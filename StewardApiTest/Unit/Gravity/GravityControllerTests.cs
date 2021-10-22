@@ -538,8 +538,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());
-                this.GravityPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
-                this.GravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(Arg.Any<string>()).Returns(true);
+                this.GravityPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<ulong>()).Returns(true);
+                this.GravityPlayerDetailsProvider.DoesPlayerExistByT10IdAsync(Arg.Any<string>()).Returns(true);
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());

@@ -465,8 +465,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetApolloEndpoint(this.Request.Headers);
-            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.apolloPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -501,8 +502,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.apolloPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -526,8 +528,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetApolloEndpoint(this.Request.Headers);
-            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.apolloPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -631,8 +634,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.apolloPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -716,8 +720,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.apolloPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }

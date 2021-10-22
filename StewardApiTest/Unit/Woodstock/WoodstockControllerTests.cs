@@ -101,7 +101,35 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "WoodstockPlayerInventoryProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockPlayerInventoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenWoodstockServiceManagementProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { WoodstockServiceManagementProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockServiceManagementProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenWoodstockNotificationProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { WoodstockNotificationProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockNotificationProvider"));
         }
 
         [TestMethod]
@@ -1321,6 +1349,163 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             details.Should().BeOfType<MessageSendResult<int>>();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task EditNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var communityMessageEdit = Fixture.Create<CommunityMessage>();
+            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.EditPlayerNotification(notificationId, xuid, communityMessageEdit).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task EditGroupNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var communityMessageEdit = Fixture.Create<LspGroupCommunityMessage>();
+            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+            communityMessageEdit.DeviceType = DeviceType.All;
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.EditGroupNotification(notificationId, communityMessageEdit).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditNotification_WithNullEditParameters_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, null).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, null).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "editParameters"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditNotification_WithNullEmptyWhitespaceMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var duration = TimeSpan.FromDays(3);
+            var deviceType = DeviceType.All;
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = null, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.Empty, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "message"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditPlayerNotifications_WithTooLongMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var tooLong = new string('*', 520);
+            var duration = TimeSpan.FromDays(3);
+            var deviceType = DeviceType.All;
+
+            // Act.
+            var actions = new List<Func<Task>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = tooLong, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = tooLong, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage(string.Format(TestConstants.ArgumentTooLongExceptionMessagePartial, "Message", "512"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task DeleteNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.DeletePlayerNotification(notificationId, xuid).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task DeleteGroupNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.DeleteGroupNotification(notificationId).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
         private IList<WoodstockBanParametersInput> GenerateBanParameters()
         {
             return new List<WoodstockBanParametersInput>
@@ -1396,8 +1581,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.WoodstockPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.WoodstockPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
-                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
-                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+                this.WoodstockPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
+                this.WoodstockPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
                 this.WoodstockPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockUserFlags>());
                 this.WoodstockPlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<ProfileSummary>());
                 this.WoodstockPlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<CreditUpdate>>());
@@ -1405,10 +1590,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.WoodstockPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.WoodstockPlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
-                this.WoodstockPlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
-                this.WoodstockPlayerDetailsProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
-                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.WoodstockNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
+                this.WoodstockNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
+                this.WoodstockNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.WoodstockNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.WoodstockNotificationProvider.GetGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Build<UserGroupNotification>().With(x => x.NotificationType, "CommunityMessageNotification").Create());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
@@ -1433,6 +1619,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             public IWoodstockPlayerInventoryProvider WoodstockPlayerInventoryProvider { get; set; } = Substitute.For<IWoodstockPlayerInventoryProvider>();
 
             public IWoodstockServiceManagementProvider WoodstockServiceManagementProvider { get; set; } = Substitute.For<IWoodstockServiceManagementProvider>();
+
+            public IWoodstockNotificationProvider WoodstockNotificationProvider { get; set; } = Substitute.For<IWoodstockNotificationProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
@@ -1471,6 +1659,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerDetailsProvider,
                 this.WoodstockPlayerInventoryProvider,
                 this.WoodstockServiceManagementProvider,
+                this.WoodstockNotificationProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,

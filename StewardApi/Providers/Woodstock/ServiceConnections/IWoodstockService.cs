@@ -199,9 +199,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Retrieves notifications for a user.
         /// </summary>
-        public Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(
+        public Task<NotificationsManagementService.LiveOpsRetrieveForUserExOutput> LiveOpsRetrieveForUserAsync(
             ulong xuid,
             int maxResults,
+            string endpoint);
+
+        /// <summary>
+        ///     Retrieves user group messages.
+        /// </summary>
+        public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
+            GetUserGroupNotificationsAsync(
+                int groupId,
+                int maxResults,
+                string endpoint);
+
+        /// <summary>
+        ///     Retrieves user group message.
+        /// </summary>
+        public Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
+            Guid notificationId,
             string endpoint);
 
         /// <summary>
@@ -225,13 +241,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
-        ///     Retrieves user group messages.
+        ///     Edits notification.
         /// </summary>
-        public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
-            GetUserGroupNotificationAsync(
-                int groupId,
-                int maxResults,
-                string endpoint);
+        public Task EditNotificationAsync(
+            Guid notificationId,
+            ulong xuid,
+            ForzaCommunityMessageNotificationEditParameters messageParams,
+            string endpoint);
+
+        /// <summary>
+        ///     Edits group notification.
+        /// </summary>
+        public Task EditGroupNotificationAsync(
+            Guid notificationId,
+            ForzaCommunityMessageNotificationEditParameters messageParams,
+            string endpoint);
 
         /// <summary>
         ///     Gets player auctions.

@@ -138,14 +138,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void EnsurePlayerExistsAsync_WithValidParameters_ReturnsCorrectType()
+        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<bool>> act = async () => await provider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(false);
+            Func<Task<bool>> act = async () => await provider.DoesPlayerExistAsync(xuid).ConfigureAwait(false);
 
             // Assert.
             act().Result.Should().BeTrue();

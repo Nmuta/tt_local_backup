@@ -29,12 +29,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Ensures player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(ulong xuid, string endpoint);
+        Task<bool> DoesPlayerExistAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Ensures player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(string gamertag, string endpoint);
+        Task<bool> DoesPlayerExistAsync(string gamertag, string endpoint);
 
         /// <summary>
         ///     Bans users.

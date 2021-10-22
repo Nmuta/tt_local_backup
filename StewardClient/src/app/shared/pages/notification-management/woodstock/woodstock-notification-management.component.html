@@ -1,0 +1,7 @@
+<notification-management-base #notificationManagementComponent [service]="service">
+  <woodstock-lsp-group-selection
+    lspGroupSelection
+    [(ngModel)]="notificationManagementComponent.selectedLspGroup"
+    (ngModelChange)="notificationManagementComponent.retrieveNotifications()"
+  ></woodstock-lsp-group-selection>
+</notification-management-base>

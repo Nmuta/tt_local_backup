@@ -115,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid, string endpoint)
+        public async Task<bool> DoesPlayerExistAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(string gamertag, string endpoint)
+        public async Task<bool> DoesPlayerExistAsync(string gamertag, string endpoint)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -435,120 +435,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
             }
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<Notification>> GetPlayerNotificationsAsync(
-            ulong xuid,
-            int maxResults,
-            string endpoint)
-        {
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var notifications = await this.steelheadService.LiveOpsRetrieveForUserAsync(
-                    xuid,
-                    maxResults,
-                    endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<Notification>>(notifications.results);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException(
-                    $"Notifications for player with XUID: {xuid} could not be found.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<UserGroupNotification>> GetGroupNotificationsAsync(
-            int groupId,
-            int maxResults,
-            string endpoint)
-        {
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-            groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
-
-            try
-            {
-                var notifications = await this.steelheadService.GetUserGroupNotificationAsync(
-                    groupId,
-                    maxResults,
-                    endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<UserGroupNotification>>(notifications.userGroupMessages);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException(
-                    $"An error occurred while querying notifications for LSP group with ID: {groupId}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(
-            IList<ulong> xuids,
-            string message,
-            DateTime expireTimeUtc,
-            string endpoint)
-        {
-            xuids.ShouldNotBeNull(nameof(xuids));
-            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var results = await this.steelheadService.SendMessageNotificationToMultipleUsersAsync(
-                    xuids,
-                    message,
-                    expireTimeUtc,
-                    endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException("Notifications failed to send.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(
-            int groupId,
-            string message,
-            DateTime expireTimeUtc,
-            DeviceType deviceType,
-            string endpoint)
-        {
-            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-            groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
-
-            var messageResponse = new MessageSendResult<int>();
-            messageResponse.PlayerOrLspGroup = groupId;
-            messageResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
-
-            try
-            {
-                await this.steelheadService.SendGroupMessageNotificationAsync(
-                    groupId,
-                    message,
-                    expireTimeUtc,
-                    forzaDeviceType,
-                    endpoint).ConfigureAwait(false);
-
-                messageResponse.Error = null;
-            }
-            catch
-            {
-                messageResponse.Error = new ServicesFailureStewardError(
-                    $"LSP failed to message group with ID: {groupId}");
-            }
-
-            return messageResponse;
         }
 
         private IList<int> PrepareGroupIds(SteelheadUserFlags userFlags, bool toggleOn)

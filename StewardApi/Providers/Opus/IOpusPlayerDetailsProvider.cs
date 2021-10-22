@@ -27,6 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         /// <summary>
         ///     Ensures a player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(ulong xuid);
+        Task<bool> DoesPlayerExistAsync(ulong xuid);
     }
 }

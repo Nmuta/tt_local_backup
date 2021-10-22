@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH4.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -18,7 +17,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -102,7 +100,35 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "SunrisePlayerInventoryProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunrisePlayerInventoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenSunriseServiceManagementProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { SunriseServiceManagementProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseServiceManagementProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenSunriseNotificationProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { SunriseNotificationProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseNotificationProvider"));
         }
 
         [TestMethod]
@@ -1390,6 +1416,163 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task EditNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var communityMessageEdit = Fixture.Create<CommunityMessage>();
+            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.EditPlayerNotification(notificationId, xuid, communityMessageEdit).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task EditGroupNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var communityMessageEdit = Fixture.Create<LspGroupCommunityMessage>();
+            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+            communityMessageEdit.DeviceType = DeviceType.All;
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.EditGroupNotification(notificationId, communityMessageEdit).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditNotification_WithNullEditParameters_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, null).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, null).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "editParameters"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditNotification_WithNullEmptyWhitespaceMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var duration = TimeSpan.FromDays(3);
+            var deviceType = DeviceType.All;
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = null, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.Empty, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "message"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditPlayerNotifications_WithTooLongMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var tooLong = new string('*', 520);
+            var duration = TimeSpan.FromDays(3);
+            var deviceType = DeviceType.All;
+
+            // Act.
+            var actions = new List<Func<Task>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = tooLong, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = tooLong, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage(string.Format(TestConstants.ArgumentTooLongExceptionMessagePartial, "Message", "512"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task DeleteNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.DeletePlayerNotification(notificationId, xuid).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task DeleteGroupNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.DeleteGroupNotification(notificationId).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetAuctions_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1772,24 +1955,25 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.SunrisePlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.SunrisePlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
-                this.SunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
-                this.SunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+                this.SunrisePlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
+                this.SunrisePlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
                 this.SunrisePlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SunriseUserFlags>());
                 this.SunrisePlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<ProfileSummary>());
                 this.SunrisePlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<CreditUpdate>>());
                 this.SunrisePlayerDetailsProvider.BanUsersAsync(Arg.Any<List<SunriseBanParameters>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
-                this.SunrisePlayerDetailsProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.SunriseServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.SunriseNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.SunriseNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.SunriseNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
+                this.SunriseNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
+                this.SunriseNotificationProvider.GetGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Build<UserGroupNotification>().With(x => x.NotificationType,"CommunityMessageNotification").Create());
                 this.SunrisePlayerDetailsProvider.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ProfileNote>>());
                 this.SunrisePlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(Arg.Any<ulong>(), Arg.Any<AuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<PlayerAuction>>());
@@ -1813,6 +1997,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public ISunriseStorefrontProvider StorefrontProvider { get; set; } = Substitute.For<ISunriseStorefrontProvider>();
 
             public ISunriseServiceManagementProvider SunriseServiceManagementProvider { get; set; } = Substitute.For<ISunriseServiceManagementProvider>();
+
+            public ISunriseNotificationProvider SunriseNotificationProvider { get; set; } = Substitute.For<ISunriseNotificationProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
@@ -1849,6 +2035,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider,
                 this.SunrisePlayerInventoryProvider,
                 this.SunriseServiceManagementProvider,
+                this.SunriseNotificationProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,

@@ -22,7 +22,6 @@ import {
   SunrisePlayerDetails,
   SunrisePlayerInventory,
   SunrisePlayerInventoryProfile,
-  SunrisePlayerNotifications,
   SunriseProfileSummary,
   SunriseSharedConsoleUser,
   SunriseUserFlags,
@@ -49,6 +48,7 @@ import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { overrideSunriseEndpointKey } from '@helpers/override-endpoint-key';
+import { GroupNotifications, PlayerNotifications } from '@models/notifications.model';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -60,8 +60,33 @@ export class SunriseService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets the status of a player's notifications. */
-  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<SunrisePlayerNotifications> {
+  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotifications> {
     return this.apiService.getRequest$(`${this.basePath}/player/xuid(${xuid})/notifications`);
+  }
+
+  /** Gets the status of an LSP group's notifications. */
+  public getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotifications> {
+    return this.apiService.getRequest$(
+      `${this.basePath}/group/groupId(${lspGroupId})/notifications`,
+    );
+  }
+
+  /** Edits a group community message. */
+  public postEditLspGroupCommunityMessage$(
+    notificationId: string,
+    communityMessage: CommunityMessage,
+  ): Observable<void> {
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/notifications/notificationId(${notificationId})`,
+      communityMessage,
+    );
+  }
+
+  /** Edits a group community message. */
+  public deleteLspGroupCommunityMessage$(notificationId: string): Observable<void> {
+    return this.apiService.deleteRequest$<void>(
+      `${this.basePath}/notifications/notificationId(${notificationId})`,
+    );
   }
 
   /** Gets a single identity within this service. */

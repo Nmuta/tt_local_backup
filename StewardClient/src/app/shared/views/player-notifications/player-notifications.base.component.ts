@@ -1,22 +1,19 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { SunrisePlayerNotification } from '@models/sunrise';
 import { sortBy } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
-import { WoodstockPlayerNotification } from '@models/woodstock';
 import { IdentityResultUnion } from '@models/identity-query.model';
-
-export type NotificationUnion = SunrisePlayerNotification | WoodstockPlayerNotification;
+import { PlayerNotification } from '@models/notifications.model';
 
 /** Retreives and displays a player notifications by XUID. */
 @Component({
   template: '',
 })
-export abstract class PlayerNotificationsBaseComponent<T extends NotificationUnion>
+export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotification>
   extends BaseComponent
   implements OnChanges {
   @Input() public identity?: IdentityResultUnion;

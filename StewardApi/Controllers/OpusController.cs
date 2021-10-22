@@ -122,7 +122,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            if (!await this.opusPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var playerExists = await this.opusPlayerDetailsProvider.DoesPlayerExistAsync(xuid).ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }

@@ -157,7 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid)
+        public async Task<bool> DoesPlayerExistAsync(ulong xuid)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(string gamertag)
+        public async Task<bool> DoesPlayerExistAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
@@ -189,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsByT10IdAsync(string t10Id)
+        public async Task<bool> DoesPlayerExistByT10IdAsync(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 

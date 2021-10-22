@@ -8,7 +8,6 @@ export * from './sunrise-user-flags.model';
 export * from './sunrise-player-inventory.model';
 export * from './sunrise-gift-history.model';
 export * from './sunrise-ban-result.model';
-export * from './sunrise-player-notifications.model';
 export * from './sunrise-ban-summary.model';
 export * from './sunrise-ban-request.model';
 export * from './sunrise-player-inventory-profile.model';

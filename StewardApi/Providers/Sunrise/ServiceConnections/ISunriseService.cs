@@ -156,6 +156,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Retrieves user group messages.
+        /// </summary>
+        public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
+            GetUserGroupNotificationsAsync(
+                int groupId,
+                int maxResults,
+                string endpoint);
+
+        /// <summary>
+        ///     Retrieves user group message.
+        /// </summary>
+        public Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
+            Guid notificationId,
+            string endpoint);
+
+        /// <summary>
         ///     Sends message to multiple xuids.
         /// </summary>
         Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
@@ -177,13 +193,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
                 string endpoint);
 
         /// <summary>
-        ///     Retrieves user group messages.
+        ///     Edits notification.
         /// </summary>
-        public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
-            GetUserGroupNotificationAsync(
-                int groupId,
-                int maxResults,
-                string endpoint);
+        public Task EditNotificationAsync(
+            Guid notificationId,
+            ulong xuid,
+            ForzaCommunityMessageNotificationEditParameters messageParams,
+            string endpoint);
+
+        /// <summary>
+        ///     Edits group notification.
+        /// </summary>
+        public Task EditGroupNotificationAsync(
+            Guid notificationId,
+            ForzaCommunityMessageNotificationEditParameters messageParams,
+            string endpoint);
 
         /// <summary>
         ///     Gets supported gift types using the admin endpoint.

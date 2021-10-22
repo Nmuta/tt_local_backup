@@ -286,6 +286,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaUserGroupMessage, UserGroupNotification>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
                 .ReverseMap();
             this.CreateMap<DeviceType, LiveOpsContracts.ForzaLiveDeviceType>().ReverseMap();
         }

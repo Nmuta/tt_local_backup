@@ -1,0 +1,96 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+table {
+  width: 100%;
+
+  tr.mat-row {
+    height: 250px;
+  }
+
+  tr.non-editable {
+    height: 120px;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    li {
+      list-style: none;
+    }
+  }
+}
+
+button {
+  display: block;
+  min-width: $button-min-size;
+  margin-bottom: $gap-small;
+
+  &.edit {
+    padding: 0;
+
+    // Allows tooltip display on disabled button.
+    span {
+      display: block;
+      float: none;
+      width: 100%;
+    }
+  }
+}
+
+div.input {
+  flex-flow: row wrap;
+  > * {
+    flex: 1 0;
+  }
+
+  .options {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin: -0.5em;
+    > * {
+      margin: 0.5em;
+    }
+  }
+}
+
+mat-form-field {
+  display: block;
+
+  &.device-type,
+  &.expiry-date {
+    width: 250px;
+  }
+
+  textarea {
+    min-height: 200px;
+  }
+}
+
+.message {
+  width: 100%;
+  max-width: 500px;
+}
+
+.mat-column-message {
+  min-width: 300px;
+  padding-right: $gap-medium;
+}
+
+.mat-column-metadata {
+  min-width: 300px;
+}
+
+.mat-column-actions {
+  @include table-width(200);
+  min-width: $button-min-size;
+  padding-left: $gap-medium;
+}
+
+.warn {
+  color: app-color-default($app-warn);
+}

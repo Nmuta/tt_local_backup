@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { faker } from '@interceptors/fake-api/utility';
-import { WoodstockPlayerNotification } from '@models/woodstock';
+import { PlayerNotification } from '@models/notifications.model';
 
 /** Fake API for woodstock player inventory profiles. */
 export class WoodstockPlayerXuidNotificationsFakeApi extends FakeApiBase {
@@ -19,14 +19,14 @@ export class WoodstockPlayerXuidNotificationsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): WoodstockPlayerNotification[] {
+  public handle(): PlayerNotification[] {
     return WoodstockPlayerXuidNotificationsFakeApi.makeMany();
   }
 
   /** Generates a sample object */
-  public static makeMany(): WoodstockPlayerNotification[] {
+  public static makeMany(): PlayerNotification[] {
     return new Array(faker.datatype.number({ min: 5, max: 20 })).fill(null).map(_ => {
-      return <WoodstockPlayerNotification>{
+      return <PlayerNotification>{
         expirationDateUtc: toDateTime(faker.date.future()),
         sendDateUtc: toDateTime(faker.date.past()),
         isRead: faker.datatype.boolean(),

@@ -58,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISteelheadPlayerInventoryProvider steelheadPlayerInventoryProvider;
         private readonly ISteelheadPlayerDetailsProvider steelheadPlayerDetailsProvider;
         private readonly ISteelheadServiceManagementProvider steelheadServiceManagementProvider;
+        private readonly ISteelheadNotificationProvider steelheadNotificationProvider;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
         private readonly IJobTracker jobTracker;
@@ -79,6 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ISteelheadPlayerDetailsProvider steelheadPlayerDetailsProvider,
             ISteelheadPlayerInventoryProvider steelheadPlayerInventoryProvider,
             ISteelheadServiceManagementProvider steelheadServiceManagementProvider,
+            ISteelheadNotificationProvider steelheadNotificationProvider,
             IKeyVaultProvider keyVaultProvider,
             ISteelheadGiftHistoryProvider giftHistoryProvider,
             ISteelheadBanHistoryProvider banHistoryProvider,
@@ -98,6 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             steelheadPlayerDetailsProvider.ShouldNotBeNull(nameof(steelheadPlayerDetailsProvider));
             steelheadPlayerInventoryProvider.ShouldNotBeNull(nameof(steelheadPlayerInventoryProvider));
             steelheadServiceManagementProvider.ShouldNotBeNull(nameof(steelheadServiceManagementProvider));
+            steelheadNotificationProvider.ShouldNotBeNull(nameof(steelheadNotificationProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -118,6 +121,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.steelheadPlayerDetailsProvider = steelheadPlayerDetailsProvider;
             this.steelheadPlayerInventoryProvider = steelheadPlayerInventoryProvider;
             this.steelheadServiceManagementProvider = steelheadServiceManagementProvider;
+            this.steelheadNotificationProvider = steelheadNotificationProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -290,8 +294,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -321,8 +326,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -516,8 +522,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -675,8 +682,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -762,8 +770,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -883,7 +892,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            var notifications = await this.steelheadPlayerDetailsProvider.GetPlayerNotificationsAsync(
+            var notifications = await this.steelheadNotificationProvider.GetPlayerNotificationsAsync(
                 xuid,
                 maxResults,
                 endpoint).ConfigureAwait(true);
@@ -903,7 +912,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            var notifications = await this.steelheadPlayerDetailsProvider.GetGroupNotificationsAsync(
+            var notifications = await this.steelheadNotificationProvider.GetGroupNotificationsAsync(
                 groupId,
                 maxResults,
                 endpoint).ConfigureAwait(true);
@@ -935,8 +944,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in communityMessage.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -948,7 +958,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
-            var notifications = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(
+            var notifications = await this.steelheadNotificationProvider.SendNotificationsAsync(
                 communityMessage.Xuids,
                 communityMessage.Message,
                 expireTime,
@@ -987,7 +997,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.Now.Add(communityMessage.Duration);
-            var result = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(
+            var result = await this.steelheadNotificationProvider.SendGroupNotificationAsync(
                 groupId,
                 communityMessage.Message,
                 expireTime,
@@ -995,6 +1005,120 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Edit the player notification.
+        /// </summary>
+        [HttpPost("player/xuid({xuid})/notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> EditPlayerNotification(
+            Guid notificationId,
+            ulong xuid,
+            [FromBody] CommunityMessage editParameters)
+        {
+            editParameters.ShouldNotBeNull(nameof(editParameters));
+            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
+            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
+            await this.steelheadNotificationProvider.EditNotificationAsync(
+                notificationId,
+                xuid,
+                editParameters.Message,
+                expireTime,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Edit the group notification.
+        /// </summary>
+        [HttpPost("notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> EditGroupNotification(
+            Guid notificationId,
+            [FromBody] LspGroupCommunityMessage editParameters)
+        {
+            editParameters.ShouldNotBeNull(nameof(editParameters));
+            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
+            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+
+            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
+            await this.steelheadNotificationProvider.EditGroupNotificationAsync(
+                notificationId,
+                editParameters.Message,
+                expireTime,
+                editParameters.DeviceType,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Deletes the player notification.
+        /// </summary>
+        [HttpDelete("player/xuid({xuid})/notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
+        {
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            await this.steelheadNotificationProvider.DeleteNotificationAsync(
+                notificationId,
+                xuid,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Deletes group notification.
+        /// </summary>
+        [HttpDelete("notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
+        {
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+
+            await this.steelheadNotificationProvider.DeleteGroupNotificationAsync(
+                notificationId,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
         }
 
         /// <summary>

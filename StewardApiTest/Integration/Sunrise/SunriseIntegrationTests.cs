@@ -1416,7 +1416,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             var response = await stewardClient.GiftInventoryByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
             Assert.IsTrue(response.Error.Message.Contains(TestConstants.InvalidProfileId.ToString()));
-
         }
 
         [TestMethod]

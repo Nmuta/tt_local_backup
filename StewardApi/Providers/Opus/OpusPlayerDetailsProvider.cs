@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid)
+        public async Task<bool> DoesPlayerExistAsync(ulong xuid)
         {
             try
             {

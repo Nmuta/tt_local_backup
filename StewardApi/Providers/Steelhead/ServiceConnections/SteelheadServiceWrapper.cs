@@ -230,11 +230,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults, string endpoint)
+        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserExOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults, string endpoint)
         {
             var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await notificationsManagementService.LiveOpsRetrieveForUser(xuid, maxResults).ConfigureAwait(false);
+            return await notificationsManagementService.LiveOpsRetrieveForUserEx(xuid, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<NotificationsManagementService.GetAllUserGroupMessagesOutput> GetUserGroupNotificationAsync(
+            int groupId,
+            int maxResults,
+            string endpoint)
+        {
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await notificationsManagementService.GetAllUserGroupMessages(groupId, maxResults)
+                .ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -255,23 +267,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await notificationsManagementService.SendGroupMessageNotification(
-                groupId,
-                message,
-                expireTimeUtc,
-                deviceType != ForzaLiveDeviceType.Invalid,
-                deviceType).ConfigureAwait(false);
+            await notificationsManagementService.SendGroupMessageNotification(groupId, message, expireTimeUtc, deviceType != ForzaLiveDeviceType.Invalid, deviceType).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.GetAllUserGroupMessagesOutput> GetUserGroupNotificationAsync(
-            int groupId,
-            int maxResults,
+        public async Task EditNotificationAsync(
+            Guid notificationId,
+            ulong xuid,
+            ForzaCommunityMessageNotificationEditParameters messageParams,
             string endpoint)
         {
             var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await notificationsManagementService.GetAllUserGroupMessages(groupId, maxResults)
+            await notificationsManagementService.EditNotification(notificationId, xuid, messageParams)
+                .ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task EditGroupNotificationAsync(
+            Guid notificationId,
+            ForzaCommunityMessageNotificationEditParameters messageParams,
+            string endpoint)
+        {
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            await notificationsManagementService.EditGroupNotification(notificationId, messageParams)
                 .ConfigureAwait(false);
         }
 

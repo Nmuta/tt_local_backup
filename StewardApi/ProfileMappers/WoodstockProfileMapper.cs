@@ -5,6 +5,7 @@ using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
 using Forza.UserInventory.FH5.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5.Generated;
+using Microsoft.Extensions.Azure;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -19,6 +20,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     ///     Mapper for Steelhead DTOs.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "High class coupling by design.")]
     public sealed class WoodstockProfileMapper : Profile
     {
         /// <summary>
@@ -136,6 +138,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserGroupMessage, UserGroupNotification>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
                 .ReverseMap();
             this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
 

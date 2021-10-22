@@ -73,4 +73,10 @@ export class SharedNavbarTools {
     title: 'Obligation',
     path: 'obligation',
   };
+
+  /** The notification management tool page. */
+  public static readonly NotificationManagementPage: RouteParams = {
+    title: 'Notification Management',
+    path: 'notification-management',
+  };
 }

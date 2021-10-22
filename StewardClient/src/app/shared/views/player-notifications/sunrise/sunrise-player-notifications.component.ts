@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
-import { SunrisePlayerNotification } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { GameTitleCodeName } from '@models/enums';
 import { Observable } from 'rxjs';
 import { PlayerNotificationsBaseComponent } from '../player-notifications.base.component';
+import { PlayerNotification } from '@models/notifications.model';
 
 /** Retreives and displays a players' Sunrise notifications by XUID. */
 @Component({
@@ -13,7 +13,7 @@ import { PlayerNotificationsBaseComponent } from '../player-notifications.base.c
   styleUrls: ['../player-notifications.component.scss'],
 })
 export class SunrisePlayerNotificationsComponent extends PlayerNotificationsBaseComponent<
-  SunrisePlayerNotification
+  PlayerNotification
 > {
   public gameTitle = GameTitleCodeName.FH4;
 
@@ -22,7 +22,7 @@ export class SunrisePlayerNotificationsComponent extends PlayerNotificationsBase
   }
 
   /** Gets a player's notification list by XUID. */
-  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<SunrisePlayerNotification[]> {
+  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotification[]> {
     return this.sunrise.getPlayerNotificationsByXuid$(xuid);
   }
 }

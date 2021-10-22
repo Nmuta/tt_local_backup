@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FH4.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -19,7 +18,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -63,6 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider;
         private readonly ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider;
         private readonly ISunriseServiceManagementProvider sunriseServiceManagementProvider;
+        private readonly ISunriseNotificationProvider sunriseNotificationProvider;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
         private readonly ISunriseStorefrontProvider storefrontProvider;
@@ -85,6 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
             ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider,
             ISunriseServiceManagementProvider sunriseServiceManagementProvider,
+            ISunriseNotificationProvider sunriseNotificationProvider,
             IKeyVaultProvider keyVaultProvider,
             ISunriseGiftHistoryProvider giftHistoryProvider,
             ISunriseBanHistoryProvider banHistoryProvider,
@@ -105,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
             sunrisePlayerInventoryProvider.ShouldNotBeNull(nameof(sunrisePlayerInventoryProvider));
             sunriseServiceManagementProvider.ShouldNotBeNull(nameof(sunriseServiceManagementProvider));
+            sunriseNotificationProvider.ShouldNotBeNull(nameof(sunriseNotificationProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -127,6 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.sunrisePlayerInventoryProvider = sunrisePlayerInventoryProvider;
             this.storefrontProvider = storefrontProvider;
             this.sunriseServiceManagementProvider = sunriseServiceManagementProvider;
+            this.sunriseNotificationProvider = sunriseNotificationProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -296,8 +298,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -331,8 +334,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -371,8 +375,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -398,8 +403,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             profileNote.ShouldNotBeNull(nameof(profileNote));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -720,8 +726,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
             }
@@ -930,8 +937,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -1019,9 +1027,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
             }
@@ -1078,8 +1086,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1164,8 +1173,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1284,7 +1294,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            var notifications = await this.sunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(
+            var notifications = await this.sunriseNotificationProvider.GetPlayerNotificationsAsync(
                 xuid,
                 maxResults,
                 endpoint).ConfigureAwait(true);
@@ -1304,7 +1314,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            var notifications = await this.sunrisePlayerDetailsProvider.GetGroupNotificationsAsync(
+            var notifications = await this.sunriseNotificationProvider.GetGroupNotificationsAsync(
                 groupId,
                 maxResults,
                 endpoint).ConfigureAwait(true);
@@ -1336,8 +1346,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in communityMessage.Xuids)
             {
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1349,7 +1360,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
-            var notifications = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(
+            var notifications = await this.sunriseNotificationProvider.SendNotificationsAsync(
                 communityMessage.Xuids,
                 communityMessage.Message,
                 expireTime,
@@ -1388,7 +1399,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.Now.Add(communityMessage.Duration);
-            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(
+            var result = await this.sunriseNotificationProvider.SendGroupNotificationAsync(
                 groupId,
                 communityMessage.Message,
                 expireTime,
@@ -1396,6 +1407,129 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Edit the player notification.
+        /// </summary>
+        [HttpPost("player/xuid({xuid})/notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
+        public async Task<IActionResult> EditPlayerNotification(
+            Guid notificationId,
+            ulong xuid,
+            [FromBody] CommunityMessage editParameters)
+        {
+            editParameters.ShouldNotBeNull(nameof(editParameters));
+            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
+            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
+            await this.sunriseNotificationProvider.EditNotificationAsync(
+                notificationId,
+                xuid,
+                editParameters.Message,
+                expireTime,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Edit the group notification.
+        /// </summary>
+        [HttpPost("notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> EditGroupNotification(
+            Guid notificationId,
+            [FromBody] LspGroupCommunityMessage editParameters)
+        {
+            editParameters.ShouldNotBeNull(nameof(editParameters));
+            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
+            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            var notification = await this.sunriseNotificationProvider.GetGroupNotificationAsync(notificationId, endpoint)
+                .ConfigureAwait(true);
+
+            if (notification.NotificationType != "CommunityMessageNotification")
+            {
+                throw new FailedToSendStewardException(
+                    $"Cannot edit notification of type: {notification.NotificationType}.");
+            }
+
+            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
+            await this.sunriseNotificationProvider.EditGroupNotificationAsync(
+                notificationId,
+                editParameters.Message,
+                expireTime,
+                editParameters.DeviceType,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Deletes the player notification.
+        /// </summary>
+        [HttpDelete("player/xuid({xuid})/notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
+        {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            await this.sunriseNotificationProvider.DeleteNotificationAsync(
+                notificationId,
+                xuid,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Deletes group notification.
+        /// </summary>
+        [HttpDelete("notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
+        {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            await this.sunriseNotificationProvider.DeleteGroupNotificationAsync(
+                notificationId,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
         }
 
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)

@@ -237,6 +237,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
             services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
             services.AddSingleton<IWoodstockServiceManagementProvider, WoodstockServiceManagementProvider>();
+            services.AddSingleton<IWoodstockNotificationProvider, WoodstockNotificationProvider>();
             services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
             services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
             services.AddSingleton<IWoodstockStorefrontProvider, WoodstockStorefrontProvider>();
@@ -250,6 +251,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISteelheadPlayerDetailsProvider, SteelheadPlayerDetailsProvider>();
             services.AddSingleton<ISteelheadPlayerInventoryProvider, SteelheadPlayerInventoryProvider>();
             services.AddSingleton<ISteelheadServiceManagementProvider, SteelheadServiceManagementProvider>();
+            services.AddSingleton<ISteelheadNotificationProvider, SteelheadNotificationProvider>();
             services.AddSingleton<ISteelheadBanHistoryProvider, SteelheadBanHistoryProvider>();
             services.AddSingleton<ISteelheadGiftHistoryProvider, SteelheadGiftHistoryProvider>();
             services.AddSingleton<IRequestValidator<SteelheadBanParametersInput>, SteelheadBanParametersRequestValidator>();
@@ -270,6 +272,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
             services.AddSingleton<ISunriseServiceManagementProvider, SunriseServiceManagementProvider>();
+            services.AddSingleton<ISunriseNotificationProvider, SunriseNotificationProvider>();
             services.AddSingleton<IRequestValidator<SunriseMasterInventory>, SunriseMasterInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseBanParametersInput>, SunriseBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseUserFlagsInput>, SunriseUserFlagsRequestValidator>();

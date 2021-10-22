@@ -68,7 +68,7 @@ context('Steward / Tools', () => {
         .first()
         .should('exist')
         .contains('a', 'Open')
-        .should('have.attr', 'href', stewardUrls.tools.serviceManagement.default);
+        .should('have.attr', 'href', stewardUrls.tools.auctionBlocklist.default);
 
       cy.get('mat-card')
         .contains('mat-card-title', 'Messaging')

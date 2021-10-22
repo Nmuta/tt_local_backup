@@ -137,7 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid, string endpoint)
+        public async Task<bool> DoesPlayerExistAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -154,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(string gamertag, string endpoint)
+        public async Task<bool> DoesPlayerExistAsync(string gamertag, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 

@@ -31,12 +31,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Ensures player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(ulong xuid, string endpoint);
+        Task<bool> DoesPlayerExistAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Ensures player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(string gamertag, string endpoint);
+        Task<bool> DoesPlayerExistAsync(string gamertag, string endpoint);
 
         /// <summary>
         ///     Gets consoles.
@@ -89,37 +89,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         ///     Gets player auctions.
         /// </summary>
         Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters, string endpoint);
-
-        /// <summary>
-        ///     Gets player notifications.
-        /// </summary>
-        Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults, string endpoint);
-
-        /// <summary>
-        ///     Gets user group notifications.
-        /// </summary>
-        public Task<IList<UserGroupNotification>> GetGroupNotificationsAsync(
-            int groupId,
-            int maxResults,
-            string endpoint);
-
-        /// <summary>
-        ///     Sends a community message.
-        /// </summary>
-        Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(
-            IList<ulong> xuids,
-            string message,
-            DateTime expireTimeUtc,
-            string endpoint);
-
-        /// <summary>
-        ///     Sends a community message.
-        /// </summary>
-        Task<MessageSendResult<int>> SendCommunityMessageAsync(
-            int groupId,
-            string message,
-            DateTime expireTimeUtc,
-            DeviceType deviceType,
-            string endpoint);
     }
 }

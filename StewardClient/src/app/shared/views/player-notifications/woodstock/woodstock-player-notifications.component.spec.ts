@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
 import { WoodstockPlayerXuidNotificationsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/notifications';
-import { WoodstockPlayerNotifications } from '@models/woodstock';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { Subject } from 'rxjs';
 
@@ -10,6 +9,7 @@ import { WoodstockPlayerNotificationsComponent } from './woodstock-player-notifi
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
+import { PlayerNotifications } from '@models/notifications.model';
 
 describe('WoodstockPlayerNotificationsComponent', () => {
   let injector: TestBed;
@@ -46,15 +46,15 @@ describe('WoodstockPlayerNotificationsComponent', () => {
   );
 
   describe('valid initialization', () => {
-    let playerNotifications$: Subject<WoodstockPlayerNotifications> = undefined;
-    let playerNotificationsValue: WoodstockPlayerNotifications = undefined;
+    let playerNotifications$: Subject<PlayerNotifications> = undefined;
+    let playerNotificationsValue: PlayerNotifications = undefined;
     const testXuid = fakeXuid();
 
     beforeEach(
       waitForAsync(() => {
         // notifications list prep
-        playerNotifications$ = new Subject<WoodstockPlayerNotifications>();
-        playerNotificationsValue = WoodstockPlayerXuidNotificationsFakeApi.makeMany() as WoodstockPlayerNotifications;
+        playerNotifications$ = new Subject<PlayerNotifications>();
+        playerNotificationsValue = WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotifications;
         service.getPlayerNotificationsByXuid$ = jasmine
           .createSpy('getPlayerNotificationsByXuid')
           .and.returnValue(playerNotifications$);

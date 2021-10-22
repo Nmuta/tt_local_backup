@@ -9,5 +9,6 @@ export class TitleMemoryModel {
   public messaging: GameTitleCodeName;
   public userDetails: GameTitleCodeName;
   public ugc: GameTitleCodeName;
+  public notificationManagement: GameTitleCodeName;
   public auctionBlocklist: GameTitleCodeName;
 }

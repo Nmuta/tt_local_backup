@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
-import { WoodstockPlayerNotification } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock';
 import { PlayerNotificationsBaseComponent } from '../player-notifications.base.component';
 import { Observable } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
+import { PlayerNotification } from '@models/notifications.model';
 
 /** Retreives and displays a players' Woodstock notifications by XUID. */
 @Component({
@@ -13,7 +13,7 @@ import { GameTitleCodeName } from '@models/enums';
   styleUrls: ['../player-notifications.component.scss'],
 })
 export class WoodstockPlayerNotificationsComponent extends PlayerNotificationsBaseComponent<
-  WoodstockPlayerNotification
+  PlayerNotification
 > {
   public gameTitle = GameTitleCodeName.FH5;
 
@@ -22,7 +22,7 @@ export class WoodstockPlayerNotificationsComponent extends PlayerNotificationsBa
   }
 
   /** Gets a player's notification list by XUID. */
-  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<WoodstockPlayerNotification[]> {
+  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotification[]> {
     return this.woodstock.getPlayerNotificationsByXuid$(xuid);
   }
 }

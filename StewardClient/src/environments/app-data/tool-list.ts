@@ -17,6 +17,7 @@ export enum NavbarTool {
   Salus = 'salus',
   BulkBanHistory = 'bulk-ban-history',
   KustoManagement = 'kusto-management',
+  NotificationManagement = 'notification-management',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -58,6 +59,7 @@ export enum AppIcon {
   Admin = 'shield',
   BulkBanHistory = 'manage_search',
   KustoManagement = 'cloud_sync',
+  Messaging = 'mail',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -213,7 +215,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
       ),
   },
   {
-    icon: AppIcon.Admin,
+    icon: AppIcon.Messaging,
+    tool: NavbarTool.NotificationManagement,
+    accessList: CommonAccessLevels.OldNavbarAppOnly,
+    title: 'Notification Management',
+    subtitle: 'A support agent tool',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Edit and delete in-game messages sent to Lsp Groups.',
+    shortDescription: [`Edit and delete in-game messages sent to Lsp Groups.`],
+    loadChildren: () =>
+      import('../../app/shared/pages/notification-management/notification-management.module').then(
+        m => m.NotificationManagementModule,
+      ),
+  },
+  {
+    icon: AppIcon.Messaging,
     tool: NavbarTool.Messaging,
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
     title: 'Messaging',

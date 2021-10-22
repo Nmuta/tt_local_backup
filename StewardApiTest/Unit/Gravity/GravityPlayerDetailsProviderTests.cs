@@ -162,7 +162,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void EnsurePlayerExistsAsync_WithValidParameters_ReturnsCorrectType()
+        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -173,9 +173,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Act.
             var actions = new List<Func<Task<bool>>>
             {
-                async () => await provider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsAsync(gamertag).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsByT10IdAsync(t10Id).ConfigureAwait(false)
+                async () => await provider.DoesPlayerExistAsync(xuid).ConfigureAwait(false),
+                async () => await provider.DoesPlayerExistAsync(gamertag).ConfigureAwait(false),
+                async () => await provider.DoesPlayerExistByT10IdAsync(t10Id).ConfigureAwait(false)
             };
 
             // Assert.
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void EnsurePlayerExistsAsync_WithNullEmptyWhitespaceGamertag_Throws()
+        public void DoesPlayerExistAsync_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -195,9 +195,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.EnsurePlayerExistsAsync(null).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsAsync(TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.DoesPlayerExistAsync(null).ConfigureAwait(false),
+                async () => await provider.DoesPlayerExistAsync(TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.DoesPlayerExistAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.
@@ -209,7 +209,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void EnsurePlayerExistsAsync_WithNullEmptyWhitespaceT10Id_Throws()
+        public void DoesPlayerExistAsync_WithNullEmptyWhitespaceT10Id_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -217,9 +217,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.EnsurePlayerExistsByT10IdAsync(null).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsByT10IdAsync(TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsByT10IdAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.DoesPlayerExistByT10IdAsync(null).ConfigureAwait(false),
+                async () => await provider.DoesPlayerExistByT10IdAsync(TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.DoesPlayerExistByT10IdAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.

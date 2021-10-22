@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FH5.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -57,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider;
         private readonly IWoodstockPlayerDetailsProvider woodstockPlayerDetailsProvider;
         private readonly IWoodstockServiceManagementProvider woodstockServiceManagementProvider;
+        private readonly IWoodstockNotificationProvider woodstockNotificationProvider;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly IWoodstockStorefrontProvider storefrontProvider;
@@ -79,6 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IWoodstockPlayerDetailsProvider woodstockPlayerDetailsProvider,
             IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider,
             IWoodstockServiceManagementProvider woodstockServiceManagementProvider,
+            IWoodstockNotificationProvider woodstockNotificationProvider,
             IKeyVaultProvider keyVaultProvider,
             IWoodstockGiftHistoryProvider giftHistoryProvider,
             IWoodstockBanHistoryProvider banHistoryProvider,
@@ -99,6 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             woodstockPlayerDetailsProvider.ShouldNotBeNull(nameof(woodstockPlayerDetailsProvider));
             woodstockPlayerInventoryProvider.ShouldNotBeNull(nameof(woodstockPlayerInventoryProvider));
             woodstockServiceManagementProvider.ShouldNotBeNull(nameof(woodstockServiceManagementProvider));
+            woodstockNotificationProvider.ShouldNotBeNull(nameof(woodstockNotificationProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -120,6 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.woodstockPlayerDetailsProvider = woodstockPlayerDetailsProvider;
             this.woodstockPlayerInventoryProvider = woodstockPlayerInventoryProvider;
             this.woodstockServiceManagementProvider = woodstockServiceManagementProvider;
+            this.woodstockNotificationProvider = woodstockNotificationProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.storefrontProvider = storefrontProvider;
@@ -304,8 +307,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -335,8 +339,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -375,8 +380,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -402,8 +408,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             profileNote.ShouldNotBeNull(nameof(profileNote));
 
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -480,6 +487,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 var carData = kustoCarData.FirstOrDefault(car => car.Id == auction.ModelId);
                 auction.ItemName = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
             }
+
             return this.Ok(results);
         }
 
@@ -508,6 +516,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
                 entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
             }
+
             return this.Ok(blocklist);
         }
 
@@ -722,8 +731,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
             }
@@ -913,8 +923,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -1003,8 +1014,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid)
         {
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                .ConfigureAwait(true))
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
             {
                 throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
             }
@@ -1047,8 +1059,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1134,8 +1147,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1255,7 +1269,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            var notifications = await this.woodstockPlayerDetailsProvider.GetPlayerNotificationsAsync(
+            var notifications = await this.woodstockNotificationProvider.GetPlayerNotificationsAsync(
                 xuid,
                 maxResults,
                 endpoint).ConfigureAwait(true);
@@ -1275,7 +1289,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            var notifications = await this.woodstockPlayerDetailsProvider.GetGroupNotificationsAsync(
+            var notifications = await this.woodstockNotificationProvider.GetGroupNotificationsAsync(
                 groupId,
                 maxResults,
                 endpoint).ConfigureAwait(true);
@@ -1307,8 +1321,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in communityMessage.Xuids)
             {
-                if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
-                    .ConfigureAwait(true))
+                var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1320,7 +1335,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
-            var notifications = await this.woodstockPlayerDetailsProvider.SendCommunityMessageAsync(
+            var notifications = await this.woodstockNotificationProvider.SendNotificationsAsync(
                 communityMessage.Xuids,
                 communityMessage.Message,
                 expireTime,
@@ -1359,7 +1374,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.Now.Add(communityMessage.Duration);
-            var result = await this.woodstockPlayerDetailsProvider.SendCommunityMessageAsync(
+            var result = await this.woodstockNotificationProvider.SendGroupNotificationAsync(
                 groupId,
                 communityMessage.Message,
                 expireTime,
@@ -1367,6 +1382,132 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Edit the player notification.
+        /// </summary>
+        [HttpPost("player/xuid({xuid})/notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> EditPlayerNotification(
+            Guid notificationId,
+            ulong xuid,
+            [FromBody] CommunityMessage editParameters)
+        {
+            editParameters.ShouldNotBeNull(nameof(editParameters));
+            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
+            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
+            // Tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903790
+            */
+            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
+            await this.woodstockNotificationProvider.EditNotificationAsync(
+                notificationId,
+                xuid,
+                editParameters.Message,
+                expireTime,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Edit the group notification.
+        /// </summary>
+        [HttpPost("notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> EditGroupNotification(
+            Guid notificationId,
+            [FromBody] LspGroupCommunityMessage editParameters)
+        {
+            editParameters.ShouldNotBeNull(nameof(editParameters));
+            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
+            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+
+            var notification = await this.woodstockNotificationProvider.GetGroupNotificationAsync(notificationId, endpoint)
+                .ConfigureAwait(true);
+
+            if (notification.NotificationType != "CommunityMessageNotification")
+            {
+                throw new FailedToSendStewardException(
+                    $"Cannot edit notification of type: {notification.NotificationType}.");
+            }
+
+            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
+            await this.woodstockNotificationProvider.EditGroupNotificationAsync(
+                notificationId,
+                editParameters.Message,
+                expireTime,
+                editParameters.DeviceType,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Deletes the player notification.
+        /// </summary>
+        [HttpDelete("player/xuid({xuid})/notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            await this.woodstockNotificationProvider.DeleteNotificationAsync(
+                notificationId,
+                xuid,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Deletes group notification.
+        /// </summary>
+        [HttpDelete("notifications/notificationId({notificationId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+
+            await this.woodstockNotificationProvider.DeleteGroupNotificationAsync(
+                notificationId,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok();
         }
 
         /// <summary>

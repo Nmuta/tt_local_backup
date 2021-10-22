@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FM8.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -78,7 +77,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunrisePlayerDetailsProviderNull_Throws()
+        public void Ctor_WhenSteelheadPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
             var dependencies = new Dependencies { SteelheadPlayerDetailsProvider = null };
@@ -92,7 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunrisePlayerInventoryProviderNull_Throws()
+        public void Ctor_WhenSteelheadPlayerInventoryProviderNull_Throws()
         {
             // Arrange.
             var dependencies = new Dependencies { SteelheadPlayerInventoryProvider = null };
@@ -102,6 +101,34 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadPlayerInventoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenSteelheadServiceManagementProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { SteelheadServiceManagementProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadServiceManagementProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenSteelheadNotificationProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { SteelheadNotificationProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadNotificationProvider"));
         }
 
         [TestMethod]
@@ -1203,6 +1230,163 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             details.Should().BeOfType<MessageSendResult<int>>();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task EditNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var communityMessageEdit = Fixture.Create<CommunityMessage>();
+            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.EditPlayerNotification(notificationId, xuid, communityMessageEdit).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task EditGroupNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var communityMessageEdit = Fixture.Create<LspGroupCommunityMessage>();
+            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+            communityMessageEdit.DeviceType = DeviceType.All;
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.EditGroupNotification(notificationId, communityMessageEdit).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditNotification_WithNullEditParameters_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, null).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, null).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "editParameters"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditNotification_WithNullEmptyWhitespaceMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var duration = TimeSpan.FromDays(3);
+            var deviceType = DeviceType.All;
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = null, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.Empty, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "message"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void EditPlayerNotifications_WithTooLongMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+            var tooLong = new string('*', 520);
+            var duration = TimeSpan.FromDays(3);
+            var deviceType = DeviceType.All;
+
+            // Act.
+            var actions = new List<Func<Task>>
+            {
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = tooLong, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = tooLong, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage(string.Format(TestConstants.ArgumentTooLongExceptionMessagePartial, "Message", "512"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task DeleteNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.DeletePlayerNotification(notificationId, xuid).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task DeleteGroupNotification_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var notificationId = Fixture.Create<Guid>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.DeleteGroupNotification(notificationId).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
         private static List<SteelheadBanParametersInput> GenerateBanParameters()
         {
             var newParams = new SteelheadBanParametersInput
@@ -1254,16 +1438,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
                 this.SteelheadPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.SteelheadPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
-                this.SteelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
-                this.SteelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+                this.SteelheadPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
+                this.SteelheadPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
                 this.SteelheadPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadUserFlags>());
                 this.SteelheadPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<SteelheadBanParameters>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.SteelheadPlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
-                this.SteelheadPlayerDetailsProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
-                this.SteelheadPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.SteelheadPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.SteelheadNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
+                this.SteelheadNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
+                this.SteelheadNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.SteelheadNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
@@ -1283,6 +1467,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public ISteelheadPlayerInventoryProvider SteelheadPlayerInventoryProvider { get; set; } = Substitute.For<ISteelheadPlayerInventoryProvider>();
 
             public ISteelheadServiceManagementProvider SteelheadServiceManagementProvider { get; set; } = Substitute.For<ISteelheadServiceManagementProvider>();
+
+            public ISteelheadNotificationProvider SteelheadNotificationProvider { get; set; } = Substitute.For<ISteelheadNotificationProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
@@ -1319,6 +1505,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerDetailsProvider,
                 this.SteelheadPlayerInventoryProvider,
                 this.SteelheadServiceManagementProvider,
+                this.SteelheadNotificationProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,

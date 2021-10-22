@@ -32,16 +32,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Ensures a player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(ulong xuid);
+        Task<bool> DoesPlayerExistAsync(ulong xuid);
 
         /// <summary>
         ///     Ensures a player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(string gamertag);
+        Task<bool> DoesPlayerExistAsync(string gamertag);
 
         /// <summary>
         ///     Ensures a player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsByT10IdAsync(string t10Id);
+        Task<bool> DoesPlayerExistByT10IdAsync(string t10Id);
     }
 }

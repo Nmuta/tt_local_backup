@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunrisePlayerXuidNotificationsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/notifications';
-import { SunrisePlayerNotifications } from '@models/sunrise';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { Subject } from 'rxjs';
 
@@ -10,6 +9,7 @@ import { SunrisePlayerNotificationsComponent } from './sunrise-player-notificati
 import { first } from 'lodash';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { PlayerNotifications } from '@models/notifications.model';
 
 describe('SunrisePlayerNotificationsComponent', () => {
   let injector: TestBed;
@@ -46,15 +46,15 @@ describe('SunrisePlayerNotificationsComponent', () => {
   );
 
   describe('valid initialization', () => {
-    let playerNotifications$: Subject<SunrisePlayerNotifications> = undefined;
-    let playerNotificationsValue: SunrisePlayerNotifications = undefined;
+    let playerNotifications$: Subject<PlayerNotifications> = undefined;
+    let playerNotificationsValue: PlayerNotifications = undefined;
     const testXuid = fakeXuid();
 
     beforeEach(
       waitForAsync(() => {
         // notifications list prep
-        playerNotifications$ = new Subject<SunrisePlayerNotifications>();
-        playerNotificationsValue = SunrisePlayerXuidNotificationsFakeApi.makeMany() as SunrisePlayerNotifications;
+        playerNotifications$ = new Subject<PlayerNotifications>();
+        playerNotificationsValue = SunrisePlayerXuidNotificationsFakeApi.makeMany() as PlayerNotifications;
         service.getPlayerNotificationsByXuid$ = jasmine
           .createSpy('getPlayerNotificationsByXuid$')
           .and.returnValue(playerNotifications$);

@@ -8,7 +8,6 @@ export * from './woodstock-user-flags.model';
 export * from './woodstock-player-inventory.model';
 export * from './woodstock-gift-history.model';
 export * from './woodstock-ban-result.model';
-export * from './woodstock-player-notifications.model';
 export * from './woodstock-ban-summary.model';
 export * from './woodstock-ban-request.model';
 export * from './woodstock-player-inventory-profile.model';

@@ -159,7 +159,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void EnsurePlayerExistsAsync_WithValidParameters_ReturnsCorrectType()
+        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -170,8 +170,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Act.
             var actions = new List<Func<Task<bool>>>
             {
-                async () => await provider.EnsurePlayerExistsAsync(xuid, endpoint).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsAsync(gamertag, endpoint).ConfigureAwait(false)
+                async () => await provider.DoesPlayerExistAsync(xuid, endpoint).ConfigureAwait(false),
+                async () => await provider.DoesPlayerExistAsync(gamertag, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
