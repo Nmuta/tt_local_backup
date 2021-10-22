@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitle } from '@models/enums';
+import { GameTitle, GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
 
 @Component({
   //selector: 'notification-management',
@@ -16,11 +16,13 @@ export class NotificationManagementComponent implements OnInit {
   public ngOnInit(): void {
     this.navbarRouterLinks = [
       {
-        name: GameTitle.FH5,
+        name: GameTitleAbbreviation.FH5,
+        codename: GameTitleCodeName.FH5,
         route: ['.', GameTitle.FH5],
       },
       {
-        name: GameTitle.FH4,
+        name: GameTitleAbbreviation.FH4,
+        codename: GameTitleCodeName.FH4,
         route: ['.', GameTitle.FH4],
       },
     ];

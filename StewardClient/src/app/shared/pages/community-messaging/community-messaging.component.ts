@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, GameTitleAbbreviation } from '@models/enums';
 
 /** The community messaging component. */
 @Component({
@@ -13,13 +13,14 @@ export class CommunityMessagingComponent implements OnInit {
   public ngOnInit(): void {
     this.navbarRouterLinks = [
       {
-        name: GameTitleCodeName.FH4,
-        route: ['.', GameTitleCodeName.FH4.toLowerCase()],
-      },
-
-      {
-        name: GameTitleCodeName.FH5,
+        name: GameTitleAbbreviation.FH5,
+        codename: GameTitleCodeName.FH5,
         route: ['.', GameTitleCodeName.FH5.toLowerCase()],
+      },
+      {
+        name: GameTitleAbbreviation.FH4,
+        codename: GameTitleCodeName.FH4,
+        route: ['.', GameTitleCodeName.FH4.toLowerCase()],
       },
     ];
   }

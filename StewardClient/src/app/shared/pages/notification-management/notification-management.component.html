@@ -4,8 +4,8 @@
     [routerLink]="link.route"
     mat-button
     routerLinkActive="mat-stroked-button"
-    >{{ link.name | titlecase }}
-    <endpoint-selection [titleCodeName]="link.name"> </endpoint-selection>
+    >{{ link.name }}
+    <endpoint-selection [titleCodeName]="link.codename"> </endpoint-selection>
   </a>
   <span class="spacer"></span>
 </mat-toolbar>

@@ -15,6 +15,16 @@ export enum GameTitleName {
   FH3 = 'Forza Horizon 3',
 }
 
+/** Enum for game title abbreviation. */
+export enum GameTitleAbbreviation {
+  FH5 = 'FH5',
+  FM8 = 'Steelhead', // Left as steelhead until official name announced.
+  Street = 'Street',
+  FH4 = 'FH4',
+  FM7 = 'FM7',
+  FH3 = 'FH3',
+}
+
 /**
  * Enum for game title names. UpperCamel.
  * @deprecated for keys: prefer GameTitle (lowerCamel)

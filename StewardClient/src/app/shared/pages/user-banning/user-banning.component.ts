@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, GameTitleAbbreviation } from '@models/enums';
 
 /** The user banning component. */
 @Component({
@@ -11,15 +11,18 @@ import { GameTitleCodeName } from '@models/enums';
 export class UserBanningComponent implements OnInit {
   public navbarRouterLinks = [
     {
-      name: GameTitleCodeName.FH5,
+      name: GameTitleAbbreviation.FH5,
+      codename: GameTitleCodeName.FH5,
       route: ['.', GameTitleCodeName.FH5.toLowerCase()],
     },
     {
-      name: GameTitleCodeName.FH4,
+      name: GameTitleAbbreviation.FH4,
+      codename: GameTitleCodeName.FH4,
       route: ['.', GameTitleCodeName.FH4.toLowerCase()],
     },
     {
-      name: GameTitleCodeName.FM7,
+      name: GameTitleAbbreviation.FM7,
+      codename: GameTitleCodeName.FM7,
       route: ['.', GameTitleCodeName.FM7.toLowerCase()],
     },
   ];
@@ -29,7 +32,8 @@ export class UserBanningComponent implements OnInit {
     // TODO: Make these into permanent routes after respective titles are fully integrated.
     if (!environment.production) {
       this.navbarRouterLinks.unshift({
-        name: GameTitleCodeName.FM8,
+        name: GameTitleAbbreviation.FM8,
+        codename: GameTitleCodeName.FM8,
         route: ['.', GameTitleCodeName.FM8.toLowerCase()],
       });
     }
