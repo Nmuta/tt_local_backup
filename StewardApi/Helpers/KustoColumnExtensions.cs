@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// <summary>
     ///     Contains assorted extension methods for <see cref="KustoColumn"/>.
     /// </summary>
-    public static class KustoColumnExtensionMethods
+    public static class KustoColumnExtensions
     {
         /// <summary>
         ///     Puts a column's value into a JObject.

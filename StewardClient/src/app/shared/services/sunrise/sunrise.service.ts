@@ -48,6 +48,9 @@ import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { overrideSunriseEndpointKey } from '@helpers/override-endpoint-key';
+import { PlayerAuctionAction } from '@models/player-auction-action';
+import { GuidLikeString } from '@models/extended-types';
+import { AuctionData } from '@models/auction-data';
 import { GroupNotifications, PlayerNotifications } from '@models/notifications.model';
 
 /** Handles calls to Sunrise API routes. */
@@ -268,6 +271,20 @@ export class SunriseService {
     return this.apiService.getRequest$<PlayerAuction[]>(
       `${this.basePath}/player/xuid(${xuid})/auctions`,
       httpParams,
+    );
+  }
+
+  /** Gets a player's auction action log by xuid.  */
+  public getPlayerAuctionLogByXuid$(xuid: BigNumber): Observable<PlayerAuctionAction[]> {
+    return this.apiService.getRequest$<PlayerAuctionAction[]>(
+      `${this.basePath}/player/xuid(${xuid})/auctionLog`,
+    );
+  }
+
+  /** Gets an auction's data by ID. */
+  public getAuctionDataByAuctionId$(auctionId: GuidLikeString): Observable<AuctionData> {
+    return this.apiService.getRequest$<AuctionData>(
+      `${this.basePath}/auction/${auctionId}/details`,
     );
   }
 

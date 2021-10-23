@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -40,5 +41,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Gets ban history.
         /// </summary>
         Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string title, string endpoint);
+
+        /// <summary>
+        ///     Gets a user's auction log.
+        /// </summary>
+        Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(ulong xuid, DateTime? skipToken = null);
     }
 }

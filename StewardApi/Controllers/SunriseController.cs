@@ -16,6 +16,7 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -486,6 +487,36 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return this.Ok(auctions);
+        }
+
+        /// <summary>
+        ///     Gets a log of player auction actions.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/auctionLog")]
+        [SwaggerResponse(200, type: typeof(IList<AuctionHistoryEntry>))]
+        public async Task<IActionResult> GetAuctionLog(ulong xuid, [FromQuery] DateTime? skipToken = null)
+        {
+            var auctionLog = await this.kustoProvider.GetAuctionLogAsync(xuid, skipToken).ConfigureAwait(true);
+
+            return this.Ok(auctionLog);
+        }
+
+        /// <summary>
+        ///     Gets a specific auction's details.
+        /// </summary>
+        [HttpGet("auction/{auctionId}/details")]
+        [SwaggerResponse(200, type: typeof(AuctionData))]
+        public async Task<IActionResult> GetAuctionDetails(string auctionId)
+        {
+            if (!Guid.TryParse(auctionId, out var parsedAuctionId))
+            {
+                throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
+            }
+
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var auctionLog = await this.storefrontProvider.GetAuctionDataAsync(parsedAuctionId, endpoint).ConfigureAwait(true);
+
+            return this.Ok(auctionLog);
         }
 
         /// <summary>

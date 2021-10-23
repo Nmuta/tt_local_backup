@@ -5,6 +5,7 @@ using System.Linq;
 using Forza.UserInventory.FH4.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH4.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.Generated;
@@ -288,7 +289,29 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
                 .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
                 .ReverseMap();
+
             this.CreateMap<DeviceType, LiveOpsContracts.ForzaLiveDeviceType>().ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaAuction, AuctionData>()
+                .ForMember(dest => dest.AuctionId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.TimeFlaggedUtc, opt => opt.MapFrom(src => src.TimeFlagged == default(DateTime) ? null : (DateTime?)src.TimeFlagged))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.ClosingDateUtc, opt => opt.MapFrom(src => src.ClosingDate))
+                .ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaBid, AuctionDataBid>()
+                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.Date))
+                .ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaLiveOpsCar, AuctionDataCar>()
+                .ReverseMap();
+
+            this.CreateMap<Forza.FH4.Generated.CarHistory, AuctionDataCarHistory>()
+                .ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaAuctionStatus, AuctionReviewState>().ReverseMap();
+            this.CreateMap<LiveOpsContracts.ForzaAuctionAction, AuctionDataAuctionAction>().ReverseMap();
+            this.CreateMap<LiveOpsContracts.ForzaBidStatus, AuctionDataBidStatus>().ReverseMap();
         }
     }
 }

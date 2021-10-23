@@ -7,6 +7,7 @@ import { HumanizePipe } from './humanize.pipe';
 import { FormGroupErrorsPipe } from './form-group-errors.pipe';
 import { ImpureJsonPipe } from './impure-json.pipe';
 import { UtcDatePipe } from './utc-date.pipe';
+import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
 
 /** Module for various shared pipes. */
 @NgModule({
@@ -17,6 +18,7 @@ import { UtcDatePipe } from './utc-date.pipe';
     FormGroupErrorsPipe,
     ImpureJsonPipe,
     UtcDatePipe,
+    DateTimeToRelativePurePipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -26,6 +28,7 @@ import { UtcDatePipe } from './utc-date.pipe';
     FormGroupErrorsPipe,
     ImpureJsonPipe,
     UtcDatePipe,
+    DateTimeToRelativePurePipe,
   ],
 })
 export class PipesModule {}

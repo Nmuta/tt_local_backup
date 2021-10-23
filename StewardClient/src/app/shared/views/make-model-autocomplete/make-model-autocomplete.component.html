@@ -1,4 +1,4 @@
-<span [formGroup]="formGroup" (submit)="emitMakeModelChangeEvent()">
+<ng-container [formGroup]="formGroup" (submit)="emitMakeModelChangeEvent()">
   <mat-form-field class="item-selection-form-field" appearance="fill">
     <mat-label>{{ label }}</mat-label>
     <input
@@ -34,4 +34,4 @@
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
-</span>
+</ng-container>

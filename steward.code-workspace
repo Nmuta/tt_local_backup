@@ -2,6 +2,9 @@
   "folders": [
     {
       "path": "StewardClient"
+    },
+    {
+      "path": "Notes"
     }
   ],
   "settings": {
@@ -11,5 +14,10 @@
     },
     
     "coverage-gutters.showLineCoverage": false,
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint"
+    ]
   },
 }

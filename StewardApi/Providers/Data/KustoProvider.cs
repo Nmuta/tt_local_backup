@@ -324,6 +324,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
         }
 
+        /// <inheritdoc />
+        public async Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(ulong xuid, DateTime? skipToken = null)
+        {
+            var query = AuctionHistoryEntry.MakeQuery(xuid, skipToken);
+            try
+            {
+                var auctionHistory = new List<AuctionHistoryEntry>();
+
+                using (var reader = await this.cslQueryProvider
+                    .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
+                    .ConfigureAwait(false))
+                {
+                    while (reader.Read())
+                    {
+                        auctionHistory.Add(AuctionHistoryEntry.FromQueryResult(reader));
+                    }
+
+                    reader.Close();
+                }
+
+                return auctionHistory;
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Auction history lookup failed on xuid: {xuid}", ex);
+            }
+        }
+
         private async Task<string> BuildQuery(KustoGameDbSupportedTitle supportedTitle, string partialQuery)
         {
             var titleMap = await this.GetTitleMapAsync().ConfigureAwait(false);

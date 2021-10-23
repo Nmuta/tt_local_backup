@@ -263,6 +263,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Gets comprehensive data about an auction.
+        /// </summary>
+        Task<Forza.LiveOps.FH4.Generated.ForzaAuction> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint);
+
+        /// <summary>
         ///     Gets auction house block list.
         /// </summary>
         Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint);

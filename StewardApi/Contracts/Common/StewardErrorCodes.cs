@@ -10,6 +10,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     public enum StewardErrorCode
     {
         /// <summary>
+        ///     The bad request error code.
+        /// </summary>
+        BadRequest,
+
+        /// <summary>
         ///     The profile not found error code.
         /// </summary>
         DocumentNotFound,

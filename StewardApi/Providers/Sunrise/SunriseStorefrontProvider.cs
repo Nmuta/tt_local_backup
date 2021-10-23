@@ -7,6 +7,7 @@ using Forza.LiveOps.FH4.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
@@ -93,6 +94,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 throw new UnknownFailureStewardException(
                     $"An unknown exception occurred while setting featured status of content item: {contentId}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<AuctionData> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var forzaAuctions = await this.sunriseService.GetAuctionDataAsync(auctionId, endpoint).ConfigureAwait(false);
+
+                return this.mapper.Map<AuctionData>(forzaAuctions);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Auction Data lookup failed for auction {auctionId}.", ex);
             }
         }
     }

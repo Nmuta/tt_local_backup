@@ -183,6 +183,14 @@ export class MockSunriseService {
     .createSpy('deleteAuctionBlocklistEntry')
     .and.callFake(() => this.waitUntil$.pipe());
 
+  public getAuctionDataByAuctionId$ = jasmine
+    .createSpy('getAuctionDataByAuctionId$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
+  public getPlayerAuctionLogByXuid$ = jasmine
+    .createSpy('getPlayerAuctionLogByXuid$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
   constructor(private readonly generator: () => unknown) {}
 }
 

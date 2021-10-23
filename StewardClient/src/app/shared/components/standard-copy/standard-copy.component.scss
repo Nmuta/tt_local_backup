@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+
+  a {
+    visibility: hidden;
+
+    // tweak from usual button style
+    line-height: 1em;
+    padding: 0.25em;
+    min-width: unset;
+  }
+
+  &:hover {
+    a {
+      visibility: unset;
+    }
+  }
+}

@@ -459,6 +459,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<Forza.LiveOps.FH4.Generated.ForzaAuction> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var result = await auctionService.GetAuctionData(auctionId).ConfigureAwait(false);
+            return result?.auction;
+        }
+
+        /// <inheritdoc/>
         public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcLiveries(
             ForzaUGCSearchRequest filters,
             ForzaUGCContentType contentType,

@@ -52,6 +52,13 @@
           <sunrise-player-auctions [identity]="identity"></sunrise-player-auctions>
         </div>
       </mat-tab>
+      <mat-tab label="Auction Log">
+        <div class="tab-container">
+          <sunrise-player-auction-action-log
+            [identity]="identity"
+          ></sunrise-player-auction-action-log>
+        </div>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

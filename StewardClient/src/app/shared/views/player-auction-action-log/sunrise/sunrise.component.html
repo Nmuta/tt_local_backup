@@ -1,0 +1,12 @@
+<auction-action-log-table
+  *ngIf="getMonitor.status.state === 'complete'; else spinner"
+  [auctionLog]="auctionLog"
+></auction-action-log-table>
+
+<ng-template #spinner>
+  <error-spinner
+    [isActive]="getMonitor.status.state === 'active'"
+    [error]="getMonitor.status.error"
+    spinnerMessage="Finding user auction actions"
+  ></error-spinner>
+</ng-template>
