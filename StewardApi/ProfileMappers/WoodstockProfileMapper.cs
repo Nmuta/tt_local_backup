@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
 using Forza.UserInventory.FH5.Generated;
@@ -61,6 +62,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserBanResult, BanResult>()
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
                     src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to ban player with XUID: {src.Xuid}")));
+            this.CreateMap<ForzaProfileSummary, ProfileSummary>()
+                .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
+            this.CreateMap<ForzaCredityUpdateEntry, CreditUpdate>().ReverseMap();
             this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
             this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, LspGroup>();
