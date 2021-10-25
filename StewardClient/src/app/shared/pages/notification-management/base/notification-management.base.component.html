@@ -69,7 +69,7 @@
                     </li>
                     <!-- Device Type -->
                     <li *ngIf="!entry.edit">
-                      <b>Device Type:</b> {{ entry.formGroup.controls.deviceType.value }}
+                      <b>Device Type:</b> {{ entry.formGroup.controls.deviceType.value | deppoh }}
                     </li>
                   </ul>
 
@@ -94,7 +94,7 @@
                       <mat-label>Device Type</mat-label>
                       <mat-select [formControl]="entry.formControls.deviceType">
                         <mat-option *ngFor="let type of deviceTypes" [value]="type">
-                          {{ type }}
+                          {{ type | deppoh }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>

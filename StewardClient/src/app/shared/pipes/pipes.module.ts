@@ -7,6 +7,8 @@ import { HumanizePipe } from './humanize.pipe';
 import { FormGroupErrorsPipe } from './form-group-errors.pipe';
 import { ImpureJsonPipe } from './impure-json.pipe';
 import { UtcDatePipe } from './utc-date.pipe';
+import { DomainEnumPrettyPrintPipe } from './domain-enum-pretty-print.pipe';
+import { DomainEnumPrettyPrintOrHumanizePipe } from './domain-enum-pretty-print-or-humanize.pipe';
 import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
 
 /** Module for various shared pipes. */
@@ -18,6 +20,8 @@ import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
     FormGroupErrorsPipe,
     ImpureJsonPipe,
     UtcDatePipe,
+    DomainEnumPrettyPrintPipe,
+    DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
   ],
   imports: [CommonModule],
@@ -28,6 +32,8 @@ import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
     FormGroupErrorsPipe,
     ImpureJsonPipe,
     UtcDatePipe,
+    DomainEnumPrettyPrintPipe,
+    DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
   ],
 })

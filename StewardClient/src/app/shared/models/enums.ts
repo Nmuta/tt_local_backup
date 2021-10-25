@@ -76,16 +76,9 @@ export enum InitEndpointKeysError {
 /** Enum for device types. */
 export enum DeviceType {
   All = 'All',
-  MoLive = 'MoLive',
-  PC = 'PC',
-  Web = 'Web',
-  WindowsOneCore = 'WindowsOneCore',
-  WindowsOneCoreMobile = 'WindowsOneCoreMobile',
-  WindowsPhone = 'WindowsPhone',
-  WindowsPhone7 = 'WindowsPhone7',
-  Xbox360 = 'Xbox360',
+  XboxSeriesXS = 'XboxSeriesXS',
   XboxOne = 'XboxOne',
-  Scarlett = 'Scarlett',
+  WindowsStore = 'WindowsStore',
+  Steam = 'Steam',
   XboxCloud = 'XboxCloud',
-  Wind32 = 'Win32',
 }

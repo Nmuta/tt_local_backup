@@ -20,9 +20,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         MoLive = 0,
 
         /// <summary>
-        ///     PC device type.
+        ///     Windows store device type.
         /// </summary>
-        PC = 1,
+        WindowsStore = 1,
 
         /// <summary>
         ///     Web device type.
@@ -60,9 +60,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         XboxOne = 8,
 
         /// <summary>
-        ///     Scarlett device type.
+        ///     Xbox Series X|S device type.
         /// </summary>
-        Scarlett = 9,
+        XboxSeriesXS = 9,
 
         /// <summary>
         ///     Xbox cloud device type.
@@ -70,8 +70,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         XboxCloud = 10,
 
         /// <summary>
-        ///     Win32 device type.
+        ///     Steam device type.
         /// </summary>
-        Win32 = 11
+        Steam = 11
     }
 }
