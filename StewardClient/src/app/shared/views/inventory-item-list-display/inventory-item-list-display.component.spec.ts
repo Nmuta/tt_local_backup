@@ -52,7 +52,7 @@ describe('InventoryItemListDisplayComponent', () => {
               description: faker.random.words(10),
               quantity: faker.datatype.number(100),
               itemType: undefined,
-              dateAquiredUtc: toDateTime(faker.date.past()),
+              acquiredUtc: toDateTime(faker.date.past()),
             },
           ] as PlayerInventoryItem[],
         };

@@ -10,6 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the date the item was acquired on.
         /// </summary>
-        public DateTime? DateAquiredUtc { get; set; }
+        public DateTime? AcquiredUtc { get; set; }
     }
 }

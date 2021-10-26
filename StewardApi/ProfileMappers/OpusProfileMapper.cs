@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.carId))
                 .ForMember(des => des.Description, opt => opt.MapFrom(src => src.displayName))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
-                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.dateCreated))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.dateCreated))
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, OpusPlayerInventory>()
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>

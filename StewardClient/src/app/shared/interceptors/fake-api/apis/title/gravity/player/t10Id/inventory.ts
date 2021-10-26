@@ -45,7 +45,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
-            dateAquiredUtc: toDateTime(faker.date.past()),
+            acquiredUtc: toDateTime(faker.date.past()),
           };
         });
     }

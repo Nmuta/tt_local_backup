@@ -47,7 +47,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: 1,
             description: faker.random.words(3),
             itemType: undefined,
-            dateAquiredUtc: toDateTime(faker.date.past()),
+            acquiredUtc: toDateTime(faker.date.past()),
           };
         }),
     };

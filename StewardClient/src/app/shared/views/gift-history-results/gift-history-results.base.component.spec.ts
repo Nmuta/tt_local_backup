@@ -129,7 +129,7 @@ describe('GiftHistoryResultsBaseComponent', () => {
         description: faker.random.words(10),
         quantity: faker.datatype.number(),
         itemType: 'creditRewards',
-        dateAquiredUtc: toDateTime(faker.date.past()),
+        acquiredUtc: toDateTime(faker.date.past()),
       },
     ] as PlayerInventoryItem[];
     it('should generate a PlayerInventoryItemList', () => {

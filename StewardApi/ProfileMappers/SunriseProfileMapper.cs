@@ -30,12 +30,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
-                .ForMember(dest => dest.DateAquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ReverseMap();
             this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
-                .ForMember(dest => dest.DateAquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, SunrisePlayerInventory>()
                 .ForMember(dest => dest.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>

@@ -35,26 +35,26 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsCar, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
-                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ReverseMap();
             this.CreateMap<LiveOpsMasteryKit, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
-                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ReverseMap();
             this.CreateMap<LiveOpsUpgradeKit, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
-                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ReverseMap();
             this.CreateMap<LiveOpsRepairKit, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
-                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ReverseMap();
             this.CreateMap<LiveOpsCurrency, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
                 .ReverseMap();
             this.CreateMap<LiveOpsEnergyRefill, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
-                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ReverseMap();
             this.CreateMap<LiveOpsUserInventory, GravityPlayerInventory>()
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<PlayerInventoryItem>>(source.Currencies)))
