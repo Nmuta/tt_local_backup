@@ -494,9 +494,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/auctionLog")]
         [SwaggerResponse(200, type: typeof(IList<AuctionHistoryEntry>))]
-        public async Task<IActionResult> GetAuctionLog(ulong xuid, [FromQuery] DateTime? skipToken = null)
+        public async Task<IActionResult> GetAuctionLog(ulong xuid, [FromQuery] string skipToken = null)
         {
-            var auctionLog = await this.kustoProvider.GetAuctionLogAsync(xuid, skipToken).ConfigureAwait(true);
+            DateTime? skipTokenUtc = null;
+            if (!string.IsNullOrWhiteSpace(skipToken))
+            {
+                if (!DateTimeOffset.TryParse(skipToken, out var skipTokenOffset))
+                {
+                    throw new BadRequestStewardException($"Invalid skipToken value '{skipToken}'. Could not convert to date-time.");
+                }
+
+                skipTokenUtc = skipTokenOffset.UtcDateTime;
+            }
+
+            var auctionLog = await this.kustoProvider.GetAuctionLogAsync(xuid, skipTokenUtc).ConfigureAwait(true);
 
             return this.Ok(auctionLog);
         }

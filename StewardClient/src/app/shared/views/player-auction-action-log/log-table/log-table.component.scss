@@ -49,10 +49,19 @@ tr.example-element-row:not(.example-expanded-row):active {
 .search-bar {
   display: flex;
   flex-flow: row wrap;
+  align-items: center;
   margin: -0.25em;
   > * {
     padding: 0.25em;
   }
+
+  .spacer {
+    flex-grow: 1;
+  }
+}
+
+::ng-deep .search-bar button[extraControl] {
+  margin: 0.25em;
 }
 
 .auction-action-detail {

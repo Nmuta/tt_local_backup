@@ -52,9 +52,17 @@
           <sunrise-player-auctions [identity]="identity"></sunrise-player-auctions>
         </div>
       </mat-tab>
-      <mat-tab label="Auction Log">
+      <mat-tab>
         <div class="tab-container">
+          <ng-template mat-tab-label>
+            Auction Log
+            <error-spinner
+              [isActive]="auctionActionLog.getMonitor.isActive"
+              spinnerMessage="Retrieving Data"
+            ></error-spinner>
+          </ng-template>
           <sunrise-player-auction-action-log
+            #auctionActionLog
             [identity]="identity"
           ></sunrise-player-auction-action-log>
         </div>

@@ -19,6 +19,8 @@ import { StandardCopyModule } from '@components/standard-copy/standard-copy.modu
 import { MatCardModule } from '@angular/material/card';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { MatButtonModule } from '@angular/material/button';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** Components for rendering a player's auction actions. */
 @NgModule({
@@ -43,6 +45,8 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
     MakeModelAutocompleteModule,
     StandardDateModule,
     ErrorSpinnerModule,
+    MatButtonModule,
+    DirectivesModule,
   ],
   exports: [SunrisePlayerAuctionActionLogComponent],
 })

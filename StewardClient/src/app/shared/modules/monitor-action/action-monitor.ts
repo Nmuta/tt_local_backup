@@ -58,6 +58,11 @@ export class ActionMonitor {
     return this.status.state === 'active';
   }
 
+  /** Returns whether monitor is in a terminal state. */
+  public get isDone(): boolean {
+    return this.status.state === 'complete' || this.status.state === 'error';
+  }
+
   constructor(public readonly label: string = 'UNLABELED') {}
 
   /** Produces the RXJS operator for monitoring a single-fire action. */

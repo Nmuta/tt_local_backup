@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
     /// </summary>
     public sealed class AuctionHistoryEntry
     {
-        public const int SingleRequestResultsLimit = 500;
+        public const int SingleRequestResultsLimit = 250;
 
         public DateTime TimeUtc { get; set; }
         public string Action { get; set; }

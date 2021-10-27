@@ -52,6 +52,7 @@ import { PlayerAuctionAction } from '@models/player-auction-action';
 import { GuidLikeString } from '@models/extended-types';
 import { AuctionData } from '@models/auction-data';
 import { GroupNotifications, PlayerNotifications } from '@models/notifications.model';
+import { DateTime } from 'luxon';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -275,10 +276,21 @@ export class SunriseService {
   }
 
   /** Gets a player's auction action log by xuid.  */
-  public getPlayerAuctionLogByXuid$(xuid: BigNumber): Observable<PlayerAuctionAction[]> {
-    return this.apiService.getRequest$<PlayerAuctionAction[]>(
-      `${this.basePath}/player/xuid(${xuid})/auctionLog`,
-    );
+  public getPlayerAuctionLogByXuid$(
+    xuid: BigNumber,
+    skipToken?: DateTime,
+  ): Observable<PlayerAuctionAction[]> {
+    if (!skipToken) {
+      return this.apiService.getRequest$<PlayerAuctionAction[]>(
+        `${this.basePath}/player/xuid(${xuid})/auctionLog`,
+      );
+    } else {
+      const skipTokenString = skipToken.toISO();
+      return this.apiService.getRequest2$<PlayerAuctionAction[]>(
+        `${this.basePath}/player/xuid(${xuid})/auctionLog`,
+        { params: { skipToken: skipTokenString } },
+      );
+    }
   }
 
   /** Gets an auction's data by ID. */

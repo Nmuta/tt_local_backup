@@ -1,7 +1,29 @@
 <auction-action-log-table
-  *ngIf="getMonitor.status.state === 'complete'; else spinner"
+  *ngIf="getMonitor.status.state !== 'error'; else spinner"
   [auctionLog]="auctionLog"
-></auction-action-log-table>
+>
+  <span extraControl *ngIf="!mayHaveMoreItems">All items loaded</span>
+  <button
+    extraControl
+    mat-mini-fab
+    (click)="loadMore()"
+    clickStop
+    [disabled]="!canLoadMore"
+    matTooltip="Load More Items"
+  >
+    <mat-icon>navigate_next</mat-icon>
+  </button>
+  <button
+    extraControl
+    mat-mini-fab
+    (click)="loadRest()"
+    clickStop
+    [disabled]="!canLoadMore"
+    matTooltip="Load Remaining Items"
+  >
+    <mat-icon>last_page</mat-icon>
+  </button>
+</auction-action-log-table>
 
 <ng-template #spinner>
   <error-spinner
