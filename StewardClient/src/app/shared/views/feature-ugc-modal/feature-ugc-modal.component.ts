@@ -43,9 +43,19 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
 
     this.ugcItem = cloneDeep(data);
 
-    if (data.type !== UGCType.Livery && data.type !== UGCType.Photo) {
+    const isUnsupportedType =
+      data.type !== UGCType.Livery && data.type !== UGCType.Photo && data.type !== UGCType.Tune;
+    if (isUnsupportedType) {
+      dialogRef.close();
       throw new Error(
-        `Bad UGC Type: ${data.type}. Featuring UGC content is limited to types: ${UGCType.Livery}, ${UGCType.Photo}.`,
+        `Bad UGC Type: ${data.type}. Featuring UGC content is limited to types: ${UGCType.Livery}, ${UGCType.Photo}, ${UGCType.Tune}.`,
+      );
+    }
+
+    if (!data.isPublic) {
+      dialogRef.close();
+      throw new Error(
+        `Cannot feature private UGC. Featuring UGC content is limited to public content only, content with id ${data.guidId} is private.`,
       );
     }
 

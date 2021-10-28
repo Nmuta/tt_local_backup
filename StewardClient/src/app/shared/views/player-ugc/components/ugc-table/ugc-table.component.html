@@ -76,8 +76,18 @@
         Copy UGC ID
       </button>
 
-      <button mat-raised-button color="accent" clickStop (click)="openFeatureUGCModal(entry)">
-        {{ entry.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}
+      <button
+        mat-raised-button
+        color="accent"
+        clickStop
+        [disabled]="!entry.isPublic"
+        (click)="openFeatureUGCModal(entry)"
+      >
+        <span
+          matTooltip="Cannot change featured status of private UGC content"
+          [matTooltipDisabled]="entry.isPublic"
+          >{{ entry.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}</span
+        >
       </button>
     </td>
   </ng-container>
