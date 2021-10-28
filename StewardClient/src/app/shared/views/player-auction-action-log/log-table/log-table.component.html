@@ -123,6 +123,12 @@
                   <standard-copy>{{ action(element).carYear }}</standard-copy>
                 </td>
               </tr>
+              <tr *ngIf="action(element).sellerXuid">
+                <th>Seller XUID</th>
+                <td>
+                  <standard-copy>{{ action(element).sellerXuid }}</standard-copy>
+                </td>
+              </tr>
               <tr *ngIf="action(element).carVin" class="multiline">
                 <th>Car VIN</th>
                 <td>

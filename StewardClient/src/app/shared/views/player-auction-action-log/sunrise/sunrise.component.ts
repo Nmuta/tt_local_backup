@@ -5,6 +5,7 @@ import { PlayerAuctionAction } from '@models/player-auction-action';
 import { SunriseService } from '@services/sunrise';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { last } from 'lodash';
+import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
@@ -26,7 +27,7 @@ export class SunrisePlayerAuctionActionLogComponent extends BaseComponent implem
     return !this.getMonitor.isActive && this.mayHaveMoreItems;
   }
 
-  private skipToken = undefined;
+  private skipToken: DateTime = undefined;
 
   constructor(private readonly sunrise: SunriseService) {
     super();
