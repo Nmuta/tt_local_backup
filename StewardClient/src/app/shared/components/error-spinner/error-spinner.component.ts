@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+type SpinnerSize = 'small' | 'medium' | 'large';
+
 /** A common error + spinner component. */
 @Component({
   selector: 'error-spinner',
@@ -18,4 +20,7 @@ export class ErrorSpinnerComponent {
 
   /** The tooltip to display while spinning. */
   @Input() public spinnerMessage: string = undefined;
+
+  /** True while loading / submitting / active. */
+  @Input() public size: SpinnerSize = 'small';
 }

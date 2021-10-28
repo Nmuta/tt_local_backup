@@ -37,6 +37,7 @@ import { MatCardModule } from '@angular/material/card';
 import { BackstagePassHistoryModule } from '@views/backstage-pass-history/backstage-pass-history.module';
 import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { EntitlementsModule } from '@views/entitlements/entitlements.module';
 import { PlayerAuctionActionLogModule } from '@views/player-auction-action-log/player-auction-action-log.module';
 
 /** The feature module for the User Details route. */
@@ -83,6 +84,7 @@ import { PlayerAuctionActionLogModule } from '@views/player-auction-action-log/p
     BackstagePassHistoryModule,
     PlayerAccountInventoryModule,
     EndpointSelectionModule,
+    EntitlementsModule,
     PlayerAuctionActionLogModule,
   ],
 })

@@ -6,6 +6,7 @@
         <div class="tab-container">
           <apollo-user-flags [identity]="identity"></apollo-user-flags>
           <apollo-ban-history [xuid]="identity.xuid"></apollo-ban-history>
+          <entitlements [identity]="identity"></entitlements>
           <apollo-gamertags [identity]="identity"></apollo-gamertags>
           <apollo-consoles [identity]="identity"></apollo-consoles>
         </div>

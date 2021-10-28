@@ -1,0 +1,172 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Entitlements</mat-card-title>
+    <mat-card-subtitle>Data has a 2-3 day latency for new entitlements</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!getMonitor.isActive; else waitingTemplate">
+      <span class="warn"
+        >Showing data from October 01, 2020 and onwards. Legacy data is coming soon.</span
+      >
+      <ng-container *ngIf="entitlementsTable?.data?.length > 0; else noEntitlementsTemplate">
+        <table mat-table [dataSource]="entitlementsTable">
+          <ng-container matColumnDef="entitlement">
+            <th mat-header-cell *matHeaderCellDef>Entitlement</th>
+            <td mat-cell *matCellDef="let entry">
+              <table>
+                <tr>
+                  <th>Title</th>
+                  <td>{{ entry.productDisplayName }}</td>
+                </tr>
+                <tr>
+                  <th>Product Id</th>
+                  <td>{{ entry.productId }}</td>
+                </tr>
+                <tr>
+                  <th>Type</th>
+                  <td>{{ entry.type }}</td>
+                </tr>
+                <tr>
+                  <th>Event Date</th>
+                  <td>{{ entry.dateId }}</td>
+                </tr>
+              </table>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="metadata">
+            <th mat-header-cell *matHeaderCellDef>Metadata</th>
+            <td mat-cell *matCellDef="let entry">
+              <table [ngSwitch]="entry.type">
+                <ng-container *ngSwitchCase="entitlementType.Purchased">
+                  <tr>
+                    <th>Purchase Date</th>
+                    <td>{{ entry.purchaseDateTimeUtc | utcDate: 'short' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Purchase Quantity</th>
+                    <td>{{ entry.purchaseQuantity }}</td>
+                  </tr>
+                  <tr>
+                    <th>Product Name</th>
+                    <td>{{ entry.productDisplayName }}</td>
+                  </tr>
+                  <tr>
+                    <th>Xbox Parent Product Id</th>
+                    <td>{{ entry.xboxParentProductId }}</td>
+                  </tr>
+                  <tr>
+                    <th>Data Source</th>
+                    <td>{{ entry.dataSourceName }}</td>
+                  </tr>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="entitlementType.Cancelled">
+                  <tr>
+                    <th>Revoked Date</th>
+                    <td>{{ entry.revokedDateId }}</td>
+                  </tr>
+                  <tr>
+                    <th>Clien Device Type</th>
+                    <td>{{ entry.clientDeviceType }}</td>
+                  </tr>
+                  <tr>
+                    <th>Order State</th>
+                    <td>{{ entry.orderStateName }}</td>
+                  </tr>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="entitlementType.Refunded">
+                  <tr>
+                    <th>Refund Date</th>
+                    <td>{{ entry.refundDateId }}</td>
+                  </tr>
+                  <tr>
+                    <th>Clien Device Type</th>
+                    <td>{{ entry.clientDeviceType }}</td>
+                  </tr>
+                  <tr>
+                    <th>Order State</th>
+                    <td>{{ entry.orderStateName }}</td>
+                  </tr>
+                  <tr>
+                    <th>Refund Reason Code</th>
+                    <td>{{ entry.refundReasonCode }}</td>
+                  </tr>
+                </ng-container>
+              </table>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="flags">
+            <th mat-header-cell *matHeaderCellDef>Flags</th>
+            <td mat-cell *matCellDef="let entry">
+              <span
+                ><mat-icon *ngIf="entry.isPaidTransaction; else falseFlagTemplate"
+                  >check_circle</mat-icon
+                >
+                Paid Transaction</span
+              >
+              <ng-container *ngIf="entry.type === entitlementType.Purchased">
+                <span
+                  ><mat-icon
+                    *ngIf="entry.tokenRedemption; else falseFlagTemplate"
+                    class="green-icon"
+                    >check_circle</mat-icon
+                  >
+                  Token Redemption</span
+                >
+                <span
+                  ><mat-icon *ngIf="entry.isFullProduct; else falseFlagTemplate" class="green-icon"
+                    >check_circle</mat-icon
+                  >
+                  Full Product</span
+                >
+                <span
+                  ><mat-icon *ngIf="entry.isTrialProduct; else falseFlagTemplate" class="green-icon"
+                    >check_circle</mat-icon
+                  >
+                  Trial Product</span
+                >
+                <span
+                  ><mat-icon *ngIf="entry.isBetaProduct; else falseFlagTemplate" class="green-icon"
+                    >check_circle</mat-icon
+                  >
+                  Beta Product</span
+                >
+                <span
+                  ><mat-icon
+                    *ngIf="entry.isInGamePurchase; else falseFlagTemplate"
+                    class="green-icon"
+                    >check_circle</mat-icon
+                  >
+                  In Game Purchase</span
+                >
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #waitingTemplate>
+  <error-spinner
+    [isActive]="getMonitor.isActive"
+    [error]="getMonitor.status.error"
+    spinnerMessage="Finding entitlement data"
+    size="large"
+  ></error-spinner>
+</ng-template>
+
+<ng-template #noEntitlementsTemplate>
+  <span>No entitlements found</span>
+</ng-template>
+
+<ng-template #falseFlagTemplate>
+  <mat-icon class="red-icon">cancel</mat-icon>
+</ng-template>

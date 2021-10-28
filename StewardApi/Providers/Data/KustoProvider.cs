@@ -11,6 +11,7 @@ using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -93,6 +94,117 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 }
 
                 throw new QueryFailedStewardException("Kusto Query failed.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<PurchasedEntitlement>> GetPlayerPurchasedEntitlements(ulong xuid)
+        {
+            try
+            {
+                var query = PurchasedEntitlement.MakeQuery(xuid);
+
+                async Task<IList<PurchasedEntitlement>> Entitlements()
+                {
+                    var entitlements = new List<PurchasedEntitlement>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (reader.Read())
+                        {
+                            entitlements.Add(PurchasedEntitlement.FromQueryResult(reader));
+                        }
+
+                        reader.Close();
+                    }
+
+                    this.refreshableCacheStore.PutItem(query, TimeSpan.FromMinutes(5), entitlements);
+
+                    return entitlements;
+                }
+
+                return this.refreshableCacheStore.GetItem<IList<PurchasedEntitlement>>(query)
+                       ?? await Entitlements().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Get purchased entitlements query failed for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<CancelledEntitlement>> GetPlayerCancelledEntitlements(ulong xuid)
+        {
+            try
+            {
+                var query = CancelledEntitlement.MakeQuery(xuid);
+
+                async Task<IList<CancelledEntitlement>> Entitlements()
+                {
+                    var entitlements = new List<CancelledEntitlement>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (reader.Read())
+                        {
+                            entitlements.Add(CancelledEntitlement.FromQueryResult(reader));
+                        }
+
+                        reader.Close();
+                    }
+
+                    this.refreshableCacheStore.PutItem(query, TimeSpan.FromMinutes(5), entitlements);
+
+                    return entitlements;
+                }
+
+                return this.refreshableCacheStore.GetItem<IList<CancelledEntitlement>>(query)
+                       ?? await Entitlements().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Get cancelled entitlements query failed for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<RefundedEntitlement>> GetPlayerRefundedEntitlements(ulong xuid)
+        {
+            try
+            {
+                var query = RefundedEntitlement.MakeQuery(xuid);
+
+                async Task<IList<RefundedEntitlement>> Entitlements()
+                {
+                    var entitlements = new List<RefundedEntitlement>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (reader.Read())
+                        {
+                            entitlements.Add(RefundedEntitlement.FromQueryResult(reader));
+                        }
+
+                        reader.Close();
+                    }
+
+                    this.refreshableCacheStore.PutItem(query, TimeSpan.FromMinutes(5), entitlements);
+
+                    return entitlements;
+                }
+
+                return this.refreshableCacheStore.GetItem<IList<RefundedEntitlement>>(query)
+                       ?? await Entitlements().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Get refunded entitlements query failed for XUID: {xuid}.", ex);
             }
         }
 

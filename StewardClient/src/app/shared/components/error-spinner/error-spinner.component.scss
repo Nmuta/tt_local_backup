@@ -9,14 +9,22 @@
   cursor: pointer;
 }
 
-$progress-spinner-diameter: 1em;
+$progress-spinner-diameter-small: 1em;
+$progress-spinner-diameter-medium: 4em;
 :host ::ng-deep {
   mat-progress-spinner {
     display: inline-block;
-    &,
-    svg {
-      width: $progress-spinner-diameter !important;
-      height: $progress-spinner-diameter !important;
+
+    &.spinner-small,
+    &.spinner-small svg {
+      width: $progress-spinner-diameter-small !important;
+      height: $progress-spinner-diameter-small !important;
+    }
+
+    &.spinner-medium,
+    &.spinner-medium svg {
+      width: $progress-spinner-diameter-medium !important;
+      height: $progress-spinner-diameter-medium !important;
     }
   }
 }

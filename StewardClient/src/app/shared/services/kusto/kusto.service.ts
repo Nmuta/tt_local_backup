@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Entitlement } from '@models/entitlement';
 import { GuidLikeString } from '@models/extended-types';
 import { KustoQuery, KustoQueryResponse } from '@models/kusto';
 import { KustoQueries } from '@models/kusto/kusto-queries';
 import { ApiService } from '@services/api';
+import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
 /** Handles calls to Sunrise API routes. */
@@ -17,6 +19,13 @@ export class KustoService {
   /** Gets identities within this service. */
   public getKustoQueries$(): Observable<KustoQueries> {
     return this.apiService.getRequest$<KustoQueries>(`${this.basePath}/queries`);
+  }
+
+  /** Gets player entitlements from Kusto. */
+  public getKustoPlayerEntitlements$(xuid: BigNumber): Observable<Entitlement[]> {
+    return this.apiService.getRequest$<Entitlement[]>(
+      `${this.basePath}/player/${xuid}/entitlements`,
+    );
   }
 
   /** Runs a query against Kusto. */

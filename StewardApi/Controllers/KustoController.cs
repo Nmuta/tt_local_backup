@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
@@ -18,7 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
-        UserRole.DataPipelineContributor,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
         UserRole.SupportAgentNew)]
@@ -114,6 +119,47 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             await this.kustoQueryProvider.DeleteKustoQueryAsync(queryId).ConfigureAwait(true);
 
             return this.Ok();
+        }
+
+        /// <summary>
+        ///     Get player entitlement data from Kusto.
+        /// </summary>
+        [HttpGet("player/{xuid}/entitlements")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.SupportAgentNew)]
+        [SwaggerResponse(200, type: typeof(IEnumerable<Entitlement>))]
+        public async Task<IActionResult> GetPlayerEntitlements(ulong xuid)
+        {
+            xuid.ShouldNotBeNull(nameof(xuid));
+
+            var exceptions = new List<Exception>();
+            var getPurchasedEntitlements = this.kustoProvider.GetPlayerPurchasedEntitlements(xuid).SuccessOrDefault(Array.Empty<PurchasedEntitlement>(), exceptions);
+            var getRefundedEntitlements = this.kustoProvider.GetPlayerRefundedEntitlements(xuid).SuccessOrDefault(Array.Empty<RefundedEntitlement>(), exceptions);
+            var getCancelledEntitlements = this.kustoProvider.GetPlayerCancelledEntitlements(xuid).SuccessOrDefault(Array.Empty<CancelledEntitlement>(), exceptions);
+
+            await Task.WhenAll(getPurchasedEntitlements, getRefundedEntitlements, getCancelledEntitlements).ConfigureAwait(true);
+
+            var allEntitlements = new List<Entitlement>();
+            if (getPurchasedEntitlements.IsCompletedSuccessfully)
+            {
+                allEntitlements.AddRange(getPurchasedEntitlements.Result);
+            }
+
+            if (getRefundedEntitlements.IsCompletedSuccessfully)
+            {
+                allEntitlements.AddRange(getRefundedEntitlements.Result);
+            }
+
+            if (getCancelledEntitlements.IsCompletedSuccessfully)
+            {
+                allEntitlements.AddRange(getCancelledEntitlements.Result);
+            }
+
+            return this.Ok(allEntitlements);
         }
     }
 }

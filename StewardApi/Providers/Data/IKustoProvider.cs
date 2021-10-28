@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
@@ -16,6 +17,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Runs a Kusto query.
         /// </summary>
         Task<IList<JObject>> RunKustoQuery(string query, string dbName);
+
+        /// <summary>
+        ///     Gets player purchased entitlements.
+        /// </summary>
+        Task<IEnumerable<PurchasedEntitlement>> GetPlayerPurchasedEntitlements(ulong xuid);
+
+        /// <summary>
+        ///     Gets player cancelled entitlements.
+        /// </summary>
+        Task<IEnumerable<CancelledEntitlement>> GetPlayerCancelledEntitlements(ulong xuid);
+
+        /// <summary>
+        ///     Gets player refunded entitlements.
+        /// </summary>
+        Task<IEnumerable<RefundedEntitlement>> GetPlayerRefundedEntitlements(ulong xuid);
 
         /// <summary>
         ///     Gets master inventory item list.

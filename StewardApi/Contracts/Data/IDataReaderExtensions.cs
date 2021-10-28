@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using static System.FormattableString;
 
 #nullable enable
@@ -83,7 +85,50 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 return null;
             }
 
-            return reader.GetDateTime(columnIndex);
+            switch (fieldType)
+            {
+                case Type dateTimeType when dateTimeType == typeof(DateTime):
+                    return reader.GetDateTime(columnIndex);
+                case Type stringType when stringType == typeof(string):
+                    DateTime date;
+                    var dateAsString = reader.GetString(columnName);
+                    if (!DateTime.TryParse(dateAsString, out date))
+                    {
+                        return null;
+                    }
+
+                    return date;
+                default:
+                    throw new InvalidOperationException(Invariant($"Cannot convert to boolean from found type '{fieldType.Name}'. Add a new entry to this switch case."));
+            }
+        }
+
+        /// <summary>Gets a DateTime value from a named column.</summary>
+        public static decimal? GetDecimal(this IDataReader reader, string columnName)
+        {
+            var columnIndex = reader.GetColumnIndex(columnName);
+            var fieldType = reader.GetFieldType(columnIndex);
+            if (reader.IsDBNull(columnIndex))
+            {
+                return null;
+            }
+
+            switch (fieldType)
+            {
+                case Type decimalType when decimalType == typeof(decimal):
+                    return reader.GetDecimal(columnIndex);
+                case Type sqlDecimalType when sqlDecimalType == typeof(SqlDecimal):
+                    var sqlDecimalObj = reader.GetValue(columnName);
+                    if (sqlDecimalObj == null)
+                    {
+                        return 0;
+                    }
+
+                    var sqlDecimal = (SqlDecimal)sqlDecimalObj;
+                    return !sqlDecimal.IsNull ? sqlDecimal.Value : null;
+                default:
+                    throw new InvalidOperationException(Invariant($"Cannot convert to decimal from found type '{fieldType.Name}'. Add a new entry to this switch case."));
+            }
         }
 
         /// <summary>Gets a string value from a named column.</summary>
@@ -197,7 +242,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 case Type doubleType when doubleType == typeof(double):
                     return (T)(object)reader.GetInt64(columnIndex);
                 case Type decimalType when decimalType == typeof(decimal):
-                    return (T)(object)reader.GetDecimal(columnIndex);
+                    return (T)(object)reader.GetDecimal(columnName);
                 default:
                     throw new InvalidOperationException("Cannot convert to given number type. Add a new entry to this switch case.");
             }
