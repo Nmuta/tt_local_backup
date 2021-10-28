@@ -171,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory.SetItemDescriptions(masterInventory, $"XUID: {xuid}", this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory.SetItemDescriptions(masterInventory, $"T10 ID: {t10Id}", this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -208,7 +208,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory.SetItemDescriptions(masterInventory, $"XUID: {xuid}, Profile ID: {profileId}", this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -230,7 +230,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for Turn 10 ID: {t10Id}");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory.SetItemDescriptions(masterInventory, $"T10 ID: {t10Id}, Profile ID: {profileId}", this.loggingService);
             return this.Ok(playerInventory);
         }
 
