@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { SetFakeApiComponent } from './set-fake-api/set-fake-api.component';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -37,6 +38,7 @@ import { SetFakeApiComponent } from './set-fake-api/set-fake-api.component';
     MatIconModule,
     MatTooltipModule,
     DirectivesModule,
+    ErrorSpinnerModule,
   ],
 })
 export class UtilModule {}

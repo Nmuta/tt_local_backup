@@ -2,9 +2,6 @@
   *ngIf="isActive"
   mode="indeterminate"
   [matTooltip]="spinnerMessage"
-  [class.spinner-small]="size === 'small'"
-  [class.spinner-medium]="size === 'medium'"
-  [class.spinner-large]="size === 'large'"
 ></mat-progress-spinner>
 <mat-icon
   *ngIf="!isActive && !!error"
