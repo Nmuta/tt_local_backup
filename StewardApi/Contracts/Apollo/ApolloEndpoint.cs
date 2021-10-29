@@ -18,14 +18,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
             get => "https://serverservices.fm7.forzamotorsport.net/ServerServices.FM7Release/o.xtsw";
         }
 
-        ///// <summary>
-        /////     Gets Apollo studio LSP endpoint.
-        ///// </summary>
-        //// TODO uncomment after player chip work is in: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/850499
-        ////public static string Studio
-        ////{
-        ////    get => "https://test-ss.fm7.forzamotorsport.net/ServerServices.FM7/o.xtsw";
-        ////}
+        /// <summary>
+        ///     Gets Apollo studio LSP endpoint.
+        /// </summary>
+        public static string Studio
+        {
+            get => "https://test-ss.fm7.forzamotorsport.net/ServerServices.FM7/o.xtsw";
+        }
 
         /// <summary>
         ///     Converts endpoint key into endpoint.

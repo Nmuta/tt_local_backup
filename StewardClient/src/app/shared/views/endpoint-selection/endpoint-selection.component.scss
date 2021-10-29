@@ -6,7 +6,9 @@ span {
   font-size: 0.8em;
   top: 1em;
   color: app-color-default($app-warn);
-  width: calc(100% - 30px /*This is from the margins on buttons, it was just copied over.*/);
+  width: 100%;
+  margin-left: -15px;
+  margin-right: -15px;
   overflow: hidden;
   text-overflow: ellipsis;
 }

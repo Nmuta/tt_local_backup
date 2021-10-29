@@ -19,6 +19,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         }
 
         /// <summary>
+        ///     Gets Sunrise studio LSP endpoint.
+        /// </summary>
+        public static string Studio
+        {
+            get => null;
+        }
+
+        /// <summary>
         ///     Converts endpoint key into endpoint.
         /// </summary>
         public static string GetEndpoint(string key)
