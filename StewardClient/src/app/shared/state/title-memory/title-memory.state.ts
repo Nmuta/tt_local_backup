@@ -12,10 +12,9 @@ import { TitleMemoryModel } from './title-memory.model';
     gifting: GameTitleCodeName.FH4,
     banning: GameTitleCodeName.FH4,
     giftHistory: GameTitleCodeName.FH4,
-    messaging: GameTitleCodeName.FH4,
     userDetails: GameTitleCodeName.FH4,
     ugc: GameTitleCodeName.FH4,
-    notificationManagement: GameTitleCodeName.FH4,
+    notifications: GameTitleCodeName.FH4,
     auctionBlocklist: GameTitleCodeName.FH4,
   },
 })

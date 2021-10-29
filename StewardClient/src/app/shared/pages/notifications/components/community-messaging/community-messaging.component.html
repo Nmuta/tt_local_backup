@@ -1,0 +1,94 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Community Messaging</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!isLoading && !loadError; else failState">
+      <ng-container *ngIf="sentCommunityMessageResults?.length <= 0; else messageResultsTemplate">
+        <ng-container *ngIf="!waitingForVerification; else pendingCommunityMessageTemplate">
+          <new-community-message
+            [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
+            [pendingCommunityMessage]="newCommunityMessage"
+            (emitNewCommunityMessage)="setNewCommunityMessage($event)"
+          ></new-community-message>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #messageResultsTemplate>
+  <section class="message-results">
+    <json-table-results
+      [results]="sentCommunityMessageResults"
+      downloadFilename="SentCommunityMessage"
+    ></json-table-results>
+    <button
+      mat-raised-button
+      color="accent"
+      matTooltip="Send another message"
+      (click)="clearMessageUI()"
+      clickStop
+    >
+      Send another message
+    </button>
+  </section>
+</ng-template>
+
+<ng-template #pendingCommunityMessageTemplate>
+  <mat-card>
+    <h3>
+      <button
+        mat-mini-fab
+        color="accent"
+        (click)="waitingForVerification = false"
+        matTooltip="Edit community message"
+      >
+        <mat-icon svgIcon="steward-edit"></mat-icon>
+      </button>
+      Pending Community Message
+    </h3>
+    <section class="new-community-message">
+      <div class="new-message-content">
+        <span
+          ><b>Expires on:</b>
+          {{ newCommunityMessage.expiryDate | dateTimeToJsDate | date: 'short' }}</span
+        >
+        <span *ngIf="!!newCommunityMessage.deviceType"
+          ><b>Device Type:</b> {{ newCommunityMessage.deviceType | deppoh }}</span
+        >
+        <span><b>Message:</b></span>
+        <span>{{ newCommunityMessage.message }}</span>
+      </div>
+      <section class="action-buttons">
+        <button
+          [disabled]="!isCommunityMessageReady()"
+          mat-raised-button
+          color="primary"
+          class="send-action"
+          matTooltip="Send the messsage"
+          (click)="submitCommunityMessage()"
+        >
+          Send message to {{ isUsingPlayerIdentities ? 'players' : 'LSP group' }}
+        </button>
+      </section>
+    </section>
+  </mat-card>
+</ng-template>
+
+<ng-template #failState>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+  <button
+    *ngIf="loadError"
+    class="reset-state"
+    mat-raised-button
+    color="accent"
+    matTooltip="Reset the failed tool."
+    (click)="clearMessageUI()"
+    clickStop
+  >
+    Reset Tool
+  </button>
+</ng-template>

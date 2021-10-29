@@ -29,3 +29,18 @@
     }
   }
 }
+
+// special case: mat-tab-group in a steward-layout-pane main group
+.steward-layout-pane.steward-layout-main-group {
+  .steward-layout-vertical-fill {
+    &:is(mat-tab-group) {
+      > .mat-tab-body-wrapper {
+        flex-shrink: 1;
+        flex-basis: 0;
+        mat-card {
+          max-height: unset;
+        }
+      }
+    }
+  }
+}

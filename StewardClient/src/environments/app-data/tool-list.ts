@@ -13,11 +13,10 @@ export enum NavbarTool {
   Kusto = 'kusto',
   AuctionBlocklist = 'auction-blocklist',
   StewardUserHistory = 'steward-user-history',
-  Messaging = 'messaging',
   Salus = 'salus',
   BulkBanHistory = 'bulk-ban-history',
   KustoManagement = 'kusto-management',
-  NotificationManagement = 'notification-management',
+  Notifications = 'notifications',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -42,6 +41,11 @@ export const CommonAccessLevels = {
     UserRole.DataPipelineAdmin,
     UserRole.DataPipelineContributor,
     UserRole.DataPipelineRead,
+  ],
+  CommunityManagersAndAdmins: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.CommunityManager,
   ],
 };
 
@@ -216,32 +220,17 @@ export const unprocessedToolList: HomeTileInfo[] = [
   },
   {
     icon: AppIcon.Messaging,
-    tool: NavbarTool.NotificationManagement,
-    accessList: CommonAccessLevels.OldNavbarAppOnly,
-    title: 'Notification Management',
-    subtitle: 'A support agent tool',
+    tool: NavbarTool.Notifications,
+    accessList: CommonAccessLevels.CommunityManagersAndAdmins,
+    title: 'Notifications',
+    subtitle: 'A tool for sending, editing, and deleting notifications',
     imageUrl: undefined,
     imageAlt: undefined,
-    tooltipDescription: 'Edit and delete in-game messages sent to Lsp Groups.',
-    shortDescription: [`Edit and delete in-game messages sent to Lsp Groups.`],
+    tooltipDescription: 'Send, edit, and delete in-game messages.',
+    shortDescription: [`Send, edit, and delete in-game messages.`],
     loadChildren: () =>
-      import('../../app/shared/pages/notification-management/notification-management.module').then(
-        m => m.NotificationManagementModule,
-      ),
-  },
-  {
-    icon: AppIcon.Messaging,
-    tool: NavbarTool.Messaging,
-    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
-    title: 'Messaging',
-    subtitle: 'A support agent tool',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'Send in-game messages to players by Gamertags, XUIDs, or LSP Group',
-    shortDescription: [`Send in-game messages to players by Gamertags, XUIDs, or LSP Group`],
-    loadChildren: () =>
-      import('../../app/shared/pages/community-messaging/community-messaging.module').then(
-        m => m.CommunityMessagingModule,
+      import('../../app/shared/pages/notifications/notifications.module').then(
+        m => m.NotificationsModule,
       ),
   },
   {

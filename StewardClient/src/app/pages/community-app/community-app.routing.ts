@@ -25,10 +25,10 @@ const routes: Routes = [
         component: CommunityHomeComponent,
       },
       {
-        path: SharedNavbarTools.MessagingPage.path,
+        path: SharedNavbarTools.NotificationsPage.path,
         loadChildren: () =>
-          import('../../shared/pages/community-messaging/community-messaging.module').then(
-            m => m.CommunityMessagingModule,
+          import('../../shared/pages/notifications/notifications.module').then(
+            m => m.NotificationsModule,
           ),
       },
       {

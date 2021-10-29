@@ -20,7 +20,7 @@ export class CommunityAppTools {
 
 /** The list of tools to display in the navbar. */
 export const communityAppToolList: RouterLinkPath[] = [
-  createCommunityNavbarPath(SharedNavbarTools.MessagingPage),
+  createCommunityNavbarPath(SharedNavbarTools.NotificationsPage),
   createCommunityNavbarPath(SharedNavbarTools.GiftingPage),
   createCommunityNavbarPath(SharedNavbarTools.UGCPage),
   createCommunityNavbarPath(SharedNavbarTools.BulkBanHistoryPage),

@@ -37,7 +37,7 @@ export const navbarToolList: RouterLinkPath[] = [
 
 /** The list of tools to display in the navbar. */
 export const navbarToolListAdminOnly: RouterLinkPath[] = [
-  createNavbarPath(SharedNavbarTools.MessagingPage),
+  createNavbarPath(SharedNavbarTools.NotificationsPage),
 ];
 
 /** The list of tools to display in the navbar. */

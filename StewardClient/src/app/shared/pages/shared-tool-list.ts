@@ -8,12 +8,6 @@ export class SharedNavbarTools {
     path: 'gifting',
   };
 
-  /** The messaging tool page. */
-  public static readonly MessagingPage: RouteParams = {
-    title: 'Messaging',
-    path: 'messaging',
-  };
-
   /** The Steward User History tool page. */
   public static readonly StewardUserHistoryPage: RouteParams = {
     title: 'Steward User History',
@@ -75,8 +69,8 @@ export class SharedNavbarTools {
   };
 
   /** The notification management tool page. */
-  public static readonly NotificationManagementPage: RouteParams = {
-    title: 'Notification Management',
-    path: 'notification-management',
+  public static readonly NotificationsPage: RouteParams = {
+    title: 'Notifications',
+    path: 'notifications',
   };
 }
