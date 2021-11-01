@@ -20,12 +20,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the credits after.
         /// </summary>
-        public int CreditsAfter { get; set; }
+        public long CreditsAfter { get; set; }
 
         /// <summary>
         ///     Gets or sets the credit amount.
         /// </summary>
-        public int CreditAmount { get; set; }
+        public long CreditAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the scene name.

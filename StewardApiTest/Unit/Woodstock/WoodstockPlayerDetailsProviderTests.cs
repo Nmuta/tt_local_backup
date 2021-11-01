@@ -5,6 +5,7 @@ using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.LiveOps.FH5.Generated;
+using Forza.WebServices.FH5.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
@@ -14,18 +15,14 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Xls.WebServices.FH5.Generated;
-using static Forza.LiveOps.FH5.Generated.NotificationsManagementService;
 using static Forza.LiveOps.FH5.Generated.UserManagementService;
 using static Forza.WebServices.FH5.Generated.LiveOpsService;
 using static Forza.WebServices.FH5.Generated.RareCarShopService;
-using ForzaCredityUpdateEntry = Xls.WebServices.FH5.Generated.ForzaCredityUpdateEntry;
-using ForzaProfileSummary = Xls.WebServices.FH5.Generated.ForzaProfileSummary;
 using ForzaUserBanDescription = Forza.LiveOps.FH5.Generated.ForzaUserBanDescription;
 using ForzaUserBanParameters = Forza.LiveOps.FH5.Generated.ForzaUserBanParameters;
 using ForzaUserBanResult = Forza.LiveOps.FH5.Generated.ForzaUserBanResult;
 using ForzaUserBanSummary = Forza.LiveOps.FH5.Generated.ForzaUserBanSummary;
 using WebServicesContracts = Forza.WebServices.FH5.Generated;
-using LiveOpsContracts = Forza.LiveOps.FH5.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
