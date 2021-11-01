@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -42,5 +43,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         Task<AuctionData> GetAuctionDataAsync(
             Guid auctionId,
             string endpoint);
+
+        /// <summary>
+        ///     Gets hidden UGC of a player.
+        /// </summary>
+        Task<IList<SunriseHideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint);
     }
 }

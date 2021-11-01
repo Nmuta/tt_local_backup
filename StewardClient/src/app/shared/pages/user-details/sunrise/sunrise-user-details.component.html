@@ -68,6 +68,15 @@
           ></sunrise-player-auction-action-log>
         </div>
       </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Hidden UGC
+          <inline-spinner [monitor]="hiddenUgc.getMonitor"></inline-spinner>
+        </ng-template>
+        <div class="tab-container">
+          <sunrise-player-hidden-ugc #hiddenUgc [identity]="identity"></sunrise-player-hidden-ugc>
+        </div>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

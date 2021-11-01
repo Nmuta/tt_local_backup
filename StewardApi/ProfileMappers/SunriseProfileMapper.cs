@@ -8,6 +8,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH4.Generated;
 using Xls.WebServices.FH4.Generated;
 using LiveOpsContracts = Forza.LiveOps.FH4.Generated;
@@ -294,7 +295,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LiveOpsContracts.ForzaAuction, AuctionData>()
                 .ForMember(dest => dest.AuctionId, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.TimeFlaggedUtc, opt => opt.MapFrom(src => src.TimeFlagged == default(DateTime) ? null : (DateTime?)src.TimeFlagged))
+                .ForMember(dest => dest.TimeFlaggedUtc, opt => opt.MapFrom(src => src.TimeFlagged.DefaultAsNull()))
                 .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.ClosingDateUtc, opt => opt.MapFrom(src => src.ClosingDate))
                 .ReverseMap();
@@ -312,6 +313,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaAuctionStatus, AuctionReviewState>().ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaAuctionAction, AuctionDataAuctionAction>().ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaBidStatus, AuctionDataBidStatus>().ReverseMap();
+
+            this.CreateMap<WebServicesContracts.ForzaStorefrontFile, SunriseHideableUgc>()
+                .ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => src.HiddenTime.DefaultAsNull()))
+                .ForMember(dest => dest.SubmissionUtc, opt => opt.MapFrom(src => src.SubmissionTime.DefaultAsNull()))
+                .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.PreviewPayload.ToImageDataUrl()))
+                .ReverseMap();
         }
     }
 }

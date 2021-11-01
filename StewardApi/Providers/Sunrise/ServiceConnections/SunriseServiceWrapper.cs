@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Forza.LiveOps.FH4.Generated;
+using Forza.UserGeneratedContent.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
+using static Forza.WebServices.FH4.Generated.StorefrontService;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
@@ -608,6 +610,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+        }
+
+        private async Task<StorefrontService> PrepareStorefrontServiceAsync(string endpoint)
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new StorefrontService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

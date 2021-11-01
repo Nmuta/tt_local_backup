@@ -704,6 +704,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets hidden player UGC content.
+        /// </summary>
+        [HttpGet("storefront/xuid({xuid})/hidden")]
+        [SwaggerResponse(200, type: typeof(IList<object>))]
+        public async Task<IActionResult> GetPlayerHiddenUgc(ulong xuid)
+        {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            var hiddenUgc = await this.storefrontProvider.GetHiddenUGCForUser(xuid, endpoint).ConfigureAwait(true);
+
+            return this.Ok(hiddenUgc);
+        }
+
+        /// <summary>
         ///     Gets auction house blocklist entries.
         /// </summary>
         [HttpGet("auctions/blocklist")]

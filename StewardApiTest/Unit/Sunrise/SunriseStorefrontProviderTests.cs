@@ -193,9 +193,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
 
+            public ISunriseServiceFactory SunriseServiceFactory { get; set; } = Substitute.For<ISunriseServiceFactory>();
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public SunriseStorefrontProvider Build() => new SunriseStorefrontProvider(this.SunriseService, this.Mapper);
+            public SunriseStorefrontProvider Build() => new SunriseStorefrontProvider(this.SunriseServiceFactory, this.SunriseService, this.Mapper);
         }
     }
 }

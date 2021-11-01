@@ -1,0 +1,59 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="preview">
+    <th mat-header-cell *matHeaderCellDef>Preview</th>
+    <td mat-cell *matCellDef="let e"><img class="inline-preview" [src]="ugc(e).previewUrl" /></td>
+  </ng-container>
+
+  <ng-container matColumnDef="info">
+    <th mat-header-cell *matHeaderCellDef>Info</th>
+    <td mat-cell *matCellDef="let e">
+      <table class="info-table">
+        <tr>
+          <th>Title</th>
+          <td>
+            <standard-copy>{{ ugc(e).title }}</standard-copy>
+          </td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td>
+            <standard-copy>{{ ugc(e).description }}</standard-copy>
+          </td>
+        </tr>
+        <tr>
+          <th>UGC ID</th>
+          <td>
+            <standard-copy>{{ ugc(e).ugcId }}</standard-copy>
+          </td>
+        </tr>
+        <tr>
+          <th>Share Code</th>
+          <td>
+            <standard-copy>{{ ugc(e).sharecode }}</standard-copy>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="times">
+    <th mat-header-cell *matHeaderCellDef>Time</th>
+    <td mat-cell *matCellDef="let e">
+      <table class="info-table">
+        <tr>
+          <th>Submitted</th>
+          <td>
+            <standard-relative-time [timeUtc]="ugc(e).submissionUtc"></standard-relative-time>
+          </td>
+        </tr>
+        <tr>
+          <th>Hidden</th>
+          <td><standard-relative-time [timeUtc]="ugc(e).hiddenUtc"></standard-relative-time></td>
+        </tr>
+      </table>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

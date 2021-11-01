@@ -4,29 +4,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH4.Generated;
+using Forza.UserGeneratedContent.FH4.Generated;
+using Forza.WebServices.FH4.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
+using static Forza.WebServices.FH4.Generated.StorefrontService;
+using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
+using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
+using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
+using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
     /// <inheritdoc />
     public sealed class SunriseStorefrontProvider : ISunriseStorefrontProvider
     {
+        private readonly ISunriseServiceFactory sunriseFactory;
         private readonly ISunriseService sunriseService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseStorefrontProvider"/> class.
         /// </summary>
-        public SunriseStorefrontProvider(ISunriseService sunriseService, IMapper mapper)
+        public SunriseStorefrontProvider(ISunriseServiceFactory sunriseFactory, ISunriseService sunriseService, IMapper mapper)
         {
+            sunriseFactory.ShouldNotBeNull(nameof(sunriseFactory));
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
+            this.sunriseFactory = sunriseFactory;
             this.sunriseService = sunriseService;
             this.mapper = mapper;
         }
@@ -114,6 +126,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 throw new UnknownFailureStewardException($"Auction Data lookup failed for auction {auctionId}.", ex);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<SunriseHideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var storefrontService = await this.sunriseFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
+            var exceptions = new List<Exception>();
+            var defaultValue = new GetHiddenUGCForUserOutput() { ugcData = Array.Empty<ForzaStorefrontFile>() };
+            var liveries = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Livery).SuccessOrDefault(defaultValue, exceptions);
+            var layerGroups = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.LayerGroup).SuccessOrDefault(defaultValue, exceptions);
+            var photos = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Photo).SuccessOrDefault(defaultValue, exceptions);
+
+            await Task.WhenAll(liveries, layerGroups, photos).ConfigureAwait(false);
+
+            var results = new List<ForzaStorefrontFile>();
+            if (liveries.IsCompletedSuccessfully)
+            {
+                results.AddRange(liveries.Result.ugcData);
+            }
+
+            if (layerGroups.IsCompletedSuccessfully)
+            {
+                results.AddRange(layerGroups.Result.ugcData);
+            }
+
+            if (photos.IsCompletedSuccessfully)
+            {
+                results.AddRange(photos.Result.ugcData);
+            }
+
+            var convertedResults = this.mapper.Map<List<SunriseHideableUgc>>(results);
+
+            return convertedResults;
         }
     }
 }

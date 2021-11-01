@@ -1,0 +1,8 @@
+<hidden-ugc-table
+  *ngIf="!getMonitor.isActive; else loading"
+  [hiddenUgc]="hiddenUgc"
+></hidden-ugc-table>
+
+<ng-template #loading>
+  <big-spinner [monitor]="getMonitor"></big-spinner>
+</ng-template>

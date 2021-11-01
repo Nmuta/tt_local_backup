@@ -1,0 +1,7 @@
+<error-spinner
+  *ngIf="monitor"
+  [isActive]="monitor.isActive"
+  [spinnerMessage]="monitor.label"
+  [error]="monitor.status.error"
+  [errorMessage]="monitor.label + ' failed'"
+></error-spinner>

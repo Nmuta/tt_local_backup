@@ -52,6 +52,7 @@ import { PlayerAuctionAction } from '@models/player-auction-action';
 import { GuidLikeString } from '@models/extended-types';
 import { AuctionData } from '@models/auction-data';
 import { GroupNotifications, PlayerNotifications } from '@models/notifications.model';
+import { SunriseHideableUgc } from '@models/sunrise/sunrise-hideable-ugc.model';
 import { DateTime } from 'luxon';
 
 /** Handles calls to Sunrise API routes. */
@@ -439,6 +440,13 @@ export class SunriseService {
     return this.apiService.getRequest$<PlayerUGCItem[]>(
       `${this.basePath}/storefront/xuid(${xuid})`,
       httpParams,
+    );
+  }
+
+  /** Gets a player's hidden UGC item. */
+  public getPlayerHiddenUGCByXuid$(xuid: BigNumber): Observable<SunriseHideableUgc[]> {
+    return this.apiService.getRequest$<SunriseHideableUgc[]>(
+      `${this.basePath}/storefront/xuid(${xuid})/hidden`,
     );
   }
 

@@ -269,6 +269,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IGravityGiftHistoryProvider, GravityGiftHistoryProvider>();
 
             services.AddSingleton<ISunriseService, SunriseServiceWrapper>();
+            services.AddSingleton<ISunriseServiceFactory, SunriseServiceFactory>();
             services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
             services.AddSingleton<ISunriseServiceManagementProvider, SunriseServiceManagementProvider>();
