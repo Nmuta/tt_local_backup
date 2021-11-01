@@ -11,7 +11,7 @@ import { SunriseHideableUgc } from '@models/sunrise/sunrise-hideable-ugc.model';
 export class HiddenUgcTableComponent implements OnChanges {
   @Input() public hiddenUgc: SunriseHideableUgc[] = [];
 
-  public displayedColumns = ['preview', 'info', 'time'];
+  public displayedColumns = ['preview', 'info', 'times'];
   public dataSource: BetterMatTableDataSource<SunriseHideableUgc> = new BetterMatTableDataSource<
     SunriseHideableUgc
   >();
