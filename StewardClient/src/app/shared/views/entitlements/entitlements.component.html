@@ -13,7 +13,7 @@
           <ng-container matColumnDef="entitlement">
             <th mat-header-cell *matHeaderCellDef>Entitlement</th>
             <td mat-cell *matCellDef="let entry">
-              <table>
+              <table class="info-table">
                 <tr>
                   <th>Title</th>
                   <td>{{ entry.productDisplayName }}</td>
@@ -37,7 +37,7 @@
           <ng-container matColumnDef="metadata">
             <th mat-header-cell *matHeaderCellDef>Metadata</th>
             <td mat-cell *matCellDef="let entry">
-              <table [ngSwitch]="entry.type">
+              <table [ngSwitch]="entry.type" class="info-table">
                 <ng-container *ngSwitchCase="entitlementType.Purchased">
                   <tr>
                     <th>Purchase Date</th>
@@ -101,12 +101,12 @@
           <ng-container matColumnDef="flags">
             <th mat-header-cell *matHeaderCellDef>Flags</th>
             <td mat-cell *matCellDef="let entry">
-              <span
-                ><mat-icon *ngIf="entry.isPaidTransaction; else falseFlagTemplate"
+              <span>
+                <mat-icon *ngIf="entry.isPaidTransaction; else falseFlagTemplate" class="green-icon"
                   >check_circle</mat-icon
                 >
-                Paid Transaction</span
-              >
+                Paid Transaction
+              </span>
               <ng-container *ngIf="entry.type === entitlementType.Purchased">
                 <span
                   ><mat-icon
