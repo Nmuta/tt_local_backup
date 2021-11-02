@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
@@ -103,8 +103,21 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     return `Player ${first(this.lookupList)} does not have a Apollo account`;
   }
 
-  constructor(private readonly store: Store, private readonly route: ActivatedRoute) {
+  constructor(
+    private readonly store: Store,
+    private readonly route: ActivatedRoute,
+    router: Router,
+  ) {
     super();
+
+    router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        window.dispatchEvent(new Event('resize'));
+      });
   }
 
   /** Initialization hook. */
