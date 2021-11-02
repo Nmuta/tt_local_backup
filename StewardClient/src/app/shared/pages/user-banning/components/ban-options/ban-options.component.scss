@@ -7,8 +7,11 @@
   }
 }
 
-.ban-area label {
-  display: block;
+.ban-area {
+  label,
+  span {
+    display: block;
+  }
 }
 
 .ban-reason {
@@ -27,4 +30,9 @@ ul {
   li {
     list-style: none;
   }
+}
+
+.warn {
+  color: app-color-default($app-warn);
+  background-color: app-color-default-contrast($app-warn);
 }

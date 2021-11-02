@@ -8,6 +8,10 @@
       >
       <mat-button-toggle [value]="options.banArea.Matchmaking">Matchmaking</mat-button-toggle>
     </mat-button-toggle-group>
+
+    <span *ngIf="formControls.banArea.value === options.banArea.AllFeatures" class="warn">
+      All player(s) UGC content will be removed when banning All Requests.
+    </span>
   </section>
 
   <mat-form-field class="ban-reason" appearance="fill">
