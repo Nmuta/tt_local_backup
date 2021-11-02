@@ -337,16 +337,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             try
             {
-                // TODO Remove conditional, else and NonProd query definitions once entries without endpoint column have dropped off.
-                string query;
-                if (endpoint == SunriseEndpoint.Retail || endpoint == ApolloEndpoint.Retail)
-                {
-                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistory, playerId, title, endpoint);
-                }
-                else
-                {
-                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistoryNonProd, playerId, title, endpoint);
-                }
+                var query = GiftHistory.MakeQuery(playerId, title, endpoint);
 
                 async Task<IList<GiftHistory>> GiftHistories()
                 {
@@ -358,13 +349,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     {
                         while (reader.Read())
                         {
-                            giftHistories.Add(new GiftHistory(
-                                reader.GetString(0),
-                                reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetDateTime(3),
-                                reader.GetString(4),
-                                reader.GetString(5)));
+                            giftHistories.Add(GiftHistory.FromQueryResult(reader));
                         }
 
                         reader.Close();
@@ -389,16 +374,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             try
             {
-                string query;
-                // TODO Remove conditional, else and NonProd query definitions once entries without endpoint column have dropped off.
-                if (endpoint == SunriseEndpoint.Retail || endpoint == ApolloEndpoint.Retail)
-                {
-                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistory, xuid, title, endpoint);
-                }
-                else
-                {
-                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistoryNonProd, xuid, title, endpoint);
-                }
+                var query = LiveOpsBanHistory.MakeQuery(xuid, title, endpoint);
 
                 async Task<IList<LiveOpsBanHistory>> BanHistories()
                 {
@@ -410,16 +386,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     {
                         while (reader.Read())
                         {
-                            banHistories.Add(new LiveOpsBanHistory(
-                                reader.GetInt64(0),
-                                reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetDateTime(3),
-                                reader.GetDateTime(4),
-                                reader.GetString(5),
-                                reader.GetString(6),
-                                reader.GetString(7),
-                                reader.GetString(8)));
+                            banHistories.Add(LiveOpsBanHistory.FromQueryResult(reader));
                         }
 
                         reader.Close();

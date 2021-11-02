@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
@@ -56,5 +57,28 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Gets or sets the LSP endpoint.
         /// </summary>
         public string Endpoint { get; set; }
+
+        /// <summary>
+        ///     Makes a query for gift history that this model can read.
+        /// </summary>
+        public static string MakeQuery(string playerId, string title, string endpoint)
+        {
+            return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and Endpoint == '{endpoint}' | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
+        }
+
+        /// <summary>
+        ///     Parses query results into a gift history object.
+        /// </summary>
+        public static GiftHistory FromQueryResult(IDataReader reader)
+        {
+            return new GiftHistory(
+                reader.Get<string>(nameof(PlayerId)),
+                reader.Get<string>(nameof(Title)),
+                reader.Get<string>(nameof(RequesterObjectId)),
+                reader.Get<DateTime>(nameof(GiftSendDateUtc)),
+                reader.Get<string>(nameof(GiftInventory)),
+                reader.Get<string>(nameof(Endpoint))
+            );
+        }
     }
 }

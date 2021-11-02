@@ -20,40 +20,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public const string GetTitleMapping = "playfab_title_mapping()";
 
         /// <summary>
-        ///     Gets the gift history.
-        /// </summary>
-        /// <remarks>Should be used with string.Format to fill out missing keys.</remarks>
-        public const string GetGiftHistory =
-            // TODO Once 30 days have passed and Kusto no longer has null values for the Endpoint column, replace the query below with the commented version.
-            // "GiftHistory | where PlayerId == '{0}' and Title == '{1}' and Endpoint == '{2}' | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
-            "GiftHistory | where PlayerId == '{0}' and Title == '{1}' and (Endpoint == '{2}' or Endpoint == '') | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint = coalesce(Endpoint, 'Legacy')";
-
-        /// <summary>
-        ///     Gets the gift history for non-production endpoints.
-        /// </summary>
-        /// <remarks>Should be used with string.Format to fill out missing keys.</remarks>
-        public const string GetGiftHistoryNonProd =
-            // TODO Once 30 days have passed and Kusto no longer has null values for the Endpoint column, delete this query and references to it.
-            "GiftHistory | where PlayerId == '{0}' and Title == '{1}' and Endpoint == '{2}' | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
-
-        /// <summary>
-        ///     Gets the ban history.
-        /// </summary>
-        /// <remarks>Should be used with string.Format to fill out missing keys.</remarks>
-        public const string GetBanHistory =
-            // TODO Once 30 days have passed and Kusto no longer has null values for the Endpoint column, replace the query below with the commented version.
-            // "BanHistory | where Xuid == {0} and Title == '{1}' and Endpoint == '{2}' | project Xuid, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint";
-            "BanHistory | where Xuid == {0} and Title == '{1}' and (Endpoint == '{2}' or Endpoint == '') | project Xuid, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint = coalesce(Endpoint, 'Legacy')";
-
-        /// <summary>
-        ///     Gets the ban history for non-production endpoints.
-        /// </summary>
-        /// <remarks>Should be used with string.Format to fill out missing keys.</remarks>
-        public const string GetBanHistoryNonProd =
-            // TODO Once 30 days have passed and Kusto no longer has null values for the Endpoint column, delete this query and references to it.
-            "BanHistory | where Xuid == {0} and Title == '{1}' and Endpoint == '{2}' | project Xuid, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint";
-
-        /// <summary>
         ///     Basic query for getting the FH4 Car data.
         /// </summary>
         public const string GetFH4Cars =

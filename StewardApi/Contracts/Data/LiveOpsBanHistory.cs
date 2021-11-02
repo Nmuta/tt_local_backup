@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
@@ -99,5 +100,31 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Gets or sets the LSP endpoint key.
         /// </summary>
         public string Endpoint { get; set; }
+
+        /// <summary>
+        ///     Makes a query for ban history that this model can read.
+        /// </summary>
+        public static string MakeQuery(ulong xuid, string title, string endpoint)
+        {
+            return $"BanHistory | where Xuid == {xuid} and Title == '{title}' and Endpoint == '{endpoint}' | project Xuid, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint";
+        }
+
+        /// <summary>
+        ///     Parses query results into a ban history object.
+        /// </summary>
+        public static LiveOpsBanHistory FromQueryResult(IDataReader reader)
+        {
+            return new LiveOpsBanHistory(
+                reader.Get<long>(nameof(Xuid)),
+                reader.Get<string>(nameof(Title)),
+                reader.Get<string>(nameof(RequesterObjectId)),
+                reader.Get<DateTime>(nameof(StartTimeUtc)),
+                reader.Get<DateTime>(nameof(ExpireTimeUtc)),
+                reader.Get<string>(nameof(FeatureArea)),
+                reader.Get<string>(nameof(Reason)),
+                reader.Get<string>(nameof(BanParameters)),
+                reader.Get<string>(nameof(Endpoint))
+            );
+        }
     }
 }
