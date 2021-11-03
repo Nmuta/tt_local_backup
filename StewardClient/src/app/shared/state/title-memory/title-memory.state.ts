@@ -9,13 +9,13 @@ import { TitleMemoryModel } from './title-memory.model';
 @State<TitleMemoryModel>({
   name: 'titleMemory',
   defaults: {
-    gifting: GameTitleCodeName.FH4,
-    banning: GameTitleCodeName.FH4,
-    giftHistory: GameTitleCodeName.FH4,
-    userDetails: GameTitleCodeName.FH4,
-    ugc: GameTitleCodeName.FH4,
-    notifications: GameTitleCodeName.FH4,
-    auctionBlocklist: GameTitleCodeName.FH4,
+    gifting: GameTitleCodeName.FH5,
+    banning: GameTitleCodeName.FH5,
+    giftHistory: GameTitleCodeName.FH5,
+    userDetails: GameTitleCodeName.FH5,
+    ugc: GameTitleCodeName.FH5,
+    notifications: GameTitleCodeName.FH5,
+    auctionBlocklist: GameTitleCodeName.FH5,
   },
 })
 @Injectable()
