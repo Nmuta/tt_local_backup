@@ -32,6 +32,7 @@ export enum GameTitleAbbreviation {
  * @see GameTitle
  */
 export enum GameTitleCodeName {
+  General = 'General',
   FH5 = 'Woodstock',
   FM8 = 'Steelhead',
   Street = 'Gravity',

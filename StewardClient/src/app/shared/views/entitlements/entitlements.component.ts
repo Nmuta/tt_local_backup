@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { Subject } from 'rxjs';
-import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Entitlement, EntitlementType } from '@models/entitlement';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -36,8 +36,11 @@ export class EntitlementsComponent extends BaseComponent implements OnChanges {
           this.entitlementsTable.data = [];
           this.getMonitor;
         }),
-        filter(() => !!this.identity?.xuid),
         switchMap(() => {
+          if (!this.identity?.xuid) {
+            return of([]);
+          }
+
           this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
           return kustoService
             .getKustoPlayerEntitlements$(this.identity?.xuid)

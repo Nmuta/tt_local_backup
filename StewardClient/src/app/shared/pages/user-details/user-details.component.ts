@@ -30,6 +30,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     return first(this.lookupList) ?? '';
   }
 
+  public generalRouterLink = ['.', 'general'];
   public woodstockRouterLink = ['.', 'woodstock'];
   public steelheadRouterLink = ['.', 'steelhead'];
   public sunriseRouterLink = ['.', 'sunrise'];

@@ -163,7 +163,14 @@
 </ng-template>
 
 <ng-template #noEntitlementsTemplate>
-  <span>No entitlements found</span>
+  <div *ngIf="identity?.xuid">
+    <span>No entitlements found</span>
+  </div>
+
+  <div *ngIf="!identity?.xuid" class="no-xuid">
+    <b>{{ identity?.error?.message }}</b>
+    <span>Use XUID in player lookup to check for general entitlements.</span>
+  </div>
 </ng-template>
 
 <ng-template #falseFlagTemplate>

@@ -11,6 +11,15 @@
     <endpoint-selection [titleCodeName]="gameTitleCodeName.FM8"> </endpoint-selection>
   </a>
   <a
+    matTooltip="Title-agnostic user details"
+    [class.mat-button-disabled]="!identity?.general"
+    [routerLink]="generalRouterLink"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    >General
+  </a>
+  <a
     [class.mat-button-disabled]="!identity?.extra?.hasWoodstock"
     [matTooltip]="woodstockTooltip"
     [routerLink]="woodstockRouterLink"

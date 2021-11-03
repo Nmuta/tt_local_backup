@@ -34,6 +34,7 @@ describe('WoodstockUGCComponent', () => {
       const identity: AugmentedCompositeIdentity = {
         query: null,
         result: null,
+        general: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,
@@ -57,6 +58,7 @@ describe('WoodstockUGCComponent', () => {
       const identity: AugmentedCompositeIdentity = {
         query: null,
         result: null,
+        general: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,
@@ -82,6 +84,7 @@ describe('WoodstockUGCComponent', () => {
       const identity: AugmentedCompositeIdentity = {
         query: null,
         result: null,
+        general: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,
@@ -105,6 +108,7 @@ describe('WoodstockUGCComponent', () => {
       const identity: AugmentedCompositeIdentity = {
         query: null,
         result: null,
+        general: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,

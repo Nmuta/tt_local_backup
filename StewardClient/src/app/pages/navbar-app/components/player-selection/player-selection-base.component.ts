@@ -6,9 +6,12 @@ import {
   IdentityQueryAlpha,
   IdentityQueryBeta,
   IdentityQueryBetaIntersection,
+  IdentityQueryByGamertag,
+  IdentityQueryByXuid,
   IdentityResultAlpha,
   IdentityResultBeta,
   makeBetaQuery,
+  toAlphaIdentity,
 } from '@models/identity-query.model';
 import { COMMA, ENTER, SEMICOLON } from '@angular/cdk/keycodes';
 import { chain, find, isEmpty, isEqual } from 'lodash';
@@ -23,6 +26,7 @@ import {
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
+  general: IdentityResultAlpha;
   woodstock: IdentityResultAlpha;
   steelhead: IdentityResultAlpha;
   sunrise: IdentityResultAlpha;
@@ -289,6 +293,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           compositeIdentity.steelhead = result.standard.steelhead;
           compositeIdentity.woodstock = result.standard.woodstock;
 
+          compositeIdentity.general = this.generateGeneralIdentity(compositeIdentity);
+
           const allRequestsErrored =
             compositeIdentity.sunrise?.error &&
             compositeIdentity.apollo?.error &&
@@ -356,5 +362,37 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           this.foundIdentities$.next(this.foundIdentities);
         }
       });
+  }
+
+  private generateGeneralIdentity(
+    compositeIdentity: AugmentedCompositeIdentity,
+  ): IdentityResultAlpha {
+    // Build general identity manually until Xbox Live API lookup is available
+    const singleUserResult = compositeIdentity.result;
+    let generalIdentity: IdentityResultAlpha = chain(singleUserResult.standard)
+      .values()
+      .filter(v => !v.error)
+      .map(identity => toAlphaIdentity(identity))
+      .first()
+      .value();
+
+    // Is no valid identity found, generate a "best fit" object based on query and custom error
+    const query = singleUserResult.query;
+    if (!generalIdentity) {
+      generalIdentity = {
+        query: query,
+        gamertag: (query as IdentityQueryByGamertag)?.gamertag,
+        xuid: (query as IdentityQueryByXuid)?.xuid,
+        error: {
+          code: null,
+          message: 'No identity found in Turn10 databases',
+          target: null,
+          details: [],
+          innererror: null,
+        },
+      };
+    }
+
+    return generalIdentity;
   }
 }

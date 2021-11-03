@@ -38,6 +38,10 @@ span {
   color: app-color-default($app-warn);
 }
 
+.no-xuid {
+  margin-top: $gap-medium;
+}
+
 error-spinner {
   font-size: 4em;
 }

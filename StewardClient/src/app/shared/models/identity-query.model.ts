@@ -4,17 +4,17 @@ import { MSError } from './error.model';
 import { GamertagString, T10IdString } from './extended-types';
 
 /** An identity query by gamertag. */
-interface IdentityQueryByGamertag {
+export interface IdentityQueryByGamertag {
   gamertag: GamertagString;
 }
 
 /** An identity query by xuid. */
-interface IdentityQueryByXuid {
+export interface IdentityQueryByXuid {
   xuid: BigNumber;
 }
 
 /** An identity query by t10Id. */
-interface IdentityQueryByT10Id {
+export interface IdentityQueryByT10Id {
   t10Id: T10IdString;
 }
 
@@ -48,6 +48,26 @@ export function makeBetaQuery(
     default:
       throw new Error(`Unacceptable type for makeBetaQuery: ${type} (value: ${value})`);
   }
+}
+
+/** Convert provided query to an Alpha query. */
+export function toAlphaQuery(query: IdentityQueryAlpha | IdentityQueryBeta): IdentityQueryAlpha {
+  return {
+    gamertag: (query as IdentityQueryByGamertag).gamertag,
+    xuid: (query as IdentityQueryByXuid).xuid,
+  };
+}
+
+/** Convert provided identity to an Alpha identity. */
+export function toAlphaIdentity(
+  identity: IdentityResultAlpha | IdentityResultBeta,
+): IdentityResultAlpha {
+  return {
+    query: toAlphaQuery(identity.query),
+    gamertag: identity.gamertag,
+    xuid: identity.xuid,
+    error: identity.error,
+  };
 }
 
 /** Type-checking for @see IdentityQueryAlpha */

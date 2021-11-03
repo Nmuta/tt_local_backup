@@ -11,6 +11,7 @@ import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-detail
 import { UserDetailsComponent } from './user-details.component';
 import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { UserRole } from '@models/enums';
+import { GeneralUserDetailsComponent } from './general/general-user-details.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,12 @@ const routes: Routes = [
       {
         path: 'gravity',
         component: GravityUserDetailsComponent,
+        canActivate: [TitleMemorySetGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'general',
+        component: GeneralUserDetailsComponent,
         canActivate: [TitleMemorySetGuard],
         pathMatch: 'full',
       },

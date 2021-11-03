@@ -39,6 +39,7 @@ import { PlayerAccountInventoryModule } from '@views/player-account-inventory/pl
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { EntitlementsModule } from '@views/entitlements/entitlements.module';
 import { PlayerAuctionActionLogModule } from '@views/player-auction-action-log/player-auction-action-log.module';
+import { GeneralUserDetailsComponent } from './general/general-user-details.component';
 import { PlayerHiddenUgcModule } from '@views/player-hidden-ugc/player-hidden-ugc.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
@@ -52,6 +53,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     GravityUserDetailsComponent,
     SteelheadUserDetailsComponent,
     WoodstockUserDetailsComponent,
+    GeneralUserDetailsComponent,
   ],
   imports: [
     CommonModule,
