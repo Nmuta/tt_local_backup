@@ -34,5 +34,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         ///     Sets featured state of a UGC content item.
         /// </summary>
         Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);
+
+        /// <summary>
+        ///     Gets hidden UGC of a player.
+        /// </summary>
+        Task<IList<HideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint);
     }
 }

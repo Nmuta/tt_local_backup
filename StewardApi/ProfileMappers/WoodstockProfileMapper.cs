@@ -9,6 +9,7 @@ using Forza.WebServices.RareCarShopTransactionObjects.FH5.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH5.Generated;
 using Xls.WebServices.FH5.Generated;
 using LiveOpsContracts = Forza.LiveOps.FH5.Generated;
@@ -276,6 +277,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ReverseMap();
+
+            this.CreateMap<WebServicesContracts.ForzaStorefrontFile, HideableUgc>()
+                .ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => src.HiddenTime.DefaultAsNull()))
+                .ForMember(dest => dest.SubmissionUtc, opt => opt.MapFrom(src => src.SubmissionTime.DefaultAsNull()))
+                .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.PreviewPayload.ToImageDataUrl()))
                 .ReverseMap();
         }
     }

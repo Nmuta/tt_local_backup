@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseHideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint)
+        public async Task<IList<HideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -158,7 +158,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 results.AddRange(photos.Result.ugcData);
             }
 
-            var convertedResults = this.mapper.Map<List<SunriseHideableUgc>>(results);
+            var convertedResults = this.mapper.Map<List<HideableUgc>>(results);
 
             return convertedResults;
         }

@@ -242,7 +242,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 case Type doubleType when doubleType == typeof(double):
                     return (T)(object)reader.GetInt64(columnIndex);
                 case Type decimalType when decimalType == typeof(decimal):
-                    return (T)(object)reader.GetDecimal(columnName);
+                    return (T?)(object?)reader.GetDecimal(columnName);
                 default:
                     throw new InvalidOperationException("Cannot convert to given number type. Add a new entry to this switch case.");
             }

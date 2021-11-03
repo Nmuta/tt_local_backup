@@ -184,11 +184,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.Mapper.Map<UGCItem>(Arg.Any<ForzaLiveryData>()).Returns(Fixture.Create<UGCItem>());
             }
 
+            public IWoodstockServiceFactory WoodstockServiceFactory { get; set; } = Substitute.For<IWoodstockServiceFactory>();
+
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public WoodstockStorefrontProvider Build() => new WoodstockStorefrontProvider(this.WoodstockService, this.Mapper);
+            public WoodstockStorefrontProvider Build() => new WoodstockStorefrontProvider(this.WoodstockServiceFactory, this.WoodstockService, this.Mapper);
         }
     }
 }

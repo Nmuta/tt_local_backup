@@ -1,25 +1,25 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { IdentityResultAlpha } from '@models/identity-query.model';
 import { HideableUgc } from '@models/hideable-ugc.model';
-import { SunriseService } from '@services/sunrise';
+import { IdentityResultAlpha } from '@models/identity-query.model';
+import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { takeUntil } from 'rxjs/operators';
 
-/** Retrieves and renders a player's sunrise hidden UGC. */
+/** Retrieves and renders a player's woodstock hidden UGC. */
 @Component({
-  selector: 'sunrise-player-hidden-ugc',
-  templateUrl: './sunrise-player-hidden-ugc.component.html',
-  styleUrls: ['./sunrise-player-hidden-ugc.component.scss'],
+  selector: 'woodstock-player-hidden-ugc',
+  templateUrl: './woodstock-player-hidden-ugc.component.html',
+  styleUrls: ['./woodstock-player-hidden-ugc.component.scss'],
 })
-export class SunrisePlayerHiddenUgcComponent extends BaseComponent implements OnChanges {
+export class WoodstockPlayerHiddenUgcComponent extends BaseComponent implements OnChanges {
   @Input() public identity: IdentityResultAlpha;
 
   public hiddenUgc: HideableUgc[] = [];
 
   public getMonitor = new ActionMonitor('GET Hidden UGC');
 
-  constructor(private readonly sunrise: SunriseService) {
+  constructor(private readonly woodstock: WoodstockService) {
     super();
   }
 
@@ -32,7 +32,7 @@ export class SunrisePlayerHiddenUgcComponent extends BaseComponent implements On
 
     this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
 
-    this.sunrise
+    this.woodstock
       .getPlayerHiddenUGCByXuid$(this.identity.xuid)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(hiddenUgc => {

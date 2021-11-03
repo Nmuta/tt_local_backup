@@ -314,7 +314,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaAuctionAction, AuctionDataAuctionAction>().ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaBidStatus, AuctionDataBidStatus>().ReverseMap();
 
-            this.CreateMap<WebServicesContracts.ForzaStorefrontFile, SunriseHideableUgc>()
+            this.CreateMap<WebServicesContracts.ForzaStorefrontFile, HideableUgc>()
                 .ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => src.HiddenTime.DefaultAsNull()))
                 .ForMember(dest => dest.SubmissionUtc, opt => opt.MapFrom(src => src.SubmissionTime.DefaultAsNull()))
                 .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Id))

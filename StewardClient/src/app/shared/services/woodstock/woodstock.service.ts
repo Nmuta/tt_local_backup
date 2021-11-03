@@ -50,6 +50,7 @@ import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GroupNotifications, PlayerNotifications } from '@models/notifications.model';
 import { ProfileNote } from '@models/profile-note.model';
+import { HideableUgc } from '@models/hideable-ugc.model';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -401,6 +402,13 @@ export class WoodstockService {
     return this.apiService.getRequest$<PlayerUGCItem[]>(
       `${this.basePath}/storefront/xuid(${xuid})`,
       httpParams,
+    );
+  }
+
+  /** Gets a player's hidden UGC item. */
+  public getPlayerHiddenUGCByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
+    return this.apiService.getRequest$<HideableUgc[]>(
+      `${this.basePath}/storefront/xuid(${xuid})/hidden`,
     );
   }
 

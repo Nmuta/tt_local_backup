@@ -57,6 +57,18 @@
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
         </div>
       </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Hidden UGC
+          <inline-spinner [monitor]="hiddenUgc.getMonitor"></inline-spinner>
+        </ng-template>
+        <div class="tab-container">
+          <woodstock-player-hidden-ugc
+            #hiddenUgc
+            [identity]="identity"
+          ></woodstock-player-hidden-ugc>
+        </div>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

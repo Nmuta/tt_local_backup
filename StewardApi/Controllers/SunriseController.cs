@@ -707,7 +707,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets hidden player UGC content.
         /// </summary>
         [HttpGet("storefront/xuid({xuid})/hidden")]
-        [SwaggerResponse(200, type: typeof(IList<object>))]
+        [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
         public async Task<IActionResult> GetPlayerHiddenUgc(ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);

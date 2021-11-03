@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
-import { SunriseHideableUgc } from '@models/sunrise/sunrise-hideable-ugc.model';
+import { HideableUgc } from '@models/hideable-ugc.model';
 
 /** Renders a player's hidden UGC. */
 @Component({
@@ -9,20 +9,20 @@ import { SunriseHideableUgc } from '@models/sunrise/sunrise-hideable-ugc.model';
   styleUrls: ['./hidden-ugc-table.component.scss'],
 })
 export class HiddenUgcTableComponent implements OnChanges {
-  @Input() public hiddenUgc: SunriseHideableUgc[] = [];
+  @Input() public hiddenUgc: HideableUgc[] = [];
 
   public displayedColumns = ['preview', 'info', 'times'];
-  public dataSource: BetterMatTableDataSource<SunriseHideableUgc> = new BetterMatTableDataSource<
-    SunriseHideableUgc
+  public dataSource: BetterMatTableDataSource<HideableUgc> = new BetterMatTableDataSource<
+    HideableUgc
   >();
 
   /** Angular lifecycle hook. */
   public ngOnChanges(): void {
-    this.dataSource = new BetterMatTableDataSource<SunriseHideableUgc>(this.hiddenUgc);
+    this.dataSource = new BetterMatTableDataSource<HideableUgc>(this.hiddenUgc);
   }
 
   /** Type safety for UGC in the template. */
-  public ugc(source: unknown): SunriseHideableUgc {
-    return source as SunriseHideableUgc;
+  public ugc(source: unknown): HideableUgc {
+    return source as HideableUgc;
   }
 }

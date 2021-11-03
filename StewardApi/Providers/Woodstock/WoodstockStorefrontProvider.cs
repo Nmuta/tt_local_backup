@@ -3,27 +3,34 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
+using Forza.UserGeneratedContent.FH5.Generated;
+using Forza.WebServices.FH5.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using static Forza.WebServices.FH5.Generated.StorefrontService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
     /// <inheritdoc />
     public sealed class WoodstockStorefrontProvider : IWoodstockStorefrontProvider
     {
+        private readonly IWoodstockServiceFactory woodstockFactory;
         private readonly IWoodstockService woodstockService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockStorefrontProvider"/> class.
         /// </summary>
-        public WoodstockStorefrontProvider(IWoodstockService woodstockService, IMapper mapper)
+        public WoodstockStorefrontProvider(IWoodstockServiceFactory woodstockFactory, IWoodstockService woodstockService, IMapper mapper)
         {
+            woodstockFactory.ShouldNotBeNull(nameof(woodstockFactory));
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
+            this.woodstockFactory = woodstockFactory;
             this.woodstockService = woodstockService;
             this.mapper = mapper;
         }
@@ -92,6 +99,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new UnknownFailureStewardException(
                     $"An unknown exception occurred while setting featured status of content item: {contentId}", ex);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<HideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var storefrontService = await this.woodstockFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
+            var exceptions = new List<Exception>();
+            var defaultValue = new GetHiddenUGCForUserOutput() { ugcData = Array.Empty<ForzaStorefrontFile>() };
+            var liveries = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Livery).SuccessOrDefault(defaultValue, exceptions);
+            var layerGroups = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.LayerGroup).SuccessOrDefault(defaultValue, exceptions);
+            var photos = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Photo).SuccessOrDefault(defaultValue, exceptions);
+
+            await Task.WhenAll(liveries, layerGroups, photos).ConfigureAwait(false);
+
+            var results = new List<ForzaStorefrontFile>();
+            if (liveries.IsCompletedSuccessfully)
+            {
+                results.AddRange(liveries.Result.ugcData);
+            }
+
+            if (layerGroups.IsCompletedSuccessfully)
+            {
+                results.AddRange(layerGroups.Result.ugcData);
+            }
+
+            if (photos.IsCompletedSuccessfully)
+            {
+                results.AddRange(photos.Result.ugcData);
+            }
+
+            var convertedResults = this.mapper.Map<List<HideableUgc>>(results);
+
+            return convertedResults;
         }
     }
 }

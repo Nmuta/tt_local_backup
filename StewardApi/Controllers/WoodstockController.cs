@@ -736,6 +736,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets hidden player UGC content.
+        /// </summary>
+        [HttpGet("storefront/xuid({xuid})/hidden")]
+        [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
+        public async Task<IActionResult> GetPlayerHiddenUgc(ulong xuid)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+
+            var hiddenUgc = await this.storefrontProvider.GetHiddenUGCForUser(xuid, endpoint).ConfigureAwait(true);
+
+            return this.Ok(hiddenUgc);
+        }
+
+        /// <summary>
         ///     Gets backstage pass updates.
         /// </summary>
         [NonAction] // TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818)
