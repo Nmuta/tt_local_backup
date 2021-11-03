@@ -5,6 +5,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { KustoQuery } from '@models/kusto';
 import { KustoService } from '@services/kusto';
+import { keys } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 
@@ -16,12 +17,7 @@ import { catchError, take, takeUntil } from 'rxjs/operators';
 })
 export class KustoManagementComponent extends BaseComponent {
   /** Game Titles */
-  public gameTitles: GameTitleCodeName[] = [
-    GameTitleCodeName.Street,
-    GameTitleCodeName.FH4,
-    GameTitleCodeName.FM7,
-    GameTitleCodeName.FH3,
-  ];
+  public gameTitles = keys(GameTitleCodeName).map(x => GameTitleCodeName[x]);
 
   /** Kusto query submit form */
   public querySubmitForm: FormGroup = this.formBuilder.group({
