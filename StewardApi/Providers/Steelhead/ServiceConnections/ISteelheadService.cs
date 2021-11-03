@@ -186,7 +186,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Sends group message.
         /// </summary>
-        public Task SendGroupMessageNotificationAsync(
+        public Task<NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
             int groupId,
             string message,
             DateTime expireTimeUtc,

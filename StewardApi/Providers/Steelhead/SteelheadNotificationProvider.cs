@@ -120,20 +120,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
 
-            var messageResponse = new MessageSendResult<int>();
-            messageResponse.PlayerOrLspGroup = groupId;
-            messageResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
+            var messageResponse = new MessageSendResult<int>
+            {
+                PlayerOrLspGroup = groupId,
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+            };
             var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
 
             try
             {
-                await this.steelheadService.SendGroupMessageNotificationAsync(
+                var response = await this.steelheadService.SendGroupMessageNotificationAsync(
                     groupId,
                     message,
                     expireTimeUtc,
                     forzaDeviceType,
                     endpoint).ConfigureAwait(false);
 
+                messageResponse.NotificationId = response.notificationId;
                 messageResponse.Error = null;
             }
             catch

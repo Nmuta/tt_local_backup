@@ -408,7 +408,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task SendGroupMessageNotificationAsync(
+        public async Task<NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
             int groupId,
             string message,
             DateTime expireTimeUtc,
@@ -418,7 +418,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             var notificationsService = await this.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
-            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc, deviceType != ForzaLiveDeviceType.Invalid, deviceType)
+            return await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc, deviceType != ForzaLiveDeviceType.Invalid, deviceType)
                 .ConfigureAwait(false);
         }
 
