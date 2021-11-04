@@ -55,6 +55,8 @@ export class TicketService {
   private mapTitleName(titleName: string): GameTitleCodeName {
     const titleNameUppercase = titleName.toUpperCase();
     switch (titleNameUppercase) {
+      case 'FORZA_HORIZON_5':
+        return GameTitleCodeName.FH5;
       case 'FORZA_STREET':
         return GameTitleCodeName.Street;
       case 'FORZA_HORIZON_4':
