@@ -507,7 +507,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 skipTokenUtc = skipTokenOffset.UtcDateTime;
             }
 
-            var auctionLog = await this.kustoProvider.GetAuctionLogAsync(xuid, skipTokenUtc).ConfigureAwait(true);
+            var auctionLog = await this.kustoProvider.GetAuctionLogAsync(KustoGameDbSupportedTitle.Sunrise, xuid, skipTokenUtc).ConfigureAwait(true);
 
             return this.Ok(auctionLog);
         }

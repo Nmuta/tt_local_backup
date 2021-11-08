@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -34,6 +35,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         ///     Sets featured state of a UGC content item.
         /// </summary>
         Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);
+
+        /// <summary>
+        ///     Gets comprehensive data about an auction.
+        /// </summary>
+        Task<AuctionData> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint);
 
         /// <summary>
         ///     Gets hidden UGC of a player.

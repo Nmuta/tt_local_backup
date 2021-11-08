@@ -61,6 +61,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Gets a user's auction log.
         /// </summary>
-        Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(ulong xuid, DateTime? skipToken = null);
+        Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(KustoGameDbSupportedTitle title, ulong xuid, DateTime? skipToken = null);
     }
 }

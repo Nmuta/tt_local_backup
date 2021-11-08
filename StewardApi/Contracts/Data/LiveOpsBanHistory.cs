@@ -123,8 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 reader.Get<string>(nameof(FeatureArea)),
                 reader.Get<string>(nameof(Reason)),
                 reader.Get<string>(nameof(BanParameters)),
-                reader.Get<string>(nameof(Endpoint))
-            );
+                reader.Get<string>(nameof(Endpoint)));
         }
     }
 }

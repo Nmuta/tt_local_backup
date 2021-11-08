@@ -7,6 +7,7 @@ using Forza.LiveOps.FH5.Generated;
 using Forza.UserInventory.FH5.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -278,6 +279,29 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
+
+            this.CreateMap<DeviceType, LiveOpsContracts.ForzaLiveDeviceType>().ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaAuction, AuctionData>()
+                .ForMember(dest => dest.AuctionId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.TimeFlaggedUtc, opt => opt.MapFrom(src => src.TimeFlagged.DefaultAsNull()))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.ClosingDateUtc, opt => opt.MapFrom(src => src.ClosingDate))
+                .ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaBid, AuctionDataBid>()
+                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.Date))
+                .ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaLiveOpsCar, AuctionDataCar>()
+                .ReverseMap();
+
+            this.CreateMap<Forza.FH5.Generated.CarHistory, AuctionDataCarHistory>()
+                .ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaAuctionStatus, AuctionReviewState>().ReverseMap();
+            this.CreateMap<LiveOpsContracts.ForzaAuctionAction, AuctionDataAuctionAction>().ReverseMap();
+            this.CreateMap<LiveOpsContracts.ForzaBidStatus, AuctionDataBidStatus>().ReverseMap();
 
             this.CreateMap<WebServicesContracts.ForzaStorefrontFile, HideableUgc>()
                 .ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => src.HiddenTime.DefaultAsNull()))

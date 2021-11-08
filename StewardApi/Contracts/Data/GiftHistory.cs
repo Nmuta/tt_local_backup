@@ -77,8 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 reader.Get<string>(nameof(RequesterObjectId)),
                 reader.Get<DateTime>(nameof(GiftSendDateUtc)),
                 reader.Get<string>(nameof(GiftInventory)),
-                reader.Get<string>(nameof(Endpoint))
-            );
+                reader.Get<string>(nameof(Endpoint)));
         }
     }
 }

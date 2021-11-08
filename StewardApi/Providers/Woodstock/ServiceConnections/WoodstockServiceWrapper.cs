@@ -458,6 +458,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<Forza.LiveOps.FH5.Generated.ForzaAuction> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var result = await auctionService.GetAuctionData(auctionId).ConfigureAwait(false);
+            return result?.auction;
+        }
+
+        /// <inheritdoc/>
         public async Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockList(int maxResults, string endpoint)
         {
             var auctionService = await this.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);

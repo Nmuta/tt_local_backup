@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Makes a query for bid events that this model can read.
         /// </summary>
-        public static string MakeBaseQuery(ulong xuid)
+        public static string MakeSunriseBaseQuery(ulong xuid)
         {
             return $@"
 let xuid = '{xuid}';
@@ -81,12 +81,70 @@ union
         /// <summary>
         ///     Makes a query for bid events that this model can read.
         /// </summary>
-        public static string MakeQuery(ulong xuid, DateTime? skipToken = null)
+        public static string MakeWoodstockBaseQuery(ulong xuid)
+        {
+            return $@"
+let xuid = '{xuid}';
+union
+    (
+        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_PlaceBid
+        | summarize by Time=['Timestamp'], Action='Bid', AuctionId, Xuid=SystemHeaderXuid, Success=SystemSuccess, SystemStackTrace, BidAmount, SpendAmount
+        | where Xuid == xuid
+    ),
+    (
+        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_Create
+        | summarize by Time=['Timestamp'], Action='Create', AuctionId, Xuid=SystemHeaderXuid, Success=SystemSuccess, SystemStackTrace
+        | where Xuid == xuid
+    ),
+    (
+        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_RetrieveCarForAuction
+        | summarize by Time=['Timestamp'], Action='RetrieveCar', AuctionId, Xuid=SystemHeaderXuid, Success=SystemSuccess
+        | where Xuid == xuid
+    ),
+    (
+        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_RetrievePaymentForAuctionSold
+        | summarize by Time=['Timestamp'], Action='RetrievePaymentForSold', AuctionId, Xuid=SystemHeaderXuid, Success=SystemSuccess
+        | where Xuid == xuid
+    ),
+    (
+        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_RetrievePaymentsForAuctionLost
+        | summarize by Time=['Timestamp'], Action='RetrievePaymentForLost', AuctionId, Xuid=SystemHeaderXuid, Success=SystemSuccess
+        | where Xuid == xuid
+    )
+| where AuctionId <> ''
+| project Time, Action, AuctionId, Xuid, Success, Message=extract('Message: ?(.*?)\r\n', 1, SystemStackTrace), BidAmount, SpendAmount
+| join kind=leftouter
+    (
+        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_Create
+        | project AuctionId, SellerXuid=SystemHeaderXuid, OpeningPrice, BuyoutPrice, CarId=ForzaCarCarId, CarMake=ForzaCarMake, CarYear=ForzaCarYear, CarVin=ForzaCarVin
+        | where AuctionId <> ''
+    ) on AuctionId
+| project TimeUtc=Time, AuctionId, SellerXuid, CarId, CarMake, CarYear, CarVin, Action, BidAmount, SpendAmount, OpeningPrice, BuyoutPrice, IsSuccess=Success, ErrorMessage=Message
+";
+        }
+
+        public static string MakeBaseQuery(KustoGameDbSupportedTitle title, ulong xuid)
+        {
+            switch (title)
+            {
+                case KustoGameDbSupportedTitle.Sunrise:
+                    return MakeSunriseBaseQuery(xuid);
+                case KustoGameDbSupportedTitle.Woodstock:
+                    return MakeWoodstockBaseQuery(xuid);
+                default:
+                    throw new ArgumentException($"{nameof(AuctionHistoryEntry)} Given unsupported title {title}");
+            }
+        }
+
+        /// <summary>
+        ///     Makes a query for bid events that this model can read.
+        /// </summary>
+        public static string MakeQuery(KustoGameDbSupportedTitle title, ulong xuid, DateTime? skipToken = null)
         {
             if (skipToken.HasValue)
             {
                 return $@"
-{MakeBaseQuery(xuid)}
+{MakeBaseQuery(title, xuid)}
 | order by TimeUtc
 | where TimeUtc < datetime({skipToken})
 | take {SingleRequestResultsLimit}
@@ -94,7 +152,7 @@ union
             }
 
             return $@"
-{MakeBaseQuery(xuid)}
+{MakeBaseQuery(title, xuid)}
 | order by TimeUtc
 | take {SingleRequestResultsLimit}
 ";

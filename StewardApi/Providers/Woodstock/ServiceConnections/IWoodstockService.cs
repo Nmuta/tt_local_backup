@@ -264,6 +264,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters, string endpoint);
 
         /// <summary>
+        ///     Gets comprehensive data about an auction.
+        /// </summary>
+        Task<Forza.LiveOps.FH5.Generated.ForzaAuction> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint);
+
+        /// <summary>
         ///     Gets auction house block list.
         /// </summary>
         Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockList(int maxResults, string endpoint);

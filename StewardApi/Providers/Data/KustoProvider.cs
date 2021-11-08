@@ -404,9 +404,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(ulong xuid, DateTime? skipToken = null)
+        public async Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(KustoGameDbSupportedTitle title, ulong xuid, DateTime? skipToken = null)
         {
-            var query = AuctionHistoryEntry.MakeQuery(xuid, skipToken);
+            var query = AuctionHistoryEntry.MakeQuery(title, xuid, skipToken);
             try
             {
                 var auctionHistory = new List<AuctionHistoryEntry>();
