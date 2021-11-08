@@ -3,9 +3,9 @@ import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/tit
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { createMockSunriseService } from '@services/sunrise';
 
-import { SunrisePlayerAuctionActionLogComponent } from './sunrise.component';
+import { SunrisePlayerAuctionActionLogComponent } from './sunrise-player-auction-action-log.component';
 
-describe('PlayerAuctionActionLogSunriseComponent', () => {
+describe('SunrisePlayerAuctionActionLogComponent', () => {
   let component: SunrisePlayerAuctionActionLogComponent;
   let fixture: ComponentFixture<SunrisePlayerAuctionActionLogComponent>;
 

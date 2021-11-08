@@ -1,5 +1,6 @@
 <auction-action-log-table
   *ngIf="getMonitor.status.state !== 'error'; else spinner"
+  [service]="service"
   [auctionLog]="auctionLog"
 >
   <span extraControl *ngIf="!mayHaveMoreItems">All items loaded</span>

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Injectable, Provider } from '@angular/core';
+import { Injectable, ValueProvider } from '@angular/core';
 import { SteelheadGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/steelhead/gifting/groupId';
 import { SteelheadGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/steelhead/gifting/players';
 import { SteelheadPlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/banHistory';
@@ -114,7 +114,7 @@ export class MockSteelheadService {
     );
 }
 /** Creates an injectable mock for Steelhead Service. */
-export function createMockSteelheadService(): Provider {
+export function createMockSteelheadService(): ValueProvider {
   return {
     provide: SteelheadService,
     useValue: new MockSteelheadService(),

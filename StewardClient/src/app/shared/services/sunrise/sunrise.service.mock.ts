@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Provider } from '@angular/core';
+import { ValueProvider } from '@angular/core';
 import { SunriseGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/groupId';
 import { SunriseGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/players';
 import { SunriseMasterInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/masterInventory';
@@ -197,7 +197,7 @@ export class MockSunriseService {
 /** Creates an injectable mock for Sunrise Service. */
 export function createMockSunriseService(
   returnValueGenerator: () => unknown = () => new Object(),
-): Provider {
+): ValueProvider {
   return {
     provide: SunriseService,
     useValue: new MockSunriseService(returnValueGenerator),

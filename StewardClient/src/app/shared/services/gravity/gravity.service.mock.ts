@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Injectable, Provider } from '@angular/core';
+import { Injectable, ValueProvider } from '@angular/core';
 import { GravityPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/gamertag/details';
 import { GravityPlayerT10IdDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/t10Id/details';
 import { GravityGiftingPlayerFakeApi } from '@interceptors/fake-api/apis/title/gravity/gifting/players';
@@ -84,7 +84,7 @@ export class MockGravityService {
 }
 
 /** Creates an injectable mock for Gravity Service. */
-export function createMockGravityService(): Provider {
+export function createMockGravityService(): ValueProvider {
   return {
     provide: GravityService,
     useValue: new MockGravityService(),

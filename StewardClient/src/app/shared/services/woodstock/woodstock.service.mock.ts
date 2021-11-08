@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Provider } from '@angular/core';
+import { ValueProvider } from '@angular/core';
 import { WoodstockGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/groupId';
 import { WoodstockGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/players';
 import { WoodstockMasterInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/masterInventory';
@@ -181,6 +181,13 @@ export class MockWoodstockService {
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidProfileNotesApi.makeMany()))),
     );
+  public getAuctionDataByAuctionId$ = jasmine
+    .createSpy('getAuctionDataByAuctionId$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
+  public getPlayerAuctionLogByXuid$ = jasmine
+    .createSpy('getPlayerAuctionLogByXuid$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   constructor(private readonly generator$: () => unknown) {}
 }
@@ -188,7 +195,7 @@ export class MockWoodstockService {
 /** Creates an injectable mock for Woodstock Service. */
 export function createMockWoodstockService(
   returnValueGenerator: () => unknown = () => new Object(),
-): Provider {
+): ValueProvider {
   return {
     provide: WoodstockService,
     useValue: new MockWoodstockService(returnValueGenerator),

@@ -10,6 +10,7 @@ import { JSONBigInt } from '@helpers/json-bigint';
 import { toDateTime } from '@helpers/luxon';
 import { KustoCar } from '@models/kusto-car';
 import { PlayerAuctionAction } from '@models/player-auction-action';
+import { AuctionDataServiceContract } from '@views/auction-data/auction-data.component';
 import { chain, merge, sumBy, trim } from 'lodash';
 import { DateTime } from 'luxon';
 
@@ -37,6 +38,7 @@ export class AuctionActionLogTableComponent
   extends BaseComponent
   implements OnInit, OnChanges, AfterViewInit {
   @Input() public auctionLog: PlayerAuctionAction[] = [];
+  @Input() public service: AuctionDataServiceContract;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

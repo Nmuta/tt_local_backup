@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Injectable, Provider } from '@angular/core';
+import { Injectable, ValueProvider } from '@angular/core';
 import { OpusPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/opus/player/xuid/inventory';
 import { OpusPlayerXuidInventoryProfilesFakeApi } from '@interceptors/fake-api/apis/title/opus/player/xuid/inventoryProfiles';
 import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/opus/players/identities';
@@ -52,7 +52,7 @@ export class MockOpusService {
 }
 
 /** Creates an injectable mock for Opus Service. */
-export function createMockOpusService(): Provider {
+export function createMockOpusService(): ValueProvider {
   return {
     provide: OpusService,
     useValue: new MockOpusService(),

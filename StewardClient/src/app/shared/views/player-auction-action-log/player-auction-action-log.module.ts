@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SunrisePlayerAuctionActionLogComponent } from './sunrise/sunrise.component';
+import { SunrisePlayerAuctionActionLogComponent } from './sunrise/sunrise-player-auction-action-log.component';
 import { AuctionActionLogTableComponent } from './log-table/log-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,10 +21,17 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MatButtonModule } from '@angular/material/button';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { WoodstockPlayerAuctionActionLogComponent } from './woodstock/woodstock-player-auction-action-log.component';
+import { LogTableLoaderComponent } from './log-table-loader/log-table-loader.component';
 
 /** Components for rendering a player's auction actions. */
 @NgModule({
-  declarations: [SunrisePlayerAuctionActionLogComponent, AuctionActionLogTableComponent],
+  declarations: [
+    SunrisePlayerAuctionActionLogComponent,
+    AuctionActionLogTableComponent,
+    WoodstockPlayerAuctionActionLogComponent,
+    LogTableLoaderComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -48,6 +55,6 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     MatButtonModule,
     DirectivesModule,
   ],
-  exports: [SunrisePlayerAuctionActionLogComponent],
+  exports: [SunrisePlayerAuctionActionLogComponent, WoodstockPlayerAuctionActionLogComponent],
 })
 export class PlayerAuctionActionLogModule {}

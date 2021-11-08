@@ -51,6 +51,10 @@ import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GroupNotifications, PlayerNotifications } from '@models/notifications.model';
 import { ProfileNote } from '@models/profile-note.model';
 import { HideableUgc } from '@models/hideable-ugc.model';
+import { DateTime } from 'luxon';
+import { PlayerAuctionAction } from '@models/player-auction-action';
+import { GuidLikeString } from '@models/extended-types';
+import { AuctionData } from '@models/auction-data';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -392,6 +396,31 @@ export class WoodstockService {
     return this.apiService.getRequest$<PlayerAuction[]>(
       `${this.basePath}/player/xuid(${xuid})/auctions`,
       httpParams,
+    );
+  }
+
+  /** Gets a player's auction action log by xuid.  */
+  public getPlayerAuctionLogByXuid$(
+    xuid: BigNumber,
+    skipToken?: DateTime,
+  ): Observable<PlayerAuctionAction[]> {
+    if (!skipToken) {
+      return this.apiService.getRequest$<PlayerAuctionAction[]>(
+        `${this.basePath}/player/xuid(${xuid})/auctionLog`,
+      );
+    } else {
+      const skipTokenString = skipToken.toISO();
+      return this.apiService.getRequest2$<PlayerAuctionAction[]>(
+        `${this.basePath}/player/xuid(${xuid})/auctionLog`,
+        { params: { skipToken: skipTokenString } },
+      );
+    }
+  }
+
+  /** Gets an auction's data by ID. */
+  public getAuctionDataByAuctionId$(auctionId: GuidLikeString): Observable<AuctionData> {
+    return this.apiService.getRequest$<AuctionData>(
+      `${this.basePath}/auction/${auctionId}/details`,
     );
   }
 

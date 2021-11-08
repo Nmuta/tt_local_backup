@@ -2,21 +2,32 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { PlayerAuctionAction } from '@models/player-auction-action';
-import { SunriseService } from '@services/sunrise';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { AuctionDataServiceContract } from '@views/auction-data/auction-data.component';
+import BigNumber from 'bignumber.js';
 import { last } from 'lodash';
 import { DateTime } from 'luxon';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
-/** Displays auction action log for the given Sunrise player. */
+/** Contract required for a service usable with {@link LogTableLoaderComponent}. */
+export interface AuctionActionLogTableServiceContract extends AuctionDataServiceContract {
+  /** Gets a player's auction action log by xuid.  */
+  getPlayerAuctionLogByXuid$(
+    xuid: BigNumber,
+    skipToken?: DateTime,
+  ): Observable<PlayerAuctionAction[]>;
+}
+
+/** Retrieves auction log data using the given service, and renders the results. */
 @Component({
-  selector: 'sunrise-player-auction-action-log',
-  templateUrl: './sunrise.component.html',
-  styleUrls: ['./sunrise.component.scss'],
+  selector: 'log-table-loader',
+  templateUrl: './log-table-loader.component.html',
+  styleUrls: ['./log-table-loader.component.scss'],
 })
-export class SunrisePlayerAuctionActionLogComponent extends BaseComponent implements OnInit {
+export class LogTableLoaderComponent extends BaseComponent implements OnInit {
   @Input() public identity: IdentityResultAlpha;
+  @Input() public service: AuctionActionLogTableServiceContract;
 
   public getMonitor = new ActionMonitor('GET Auction Action Logs');
   public auctionLog: PlayerAuctionAction[] = [];
@@ -29,13 +40,13 @@ export class SunrisePlayerAuctionActionLogComponent extends BaseComponent implem
 
   private skipToken: DateTime = undefined;
 
-  constructor(private readonly sunrise: SunriseService) {
+  constructor() {
     super();
   }
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.sunrise
+    this.service
       .getPlayerAuctionLogByXuid$(this.identity.xuid)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(auctionLog => {
@@ -57,7 +68,7 @@ export class SunrisePlayerAuctionActionLogComponent extends BaseComponent implem
 
     this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
 
-    this.sunrise
+    this.service
       .getPlayerAuctionLogByXuid$(this.identity.xuid)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(auctionLog => {
@@ -84,7 +95,7 @@ export class SunrisePlayerAuctionActionLogComponent extends BaseComponent implem
       .pipe(
         this.getMonitor.monitorStart(),
         switchMap(() =>
-          this.sunrise.getPlayerAuctionLogByXuid$(this.identity.xuid, this.skipToken),
+          this.service.getPlayerAuctionLogByXuid$(this.identity.xuid, this.skipToken),
         ),
         this.getMonitor.monitorEnd(),
         takeUntil(this.onDestroy$),

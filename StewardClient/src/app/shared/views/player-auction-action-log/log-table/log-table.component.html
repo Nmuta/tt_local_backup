@@ -138,7 +138,10 @@
             </table>
           </mat-card>
           <mat-card>
-            <auction-data [auctionId]="action(element).auctionId"></auction-data>
+            <auction-data
+              [auctionId]="action(element).auctionId"
+              [service]="service"
+            ></auction-data>
           </mat-card>
         </div>
       </td>
