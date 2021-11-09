@@ -1,5 +1,4 @@
 import { Component, forwardRef } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
 import { KustoCar } from '@models/kusto-car';
 import { WoodstockService } from '@services/woodstock';
 import { Observable } from 'rxjs';
@@ -20,8 +19,6 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class WoodstockMakeModelAutocompleteComponent extends MakeModelAutocompleteBaseComponent {
-  public gameTitle = GameTitleCodeName.FH5;
-
   constructor(private readonly woodstockService: WoodstockService) {
     super();
   }

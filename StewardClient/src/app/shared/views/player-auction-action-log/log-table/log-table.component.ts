@@ -11,6 +11,7 @@ import { toDateTime } from '@helpers/luxon';
 import { KustoCar } from '@models/kusto-car';
 import { PlayerAuctionAction } from '@models/player-auction-action';
 import { AuctionDataServiceContract } from '@views/auction-data/auction-data.component';
+import { MakeModelAutocompleteServiceContract } from '@views/make-model-autocomplete/make-model-autocomplete/make-model-autocomplete.component';
 import { chain, merge, sumBy, trim } from 'lodash';
 import { DateTime } from 'luxon';
 
@@ -20,6 +21,11 @@ interface LogTableFilter {
   dateEnd?: DateTime;
   car?: KustoCar;
 }
+
+/** Service contract for log-table component.*/
+export interface LogTableServiceContract
+  extends AuctionDataServiceContract,
+    MakeModelAutocompleteServiceContract {}
 
 /** Renders a table of auction actions. */
 @Component({
@@ -38,7 +44,7 @@ export class AuctionActionLogTableComponent
   extends BaseComponent
   implements OnInit, OnChanges, AfterViewInit {
   @Input() public auctionLog: PlayerAuctionAction[] = [];
-  @Input() public service: AuctionDataServiceContract;
+  @Input() public service: LogTableServiceContract;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

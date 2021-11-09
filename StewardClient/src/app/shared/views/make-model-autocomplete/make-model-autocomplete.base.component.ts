@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
 import { KustoCar } from '@models/kusto-car';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep } from 'lodash';
@@ -33,8 +32,6 @@ export abstract class MakeModelAutocompleteBaseComponent
   public makeModelFilterGroups: MakeModelFilterGroup[];
 
   public getMonitor = new ActionMonitor('GET Detailed Kusto Car List');
-
-  public abstract gameTitle: GameTitleCodeName;
 
   /** Gets the input label. */
   public get label(): string {

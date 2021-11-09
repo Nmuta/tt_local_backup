@@ -3,15 +3,15 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { PlayerAuctionAction } from '@models/player-auction-action';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { AuctionDataServiceContract } from '@views/auction-data/auction-data.component';
 import BigNumber from 'bignumber.js';
 import { last } from 'lodash';
 import { DateTime } from 'luxon';
 import { Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
+import { LogTableServiceContract } from '../log-table/log-table.component';
 
 /** Contract required for a service usable with {@link LogTableLoaderComponent}. */
-export interface AuctionActionLogTableServiceContract extends AuctionDataServiceContract {
+export interface AuctionActionLogTableServiceContract extends LogTableServiceContract {
   /** Gets a player's auction action log by xuid.  */
   getPlayerAuctionLogByXuid$(
     xuid: BigNumber,

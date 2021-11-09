@@ -20,19 +20,19 @@
     </li>
     <li>
       <b>Created:</b
-      ><standard-relative-time [timeUtc]="auctionData.createdDateUtc"></standard-relative-time>
+      ><standard-absolute-time [timeUtc]="auctionData.createdDateUtc"></standard-absolute-time>
     </li>
     <li>
       <b>Closing:</b
-      ><standard-relative-time [timeUtc]="auctionData.closingDateUtc"></standard-relative-time>
+      ><standard-absolute-time [timeUtc]="auctionData.closingDateUtc"></standard-absolute-time>
     </li>
     <li>
       <b>Flagged:</b>
-      <standard-relative-time
+      <standard-absolute-time
         *ngIf="auctionData.timeFlaggedUtc"
         [timeUtc]="auctionData.timeFlaggedUtc"
       >
-      </standard-relative-time>
+      </standard-absolute-time>
     </li>
     <li>
       <b>Flags:</b><span>{{ auctionFlagsCsv }}</span>

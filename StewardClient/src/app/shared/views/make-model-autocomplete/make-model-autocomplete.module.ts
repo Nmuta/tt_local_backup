@@ -17,10 +17,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { SunriseMakeModelAutocompleteComponent } from './sunrise-make-model-autocomplete/sunrise-make-model-autocomplete.component';
 import { WoodstockMakeModelAutocompleteComponent } from './woodstock-make-model-autocomplete/woodstock-make-model-autocomplete.component';
+import { MakeModelAutocompleteComponent } from './make-model-autocomplete/make-model-autocomplete.component';
 
 /** Module for autocomplete input of car make & models. */
 @NgModule({
-  declarations: [SunriseMakeModelAutocompleteComponent, WoodstockMakeModelAutocompleteComponent],
+  declarations: [
+    SunriseMakeModelAutocompleteComponent,
+    WoodstockMakeModelAutocompleteComponent,
+    MakeModelAutocompleteComponent,
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -40,6 +45,10 @@ import { WoodstockMakeModelAutocompleteComponent } from './woodstock-make-model-
     MatSelectModule,
     DirectivesModule,
   ],
-  exports: [SunriseMakeModelAutocompleteComponent, WoodstockMakeModelAutocompleteComponent],
+  exports: [
+    SunriseMakeModelAutocompleteComponent,
+    WoodstockMakeModelAutocompleteComponent,
+    MakeModelAutocompleteComponent,
+  ],
 })
 export class MakeModelAutocompleteModule {}

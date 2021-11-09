@@ -43,12 +43,12 @@
         <tr>
           <th>Submitted</th>
           <td>
-            <standard-relative-time [timeUtc]="ugc(e).submissionUtc"></standard-relative-time>
+            <standard-absolute-time [timeUtc]="ugc(e).submissionUtc"></standard-absolute-time>
           </td>
         </tr>
         <tr>
           <th>Hidden</th>
-          <td><standard-relative-time [timeUtc]="ugc(e).hiddenUtc"></standard-relative-time></td>
+          <td><standard-absolute-time [timeUtc]="ugc(e).hiddenUtc"></standard-absolute-time></td>
         </tr>
       </table>
     </td>
