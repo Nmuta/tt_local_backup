@@ -14,7 +14,7 @@ import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
 
 /** The gifting page for the Navbar app. */

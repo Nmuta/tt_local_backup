@@ -8,7 +8,7 @@ import { GiftHistoryBaseComponent } from '../base/gift-history.base.component';
 import { GravityGiftHistoryState } from './state/gravity-gift-history.state';
 import { SetGravitySelectedPlayerIdentities } from './state/gravity-gift-history.state.actions';
 import { first } from 'lodash';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { GravityPlayerInventory, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 
 /** The gravity gift history page for the Navbar app. */

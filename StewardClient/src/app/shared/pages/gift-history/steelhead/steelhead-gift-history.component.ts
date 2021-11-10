@@ -12,7 +12,7 @@ import {
   SetSteelheadGiftHistorySelectedPlayerIdentities,
 } from './state/steelhead-gift-history.state.actions';
 import { first } from 'lodash';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import BigNumber from 'bignumber.js';
 

@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { LspGroup } from '@models/lsp-group';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseNotificationManagementComponent } from '../components/notification-management/sunrise/sunrise-notification-management.component';

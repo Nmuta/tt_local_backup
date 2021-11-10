@@ -15,9 +15,9 @@ import { GiftHistoryResultsModule } from '@shared/views/gift-history-results/gif
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.component';
 import { MatCardModule } from '@angular/material/card';
-import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
+import { LspGroupSelectionModule } from '@shared/views/lsp-group-selection/lsp-group-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
+import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';

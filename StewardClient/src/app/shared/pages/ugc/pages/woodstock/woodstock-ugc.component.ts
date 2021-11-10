@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { UGCType } from '@models/ugc-filters';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { keys } from 'lodash';
 
 /** Routed Component; Woodstock UGC Tool. */

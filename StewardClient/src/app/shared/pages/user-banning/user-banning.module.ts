@@ -21,7 +21,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BanChipIconModule } from './components/ban-chip-icon/ban-chip-icon.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
-import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
+import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
 import { BanResultsModule } from './components/ban-results/ban-results.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

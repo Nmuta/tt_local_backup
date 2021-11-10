@@ -22,9 +22,9 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
+import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
 import { NotificationsRoutingModule } from './notifications.routing';
-import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
+import { LspGroupSelectionModule } from '@shared/views/lsp-group-selection/lsp-group-selection.module';
 import { MatSelectModule } from '@angular/material/select';
 import { NotificationsComponent } from './notifications.component';
 import { LuxonModule } from 'luxon-angular';

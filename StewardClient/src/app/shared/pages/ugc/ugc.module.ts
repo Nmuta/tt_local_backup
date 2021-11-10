@@ -17,7 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatChipsModule } from '@angular/material/chips';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
-import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
+import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';

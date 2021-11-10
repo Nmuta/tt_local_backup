@@ -4,7 +4,7 @@ import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-
 import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { UserModel } from '@models/user.model';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';

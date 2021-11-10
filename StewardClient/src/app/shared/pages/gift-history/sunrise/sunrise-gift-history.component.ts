@@ -12,7 +12,7 @@ import {
   SetSunriseGiftHistorySelectedPlayerIdentities,
 } from './state/sunrise-gift-history.state.actions';
 import { first } from 'lodash';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { SunriseMasterInventory } from '@models/sunrise';
 import BigNumber from 'bignumber.js';
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { GravityPlayerInventory, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultBeta, IdentityResultBetaBatch } from '@models/identity-query.model';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

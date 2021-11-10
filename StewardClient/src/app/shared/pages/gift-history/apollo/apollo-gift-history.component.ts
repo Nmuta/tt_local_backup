@@ -12,7 +12,7 @@ import {
   SetApolloGiftHistorySelectedPlayerIdentities,
 } from './state/apollo-gift-history.state.actions';
 import { first } from 'lodash';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { ApolloMasterInventory } from '@models/apollo';
 import BigNumber from 'bignumber.js';
 

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SteelheadBanArea, SteelheadBanRequest, SteelheadBanSummary } from '@models/steelhead';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { BackgroundJob } from '@models/background-job';
 import { SteelheadService } from '@services/steelhead';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
