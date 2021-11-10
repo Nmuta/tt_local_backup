@@ -51,7 +51,9 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
       // show the usable tools above the unusable tools
       const accessibleTools = environment.tools.filter(t => this.hasAccess[t.tool]);
-      const inaccessibleTools = environment.tools.filter(t => !this.hasAccess[t.tool]);
+      const inaccessibleTools = environment.tools.filter(
+        t => !this.hasAccess[t.tool] && !t.hideFromUnauthorized,
+      );
       this.possibleNavbarItems = [...accessibleTools, ...inaccessibleTools];
     });
 

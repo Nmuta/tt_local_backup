@@ -89,6 +89,9 @@ export interface HomeTileInfoBase {
 
   /** The list of roles allowed access to this tool. */
   readonly accessList: UserRole[];
+
+  /** Hides the tool on home page from unauthroized users. */
+  readonly hideFromUnauthorized?: boolean;
 }
 
 /** Model for Home Tiles that send the user to internal tools. */
@@ -262,6 +265,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/shared/pages/obligation/obligation.module').then(
         m => m.DataPipelineObligationModule,
       ),
+    hideFromUnauthorized: true,
   },
   {
     icon: AppIcon.DeveloperTool,
@@ -308,6 +312,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/shared/pages/kusto-management/kusto-management.module').then(
         m => m.KustoManagementModule,
       ),
+    hideFromUnauthorized: true,
   },
 ];
 
