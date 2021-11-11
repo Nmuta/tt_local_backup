@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Release management</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!getToolsAvailabilityMonitor.isActive; else waitingTemplate">
+      <ng-container *ngIf="!getToolsAvailabilityMonitor.status.error; else errorTemplate">
+        <!-- Permanently disabled until Steward API can update tools availability blob. -->
+        <p>Permanently disabled until Steward API can update tools availability blob.</p>
+        <mat-slide-toggle
+          [checked]="toolsAvailability.allTools"
+          [disabled]="true"
+          (change)="toggleAllToolsAvailability($event)"
+        >
+          All tools available
+        </mat-slide-toggle>
+        <mat-icon
+          matTooltip="Disabling will display errors to users when sending requests to Steward API"
+          >info</mat-icon
+        >
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #waitingTemplate>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <json-dump [input]="getToolsAvailabilityMonitor.status.error">Failure occured.</json-dump>
+</ng-template>

@@ -1,0 +1,6 @@
+@import '/src/styles/mixins';
+
+mat-tab-group {
+  margin: $gap-medium;
+  flex-grow: 1;
+}

@@ -27,8 +27,8 @@ const routes: Routes = [
       {
         path: SharedNavbarTools.KustoManagementPage.path,
         loadChildren: () =>
-          import('../../shared/pages/kusto-management/kusto-management.module').then(
-            m => m.KustoManagementModule,
+          import('../../shared/pages/steward-management/steward-management.module').then(
+            m => m.StewardManagementModule,
           ),
       },
       ...sidebarRoutes,

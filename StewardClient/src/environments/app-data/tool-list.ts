@@ -15,8 +15,8 @@ export enum NavbarTool {
   StewardUserHistory = 'steward-user-history',
   Salus = 'salus',
   BulkBanHistory = 'bulk-ban-history',
-  KustoManagement = 'kusto-management',
   Notifications = 'notifications',
+  StewardManagement = 'steward-management',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -62,8 +62,8 @@ export enum AppIcon {
   AdminInfo = 'policy',
   Admin = 'shield',
   BulkBanHistory = 'manage_search',
-  KustoManagement = 'cloud_sync',
   Messaging = 'mail',
+  StewardManagement = 'cloud_sync',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -299,18 +299,18 @@ export const unprocessedToolList: HomeTileInfo[] = [
       ),
   },
   {
-    icon: AppIcon.KustoManagement,
-    tool: NavbarTool.KustoManagement,
+    icon: AppIcon.StewardManagement,
+    tool: NavbarTool.StewardManagement,
     accessList: [UserRole.LiveOpsAdmin],
-    title: 'Kusto Management',
-    subtitle: 'A tool to manage Kusto queries and functions',
+    title: 'Steward Management',
+    subtitle: 'A tool to manage Steward',
     imageUrl: undefined,
     imageAlt: undefined,
-    tooltipDescription: 'Add, Edit, and Delete Kusto queries and functions for the Kusto tool',
-    shortDescription: ['Add, Edit, and Delete Kusto queries and functions for the Kusto tool'],
+    tooltipDescription: 'Manage high-level Kusto and Release features within Steward',
+    shortDescription: ['Manage high-level Kusto and Release features within Steward'],
     loadChildren: () =>
-      import('../../app/shared/pages/kusto-management/kusto-management.module').then(
-        m => m.KustoManagementModule,
+      import('../../app/shared/pages/steward-management/steward-management.module').then(
+        m => m.StewardManagementModule,
       ),
     hideFromUnauthorized: true,
   },
