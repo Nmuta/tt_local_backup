@@ -71,6 +71,8 @@ import {
 } from '@azure/msal-browser';
 import { EndpointSelectionInterceptor } from '@interceptors/endpoint-selection.interceptor';
 import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interceptor';
+import { ToolsAvailabilityInterceptor } from '@interceptors/tools-availability.interceptor';
+import { ToolsAvailabilityModalModule } from '@views/tools-availability-modal/tools-availability-modal.module';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -136,7 +138,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     HttpClientModule,
     FourOhFourModule,
     MatCardModule,
-    MatSnackBarModule, //App component uses this to display init errors.
+    MatSnackBarModule, // App component uses this to display init errors.
+    ToolsAvailabilityModalModule, // Used within tools availability interceptor
     MatLuxonDateModule,
     LuxonModule,
     MatNativeDateModule,
@@ -211,6 +214,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     Clipboard,
     ...fakeApiOrNothing(),
     ...USER_GUARD_PROVIDERS,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ToolsAvailabilityInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: EndpointSelectionInterceptor,

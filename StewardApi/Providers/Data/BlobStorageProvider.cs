@@ -42,7 +42,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             var serviceClient = new BlobServiceClient(blobConnectionString);
             var containerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);
             this.blobClient = containerClient.GetBlobClient(ToolsAvailabilityBlobName);
-            this.blobClient.SetHttpHeaders(new BlobHttpHeaders {ContentType = "application/json"});
         }
 
         /// <inheritdoc />

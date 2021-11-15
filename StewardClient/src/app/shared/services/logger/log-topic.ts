@@ -5,4 +5,5 @@ export enum LogTopic {
   ZAF = 'ZAF',
   FakeApi = 'FakeApi',
   RouteReuse = 'RouteReuse',
+  ToolsAvailabilityInterceptor = 'ToolsAvailabilityInterceptor',
 }
