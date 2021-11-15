@@ -52,6 +52,8 @@ export class KustoFunctionComponent implements ControlValueAccessor, Validator {
     numberOfBuckets: null,
   };
 
+  private _isTimeAgnostic: boolean;
+
   public formControls = {
     name: new FormControl(KustoFunctionComponent.defaults.name, [
       Validators.required,
@@ -70,6 +72,31 @@ export class KustoFunctionComponent implements ControlValueAccessor, Validator {
     useSplitting: this.formControls.useSplitting,
     numberOfBuckets: this.formControls.numberOfBuckets,
   });
+
+  /** Gets a value indicating whether this is in "time agnostic" mode. */
+  public get isTimeAgnostic(): boolean {
+    return this._isTimeAgnostic;
+  }
+
+  /** Sets a value indicating whether this should be in "time agnostic" mode. */
+  public set isTimeAgnostic(value: boolean) {
+    this._isTimeAgnostic = value;
+    if (this._isTimeAgnostic) {
+      this.formControls.makeFunctionCall.setValue(false);
+      this.formControls.useEndDate.setValue(false);
+      this.formControls.useSplitting.setValue(false);
+      this.formControls.numberOfBuckets.setValue(undefined);
+      this.formControls.makeFunctionCall.disable();
+      this.formControls.useEndDate.disable();
+      this.formControls.useSplitting.disable();
+      this.formControls.numberOfBuckets.disable();
+    } else {
+      this.formControls.makeFunctionCall.enable();
+      this.formControls.useEndDate.enable();
+      this.formControls.useSplitting.enable();
+      this.formControls.numberOfBuckets.enable();
+    }
+  }
 
   constructor() {
     this.formGroup.valueChanges.subscribe(data => this.changeFn(data));

@@ -103,11 +103,17 @@
           When this dataActivity is created, do not add any slices.
         </mat-hint>
       </mat-form-field>
+
+      <mat-checkbox
+        [formControl]="formControls.isTimeAgnostic"
+        matTooltip="When set, this activity: Does not use Time Parameters; Targets a single partition"
+        >Time Agnostic</mat-checkbox
+      >
     </section>
   </section>
 
   <section>
-    <kusto-function [formControl]="formControls.query"></kusto-function>
+    <kusto-function #kustoFunction [formControl]="formControls.query"></kusto-function>
   </section>
 
   <mat-divider></mat-divider>

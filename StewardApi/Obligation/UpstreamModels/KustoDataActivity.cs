@@ -16,13 +16,19 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         ///     Not sure what this is for but it's on the model that this code is c/p from.
         /// </remarks>
         [JsonProperty("attempt_mid_partition_sync_swap")]
-        private readonly bool attemptMidPartitionSyncSwap;
+        private bool attemptMidPartitionSyncSwap;
 
         /// <remarks>
         ///     Not sure what this is for but it's on the model that this code is c/p from.
         /// </remarks>
         [JsonProperty("restatement_span")]
-        private readonly TimeSpan restatementSpan;
+        private TimeSpan restatementSpan;
+
+        [JsonProperty("is_time_agnostic")]
+        private bool isTimeAgnostic;
+
+        [JsonIgnore]
+        private TimeSpan maxExecutionSpan;
 #pragma warning restore
 
         /// <summary>
@@ -32,6 +38,30 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         {
             this.restatementSpan = TimeSpan.FromDays(20);
             this.attemptMidPartitionSyncSwap = true;
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this data activity...
+        ///       1. Does not use Time Parameters
+        ///       2. Targets a single partition.
+        /// </summary>
+        public bool IsTimeAgnostic
+        {
+            get
+            {
+                return this.isTimeAgnostic;
+            }
+
+            set
+            {
+                this.isTimeAgnostic = value;
+                if (this.isTimeAgnostic)
+                {
+                    this.restatementSpan = TimeSpan.Zero;
+                    this.attemptMidPartitionSyncSwap = false;
+                    this.MaxExecutionSpan = (this.TimeRange.End - this.TimeRange.Start).Add(TimeSpan.FromMinutes(5));
+                }
+            }
         }
 
         /// <summary>
@@ -72,7 +102,25 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         ///     The longest timespan the system should execute of this activity.
         /// </remarks>
         [JsonProperty("max_execution_span")]
-        public TimeSpan MaxExecutionSpan { get; set; }
+        public TimeSpan MaxExecutionSpan
+        {
+            get
+            {
+                if (this.IsTimeAgnostic)
+                {
+                    var minimumTimeSpan = (this.TimeRange.End - this.TimeRange.Start).Add(TimeSpan.FromMinutes(5));
+                    var intervals = Math.Ceiling(minimumTimeSpan / this.ExecutionInterval);
+                    return intervals * this.ExecutionInterval;
+                }
+
+                return this.maxExecutionSpan;
+            }
+
+            set
+            {
+                this.maxExecutionSpan = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the execution interval.

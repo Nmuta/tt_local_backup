@@ -84,6 +84,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Pipelines
         public int ParallelismLimit { get; set; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether the data-activity is time agnostic.
+        /// </summary>
+        public bool IsTimeAgnostic { get; set; }
+
+        /// <summary>
         ///     Gets or sets the upstream creation behavior. Only valid on new data activities.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]

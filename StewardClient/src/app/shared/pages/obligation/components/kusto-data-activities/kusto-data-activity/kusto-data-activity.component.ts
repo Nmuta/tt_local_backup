@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -34,6 +34,7 @@ export interface KustoDataActivityOptions {
   executionIntervalInMinutes: number;
   executionDelayInMinutes: number;
   parallelismLimit: number;
+  isTimeAgnostic: boolean;
   dependencyNames: string[];
   creationBehavior: DataActivityCreationBehavior;
 
@@ -59,8 +60,11 @@ export interface KustoDataActivityOptions {
     },
   ],
 })
-export class KustoDataActivityComponent implements ControlValueAccessor, Validator {
+export class KustoDataActivityComponent implements AfterViewInit, ControlValueAccessor, Validator {
   private static readonly UTC_NOW = DateTime.utc();
+
+  @ViewChild('kustoFunction') public kustoFunction: KustoFunctionComponent;
+
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public static defaults: KustoDataActivityOptions = {
     name: '',
@@ -74,6 +78,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     maximumExecutionTimeInMinutes: 1440,
     executionIntervalInMinutes: 1440,
     executionDelayInMinutes: 2880,
+    isTimeAgnostic: false,
     dependencyNames: [],
     parallelismLimit: 2,
     creationBehavior: DataActivityCreationBehavior.Full,
@@ -113,6 +118,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
       Validators.min(1),
       Validators.max(25),
     ]),
+    isTimeAgnostic: new FormControl(KustoDataActivityComponent.defaults.isTimeAgnostic),
     dependencyNames: new FormControl(KustoDataActivityComponent.defaults.dependencyNames),
     creationBehavior: new FormControl(KustoDataActivityComponent.defaults.creationBehavior),
     fromApi: new FormControl(KustoDataActivityComponent.defaults.fromApi),
@@ -128,15 +134,29 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     executionIntervalInMinutes: this.formControls.executionIntervalInMinutes,
     executionDelayInMinutes: this.formControls.executionDelayInMinutes,
     parallelismLimit: this.formControls.parallelismLimit,
+    isTimeAgnostic: this.formControls.isTimeAgnostic,
     dependencyNames: this.formControls.dependencyNames,
     creationBehavior: this.formControls.creationBehavior,
     fromApi: this.formControls.fromApi,
   });
 
-  constructor(private readonly activePipeline: ActivePipelineService) {
+  constructor(private readonly activePipeline: ActivePipelineService) {}
+
+  /** Angular lifecycle hook. */
+  public ngAfterViewInit(): void {
     this.formGroup.valueChanges
       .pipe(map(_ => this.formGroup.getRawValue())) // we need to map this to the raw value to include the disabled form controls
       .subscribe(data => this.changeFn(data));
+
+    this.formControls.isTimeAgnostic.valueChanges.subscribe(isTimeAgnostic => {
+      if (isTimeAgnostic) {
+        this.formControls.maximumExecutionTimeInMinutes.disable();
+      } else {
+        this.formControls.maximumExecutionTimeInMinutes.enable();
+      }
+
+      this.kustoFunction.isTimeAgnostic = isTimeAgnostic;
+    });
   }
 
   /** Form control hook. */
@@ -148,10 +168,12 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
         this.formControls.dateRange.disable();
         this.formControls.name.disable();
         this.formControls.creationBehavior.disable();
+        this.formControls.isTimeAgnostic.disable();
       } else {
         this.formControls.dateRange.enable();
         this.formControls.name.enable();
         this.formControls.creationBehavior.enable();
+        this.formControls.isTimeAgnostic.enable();
       }
     }
   }
@@ -186,6 +208,6 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
   }
 
   private changeFn = (_data: KustoDataActivityOptions) => {
-    /* Empty */
+    // empty
   };
 }

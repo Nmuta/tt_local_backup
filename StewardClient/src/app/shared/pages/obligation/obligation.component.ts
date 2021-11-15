@@ -218,6 +218,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
               ? new BigNumber(activity.query.numberOfBuckets)
               : null,
           },
+          isTimeAgnostic: activity.isTimeAgnostic,
           dataActivityDependencyNames: activity.dependencyNames,
           creationBehavior: activity.creationBehavior,
         };
@@ -292,6 +293,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           executionIntervalInMinutes: toDuration(activity.executionInterval).as('minutes'),
           maximumExecutionTimeInMinutes: toDuration(activity.maxExecutionSpan).as('minutes'),
           parallelismLimit: activity.parallelismLimit.toNumber(),
+          isTimeAgnostic: activity.isTimeAgnostic,
           query: {
             name: activity.kustoFunction.name,
             makeFunctionCall: activity.kustoFunction.makeFunctionCall,
