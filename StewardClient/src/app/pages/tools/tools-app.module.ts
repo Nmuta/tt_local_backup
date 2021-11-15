@@ -16,7 +16,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AllAppsDropdownModule } from '@views/all-apps-dropdown/all-apps-dropdown.module';
 import { DataPrivacyNoticeModule } from '@views/data-privacy-notice/data-privacy-notice.module';
 import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
 import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
@@ -30,7 +29,6 @@ import { DirectivesModule } from '@shared/directives/directives.module';
   imports: [
     ToolsAppRouterModule,
     CommonModule,
-    AllAppsDropdownModule,
     CommonModule,
     DataPrivacyNoticeModule,
     FontAwesomeModule,
@@ -40,7 +38,6 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     MatButtonModule,
     MatCardModule,
     MatBadgeModule,
-    AllAppsDropdownModule,
     SidebarIconsModule,
     MatIconModule,
     MatSidenavModule,

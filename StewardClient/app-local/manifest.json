@@ -9,8 +9,8 @@
   "private": true,
   "location": {
     "support": {
-      "nav_bar": "http://localhost:4200/support/navbar-app/tools",
-      "ticket_sidebar": "http://localhost:4200/support/ticket-app/title",
+      "nav_bar": "http://localhost:4200/app/tools/home",
+      "ticket_sidebar": "http://localhost:4200/ticket-app/title",
       "background": "assets/background.html"
     }
   },

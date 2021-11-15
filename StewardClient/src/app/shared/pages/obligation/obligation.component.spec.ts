@@ -14,7 +14,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AllAppsDropdownModule } from '@views/all-apps-dropdown/all-apps-dropdown.module';
 import { DataPrivacyNoticeModule } from '@views/data-privacy-notice/data-privacy-notice.module';
 import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
 import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
@@ -62,7 +61,6 @@ describe('DataPipelineObligationComponent', () => {
         FontAwesomeModule,
         FourOhFourModule,
         MatCardModule,
-        AllAppsDropdownModule,
         SidebarIconsModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],

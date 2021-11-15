@@ -27,10 +27,7 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
   public userProfile: UserModel;
 
   public areAnyAppsAccessible: boolean = false;
-  public areLiveOpsAppsAccessible: boolean = false;
-  public areSupportAppsAccessible: boolean = false;
-  public areDataAppsAccessible: boolean = false;
-  public areCommunityAppsAccessible: boolean = false;
+  public areZendeskAppsAccessible: boolean = false;
 
   public availableIcon = faCheckCircle;
   public unavailableIcon = faTimesCircle;
@@ -60,26 +57,21 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
       switch (role) {
         case UserRole.LiveOpsAdmin:
           this.areAnyAppsAccessible = true;
-          this.areLiveOpsAppsAccessible = true;
-          this.areSupportAppsAccessible = true;
-          this.areDataAppsAccessible = true;
-          this.areCommunityAppsAccessible = true;
+          this.areZendeskAppsAccessible = true;
           break;
         case UserRole.SupportAgentAdmin:
         case UserRole.SupportAgent:
         case UserRole.SupportAgentNew:
           this.areAnyAppsAccessible = true;
-          this.areSupportAppsAccessible = true;
+          this.areZendeskAppsAccessible = true;
           break;
         case UserRole.DataPipelineAdmin:
         case UserRole.DataPipelineContributor:
         case UserRole.DataPipelineRead:
           this.areAnyAppsAccessible = true;
-          this.areDataAppsAccessible = true;
           break;
         case UserRole.CommunityManager:
           this.areAnyAppsAccessible = true;
-          this.areCommunityAppsAccessible = true;
           break;
       }
     }

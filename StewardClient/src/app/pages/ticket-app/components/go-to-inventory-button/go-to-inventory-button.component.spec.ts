@@ -46,7 +46,7 @@ describe('GoToInventoryButtonComponent', () => {
 
       const expectedUrl = `${
         environment.stewardUiUrl
-      }/support/navbar-app/tools/user-details/${gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${xuid}`;
+      }/app/tools/user-details/${gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${xuid}`;
 
       expect(window.open).toHaveBeenCalledWith(expectedUrl, '_blank');
     });

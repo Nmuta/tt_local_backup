@@ -17,7 +17,7 @@ export class GoToInventoryButtonComponent {
   public goToInventory(): void {
     if (!!this.gameTitle && !!this.xuid) {
       const domain = environment.stewardUiUrl;
-      const userDetailsLink = `${domain}/support/navbar-app/tools/user-details/${this.gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${
+      const userDetailsLink = `${domain}/app/tools/user-details/${this.gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${
         this.xuid
       }`;
       window.open(userDetailsLink, '_blank');

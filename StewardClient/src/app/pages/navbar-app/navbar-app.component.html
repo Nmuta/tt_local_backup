@@ -1,9 +1,0 @@
-<navbar></navbar>
-<mat-drawer-container autosize>
-  <mat-drawer mode="over" position="end" [opened]="drawerOpened" (closed)="clearSidebar()">
-    <router-outlet name="sidebar"></router-outlet>
-  </mat-drawer>
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
-</mat-drawer-container>

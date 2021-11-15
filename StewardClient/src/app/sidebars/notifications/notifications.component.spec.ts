@@ -14,7 +14,7 @@ import { NotificationsService } from '@shared/hubs/notifications.service';
 import { Subject } from 'rxjs';
 
 describe('NotificationsComponent', () => {
-  const urlPath = '/support/navbar-app/tools/foo/bar';
+  const urlPath = '/app/tools/foo/bar';
 
   let component: NotificationsComponent;
   let fixture: ComponentFixture<NotificationsComponent>;
@@ -61,9 +61,7 @@ describe('NotificationsComponent', () => {
     it('should set backgroundJobRouterLink', () => {
       component.ngOnInit();
 
-      expect(component.backgroundJobRouterLink).toEqual([
-        `/support/navbar-app/tools/steward-user-history`,
-      ]);
+      expect(component.backgroundJobRouterLink).toEqual([`/app/tools/steward-user-history`]);
     });
   });
 });

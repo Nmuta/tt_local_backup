@@ -19,7 +19,6 @@
   <p>Hi, {{ userProfile.name || userProfile.emailAddress }}.</p>
   <p>Your role is: {{ userProfile.role }}.</p>
   <div class="app-list">
-    <h2>Which Toolset?</h2>
     <a
       [disabled]="!areAnyAppsAccessible"
       mat-raised-button
@@ -33,71 +32,17 @@
         [matTooltip]="areAnyAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
       ></mat-icon>
     </a>
-
     <a
-      [disabled]="!areLiveOpsAppsAccessible"
+      [disabled]="!areZendeskAppsAccessible"
       mat-raised-button
       color="accent"
-      routerLink="/live-ops/live-ops-app/tools/home"
+      routerLink="/ticket-app/title"
     >
-      Live Ops Tools
+      Zendesk Ticket Tools
 
       <mat-icon
-        [svgIcon]="areLiveOpsAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
-        [matTooltip]="areLiveOpsAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></mat-icon>
-    </a>
-    <a
-      [disabled]="!areSupportAppsAccessible"
-      mat-raised-button
-      color="accent"
-      routerLink="/support/navbar-app/tools/home"
-    >
-      Support Tools
-
-      <mat-icon
-        [svgIcon]="areSupportAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
-        [matTooltip]="areSupportAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></mat-icon>
-    </a>
-    <a
-      [disabled]="!areSupportAppsAccessible"
-      mat-raised-button
-      color="accent"
-      routerLink="/support/ticket-app/title"
-    >
-      Support Ticket Tools
-
-      <mat-icon
-        [svgIcon]="areSupportAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
-        [matTooltip]="areSupportAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></mat-icon>
-    </a>
-    <a
-      [disabled]="!areCommunityAppsAccessible"
-      mat-raised-button
-      color="accent"
-      routerLink="/community/community-app/tools/home"
-    >
-      Community Manager Tools
-
-      <mat-icon
-        [svgIcon]="areCommunityAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
-        [matTooltip]="areCommunityAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></mat-icon>
-    </a>
-
-    <a
-      [disabled]="!areDataAppsAccessible"
-      mat-raised-button
-      color="accent"
-      routerLink="/data-pipeline/data-pipeline-app/tools/home"
-    >
-      Data Pipeline Tools
-
-      <mat-icon
-        [svgIcon]="areDataAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
-        [matTooltip]="areDataAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
+        [svgIcon]="areZendeskAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
+        [matTooltip]="areZendeskAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
       ></mat-icon>
     </a>
   </div>

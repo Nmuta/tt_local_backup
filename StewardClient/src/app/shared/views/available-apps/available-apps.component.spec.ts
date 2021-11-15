@@ -76,10 +76,8 @@ describe('AvailableAppsComponent', () => {
       it('should set correct app availability', () => {
         component.ngOnInit();
 
-        expect(component.areLiveOpsAppsAccessible).toBeTruthy();
-        expect(component.areSupportAppsAccessible).toBeTruthy();
-        expect(component.areDataAppsAccessible).toBeTruthy();
-        expect(component.areCommunityAppsAccessible).toBeTruthy();
+        expect(component.areAnyAppsAccessible).toBeTruthy();
+        expect(component.areZendeskAppsAccessible).toBeTruthy();
       });
     });
 
@@ -97,10 +95,8 @@ describe('AvailableAppsComponent', () => {
       it('should set correct app availability', () => {
         component.ngOnInit();
 
-        expect(component.areLiveOpsAppsAccessible).toBeFalsy();
-        expect(component.areSupportAppsAccessible).toBeTruthy();
-        expect(component.areDataAppsAccessible).toBeFalsy();
-        expect(component.areCommunityAppsAccessible).toBeFalsy();
+        expect(component.areAnyAppsAccessible).toBeTruthy();
+        expect(component.areZendeskAppsAccessible).toBeTruthy();
       });
     });
     describe('When user role is DataPipeline', () => {
@@ -117,10 +113,8 @@ describe('AvailableAppsComponent', () => {
       it('should set correct app availability', () => {
         component.ngOnInit();
 
-        expect(component.areLiveOpsAppsAccessible).toBeFalsy();
-        expect(component.areSupportAppsAccessible).toBeFalsy();
-        expect(component.areDataAppsAccessible).toBeTruthy();
-        expect(component.areCommunityAppsAccessible).toBeFalsy();
+        expect(component.areAnyAppsAccessible).toBeTruthy();
+        expect(component.areZendeskAppsAccessible).toBeFalsy();
       });
     });
     describe('When user role is CommunityManager', () => {
@@ -137,10 +131,8 @@ describe('AvailableAppsComponent', () => {
       it('should set correct app availability', () => {
         component.ngOnInit();
 
-        expect(component.areLiveOpsAppsAccessible).toBeFalsy();
-        expect(component.areSupportAppsAccessible).toBeFalsy();
-        expect(component.areDataAppsAccessible).toBeFalsy();
-        expect(component.areCommunityAppsAccessible).toBeTruthy();
+        expect(component.areAnyAppsAccessible).toBeTruthy();
+        expect(component.areZendeskAppsAccessible).toBeFalsy();
       });
     });
   });
