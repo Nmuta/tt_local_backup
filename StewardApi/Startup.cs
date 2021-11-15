@@ -300,6 +300,8 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IOpusPlayerDetailsProvider, OpusPlayerDetailsProvider>();
             services.AddSingleton<IOpusPlayerInventoryProvider, OpusPlayerInventoryProvider>();
 
+            services.AddSingleton<IBlobStorageProvider, BlobStorageProvider>();
+
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 
             var kustoLoggerConfiguration = new KustoConfiguration();

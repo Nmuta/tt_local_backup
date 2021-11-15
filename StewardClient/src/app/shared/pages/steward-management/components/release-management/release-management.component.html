@@ -1,27 +1,34 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Release management</mat-card-title>
+    <mat-card-subtitle>Set tool availability pre & post release</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngIf="!getToolsAvailabilityMonitor.isActive; else waitingTemplate">
-      <ng-container *ngIf="!getToolsAvailabilityMonitor.status.error; else errorTemplate">
-        <!-- Permanently disabled until Steward API can update tools availability blob. -->
-        <p>Permanently disabled until Steward API can update tools availability blob.</p>
-        <mat-slide-toggle
-          [checked]="toolsAvailability.allTools"
-          [disabled]="true"
-          (change)="toggleAllToolsAvailability($event)"
-        >
-          All tools available
-        </mat-slide-toggle>
-        <mat-icon
-          matTooltip="Disabling will display errors to users when sending requests to Steward API"
-          >info</mat-icon
-        >
+    <ng-container *ngIf="featureSupported; else unsupportedFeatureTemplate">
+      <ng-container *ngIf="!getToolsAvailabilityMonitor.isActive; else waitingTemplate">
+        <ng-container *ngIf="!getToolsAvailabilityMonitor.status.error; else errorTemplate">
+          <mat-slide-toggle
+            [checked]="toolsAvailability.allTools"
+            [disabled]="setToolsAvailabilityMonitor.isActive"
+            (change)="toggleAllToolsAvailability($event)"
+          >
+            All tools available
+          </mat-slide-toggle>
+          <mat-icon
+            matTooltip="Disabling will display errors to users when sending requests to Steward API"
+            >info</mat-icon
+          >
+          <inline-spinner [monitor]="setToolsAvailabilityMonitor"></inline-spinner>
+        </ng-container>
       </ng-container>
     </ng-container>
   </mat-card-content>
 </mat-card>
+
+<ng-template #unsupportedFeatureTemplate>
+  <h3>Feature is unsupported in this environment.</h3>
+  <img src="https://placedog.net/640/480?random" />
+</ng-template>
 
 <ng-template #waitingTemplate>
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>

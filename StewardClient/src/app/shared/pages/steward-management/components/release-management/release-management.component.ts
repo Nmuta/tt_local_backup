@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BaseComponent } from '@components/base-component/base.component';
+import { environment } from '@environments/environment';
 import { ToolsAvailability } from '@models/blob-storage';
 import { BlobStorageService } from '@services/blob-storage';
+import { SettingsService } from '@services/settings';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, Subject } from 'rxjs';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 
 /** Displays the release management tool. */
 @Component({
@@ -18,13 +20,24 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit 
 
   public toolsAvailability: ToolsAvailability;
   public getToolsAvailabilityMonitor = new ActionMonitor('GET tools availability');
+  public setToolsAvailabilityMonitor = new ActionMonitor('POST tools availability');
+  public featureSupported: boolean = false;
 
-  constructor(private readonly blobStorageService: BlobStorageService) {
+  constructor(
+    private readonly blobStorageService: BlobStorageService,
+    private readonly settingsService: SettingsService,
+  ) {
     super();
   }
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
+    this.featureSupported = environment.production;
+
+    if (!this.featureSupported) {
+      return;
+    }
+
     this.getToolsAvailability$
       .pipe(
         switchMap(() => {
@@ -45,7 +58,27 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit 
   }
 
   /** Change event when all tools availability changes */
-  public toggleAllToolsAvailability(_event: MatSlideToggleChange): void {
-    // TODO: Ask steward to update tools availability blob
+  public toggleAllToolsAvailability(event: MatSlideToggleChange): void {
+    if (!this.featureSupported) {
+      return;
+    }
+
+    this.setToolsAvailabilityMonitor = new ActionMonitor(
+      this.setToolsAvailabilityMonitor.dispose().label,
+    );
+
+    this.settingsService
+      .setToolAvailability$({ allTools: event.checked })
+      .pipe(
+        this.setToolsAvailabilityMonitor.monitorSingleFire(),
+        catchError(_error => {
+          this.getToolsAvailability$.next();
+          return EMPTY;
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(updatedToolsAvailability => {
+        this.toolsAvailability = updatedToolsAvailability;
+      });
   }
 }

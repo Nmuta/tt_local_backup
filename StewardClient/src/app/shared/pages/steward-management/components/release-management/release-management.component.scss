@@ -5,11 +5,10 @@
 }
 
 mat-card {
-  margin: $gap-medium;
   flex-grow: 1;
 
   mat-card-content {
-    margin-top: $gap-medium;
+    padding: $gap-medium 0;
   }
 }
 
@@ -17,4 +16,8 @@ mat-icon {
   margin-left: $gap-small;
   position: relative;
   top: $gap-micro;
+}
+
+error-spinner {
+  margin-left: $gap-small;
 }

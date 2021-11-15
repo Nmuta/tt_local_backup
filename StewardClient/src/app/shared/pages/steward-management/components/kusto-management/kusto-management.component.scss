@@ -1,39 +1,43 @@
-:host ::ng-deep button:not(.icon-button) {
-  max-width: 12em;
-  width: 100%;
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
 }
 
-section {
-  padding: 0 2em;
-  padding-bottom: 4em;
+mat-card {
+  flex-grow: 1;
 
-  mat-card {
-    margin-top: 2em;
+  mat-card-content {
+    margin-top: $gap-medium;
   }
 
-  mat-form-field {
-    display: block;
-    max-width: 20em;
-    width: 100%;
+  section {
+    margin-top: $gap-large;
   }
+}
 
-  mat-form-field.query-string {
+mat-form-field {
+  display: block;
+  max-width: 20em;
+  width: 100%;
+
+  &.query-string {
     max-width: unset;
     width: auto;
   }
+}
 
-  textarea {
-    width: 100%;
-    min-height: 4em;
-    max-height: 30vh;
-  }
+textarea {
+  width: 100%;
+  min-height: 4em;
+  max-height: 30vh;
+}
 
-  button.clear-input {
-    margin-left: 2em;
-  }
+button.clear-input {
+  margin-left: 2em;
+}
 
-  button.delete {
-    display: block;
-    margin-top: 2em;
-  }
+button.delete {
+  display: block;
+  margin-top: 2em;
 }

@@ -21,6 +21,8 @@ import { MatTableModule } from '@angular/material/table';
 import { StewardManagementComponent } from './steward-management.component';
 import { ReleaseManagementComponent } from './components/release-management/release-management.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
@@ -46,6 +48,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     JsonDumpModule,
     MatProgressSpinnerModule,
     KustoQuerySelectionModule,
+    ErrorSpinnerModule,
+    MonitorActionModule,
   ],
   exports: [KustoManagementComponent, ReleaseManagementComponent],
 })

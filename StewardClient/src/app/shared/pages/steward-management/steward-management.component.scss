@@ -1,6 +1,7 @@
 @import '/src/styles/mixins';
 
+@include flex-navbar-fill;
+
 mat-tab-group {
   margin: $gap-medium;
-  flex-grow: 1;
 }
