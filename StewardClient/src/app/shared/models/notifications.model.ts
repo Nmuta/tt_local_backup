@@ -1,29 +1,25 @@
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
+import { GuidLikeString } from './extended-types';
 
 /** An individual return element for endpoint `api/v1/title/{title}/player/xuid(...)/notifications` */
 export interface PlayerNotification {
+  message: string;
+  notificationId: GuidLikeString;
   notificationType: string;
-  isRead: boolean;
-  notificationId: string;
-  sendDateUtc: DateTime;
+  sentDateUtc: DateTime;
   expirationDateUtc: DateTime;
+  isRead: boolean;
 }
 
 /** An individual return element for endpoint `api/v1/title/{title}/group/groupId(...)/notifications` */
 export interface GroupNotification {
+  groupId: BigNumber;
   message: string;
-  notificationId: string;
+  notificationId: GuidLikeString;
+  notificationType: string;
   sentDateUtc: DateTime;
   expirationDateUtc: DateTime;
   hasDeviceType: boolean;
   deviceType: string;
-  notificationType: string;
-  groupId: BigNumber;
 }
-
-/** The return type for endpoint `api/v1/title/{title}/player/xuid(...)/notifications` */
-export type PlayerNotifications = PlayerNotification[];
-
-/** The return type for endpoint `api/v1/title/{title}/group/groupId(...))/notifications` */
-export type GroupNotifications = GroupNotification[];

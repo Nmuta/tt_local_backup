@@ -1,13 +1,15 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { sortBy } from 'lodash';
+import { cloneDeep, sortBy } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { PlayerNotification } from '@models/notifications.model';
+
+type AnnotatedType<T> = T & { isCommunityMessage: boolean };
 
 /** Retreives and displays a player notifications by XUID. */
 @Component({
@@ -20,15 +22,17 @@ export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotificat
 
   /** True while waiting on a request. */
   public isLoading = true;
+
   /** The error received while loading. */
   public loadError: unknown;
 
   public seenIcon = faEye;
   public unSeenIcon = faEyeSlash;
 
-  public notifications: T[] = [];
+  public notifications: AnnotatedType<T>[] = [];
   public columnsToDisplay = [
     'isRead',
+    'message',
     'notificationType',
     'notificationId',
     'sendDateUtc',
@@ -60,7 +64,20 @@ export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotificat
       )
       .subscribe(notifications => {
         this.isLoading = false;
-        this.notifications = sortBy(notifications, n => n.sendDateUtc).reverse();
+        const annotatedNotifications: AnnotatedType<T>[] = notifications.map(notification => {
+          const x: AnnotatedType<T> = (cloneDeep(notification) as unknown) as AnnotatedType<T>;
+          x.isCommunityMessage = this.isCommunityMessage(x);
+          return x;
+        });
+        this.notifications = sortBy(annotatedNotifications, n => n.sentDateUtc).reverse();
+        this.notifications.forEach(
+          notification => (notification.isCommunityMessage = this.isCommunityMessage(notification)),
+        );
       });
+  }
+
+  /** Checks if notification is of Community Message type */
+  public isCommunityMessage(entry: PlayerNotification): boolean {
+    return entry.notificationType === 'CommunityMessageNotification';
   }
 }

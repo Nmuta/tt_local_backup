@@ -27,8 +27,9 @@ export class WoodstockPlayerXuidNotificationsFakeApi extends FakeApiBase {
   public static makeMany(): PlayerNotification[] {
     return new Array(faker.datatype.number({ min: 5, max: 20 })).fill(null).map(_ => {
       return <PlayerNotification>{
+        message: faker.datatype.string(),
         expirationDateUtc: toDateTime(faker.date.future()),
-        sendDateUtc: toDateTime(faker.date.past()),
+        sentDateUtc: toDateTime(faker.date.past()),
         isRead: faker.datatype.boolean(),
         notificationId: faker.datatype.uuid(),
         notificationType: faker.random.arrayElement([

@@ -51,7 +51,7 @@ import { overrideSunriseEndpointKey } from '@helpers/override-endpoint-key';
 import { PlayerAuctionAction } from '@models/player-auction-action';
 import { GuidLikeString } from '@models/extended-types';
 import { AuctionData } from '@models/auction-data';
-import { GroupNotifications, PlayerNotifications } from '@models/notifications.model';
+import { GroupNotification, PlayerNotification } from '@models/notifications.model';
 import { HideableUgc } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
 
@@ -65,12 +65,12 @@ export class SunriseService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets the status of a player's notifications. */
-  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotifications> {
+  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotification[]> {
     return this.apiService.getRequest$(`${this.basePath}/player/xuid(${xuid})/notifications`);
   }
 
   /** Gets the status of an LSP group's notifications. */
-  public getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotifications> {
+  public getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
     return this.apiService.getRequest$(
       `${this.basePath}/group/groupId(${lspGroupId})/notifications`,
     );

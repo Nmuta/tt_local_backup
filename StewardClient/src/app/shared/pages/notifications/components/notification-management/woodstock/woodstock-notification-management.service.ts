@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import BigNumber from 'bignumber.js';
 import { CommunityMessage } from '@models/community-message';
 import { WoodstockService } from '@services/woodstock';
-import { GroupNotifications } from '@models/notifications.model';
+import { GroupNotification } from '@models/notifications.model';
 
 /**
  *  Sunrise notification management service.
@@ -20,7 +20,7 @@ export class WoodstockNotificationManagementService implements NotificationManag
   }
 
   /** Get group notifications. */
-  public getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotifications> {
+  public getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
     return this.woodstockService.getGroupNotifications$(lspGroupId);
   }
 

@@ -9,7 +9,7 @@ import { SunrisePlayerNotificationsComponent } from './sunrise-player-notificati
 import { first } from 'lodash';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
-import { PlayerNotifications } from '@models/notifications.model';
+import { PlayerNotification } from '@models/notifications.model';
 
 describe('SunrisePlayerNotificationsComponent', () => {
   let injector: TestBed;
@@ -46,15 +46,15 @@ describe('SunrisePlayerNotificationsComponent', () => {
   );
 
   describe('valid initialization', () => {
-    let playerNotifications$: Subject<PlayerNotifications> = undefined;
-    let playerNotificationsValue: PlayerNotifications = undefined;
+    let playerNotifications$: Subject<PlayerNotification[]> = undefined;
+    let playerNotificationsValue: PlayerNotification[] = undefined;
     const testXuid = fakeXuid();
 
     beforeEach(
       waitForAsync(() => {
         // notifications list prep
-        playerNotifications$ = new Subject<PlayerNotifications>();
-        playerNotificationsValue = SunrisePlayerXuidNotificationsFakeApi.makeMany() as PlayerNotifications;
+        playerNotifications$ = new Subject<PlayerNotification[]>();
+        playerNotificationsValue = SunrisePlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
         service.getPlayerNotificationsByXuid$ = jasmine
           .createSpy('getPlayerNotificationsByXuid$')
           .and.returnValue(playerNotifications$);

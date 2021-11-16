@@ -14,7 +14,7 @@ import { LspGroup } from '@models/lsp-group';
 import { CommunityMessage } from '@models/community-message';
 import { GuidLikeString } from '@models/extended-types';
 import { NotificationManagementService } from './notification-management.service';
-import { GroupNotification, GroupNotifications } from '@models/notifications.model';
+import { GroupNotification } from '@models/notifications.model';
 import { toDateTime } from '@helpers/luxon';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -46,12 +46,12 @@ export class NotificationManagementComponent
   @Input() public isUsingPlayerIdentities: boolean;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
-  private readonly getNotifications$ = new Subject<GroupNotifications>();
+  private readonly getNotifications$ = new Subject<GroupNotification[]>();
   private readonly noExpireDefaultTime = DateTime.local(9999, 12, 31);
   public readonly messageMaxLength: number = 512;
 
   public deviceTypes: string[] = Object.values(DeviceType);
-  public rawNotifications: GroupNotifications;
+  public rawNotifications: GroupNotification[];
   public notifications = new MatTableDataSource<FormGroupNotificationEntry>();
 
   public columnsToDisplay = ['message', 'metadata', 'actions'];

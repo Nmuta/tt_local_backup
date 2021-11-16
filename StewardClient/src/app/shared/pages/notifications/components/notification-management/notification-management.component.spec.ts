@@ -12,13 +12,13 @@ import {
 } from './notification-management.component';
 import { NotificationManagementService } from './notification-management.service';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
-import { GroupNotifications } from '@models/notifications.model';
+import { GroupNotification } from '@models/notifications.model';
 
 class TestNotificationManagementService implements NotificationManagementService {
   public getGameTitle(): GameTitle {
     return null;
   }
-  public getGroupNotifications$(): Observable<GroupNotifications> {
+  public getGroupNotifications$(): Observable<GroupNotification[]> {
     return null;
   }
   public postEditLspGroupCommunityMessage$(
@@ -35,7 +35,7 @@ class TestNotificationManagementService implements NotificationManagementService
 describe('NotificationManagementComponent', () => {
   let component: NotificationManagementComponent;
   let fixture: ComponentFixture<NotificationManagementComponent>;
-  let testGroupNotifications: GroupNotifications;
+  let testGroupNotifications: GroupNotification[];
 
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
 

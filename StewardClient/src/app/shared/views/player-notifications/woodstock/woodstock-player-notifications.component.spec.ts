@@ -9,7 +9,7 @@ import { WoodstockPlayerNotificationsComponent } from './woodstock-player-notifi
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
-import { PlayerNotifications } from '@models/notifications.model';
+import { PlayerNotification } from '@models/notifications.model';
 
 describe('WoodstockPlayerNotificationsComponent', () => {
   let injector: TestBed;
@@ -46,15 +46,15 @@ describe('WoodstockPlayerNotificationsComponent', () => {
   );
 
   describe('valid initialization', () => {
-    let playerNotifications$: Subject<PlayerNotifications> = undefined;
-    let playerNotificationsValue: PlayerNotifications = undefined;
+    let playerNotifications$: Subject<PlayerNotification[]> = undefined;
+    let playerNotificationsValue: PlayerNotification[] = undefined;
     const testXuid = fakeXuid();
 
     beforeEach(
       waitForAsync(() => {
         // notifications list prep
-        playerNotifications$ = new Subject<PlayerNotifications>();
-        playerNotificationsValue = WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotifications;
+        playerNotifications$ = new Subject<PlayerNotification[]>();
+        playerNotificationsValue = WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
         service.getPlayerNotificationsByXuid$ = jasmine
           .createSpy('getPlayerNotificationsByXuid')
           .and.returnValue(playerNotifications$);

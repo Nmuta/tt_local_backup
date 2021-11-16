@@ -3,7 +3,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { DeviceType } from '@models/enums';
 import { toDateTime } from '@helpers/luxon';
-import { GroupNotification, GroupNotifications } from '@models/notifications.model';
+import { GroupNotification } from '@models/notifications.model';
 
 /** Fake API for finding User Flags. */
 export class SunriseGroupNotificationsFakeApi extends FakeApiBase {
@@ -20,12 +20,12 @@ export class SunriseGroupNotificationsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): GroupNotifications {
+  public handle(): GroupNotification[] {
     return SunriseGroupNotificationsFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(min: number = 1): GroupNotifications {
+  public static make(min: number = 1): GroupNotification[] {
     return new Array(faker.datatype.number({ min: min, max: 10 })).fill(undefined).map(
       () =>
         <GroupNotification>{

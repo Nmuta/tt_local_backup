@@ -23,9 +23,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public Guid NotificationId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the send date.
+        ///     Gets or sets the message.
         /// </summary>
-        public DateTime SendDateUtc { get; set; }
+        public string Message { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the sent date.
+        /// </summary>
+        public DateTime SentDateUtc { get; set; }
 
         /// <summary>
         ///     Gets or sets the expiration date.

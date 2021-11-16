@@ -88,7 +88,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<LiveOpsContracts.LiveOpsNotification, Notification>()
                 .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(src => src.SentDate))
+                .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ReverseMap();
+            this.CreateMap<ForzaUserGroupMessage, UserGroupNotification>()
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
+                .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
                 .ReverseMap();
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
@@ -141,11 +146,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<ForzaAuctionBlocklistEntry, AuctionBlocklistEntry>()
                 .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))
-                .ReverseMap();
-            this.CreateMap<ForzaUserGroupMessage, UserGroupNotification>()
-                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
-                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
-                .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
                 .ReverseMap();
             this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
 
