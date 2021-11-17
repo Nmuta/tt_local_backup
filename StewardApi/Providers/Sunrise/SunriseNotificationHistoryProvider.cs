@@ -11,10 +11,10 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
-namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
+namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
     /// <inheritdoc />
-    public sealed class WoodstockNotificationHistoryProvider : IWoodstockNotificationHistoryProvider
+    public sealed class SunriseNotificationHistoryProvider : ISunriseNotificationHistoryProvider
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -27,9 +27,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private readonly string kustoDatabaseName;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WoodstockNotificationHistoryProvider"/> class.
+        ///     Initializes a new instance of the <see cref="SunriseNotificationHistoryProvider"/> class.
         /// </summary>
-        public WoodstockNotificationHistoryProvider(
+        public SunriseNotificationHistoryProvider(
             IKustoStreamingLogger kustoStreamingLogger,
             IKustoProvider kustoProvider,
             ILoggingService loggingService,
@@ -82,6 +82,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var results = notificationHistoryResult.ToList();
 
             return results;
-        }
+            }
     }
 }

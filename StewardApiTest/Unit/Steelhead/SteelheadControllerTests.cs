@@ -175,6 +175,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenNotificationHistoryProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { NotificationHistoryProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "notificationHistoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -1447,7 +1461,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
                 this.SteelheadNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.SteelheadNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.SteelheadNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.SteelheadNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
@@ -1475,6 +1489,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public ISteelheadGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISteelheadGiftHistoryProvider>();
 
             public ISteelheadBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<ISteelheadBanHistoryProvider>();
+
+            public ISteelheadNotificationHistoryProvider NotificationHistoryProvider { get; set; } =
+                Substitute.For<ISteelheadNotificationHistoryProvider>();
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
@@ -1509,6 +1526,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,
+                this.NotificationHistoryProvider,
                 this.Configuration,
                 this.Scheduler,
                 this.JobTracker,

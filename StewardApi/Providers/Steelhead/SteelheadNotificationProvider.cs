@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -15,6 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
     public sealed class SteelheadNotificationProvider : ISteelheadNotificationProvider
     {
         private readonly ISteelheadService steelheadService;
+        private readonly ISteelheadNotificationHistoryProvider notificationHistoryProvider;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -22,12 +25,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// </summary>
         public SteelheadNotificationProvider(
             ISteelheadService steelheadService,
+            ISteelheadNotificationHistoryProvider notificationHistoryProvider,
             IMapper mapper)
         {
             steelheadService.ShouldNotBeNull(nameof(steelheadService));
+            notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.steelheadService = steelheadService;
+            this.notificationHistoryProvider = notificationHistoryProvider;
             this.mapper = mapper;
         }
 
@@ -67,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var notifications = await this.steelheadService.GetUserGroupNotificationAsync(
+                var notifications = await this.steelheadService.GetUserGroupNotificationsAsync(
                     groupId,
                     maxResults,
                     endpoint).ConfigureAwait(false);
@@ -114,12 +120,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             string message,
             DateTime expireTimeUtc,
             DeviceType deviceType,
+            string requesterObjectId,
             string endpoint)
         {
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
 
+            Guid notificationId = Guid.Empty;
             var messageResponse = new MessageSendResult<int>
             {
                 PlayerOrLspGroup = groupId,
@@ -136,6 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                     forzaDeviceType,
                     endpoint).ConfigureAwait(false);
 
+                notificationId = response.notificationId;
                 messageResponse.NotificationId = response.notificationId;
                 messageResponse.Error = null;
             }
@@ -143,6 +153,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 messageResponse.Error = new ServicesFailureStewardError(
                     $"LSP failed to message group with ID: {groupId}");
+            }
+
+            try
+            {
+                var notificationInfo = await this.steelheadService
+                    .GetUserGroupNotificationAsync(notificationId, endpoint).ConfigureAwait(false);
+
+                var notificationHistory = new NotificationHistory
+                {
+                    Id = notificationId.ToString(),
+                    Title = TitleConstants.SteelheadCodeName,
+                    Message = message,
+                    RequesterObjectId = requesterObjectId,
+                    RecipientId = groupId.ToString(CultureInfo.InvariantCulture),
+                    Type = notificationInfo.userGroupMessage.NotificationType,
+                    RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
+                    DeviceType = deviceType.ToString(),
+                    GiftType = GiftType.None.ToString(),
+                    BatchReferenceId = string.Empty,
+                    Action = NotificationAction.Send.ToString(),
+                    Endpoint = endpoint,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    ExpireDateUtc = expireTimeUtc
+                };
+
+                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(notificationHistory)
+                    .ConfigureAwait(false);
+            }
+            catch
+            {
+                messageResponse.Error = new ServicesFailureStewardError("Message successfully sent; Logging of send event failed.");
             }
 
             return messageResponse;
@@ -187,9 +228,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             string message,
             DateTime expireTimeUtc,
             DeviceType deviceType,
+            string requesterObjectId,
             string endpoint)
         {
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
             var editParams = new ForzaCommunityMessageNotificationEditParameters
@@ -210,7 +253,38 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException("Notifications failed to send.", ex);
+                throw new FailedToSendStewardException($"Notification with ID: {notificationId} failed to send.", ex);
+            }
+
+            try
+            {
+                var notificationInfo = await this.steelheadService
+                    .GetUserGroupNotificationAsync(notificationId, endpoint).ConfigureAwait(false);
+
+                var notificationHistory = new NotificationHistory
+                {
+                    Id = notificationId.ToString(),
+                    Title = TitleConstants.SteelheadCodeName,
+                    Message = message,
+                    RequesterObjectId = requesterObjectId,
+                    RecipientId = notificationInfo.userGroupMessage.GroupId.ToString(CultureInfo.InvariantCulture),
+                    Type = notificationInfo.userGroupMessage.NotificationType,
+                    RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
+                    DeviceType = deviceType.ToString(),
+                    GiftType = GiftType.None.ToString(),
+                    BatchReferenceId = string.Empty,
+                    Action = NotificationAction.Edit.ToString(),
+                    Endpoint = endpoint,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    ExpireDateUtc = expireTimeUtc
+                };
+
+                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                    notificationHistory).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Message successfully edited; Logging of edit event failed.", ex);
             }
         }
 
@@ -241,8 +315,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task DeleteGroupNotificationAsync(Guid notificationId, string endpoint)
+        public async Task DeleteGroupNotificationAsync(Guid notificationId, string requesterObjectId, string endpoint)
         {
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            DeviceType deviceType;
+            ForzaUserGroupMessage groupMessage;
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = true,
@@ -254,14 +332,48 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
+                var notificationInfo = await this.steelheadService
+                    .GetUserGroupNotificationAsync(notificationId, endpoint).ConfigureAwait(false);
+
                 await this.steelheadService.EditGroupNotificationAsync(
                     notificationId,
                     editParams,
                     endpoint).ConfigureAwait(false);
+
+                groupMessage = notificationInfo.userGroupMessage;
+                deviceType = this.mapper.Map<DeviceType>(groupMessage.DeviceType);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"LSP failed to delete group message with Notification ID: {notificationId}", ex);
+            }
+
+            try
+            {
+                var notificationHistory = new NotificationHistory
+                {
+                    Id = notificationId.ToString(),
+                    Title = TitleConstants.SteelheadCodeName,
+                    Message = groupMessage.Message,
+                    RequesterObjectId = requesterObjectId,
+                    RecipientId = groupMessage.GroupId.ToString(CultureInfo.InvariantCulture),
+                    Type = groupMessage.NotificationType,
+                    RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
+                    DeviceType = deviceType.ToString(),
+                    GiftType = GiftType.None.ToString(),
+                    BatchReferenceId = string.Empty,
+                    Action = NotificationAction.Delete.ToString(),
+                    Endpoint = endpoint,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    ExpireDateUtc = DateTime.UtcNow
+                };
+
+                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                    notificationHistory).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Message successfully deleted; Logging of delete event failed.", ex);
             }
         }
     }

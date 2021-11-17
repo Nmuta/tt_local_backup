@@ -61,6 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISteelheadNotificationProvider steelheadNotificationProvider;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
+        private readonly ISteelheadNotificationHistoryProvider notificationHistoryProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
@@ -84,6 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKeyVaultProvider keyVaultProvider,
             ISteelheadGiftHistoryProvider giftHistoryProvider,
             ISteelheadBanHistoryProvider banHistoryProvider,
+            ISteelheadNotificationHistoryProvider notificationHistoryProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
@@ -104,6 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
+            notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -124,6 +127,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.steelheadNotificationProvider = steelheadNotificationProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
+            this.notificationHistoryProvider = notificationHistoryProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.mapper = mapper;
@@ -881,6 +885,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the notification histories.
+        /// </summary>
+        [HttpGet("notification/{notificationId}/history")]
+        [SwaggerResponse(200, type: typeof(IList<NotificationHistory>))]
+        public async Task<IActionResult> GetNotificationHistoriesAsync(
+            string notificationId)
+        {
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var notificationHistory = await this.notificationHistoryProvider.GetNotificationHistoriesAsync(
+                notificationId,
+                TitleConstants.SunriseCodeName,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok(notificationHistory);
+        }
+
+        /// <summary>
         ///     Gets the player notifications.
         /// </summary>
         [HttpGet("player/xuid({xuid})/notifications")]
@@ -988,6 +1009,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 nameof(communityMessage.Duration));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
 
             var groups = await this.steelheadServiceManagementProvider.GetLspGroupsAsync(
                 endpoint).ConfigureAwait(false);
@@ -1002,6 +1025,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 communityMessage.Message,
                 expireTime,
                 communityMessage.DeviceType,
+                requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
@@ -1062,6 +1086,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
 
             var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             await this.steelheadNotificationProvider.EditGroupNotificationAsync(
@@ -1069,6 +1095,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 editParameters.Message,
                 expireTime,
                 editParameters.DeviceType,
+                requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
@@ -1113,9 +1140,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
 
             await this.steelheadNotificationProvider.DeleteGroupNotificationAsync(
                 notificationId,
+                requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();

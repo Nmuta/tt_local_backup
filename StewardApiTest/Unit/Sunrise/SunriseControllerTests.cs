@@ -175,6 +175,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenNotificationHistoryProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { NotificationHistoryProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "notificationHistoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenStorefrontProviderNull_Throws()
         {
             // Arrange.
@@ -1970,7 +1984,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.SunriseNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.SunriseNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.SunriseNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.SunriseNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
                 this.SunriseNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.SunriseNotificationProvider.GetGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Build<UserGroupNotification>().With(x => x.NotificationType,"CommunityMessageNotification").Create());
@@ -2006,6 +2020,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public ISunriseBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<ISunriseBanHistoryProvider>();
 
+            public ISunriseNotificationHistoryProvider NotificationHistoryProvider { get; set; } =
+                Substitute.For<ISunriseNotificationHistoryProvider>();
+
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
             public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
@@ -2039,6 +2056,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,
+                this.NotificationHistoryProvider,
                 this.StorefrontProvider,
                 this.Configuration,
                 this.Scheduler,

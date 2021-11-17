@@ -168,10 +168,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Retrieves user group messages.
         /// </summary>
         public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
-            GetUserGroupNotificationAsync(
+            GetUserGroupNotificationsAsync(
                 int groupId,
                 int maxResults,
                 string endpoint);
+
+        /// <summary>
+        ///     Retrieves user group message.
+        /// </summary>
+        public Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
+            Guid notificationId,
+            string endpoint);
 
         /// <summary>
         ///     Sends message to multiple xuids.

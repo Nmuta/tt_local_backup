@@ -256,6 +256,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISteelheadNotificationProvider, SteelheadNotificationProvider>();
             services.AddSingleton<ISteelheadBanHistoryProvider, SteelheadBanHistoryProvider>();
             services.AddSingleton<ISteelheadGiftHistoryProvider, SteelheadGiftHistoryProvider>();
+            services.AddSingleton<ISteelheadNotificationHistoryProvider, SteelheadNotificationHistoryProvider>();
             services.AddSingleton<IRequestValidator<SteelheadBanParametersInput>, SteelheadBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<SteelheadGroupGift>, SteelheadGroupGiftRequestValidator>();
             services.AddSingleton<IRequestValidator<SteelheadGift>, SteelheadGiftRequestValidator>();
@@ -283,6 +284,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<SunriseGroupGift>, SunriseGroupGiftRequestValidator>();
             services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
             services.AddSingleton<ISunriseBanHistoryProvider, SunriseBanHistoryProvider>();
+            services.AddSingleton<ISunriseNotificationHistoryProvider, SunriseNotificationHistoryProvider>();
             services.AddSingleton<ISunriseStorefrontProvider, SunriseStorefrontProvider>();
 
             services.AddSingleton<IApolloService, ApolloServiceWrapper>();

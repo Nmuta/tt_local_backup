@@ -41,6 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             string message,
             DateTime expireTimeUtc,
             DeviceType deviceType,
+            string requesterObjectId,
             string endpoint);
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             string message,
             DateTime expireTimeUtc,
             DeviceType deviceType,
+            string requesterObjectId,
             string endpoint);
 
         /// <summary>
@@ -71,6 +73,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Deletes group notification.
         /// </summary>
-        Task DeleteGroupNotificationAsync(Guid notificationId, string endpoint);
+        Task DeleteGroupNotificationAsync(Guid notificationId, string requesterObjectId, string endpoint);
     }
 }

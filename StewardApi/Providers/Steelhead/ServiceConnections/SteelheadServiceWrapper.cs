@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.GetAllUserGroupMessagesOutput> GetUserGroupNotificationAsync(
+        public async Task<NotificationsManagementService.GetAllUserGroupMessagesOutput> GetUserGroupNotificationsAsync(
             int groupId,
             int maxResults,
             string endpoint)
@@ -247,6 +247,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return await notificationsManagementService.GetAllUserGroupMessages(groupId, maxResults)
                 .ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
+            Guid notificationId,
+            string endpoint)
+        {
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await notificationsManagementService.GetUserGroupMessage(notificationId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

@@ -51,6 +51,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenNotificationHistoryProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { NotificationHistoryProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "notificationHistoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -128,10 +142,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
             var deviceType = Fixture.Create<DeviceType>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<MessageSendResult<int>> Action() => await provider.SendGroupNotificationAsync(groupId, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
+            async Task<MessageSendResult<int>> Action() => await provider.SendGroupNotificationAsync(groupId, message, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<MessageSendResult<int>>();
@@ -163,12 +178,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
-
             var deviceType = Fixture.Create<DeviceType>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<MessageSendResult<int>>> action = async () => await provider.SendGroupNotificationAsync(TestConstants.NegativeValue, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
+            Func<Task<MessageSendResult<int>>> action = async () => await provider.SendGroupNotificationAsync(TestConstants.NegativeValue, message, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, "groupId", -1, TestConstants.NegativeValue));
@@ -183,6 +198,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuids = Fixture.Create<List<ulong>>();
             var groupId = Fixture.Create<int>();
             var expireTime = Fixture.Create<DateTime>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
             var deviceType = Fixture.Create<DeviceType>();
 
@@ -192,9 +208,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 async () => await provider.SendNotificationsAsync(xuids, null, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendNotificationsAsync(xuids, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendNotificationsAsync(xuids, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendGroupNotificationAsync(groupId, null, expireTime, deviceType, endpoint).ConfigureAwait(false),
-                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.Empty, expireTime, deviceType, endpoint).ConfigureAwait(false),
-                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.WhiteSpace, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.SendGroupNotificationAsync(groupId, null, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.Empty, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.WhiteSpace, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -215,13 +231,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
             var deviceType = Fixture.Create<DeviceType>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
                 async () => await provider.EditNotificationAsync(notificationId, xuid, message, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.EditGroupNotificationAsync(notificationId, message, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.EditGroupNotificationAsync(notificationId, message, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -241,6 +258,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var notificationId = Fixture.Create<Guid>();
             var expireTime = Fixture.Create<DateTime>();
             var deviceType = Fixture.Create<DeviceType>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
@@ -249,9 +267,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 async () => await provider.EditNotificationAsync(notificationId, xuid, null, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.EditNotificationAsync(notificationId, xuid, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.EditNotificationAsync(notificationId, xuid, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.EditGroupNotificationAsync(notificationId, null, expireTime, deviceType, endpoint).ConfigureAwait(false),
-                async () => await provider.EditGroupNotificationAsync(notificationId, TestConstants.Empty, expireTime, deviceType, endpoint).ConfigureAwait(false),
-                async () => await provider.EditGroupNotificationAsync(notificationId, TestConstants.WhiteSpace, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.EditGroupNotificationAsync(notificationId, null, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.EditGroupNotificationAsync(notificationId, TestConstants.Empty, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.EditGroupNotificationAsync(notificationId, TestConstants.WhiteSpace, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -269,13 +287,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var notificationId = Fixture.Create<Guid>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
                 async () => await provider.DeleteNotificationAsync(notificationId, xuid, endpoint).ConfigureAwait(false),
-                async () => await provider.DeleteGroupNotificationAsync(notificationId, endpoint).ConfigureAwait(false),
+                async () => await provider.DeleteGroupNotificationAsync(notificationId, requesterObjectId, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -291,6 +310,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             {
                 this.SunriseService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsRetrieveForUserExOutput>());
                 this.SunriseService.GetUserGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAllUserGroupMessagesOutput>());
+                this.SunriseService.GetUserGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupMessageOutput>());
                 this.SunriseService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
                 this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
@@ -299,13 +319,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
 
-            public ISunriseBanHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISunriseBanHistoryProvider>();
+            public ISunriseNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<ISunriseNotificationHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
             
 
             public SunriseNotificationProvider Build() => new SunriseNotificationProvider(
                 this.SunriseService,
+                this.NotificationHistoryProvider,
                 this.Mapper);
         }
     }
