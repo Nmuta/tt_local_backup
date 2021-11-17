@@ -404,6 +404,44 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
+        public async Task<IList<NotificationHistory>> GetNotificationHistoryAsync(string notificationId, string title, string endpoint)
+        {
+            notificationId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(notificationId));
+            title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var query = NotificationHistory.MakeQuery(notificationId, title, endpoint);
+
+                async Task<IList<NotificationHistory>> NotificationHistories()
+                {
+                    var notificationHistories = new List<NotificationHistory>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (reader.Read())
+                        {
+                            notificationHistories.Add(NotificationHistory.FromQueryResult(reader));
+                        }
+
+                        reader.Close();
+                    }
+
+                    return notificationHistories;
+                }
+
+                return await NotificationHistories().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"No notification history found for notificationID: {notificationId} with Title: {title} and Endpoint: {endpoint}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(KustoGameDbSupportedTitle title, ulong xuid, DateTime? skipToken = null)
         {
             var query = AuctionHistoryEntry.MakeQuery(title, xuid, skipToken);

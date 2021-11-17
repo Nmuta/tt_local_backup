@@ -59,6 +59,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string title, string endpoint);
 
         /// <summary>
+        ///     Gets notification history.
+        /// </summary>
+        Task<IList<NotificationHistory>> GetNotificationHistoryAsync(string notificationId, string title, string endpoint);
+
+        /// <summary>
         ///     Gets a user's auction log.
         /// </summary>
         Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(KustoGameDbSupportedTitle title, ulong xuid, DateTime? skipToken = null);

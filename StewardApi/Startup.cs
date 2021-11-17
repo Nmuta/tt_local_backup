@@ -241,6 +241,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IWoodstockNotificationProvider, WoodstockNotificationProvider>();
             services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
             services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
+            services.AddSingleton<IWoodstockNotificationHistoryProvider, WoodstockNotificationHistoryProvider>();
             services.AddSingleton<IWoodstockStorefrontProvider, WoodstockStorefrontProvider>();
             services.AddSingleton<IRequestValidator<WoodstockBanParametersInput>, WoodstockBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<WoodstockGroupGift>, WoodstockGroupGiftRequestValidator>();

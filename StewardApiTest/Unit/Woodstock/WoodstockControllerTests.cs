@@ -176,6 +176,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenNotificationHistoryProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { NotificationHistoryProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "notificationHistoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenStorefrontProviderNull_Throws()
         {
             // Arrange.
@@ -1593,7 +1607,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
                 this.WoodstockNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.WoodstockNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.WoodstockNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.WoodstockNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.WoodstockNotificationProvider.GetGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Build<UserGroupNotification>().With(x => x.NotificationType, "CommunityMessageNotification").Create());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
@@ -1627,6 +1641,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
             public IWoodstockBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IWoodstockBanHistoryProvider>();
+
+            public IWoodstockNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<IWoodstockNotificationHistoryProvider>();
 
             public IWoodstockStorefrontProvider StorefrontProvider { get; set; } = Substitute.For<IWoodstockStorefrontProvider>();
 
@@ -1663,6 +1679,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,
+                this.NotificationHistoryProvider,
                 this.StorefrontProvider,
                 this.Configuration,
                 this.Scheduler,
