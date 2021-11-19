@@ -16,6 +16,7 @@ import { TitleMemoryModel } from './title-memory.model';
     ugc: GameTitleCodeName.FH5,
     notifications: GameTitleCodeName.FH5,
     auctionBlocklist: GameTitleCodeName.FH5,
+    auctionDetails: GameTitleCodeName.FH5,
   },
 })
 @Injectable()

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { GameTitle, GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
 
+/**
+ * Routed component which displays the Notifications toolbar.
+ */
 @Component({
-  //selector: 'notification-management',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
 })
-/**
- *
- */
 export class NotificationsComponent implements OnInit {
   public navbarRouterLinks = [];
 

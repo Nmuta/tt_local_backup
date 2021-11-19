@@ -32,7 +32,7 @@ export enum GameTitleAbbreviation {
  * @see GameTitle
  */
 export enum GameTitleCodeName {
-  General = 'General',
+  General = 'General', // TODO: this is not really a title. It should be removed and placed in its own type alias when we migrate to `GameTitle` over `GameTitleCodeName`
   FH5 = 'Woodstock',
   FM8 = 'Steelhead',
   Street = 'Gravity',

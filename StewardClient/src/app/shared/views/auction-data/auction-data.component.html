@@ -1,47 +1,38 @@
 <ng-container *ngIf="auctionData; else spinner">
-  <ul>
-    <li>
-      <b>Status:</b><span>{{ auctionData.status | humanize }}</span>
-    </li>
-    <li>
-      <b>Seller:</b><standard-copy>{{ auctionData.seller }}</standard-copy>
-    </li>
-    <li>
-      <b>Opening Price:</b><span>{{ auctionData.openingPrice | bignumber }}</span>
-    </li>
-    <li>
-      <b>Buyout Price:</b><span>{{ auctionData.buyoutPrice | bignumber }}</span>
-    </li>
-    <li>
-      <b>Current Price:</b><span>{{ auctionData.currentPrice | bignumber }}</span>
-    </li>
-    <li>
-      <b>Invested:</b><span>{{ auctionData.amountInvested | bignumber }}</span>
-    </li>
-    <li>
-      <b>Created:</b
-      ><standard-absolute-time [timeUtc]="auctionData.createdDateUtc"></standard-absolute-time>
-    </li>
-    <li>
-      <b>Closing:</b
-      ><standard-absolute-time [timeUtc]="auctionData.closingDateUtc"></standard-absolute-time>
-    </li>
-    <li>
-      <b>Flagged:</b>
-      <standard-absolute-time
-        *ngIf="auctionData.timeFlaggedUtc"
-        [timeUtc]="auctionData.timeFlaggedUtc"
-      >
-      </standard-absolute-time>
-    </li>
-    <li>
-      <b>Flags:</b><span>{{ auctionFlagsCsv }}</span>
-    </li>
-    <li>
-      <b>Tuner Level:</b><span>{{ auctionData.tunerLevel }}</span>
-    </li>
-  </ul>
-  <pre>{{ auctionData | bigjson }}</pre>
+  <model-dump #source [model]="auctionData">
+    <model-dump-xuids></model-dump-xuids>
+    <model-dump-simple-table
+      [values]="source.processedModel.extractedStrings.ids"
+    ></model-dump-simple-table>
+    <model-dump-humanize-table
+      [values]="source.processedModel.extractedStrings.other"
+    ></model-dump-humanize-table>
+    <!-- disabled on request <model-dump-simple-table
+      [values]="source.processedModel.extractedNumbers.ids"
+    ></model-dump-simple-table> -->
+
+    <div>
+      <model-dump-datetime-table
+        [values]="source.processedModel.extractedDates.all"
+      ></model-dump-datetime-table>
+      <!-- disabled on request <model-dump-duration-table
+        [values]="source.processedModel.extractedDurations.all"
+      ></model-dump-duration-table> -->
+      <model-dump-number-table
+        [values]="source.processedModel.extractedNumbers.counts"
+      ></model-dump-number-table>
+    </div>
+    <model-dump-price-table
+      [values]="source.processedModel.extractedNumbers.prices"
+    ></model-dump-price-table>
+    <model-dump-price-table
+      [values]="source.processedModel.extractedNumbers.amounts"
+    ></model-dump-price-table>
+    <model-dump-number-table
+      [values]="source.processedModel.extractedNumbers.other"
+    ></model-dump-number-table>
+    <model-dump-flags></model-dump-flags>
+  </model-dump>
 </ng-container>
 
 <ng-template #spinner>

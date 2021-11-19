@@ -36,7 +36,7 @@ import { SidebarsModule } from './sidebars/sidebars.module';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZafClientService } from '@services/zendesk/zaf-client.service';
-import { UtcInterceptor } from '@interceptors/utc.interceptor';
+import { UtcInterceptor } from '@interceptors/luxon.interceptor';
 
 // States
 import { UserState } from '@shared/state/user/user.state';

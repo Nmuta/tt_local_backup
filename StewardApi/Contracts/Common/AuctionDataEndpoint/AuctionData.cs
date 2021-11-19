@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint
     {
         public Guid AuctionId { get; set; }
         public AuctionReviewState Status { get; set; }
-        public ulong Seller { get; set; }
+        public ulong SellerXuid { get; set; }
         public Guid SellerProfileId { get; set; }
         public uint OpeningPrice { get; set; }
         public uint BuyoutPrice { get; set; }
@@ -26,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint
         public bool IsVipAuction { get; set; }
         public bool IsTurn10Auction { get; set; }
         public DateTime? TimeFlaggedUtc { get; set; }
-        public long DurationInMS { get; set; }
+        public TimeSpan? Duration { get; set; }
         public bool IsFeatured { get; set; }
         public uint AmountInvested { get; set; }
         public bool IsHotDeal { get; set; }
@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint
         public uint NextBidAmount { get; set; }
         public AuctionDataAuctionAction AllowedActions { get; set; }
         public uint TopBidAmount { get; set; }
-        public ulong TopBidder { get; set; }
+        public ulong TopBidderXuid { get; set; }
         public int PainterLevel { get; set; }
         public int BidCount { get; set; }
     }

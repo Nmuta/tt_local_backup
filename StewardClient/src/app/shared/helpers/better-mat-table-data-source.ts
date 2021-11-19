@@ -27,6 +27,11 @@ export class BetterMatTableDataSource<T, TFilter = string> extends MatTableDataS
     this.refilter();
   }
 
+  /** Provides type-safe access to this table's entries to templates.*/
+  public cast(tableEntry: unknown): T {
+    return tableEntry as T;
+  }
+
   /**
    * Do not use.
    * @deprecated Do not use this filter method. Use betterFilterPredicate.

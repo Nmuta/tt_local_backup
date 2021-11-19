@@ -50,11 +50,11 @@ import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
 import { ProfileNote } from '@models/profile-note.model';
+import { AuctionData } from '@models/auction-data';
+import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
 import { PlayerAuctionAction } from '@models/player-auction-action';
-import { GuidLikeString } from '@models/extended-types';
-import { AuctionData } from '@models/auction-data';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({

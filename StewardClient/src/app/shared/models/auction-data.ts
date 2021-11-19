@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { GuidLikeString } from './extended-types';
 
 export interface AuctionData {
-  id: GuidLikeString;
+  auctionId: GuidLikeString;
   status: AuctionDataAuctionStatus;
-  seller: BigNumber;
+  sellerXuid: BigNumber;
   sellerProfileId: GuidLikeString;
   openingPrice: BigNumber;
   buyoutPrice: BigNumber;
@@ -15,7 +15,7 @@ export interface AuctionData {
   isVipAuction: boolean;
   isTurn10Auction: boolean;
   timeFlaggedUtc?: DateTime;
-  durationInMS: BigNumber;
+  duration: Duration;
   isFeatured: boolean;
   amountInvested: BigNumber;
   isHotDeal: boolean;
@@ -32,7 +32,7 @@ export interface AuctionData {
   nextBidAmount: BigNumber;
   allowedActions: AuctionDataAuctionAction;
   topBidAmount: BigNumber;
-  topBidder: BigNumber;
+  topBidderXuid: BigNumber;
   paBigNumbererLevel: BigNumber;
   bidCount: BigNumber;
 }
@@ -70,7 +70,7 @@ export interface AuctionDataBid {
   xuid: BigNumber;
   profileId: GuidLikeString;
   amount: BigNumber;
-  date: DateTime;
+  dateUtc: DateTime;
   status: AuctionDataBidStatus;
   isTopBid: boolean;
 }

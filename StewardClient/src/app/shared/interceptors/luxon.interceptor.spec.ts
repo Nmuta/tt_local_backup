@@ -5,7 +5,7 @@ import { environment } from '@environments/environment';
 import { clone } from 'lodash';
 import { DateTime } from 'luxon';
 
-import { UtcInterceptor } from './utc.interceptor';
+import { UtcInterceptor } from './luxon.interceptor';
 
 type TestResponseSimple = {
   test: unknown;

@@ -6,8 +6,9 @@ import { AllSecondaryAADScopes } from './app-data/aad';
 
 import { StewardEnvironment } from './steward-environment';
 
-export * from './app-data/tool-list';
 export * from './app-data/aad';
+export * from './app-data/hci';
+export * from './app-data/tool-list';
 
 /** Deployed to Prod */
 export const environment: StewardEnvironment = {

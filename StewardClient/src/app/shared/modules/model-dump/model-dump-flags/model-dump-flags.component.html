@@ -1,0 +1,5 @@
+<ul *ngIf="processedModel?.extractedFlags">
+  <li *ngFor="let e of processedModel.extractedFlags.all">
+    <standard-flag [value]="e.value">{{ e.name }}</standard-flag>
+  </li>
+</ul>

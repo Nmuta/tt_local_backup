@@ -20,6 +20,7 @@ export enum NavbarTool {
   Salus = 'salus',
   BulkBanHistory = 'bulk-ban-history',
   Notifications = 'notifications',
+  AuctionDetails = 'auction-details',
   StewardManagement = 'steward-management',
 }
 
@@ -53,7 +54,10 @@ export const CommonAccessLevels = {
   ],
 };
 
-/** Enum from apps to standard angular icons. */
+/**
+ * Enum from apps to standard angular icons.
+ * Select from here https://fonts.google.com/icons?selected=Material+Icons
+ */
 export enum AppIcon {
   DeveloperTool = 'integration_instructions',
   PlayerInfo = 'person_search',
@@ -67,6 +71,7 @@ export enum AppIcon {
   Admin = 'shield',
   BulkBanHistory = 'manage_search',
   Messaging = 'mail',
+  AuctionDetails = 'price_check',
   StewardManagement = 'cloud_sync',
 }
 
@@ -77,13 +82,28 @@ export enum ExtraIcon {
 
 /** Base model for Home Tiles. */
 export interface HomeTileInfoBase {
+  /** The primary icon that is displayed alongside this tool's title. As in the top-level of the tiles. */
   readonly icon: string;
+
+  /** The icon that is displayed alongside this tool's link. As in links that open to an external tool. */
   readonly extraIcon?: string;
+
+  /** The slug identifier of the tool. */
   readonly tool: NavbarTool;
+
+  /** Previous tool routes. Used to generate redirects to the canonical {@link HomeTileInfoBase.tool} route. */
   readonly oldToolRoutes?: string[];
+
+  /** The displayed title of the tool. As in the navbar and card titles. Should be very short. */
   readonly title: string;
+
+  /** The displayed subtitle of the tool. As below the card title. Should be quite short. */
   readonly subtitle: string;
+
+  /** A URL to an image that represents this tool. As displayed at the top of the card body. */
   readonly imageUrl?: string;
+
+  /** Alt text describing the image that represents this tool. */
   readonly imageAlt?: string;
 
   /** A short description for tooltips linking to this tool. */
@@ -92,7 +112,11 @@ export interface HomeTileInfoBase {
   /** A short description for the home page. Each element is a paragraph. */
   readonly shortDescription: string[];
 
-  /** The list of roles allowed access to this tool. */
+  /**
+   * The list of roles allowed access to this tool.
+   *
+   * Must be from {@link CommonAccessLevels} or a single-element-array.
+   */
   readonly accessList: UserRole[];
 
   /** Hides the tool on home page from unauthroized users. */
@@ -101,11 +125,13 @@ export interface HomeTileInfoBase {
 
 /** Model for Home Tiles that send the user to internal tools. */
 export interface HomeTileInfoInternal extends HomeTileInfoBase {
+  /** Angular hook which chooses the target module for lazy-loading. */
   readonly loadChildren: LoadChildren;
 }
 
 /** Model for Home Tiles that send the user to external tools. */
 export interface HomeTileInfoExternal extends HomeTileInfoBase {
+  /** Target URL for opening a link in a new tab. */
   externalUrl: string;
 }
 
@@ -128,7 +154,7 @@ export function isHomeTileInfoInternal(
 
 /** The unprocessed tool list. Use @see environment.tools instead. */
 export const unprocessedToolList: HomeTileInfo[] = [
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.UGC,
     accessList: CommonAccessLevels.OldCommunityAppOnly,
@@ -140,7 +166,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     shortDescription: [`View information about a player`],
     loadChildren: () => import('../../app/shared/pages/ugc/ugc.module').then(m => m.UGCModule),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.UserDetails,
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
@@ -155,7 +181,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.UserDetailsModule,
       ),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.PlayerGift,
     tool: NavbarTool.Gifting,
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
@@ -168,7 +194,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     loadChildren: () =>
       import('../../app/shared/pages/gifting/gifting.module').then(m => m.GiftingsModule),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.PlayerBan,
     tool: NavbarTool.UserBanning,
     accessList: CommonAccessLevels.OldNavbarAppOnly,
@@ -183,7 +209,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.UserBanningModule,
       ),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.GiftHistory,
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
@@ -198,7 +224,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.GiftHistoryModule,
       ),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.Kusto,
     tool: NavbarTool.Kusto,
     accessList: CommonAccessLevels.OldNavbarAppOnly,
@@ -211,7 +237,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     loadChildren: () =>
       import('../../app/shared/pages/kusto/kusto.module').then(m => m.KustoModule),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.ItemBan,
     tool: NavbarTool.AuctionBlocklist,
     accessList: CommonAccessLevels.OldNavbarAppOnly,
@@ -226,7 +252,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.StewardAuctionBlocklistModule,
       ),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.Messaging,
     tool: NavbarTool.Notifications,
     accessList: CommonAccessLevels.CommunityManagersAndAdmins,
@@ -241,7 +267,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.NotificationsModule,
       ),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.AdminInfo,
     tool: NavbarTool.StewardUserHistory,
     accessList: CommonAccessLevels.OldNavbarAppAdminOnly,
@@ -256,7 +282,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.StewardUserHistoryModule,
       ),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.DeveloperTool,
     tool: NavbarTool.DataObligation,
     oldToolRoutes: ['data-pipeline-obligation'],
@@ -273,7 +299,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
       ),
     hideFromUnauthorized: true,
   },
-  {
+  <HomeTileInfoExternal>{
     icon: AppIcon.DeveloperTool,
     extraIcon: ExtraIcon.External,
     tool: NavbarTool.Salus,
@@ -286,7 +312,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     shortDescription: [`External UGC Moderation Tool`],
     externalUrl: 'https://gmx-dev.azureedge.net/#/dashboard',
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.BulkBanHistory,
     tool: NavbarTool.BulkBanHistory,
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
@@ -304,7 +330,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.BulkBanHistoryModule,
       ),
   },
-  {
+  <HomeTileInfoInternal>{
     icon: AppIcon.StewardManagement,
     tool: NavbarTool.StewardManagement,
     accessList: [UserRole.LiveOpsAdmin],
@@ -319,6 +345,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.StewardManagementModule,
       ),
     hideFromUnauthorized: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.AuctionDetails,
+    tool: NavbarTool.AuctionDetails,
+    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
+    title: 'Auction Details',
+    subtitle: 'View the current state of an auction',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View the current state of an auction',
+    shortDescription: [
+      'View the canonical state of an auction, as Services knows it.',
+      'Lookup is by Auction ID.',
+    ],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/auction/auction.module').then(m => m.AuctionModule),
   },
 ];
 

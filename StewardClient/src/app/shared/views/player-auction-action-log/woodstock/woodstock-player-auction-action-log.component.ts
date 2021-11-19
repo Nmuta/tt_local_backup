@@ -1,4 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { WOODSTOCK_LINK_GENERATOR } from '@helpers/link-generators';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -13,6 +14,7 @@ import { LogTableLoaderComponent } from '../log-table-loader/log-table-loader.co
 export class WoodstockPlayerAuctionActionLogComponent {
   @Input() public identity: IdentityResultAlpha;
   @ViewChild('loader', { static: true }) public loader: LogTableLoaderComponent;
+  public linkGenerator = WOODSTOCK_LINK_GENERATOR;
 
   /** Monitors retrieval of hte log table results. */
   public get getMonitor(): ActionMonitor {

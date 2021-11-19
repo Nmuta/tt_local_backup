@@ -298,7 +298,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimeFlaggedUtc, opt => opt.MapFrom(src => src.TimeFlagged.DefaultAsNull()))
                 .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.ClosingDateUtc, opt => opt.MapFrom(src => src.ClosingDate))
-                .ReverseMap();
+                .ForMember(dest => dest.SellerXuid, opt => opt.MapFrom(src => src.Seller))
+                .ForMember(dest => dest.TopBidderXuid, opt => opt.MapFrom(src => src.TopBidder))
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => TimeSpan.FromMilliseconds(src.DurationInMS)));
 
             this.CreateMap<LiveOpsContracts.ForzaBid, AuctionDataBid>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.Date))

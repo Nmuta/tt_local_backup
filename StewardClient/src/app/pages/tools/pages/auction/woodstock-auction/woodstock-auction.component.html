@@ -1,0 +1,9 @@
+<page-auction-data
+  *ngIf="auctionData && !getMonitor.isErrored; else spinner"
+  [auctionData]="auctionData"
+  [title]="GameTitleAbbreviation.FH5"
+>
+</page-auction-data>
+<ng-template #spinner>
+  <big-spinner [monitor]="getMonitor"></big-spinner>
+</ng-template>

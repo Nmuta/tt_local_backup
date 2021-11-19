@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostBinding, HostListener, Input, Renderer2 } fr
 import { Clipboard } from '@helpers/clipboard';
 
 /**
- *
+ *  Directive for displaying an enacting copying on hover.
  */
 @Directive({
   selector: '[hoverToCopy]',

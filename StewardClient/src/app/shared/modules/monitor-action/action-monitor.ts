@@ -1,7 +1,7 @@
 import { cloneDeep, last } from 'lodash';
 import { DateTime } from 'luxon';
-import { BehaviorSubject, MonoTypeOperatorFunction, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, MonoTypeOperatorFunction, NEVER, Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { ActionStatus } from './action-status';
 
 type ActionMonitorMode = 'single-fire' | 'multi-fire';
@@ -56,6 +56,11 @@ export class ActionMonitor {
   /** Returns whether monitor is currently active. */
   public get isActive(): boolean {
     return this.status.state === 'active';
+  }
+
+  /** Returns whether monitor is in an errored state. */
+  public get isErrored(): boolean {
+    return this.status.state === 'error' || this.status.state === 'inactive-error';
   }
 
   /** Returns whether monitor is in a terminal state. */
@@ -137,6 +142,21 @@ export class ActionMonitor {
     };
   }
 
+  /** Produces the RXJS operator for monitoring the end of a multi-fire action. */
+  public monitorCatch<T>(
+    errorHandler: (error: unknown) => Observable<T> = () => NEVER,
+  ): MonoTypeOperatorFunction<T> {
+    this.setMode('multi-fire');
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+
+    return catchError(error => {
+      self.onTransientError(error);
+      return errorHandler(error);
+    });
+  }
+
   /** Call to perform cleanup. */
   public dispose(): ActionMonitor {
     this._status$.complete();
@@ -182,6 +202,15 @@ export class ActionMonitor {
       s.dates.lastEnd = DateTime.local();
     });
     this._status$.error(error);
+  }
+
+  /** Fired when the observable terminates in an error. */
+  private onTransientError(error: unknown): void {
+    this.updateStatus(s => {
+      s.value = null;
+      s.error = error;
+      s.state = 'inactive-error';
+    });
   }
 
   /** Fired when the observable terminates successfully. */

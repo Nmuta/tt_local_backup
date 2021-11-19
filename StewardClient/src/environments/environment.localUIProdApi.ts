@@ -4,8 +4,9 @@ import { environment as baseEnvLocal } from './environment.localUiDevApi';
 import { cloneDeep } from 'lodash';
 import { AllSecondaryAADScopes } from './app-data/aad';
 
-export * from './app-data/tool-list';
 export * from './app-data/aad';
+export * from './app-data/hci';
+export * from './app-data/tool-list';
 
 /** Dev in a prod-like configuration. */
 const modifiedEnvironment: StewardEnvironment = cloneDeep(baseEnvLocal);

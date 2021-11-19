@@ -10,6 +10,7 @@ import { UtcDatePipe } from './utc-date.pipe';
 import { DomainEnumPrettyPrintPipe } from './domain-enum-pretty-print.pipe';
 import { DomainEnumPrettyPrintOrHumanizePipe } from './domain-enum-pretty-print-or-humanize.pipe';
 import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
+import { DurationToMillisPipe } from './duration-to-millis.pipe';
 
 /** Module for various shared pipes. */
 @NgModule({
@@ -23,6 +24,7 @@ import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
     DomainEnumPrettyPrintPipe,
     DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
+    DurationToMillisPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -35,6 +37,7 @@ import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
     DomainEnumPrettyPrintPipe,
     DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
+    DurationToMillisPipe,
   ],
 })
 export class PipesModule {}

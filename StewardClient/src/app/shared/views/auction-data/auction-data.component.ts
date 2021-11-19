@@ -22,8 +22,6 @@ export class AuctionDataComponent extends BaseComponent implements OnChanges {
   @Input() public auctionId: GuidLikeString;
   @Input() public service: AuctionDataServiceContract;
   public auctionData: AuctionData;
-  public auctionFlags: string[] = [];
-  public auctionFlagsCsv: string = ''; // TODO: a nice improvement would be to replace this CSV display with some icons, but we don't have the icons for it right now
   public getMonitor = new ActionMonitor('GET Auction Data');
 
   constructor() {
@@ -40,23 +38,6 @@ export class AuctionDataComponent extends BaseComponent implements OnChanges {
     this.service
       .getAuctionDataByAuctionId$(this.auctionId)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(auctionData => {
-        const newFlags = [];
-        if (auctionData.isFeatured) {
-          newFlags.push('Featured');
-        }
-        if (auctionData.isVipAuction) {
-          newFlags.push('VIP');
-        }
-        if (auctionData.isTurn10Auction) {
-          newFlags.push('Turn 10');
-        }
-        if (auctionData.isHotDeal) {
-          newFlags.push('Hot Deal');
-        }
-        this.auctionData = auctionData;
-        this.auctionFlags = newFlags;
-        this.auctionFlagsCsv = this.auctionFlags.join(', ');
-      });
+      .subscribe(auctionData => (this.auctionData = auctionData));
   }
 }

@@ -51,8 +51,10 @@
     </ng-container>
     <ng-container matColumnDef="auctionId">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Auction</th>
-      <td mat-cell *matCellDef="let a">
-        <standard-copy>{{ action(a).auctionId }}</standard-copy>
+      <td mat-cell *matCellDef="let a" class="shrink">
+        <a [routerLink]="linkGenerator.makeAuctionDetailsRoute(action(a).auctionId)">
+          <standard-copy>{{ action(a).auctionId }}</standard-copy>
+        </a>
       </td>
     </ng-container>
     <ng-container matColumnDef="message">

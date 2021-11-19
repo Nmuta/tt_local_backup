@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
+import { AuctionDetailsLinkGenerator } from '@helpers/link-generators';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { PlayerAuctionAction } from '@models/player-auction-action';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -28,6 +29,7 @@ export interface AuctionActionLogTableServiceContract extends LogTableServiceCon
 export class LogTableLoaderComponent extends BaseComponent implements OnInit {
   @Input() public identity: IdentityResultAlpha;
   @Input() public service: AuctionActionLogTableServiceContract;
+  @Input() public linkGenerator: AuctionDetailsLinkGenerator;
 
   public getMonitor = new ActionMonitor('GET Auction Action Logs');
   public auctionLog: PlayerAuctionAction[] = [];

@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { WoodstockPlayerAuctionActionLogComponent } from './woodstock/woodstock-player-auction-action-log.component';
 import { LogTableLoaderComponent } from './log-table-loader/log-table-loader.component';
+import { RouterModule } from '@angular/router';
 
 /** Components for rendering a player's auction actions. */
 @NgModule({
@@ -54,6 +55,7 @@ import { LogTableLoaderComponent } from './log-table-loader/log-table-loader.com
     ErrorSpinnerModule,
     MatButtonModule,
     DirectivesModule,
+    RouterModule,
   ],
   exports: [SunrisePlayerAuctionActionLogComponent, WoodstockPlayerAuctionActionLogComponent],
 })

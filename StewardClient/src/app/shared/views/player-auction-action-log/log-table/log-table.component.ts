@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { JSONBigInt } from '@helpers/json-bigint';
+import { AuctionDetailsLinkGenerator } from '@helpers/link-generators';
 import { toDateTime } from '@helpers/luxon';
 import { KustoCar } from '@models/kusto-car';
 import { PlayerAuctionAction } from '@models/player-auction-action';
@@ -45,6 +46,7 @@ export class AuctionActionLogTableComponent
   implements OnInit, OnChanges, AfterViewInit {
   @Input() public auctionLog: PlayerAuctionAction[] = [];
   @Input() public service: LogTableServiceContract;
+  @Input() public linkGenerator: AuctionDetailsLinkGenerator;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

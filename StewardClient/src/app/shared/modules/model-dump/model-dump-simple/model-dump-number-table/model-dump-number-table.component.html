@@ -1,0 +1,8 @@
+<table class="info-table" *ngIf="values">
+  <tr *ngFor="let e of values">
+    <th>{{ e.name }}</th>
+    <td>
+      <standard-copy>{{ e.value | bignumber }}</standard-copy>
+    </td>
+  </tr>
+</table>

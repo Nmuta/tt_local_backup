@@ -1,0 +1,158 @@
+<model-dump #source [model]="auctionData" *ngIf="auctionData">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Auction State</mat-card-title>
+      <mat-card-subtitle>Related IDs and flags</mat-card-subtitle>
+    </mat-card-header>
+    <model-dump-xuids></model-dump-xuids>
+    <model-dump-simple-table
+      [values]="source.processedModel.extractedStrings.ids"
+    ></model-dump-simple-table>
+    <model-dump-humanize-table
+      [values]="source.processedModel.extractedStrings.other"
+    ></model-dump-humanize-table>
+    <model-dump-simple-table
+      [values]="source.processedModel.extractedNumbers.ids"
+    ></model-dump-simple-table>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Auction Stats</mat-card-title>
+      <mat-card-subtitle>Dates and values</mat-card-subtitle>
+    </mat-card-header>
+    <div>
+      <model-dump-datetime-table
+        [values]="source.processedModel.extractedDates.all"
+      ></model-dump-datetime-table>
+      <model-dump-duration-table
+        [values]="source.processedModel.extractedDurations.all"
+      ></model-dump-duration-table>
+      <model-dump-number-table
+        [values]="source.processedModel.extractedNumbers.counts"
+      ></model-dump-number-table>
+    </div>
+    <model-dump-price-table
+      [values]="source.processedModel.extractedNumbers.prices"
+    ></model-dump-price-table>
+    <model-dump-price-table
+      [values]="source.processedModel.extractedNumbers.amounts"
+    ></model-dump-price-table>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Auction Info</mat-card-title>
+      <mat-card-subtitle>Flags, counters, and levels</mat-card-subtitle>
+    </mat-card-header>
+    <model-dump-number-table
+      [values]="source.processedModel.extractedNumbers.other"
+    ></model-dump-number-table>
+    <model-dump-flags></model-dump-flags>
+  </mat-card>
+</model-dump>
+
+<model-dump #carSource [model]="auctionData.car" *ngIf="auctionData?.car">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Car Summary</mat-card-title>
+      <mat-card-subtitle>IDs and flags</mat-card-subtitle>
+    </mat-card-header>
+    <model-dump-xuids></model-dump-xuids>
+    <model-dump-simple-table
+      [values]="carSource.processedModel.extractedNumbers.ids"
+    ></model-dump-simple-table>
+    <model-dump-simple-table
+      [values]="carSource.processedModel.extractedStrings.ids"
+    ></model-dump-simple-table>
+    <model-dump-flags></model-dump-flags>
+    <div>
+      <model-dump-datetime-table
+        [values]="carSource.processedModel.extractedDates.all"
+      ></model-dump-datetime-table>
+      <model-dump-duration-table
+        [values]="carSource.processedModel.extractedDurations.all"
+      ></model-dump-duration-table>
+    </div>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Car Stats</mat-card-title>
+      <mat-card-subtitle>Ratings, etc</mat-card-subtitle>
+    </mat-card-header>
+    <model-dump-simple-table
+      [values]="carSource.processedModel.extractedNumbers.counts"
+    ></model-dump-simple-table>
+    <model-dump-simple-table
+      [values]="carSource.processedModel.extractedNumbers.other"
+    ></model-dump-simple-table>
+    <model-dump-humanize-table
+      [values]="carSource.processedModel.extractedStrings.other"
+    ></model-dump-humanize-table>
+  </mat-card>
+</model-dump>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Bids</mat-card-title>
+  </mat-card-header>
+  <table
+    mat-table
+    [dataSource]="bidsData"
+    matSort
+    [matSortActive]="'dateUtc'"
+    [matSortDirection]="'desc'"
+  >
+    <ng-container matColumnDef="top">
+      <th mat-header-cell *matHeaderCellDef>Top?</th>
+      <td mat-cell *matCellDef="let e">
+        <standard-flag
+          [value]="bidsData.cast(e).isTopBid"
+          [matTooltip]="
+            bidsData.cast(e).isTopBid ? 'This is the top bid' : 'This is not the top bid'
+          "
+        ></standard-flag>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateUtc">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Date">
+        Date
+      </th>
+      <td mat-cell *matCellDef="let e">
+        <standard-absolute-time [timeUtc]="bidsData.cast(e).dateUtc"></standard-absolute-time>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="xuid">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by XUID">
+        XUID
+      </th>
+      <td mat-cell *matCellDef="let e">
+        <standard-copy>{{ bidsData.cast(e).xuid }}</standard-copy>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Amount">
+        Amount
+      </th>
+      <td mat-cell *matCellDef="let e">
+        <standard-copy>${{ bidsData.cast(e).amount | bignumber }}</standard-copy>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Status">
+        Status
+      </th>
+      <td mat-cell *matCellDef="let e">
+        <standard-copy>{{ bidsData.cast(e).status | humanize }}</standard-copy>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="bidsDisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: bidsDisplayedColumns"></tr>
+  </table>
+</mat-card>

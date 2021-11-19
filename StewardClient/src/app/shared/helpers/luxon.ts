@@ -1,7 +1,22 @@
 import { isNull, isUndefined } from 'lodash';
 import { DateTime, Duration } from 'luxon';
 
-/** Converts the given source to a Luxon DateTime, if possible. */
+/** Converts the given source to a Luxon DateTime, or returns null. */
+export function tryToDateTime(source: unknown): DateTime {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const converted = toDateTime(source as any);
+    if (converted.isValid) {
+      return converted;
+    } else {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+}
+
+/** Converts the given source to a Luxon DateTime or throws. */
 export function toDateTime(source: string | DateTime | Date): DateTime {
   if (isUndefined(source) || isNull(source)) {
     return source;

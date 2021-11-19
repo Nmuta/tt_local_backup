@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 import { chain, isArray, isPlainObject, map } from 'lodash';
 import { filter, map as rxMap } from 'rxjs/operators';
-import { toDateTime } from '@helpers/luxon';
+import { toDateTime, toDuration } from '@helpers/luxon';
 
 type DeepMapPairsFn = ([key, value]) => [string, unknown];
 function deepMapPairs(
@@ -43,7 +43,10 @@ function deepMapPairs(
   return input;
 }
 
-/** An interceptor that converts all model fields named *Utc to the appropriate date type. */
+/** An interceptor that converts all model fields that match one of these rules to the corresponding luxon type:
+ * - *Utc to DateTime
+ * - *Duration to Duration
+ */
 @Injectable()
 export class UtcInterceptor implements HttpInterceptor {
   /** Interceptor hook. */
@@ -71,6 +74,10 @@ export class UtcInterceptor implements HttpInterceptor {
         const newBody = deepMapPairs(event.body, ([key, value]) => {
           if (key.endsWith('Utc') && typeof value === 'string') {
             return [key, toDateTime(value)];
+          }
+
+          if (key.toUpperCase().endsWith('DURATION') && typeof value === 'string') {
+            return [key, toDuration(value)];
           }
 
           return [key, value];

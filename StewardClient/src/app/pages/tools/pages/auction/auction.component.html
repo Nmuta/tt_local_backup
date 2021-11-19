@@ -1,0 +1,24 @@
+<mat-toolbar>
+  <a [routerLink]="woodstockRouterLink" mat-button routerLinkActive="mat-stroked-button"
+    >FH5
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FH5"> </endpoint-selection>
+  </a>
+  <a [routerLink]="sunriseRouterLink" mat-button routerLinkActive="mat-stroked-button"
+    >FH4
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FH4"> </endpoint-selection>
+  </a>
+  <span class="icon-spacer"></span>
+  <div class="lookup-container">
+    <mat-form-field>
+      <mat-label>Auction ID</mat-label>
+      <input
+        matInput
+        placeholder="fd895fdc-fb7e-4b3f-8e0d-7feaa772cd5d"
+        [formControl]="controls.auctionId"
+      />
+      <mat-hint>Auction IDs may be found with other tools</mat-hint>
+    </mat-form-field>
+  </div>
+  <span class="spacer"></span>
+</mat-toolbar>
+<router-outlet></router-outlet>

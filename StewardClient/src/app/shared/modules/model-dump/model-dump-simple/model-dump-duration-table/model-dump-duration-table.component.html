@@ -1,0 +1,10 @@
+<table class="info-table" *ngIf="values">
+  <tr *ngFor="let e of values">
+    <th>{{ e.name }}</th>
+    <td>
+      <standard-copy [text]="e.value | durationToIso">{{
+        e.value | durationToMillis | humanizeDuration
+      }}</standard-copy>
+    </td>
+  </tr>
+</table>

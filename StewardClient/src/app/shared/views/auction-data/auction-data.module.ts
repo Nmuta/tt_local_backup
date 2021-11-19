@@ -6,6 +6,7 @@ import { StandardCopyModule } from '@components/standard-copy/standard-copy.modu
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
 
 /**
  *  A feature module that displays found auction data.
@@ -19,6 +20,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
     MatTooltipModule,
     StandardDateModule,
     ErrorSpinnerModule,
+    ModelDumpModule,
   ],
   exports: [AuctionDataComponent],
 })

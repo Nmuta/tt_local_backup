@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using Turn10.Data.Common;
 
 #pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped from Kusto)
 #pragma warning disable CS1591 // XML Comments (POCO mapped from Kusto)
