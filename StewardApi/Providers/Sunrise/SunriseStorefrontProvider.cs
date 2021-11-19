@@ -87,9 +87,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var photoOutput = await this.sunriseService.GetPlayerPhoto(tuneId, endpoint).ConfigureAwait(false);
+            var tuneOutput = await this.sunriseService.GetPlayerTune(tuneId, endpoint).ConfigureAwait(false);
 
-            return this.mapper.Map<UGCItem>(photoOutput.result);
+            return this.mapper.Map<UGCItem>(tuneOutput.result);
         }
 
         /// <inheritdoc />

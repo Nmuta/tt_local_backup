@@ -80,9 +80,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var photoOutput = await this.woodstockService.GetPlayerPhoto(tuneId, endpoint).ConfigureAwait(false);
+            var tuneOutput = await this.woodstockService.GetPlayerTune(tuneId, endpoint).ConfigureAwait(false);
 
-            return this.mapper.Map<UGCItem>(photoOutput.result);
+            return this.mapper.Map<UGCItem>(tuneOutput.result);
         }
 
         /// <inheritdoc />
