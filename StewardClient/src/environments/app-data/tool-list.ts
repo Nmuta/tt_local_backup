@@ -2,9 +2,13 @@ import { LoadChildren } from '@angular/router';
 import { UserRole } from '@models/enums';
 import { chain } from 'lodash';
 
-/** App names to load. String portion must be route-friendly. */
+/**
+ * App names to load.
+ * String portion must be route-friendly.
+ * Changing these values will change the routes of the tools.
+ */
 export enum NavbarTool {
-  DataObligation = 'data-pipeline-obligation',
+  DataObligation = 'obligation',
   UGC = 'ugc',
   Gifting = 'gifting',
   UserDetails = 'user-details',
@@ -76,6 +80,7 @@ export interface HomeTileInfoBase {
   readonly icon: string;
   readonly extraIcon?: string;
   readonly tool: NavbarTool;
+  readonly oldToolRoutes?: string[];
   readonly title: string;
   readonly subtitle: string;
   readonly imageUrl?: string;
@@ -254,6 +259,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   {
     icon: AppIcon.DeveloperTool,
     tool: NavbarTool.DataObligation,
+    oldToolRoutes: ['data-pipeline-obligation'],
     accessList: CommonAccessLevels.DataPipelineAppOnly,
     title: 'Obligation',
     subtitle: 'A data pipeline tool',

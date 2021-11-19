@@ -7,11 +7,13 @@ import { ToolsAppComponent } from './tools-app.component';
 import { ToolsAppHomeComponent } from './pages/home/home.component';
 import {
   environment,
+  HomeTileInfo,
   isHomeTileInfoExternal,
   isHomeTileInfoInternal,
 } from '@environments/environment';
 import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { HomeTileInfoExternal, HomeTileInfoInternal } from '@environments/environment.dev';
+import { chain } from 'lodash';
 
 const routes: Routes = [
   {
@@ -40,6 +42,18 @@ const routes: Routes = [
             canActivateChild: [AuthGuard],
           };
         }),
+      // tool redirects
+      ...chain(environment.tools)
+        .filter((tool: HomeTileInfo) => !!tool.oldToolRoutes)
+        .flatMap((tool: HomeTileInfo) =>
+          tool.oldToolRoutes.map(oldName => {
+            return <Route>{
+              path: oldName,
+              redirectTo: tool.tool,
+            };
+          }),
+        )
+        .value(),
       // external tools
       ...environment.tools
         .filter(tool => isHomeTileInfoExternal(tool))
