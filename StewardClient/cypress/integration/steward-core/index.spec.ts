@@ -30,11 +30,7 @@ context('Steward Index', () => {
 
   it('should have link to Support Ticket Tools', () => {
     cy.get('.mat-button-wrapper').contains('Support Ticket Tools').should('exist');
-    cy.contains('a', 'Support Ticket Tools').should(
-      'have.attr',
-      'href',
-      '/support/ticket-app/title',
-    );
+    cy.contains('a', 'Support Ticket Tools').should('have.attr', 'href', '/ticket-app/title');
     // this cannot be fully tested outside of zendesk
     // cy.contains('Steward Support Ticket App').should('exist');
   });

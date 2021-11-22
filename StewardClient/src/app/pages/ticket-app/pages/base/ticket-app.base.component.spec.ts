@@ -94,7 +94,7 @@ describe('TicketAppBaseComponent', () => {
         component.ngOnInit();
 
         expect(mockStore.dispatch).not.toHaveBeenCalledWith(
-          new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
         );
       });
     });
@@ -114,7 +114,7 @@ describe('TicketAppBaseComponent', () => {
         component.ngOnInit();
 
         expect(mockStore.dispatch).toHaveBeenCalledWith(
-          new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
         );
       });
     });

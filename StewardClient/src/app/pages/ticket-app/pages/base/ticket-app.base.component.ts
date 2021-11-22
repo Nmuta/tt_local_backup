@@ -37,9 +37,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
         tap(title => {
           this.gameTitle = title;
           if (!this.isInCorrectTitleRoute(this.gameTitle)) {
-            this.store.dispatch(
-              new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
-            );
+            this.store.dispatch(new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }));
           }
         }),
         takeUntil(this.onDestroy$),

@@ -45,6 +45,18 @@ const routes: Routes = [
   },
   /** Old app redirects. */
   {
+    path: 'support/ticket-app/title/:title',
+    redirectTo: '/ticket-app/title/:title',
+  },
+  {
+    path: 'support/ticket-app/title',
+    redirectTo: '/ticket-app/title',
+  },
+  {
+    path: 'support/ticket-app/',
+    redirectTo: '/ticket-app/title',
+  },
+  {
     path: 'support/navbar-app/tools/:tool/:title',
     redirectTo: '/app/tools/:tool/:title',
   },

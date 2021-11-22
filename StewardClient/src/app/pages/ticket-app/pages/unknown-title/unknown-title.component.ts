@@ -32,27 +32,27 @@ export class UnknownTitleComponent extends BaseComponent implements OnInit {
     switch (title) {
       case GameTitleCodeName.FH5:
         return this.store.dispatch(
-          new Navigate(['/support/ticket-app/title/woodstock'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/woodstock'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.FM8:
         return this.store.dispatch(
-          new Navigate(['/support/ticket-app/title/steelhead'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/steelhead'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.Street:
         return this.store.dispatch(
-          new Navigate(['/support/ticket-app/title/gravity'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/gravity'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.FH4:
         return this.store.dispatch(
-          new Navigate(['/support/ticket-app/title/sunrise'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/sunrise'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.FM7:
         return this.store.dispatch(
-          new Navigate(['/support/ticket-app/title/apollo'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/apollo'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.FH3:
         return this.store.dispatch(
-          new Navigate(['/support/ticket-app/title/opus'], null, { replaceUrl: true }),
+          new Navigate(['/ticket-app/title/opus'], null, { replaceUrl: true }),
         );
     }
   }
