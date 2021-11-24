@@ -6,6 +6,7 @@ import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { GameTitle } from '@models/enums';
 
 /** Displays a Sunrise player's inventory. */
 @Component({
@@ -17,6 +18,8 @@ export class SunrisePlayerInventoryComponent extends PlayerInventoryBaseComponen
   SunriseMasterInventory,
   IdentityResultAlpha
 > {
+  public gameTitle = GameTitle.FH4;
+
   constructor(private readonly sunrise: SunriseService) {
     super();
   }

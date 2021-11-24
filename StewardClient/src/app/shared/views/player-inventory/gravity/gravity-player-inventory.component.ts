@@ -6,6 +6,7 @@ import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { GameTitle } from '@models/enums';
 
 /** Displays a Gravity player's inventory. */
 @Component({
@@ -17,6 +18,8 @@ export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponen
   GravityPlayerInventory,
   IdentityResultBeta
 > {
+  public gameTitle = GameTitle.Street;
+
   constructor(private readonly gravity: GravityService) {
     super();
   }

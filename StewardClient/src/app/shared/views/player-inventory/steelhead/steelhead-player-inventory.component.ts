@@ -6,6 +6,7 @@ import { SteelheadService } from '@services/steelhead';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { GameTitle } from '@models/enums';
 
 /** Displays an Steelhead player's inventory. */
 @Component({
@@ -17,6 +18,8 @@ export class SteelheadPlayerInventoryComponent extends PlayerInventoryBaseCompon
   SteelheadMasterInventory,
   IdentityResultAlpha
 > {
+  public gameTitle = GameTitle.FM8;
+
   constructor(private readonly steelhead: SteelheadService) {
     super();
   }

@@ -1,0 +1,8 @@
+@import '/src/styles/mixins';
+
+.hotfix-qcl {
+  color: app-color-default($app-warn);
+  background-color: app-color-default-contrast($app-warn);
+  margin-bottom: $gap-medium;
+  display: block;
+}

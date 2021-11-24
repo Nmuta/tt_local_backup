@@ -18,6 +18,7 @@ import { SunriseMasterInventory } from '@models/sunrise';
 import { combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { GameTitle } from '@models/enums';
 
 export type AcceptablePlayerInventoryTypeUnion =
   | GravityPlayerInventory
@@ -65,6 +66,8 @@ export abstract class PlayerInventoryBaseComponent<
 
   /** Intermediate event that is fired when @see profileId changes. */
   private profileId$ = new Subject<BigNumber | string | undefined | null>();
+
+  public abstract gameTitle: GameTitle;
 
   /** Implement in order to retrieve concrete identity instance. */
   protected abstract getPlayerInventoryByIdentity$(

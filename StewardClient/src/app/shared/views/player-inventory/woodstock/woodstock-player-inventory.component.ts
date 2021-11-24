@@ -6,6 +6,7 @@ import { WoodstockService } from '@services/woodstock';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { GameTitle } from '@models/enums';
 
 /** Displays a Woodstock player's inventory. */
 @Component({
@@ -17,6 +18,8 @@ export class WoodstockPlayerInventoryComponent extends PlayerInventoryBaseCompon
   WoodstockMasterInventory,
   IdentityResultAlpha
 > {
+  public gameTitle = GameTitle.FH5;
+
   constructor(private readonly woodstock: WoodstockService) {
     super();
   }

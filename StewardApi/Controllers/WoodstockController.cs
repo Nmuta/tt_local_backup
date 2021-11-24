@@ -1668,13 +1668,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         private async Task<WoodstockMasterInventory> RetrieveMasterInventoryListAsync()
         {
-            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Cars);
-            var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5CarHorns);
-            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5VanityItems);
-            var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Emotes);
-            var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5QuickChatLines);
+            var getCars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Cars);
+            var getCarHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5CarHorns);
+            var getVanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5VanityItems);
+            var getEmotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Emotes);
+            var getQuickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5QuickChatLines);
 
-            await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
+            await Task.WhenAll(getCars, getCarHorns, getVanityItems, getEmotes, getQuickChatLines).ConfigureAwait(true);
+
+            var quickChatLines = await getQuickChatLines.ConfigureAwait(true);
+
+            // TODO: Remove this hotfix for item 459 (Gotta Smash Em All!) when Services GameDB is update
+            try
+            {
+                var itemToRemove = quickChatLines.Single(r => r.Id == 459);
+                quickChatLines.Remove(itemToRemove);
+            }
+            catch (Exception ex)
+            {
+                 // EMPTY, ignore if it doesn't exist
+            }
 
             var masterInventory = new WoodstockMasterInventory
             {
@@ -1687,11 +1700,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
                     //// new MasterInventoryItem { Id = -1, Description = "BackstagePasses" }
                 },
-                Cars = await cars.ConfigureAwait(true),
-                CarHorns = await carHorns.ConfigureAwait(true),
-                VanityItems = await vanityItems.ConfigureAwait(true),
-                Emotes = await emotes.ConfigureAwait(true),
-                QuickChatLines = await quickChatLines.ConfigureAwait(true),
+                Cars = await getCars.ConfigureAwait(true),
+                CarHorns = await getCarHorns.ConfigureAwait(true),
+                VanityItems = await getVanityItems.ConfigureAwait(true),
+                Emotes = await getEmotes.ConfigureAwait(true),
+                QuickChatLines = quickChatLines,
             };
 
             return masterInventory;

@@ -6,6 +6,7 @@ import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { GameTitle } from '@models/enums';
 
 /** Displays an Apollo player's inventory. */
 @Component({
@@ -17,6 +18,8 @@ export class ApolloPlayerInventoryComponent extends PlayerInventoryBaseComponent
   ApolloMasterInventory,
   IdentityResultAlpha
 > {
+  public gameTitle = GameTitle.FM7;
+
   constructor(private readonly apollo: ApolloService) {
     super();
   }

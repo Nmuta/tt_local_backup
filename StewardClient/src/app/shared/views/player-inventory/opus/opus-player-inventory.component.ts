@@ -6,6 +6,7 @@ import { OpusService } from '@services/opus';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { GameTitle } from '@models/enums';
 
 /** Displays an Opus player's inventory. */
 @Component({
@@ -17,6 +18,8 @@ export class OpusPlayerInventoryComponent extends PlayerInventoryBaseComponent<
   OpusMasterInventory,
   IdentityResultAlpha
 > {
+  public gameTitle = GameTitle.FH3;
+
   constructor(private readonly opus: OpusService) {
     super();
   }
