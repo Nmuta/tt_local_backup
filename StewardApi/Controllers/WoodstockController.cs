@@ -1679,14 +1679,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var quickChatLines = await getQuickChatLines.ConfigureAwait(true);
 
             // TODO: Remove this hotfix for item 459 (Gotta Smash Em All!) when Services GameDB is update
-            try
+            var itemToRemove = quickChatLines.FirstOrDefault(r => r.Id == 459);
+            if (itemToRemove != null)
             {
-                var itemToRemove = quickChatLines.Single(r => r.Id == 459);
                 quickChatLines.Remove(itemToRemove);
-            }
-            catch (Exception ex)
-            {
-                 // EMPTY, ignore if it doesn't exist
             }
 
             var masterInventory = new WoodstockMasterInventory
