@@ -92,22 +92,22 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Basic query for getting the FH5 CarHorn data.
         /// </summary>
-        public const string GetFH5CarHorns = "FH5_CarHorns | project Id=['id'], column_ifexists('DisplayNameEnglish', '')";
+        public const string GetFH5CarHorns = "FH5_CarHorns | project Id=['id'], column_ifexists('DisplayName', '')";
 
         /// <summary>
         ///     Basic query for getting the FH5 VanityItem data.
         /// </summary>
-        public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayNameEnglish, ItemID)";
+        public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayName, ItemID)";
 
         /// <summary>
         ///     Basic query for getting the FH5 Emote data.
         /// </summary>
-        public const string GetFH5Emotes = "FH5_EmoteData | project Id=['id'], column_ifexists('NameEnglish', '')";
+        public const string GetFH5Emotes = "FH5_EmoteData | project Id=['id'], column_ifexists('Name', '')";
 
         /// <summary>
         ///     Basic query for getting the FH5 QuickChatLine data.
         /// </summary>
-        public const string GetFH5QuickChatLines = "FH5_QuickChatData | project Id=['id'], column_ifexists('ChatMessageEnglish', '')";
+        public const string GetFH5QuickChatLines = "FH5_QuickChatData | project Id=['id'], column_ifexists('ChatMessage', '')";
 
         /// <summary>
         ///     Allowed queries to get detailed car lists from Kusto.
