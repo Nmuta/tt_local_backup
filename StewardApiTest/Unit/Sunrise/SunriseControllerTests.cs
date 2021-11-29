@@ -336,7 +336,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query}).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -353,7 +353,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var query = new IdentityQueryAlpha {Xuid = default, Gamertag = null};
+            var query = new IdentityQueryAlpha { Xuid = default, Gamertag = null };
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
@@ -488,7 +488,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             foreach (var action in actions)
             {
-                action.Should().Throw<BadHeaderStewardException>().WithMessage(string.Format(TestConstants.BadHeaderStewardExceptionBadEndpointKeyMessagePartial, "Tiger", "Sunrise")) ;
+                action.Should().Throw<BadHeaderStewardException>().WithMessage(string.Format(TestConstants.BadHeaderStewardExceptionBadEndpointKeyMessagePartial, "Tiger", "Sunrise"));
             }
         }
 
@@ -872,21 +872,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.GetProfileNotesAsync(xuid).ConfigureAwait(false),
-            };
+            async Task<IActionResult> Action() => await controller.GetProfileNotesAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as IList<ProfileNote>;
-                details.Should().NotBeNull();
-                details.Should().BeOfType<List<ProfileNote>>();
-            }
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<ProfileNote>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<ProfileNote>>();
         }
 
         [TestMethod]
@@ -917,16 +911,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.AddProfileNoteAsync(xuid, null).ConfigureAwait(false)
-            };
+            Func<Task<IActionResult>> action = async () => await controller.AddProfileNoteAsync(xuid, null).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "profileNote"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "profileNote"));
         }
 
         [TestMethod]
@@ -1079,20 +1067,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupGift).ConfigureAwait(false),
-            };
+            async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupGift).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as OkObjectResult;
-                result.Should().NotBeNull();
-                result.StatusCode.Should().Be(200);
-                result.Value.Should().NotBeNull();
-            }
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -1103,21 +1085,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
-            };
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
+        public async Task UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -1129,18 +1105,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false),
-            };
+            async Task<IActionResult> Action() => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                // To reset the context and prevent header key collision, rebuild the Dependencies.
-                controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<CreatedResult>();
-            }
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<CreatedResult>();
         }
 
         [TestMethod]
@@ -1151,16 +1120,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
-            };
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
         }
 
         [TestMethod]
@@ -1312,7 +1275,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            
+
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
@@ -1336,11 +1299,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var groupId = Fixture.Create<int>();
             var duration = TimeSpan.FromDays(1);
             var deviceType = DeviceType.All;
-            
+
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null, Duration = duration}).ConfigureAwait(false),
+                async () =>
+                await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
@@ -1661,16 +1625,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var status = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await controller.GetAuctions(xuid, status:status).ConfigureAwait(false),
-            };
+            Func<Task> action = async () => await controller.GetAuctions(xuid, status: status).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Invalid AuctionStatus provided: {status}");
-            }
+            action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Invalid AuctionStatus provided: {status}");
         }
 
         [TestMethod]
@@ -1683,16 +1641,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var sort = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await controller.GetAuctions(xuid, sort:sort).ConfigureAwait(false),
-            };
+            Func<Task> action = async () => await controller.GetAuctions(xuid, sort: sort).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Invalid AuctionSort provided: {sort}");
-            }
+            action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Invalid AuctionSort provided: {sort}");
         }
 
         [TestMethod]
@@ -1980,14 +1932,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
-                this.SunriseServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.SunriseServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.SunriseNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.SunriseNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.SunriseNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
                 this.SunriseNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
-                this.SunriseNotificationProvider.GetGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Build<UserGroupNotification>().With(x => x.NotificationType,"CommunityMessageNotification").Create());
+                this.SunriseNotificationProvider.GetGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Build<UserGroupNotification>().With(x => x.NotificationType, "CommunityMessageNotification").Create());
                 this.SunrisePlayerDetailsProvider.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ProfileNote>>());
                 this.SunrisePlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(Arg.Any<ulong>(), Arg.Any<AuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<PlayerAuction>>());
@@ -2003,7 +1955,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
-            
+
             public ISunrisePlayerDetailsProvider SunrisePlayerDetailsProvider { get; set; } = Substitute.For<ISunrisePlayerDetailsProvider>();
 
             public ISunrisePlayerInventoryProvider SunrisePlayerInventoryProvider { get; set; } = Substitute.For<ISunrisePlayerInventoryProvider>();

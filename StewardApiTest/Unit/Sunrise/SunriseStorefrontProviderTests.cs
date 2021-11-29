@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUGCLiveryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUGCLiveryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -139,15 +139,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            Func<Task<UGCItem>> act = async () => await provider.GetUGCLivery(liveryId, endpointKey).ConfigureAwait(false);
+            async Task<UGCItem> Action() => await provider.GetUGCLivery(liveryId, endpointKey).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<UGCItem>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<UGCItem>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUGCPhotoAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUGCPhotoAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -155,10 +156,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            Func<Task<UGCItem>> act = async () => await provider.GetUGCPhoto(photoId, endpointKey).ConfigureAwait(false);
+            async Task<UGCItem> Action() => await provider.GetUGCPhoto(photoId, endpointKey).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<UGCItem>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<UGCItem>();
         }
 
         [TestMethod]

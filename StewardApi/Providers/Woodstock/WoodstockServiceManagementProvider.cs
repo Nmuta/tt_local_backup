@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<AuctionBlocklistEntry>> GetAuctionBlocklistAsync(int maxResults, string endpoint)
+        public async Task<IList<AuctionBlockListEntry>> GetAuctionBlockListAsync(int maxResults, string endpoint)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -72,34 +72,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 var forzaAuctions = await this.woodstockService.GetAuctionBlockList(maxResults, endpoint).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<AuctionBlocklistEntry>>(forzaAuctions.blocklistEntries);
+                return this.mapper.Map<IList<AuctionBlockListEntry>>(forzaAuctions.blocklistEntries);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException("Search auctions blocklist failed.", ex);
+                throw new UnknownFailureStewardException("Search auctions block list failed.", ex);
             }
         }
 
         /// <inheritdoc />
-        public async Task AddAuctionBlocklistEntriesAsync(IList<AuctionBlocklistEntry> blocklistEntries, string endpoint)
+        public async Task AddAuctionBlockListEntriesAsync(IList<AuctionBlockListEntry> blockListEntries, string endpoint)
         {
-            blocklistEntries.ShouldNotBeNull(nameof(blocklistEntries));
+            blockListEntries.ShouldNotBeNull(nameof(blockListEntries));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var convertedEntries = this.mapper.Map<ForzaAuctionBlocklistEntry[]>(blocklistEntries);
+                var convertedEntries = this.mapper.Map<ForzaAuctionBlocklistEntry[]>(blockListEntries);
 
                 await this.woodstockService.AddAuctionBlocklistEntriesAsync(convertedEntries, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException("Auction blocklist additions failed.", ex);
+                throw new UnknownFailureStewardException("Auction block list additions failed.", ex);
             }
         }
 
         /// <inheritdoc />
-        public async Task DeleteAuctionBlocklistEntriesAsync(IList<int> carIds, string endpoint)
+        public async Task DeleteAuctionBlockListEntriesAsync(IList<int> carIds, string endpoint)
         {
             carIds.ShouldNotBeNull(nameof(carIds));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException("Auction blocklist deletions failed.", ex);
+                throw new UnknownFailureStewardException("Auction block list deletions failed.", ex);
             }
         }
     }

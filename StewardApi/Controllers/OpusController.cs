@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            string MakeKey(IdentityQueryAlpha identityQuery)
+            static string MakeKey(IdentityQueryAlpha identityQuery)
             {
                 return OpusCacheKey.MakeIdentityLookupKey(identityQuery.Gamertag, identityQuery.Xuid);
             }
@@ -171,7 +170,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                return await this.opusPlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+                return await this.opusPlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

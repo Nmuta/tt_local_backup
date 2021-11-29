@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -101,14 +101,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                var response = action();
-                response.Result.Should().BeOfType<SunrisePlayerInventory>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<SunrisePlayerInventory>();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -116,15 +116,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<SunriseInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<IList<SunriseInventoryProfile>> Action() => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseInventoryProfile>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<SunriseInventoryProfile>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetAccountInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetAccountInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -132,10 +133,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<SunriseAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<SunriseAccountInventory> Action() => await provider.GetAccountInventoryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<SunriseAccountInventory>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<SunriseAccountInventory>();
         }
 
 

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
@@ -114,9 +113,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// </summary>
         public static readonly IList<string> AllowedDetailedKustoCarQueries = new List<string>()
         {
-            KustoQueries.GetFH4CarsDetailed,
-            KustoQueries.GetFH5CarsDetailed,
-            KustoQueries.GetFM8CarsDetailed,
+            GetFH4CarsDetailed,
+            GetFH5CarsDetailed,
+            GetFM8CarsDetailed,
         };
     }
 }

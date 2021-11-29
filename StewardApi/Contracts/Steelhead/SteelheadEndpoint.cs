@@ -11,20 +11,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     public static class SteelheadEndpoint
     {
         /// <summary>
-        ///     Gets Steelhead development LSP endpoint.
+        ///     Gets development LSP endpoint.
         /// </summary>
-        public static string Development
-        {
-            get => "https://Steelhead-Flight-12.dev.services.forzamotorsport.net/Services/o.xtsw";
-        }
+        public static string Development => "https://Steelhead-Flight-12.dev.services.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
-        ///     Gets Sunrise studio LSP endpoint.
+        ///     Gets studio LSP endpoint.
         /// </summary>
-        public static string Studio
-        {
-            get => null;
-        }
+        public static string Studio => null;
 
         /// <summary>
         ///     Converts endpoint key into endpoint.

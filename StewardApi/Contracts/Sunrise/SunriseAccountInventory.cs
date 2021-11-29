@@ -1,6 +1,4 @@
-﻿using Turn10.LiveOps.StewardApi.Contracts.Common;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
 {
     /// <summary>
     ///     Represents items tied to a player's account/xuid, and not their inventory profile.

@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -73,12 +73,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<LspGroup>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<LspGroup>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetAuctionBlocklistAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetAuctionBlockListAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -86,15 +87,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<AuctionBlocklistEntry>> Action() => await provider.GetAuctionBlocklistAsync(maxResults, endpoint).ConfigureAwait(false);
+            async Task<IList<AuctionBlockListEntry>> Action() => await provider.GetAuctionBlockListAsync(maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<AuctionBlocklistEntry>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<AuctionBlockListEntry>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetAuctionBlocklistAsync_WithInvalidMaxResults_Throws()
+        public void GetAuctionBlockListAsync_WithInvalidMaxResults_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -102,7 +104,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<AuctionBlocklistEntry>>> action = async () => await provider.GetAuctionBlocklistAsync(maxResults, endpoint).ConfigureAwait(false);
+            Func<Task<IList<AuctionBlockListEntry>>> action = async () => await provider.GetAuctionBlockListAsync(maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
@@ -110,17 +112,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void AddAuctionBlocklistEntriesAsync_WithValidParameters_ReturnsCorrectType()
+        public void AddAuctionBlockListEntriesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var blocklistEntries = Fixture.Create<IList<AuctionBlocklistEntry>>();
+            var blockListEntries = Fixture.Create<IList<AuctionBlockListEntry>>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.AddAuctionBlocklistEntriesAsync(blocklistEntries, endpoint).ConfigureAwait(false)
+                async () => await provider.AddAuctionBlockListEntriesAsync(blockListEntries, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -132,28 +134,22 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void AddAuctionBlocklistEntriesAsync_WithNullBlocklistEntries_Throws()
+        public void AddAuctionBlockListEntriesAsync_WithNullBlockListEntries_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.AddAuctionBlocklistEntriesAsync(null, endpoint).ConfigureAwait(false),
-            };
+            Func<Task> action = async () => await provider.AddAuctionBlockListEntriesAsync(null, endpoint).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "blocklistEntries"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "blockListEntries"));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DeleteAuctionBlocklistEntriesAsync_WithValidParameters_ReturnsCorrectType()
+        public void DeleteAuctionBlockListEntriesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -161,37 +157,25 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.DeleteAuctionBlocklistEntriesAsync(carIds, endpoint).ConfigureAwait(false)
-            };
+            Func<Task> action = async () => await provider.DeleteAuctionBlockListEntriesAsync(carIds, endpoint).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().NotThrow();
-            }
+            action.Should().NotThrow();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DeleteAuctionBlocklistEntriesAsync_WithNullCarIds_Throws()
+        public void DeleteAuctionBlockListEntriesAsync_WithNullCarIds_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.DeleteAuctionBlocklistEntriesAsync(null, endpoint).ConfigureAwait(false),
-            };
+            Func<Task> action = async () => await provider.DeleteAuctionBlockListEntriesAsync(null, endpoint).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "carIds"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "carIds"));
         }
 
         private sealed class Dependencies
@@ -201,7 +185,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
                 this.SunriseService.GetAuctionBlockListAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<AuctionManagementService.GetAuctionBlocklistOutput>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
-                this.Mapper.Map<IList<AuctionBlocklistEntry>>(Arg.Any<ForzaAuctionBlocklistEntry[]>()).Returns(Fixture.Create<IList<AuctionBlocklistEntry>>());
+                this.Mapper.Map<IList<AuctionBlockListEntry>>(Arg.Any<ForzaAuctionBlocklistEntry[]>()).Returns(Fixture.Create<IList<AuctionBlockListEntry>>());
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

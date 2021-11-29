@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Forza.LiveOps.FH5.Generated;
-using Forza.UserInventory.FH5.Generated;
 using Forza.WebServices.FH5.Generated;
 using AuctionManagementService = Forza.LiveOps.FH5.Generated.AuctionManagementService;
-using ForzaUserBanParameters = Forza.LiveOps.FH5.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH5.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH5.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH5.Generated.UserInventoryService;

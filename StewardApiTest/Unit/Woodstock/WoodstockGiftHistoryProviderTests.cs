@@ -91,8 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> act = async () =>
-                await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -200,7 +199,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -210,11 +209,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<WoodstockGiftHistory>>> act = async () =>
-                await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
+            async Task<IList<WoodstockGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<List<WoodstockGiftHistory>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<WoodstockGiftHistory>>();
         }
 
         [TestMethod]

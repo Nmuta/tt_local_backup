@@ -586,7 +586,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var startIndex = -1;
+            const int startIndex = -1;
             var maxResults = Fixture.Create<int>();
 
             // Act.
@@ -604,7 +604,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var startIndex = Fixture.Create<int>();
-            var maxResults = -1;
+            const int maxResults = -1;
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
@@ -925,21 +925,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var controller = new Dependencies().Build();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
-            };
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
+        public async Task UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -948,18 +942,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false),
-            };
+            async Task<IActionResult> Action() => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                // To reset the context and prevent header key collision, rebuild the Dependencies.
-                controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<CreatedResult>();
-            }
+            // To reset the context and prevent header key collision, rebuild the Dependencies.
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<CreatedResult>();
         }
 
         [TestMethod]
@@ -970,16 +958,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var controller = new Dependencies().Build();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
-            };
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
         }
 
         [TestMethod]
@@ -1133,8 +1115,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var actions = new List<Func<Task<IActionResult>>>
             {
                 async () => await controller.SendPlayerNotifications(null).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, null).ConfigureAwait(false),
-        };
+                async () => await controller.SendGroupNotifications(groupId, null).ConfigureAwait(false)
+            };
 
             // Assert.
             foreach (var action in actions)
@@ -1161,7 +1143,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
                 async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.Empty, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false)
             };
 
             // Assert.
@@ -1180,7 +1162,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var groupId = Fixture.Create<int>();
             var tooLong = new string('*', 520);
             var duration = TimeSpan.FromDays(1);
-            var deviceType = DeviceType.All;
+            const DeviceType deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task>>

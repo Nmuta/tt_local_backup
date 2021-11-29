@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -80,23 +80,25 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<OpusPlayerInventory>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<OpusPlayerInventory>();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            async Task<IList<OpusInventoryProfile>> xuidAct() => await provider.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
+            async Task<IList<OpusInventoryProfile>> Action() => await provider.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            xuidAct().Result.Should().BeOfType<List<OpusInventoryProfile>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<OpusInventoryProfile>>();
         }
 
         private sealed class Dependencies

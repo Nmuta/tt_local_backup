@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoFixture.Kernel;
 using AutoMapper;
 using Forza.LiveOps.FH4.Generated;
 using Turn10.Data.Common;

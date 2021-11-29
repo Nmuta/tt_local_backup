@@ -1,7 +1,4 @@
-﻿using System;
-using Forza.LiveOps.FH4.Generated;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents player ugc search filters.

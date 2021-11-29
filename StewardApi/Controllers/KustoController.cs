@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -146,17 +143,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var allEntitlements = new List<Entitlement>();
             if (getPurchasedEntitlements.IsCompletedSuccessfully)
             {
-                allEntitlements.AddRange(getPurchasedEntitlements.Result);
+                allEntitlements.AddRange(getPurchasedEntitlements.GetAwaiter().GetResult());
             }
 
             if (getRefundedEntitlements.IsCompletedSuccessfully)
             {
-                allEntitlements.AddRange(getRefundedEntitlements.Result);
+                allEntitlements.AddRange(getRefundedEntitlements.GetAwaiter().GetResult());
             }
 
             if (getCancelledEntitlements.IsCompletedSuccessfully)
             {
-                allEntitlements.AddRange(getCancelledEntitlements.Result);
+                allEntitlements.AddRange(getCancelledEntitlements.GetAwaiter().GetResult());
             }
 
             return this.Ok(allEntitlements);

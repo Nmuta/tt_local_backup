@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -100,7 +100,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<IdentityResultAlpha>> Action() => await provider.GetPlayerIdentitiesAsync(queries, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<IdentityResultAlpha>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<IdentityResultAlpha>>();
         }
 
         [TestMethod]
@@ -143,7 +144,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -161,7 +162,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeTrue();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeTrue();
             }
         }
 
@@ -190,7 +192,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -202,7 +204,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<ConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ConsoleDetails>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<ConsoleDetails>>();
         }
 
         [TestMethod]
@@ -224,7 +227,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -237,12 +240,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<SharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SharedConsoleUser>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<SharedConsoleUser>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -253,9 +257,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<WoodstockUserFlags> Action() => await provider.GetUserFlagsAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<WoodstockUserFlags>();
-            Action().Result.ShouldNotBeNull();
-            Action().Result.IsEarlyAccess.Should().Be(false);
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<WoodstockUserFlags>();
+            result.IsEarlyAccess.Should().BeFalse();
         }
 
         [TestMethod]
@@ -293,7 +297,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetProfileSummaryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetProfileSummaryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -304,12 +308,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<ProfileSummary> Action() => await provider.GetProfileSummaryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<ProfileSummary>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<ProfileSummary>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetCreditUpdatesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetCreditUpdatesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -322,12 +327,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<CreditUpdate>> Action() => await provider.GetCreditUpdatesAsync(xuid, startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<CreditUpdate>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<CreditUpdate>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetBackstagePassTransactionsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetBackstagePassTransactionsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -338,12 +344,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<BackstagePassUpdate>> Action() => await provider.GetBackstagePassUpdatesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<BackstagePassUpdate>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<BackstagePassUpdate>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void BanUsersAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task BanUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -355,7 +362,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<BanResult>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<BanResult>>();
         }
 
         [TestMethod]
@@ -400,7 +408,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -411,12 +419,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<BanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<BanSummary>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<BanSummary>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -424,16 +433,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
-            {
-                async () => await provider.GetUserBanHistoryAsync(xuid, endpoint).ConfigureAwait(false)
-            };
+            async Task<IList<LiveOpsBanHistory>> Action() => await provider.GetUserBanHistoryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
-            }
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<LiveOpsBanHistory>>();
         }
 
          private List<WoodstockBanParameters> GenerateBanParameters()

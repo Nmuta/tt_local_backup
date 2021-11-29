@@ -47,10 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         /// </summary>
         public bool IsTimeAgnostic
         {
-            get
-            {
-                return this.isTimeAgnostic;
-            }
+            get => this.isTimeAgnostic;
 
             set
             {
@@ -116,10 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
                 return this.maxExecutionSpan;
             }
 
-            set
-            {
-                this.maxExecutionSpan = value;
-            }
+            set => this.maxExecutionSpan = value;
         }
 
         /// <summary>

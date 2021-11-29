@@ -64,17 +64,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<IdentityResultAlpha>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<IdentityResultAlpha>();
         }
 
         [TestMethod]
@@ -93,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerDetailsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerDetailsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -110,7 +111,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<OpusPlayerDetails>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<OpusPlayerDetails>();
             }
         }
 
@@ -138,17 +140,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<bool>> act = async () => await provider.DoesPlayerExistAsync(xuid).ConfigureAwait(false);
+            async Task<bool> Action() => await provider.DoesPlayerExistAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeTrue();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeTrue();
         }
 
         private sealed class Dependencies

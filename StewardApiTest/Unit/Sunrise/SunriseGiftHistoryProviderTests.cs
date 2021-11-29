@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -211,11 +211,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<SunriseGiftHistory>>> act = async () =>
-                await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
+            async Task<IList<SunriseGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<List<SunriseGiftHistory>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<SunriseGiftHistory>>();
         }
 
         [TestMethod]

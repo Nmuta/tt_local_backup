@@ -185,7 +185,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return SunriseCacheKey.MakeIdentityLookupKey(endpoint, identityQuery.Gamertag, identityQuery.Xuid);
             }
 
-            var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
+            var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v))).ToList();
             if (cachedResults.All(result => result != null))
             {
                 return this.Ok(cachedResults.ToList());
@@ -481,8 +481,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
 
-            var auctions = getAuctions.Result;
-            var kustoCars = getKustoCars.Result;
+            var auctions = getAuctions.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             foreach (var auction in auctions)
             {
@@ -557,8 +557,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
 
-            var ugCItems = getUgcItems.Result;
-            var kustoCars = getKustoCars.Result;
+            var ugCItems = getUgcItems.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             foreach (var item in ugCItems)
             {
@@ -592,8 +592,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
 
-            var ugCItems = getUgcItems.Result;
-            var kustoCars = getKustoCars.Result;
+            var ugCItems = getUgcItems.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             foreach (var item in ugCItems)
             {
@@ -618,8 +618,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
 
-            var livery = getLivery.Result;
-            var kustoCars = getKustoCars.Result;
+            var livery = getLivery.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             var carData = kustoCars.FirstOrDefault(car => car.Id == livery.CarId);
             livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
@@ -641,8 +641,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
 
-            var photo = getPhoto.Result;
-            var kustoCars = getKustoCars.Result;
+            var photo = getPhoto.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             var carData = kustoCars.FirstOrDefault(car => car.Id == photo.CarId);
             photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
@@ -664,8 +664,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
 
-            var tune = getTune.Result;
-            var kustoCars = getKustoCars.Result;
+            var tune = getTune.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             var carData = kustoCars.FirstOrDefault(car => car.Id == tune.CarId);
             tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
@@ -722,57 +722,57 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets auction house blocklist entries.
+        ///     Gets auction house block list entries.
         /// </summary>
         [HttpGet("auctions/blocklist")]
-        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
-        public async Task<IActionResult> GetAuctionBlocklist(
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
+        public async Task<IActionResult> GetAuctionBlockList(
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0);
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            var getBlocklist = this.sunriseServiceManagementProvider.GetAuctionBlocklistAsync(maxResults, endpoint);
+            var getBlockList = this.sunriseServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
-            await Task.WhenAll(getBlocklist, getKustoCars).ConfigureAwait(true);
+            await Task.WhenAll(getBlockList, getKustoCars).ConfigureAwait(true);
 
-            var blocklist = getBlocklist.Result;
-            var kustoCars = getKustoCars.Result;
+            var blockList = getBlockList.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
-            foreach (var entry in blocklist)
+            foreach (var entry in blockList)
             {
                 var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
                 entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
             }
 
-            return this.Ok(blocklist);
+            return this.Ok(blockList);
         }
 
         /// <summary>
-        ///     Adds entries to auction house blocklist.
+        ///     Adds entries to auction house block list.
         /// </summary>
         [HttpPost("auctions/blocklist")]
-        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
-        public async Task<IActionResult> AddEntriesToAuctionBlocklist(
-            [FromBody] IList<AuctionBlocklistEntry> entries)
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
+        public async Task<IActionResult> AddEntriesToAuctionBlockList(
+            [FromBody] IList<AuctionBlockListEntry> entries)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            await this.sunriseServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries, endpoint).ConfigureAwait(true);
+            await this.sunriseServiceManagementProvider.AddAuctionBlockListEntriesAsync(entries, endpoint).ConfigureAwait(true);
 
             return this.Ok(entries);
         }
 
         /// <summary>
-        ///     Removes an entry from auction house blocklist.
+        ///     Removes an entry from auction house block list.
         /// </summary>
         [HttpDelete("auctions/blocklist/carId({carId})")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> RemoveEntryFromAuctionBlocklist(
+        public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            await this.sunriseServiceManagementProvider.DeleteAuctionBlocklistEntriesAsync(new List<int> { carId }, endpoint).ConfigureAwait(true);
+            await this.sunriseServiceManagementProvider.DeleteAuctionBlockListEntriesAsync(new List<int> { carId }, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -1184,7 +1184,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         allowedToExceedCreditLimit,
                         endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
                 }
@@ -1471,8 +1471,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var requesterObjectId = userClaims.ObjectId;
 
             var groups = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(
-                endpoint).ConfigureAwait(false);
-            if (!groups.Any(x => x.Id == groupId))
+                endpoint).ConfigureAwait(true);
+            if (groups.All(x => x.Id != groupId))
             {
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
@@ -1699,34 +1699,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var car in gift.Cars)
             {
-                var validItem = masterInventoryItem.Cars.Any(data => { return data.Id == car.Id; });
+                var validItem = masterInventoryItem.Cars.Any(data => data.Id == car.Id);
                 error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var carHorn in gift.CarHorns)
             {
-                var validItem = masterInventoryItem.CarHorns.Any(data => { return data.Id == carHorn.Id; });
+                var validItem = masterInventoryItem.CarHorns.Any(data => data.Id == carHorn.Id);
                 error += validItem
                     ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var vanityItem in gift.VanityItems)
             {
-                var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
+                var validItem = masterInventoryItem.VanityItems.Any(data => data.Id == vanityItem.Id);
                 error += validItem
                     ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var emote in gift.Emotes)
             {
-                var validItem = masterInventoryItem.Emotes.Any(data => { return data.Id == emote.Id; });
+                var validItem = masterInventoryItem.Emotes.Any(data => data.Id == emote.Id);
                 error += validItem
                     ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var quickChatLine in gift.QuickChatLines)
             {
-                var validItem = masterInventoryItem.QuickChatLines.Any(data => { return data.Id == quickChatLine.Id; });
+                var validItem = masterInventoryItem.QuickChatLines.Any(data => data.Id == quickChatLine.Id);
                 error += validItem
                     ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }

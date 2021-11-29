@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -74,7 +74,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<LspGroup>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<LspGroup>>();
         }
 
         private sealed class Dependencies

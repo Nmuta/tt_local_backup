@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
 {
     /// <summary>
     ///     Represents an endpoint for use by Gravity service wrapper.
@@ -14,9 +9,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         /// <summary>
         ///     Gets Gravity development LSP endpoint.
         /// </summary>
-        public static string Retail
-        {
-            get => "https://gameservices.street.forzamotorsport.net/Services/o.xtsw";
-        }
+        public static string Retail => "https://gameservices.street.forzamotorsport.net/Services/o.xtsw";
     }
 }

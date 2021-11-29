@@ -13,18 +13,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <summary>
         ///     Gets Apollo production LSP endpoint.
         /// </summary>
-        public static string Retail
-        {
-            get => "https://serverservices.fm7.forzamotorsport.net/ServerServices.FM7Release/o.xtsw";
-        }
+        public static string Retail => "https://serverservices.fm7.forzamotorsport.net/ServerServices.FM7Release/o.xtsw";
 
         /// <summary>
         ///     Gets Apollo studio LSP endpoint.
         /// </summary>
-        public static string Studio
-        {
-            get => "https://test-ss.fm7.forzamotorsport.net/ServerServices.FM7/o.xtsw";
-        }
+        public static string Studio => "https://test-ss.fm7.forzamotorsport.net/ServerServices.FM7/o.xtsw";
 
         /// <summary>
         ///     Converts endpoint key into endpoint.

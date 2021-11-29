@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
     ///     Represents an error with an inventory item.

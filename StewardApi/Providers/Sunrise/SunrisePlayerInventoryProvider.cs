@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -130,19 +129,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var giftResponse = new GiftResponse<ulong>();
-            giftResponse.PlayerOrLspGroup = xuid;
-            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.Xuid;
+            var giftResponse = new GiftResponse<ulong>
+            {
+                PlayerOrLspGroup = xuid, IdentityAntecedent = GiftIdentityAntecedent.Xuid
+            };
 
             try
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
                 var backstagePasses = gift.Inventory.CreditRewards
-                    .FirstOrDefault(data => { return data.Description == "BackstagePasses"; });
-                var backstagePassDelta = backstagePasses != default(MasterInventoryItem)
-                    ? backstagePasses.Quantity
-                    : 0;
+                    .FirstOrDefault(data => data.Description == "BackstagePasses");
+                var backstagePassDelta = backstagePasses?.Quantity ?? 0;
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
                 currencyGifts[InventoryItemType.Credits] =
@@ -158,7 +156,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         .ConfigureAwait(false);
                 }
 
-                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                await SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
                 await this.UpdateBackstagePasses(xuid, backstagePassDelta, endpoint).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
@@ -219,9 +217,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var giftResponse = new GiftResponse<int>();
-            giftResponse.PlayerOrLspGroup = groupId;
-            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
+            var giftResponse = new GiftResponse<int>
+            {
+                PlayerOrLspGroup = groupId, IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+            };
 
             try
             {
@@ -245,7 +244,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         endpoint).ConfigureAwait(false);
                 }
 
-                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                await SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
@@ -265,7 +264,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             return giftResponse;
         }
 
-        private async Task SendGifts(
+        private static async Task SendGifts(
             Func<InventoryItemType, int, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, int> currencyGifts)
@@ -333,37 +332,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private IDictionary<InventoryItemType, int> BuildCurrencyItems(SunriseMasterInventory giftInventory)
         {
             var credits = giftInventory.CreditRewards.FirstOrDefault(
-                data => { return data.Description == "Credits"; });
+                data => data.Description == "Credits");
             var forzathonPoints = giftInventory.CreditRewards.FirstOrDefault(
-                data => { return data.Description == "ForzathonPoints"; });
+                data => data.Description == "ForzathonPoints");
             var skillPoints = giftInventory.CreditRewards.FirstOrDefault(
-                data => { return data.Description == "SkillPoints"; });
+                data => data.Description == "SkillPoints");
             var wheelSpins = giftInventory.CreditRewards.FirstOrDefault(
-                data => { return data.Description == "WheelSpins"; });
+                data => data.Description == "WheelSpins");
             var superWheelSpins = giftInventory.CreditRewards.FirstOrDefault(
-                data => { return data.Description == "SuperWheelSpins"; });
+                data => data.Description == "SuperWheelSpins");
 
             return new Dictionary<InventoryItemType, int>
             {
                 {
-                    InventoryItemType.Credits, credits != default(MasterInventoryItem)
-                    ? credits.Quantity : 0
+                    InventoryItemType.Credits, credits?.Quantity ?? 0
                 },
                 {
-                    InventoryItemType.ForzathonPoints, forzathonPoints != default(MasterInventoryItem)
-                    ? forzathonPoints.Quantity : 0
+                    InventoryItemType.ForzathonPoints, forzathonPoints?.Quantity ?? 0
                 },
                 {
-                    InventoryItemType.SkillPoints, skillPoints != default(MasterInventoryItem)
-                        ? skillPoints.Quantity : 0
+                    InventoryItemType.SkillPoints, skillPoints?.Quantity ?? 0
                 },
                 {
-                    InventoryItemType.WheelSpins, wheelSpins != default(MasterInventoryItem)
-                        ? wheelSpins.Quantity : 0
+                    InventoryItemType.WheelSpins, wheelSpins?.Quantity ?? 0
                 },
                 {
-                    InventoryItemType.SuperWheelSpins, superWheelSpins != default(MasterInventoryItem)
-                        ? superWheelSpins.Quantity : 0
+                    InventoryItemType.SuperWheelSpins, superWheelSpins?.Quantity ?? 0
                 },
             };
         }

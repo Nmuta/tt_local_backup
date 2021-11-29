@@ -3,9 +3,9 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents an auction house blocklist entry.
+    ///     Represents an auction house block list entry.
     /// </summary>
-    public sealed class AuctionBlocklistEntry
+    public sealed class AuctionBlockListEntry
     {
         /// <summary>
         ///     Gets or sets the car ID.

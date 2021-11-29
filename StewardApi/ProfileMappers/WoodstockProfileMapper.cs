@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ModelId, opt => opt.MapFrom(source => source.Auction.Car.carId))
                 .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
                 .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
-                .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default(DateTime) ? source.Auction.TimeFlagged : (DateTime?)null));
+                .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default ? source.Auction.TimeFlagged : (DateTime?)null));
             this.CreateMap<IdentityQueryAlpha, ForzaPlayerLookupParameters>()
                 .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(
                     src => src.Xuid.HasValue ? ForzaUserIdType.Xuid : ForzaUserIdType.Gamertag))
@@ -144,7 +144,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.PlayerExists ? src.Gamertag : null))
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.PlayerExists ? src.Xuid : 0))
                 .ReverseMap();
-            this.CreateMap<ForzaAuctionBlocklistEntry, AuctionBlocklistEntry>()
+            this.CreateMap<ForzaAuctionBlocklistEntry, AuctionBlockListEntry>()
                 .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))
                 .ReverseMap();
             this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
@@ -280,9 +280,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<DeviceType, LiveOpsContracts.ForzaLiveDeviceType>().ReverseMap();
+            this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
 
-            this.CreateMap<LiveOpsContracts.ForzaAuction, AuctionData>()
+            this.CreateMap<ForzaAuction, AuctionData>()
                 .ForMember(dest => dest.AuctionId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.TimeFlaggedUtc, opt => opt.MapFrom(src => src.TimeFlagged.DefaultAsNull()))
                 .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(src => src.CreatedDate))
@@ -291,19 +291,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TopBidderXuid, opt => opt.MapFrom(src => src.TopBidder))
                 .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => TimeSpan.FromMilliseconds(src.DurationInMS)));
 
-            this.CreateMap<LiveOpsContracts.ForzaBid, AuctionDataBid>()
+            this.CreateMap<ForzaBid, AuctionDataBid>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.Date))
                 .ReverseMap();
 
-            this.CreateMap<LiveOpsContracts.ForzaLiveOpsCar, AuctionDataCar>()
+            this.CreateMap<ForzaLiveOpsCar, AuctionDataCar>()
                 .ReverseMap();
 
             this.CreateMap<Forza.FH5.Generated.CarHistory, AuctionDataCarHistory>()
                 .ReverseMap();
 
-            this.CreateMap<LiveOpsContracts.ForzaAuctionStatus, AuctionReviewState>().ReverseMap();
-            this.CreateMap<LiveOpsContracts.ForzaAuctionAction, AuctionDataAuctionAction>().ReverseMap();
-            this.CreateMap<LiveOpsContracts.ForzaBidStatus, AuctionDataBidStatus>().ReverseMap();
+            this.CreateMap<ForzaAuctionStatus, AuctionReviewState>().ReverseMap();
+            this.CreateMap<ForzaAuctionAction, AuctionDataAuctionAction>().ReverseMap();
+            this.CreateMap<ForzaBidStatus, AuctionDataBidStatus>().ReverseMap();
 
             this.CreateMap<WebServicesContracts.ForzaStorefrontFile, HideableUgc>()
                 .ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => src.HiddenTime.DefaultAsNull()))

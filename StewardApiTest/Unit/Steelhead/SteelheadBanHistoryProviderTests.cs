@@ -168,7 +168,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetBanHistoriesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetBanHistoriesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -177,10 +177,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<LiveOpsBanHistory>>> act = async () => await provider.GetBanHistoriesAsync(xuid, title, endpoint).ConfigureAwait(false);
+            async Task<IList<LiveOpsBanHistory>> Action() => await provider.GetBanHistoriesAsync(xuid, title, endpoint).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<LiveOpsBanHistory>>();
         }
 
         [TestMethod]

@@ -5,12 +5,12 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StewardApi", "StewardApi\StewardApi.csproj", "{6B43EB76-2A24-4D4B-8E3A-89DB19286BAF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StewardApiTest", "StewardApiTest\StewardApiTest.csproj", "{0B694E1F-C693-4595-9D18-79D1E4623E63}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51BEB8FD-078B-48B9-9408-767D1A6A6D9B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StewardApiTest", "StewardApiTest\StewardApiTest.csproj", "{0B694E1F-C693-4595-9D18-79D1E4623E63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

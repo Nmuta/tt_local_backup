@@ -177,13 +177,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerIdentity(
             [FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
                 return WoodstockCacheKey.MakeIdentityLookupKey(endpoint, identityQuery.Gamertag, identityQuery.Xuid);
             }
 
-            var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
+            var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v))).ToList();
             if (cachedResults.All(result => result != null))
             {
                 return this.Ok(cachedResults.ToList());
@@ -221,7 +221,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
                 .ConfigureAwait(true);
             if (playerDetails == null)
@@ -240,7 +240,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerDetails(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (playerDetails == null)
@@ -262,7 +262,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults, endpoint)
                 .ConfigureAwait(true);
 
@@ -283,7 +283,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong consoleId,
             bool isBanned)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             await this.woodstockPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned, endpoint)
                 .ConfigureAwait(true);
 
@@ -303,7 +303,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetSharedConsoleUsersAsync(
                 xuid,
                 startIndex,
@@ -321,7 +321,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetUserFlags(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -350,7 +350,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
             if (!this.ModelState.IsValid)
             {
@@ -383,7 +383,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetProfileSummary(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetProfileSummaryAsync(xuid, endpoint)
                 .ConfigureAwait(true);
 
@@ -398,7 +398,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetProfileNotesAsync(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -426,7 +426,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             profileNote.ShouldNotBeNull(nameof(profileNote));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -456,7 +456,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetCreditUpdatesAsync(
                 xuid,
                 startIndex,
@@ -484,7 +484,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             status.ShouldNotBeNull(nameof(status));
             sort.ShouldNotBeNull(nameof(sort));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             if (!Enum.TryParse(status, out AuctionStatus statusEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionStatus)} provided: {status}");
@@ -545,65 +545,65 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var auctionLog = await this.storefrontProvider.GetAuctionDataAsync(parsedAuctionId, endpoint).ConfigureAwait(true);
 
             return this.Ok(auctionLog);
         }
 
         /// <summary>
-        ///     Gets auction house blocklist entries.
+        ///     Gets auction house block list entries.
         /// </summary>
         [HttpGet("auctions/blocklist")]
-        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
-        public async Task<IActionResult> GetAuctionBlocklist(
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
+        public async Task<IActionResult> GetAuctionBlockList(
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0);
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
-            var getBlocklist = this.woodstockServiceManagementProvider.GetAuctionBlocklistAsync(maxResults, endpoint);
+            var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
 
-            await Task.WhenAll(getBlocklist/*, getKustoCars*/).ConfigureAwait(true);
+            await Task.WhenAll(getBlockList/*, getKustoCars*/).ConfigureAwait(true);
 
-            var blocklist = getBlocklist.Result;
+            var blockList = getBlockList.GetAwaiter().GetResult();
 
-            var kustoCars = getKustoCars.Result;
-            foreach (var entry in blocklist)
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+            foreach (var entry in blockList)
             {
                 var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
                 entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
             }
 
-            return this.Ok(blocklist);
+            return this.Ok(blockList);
         }
 
         /// <summary>
-        ///     Adds entries to auction house blocklist.
+        ///     Adds entries to auction house block list.
         /// </summary>
         [HttpPost("auctions/blocklist")]
-        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
-        public async Task<IActionResult> AddEntriesToAuctionBlocklist(
-            [FromBody] IList<AuctionBlocklistEntry> entries)
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
+        public async Task<IActionResult> AddEntriesToAuctionBlockList(
+            [FromBody] IList<AuctionBlockListEntry> entries)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            await this.woodstockServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries, endpoint).ConfigureAwait(true);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            await this.woodstockServiceManagementProvider.AddAuctionBlockListEntriesAsync(entries, endpoint).ConfigureAwait(true);
 
             return this.Ok(entries);
         }
 
         /// <summary>
-        ///     Removes an entry from auction house blocklist.
+        ///     Removes an entry from auction house block list.
         /// </summary>
         [HttpDelete("auctions/blocklist/carId({carId})")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> RemoveEntryFromAuctionBlocklist(
+        public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
-            await this.woodstockServiceManagementProvider.DeleteAuctionBlocklistEntriesAsync(new List<int> { carId }, endpoint).ConfigureAwait(true);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            await this.woodstockServiceManagementProvider.DeleteAuctionBlockListEntriesAsync(new List<int> { carId }, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -617,7 +617,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             if (!Enum.TryParse(ugcType, out UGCType typeEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
@@ -631,8 +631,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
 
-            var ugCItems = getUgcItems.Result;
-            var kustoCars = getKustoCars.Result;
+            var ugCItems = getUgcItems.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             foreach (var item in ugCItems)
             {
@@ -652,7 +652,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             if (!Enum.TryParse(ugcType, out UGCType typeEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
@@ -666,8 +666,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
 
-            var ugCItems = getUgcItems.Result;
-            var kustoCars = getKustoCars.Result;
+            var ugCItems = getUgcItems.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             foreach (var item in ugCItems)
             {
@@ -685,15 +685,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(UGCItem))]
         public async Task<IActionResult> GetUGCLivery(Guid id)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUGCLivery(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
 
             await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
 
-            var livery = getLivery.Result;
-            var kustoCars = getKustoCars.Result;
+            var livery = getLivery.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             var carData = kustoCars.FirstOrDefault(car => car.Id == livery.CarId);
             livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
@@ -708,15 +708,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(UGCItem))]
         public async Task<IActionResult> GetUGCPhoto(Guid id)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUGCPhoto(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
 
             await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
 
-            var photo = getPhoto.Result;
-            var kustoCars = getKustoCars.Result;
+            var photo = getPhoto.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             var carData = kustoCars.FirstOrDefault(car => car.Id == photo.CarId);
             photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
@@ -731,15 +731,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(UGCItem))]
         public async Task<IActionResult> GetUGCTune(Guid id)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUGCTune(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
 
             await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
 
-            var tune = getTune.Result;
-            var kustoCars = getKustoCars.Result;
+            var tune = getTune.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
             var carData = kustoCars.FirstOrDefault(car => car.Id == tune.CarId);
             tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
@@ -756,7 +756,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             string itemId,
             [FromBody] UGCFeaturedStatus status)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             if (!Guid.TryParse(itemId, out var itemIdGuid))
             {
                 throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {itemId}");
@@ -767,9 +767,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Required query param is missing: {nameof(status.Expiry)}");
             }
 
-            if (status.IsFeatured && status.Expiry.HasValue)
+            if (status.IsFeatured)
             {
-                status.Expiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
+                status.Expiry?.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
             }
 
             await this.storefrontProvider.SetUGCFeaturedStatus(
@@ -788,7 +788,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
         public async Task<IActionResult> GetPlayerHiddenUgc(ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var hiddenUgc = await this.storefrontProvider.GetHiddenUGCForUser(xuid, endpoint).ConfigureAwait(true);
 
@@ -804,7 +804,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetBackstagePassUpdates(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -837,7 +837,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -906,7 +906,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -939,7 +939,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetUserBanSummariesAsync(xuids, endpoint)
                 .ConfigureAwait(true);
 
@@ -954,7 +954,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetBanHistory(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.GetBanHistoryAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
@@ -970,7 +970,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
                 .ConfigureAwait(true);
 
@@ -991,7 +991,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
         public async Task<IActionResult> GetGroups()
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.woodstockServiceManagementProvider.GetLspGroupsAsync(
                 endpoint).ConfigureAwait(true);
 
@@ -1006,7 +1006,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventory(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1042,7 +1042,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventoryByProfileId(
             int profileId)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(
                 profileId,
                 endpoint);
@@ -1074,7 +1074,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventoryProfiles(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var inventoryProfileSummary = await this.woodstockPlayerInventoryProvider.GetInventoryProfilesAsync(
                 xuid,
                 endpoint).ConfigureAwait(true);
@@ -1097,7 +1097,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetAccountInventory(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1129,7 +1129,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
@@ -1182,7 +1182,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         allowedToExceedCreditLimit,
                         endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
                 }
@@ -1217,7 +1217,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
@@ -1278,7 +1278,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             gift.ShouldNotBeNull(nameof(gift));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
             if (!this.ModelState.IsValid)
@@ -1313,7 +1313,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetGiftHistoriesAsync(
             ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 xuid.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.WoodstockCodeName,
@@ -1331,7 +1331,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetGiftHistoriesAsync(
             int groupId)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 groupId.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.WoodstockCodeName,
@@ -1349,7 +1349,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetNotificationHistoriesAsync(
             string notificationId)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var notificationHistory = await this.notificationHistoryProvider.GetNotificationHistoriesAsync(
                 notificationId,
                 TitleConstants.WoodstockCodeName,
@@ -1369,7 +1369,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var notifications = await this.woodstockNotificationProvider.GetPlayerNotificationsAsync(
                 xuid,
                 maxResults,
@@ -1389,7 +1389,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var notifications = await this.woodstockNotificationProvider.GetGroupNotificationsAsync(
                 groupId,
                 maxResults,
@@ -1417,7 +1417,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 TimeSpan.FromDays(1),
                 nameof(communityMessage.Duration));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             foreach (var xuid in communityMessage.Xuids)
@@ -1465,13 +1465,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 TimeSpan.FromDays(1),
                 nameof(communityMessage.Duration));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
             var groups = await this.woodstockServiceManagementProvider.GetLspGroupsAsync(
-                endpoint).ConfigureAwait(false);
-            if (!groups.Any(x => x.Id == groupId))
+                endpoint).ConfigureAwait(true);
+            if (groups.All(x => x.Id != groupId))
             {
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
@@ -1506,7 +1506,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1545,7 +1545,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
 
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
@@ -1581,7 +1581,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1608,7 +1608,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
-            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
@@ -1618,6 +1618,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
+        }
+
+        private static string GetWoodstockEndpoint(IHeaderDictionary headers)
+        {
+            if (!headers.TryGetValue("endpointKey", out var headerValue))
+            {
+                headerValue = DefaultEndpointKey;
+            }
+
+            var endpointKeyValue = headerValue.ToString();
+            endpointKeyValue.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpointKeyValue));
+
+            var splitValue = endpointKeyValue.Split('|');
+            var title = splitValue.ElementAtOrDefault(0);
+            var key = splitValue.ElementAtOrDefault(1);
+
+            if (title != TitleConstants.WoodstockCodeName)
+            {
+                throw new BadHeaderStewardException(
+                    $"Endpoint key designated for title: {title}, but expected {TitleConstants.WoodstockCodeName}.");
+            }
+
+            return WoodstockEndpoint.GetEndpoint(key);
         }
 
         /// <summary>
@@ -1693,8 +1716,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
                     new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
                     new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
-                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
-                    //// new MasterInventoryItem { Id = -1, Description = "BackstagePasses" }
+                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
                 },
                 Cars = await getCars.ConfigureAwait(true),
                 CarHorns = await getCarHorns.ConfigureAwait(true),
@@ -1716,62 +1738,39 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var car in gift.Cars)
             {
-                var validItem = masterInventoryItem.Cars.Any(data => { return data.Id == car.Id; });
+                var validItem = masterInventoryItem.Cars.Any(data => data.Id == car.Id);
                 error += validItem
                     ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var carHorn in gift.CarHorns)
             {
-                var validItem = masterInventoryItem.CarHorns.Any(data => { return data.Id == carHorn.Id; });
+                var validItem = masterInventoryItem.CarHorns.Any(data => data.Id == carHorn.Id);
                 error += validItem
                     ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var vanityItem in gift.VanityItems)
             {
-                var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
+                var validItem = masterInventoryItem.VanityItems.Any(data => data.Id == vanityItem.Id);
                 error += validItem
                     ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var emote in gift.Emotes)
             {
-                var validItem = masterInventoryItem.Emotes.Any(data => { return data.Id == emote.Id; });
+                var validItem = masterInventoryItem.Emotes.Any(data => data.Id == emote.Id);
                 error += validItem ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var quickChatLine in gift.QuickChatLines)
             {
-                var validItem = masterInventoryItem.QuickChatLines.Any(data => { return data.Id == quickChatLine.Id; });
+                var validItem = masterInventoryItem.QuickChatLines.Any(data => data.Id == quickChatLine.Id);
                 error += validItem
                     ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             return error;
-        }
-
-        private string GetWoodstockEndpoint(IHeaderDictionary headers)
-        {
-            if (!headers.TryGetValue("endpointKey", out var headerValue))
-            {
-                headerValue = DefaultEndpointKey;
-            }
-
-            var endpointKeyValue = headerValue.ToString();
-            endpointKeyValue.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpointKeyValue));
-
-            var splitValue = endpointKeyValue.Split('|');
-            var title = splitValue.ElementAtOrDefault(0);
-            var key = splitValue.ElementAtOrDefault(1);
-
-            if (title != TitleConstants.WoodstockCodeName)
-            {
-                throw new BadHeaderStewardException(
-                    $"Endpoint key designated for title: {title}, but expected {TitleConstants.WoodstockCodeName}.");
-            }
-
-            return WoodstockEndpoint.GetEndpoint(key);
         }
     }
 }

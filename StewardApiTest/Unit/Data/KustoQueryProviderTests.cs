@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetKustoQueriesAsync_ReturnsCorrectType()
+        public async Task GetKustoQueriesAsync_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -212,7 +212,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             async Task<IList<KustoQuery>> Action() => await provider.GetKustoQueriesAsync().ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<KustoQuery>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<KustoQuery>>();
         }
 
         [TestMethod]

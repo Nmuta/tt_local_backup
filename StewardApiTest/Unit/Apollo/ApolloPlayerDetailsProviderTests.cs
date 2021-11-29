@@ -81,7 +81,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -92,7 +92,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<IdentityResultAlpha>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<IdentityResultAlpha>();
         }
 
         [TestMethod]
@@ -112,7 +113,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerDetailsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerDetailsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -130,7 +131,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<ApolloPlayerDetails>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<ApolloPlayerDetails>();
             }
         }
 
@@ -159,7 +161,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -177,13 +179,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeTrue();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeTrue();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void BanUsersAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task BanUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -195,7 +198,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<BanResult>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<BanResult>>();
         }
 
         [TestMethod]
@@ -240,7 +244,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -248,22 +252,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
-            {
-                async () => await provider.GetUserBanHistoryAsync(xuid, endpoint).ConfigureAwait(false)
-            };
+            async Task<IList<LiveOpsBanHistory>> Action() => await provider.GetUserBanHistoryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                var result = action().Result;
-                result.Should().BeOfType<List<LiveOpsBanHistory>>();
-            }
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<LiveOpsBanHistory>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -274,12 +272,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             async Task<IList<BanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<BanSummary>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<BanSummary>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -291,7 +290,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             async Task<IList<ConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ConsoleDetails>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<ConsoleDetails>>();
         }
 
         [TestMethod]
@@ -313,7 +313,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -326,12 +326,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             async Task<IList<SharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SharedConsoleUser>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<SharedConsoleUser>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -342,7 +343,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             async Task<ApolloUserFlags> Action() => await provider.GetUserFlagsAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<ApolloUserFlags>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<ApolloUserFlags>();
         }
 
         [TestMethod]
@@ -394,7 +396,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 SendReasonNotification = false
             };
 
-            return new List<ApolloBanParameters> {newParams};
+            return new List<ApolloBanParameters> { newParams };
         }
 
         private sealed class Dependencies
@@ -422,7 +424,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             }
 
             public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();
-            
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public IApolloBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IApolloBanHistoryProvider>();

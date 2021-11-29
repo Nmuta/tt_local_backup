@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH4.Generated;
 using Forza.UserGeneratedContent.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
-using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using static Forza.WebServices.FH4.Generated.StorefrontService;
-using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
-using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
-using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
-using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -145,17 +138,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             var results = new List<ForzaStorefrontFile>();
             if (liveries.IsCompletedSuccessfully)
             {
-                results.AddRange(liveries.Result.ugcData);
+                results.AddRange(liveries.GetAwaiter().GetResult().ugcData);
             }
 
             if (layerGroups.IsCompletedSuccessfully)
             {
-                results.AddRange(layerGroups.Result.ugcData);
+                results.AddRange(layerGroups.GetAwaiter().GetResult().ugcData);
             }
 
             if (photos.IsCompletedSuccessfully)
             {
-                results.AddRange(photos.Result.ugcData);
+                results.AddRange(photos.GetAwaiter().GetResult().ugcData);
             }
 
             var convertedResults = this.mapper.Map<List<HideableUgc>>(results);

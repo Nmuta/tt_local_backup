@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -115,14 +115,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Assert.
             foreach (var action in actions)
             {
-                var response = action();
-                response.Result.Should().BeOfType<WoodstockPlayerInventory>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<WoodstockPlayerInventory>();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -130,15 +130,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<WoodstockInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<IList<WoodstockInventoryProfile>> Action() => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<WoodstockInventoryProfile>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<WoodstockInventoryProfile>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetAccountInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetAccountInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -146,10 +147,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<WoodstockAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<WoodstockAccountInventory> Action() => await provider.GetAccountInventoryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<WoodstockAccountInventory>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<WoodstockAccountInventory>();
         }
 
         [TestMethod]

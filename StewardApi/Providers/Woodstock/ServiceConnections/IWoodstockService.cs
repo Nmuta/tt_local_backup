@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Forza.LiveOps.FH5.Generated;
 using Forza.UserInventory.FH5.Generated;
 using Forza.WebServices.FH5.Generated;
-using static Forza.WebServices.FH5.Generated.StorefrontService;
 using GiftingService = Forza.LiveOps.FH5.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FH5.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5.Generated.RareCarShopService;

@@ -200,7 +200,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -210,11 +210,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<SteelheadGiftHistory>>> act = async () =>
-                await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
+            async Task<IList<SteelheadGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<List<SteelheadGiftHistory>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<SteelheadGiftHistory>>();
         }
 
         [TestMethod]

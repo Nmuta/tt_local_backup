@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -97,14 +97,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Assert.
             foreach (var action in actions)
             {
-                var response = action();
-                response.Result.Should().BeOfType<SteelheadPlayerInventory>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<SteelheadPlayerInventory>();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -112,10 +112,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<SteelheadInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<IList<SteelheadInventoryProfile>> Action() => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SteelheadInventoryProfile>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<SteelheadInventoryProfile>>();
         }
 
         [TestMethod]

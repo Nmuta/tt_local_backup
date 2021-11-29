@@ -337,7 +337,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query}).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -354,7 +354,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var query = new IdentityQueryAlpha {Xuid = default, Gamertag = null};
+            var query = new IdentityQueryAlpha { Xuid = default, Gamertag = null };
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
@@ -1052,7 +1052,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
+        public async Task UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -1064,18 +1064,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false),
-            };
+            async Task<IActionResult> Action() => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                // To reset the context and prevent header key collision, rebuild the Dependencies.
-                controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<CreatedResult>();
-            }
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<CreatedResult>();
         }
 
         [TestMethod]
@@ -1086,16 +1079,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var controller = new Dependencies().Build();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
-            };
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
         }
 
         [TestMethod]
@@ -1612,7 +1599,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
-                this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>());
                 this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.StorefrontProvider.SearchUGCItems(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UGCItem>>());
@@ -1627,7 +1614,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
-            
+
             public IWoodstockPlayerDetailsProvider WoodstockPlayerDetailsProvider { get; set; } = Substitute.For<IWoodstockPlayerDetailsProvider>();
 
             public IWoodstockPlayerInventoryProvider WoodstockPlayerInventoryProvider { get; set; } = Substitute.For<IWoodstockPlayerInventoryProvider>();

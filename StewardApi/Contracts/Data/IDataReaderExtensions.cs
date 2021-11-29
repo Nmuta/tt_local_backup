@@ -4,8 +4,6 @@ using System.Data;
 using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using static System.FormattableString;
 
 #nullable enable
@@ -125,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                     }
 
                     var sqlDecimal = (SqlDecimal)sqlDecimalObj;
-                    return !sqlDecimal.IsNull ? sqlDecimal.Value : null;
+                    return !sqlDecimal.IsNull ? sqlDecimal.Value : (decimal?)null;
                 default:
                     throw new InvalidOperationException(Invariant($"Cannot convert to decimal from found type '{fieldType.Name}'. Add a new entry to this switch case."));
             }
@@ -136,12 +134,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         {
             var columnIndex = reader.GetColumnIndex(columnName);
             var fieldType = reader.GetFieldType(columnIndex);
-            if (reader.IsDBNull(columnIndex))
-            {
-                return null;
-            }
 
-            return reader.GetString(columnIndex);
+            return reader.IsDBNull(columnIndex) ? null : reader.GetString(columnIndex);
         }
 
         /// <summary>Gets a raw (object) value from a named column.</summary>
@@ -149,12 +143,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         {
             var columnIndex = reader.GetColumnIndex(columnName);
             var fieldType = reader.GetFieldType(columnIndex);
-            if (reader.IsDBNull(columnIndex))
-            {
-                return null;
-            }
 
-            return reader.GetValue(columnIndex);
+            return reader.IsDBNull(columnIndex) ? null : reader.GetValue(columnIndex);
         }
 
         /// <summary>True if the column is null. You should not need to use this, as these extensions handle this by default.</summary>
@@ -162,10 +152,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         {
             var columnIndex = reader.GetColumnIndex(columnName);
             var fieldType = reader.GetFieldType(columnIndex);
+
             return reader.IsDBNull(columnIndex);
         }
 
-        #pragma warning disable CA1502 // High cyclomatic complexity (Seems necessary to make the type system happy; restructuring will not make it easier to read, anyway)
+#pragma warning disable CA1502 // High cyclomatic complexity (Seems necessary to make the type system happy; restructuring will not make it easier to read, anyway)
         /// <summary>Gets a specific number type from a named column.</summary>
         /// <typeparam name="T">The number type to try to read from the field.</typeparam>
         public static T? GetNumber<T>(this IDataReader reader, string columnName)
@@ -247,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                     throw new InvalidOperationException("Cannot convert to given number type. Add a new entry to this switch case.");
             }
         }
-        #pragma warning restore CA1502
+#pragma warning restore CA1502
 
         /// <summary>Gets a specific type from a named column.</summary>
         /// <typeparam name="T">The type to try to read from the field.</typeparam>
@@ -255,10 +246,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         {
             if (reader.IsNull(columnName))
             {
-                return default(T?);
+                return default;
             }
 
-            object? result = null;
+            object? result;
             switch (typeof(T))
             {
                 case Type byteType when byteType == typeof(byte):
@@ -307,7 +298,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             if (result == null)
             {
                 // necessary because casting directly to T? from null fails
-                return default(T?);
+                return default;
             }
 
             return (T?)result;

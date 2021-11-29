@@ -64,17 +64,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var query = Fixture.Create<IdentityQueryBeta>();
 
             // Act.
-            Func<Task<IdentityResultBeta>> action = async () => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IdentityResultBeta> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<IdentityResultBeta>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<IdentityResultBeta>();
         }
 
         [TestMethod]
@@ -93,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerDetailsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerDetailsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -112,7 +113,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<GravityPlayerDetails>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<GravityPlayerDetails>();
             }
         }
 
@@ -162,7 +164,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -181,7 +183,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeTrue();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeTrue();
             }
         }
 

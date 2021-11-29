@@ -15,18 +15,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<LspGroup>> GetLspGroupsAsync(string endpoint);
 
         /// <summary>
-        ///     Gets auction house blocklist.
+        ///     Gets auction house block list.
         /// </summary>
-        Task<IList<AuctionBlocklistEntry>> GetAuctionBlocklistAsync(int maxResults, string endpoint);
+        Task<IList<AuctionBlockListEntry>> GetAuctionBlockListAsync(int maxResults, string endpoint);
 
         /// <summary>
-        ///     Adds entries to auction house blocklist.
+        ///     Adds entries to auction house block list.
         /// </summary>
-        Task AddAuctionBlocklistEntriesAsync(IList<AuctionBlocklistEntry> blocklistEntries, string endpoint);
+        Task AddAuctionBlockListEntriesAsync(IList<AuctionBlockListEntry> blockListEntries, string endpoint);
 
         /// <summary>
-        ///     Deletes entries from auction house blocklist.
+        ///     Deletes entries from auction house block list.
         /// </summary>
-        Task DeleteAuctionBlocklistEntriesAsync(IList<int> carIds, string endpoint);
+        Task DeleteAuctionBlockListEntriesAsync(IList<int> carIds, string endpoint);
     }
 }

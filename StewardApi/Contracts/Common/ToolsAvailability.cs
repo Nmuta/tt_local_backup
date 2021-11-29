@@ -1,7 +1,4 @@
-﻿using System;
-using Turn10.Data.Common;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents tools availability.

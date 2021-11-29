@@ -77,7 +77,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -97,7 +97,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<GravityPlayerInventory>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<GravityPlayerInventory>();
             }
         }
 

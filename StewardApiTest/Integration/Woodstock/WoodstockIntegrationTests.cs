@@ -236,7 +236,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         {
             try
             {
-                var x = await stewardClient.GetConsolesAsync(TestConstants.InvalidXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+                await stewardClient.GetConsolesAsync(TestConstants.InvalidXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1722,9 +1722,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task GetAuctionBlocklist()
+        public async Task GetAuctionBlockList()
         {
-            var result = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
+            var result = await stewardClient.GetAuctionBlockListAsync().ConfigureAwait(false);
 
             Assert.IsNotNull(result);
         }
@@ -1732,28 +1732,28 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestMethod]
         [TestCategory("Integration")]
         [Ignore]
-        public async Task AddAndRemoveAuctionBlocklistEntry()
+        public async Task AddAndRemoveAuctionBlockListEntry()
         {
-            var newEntry = new AuctionBlocklistEntry
+            var newEntry = new AuctionBlockListEntry
             { CarId = 1301, ExpireDateUtc = DateTime.UtcNow.AddDays(1), DoesExpire = true, Description = "" };
 
-            var beforeResult = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
-            Assert.IsFalse(beforeResult.Where(entry => entry.CarId == 1301).Any());
+            var beforeResult = await stewardClient.GetAuctionBlockListAsync().ConfigureAwait(false);
+            Assert.IsFalse(beforeResult.Any(entry => entry.CarId == 1301));
 
-            await stewardClient.PostAuctionBlocklistEntriesAsync(new List<AuctionBlocklistEntry> { newEntry }).ConfigureAwait(false);
-            var duringResult = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
-            Assert.IsTrue(duringResult.Where(entry => entry.CarId == 1301).Any());
+            await stewardClient.PostAuctionBlockListEntriesAsync(new List<AuctionBlockListEntry> { newEntry }).ConfigureAwait(false);
+            var duringResult = await stewardClient.GetAuctionBlockListAsync().ConfigureAwait(false);
+            Assert.IsTrue(duringResult.Any(entry => entry.CarId == 1301));
 
-            await stewardClient.DeleteAuctionBlocklistEntryAsync(1301).ConfigureAwait(false);
-            var afterResult = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
-            Assert.IsFalse(afterResult.Where(entry => entry.CarId == 1301).Any());
+            await stewardClient.DeleteAuctionBlockListEntryAsync(1301).ConfigureAwait(false);
+            var afterResult = await stewardClient.GetAuctionBlockListAsync().ConfigureAwait(false);
+            Assert.IsFalse(afterResult.Any(entry => entry.CarId == 1301));
         }
 
-        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(WoodstockStewardTestingClient stewardClient, WoodstockGroupGift groupGift, BackgroundJobStatus expectedStatus)
+        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, WoodstockGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
-            var response = await stewardClient.UpdatePlayerInventoriesWithHeaderResponseAsync(groupGift, headersToValidate).ConfigureAwait(false);
+            var response = await stewardTestingClient.UpdatePlayerInventoriesWithHeaderResponseAsync(groupGift, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1764,7 +1764,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
             do
             {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
+                var backgroundJob = await stewardTestingClient.GetJobStatusAsync(response.Headers["jobId"])
                     .ConfigureAwait(false);
 
                 status = backgroundJob.Status;
@@ -1785,11 +1785,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return jobResult;
         }
 
-        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardClient, IList<WoodstockBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, IList<WoodstockBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
-            var response = await stewardClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate).ConfigureAwait(false);
+            var response = await stewardTestingClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1800,7 +1800,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
             do
             {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"]).ConfigureAwait(false);
+                var backgroundJob = await stewardTestingClient.GetJobStatusAsync(response.Headers["jobId"]).ConfigureAwait(false);
 
                 status = backgroundJob.Status;
 

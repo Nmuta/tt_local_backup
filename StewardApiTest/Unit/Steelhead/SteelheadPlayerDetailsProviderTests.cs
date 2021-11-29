@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Xls.WebServices.FM8.Generated;
-using static Forza.LiveOps.FM8.Generated.NotificationsManagementService;
 using static Forza.LiveOps.FM8.Generated.UserManagementService;
 using static Forza.WebServices.FM8.Generated.LiveOpsService;
 
@@ -69,7 +68,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -80,7 +79,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             async Task<IList<IdentityResultAlpha>> Action() => await provider.GetPlayerIdentitiesAsync(query, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<IdentityResultAlpha>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<IdentityResultAlpha>>();
         }
 
         [TestMethod]
@@ -123,7 +123,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -141,7 +141,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeTrue();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeTrue();
             }
         }
 
@@ -170,7 +171,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -182,7 +183,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             async Task<IList<ConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ConsoleDetails>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<ConsoleDetails>>();
         }
 
         [TestMethod]
@@ -204,7 +206,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -217,12 +219,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             async Task<IList<SharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SharedConsoleUser>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<SharedConsoleUser>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -233,9 +236,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             async Task<SteelheadUserFlags> Action() => await provider.GetUserFlagsAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<SteelheadUserFlags>();
-            Action().Result.ShouldNotBeNull();
-            Action().Result.IsEarlyAccess.Should().Be(false);
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<SteelheadUserFlags>();
+            result.IsEarlyAccess.Should().BeFalse();
         }
 
         [TestMethod]
@@ -273,7 +276,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void BanUsersAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task BanUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -285,7 +288,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<BanResult>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<BanResult>>();
         }
 
         [TestMethod]
@@ -330,7 +334,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -341,12 +345,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             async Task<IList<BanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<BanSummary>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<BanSummary>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -354,16 +359,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
-            {
-                async () => await provider.GetUserBanHistoryAsync(xuid, endpoint).ConfigureAwait(false)
-            };
+            async Task<IList<LiveOpsBanHistory>> Action() => await provider.GetUserBanHistoryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
-            }
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<LiveOpsBanHistory>>();
         }
 
         private List<SteelheadBanParameters> GenerateBanParameters()

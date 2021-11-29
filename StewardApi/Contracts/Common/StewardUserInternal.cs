@@ -34,10 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets the user's Azure object ID.
         /// </summary>
-        public string ObjectId
-        {
-            get { return this.RowKey; }
-        }
+        public string ObjectId => this.RowKey;
 
         /// <summary>
         ///     Gets or sets the email address.

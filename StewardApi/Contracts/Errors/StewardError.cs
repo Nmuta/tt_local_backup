@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Newtonsoft.Json.Converters;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 

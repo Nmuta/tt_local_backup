@@ -138,17 +138,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var results = new List<ForzaStorefrontFile>();
             if (liveries.IsCompletedSuccessfully)
             {
-                results.AddRange(liveries.Result.ugcData);
+                results.AddRange(liveries.GetAwaiter().GetResult().ugcData);
             }
 
             if (layerGroups.IsCompletedSuccessfully)
             {
-                results.AddRange(layerGroups.Result.ugcData);
+                results.AddRange(layerGroups.GetAwaiter().GetResult().ugcData);
             }
 
             if (photos.IsCompletedSuccessfully)
             {
-                results.AddRange(photos.Result.ugcData);
+                results.AddRange(photos.GetAwaiter().GetResult().ugcData);
             }
 
             var convertedResults = this.mapper.Map<List<HideableUgc>>(results);

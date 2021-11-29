@@ -48,18 +48,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets the object Id for this job.
         /// </summary>
         [JsonIgnore]
-        public string ObjectId
-        {
-            get { return this.PartitionKey; }
-        }
+        public string ObjectId => this.PartitionKey;
 
         /// <summary>
         ///     Gets the job Id.
         /// </summary>
-        public string JobId
-        {
-            get { return this.RowKey; }
-        }
+        public string JobId => this.RowKey;
 
         /// <summary>
         ///     Gets or sets the status.

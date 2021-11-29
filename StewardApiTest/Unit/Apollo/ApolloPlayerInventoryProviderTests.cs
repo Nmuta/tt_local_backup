@@ -77,7 +77,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -95,13 +95,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<ApolloPlayerInventory>();
+                var result = await action().ConfigureAwait(false);
+                result.Should().BeOfType<ApolloPlayerInventory>();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -109,10 +110,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<ApolloInventoryProfile>> xuidAct() => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<IList<ApolloInventoryProfile>> Action() => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            xuidAct().Result.Should().BeOfType<List<ApolloInventoryProfile>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<ApolloInventoryProfile>>();
         }
 
         [TestMethod]

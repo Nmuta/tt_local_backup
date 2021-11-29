@@ -196,7 +196,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -205,11 +205,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
 
             // Act.
-            Func<Task<IList<GravityGiftHistory>>> act = async () =>
-                await provider.GetGiftHistoriesAsync(id, title, antecedent).ConfigureAwait(false);
+            async Task<IList<GravityGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<List<GravityGiftHistory>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<GravityGiftHistory>>();
         }
 
         [TestMethod]

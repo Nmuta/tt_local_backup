@@ -274,21 +274,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<PlayerAuction>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<AuctionBlocklistEntry>> GetAuctionBlocklistAsync()
+        public async Task<IList<AuctionBlockListEntry>> GetAuctionBlockListAsync()
         {
             var path = new Uri(this.baseUri, $"{TitlePath}auctions/blocklist");
 
-            return await ServiceClient.SendRequestAsync<IList<AuctionBlocklistEntry>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<AuctionBlockListEntry>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task PostAuctionBlocklistEntriesAsync(IList<AuctionBlocklistEntry> entries)
+        public async Task PostAuctionBlockListEntriesAsync(IList<AuctionBlockListEntry> entries)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}auctions/blocklist");
 
             await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, entries).ConfigureAwait(false);
         }
 
-        public async Task DeleteAuctionBlocklistEntryAsync(int carId)
+        public async Task DeleteAuctionBlockListEntryAsync(int carId)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}auctions/blocklist/carId({carId})");
 

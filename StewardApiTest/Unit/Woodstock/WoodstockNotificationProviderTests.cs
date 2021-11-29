@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetPlayerNotificationsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -92,13 +92,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<Notification>> Action() => await provider.GetPlayerNotificationsAsync(xuid, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<Notification>>();
-            Action().Result.ShouldNotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<Notification>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetGroupNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetGroupNotificationsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -110,13 +110,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<UserGroupNotification>> Action() => await provider.GetGroupNotificationsAsync(groupId, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<UserGroupNotification>>();
-            Action().Result.ShouldNotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<UserGroupNotification>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SendNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task SendNotificationsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -129,13 +129,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendNotificationsAsync(xuids, message, expireTime, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<MessageSendResult<ulong>>>();
-            Action().Result.ShouldNotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<MessageSendResult<ulong>>>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SendGroupNotificationAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task SendGroupNotificationAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -150,8 +150,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             async Task<MessageSendResult<int>> Action() => await provider.SendGroupNotificationAsync(groupId, message, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<MessageSendResult<int>>();
-            Action().Result.ShouldNotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<MessageSendResult<int>>();
         }
 
         [TestMethod]

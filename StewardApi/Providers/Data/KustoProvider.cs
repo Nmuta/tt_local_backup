@@ -9,12 +9,10 @@ using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
@@ -72,10 +70,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 {
                     while (reader.Read())
                     {
-                        JObject item = new JObject();
-                        for (int i = 0; i < columns.Count; i++)
+                        var item = new JObject();
+                        foreach (var column in columns)
                         {
-                            columns[i].ReadValue(item, reader);
+                            column.ReadValue(item, reader);
                         }
 
                         items.Add(item);

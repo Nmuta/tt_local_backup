@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -214,7 +214,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             async Task<IList<ApolloGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ApolloGiftHistory>>();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<ApolloGiftHistory>>();
         }
 
         [TestMethod]

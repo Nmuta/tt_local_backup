@@ -13,18 +13,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets Sunrise production LSP endpoint.
         /// </summary>
-        public static string Retail
-        {
-            get => "https://gameservices.fh4.forzamotorsport.net/Services/o.xtsw";
-        }
+        public static string Retail => "https://gameservices.fh4.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
         ///     Gets Sunrise studio LSP endpoint.
         /// </summary>
-        public static string Studio
-        {
-            get => "https://test-gs.fh4.forzamotorsport.net/Services/o.xtsw";
-        }
+        public static string Studio => "https://test-gs.fh4.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
         ///     Converts endpoint key into endpoint.
