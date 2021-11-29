@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Basic query for getting the FH4 VanityItem data.
         /// </summary>
-        public const string GetFH4VanityItems = "FH4_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayNameEnglish, ItemID)";
+        public const string GetFH4VanityItems = "FH4_VanityItems | project Id=['id'], DisplayNameEnglish=column_ifexists('DisplayNameEnglish', column_ifexists('ItemID', ''))";
 
         /// <summary>
         ///     Basic query for getting the FH4 Emote data.
@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Basic query for getting the FH5 VanityItem data.
         /// </summary>
-        public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayName, ItemID)";
+        public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=column_ifexists('DisplayName', column_ifexists('ItemID', ''))";
 
         /// <summary>
         ///     Basic query for getting the FH5 Emote data.
