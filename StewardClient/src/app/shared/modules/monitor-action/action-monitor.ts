@@ -54,6 +54,11 @@ export class ActionMonitor {
   }
 
   /** Returns whether monitor is currently active. */
+  public get isSuccess(): boolean {
+    return this.status.state === 'complete';
+  }
+
+  /** Returns whether monitor is currently active. */
   public get isActive(): boolean {
     return this.status.state === 'active';
   }

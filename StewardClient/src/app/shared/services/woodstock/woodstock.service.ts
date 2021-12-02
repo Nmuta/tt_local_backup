@@ -66,7 +66,7 @@ export class WoodstockService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets the status of a player's notifications. */
-  public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotification[]> {
+  public getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {
     return this.apiService.getRequest$(`${this.basePath}/player/xuid(${xuid})/notifications`);
   }
 
@@ -74,6 +74,18 @@ export class WoodstockService {
   public getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
     return this.apiService.getRequest$(
       `${this.basePath}/group/groupId(${lspGroupId})/notifications`,
+    );
+  }
+
+  /** Edits a player's community message. */
+  public postEditPlayerCommunityMessage$(
+    xuid: BigNumber,
+    notificationId: string,
+    communityMessage: CommunityMessage,
+  ): Observable<void> {
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/player/xuid(${xuid})/notifications/notificationId(${notificationId})`,
+      communityMessage,
     );
   }
 
@@ -88,7 +100,14 @@ export class WoodstockService {
     );
   }
 
-  /** Edits a group community message. */
+  /** Deletes a player's community message. */
+  public deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
+    return this.apiService.deleteRequest$<void>(
+      `${this.basePath}/player/xuid(${xuid})/notifications/notificationId(${notificationId})`,
+    );
+  }
+
+  /** Deletes a group community message. */
   public deleteLspGroupCommunityMessage$(notificationId: string): Observable<void> {
     return this.apiService.deleteRequest$<void>(
       `${this.basePath}/notifications/notificationId(${notificationId})`,

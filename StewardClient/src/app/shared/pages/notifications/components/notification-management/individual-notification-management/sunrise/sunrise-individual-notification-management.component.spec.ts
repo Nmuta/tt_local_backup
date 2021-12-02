@@ -2,23 +2,23 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
-import { SunriseNotificationManagementComponent } from './sunrise-notification-management.component';
-import { SunriseNotificationManagementService } from './sunrise-notification-management.service';
+import { SunriseIndividualNotificationManagementComponent } from './sunrise-individual-notification-management.component';
+import { SunriseIndividualNotificationManagementContract } from './sunrise-individual-notification-management.contract';
 
 describe('SunriseAuctionBlocklistComponent', () => {
-  let component: SunriseNotificationManagementComponent;
-  let fixture: ComponentFixture<SunriseNotificationManagementComponent>;
+  let component: SunriseIndividualNotificationManagementComponent;
+  let fixture: ComponentFixture<SunriseIndividualNotificationManagementComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [SunriseNotificationManagementComponent],
+        declarations: [SunriseIndividualNotificationManagementComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [SunriseNotificationManagementService],
+        providers: [SunriseIndividualNotificationManagementContract],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(SunriseNotificationManagementComponent);
+      fixture = TestBed.createComponent(SunriseIndividualNotificationManagementComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );

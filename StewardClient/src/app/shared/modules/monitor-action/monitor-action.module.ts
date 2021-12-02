@@ -12,6 +12,7 @@ import { MonitorCheckboxDirective } from './monitor-checkbox.directive';
 import { BigSpinnerComponent } from './big-spinner/big-spinner.component';
 import { InlineSpinnerComponent } from './inline-spinner/inline-spinner.component';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A feature module that enables monitoring RXJS actions. */
 @NgModule({
@@ -31,6 +32,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
     MatButtonModule,
     MatTooltipModule,
     ErrorSpinnerModule,
+    JsonDumpModule,
   ],
   exports: [
     MonitorButtonDirective,

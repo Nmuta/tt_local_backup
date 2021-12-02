@@ -64,4 +64,12 @@ export class NewCommunityMessageComponent implements OnInit {
       deviceType: deviceType,
     } as CommunityMessage);
   }
+
+  public dateTimeFutureFilter = (input: DateTime | null): boolean => {
+    if (!input) {
+      return false;
+    }
+    const day = input || DateTime.local().startOf('day');
+    return day > DateTime.local().startOf('day');
+  };
 }

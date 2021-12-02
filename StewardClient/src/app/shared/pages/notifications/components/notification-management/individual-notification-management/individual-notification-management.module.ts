@@ -21,22 +21,22 @@ import { OverrideManagersModule } from '@shared/modules/state-managers/state-man
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
-import { SunriseNotificationManagementComponent } from './sunrise/sunrise-notification-management.component';
-import { WoodstockNotificationManagementComponent } from './woodstock/woodstock-notification-management.component';
+import { SunriseIndividualNotificationManagementComponent } from './sunrise/sunrise-individual-notification-management.component';
+import { WoodstockIndividualNotificationManagementComponent } from './woodstock/woodstock-individual-notification-management.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
-import { NotificationManagementComponent } from './notification-management.component';
-import { LuxonModule } from 'luxon-angular';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { IndividualNotificationManagementComponent } from './individual-notification-management.component';
+import { WoodstockIndividualNotificationManagementContract } from './woodstock/woodstock-individual-notification-management.contract';
+import { SunriseIndividualNotificationManagementContract } from './sunrise/sunrise-individual-notification-management.contract';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
   declarations: [
-    NotificationManagementComponent,
-    SunriseNotificationManagementComponent,
-    WoodstockNotificationManagementComponent,
+    IndividualNotificationManagementComponent,
+    SunriseIndividualNotificationManagementComponent,
+    WoodstockIndividualNotificationManagementComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
@@ -65,15 +65,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTabsModule,
     MatOptionModule,
     MatSelectModule,
-    LuxonModule,
-    MatLuxonDateModule,
     MatTooltipModule,
     MatPaginatorModule,
   ],
   exports: [
-    NotificationManagementComponent,
-    SunriseNotificationManagementComponent,
-    WoodstockNotificationManagementComponent,
+    IndividualNotificationManagementComponent,
+    SunriseIndividualNotificationManagementComponent,
+    WoodstockIndividualNotificationManagementComponent,
+  ],
+  providers: [
+    WoodstockIndividualNotificationManagementContract,
+    SunriseIndividualNotificationManagementContract,
   ],
 })
-export class NotificationManagementModule {}
+export class IndividualNotificationManagementModule {}

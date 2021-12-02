@@ -23,6 +23,6 @@ export class WoodstockPlayerNotificationsComponent extends PlayerNotificationsBa
 
   /** Gets a player's notification list by XUID. */
   public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotification[]> {
-    return this.woodstock.getPlayerNotificationsByXuid$(xuid);
+    return this.woodstock.getPlayerNotifications$(xuid);
   }
 }

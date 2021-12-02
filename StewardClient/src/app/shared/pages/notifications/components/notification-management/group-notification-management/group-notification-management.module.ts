@@ -21,26 +21,22 @@ import { OverrideManagersModule } from '@shared/modules/state-managers/state-man
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { SunriseGroupNotificationManagementComponent } from './sunrise/sunrise-group-notification-management.component';
+import { WoodstockGroupNotificationManagementComponent } from './woodstock/woodstock-group-notification-management.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
-import { NotificationsRoutingModule } from './notifications.routing';
-import { LspGroupSelectionModule } from '@shared/views/lsp-group-selection/lsp-group-selection.module';
 import { MatSelectModule } from '@angular/material/select';
-import { NotificationsComponent } from './notifications.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { SunriseNotificationsComponent } from './sunrise/sunrise-notifications.component';
-import { WoodstockNotificationsComponent } from './woodstock/woodstock-notifications.component';
-import { CommunityMessagingModule } from './components/community-messaging/community-messaging.module';
-import { GroupNotificationManagementModule } from './components/notification-management/group-notification-management/group-notification-management.module';
-import { IndividualNotificationManagementModule } from './components/notification-management/individual-notification-management/individual-notification-management.module';
+import { GroupNotificationManagementComponent } from './group-notification-management.component';
+import { WoodstockGroupNotificationManagementContract } from './woodstock/woodstock-group-notification-management.contract';
+import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-group-notification-management.contract';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
   declarations: [
-    NotificationsComponent,
-    SunriseNotificationsComponent,
-    WoodstockNotificationsComponent,
+    GroupNotificationManagementComponent,
+    SunriseGroupNotificationManagementComponent,
+    WoodstockGroupNotificationManagementComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
@@ -67,16 +63,19 @@ import { IndividualNotificationManagementModule } from './components/notificatio
     MakeModelAutocompleteModule,
     EndpointSelectionModule,
     MatTabsModule,
-    PlayerSelectionModule,
-    LspGroupSelectionModule,
-    NotificationsRoutingModule,
     MatOptionModule,
     MatSelectModule,
     MatTooltipModule,
     MatPaginatorModule,
-    CommunityMessagingModule,
-    GroupNotificationManagementModule,
-    IndividualNotificationManagementModule,
+  ],
+  exports: [
+    GroupNotificationManagementComponent,
+    SunriseGroupNotificationManagementComponent,
+    WoodstockGroupNotificationManagementComponent,
+  ],
+  providers: [
+    WoodstockGroupNotificationManagementContract,
+    SunriseGroupNotificationManagementContract,
   ],
 })
-export class NotificationsModule {}
+export class GroupNotificationManagementModule {}

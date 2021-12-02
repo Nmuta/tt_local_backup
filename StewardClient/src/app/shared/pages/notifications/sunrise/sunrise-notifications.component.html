@@ -10,9 +10,10 @@
           <mat-card class="player-selection">
             <player-selection-bulk
               [disableLookupTypes]="['t10Id']"
-              [allowSelection]="false"
+              [allowSelection]="isInEditTab"
               [rejectionFn]="identityRejectionFn"
               (found)="onPlayerIdentitiesChange($event)"
+              (selected)="onPlayerSelected($event)"
             ></player-selection-bulk>
           </mat-card>
         </mat-tab>
@@ -39,10 +40,14 @@
         ></sunrise-community-messaging>
       </mat-tab>
       <mat-tab label="Edit/Delete">
-        <sunrise-notification-management
+        <sunrise-individual-notification-management
+          [hidden]="!isUsingPlayerIdentities"
+          [selectedXuid]="selectedXuid"
+        ></sunrise-individual-notification-management>
+        <sunrise-group-notification-management
+          [hidden]="isUsingPlayerIdentities"
           [selectedLspGroup]="selectedLspGroup"
-          [isUsingPlayerIdentities]="isUsingPlayerIdentities"
-        ></sunrise-notification-management>
+        ></sunrise-group-notification-management>
       </mat-tab>
     </mat-tab-group>
   </div>

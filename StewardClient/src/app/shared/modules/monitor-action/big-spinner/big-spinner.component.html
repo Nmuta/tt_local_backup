@@ -5,3 +5,4 @@
   [error]="monitor.status.error"
   [errorMessage]="monitor.label + ' failed'"
 ></error-spinner>
+<json-dump *ngIf="monitor.isErrored" [input]="monitor.status.error">Failed to load.</json-dump>

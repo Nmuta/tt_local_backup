@@ -23,6 +23,6 @@ export class SunrisePlayerNotificationsComponent extends PlayerNotificationsBase
 
   /** Gets a player's notification list by XUID. */
   public getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<PlayerNotification[]> {
-    return this.sunrise.getPlayerNotificationsByXuid$(xuid);
+    return this.sunrise.getPlayerNotifications$(xuid);
   }
 }

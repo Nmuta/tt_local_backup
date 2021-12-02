@@ -8,13 +8,13 @@ import { NgxsModule } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
 import {
   FormGroupNotificationEntry,
-  NotificationManagementComponent,
-} from './notification-management.component';
-import { NotificationManagementService } from './notification-management.service';
+  GroupNotificationManagementComponent,
+} from './group-notification-management.component';
+import { GroupNotificationManagementContract } from './group-notification-management.contract';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { GroupNotification } from '@models/notifications.model';
 
-class TestNotificationManagementService implements NotificationManagementService {
+class TestNotificationManagementService implements GroupNotificationManagementContract {
   public getGameTitle(): GameTitle {
     return null;
   }
@@ -33,8 +33,8 @@ class TestNotificationManagementService implements NotificationManagementService
 }
 
 describe('NotificationManagementComponent', () => {
-  let component: NotificationManagementComponent;
-  let fixture: ComponentFixture<NotificationManagementComponent>;
+  let component: GroupNotificationManagementComponent;
+  let fixture: ComponentFixture<GroupNotificationManagementComponent>;
   let testGroupNotifications: GroupNotification[];
 
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
@@ -43,12 +43,12 @@ describe('NotificationManagementComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [NotificationManagementComponent],
+        declarations: [GroupNotificationManagementComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [TestNotificationManagementService],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(NotificationManagementComponent);
+      fixture = TestBed.createComponent(GroupNotificationManagementComponent);
       component = fixture.debugElement.componentInstance;
       component.service = mockService;
 

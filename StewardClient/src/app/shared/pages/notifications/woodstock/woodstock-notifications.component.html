@@ -10,9 +10,10 @@
           <mat-card class="player-selection">
             <player-selection-bulk
               [disableLookupTypes]="['t10Id']"
-              [allowSelection]="false"
+              [allowSelection]="isInEditTab"
               [rejectionFn]="identityRejectionFn"
               (found)="onPlayerIdentitiesChange($event)"
+              (selected)="onPlayerSelected($event)"
             ></player-selection-bulk>
           </mat-card>
         </mat-tab>
@@ -39,10 +40,14 @@
         ></woodstock-community-messaging>
       </mat-tab>
       <mat-tab label="Edit/Delete">
-        <woodstock-notification-management
+        <woodstock-individual-notification-management
+          [hidden]="!isUsingPlayerIdentities"
+          [selectedXuid]="selectedXuid"
+        ></woodstock-individual-notification-management>
+        <woodstock-group-notification-management
+          [hidden]="isUsingPlayerIdentities"
           [selectedLspGroup]="selectedLspGroup"
-          [isUsingPlayerIdentities]="isUsingPlayerIdentities"
-        ></woodstock-notification-management>
+        ></woodstock-group-notification-management>
       </mat-tab>
     </mat-tab-group>
   </div>

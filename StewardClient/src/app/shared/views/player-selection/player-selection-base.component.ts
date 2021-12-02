@@ -88,6 +88,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       this.handleNewValues(values, false);
     }
   }
+
   /** The list of things to look up. */
   public get lookupList(): string[] {
     return this.foundIdentities.map(i => <string>i.query[this.lookupType]);

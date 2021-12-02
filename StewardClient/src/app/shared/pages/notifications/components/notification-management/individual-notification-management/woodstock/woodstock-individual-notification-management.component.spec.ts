@@ -2,23 +2,23 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
-import { WoodstockNotificationManagementComponent } from './woodstock-notification-management.component';
-import { WoodstockNotificationManagementService } from './woodstock-notification-management.service';
+import { WoodstockIndividualNotificationManagementComponent } from './woodstock-individual-notification-management.component';
+import { WoodstockIndividualNotificationManagementContract } from './woodstock-individual-notification-management.contract';
 
 describe('SunriseAuctionBlocklistComponent', () => {
-  let component: WoodstockNotificationManagementComponent;
-  let fixture: ComponentFixture<WoodstockNotificationManagementComponent>;
+  let component: WoodstockIndividualNotificationManagementComponent;
+  let fixture: ComponentFixture<WoodstockIndividualNotificationManagementComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [WoodstockNotificationManagementComponent],
+        declarations: [WoodstockIndividualNotificationManagementComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [WoodstockNotificationManagementService],
+        providers: [WoodstockIndividualNotificationManagementContract],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(WoodstockNotificationManagementComponent);
+      fixture = TestBed.createComponent(WoodstockIndividualNotificationManagementComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );

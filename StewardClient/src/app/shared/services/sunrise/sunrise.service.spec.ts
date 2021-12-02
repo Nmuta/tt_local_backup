@@ -117,7 +117,7 @@ describe('SunriseService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerNotificationsByXuid$(expectedXuid).subscribe(() => {
+      service.getPlayerNotifications$(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/notifications`,
         );

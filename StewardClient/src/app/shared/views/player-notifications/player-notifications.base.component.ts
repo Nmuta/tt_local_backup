@@ -78,6 +78,6 @@ export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotificat
 
   /** Checks if notification is of Community Message type */
   public isCommunityMessage(entry: PlayerNotification): boolean {
-    return entry.notificationType === 'CommunityMessageNotification';
+    return entry?.notificationType === 'CommunityMessageNotification';
   }
 }

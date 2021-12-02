@@ -1,4 +1,10 @@
 @import '/src/styles/mixins';
+$rowHeight: 250px;
+$shortRowHeight: 120px;
+$metadataWidth: 250px;
+$messageMinHeight: 200px;
+$messageMaxWidth: 500px;
+$columnMinWidth: 300px;
 
 :host {
   @include flex-column-fill();
@@ -8,11 +14,11 @@ table {
   width: 100%;
 
   tr.mat-row {
-    height: 250px;
+    height: $rowHeight;
   }
 
-  tr.non-editable {
-    height: 120px;
+  tr.nonEditable {
+    height: $shortRowHeight;
   }
 
   ul {
@@ -63,26 +69,26 @@ mat-form-field {
 
   &.device-type,
   &.expiry-date {
-    width: 250px;
+    width: $metadataWidth;
   }
 
   textarea {
-    min-height: 200px;
+    min-height: $messageMinHeight;
   }
 }
 
 .message {
   width: 100%;
-  max-width: 500px;
+  max-width: $messageMaxWidth;
 }
 
 .mat-column-message {
-  min-width: 300px;
+  min-width: $columnMinWidth;
   padding-right: $gap-medium;
 }
 
 .mat-column-metadata {
-  min-width: 300px;
+  min-width: $columnMinWidth;
 }
 
 .mat-column-actions {

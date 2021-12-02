@@ -13,7 +13,7 @@ import { flatten } from 'lodash';
 import { LspGroup } from '@models/lsp-group';
 import { CommunityMessage } from '@models/community-message';
 import { GuidLikeString } from '@models/extended-types';
-import { NotificationManagementService } from './notification-management.service';
+import { GroupNotificationManagementContract } from './group-notification-management.contract';
 import { GroupNotification } from '@models/notifications.model';
 import { toDateTime } from '@helpers/luxon';
 import { MatPaginator } from '@angular/material/paginator';
@@ -33,21 +33,20 @@ export interface FormGroupNotificationEntry {
  *  Notification management component.
  */
 @Component({
-  selector: 'notification-management',
-  templateUrl: './notification-management.component.html',
-  styleUrls: ['./notification-management.component.scss'],
+  selector: 'group-notification-management',
+  templateUrl: './group-notification-management.component.html',
+  styleUrls: ['./group-notification-management.component.scss'],
 })
-export class NotificationManagementComponent
+export class GroupNotificationManagementComponent
   extends BaseComponent
   implements OnInit, AfterViewInit, OnChanges {
-  @Input() public service: NotificationManagementService;
+  /** The group notification service. */
+  @Input() public service: GroupNotificationManagementContract;
+  /** The selected LSP group. */
   @Input() public selectedLspGroup: LspGroup;
-  /** True for player lookup, false for LSP group lookup.  */
-  @Input() public isUsingPlayerIdentities: boolean;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
   private readonly getNotifications$ = new Subject<GroupNotification[]>();
-  private readonly noExpireDefaultTime = DateTime.local(9999, 12, 31);
   public readonly messageMaxLength: number = 512;
 
   public deviceTypes: string[] = Object.values(DeviceType);
@@ -65,8 +64,11 @@ export class NotificationManagementComponent
   }
 
   public dateTimeFutureFilter = (input: DateTime | null): boolean => {
-    const day = input || DateTime.local().startOf('day');
-    return day > DateTime.local().startOf('day');
+    if (!input) {
+      return false;
+    }
+
+    return input > DateTime.local().startOf('day');
   };
 
   /** Lifecycle hook */
@@ -94,6 +96,7 @@ export class NotificationManagementComponent
               }),
             );
           }
+
           return EMPTY;
         }),
         takeUntil(this.onDestroy$),
@@ -123,7 +126,7 @@ export class NotificationManagementComponent
 
   /** Checks if notification is of Community Message type */
   public isCommunityMessage(entry: GroupNotification): boolean {
-    return entry.notificationType === 'CommunityMessageNotification';
+    return entry?.notificationType === 'CommunityMessageNotification';
   }
 
   /** Retrieves notifications */
@@ -242,7 +245,7 @@ export class NotificationManagementComponent
       deviceType: entry.formGroup.controls.deviceType.value,
       notificationType: entry.notification.notificationType,
       sentDateUtc: entry.notification.sentDateUtc,
-      expirationDateUtc: entry.formGroup.controls.expireDateUtc.value ?? this.noExpireDefaultTime,
+      expirationDateUtc: entry.formGroup.controls.expireDateUtc.value,
     };
 
     entry.edit = false;
