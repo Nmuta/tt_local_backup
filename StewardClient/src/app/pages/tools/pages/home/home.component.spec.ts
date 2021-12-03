@@ -6,7 +6,7 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { createMockWindowService } from '@services/window';
-import { createMockZendeskService } from '@services/zendesk';
+import { createMockZendeskService, ZendeskService } from '@services/zendesk';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
@@ -17,6 +17,8 @@ import { ToolsAppHomeComponent } from './home.component';
 describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
   let fixture: ComponentFixture<ToolsAppHomeComponent>;
+
+  let mockZendeskService: ZendeskService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -38,6 +40,9 @@ describe('ToolsAppHomeComponent', () => {
 
     fixture = TestBed.createComponent(ToolsAppHomeComponent);
     component = fixture.componentInstance;
+
+    mockZendeskService = TestBed.inject(ZendeskService);
+    Object.defineProperty(mockZendeskService, 'inZendesk$', { value: of(false) });
 
     Object.defineProperty(component, 'profile$', { writable: true });
     component.profile$ = of();

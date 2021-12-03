@@ -8,6 +8,7 @@
       *ngFor="let item of listedTools"
       mat-button
       [routerLink]="parentRoute + item.tool"
+      [target]="item.target"
       routerLinkActive="mat-stroked-button"
       [matTooltip]="item.tooltipDescription"
     >

@@ -25,6 +25,7 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { chain } from 'lodash';
+import { HomeTileInfoForNav, setExternalLinkTarget } from '@helpers/external-links';
 
 /** The shared top-level navbar. */
 @Component({
@@ -37,7 +38,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
 
   public role: UserRole = undefined;
-  public listedTools: HomeTileInfo[] = [];
+  public listedTools: HomeTileInfoForNav[] = [];
   public standardTools: Partial<Record<NavbarTool, number>> = undefined;
 
   public parentRoute: string = '/app/tools/';
@@ -47,6 +48,9 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
   public notificationCount = null;
   public notificationColor: ThemePalette = undefined;
+
+  /** True when app is running inside of Zendesk. */
+  public isInZendesk: boolean = false;
 
   constructor(
     private readonly store: Store,
@@ -62,6 +66,10 @@ export class NavbarComponent extends BaseComponent implements OnInit {
    * TODO: Remove when Kusto feature is ready.
    */
   public ngOnInit(): void {
+    this.zendeskService.inZendesk$.pipe(takeUntil(this.onDestroy$)).subscribe(inZendesk => {
+      this.isInZendesk = inZendesk;
+    });
+
     this.notificationsService.initialize();
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.role = profile?.role;
@@ -76,6 +84,9 @@ export class NavbarComponent extends BaseComponent implements OnInit {
       this.listedTools = chain(environment.tools)
         .filter(tool => !!navbarTools[tool.tool])
         .orderBy(tool => navbarTools[tool.tool])
+        .map(tool => {
+          return setExternalLinkTarget(tool, this.isInZendesk);
+        })
         .value();
     });
 

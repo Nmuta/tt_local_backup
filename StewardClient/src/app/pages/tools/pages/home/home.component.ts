@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment, HomeTileInfo, NavbarTool } from '@environments/environment';
+import { environment, NavbarTool } from '@environments/environment';
+import { HomeTileInfoForNav, setExternalLinkTarget } from '@helpers/external-links';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
+import { ZendeskService } from '@services/zendesk';
 import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
 import {
   UserSettingsState,
@@ -30,21 +32,28 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   public parentRoute: string = '/app/tools/';
 
-  public possibleNavbarItems: HomeTileInfo[] = environment.tools;
+  public possibleNavbarItems: HomeTileInfoForNav[] = [];
 
-  constructor(private readonly store: Store) {
+  /** True when app is running inside of Zendesk. */
+  public isInZendesk: boolean = false;
+
+  constructor(private readonly store: Store, private readonly zendeskService: ZendeskService) {
     super();
   }
 
   /** Initialization hook. */
   public ngOnInit(): void {
+    this.zendeskService.inZendesk$.pipe(takeUntil(this.onDestroy$)).subscribe(inZendesk => {
+      this.isInZendesk = inZendesk;
+    });
+
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
       this.userRole = profile.role;
       // The state replaces profile.role with profile.liveOpsAdminSecondaryRole to trick the app.
       // We must check for liveOpsAdminSecondaryRole instead of role to know if the user is a LiveOpsAdmin.
       this.isLiveOpsAdmin =
         !!profile.liveOpsAdminSecondaryRole && profile.liveOpsAdminSecondaryRole === profile.role;
-      this.hasAccess = chain(this.possibleNavbarItems)
+      this.hasAccess = chain(environment.tools)
         .map(v => [v.tool, v.accessList.includes(profile?.role)])
         .fromPairs()
         .value();
@@ -54,7 +63,9 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       const inaccessibleTools = environment.tools.filter(
         t => !this.hasAccess[t.tool] && !t.hideFromUnauthorized,
       );
-      this.possibleNavbarItems = [...accessibleTools, ...inaccessibleTools];
+      this.possibleNavbarItems = [...accessibleTools, ...inaccessibleTools].map(tool => {
+        return setExternalLinkTarget(tool, this.isInZendesk);
+      });
     });
 
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {

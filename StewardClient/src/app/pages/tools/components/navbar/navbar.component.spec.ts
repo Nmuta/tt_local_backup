@@ -9,7 +9,7 @@ import { UserModel } from '@models/user.model';
 import { NgxsModule } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { createMockWindowService } from '@services/window';
-import { createMockZendeskService } from '@services/zendesk';
+import { createMockZendeskService, ZendeskService } from '@services/zendesk';
 import { NotificationsService } from '@shared/hubs/notifications.service';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
 import {
@@ -27,6 +27,7 @@ describe('ToolsNavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
 
   let mockNotificationsService: NotificationsService;
+  let mockZendeskService: ZendeskService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -48,6 +49,9 @@ describe('ToolsNavbarComponent', () => {
 
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
+
+    mockZendeskService = TestBed.inject(ZendeskService);
+    Object.defineProperty(mockZendeskService, 'inZendesk$', { value: of(false) });
 
     mockNotificationsService = TestBed.inject(NotificationsService);
     mockNotificationsService.initialize = jasmine.createSpy('initialize');

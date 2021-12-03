@@ -40,7 +40,12 @@
             In Nav
           </mat-checkbox>
           <div class="spacer"></div>
-          <a *ngIf="hasAccess[item.tool]" mat-button [routerLink]="parentRoute + item.tool">
+          <a
+            *ngIf="hasAccess[item.tool]"
+            mat-button
+            [routerLink]="parentRoute + item.tool"
+            [target]="item.target"
+          >
             <mat-icon inline="true" *ngIf="!!item.extraIcon">{{ item.extraIcon }}</mat-icon>
             Open
           </a>
