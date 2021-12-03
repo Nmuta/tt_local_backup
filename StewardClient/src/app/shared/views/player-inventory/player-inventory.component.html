@@ -1,10 +1,3 @@
-<ng-container *ngIf="gameTitle === 'woodstock'">
-  <span class="hotfix-qcl">
-    Quick Chat Line #459 (Gotta Catch Em All!) is temporarily disabled while GameDbs are being
-    updated.
-  </span>
-</ng-container>
-
 <div *ngIf="inventory; else failstate">
   <inventory-item-list-display
     *ngFor="let whatToShow of itemsToShow"

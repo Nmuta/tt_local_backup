@@ -1699,15 +1699,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getCars, getCarHorns, getVanityItems, getEmotes, getQuickChatLines).ConfigureAwait(true);
 
-            var quickChatLines = await getQuickChatLines.ConfigureAwait(true);
-
-            // TODO: Remove this hotfix for item 459 (Gotta Smash Em All!) when Services GameDB is update
-            var itemToRemove = quickChatLines.FirstOrDefault(r => r.Id == 459);
-            if (itemToRemove != null)
-            {
-                quickChatLines.Remove(itemToRemove);
-            }
-
             var masterInventory = new WoodstockMasterInventory
             {
                 CreditRewards = new List<MasterInventoryItem>
@@ -1722,8 +1713,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 CarHorns = await getCarHorns.ConfigureAwait(true),
                 VanityItems = await getVanityItems.ConfigureAwait(true),
                 Emotes = await getEmotes.ConfigureAwait(true),
-                QuickChatLines = quickChatLines,
-            };
+                QuickChatLines = await getQuickChatLines.ConfigureAwait(true),
+        };
 
             return masterInventory;
         }
