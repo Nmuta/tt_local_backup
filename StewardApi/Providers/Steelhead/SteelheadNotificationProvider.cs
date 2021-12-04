@@ -112,6 +112,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 throw new FailedToSendStewardException("Notifications failed to send.", ex);
             }
+
+            // TODO Add notification logging for individual users Task(948868)
         }
 
         /// <inheritdoc />
@@ -220,6 +222,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 throw new FailedToSendStewardException("Notifications failed to send.", ex);
             }
+
+            // TODO Add notification logging for individual users Task(948868)
         }
 
         /// <inheritdoc />
@@ -312,6 +316,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 throw new FailedToSendStewardException($"LSP failed to delete message with Notification ID: {notificationId}", ex);
             }
+
+            // TODO Add notification logging for individual users Task(948868)
         }
 
         /// <inheritdoc />

@@ -37,6 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             IList<ulong> xuids,
             string message,
             DateTime expireTimeUtc,
+            string requesterObjectId,
             string endpoint);
 
         /// <summary>
@@ -58,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             ulong xuid,
             string message,
             DateTime expireTimeUtc,
+            string requesterObjectId,
             string endpoint);
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Deletes notification.
         /// </summary>
-        Task DeleteNotificationAsync(Guid notificationId, ulong xuid, string endpoint);
+        Task DeleteNotificationAsync(Guid notificationId, ulong xuid, string requesterObjectId, string endpoint);
 
         /// <summary>
         ///     Deletes group notification.

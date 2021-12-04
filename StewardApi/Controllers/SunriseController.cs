@@ -1419,6 +1419,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 nameof(communityMessage.Duration));
 
             var stringBuilder = new StringBuilder();
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
             foreach (var xuid in communityMessage.Xuids)
@@ -1441,6 +1443,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 communityMessage.Xuids,
                 communityMessage.Message,
                 expireTime,
+                requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(notifications);
@@ -1508,6 +1511,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
             var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1521,6 +1526,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 xuid,
                 editParameters.Message,
                 expireTime,
+                requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
@@ -1580,6 +1586,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
             var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1590,6 +1598,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             await this.sunriseNotificationProvider.DeleteNotificationAsync(
                 notificationId,
                 xuid,
+                requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();

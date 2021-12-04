@@ -214,6 +214,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 string endpoint);
 
         /// <summary>
+        ///     Retrieves player messages.
+        /// </summary>
+        public Task<NotificationsManagementService.GetNotificationOutput> GetPlayerNotificationAsync(
+            ulong xuid,
+            Guid notificationId,
+            string endpoint);
+
+        /// <summary>
         ///     Retrieves user group message.
         /// </summary>
         public Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(

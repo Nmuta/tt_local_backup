@@ -122,10 +122,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuids = Fixture.Create<List<ulong>>();
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendNotificationsAsync(xuids, message, expireTime, endpoint).ConfigureAwait(false);
+            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendNotificationsAsync(xuids, message, expireTime, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -161,10 +162,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
+            var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendNotificationsAsync(null, message, expireTime, endpoint).ConfigureAwait(false);
+            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendNotificationsAsync(null, message, expireTime, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
@@ -205,9 +207,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SendNotificationsAsync(xuids, null, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendNotificationsAsync(xuids, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendNotificationsAsync(xuids, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
+                async () => await provider.SendNotificationsAsync(xuids, null, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendNotificationsAsync(xuids, TestConstants.Empty, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendNotificationsAsync(xuids, TestConstants.WhiteSpace, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.SendGroupNotificationAsync(groupId, null, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.Empty, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.WhiteSpace, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
@@ -237,7 +239,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.EditNotificationAsync(notificationId, xuid, message, expireTime, endpoint).ConfigureAwait(false),
+                async () => await provider.EditNotificationAsync(notificationId, xuid, message, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.EditGroupNotificationAsync(notificationId, message, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
             };
 
@@ -264,9 +266,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.EditNotificationAsync(notificationId, xuid, null, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.EditNotificationAsync(notificationId, xuid, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.EditNotificationAsync(notificationId, xuid, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
+                async () => await provider.EditNotificationAsync(notificationId, xuid, null, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.EditNotificationAsync(notificationId, xuid, TestConstants.Empty, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.EditNotificationAsync(notificationId, xuid, TestConstants.WhiteSpace, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.EditGroupNotificationAsync(notificationId, null, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.EditGroupNotificationAsync(notificationId, TestConstants.Empty, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.EditGroupNotificationAsync(notificationId, TestConstants.WhiteSpace, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
@@ -293,7 +295,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.DeleteNotificationAsync(notificationId, xuid, endpoint).ConfigureAwait(false),
+                async () => await provider.DeleteNotificationAsync(notificationId, xuid, requesterObjectId, endpoint).ConfigureAwait(false),
                 async () => await provider.DeleteGroupNotificationAsync(notificationId, requesterObjectId, endpoint).ConfigureAwait(false),
             };
 
@@ -309,6 +311,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public Dependencies()
             {
                 this.SunriseService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsRetrieveForUserExOutput>());
+                this.SunriseService.GetPlayerNotificationAsync(Arg.Any<ulong>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GetNotificationOutput>());
                 this.SunriseService.GetUserGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAllUserGroupMessagesOutput>());
                 this.SunriseService.GetUserGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupMessageOutput>());
                 this.SunriseService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());

@@ -156,6 +156,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Retrieves player messages.
+        /// </summary>
+        public Task<NotificationsManagementService.GetNotificationOutput> GetPlayerNotificationAsync(
+            ulong xuid,
+            Guid notificationId,
+            string endpoint);
+
+        /// <summary>
         ///     Retrieves user group messages.
         /// </summary>
         public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
@@ -112,11 +113,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             IList<ulong> xuids,
             string message,
             DateTime expireTimeUtc,
+            string requesterObjectId,
             string endpoint)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var messageSendResults = new List<MessageSendResult<ulong>>();
 
             try
             {
@@ -126,12 +131,49 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     expireTimeUtc,
                     endpoint).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
+                messageSendResults = this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults).ToList();
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException("Notifications failed to send.", ex);
             }
+
+            var batchReferenceId = Guid.NewGuid();
+            foreach (var messageResult in messageSendResults)
+            {
+                try
+                {
+                    var notificationInfo = await this.woodstockService
+                        .GetPlayerNotificationAsync(messageResult.PlayerOrLspGroup, messageResult.NotificationId, endpoint).ConfigureAwait(false);
+
+                    var notificationHistory = new NotificationHistory
+                    {
+                        Id = notificationInfo.notification.Id.ToString(),
+                        Title = TitleConstants.WoodstockCodeName,
+                        Message = notificationInfo.notification.Message,
+                        RequesterObjectId = requesterObjectId,
+                        RecipientId = messageResult.PlayerOrLspGroup.ToString(CultureInfo.InvariantCulture),
+                        Type = notificationInfo.notification.NotificationType,
+                        RecipientType = GiftIdentityAntecedent.Xuid.ToString(),
+                        DeviceType = DeviceType.All.ToString(),
+                        GiftType = GiftType.None.ToString(),
+                        BatchReferenceId = batchReferenceId.ToString(),
+                        Action = NotificationAction.Send.ToString(),
+                        Endpoint = endpoint,
+                        CreatedDateUtc = DateTime.UtcNow,
+                        ExpireDateUtc = expireTimeUtc
+                    };
+
+                    await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(notificationHistory)
+                        .ConfigureAwait(false);
+                }
+                catch
+                {
+                    messageResult.Error = new ServicesFailureStewardError("Message successfully sent; Logging of send event failed.");
+                }
+            }
+
+            return messageSendResults;
         }
 
         /// <inheritdoc />
@@ -215,9 +257,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             ulong xuid,
             string message,
             DateTime expireTimeUtc,
+            string requesterObjectId,
             string endpoint)
         {
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
@@ -238,7 +282,38 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException("Notifications failed to send.", ex);
+                throw new FailedToSendStewardException($"Notification with ID: {notificationId} failed to update.", ex);
+            }
+
+            try
+            {
+                var notificationInfo = await this.woodstockService
+                    .GetPlayerNotificationAsync(xuid, notificationId, endpoint).ConfigureAwait(false);
+
+                var notificationHistory = new NotificationHistory
+                {
+                    Id = notificationId.ToString(),
+                    Title = TitleConstants.WoodstockCodeName,
+                    Message = message,
+                    RequesterObjectId = requesterObjectId,
+                    RecipientId = xuid.ToString(DateTimeFormatInfo.InvariantInfo),
+                    Type = notificationInfo.notification.NotificationType,
+                    RecipientType = GiftIdentityAntecedent.Xuid.ToString(),
+                    DeviceType = DeviceType.All.ToString(),
+                    GiftType = GiftType.None.ToString(),
+                    BatchReferenceId = string.Empty,
+                    Action = NotificationAction.Edit.ToString(),
+                    Endpoint = endpoint,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    ExpireDateUtc = expireTimeUtc
+                };
+
+                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                    notificationHistory).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Message successfully edited; Logging of edit event failed.", ex);
             }
         }
 
@@ -273,7 +348,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException($"Notification with ID: {notificationId} failed to send.", ex);
+                throw new FailedToSendStewardException($"Notification with ID: {notificationId} failed to update.", ex);
             }
 
             try
@@ -309,8 +384,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task DeleteNotificationAsync(Guid notificationId, ulong xuid, string endpoint)
+        public async Task DeleteNotificationAsync(
+            Guid notificationId,
+            ulong xuid,
+            string requesterObjectId,
+            string endpoint)
         {
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            LiveOpsNotification notification;
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = true,
@@ -322,15 +404,48 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
+                var notificationInfo = await this.woodstockService
+                    .GetPlayerNotificationAsync(xuid, notificationId, endpoint).ConfigureAwait(false);
+
                 await this.woodstockService.EditNotificationAsync(
                     notificationId,
                     xuid,
                     editParams,
                     endpoint).ConfigureAwait(false);
+
+                notification = notificationInfo.notification;
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"LSP failed to delete message with Notification ID: {notificationId}", ex);
+            }
+
+            try
+            {
+                var notificationHistory = new NotificationHistory
+                {
+                    Id = notificationId.ToString(),
+                    Title = TitleConstants.WoodstockCodeName,
+                    Message = notification.Message,
+                    RequesterObjectId = requesterObjectId,
+                    RecipientId = xuid.ToString(CultureInfo.InvariantCulture),
+                    Type = notification.NotificationType,
+                    RecipientType = GiftIdentityAntecedent.Xuid.ToString(),
+                    DeviceType = DeviceType.All.ToString(),
+                    GiftType = GiftType.None.ToString(),
+                    BatchReferenceId = string.Empty,
+                    Action = NotificationAction.Delete.ToString(),
+                    Endpoint = endpoint,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    ExpireDateUtc = DateTime.UtcNow
+                };
+
+                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                    notificationHistory).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Message successfully deleted; Logging of delete event failed.", ex);
             }
         }
 

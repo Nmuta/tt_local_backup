@@ -378,6 +378,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<NotificationsManagementService.GetNotificationOutput> GetPlayerNotificationAsync(
+            ulong xuid,
+            Guid notificationId,
+            string endpoint)
+        {
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await notificationsManagementService.GetNotification(xuid, notificationId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
             Guid notificationId,
             string endpoint)
