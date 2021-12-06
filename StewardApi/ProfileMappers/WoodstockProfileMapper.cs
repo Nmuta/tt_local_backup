@@ -44,6 +44,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
                     new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
+                    new PlayerInventoryItem { Id = -1, Description = "WheelSpins", Quantity = src.wheelSpins },
+                    new PlayerInventoryItem { Id = -1, Description = "SuperWheelSpins", Quantity = src.superWheelSpins },
+                    new PlayerInventoryItem { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints },
                 }))
                 .ReverseMap();
             this.CreateMap<AdminForzaProfile, WoodstockInventoryProfile>().ReverseMap();
