@@ -18,11 +18,10 @@
             ></player-selection-bulk>
           </mat-card>
         </mat-tab>
-        <mat-tab
-          *ngIf="!disableLspGroupSelection"
-          label="LSP Group Selection"
-          class="steward-layout-vertical-fill"
-        >
+        <mat-tab [disabled]="disableLspGroupSelection" class="steward-layout-vertical-fill">
+          <ng-template mat-tab-label>
+            <span [matTooltip]="groupGiftTabTooltip"> LSP Group Selection </span>
+          </ng-template>
           <woodstock-lsp-group-selection
             class="steward-layout-vertical-fill"
             [(ngModel)]="selectedLspGroup"

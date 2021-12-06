@@ -754,7 +754,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200)]
         public async Task<IActionResult> UpdateGroupInventories(

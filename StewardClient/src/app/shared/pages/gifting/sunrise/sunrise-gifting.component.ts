@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitleCodeName, UserRole } from '@models/enums';
+import { GameTitle, GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
@@ -16,6 +16,7 @@ import {
   SetSunriseGiftingMatTabIndex,
   SetSunriseGiftingSelectedPlayerIdentities,
 } from './state/sunrise-gifting.state.actions';
+import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 
 /** The sunrise gifting page for the Navbar app. */
 @Component({
@@ -39,6 +40,9 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
 
   public disableLspGroupSelection: boolean = true;
 
+  /** Tooltip for disabled LSP group selection tab., */
+  public groupGiftTabTooltip: string = null;
+
   constructor(private readonly store: Store) {
     super();
   }
@@ -46,7 +50,15 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   /** Initialization hook */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = user.role !== UserRole.LiveOpsAdmin;
+    this.disableLspGroupSelection = !hasAccessToRestrictedFeature(
+      RestrictedFeature.GroupGifting,
+      GameTitle.FM7,
+      user.role,
+    );
+
+    if (this.disableLspGroupSelection) {
+      this.groupGiftTabTooltip = `Feature is not supported for your user role: ${user.role}`;
+    }
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftingState.selectedMatTabIndex,

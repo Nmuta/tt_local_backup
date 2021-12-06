@@ -25,6 +25,7 @@ import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.compone
 import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
 import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -45,6 +46,7 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
     MatIconModule,
     MatInputModule,
     MatCardModule,
+    MatTooltipModule,
     FontAwesomeModule,
     FormsModule,
     LspGroupSelectionModule,

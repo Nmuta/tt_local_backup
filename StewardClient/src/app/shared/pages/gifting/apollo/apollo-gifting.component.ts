@@ -7,7 +7,7 @@ import {
   SetApolloGiftingSelectedPlayerIdentities,
 } from './state/apollo-gifting.state.actions';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle, GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
@@ -16,6 +16,7 @@ import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
+import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -35,6 +36,9 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
   public selectedPlayerInventoryProfile: ApolloPlayerInventoryProfile;
   public selectedPlayerInventory: ApolloMasterInventory;
 
+  /** Tooltip for disabled LSP group selection tab., */
+  public groupGiftTabTooltip: string = null;
+
   constructor(private readonly store: Store) {
     super();
   }
@@ -42,7 +46,15 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
   /** Initialization hook */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
+    this.disableLspGroupSelection = !hasAccessToRestrictedFeature(
+      RestrictedFeature.GroupGifting,
+      GameTitle.FM7,
+      user.role,
+    );
+
+    if (this.disableLspGroupSelection) {
+      this.groupGiftTabTooltip = `Feature is not supported for your user role: ${user.role}`;
+    }
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       ApolloGiftingState.selectedMatTabIndex,
