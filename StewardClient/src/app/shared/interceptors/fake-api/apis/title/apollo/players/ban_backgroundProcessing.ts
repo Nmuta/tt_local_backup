@@ -27,6 +27,7 @@ export class ApolloPlayersBanWithBackgroundProcessingFakeApi extends FakeApiBase
   public static make(): BackgroundJob<void> {
     return {
       createdDateUtc: toDateTime(faker.date.past()),
+      userId: faker.datatype.uuid(),
       jobId: faker.datatype.uuid().toString(),
       status: BackgroundJobStatus.InProgress,
       result: undefined,

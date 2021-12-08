@@ -87,6 +87,7 @@ describe('StewardUserHistoryComponent', () => {
       beforeEach(() => {
         backgroundJob = {
           createdDateUtc: toDateTime(faker.date.past()),
+          userId: faker.datatype.uuid(),
           jobId: faker.datatype.uuid(),
           status: BackgroundJobStatus.Completed,
           rawResult: { foo: 'bar' } as Record<string, unknown>,
@@ -111,6 +112,7 @@ describe('StewardUserHistoryComponent', () => {
       beforeEach(() => {
         backgroundJob = {
           createdDateUtc: toDateTime(faker.date.past()),
+          userId: faker.datatype.uuid(),
           jobId: faker.datatype.uuid(),
           status: BackgroundJobStatus.Completed,
           rawResult: { foo: 'bar' },
@@ -135,6 +137,7 @@ describe('StewardUserHistoryComponent', () => {
     beforeEach(() => {
       component.selectedBackgroundJob = {
         createdDateUtc: toDateTime(faker.date.past()),
+        userId: faker.datatype.uuid(),
         jobId: faker.datatype.uuid(),
         status: BackgroundJobStatus.Completed,
         rawResult: { foo: 'bar' },

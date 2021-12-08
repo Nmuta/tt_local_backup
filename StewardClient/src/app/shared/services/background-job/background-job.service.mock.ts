@@ -12,6 +12,10 @@ export class MockBackgroundJobService {
   public getBackgroundJob$ = jasmine
     .createSpy('getBackgroundJob')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(JobsGetJobFakeApi.make()))));
+
+  public getInProgressBackgroundJob$ = jasmine
+    .createSpy('getInProgressBackgroundJob$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 }
 
 /** Creates an injectable mock for Background Job Service. */

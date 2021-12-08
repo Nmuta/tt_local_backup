@@ -1,13 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
+import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { BackgroundJob } from '@models/background-job';
 import { ToolsAvailability } from '@models/blob-storage';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { BlobStorageService } from '@services/blob-storage';
 import { SettingsService } from '@services/settings';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { sortBy } from 'lodash';
+import { DateTime } from 'luxon';
 import { EMPTY, Subject } from 'rxjs';
-import { catchError, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
 
 /** Displays the release management tool. */
 @Component({
@@ -15,17 +21,27 @@ import { catchError, switchMap, takeUntil } from 'rxjs/operators';
   templateUrl: './release-management.component.html',
   styleUrls: ['./release-management.component.scss'],
 })
-export class ReleaseManagementComponent extends BaseComponent implements OnInit {
+export class ReleaseManagementComponent extends BaseComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   private readonly getToolsAvailability$ = new Subject();
+  private readonly getInProgressJobs$ = new Subject();
 
   public toolsAvailability: ToolsAvailability;
   public getToolsAvailabilityMonitor = new ActionMonitor('GET tools availability');
   public setToolsAvailabilityMonitor = new ActionMonitor('POST tools availability');
+
+  public jobsTableColumns = ['date', 'reason', 'creator', 'status'];
+  public jobsTable = new BetterMatTableDataSource<BackgroundJob<unknown>>([]);
+  public jobsTableLastUpdated: DateTime;
+  public getInProgressJobsMonitor = new ActionMonitor('GET in progress jobs');
+
   public featureSupported: boolean = false;
 
   constructor(
     private readonly blobStorageService: BlobStorageService,
     private readonly settingsService: SettingsService,
+    private readonly backgroundJobService: BackgroundJobService,
   ) {
     super();
   }
@@ -34,27 +50,19 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit 
   public ngOnInit(): void {
     this.featureSupported = environment.production;
 
-    if (!this.featureSupported) {
-      return;
+    this.setupGetInProgressJobs();
+    this.getInProgressJobs$.next();
+
+    // Ignore tools availability if feature is not supported
+    if (this.featureSupported) {
+      this.setupGetToolsAvailability();
+      this.getToolsAvailability$.next();
     }
+  }
 
-    this.getToolsAvailability$
-      .pipe(
-        switchMap(() => {
-          this.getToolsAvailabilityMonitor = new ActionMonitor(
-            this.getToolsAvailabilityMonitor.dispose().label,
-          );
-          return this.blobStorageService
-            .getToolAvailability$()
-            .pipe(this.getToolsAvailabilityMonitor.monitorSingleFire());
-        }),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe(toolsAvailability => {
-        this.toolsAvailability = toolsAvailability;
-      });
-
-    this.getToolsAvailability$.next();
+  /** Lifecycle hook */
+  public ngAfterViewInit(): void {
+    this.jobsTable.paginator = this.paginator;
   }
 
   /** Change event when all tools availability changes */
@@ -79,6 +87,54 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit 
       )
       .subscribe(updatedToolsAvailability => {
         this.toolsAvailability = updatedToolsAvailability;
+      });
+  }
+
+  /** Gets the latest job data. */
+  public getLatestJobData(): void {
+    this.getInProgressJobs$.next();
+  }
+
+  private setupGetInProgressJobs(): void {
+    this.getInProgressJobs$
+      .pipe(
+        switchMap(() => {
+          this.getInProgressJobsMonitor = new ActionMonitor(
+            this.getInProgressJobsMonitor.dispose().label,
+          );
+          return this.backgroundJobService
+            .getInProgressBackgroundJob$()
+            .pipe(this.getInProgressJobsMonitor.monitorSingleFire());
+        }),
+        tap(() => (this.jobsTableLastUpdated = DateTime.local())),
+        map(jobs =>
+          jobs.filter(
+            job => job?.createdDateUtc?.isValid && !!job.reason && !job.reason.includes('Fake Job'),
+          ),
+        ),
+        map(jobs => sortBy(jobs, j => j.createdDateUtc).reverse()),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(jobs => {
+        this.jobsTable.data = jobs;
+      });
+  }
+
+  private setupGetToolsAvailability(): void {
+    this.getToolsAvailability$
+      .pipe(
+        switchMap(() => {
+          this.getToolsAvailabilityMonitor = new ActionMonitor(
+            this.getToolsAvailabilityMonitor.dispose().label,
+          );
+          return this.blobStorageService
+            .getToolAvailability$()
+            .pipe(this.getToolsAvailabilityMonitor.monitorSingleFire());
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(toolsAvailability => {
+        this.toolsAvailability = toolsAvailability;
       });
   }
 }

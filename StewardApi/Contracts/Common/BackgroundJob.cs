@@ -64,6 +64,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the created time.
         /// </summary>
-        public DateTime? CreatedTimeUtc { get; set; }
+        public DateTime? CreatedDateUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the user Id.
+        /// </summary>
+        public Guid? UserId { get; set; }
     }
 }

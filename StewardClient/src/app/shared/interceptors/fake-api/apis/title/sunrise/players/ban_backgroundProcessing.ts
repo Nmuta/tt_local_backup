@@ -27,6 +27,7 @@ export class SunrisePlayersBanWithBackgroundProcessingFakeApi extends FakeApiBas
   public static make(): BackgroundJob<undefined> {
     return {
       createdDateUtc: toDateTime(faker.date.past()),
+      userId: faker.datatype.uuid(),
       jobId: faker.datatype.uuid().toString(),
       status: BackgroundJobStatus.InProgress,
       result: undefined,

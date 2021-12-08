@@ -23,6 +23,10 @@ import { ReleaseManagementComponent } from './components/release-management/rele
 import { MatTabsModule } from '@angular/material/tabs';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { PipesModule } from '@shared/pipes/pipes.module';
+import { StewardUserModule } from '@views/steward-user/steward-user.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { LuxonModule } from 'luxon-angular';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
@@ -44,12 +48,16 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     MatOptionModule,
     MatTableModule,
     MatTabsModule,
+    MatPaginatorModule,
     TextFieldModule,
     JsonDumpModule,
     MatProgressSpinnerModule,
     KustoQuerySelectionModule,
     ErrorSpinnerModule,
     MonitorActionModule,
+    StewardUserModule,
+    PipesModule,
+    LuxonModule,
   ],
   exports: [KustoManagementComponent, ReleaseManagementComponent],
 })

@@ -25,6 +25,63 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Verify In Progress Jobs</mat-card-title>
+    <mat-card-subtitle *ngIf="!!jobsTableLastUpdated">
+      Last Checked: {{ jobsTableLastUpdated | dateTimeToJsDate | date: 'short' }}
+      <button
+        mat-icon-button
+        matTooltip="Get the latest background job data"
+        (click)="getLatestJobData()"
+      >
+        <mat-icon>sync</mat-icon>
+      </button>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!getInProgressJobsMonitor.isActive; else waitingTemplate">
+      <ng-container *ngIf="!getInProgressJobsMonitor.status.error; else errorTemplate">
+        <table mat-table [dataSource]="jobsTable">
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Created Date</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.createdDateUtc | utcDate: 'short' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">{{ element.status | humanize }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="reason">
+            <th mat-header-cell *matHeaderCellDef>Reason</th>
+            <td mat-cell *matCellDef="let element">{{ element.reason }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="creator">
+            <th mat-header-cell *matHeaderCellDef>Creator</th>
+            <td mat-cell *matCellDef="let element">
+              <steward-user [objectId]="element.userId"></steward-user>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="jobsTableColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: jobsTableColumns"></tr>
+        </table>
+      </ng-container>
+    </ng-container>
+    <mat-paginator
+      [hidden]="true"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50]"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>
+
 <ng-template #unsupportedFeatureTemplate>
   <h3>Feature is unsupported in this environment.</h3>
   <img src="https://placedog.net/640/480?random" />

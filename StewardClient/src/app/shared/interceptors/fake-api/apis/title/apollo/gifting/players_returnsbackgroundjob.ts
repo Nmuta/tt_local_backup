@@ -27,6 +27,7 @@ export class ApolloGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBase
   public static make(): BackgroundJob<void> {
     return {
       createdDateUtc: toDateTime(faker.date.past()),
+      userId: faker.datatype.uuid(),
       jobId: faker.datatype.uuid(),
       status: BackgroundJobStatus.InProgress,
       rawResult: {

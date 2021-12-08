@@ -4,8 +4,21 @@
   @include flex-column-fill();
 }
 
+table {
+  width: 100%;
+}
+
+img {
+  width: 200px;
+}
+
+mat-icon {
+  vertical-align: top !important;
+}
+
 mat-card {
   flex-grow: 1;
+  margin-bottom: $gap-medium;
 
   mat-card-content {
     padding: $gap-medium 0;

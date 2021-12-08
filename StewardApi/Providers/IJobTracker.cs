@@ -44,5 +44,10 @@ namespace Turn10.LiveOps.StewardApi.Providers
         ///     Sets the job's IsRead status.
         /// </summary>
         Task SetJobIsReadAsync(string jobId, string userObjectId, bool isRead);
+
+        /// <summary>
+        ///     Gets all the "InProgress" jobs.
+        /// </summary>
+        Task<IList<BackgroundJobInternal>> GetInProgressJobsAsync();
     }
 }

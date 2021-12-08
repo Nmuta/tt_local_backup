@@ -1,4 +1,5 @@
 import { environment } from '@environments/environment';
+import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import faker from 'faker';
@@ -25,7 +26,8 @@ export class WoodstockGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiB
   /** Generates a sample object */
   public static make(): BackgroundJob<void> {
     return {
-      createdDateUtc: faker.date.past(),
+      createdDateUtc: toDateTime(faker.date.past()),
+      userId: faker.datatype.uuid(),
       jobId: faker.datatype.uuid(),
       status: BackgroundJobStatus.InProgress,
       rawResult: {

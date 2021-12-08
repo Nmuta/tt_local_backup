@@ -278,6 +278,16 @@ namespace Turn10.LiveOps.StewardApi.Providers
             }
         }
 
+        /// <inheritdoc />
+        public async Task<IList<BackgroundJobInternal>> GetInProgressJobsAsync()
+        {
+            var tableQuery = new TableQuery<BackgroundJobInternal>().Where(TableQuery.GenerateFilterCondition("Status", QueryComparisons.Equal, Enum.GetName(typeof(BackgroundJobStatus), BackgroundJobStatus.InProgress)));
+
+            var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+
+            return results;
+        }
+
         private void AddFinalStatusToCache(BackgroundJobInternal backgroundJob, string jobId)
         {
             _ = Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out var status);

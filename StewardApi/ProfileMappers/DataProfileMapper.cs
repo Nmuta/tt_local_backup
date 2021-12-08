@@ -21,6 +21,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.JobId, opt =>
                     opt.MapFrom(src => src.JobId))
                 .ForMember(des => des.IsRead, opt => opt.MapFrom(src => src.IsRead ?? true))
+                .ForMember(des => des.CreatedDateUtc, opt => opt.MapFrom(src => src.CreatedTimeUtc))
+                .ForMember(des => des.UserId, opt => opt.MapFrom(src => src.PartitionKey))
                 .ReverseMap();
             this.CreateMap<KustoQueryInternal, KustoQuery>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.RowKey))

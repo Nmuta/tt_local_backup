@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
+import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { createMockBlobStorageService, BlobStorageService } from '@services/blob-storage';
 
 import { ReleaseManagementComponent } from './release-management.component';
@@ -35,7 +36,11 @@ describe('ReleaseManagementComponent', () => {
         MatInputModule,
       ],
       declarations: [ReleaseManagementComponent],
-      providers: [createMockBlobStorageService(), { provide: FormBuilder, useValue: formBuilder }],
+      providers: [
+        createMockBlobStorageService(),
+        createMockBackgroundJobService(),
+        { provide: FormBuilder, useValue: formBuilder },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReleaseManagementComponent);

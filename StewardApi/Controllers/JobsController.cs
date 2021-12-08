@@ -179,6 +179,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets all of the "InProgress" jobs.
+        /// </summary>
+        [HttpGet("inProgress")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [SwaggerResponse(200, type: typeof(IList<BackgroundJob>))]
+        public async Task<IActionResult> GetInProgressJobs()
+        {
+            var results = await this.jobTracker.GetInProgressJobsAsync().ConfigureAwait(true);
+
+            var outputResults = this.mapper.Map<IList<BackgroundJob>>(results);
+
+            return this.Ok(outputResults);
+        }
+
+        /// <summary>
         ///     Gets the background jobs for a given user.
         /// </summary>
         [HttpGet("userObjectId({userObjectId})")]

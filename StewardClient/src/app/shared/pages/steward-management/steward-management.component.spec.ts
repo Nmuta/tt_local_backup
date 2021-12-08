@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { StewardManagementComponent } from './steward-management.component';
 
 describe('StewardManagementComponent', () => {
@@ -8,6 +9,7 @@ describe('StewardManagementComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StewardManagementComponent],
+      providers: [createMockBackgroundJobService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StewardManagementComponent);

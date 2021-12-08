@@ -55,14 +55,17 @@ export class BackgroundJobService {
     );
   }
 
+  /** Gets the in progress background jobs.. */
+  public getInProgressBackgroundJob$(): Observable<BackgroundJob<unknown>[]> {
+    return this.apiService.getRequest$<BackgroundJob<unknown>[]>(`${this.basePath}/inProgress`);
+  }
+
   /** Gets the background job. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getBackgroundJobs$(
     userObjectId: string,
     resultsFrom: Duration,
   ): Observable<BackgroundJob<unknown>[]> {
     const params = new HttpParams().append('resultsFrom', resultsFrom.toISO());
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.apiService
       .getRequest$<BackgroundJob<unknown>[]>(
         `${this.basePath}/userObjectId(${userObjectId})`,
@@ -73,25 +76,12 @@ export class BackgroundJobService {
           for (const job of jobs) {
             try {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              job.result = (job.rawResult as unknown) as any;
+              job.result = job.rawResult as unknown;
             } catch (err) {
               /** Do nothing, just try to parse */
             }
           }
         }),
       );
-  }
-
-  /** Converts each properties first letter to lowercase. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private lowercaseProperties(object: any): any {
-    const objectWithLowercaseProps = {};
-    for (const key in object) {
-      if (object.hasOwnProperty(key)) {
-        const newKey = key.charAt(0).toLowerCase() + key.slice(1);
-        objectWithLowercaseProps[newKey] = object[key];
-      }
-    }
-    return objectWithLowercaseProps;
   }
 }
