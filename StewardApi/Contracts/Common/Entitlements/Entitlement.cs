@@ -21,6 +21,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
 
         public string ProductId { get; set; }
 
+        public string ProductDisplayName { get; set; }
+
         public string ProductTypeName { get; set; }
 
         public ulong TitleId { get; set; }

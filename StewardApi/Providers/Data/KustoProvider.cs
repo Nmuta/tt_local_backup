@@ -21,6 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     public sealed class KustoProvider : IKustoProvider
     {
         private const string GameDatabaseName = "T10Analytics";
+        private const string LiveOpsDatabaseName = "Live Ops Tools Prod";
 
         private readonly ICslQueryProvider cslQueryProvider;
         private readonly IRefreshableCacheStore refreshableCacheStore;
@@ -107,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     var entitlements = new List<PurchasedEntitlement>();
 
                     using (var reader = await this.cslQueryProvider
-                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                        .ExecuteQueryAsync(LiveOpsDatabaseName, query, new ClientRequestProperties())
                         .ConfigureAwait(false))
                     {
                         while (reader.Read())
@@ -144,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     var entitlements = new List<CancelledEntitlement>();
 
                     using (var reader = await this.cslQueryProvider
-                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                        .ExecuteQueryAsync(LiveOpsDatabaseName, query, new ClientRequestProperties())
                         .ConfigureAwait(false))
                     {
                         while (reader.Read())
@@ -181,7 +182,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     var entitlements = new List<RefundedEntitlement>();
 
                     using (var reader = await this.cslQueryProvider
-                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                        .ExecuteQueryAsync(LiveOpsDatabaseName, query, new ClientRequestProperties())
                         .ConfigureAwait(false))
                     {
                         while (reader.Read())

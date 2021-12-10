@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
         /// </summary>
         public static string MakeQuery(ulong xuid)
         {
-            return $"get_entitlements_PurchaseRefund({xuid})";
+            return $"get_entitlements_purchaserefund_v2({xuid})";
         }
 
         public static RefundedEntitlement FromQueryResult(IDataReader reader)
@@ -45,6 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
                 PurchasePriceUSDAmount = reader.Get<decimal>(nameof(PurchasePriceUSDAmount)),
                 IsPaidTransaction = reader.Get<bool>(nameof(IsPaidTransaction)),
                 ProductId = reader.Get<string>(nameof(ProductId)),
+                ProductDisplayName = reader.Get<string>(nameof(ProductDisplayName)),
                 ProductTypeName = reader.Get<string>(nameof(ProductTypeName)),
                 TitleId = reader.Get<ulong>(nameof(TitleId)),
             };
