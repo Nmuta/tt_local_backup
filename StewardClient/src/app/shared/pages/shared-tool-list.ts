@@ -16,7 +16,7 @@ export class SharedNavbarTools {
 
   /** The bulk ban history tool page. */
   public static readonly BulkBanHistoryPage: RouteParams = {
-    title: 'Bulk Ban History',
+    title: 'Ban Review',
     path: 'bulk-ban-history',
   };
 

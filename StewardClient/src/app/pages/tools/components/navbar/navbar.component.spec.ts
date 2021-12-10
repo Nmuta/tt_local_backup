@@ -111,7 +111,7 @@ describe('ToolsNavbarComponent', () => {
           enableFakeApi: false,
           enableStagingApi: false,
           appVersion: undefined,
-          navbarTools: { 'user-details': 1, ugc: 2, gifting: 3, 'bulk-ban-history': 4 },
+          navbarTools: { 'user-details': 1, ugc: 2, gifting: 3, 'ban-history': 4 },
           apolloEndpointKey: undefined,
           sunriseEndpointKey: undefined,
           woodstockEndpointKey: undefined,
@@ -127,7 +127,7 @@ describe('ToolsNavbarComponent', () => {
         expect(component.listedTools[0].tool).toEqual('user-details');
         expect(component.listedTools[1].tool).toEqual('ugc');
         expect(component.listedTools[2].tool).toEqual('gifting');
-        expect(component.listedTools[3].tool).toEqual('bulk-ban-history');
+        expect(component.listedTools[3].tool).toEqual('ban-history');
       });
     });
   });

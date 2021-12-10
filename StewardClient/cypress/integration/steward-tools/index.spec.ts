@@ -103,7 +103,7 @@ context('Steward / Tools', () => {
         .should('have.attr', 'href', stewardUrls.tools.salus);
 
       cy.get('mat-card')
-        .contains('mat-card-title', 'Bulk Ban History')
+        .contains('mat-card-title', 'Ban Review')
         .parents('mat-card')
         .first()
         .should('exist')
