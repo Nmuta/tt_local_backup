@@ -464,8 +464,8 @@ export const unprocessedToolList: HomeTileInfo[] = [
     subtitle: 'Admin Pages',
     imageUrl: undefined,
     imageAlt: undefined,
-    tooltipDescription: 'FH4 Admin Pages',
-    shortDescription: [`FH4 Admin Pages`],
+    tooltipDescription: 'FM7 Admin Pages',
+    shortDescription: [`FM7 Admin Pages`],
     externalUrl: 'https://admin.fm7.forzamotorsport.net/',
   },
 ];
