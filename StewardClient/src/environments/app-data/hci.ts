@@ -5,4 +5,5 @@ export const HCI = {
    * User stops typing -> (Delay) -> perform automatic search
    */
   TypingToAutoSearchDebounceMillis: 200,
+  AutoRetryMillis: 3_000,
 };

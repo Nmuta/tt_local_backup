@@ -239,6 +239,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, string endpoint);
 
         /// <summary>
+        ///    Sends car livery to a player xuid.
+        /// </summary>
+        Task<GiftingService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint);
+
+        /// <summary>
+        ///    Sends car livery to a user group.
+        /// </summary>
+        Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint);
+
+        /// <summary>
         ///     Bans users.
         /// </summary>
         Task<UserManagementService.BanUsersOutput> BanUsersAsync(
@@ -310,7 +320,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Search player UGC content.
         /// </summary>
-        Task<StorefrontManagementService.SearchUGCOutput> SearchUgcLiveries(
+        Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ForzaUGCSearchRequest filters,
             ForzaUGCContentType contentType,
             string endpoint);
@@ -318,28 +328,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Get a player livery.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLivery(
+        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
             Guid liveryId,
             string endpoint);
 
         /// <summary>
         ///     Get a player photo.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhoto(
+        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
             Guid photoId,
             string endpoint);
 
         /// <summary>
         ///     Get a player tune.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTune(
+        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
             string endpoint);
 
         /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
-        Task SetUGCFeaturedStatus(
+        Task SetUGCFeaturedStatusAsync(
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,

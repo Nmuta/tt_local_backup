@@ -356,6 +356,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<GiftingService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint)
+        {
+            var giftingService = await this.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint)
+        {
+            var giftingService = await this.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<NotificationsManagementService.LiveOpsRetrieveForUserExOutput>
             LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults, string endpoint)
         {
@@ -501,7 +517,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcLiveries(
+        public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ForzaUGCSearchRequest filters,
             ForzaUGCContentType contentType,
             string endpoint)
@@ -512,7 +528,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLivery(
+        public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
             Guid liveryId,
             string endpoint)
         {
@@ -522,7 +538,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhoto(
+        public async Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
             Guid photoId,
             string endpoint)
         {
@@ -532,7 +548,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTune(
+        public async Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
             string endpoint)
         {
@@ -542,7 +558,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task SetUGCFeaturedStatus(
+        public async Task SetUGCFeaturedStatusAsync(
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,

@@ -1662,9 +1662,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<UGCItem>;
+            var details = result.Value as IList<UgcItem>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<UGCItem>>();
+            details.Should().BeOfType<List<UgcItem>>();
         }
 
         [TestMethod]
@@ -1725,9 +1725,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as UGCItem;
+            var details = result.Value as UgcItem;
             details.Should().NotBeNull();
-            details.Should().BeOfType<UGCItem>();
+            details.Should().BeOfType<UgcItem>();
         }
 
         [TestMethod]
@@ -1745,9 +1745,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as UGCItem;
+            var details = result.Value as UgcItem;
             details.Should().NotBeNull();
-            details.Should().BeOfType<UGCItem>();
+            details.Should().BeOfType<UgcItem>();
         }
 
         [TestMethod]
@@ -1765,9 +1765,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as UGCItem;
+            var details = result.Value as UgcItem;
             details.Should().NotBeNull();
-            details.Should().BeOfType<UGCItem>();
+            details.Should().BeOfType<UgcItem>();
         }
 
         [TestMethod]
@@ -1943,11 +1943,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ProfileNote>>());
                 this.SunrisePlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(Arg.Any<ulong>(), Arg.Any<AuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<PlayerAuction>>());
-                this.StorefrontProvider.SearchUGCItems(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UGCItem>>());
-                this.StorefrontProvider.GetUGCLivery(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
-                this.StorefrontProvider.GetUGCPhoto(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
-                this.StorefrontProvider.GetUGCTune(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
-                this.StorefrontProvider.SetUGCFeaturedStatus(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
+                this.StorefrontProvider.SearchUgcContentAsync(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.StorefrontProvider.GetUGCLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.GetUGCPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.GetUGCTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.SetUGCFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());

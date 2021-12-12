@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitle, GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
@@ -10,15 +10,15 @@ import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { SunriseGiftingState } from './state/sunrise-gifting.state';
 import {
   SetSunriseGiftingMatTabIndex,
   SetSunriseGiftingSelectedPlayerIdentities,
 } from './state/sunrise-gifting.state.actions';
+import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 
-/** The sunrise gifting page for the Navbar app. */
+/** The sunrise gifting page. */
 @Component({
   templateUrl: './sunrise-gifting.component.html',
   styleUrls: ['./sunrise-gifting.component.scss'],
@@ -27,8 +27,6 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
-  /** Game title. */
-  public title: GameTitleCodeName = GameTitleCodeName.FH4;
   /** All selected player identities from player selection tool. */
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected LSP group. */
@@ -63,6 +61,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftingState.selectedMatTabIndex,
     );
+
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {

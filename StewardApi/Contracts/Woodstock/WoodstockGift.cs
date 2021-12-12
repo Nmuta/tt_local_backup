@@ -1,15 +1,12 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
+﻿using Turn10.LiveOps.StewardApi.Contracts.Common;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
 {
     /// <summary>
     ///     Represents a Woodstock gift.
     /// </summary>
-    public sealed class WoodstockGift
+    public sealed class WoodstockGift : Gift
     {
-        /// <summary>
-        ///     Gets or sets the gift reason.
-        /// </summary>
-        public string GiftReason { get; set; }
-
         /// <summary>
         ///     Gets or sets the gift inventory.
         /// </summary>

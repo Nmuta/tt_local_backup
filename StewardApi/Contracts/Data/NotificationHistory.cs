@@ -39,12 +39,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
         public DateTime ExpireDateUtc { get; set; }
 
+        /// <remarks>Used for tracking human friendly data for PowerBi, use chars to split metadata info.</remarks>
+        public string Metadata { get; set; }
+
         /// <summary>
         ///     Makes a query for ban history that this model can read.
         /// </summary>
         public static string MakeQuery(string notificationId, string title, string endpoint)
         {
-            return $"NotificationHistory | where Id == '{notificationId}' and Title == '{title}' and Endpoint == '{endpoint}' | project Id, Title, Message, RequesterObjectId, RecipientId, Type, RecipientType, DeviceType, GiftType, BatchReferenceId, Action, Endpoint, CreatedDateUtc, ExpireDateUtc";
+            return $"NotificationHistory | where Id == '{notificationId}' and Title == '{title}' and Endpoint == '{endpoint}' | project Id, Title, Message, RequesterObjectId, RecipientId, Type, RecipientType, DeviceType, GiftType, BatchReferenceId, Action, Endpoint, CreatedDateUtc, ExpireDateUtc, column_ifexists('Metadata', '')";
         }
 
         /// <summary>
@@ -67,7 +70,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 Action = reader.Get<string>(nameof(Action)),
                 Endpoint = reader.Get<string>(nameof(Endpoint)),
                 CreatedDateUtc = reader.Get<DateTime>(nameof(CreatedDateUtc)),
-                ExpireDateUtc = reader.Get<DateTime>(nameof(ExpireDateUtc))
+                ExpireDateUtc = reader.Get<DateTime>(nameof(ExpireDateUtc)),
+                Metadata = reader.Get<string>(nameof(Metadata)),
             };
         }
     }

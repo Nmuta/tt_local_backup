@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
+using Turn10.UGC.Contracts;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 {
@@ -70,7 +71,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SearchUGCItemsAsync_WithValidParameters_DoesNotThrow()
+        public void SearchUgcItemsAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -79,15 +80,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<UGCItem>>> act = async () => await provider.SearchUGCItems(ugcType, filters, endpointKey).ConfigureAwait(false);
+            var actions = new List<Func<Task>>
+            {
+                async () => await provider.SearchUgcContentAsync(UGCType.Livery, filters, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UGCType.Photo, filters, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UGCType.Tune, filters, endpointKey).ConfigureAwait(false),
+            };
 
             // Assert.
-            act.Should().NotThrow();
+            foreach (var action in actions)
+            {
+                action.Should().NotThrow();
+            }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SearchUGCItemsAsync_WithUnknownUgcType_Throws()
+        public void SearchUgcItemsAsync_WithUnknownUgcType_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -97,7 +106,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SearchUGCItems(UGCType.Unknown, filters, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UGCType.Unknown, filters, endpointKey).ConfigureAwait(false),
             };
 
             // Assert.
@@ -109,17 +118,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SearchUGCItemsAsync_WithNullUgcFilters_Throws()
+        public void SearchUgcItemsAsync_WithNullUgcFilters_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var ugcType = Fixture.Create<UGCType>();
             var endpointKey = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SearchUGCItems(ugcType, null, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UGCType.Livery, null, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UGCType.Photo, null, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UGCType.Tune, null, endpointKey).ConfigureAwait(false),
             };
 
             // Assert.
@@ -139,11 +149,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<UGCItem> Action() => await provider.GetUGCLivery(liveryId, endpointKey).ConfigureAwait(false);
+            async Task<UgcItem> Action() => await provider.GetUGCLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<UGCItem>();
+            result.Should().BeOfType<UgcItem>();
         }
 
         [TestMethod]
@@ -156,11 +166,27 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<UGCItem> Action() => await provider.GetUGCPhoto(photoId, endpointKey).ConfigureAwait(false);
+            async Task<UgcItem> Action() => await provider.GetUGCPhotoAsync(photoId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<UGCItem>();
+            result.Should().BeOfType<UgcItem>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetUGCTuneAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var tuneId = Fixture.Create<Guid>();
+            var endpointKey = Fixture.Create<string>();
+
+            async Task<UgcItem> Action() => await provider.GetUGCTuneAsync(tuneId, endpointKey).ConfigureAwait(false);
+
+            // Assert.
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<UgcItem>();
         }
 
         [TestMethod]
@@ -174,7 +200,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            Func<Task> act = async () => await provider.SetUGCFeaturedStatus(contentId, featured, null, endpointKey).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.SetUGCFeaturedStatusAsync(contentId, featured, null, endpointKey).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -184,13 +210,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             public Dependencies()
             {
-                this.SunriseService.SearchUgcLiveries(Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<ForzaUGCContentType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCOutput>());
-                this.SunriseService.GetPlayerLivery(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCLiveryOutput>());
-                this.SunriseService.GetPlayerPhoto(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCPhotoOutput>());
-                this.Mapper.Map<IList<UGCItem>>(Arg.Any<ForzaPhotoData[]>()).Returns(Fixture.Create<IList<UGCItem>>());
-                this.Mapper.Map<IList<UGCItem>>(Arg.Any<ForzaLiveryData[]>()).Returns(Fixture.Create<IList<UGCItem>>());
-                this.Mapper.Map<UGCItem>(Arg.Any<ForzaPhotoData>()).Returns(Fixture.Create<UGCItem>());
-                this.Mapper.Map<UGCItem>(Arg.Any<ForzaLiveryData>()).Returns(Fixture.Create<UGCItem>());
+                this.SunriseService.SearchUgcContentAsync(Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<ForzaUGCContentType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCOutput>());
+                this.SunriseService.GetPlayerLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCLiveryOutput>());
+                this.SunriseService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCPhotoOutput>());
+                this.SunriseService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCTuneOutput>());
+                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaPhotoData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaLiveryData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaTuneData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
+                var ugcItem = Fixture.Create<UgcItem>();
+                ugcItem.GameTitle = (int)GameTitle.FH4;
+                this.Mapper.Map<UgcItem>(Arg.Any<ForzaPhotoData>()).Returns(ugcItem);
+                this.Mapper.Map<UgcItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcItem);
+                this.Mapper.Map<UgcItem>(Arg.Any<ForzaTuneData>()).Returns(ugcItem);
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

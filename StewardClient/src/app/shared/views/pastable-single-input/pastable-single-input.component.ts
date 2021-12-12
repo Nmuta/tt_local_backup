@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -9,11 +9,22 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './pastable-single-input.component.html',
   styleUrls: ['./pastable-single-input.component.scss'],
 })
-export class PastableSingleInputComponent extends BaseComponent {
+export class PastableSingleInputComponent extends BaseComponent implements OnInit {
+  /** Defines the mat-input label */
   @Input() public label: string = null;
+  /** Sets provided value to input on initial load */
+  @Input() public presetValue: string = null;
   @Output() public changes = new EventEmitter<string>();
 
   public input: string = '';
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    if (this.presetValue) {
+      this.input = this.presetValue;
+      this.emitInput();
+    }
+  }
 
   /** Emits input. */
   public emitInput(): void {

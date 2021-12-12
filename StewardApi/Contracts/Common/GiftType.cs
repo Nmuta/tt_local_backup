@@ -9,5 +9,10 @@
         ///     Indicates a message with no attached gifts.
         /// </summary>
         None,
+
+        /// <summary>
+        ///     Indicates a message with a car livery.
+        /// </summary>
+        CarLivery,
     }
 }

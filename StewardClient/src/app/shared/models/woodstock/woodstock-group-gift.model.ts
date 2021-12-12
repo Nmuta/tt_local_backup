@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js';
-import { WoodstockGift } from './woodstock-gift.model';
+import { GroupGift } from '@models/gift';
+import { WoodstockMasterInventory } from './woodstock-master-inventory.model';
 
 /** Interface for an Apollo group gift. */
-export interface WoodstockGroupGift extends WoodstockGift {
-  xuids: BigNumber[];
+export interface WoodstockGroupGift extends GroupGift {
+  inventory: WoodstockMasterInventory;
 }

@@ -45,6 +45,7 @@ import { ProfileNote } from '@models/profile-note.model';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
 import { UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
+import { Gift, GroupGift } from '@models/gift';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { overrideSunriseEndpointKey } from '@helpers/override-endpoint-key';
@@ -502,6 +503,29 @@ export class SunriseService {
     return this.apiService.postRequest$<void>(
       `${this.basePath}/storefront/itemId(${status.itemId})/featuredStatus`,
       status,
+    );
+  }
+
+  /** Gifts livery to players.  */
+  public postGiftLiveryToPlayersUsingBackgroundJob$(
+    liveryId: string,
+    groupGift: GroupGift,
+  ): Observable<BackgroundJob<void>> {
+    return this.apiService.postRequest$<BackgroundJob<void>>(
+      `${this.basePath}/gifting/livery(${liveryId})/players/useBackgroundProcessing`,
+      groupGift,
+    );
+  }
+
+  /** Gifts livery to an LSP group.  */
+  public postGiftLiveryToLspGroup$(
+    liveryId: string,
+    lspGroup: LspGroup,
+    gift: Gift,
+  ): Observable<GiftResponse<BigNumber>> {
+    return this.apiService.postRequest$<GiftResponse<BigNumber>>(
+      `${this.basePath}/gifting/livery(${liveryId})/groupId(${lspGroup.id})`,
+      gift,
     );
   }
 }

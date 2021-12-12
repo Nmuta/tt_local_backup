@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
@@ -17,6 +18,7 @@ using static Forza.LiveOps.FH5.Generated.UserInventoryService;
 using static Forza.WebServices.FH5.Generated.RareCarShopService;
 using AdminForzaProfile = Forza.LiveOps.FH5.Generated.AdminForzaProfile;
 using AdminForzaUserInventorySummary = Forza.UserInventory.FH5.Generated.AdminForzaUserInventorySummary;
+using GiftingService = Forza.LiveOps.FH5.Generated.GiftingService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
@@ -93,6 +95,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftHistoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenNotificationHistoryProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { NotificationHistoryProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "notificationHistoryProvider"));
         }
 
         [TestMethod]
@@ -307,14 +323,90 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToUserGroup_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var gift = Fixture.Create<Gift>();
+            var groupId = Fixture.Create<int>();
+            var livery = Fixture.Create<UgcItem>();
+            var requesterId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, requesterId, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<GiftResponse<int>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToUserGroup_WithNullRequesterId_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var gift = Fixture.Create<Gift>();
+            var groupId = Fixture.Create<int>();
+            var livery = Fixture.Create<UgcItem>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, null, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToPlayers_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupGift = Fixture.Create<GroupGift>();
+            var livery = Fixture.Create<UgcItem>();
+            var requesterId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, requesterId, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<List<GiftResponse<ulong>>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToPlayers_WithNullRequesterId_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupGift = Fixture.Create<GroupGift>();
+            var livery = Fixture.Create<UgcItem>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, null, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
+        }
+
         private sealed class Dependencies
         {
             public Dependencies()
             {
+                this.WoodstockService.SendCarLiveryAsync(Arg.Any<ulong[]>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingService.AdminSendLiveryGiftOutput>());
+                this.WoodstockService.SendCarLiveryAsync(Arg.Any<int>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingService.AdminSendGroupLiveryGiftOutput>());
+                this.Mapper.Map<IList<GiftResponse<ulong>>>(Arg.Any<ForzaLiveryGiftResult[]>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
                 this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
                 this.WoodstockService.GetTokenBalanceAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
+                this.NotificationHistoryProvider.UpdateNotificationHistoryAsync(Arg.Any<NotificationHistory>());
                 this.Mapper.Map<WoodstockPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.Mapper.Map<IList<WoodstockInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
@@ -331,11 +423,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
+            public IWoodstockNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<IWoodstockNotificationHistoryProvider>();
+
             public WoodstockPlayerInventoryProvider Build() => new WoodstockPlayerInventoryProvider(
                 this.WoodstockService,
                 this.Mapper,
                 this.RefreshableCacheStore,
-                this.GiftHistoryProvider);
+                this.GiftHistoryProvider,
+                this.NotificationHistoryProvider);
         }
     }
 }

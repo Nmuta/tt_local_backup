@@ -6,7 +6,7 @@ import { ApolloPlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/t
 import { ApolloPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/inventory';
 import { ApolloPlayerXuidInventoryProfilesFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/inventoryProfiles';
 import { ApolloPlayersBanFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban';
-import { ApolloPlayersBanWithBackgroundProcessingFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban_backgroundProcessing';
+import { ApolloPlayersBanWithBackgroundProcessingFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/useBackgroundProcessing/ban';
 import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
 import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
 import { Observable, of } from 'rxjs';

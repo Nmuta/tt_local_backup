@@ -105,7 +105,7 @@
     <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.2.23">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5" Version="4.5.7">
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5" Version="4.5.9">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.5.0">
@@ -122,6 +122,7 @@
     <PackageReference Include="Turn10.Services.STS.Contracts" Version="1.2.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
+    <PackageReference Include="Turn10.Services.UGC.Contracts" Version="1.11.13" />
     <PackageReference Include="Turn10.Services.WebApi-Core" Version="1.2.1" />
   </ItemGroup>
 

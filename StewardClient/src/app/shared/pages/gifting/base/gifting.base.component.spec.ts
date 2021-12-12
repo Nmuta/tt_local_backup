@@ -47,7 +47,7 @@ describe('GiftingBaseComponent', () => {
       });
 
       it('should return true', () => {
-        const response = component.isUsingPlayerIdentities();
+        const response = component.isUsingPlayerIdentities;
 
         expect(response).toBeTruthy();
       });
@@ -59,7 +59,7 @@ describe('GiftingBaseComponent', () => {
       });
 
       it('should return false', () => {
-        const response = component.isUsingPlayerIdentities();
+        const response = component.isUsingPlayerIdentities;
 
         expect(response).toBeFalsy();
       });

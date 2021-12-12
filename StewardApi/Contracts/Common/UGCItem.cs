@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents a UGC item.
     /// </summary>
-    public sealed class UGCItem
+    public sealed class UgcItem
     {
         /// <summary>
         ///     Gets or sets the Id.

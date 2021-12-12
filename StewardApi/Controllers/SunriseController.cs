@@ -538,7 +538,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets player UGC items.
         /// </summary>
         [HttpGet("storefront/xuid({xuid})")]
-        [SwaggerResponse(200, type: typeof(IList<UGCItem>))]
+        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
         public async Task<IActionResult> GetUGCItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
@@ -549,7 +549,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
             }
 
-            var getUgcItems = this.storefrontProvider.SearchUGCItems(
+            var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
                 new UGCFilters(xuid, null),
                 endpoint);
@@ -557,23 +557,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
 
-            var ugCItems = getUgcItems.GetAwaiter().GetResult();
+            var ugcItems = getUgcItems.GetAwaiter().GetResult();
             var kustoCars = getKustoCars.GetAwaiter().GetResult();
 
-            foreach (var item in ugCItems)
+            foreach (var item in ugcItems)
             {
                 var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
                 item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
             }
 
-            return this.Ok(ugCItems);
+            return this.Ok(ugcItems);
         }
 
         /// <summary>
         ///     Gets UGC item by share code.
         /// </summary>
         [HttpGet("storefront/shareCode({shareCode})")]
-        [SwaggerResponse(200, type: typeof(IList<UGCItem>))]
+        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
         public async Task<IActionResult> GetUGCItems(string shareCode, [FromQuery] string ugcType = "Unknown")
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
@@ -584,7 +584,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
             }
 
-            var getUgcItems = this.storefrontProvider.SearchUGCItems(
+            var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
                 new UGCFilters(ulong.MaxValue, shareCode),
                 endpoint);
@@ -608,12 +608,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC livery by ID.
         /// </summary>
         [HttpGet("storefront/livery({id})")]
-        [SwaggerResponse(200, type: typeof(UGCItem))]
+        [SwaggerResponse(200, type: typeof(UgcItem))]
         public async Task<IActionResult> GetUGCLivery(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var getLivery = this.storefrontProvider.GetUGCLivery(id, endpoint);
+            var getLivery = this.storefrontProvider.GetUGCLiveryAsync(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
@@ -631,12 +631,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC photo by ID.
         /// </summary>
         [HttpGet("storefront/photo({id})")]
-        [SwaggerResponse(200, type: typeof(UGCItem))]
+        [SwaggerResponse(200, type: typeof(UgcItem))]
         public async Task<IActionResult> GetUGCPhoto(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var getPhoto = this.storefrontProvider.GetUGCPhoto(id, endpoint);
+            var getPhoto = this.storefrontProvider.GetUGCPhotoAsync(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
@@ -651,15 +651,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets a UGC photo by ID.
+        ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("storefront/tune({id})")]
-        [SwaggerResponse(200, type: typeof(UGCItem))]
+        [SwaggerResponse(200, type: typeof(UgcItem))]
         public async Task<IActionResult> GetUGCTune(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var getTune = this.storefrontProvider.GetUGCTune(id, endpoint);
+            var getTune = this.storefrontProvider.GetUGCTuneAsync(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
@@ -698,7 +698,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 status.Expiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
             }
 
-            await this.storefrontProvider.SetUGCFeaturedStatus(
+            await this.storefrontProvider.SetUGCFeaturedStatusAsync(
                 itemIdGuid,
                 status.IsFeatured,
                 status.Expiry,
@@ -1304,6 +1304,99 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
+            return this.Ok(response);
+        }
+
+        /// <summary>
+        ///     Gift players a car livery.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager)]
+        [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var xuid in groupGift.Xuids)
+            {
+                if (!await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint).ConfigureAwait(true))
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var livery = await this.storefrontProvider.GetUGCLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
+            if (livery == null)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
+            }
+
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    var response = await this.sunrisePlayerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint).ConfigureAwait(true);
+
+                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Created(
+                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+        }
+
+        /// <summary>
+        ///     Updates inventories for an LSP group.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager)]
+        [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
+        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            groupId.ShouldNotBeNull(nameof(groupId));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            var livery = await this.storefrontProvider.GetUGCLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
+            if (livery == null)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
+            }
+
+            var response = await this.sunrisePlayerInventoryProvider.SendCarLiveryAsync(gift, groupId, livery, requesterObjectId, endpoint).ConfigureAwait(true);
             return this.Ok(response);
         }
 

@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js';
-import { SunriseGift } from './sunrise-gift.model';
+import { GroupGift } from '@models/gift';
+import { SunriseMasterInventory } from './sunrise-master-inventory.model';
 
-/** Interface for an Apollo group gift. */
-export interface SunriseGroupGift extends SunriseGift {
-  xuids: BigNumber[];
+/** Interface for a Sunrise group gift. */
+export interface SunriseGroupGift extends GroupGift {
+  inventory: SunriseMasterInventory;
 }

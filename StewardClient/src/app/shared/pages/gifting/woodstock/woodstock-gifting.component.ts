@@ -9,16 +9,16 @@ import { Select, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { WoodstockGiftingState } from './state/woodstock-gifting.state';
 import {
   SetWoodstockGiftingMatTabIndex,
   SetWoodstockGiftingSelectedPlayerIdentities,
 } from './state/woodstock-gifting.state.actions';
 import BigNumber from 'bignumber.js';
+import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 
-/** The woodstock gifting page for the Navbar app. */
+/** The woodstock gifting page. */
 @Component({
   templateUrl: './woodstock-gifting.component.html',
   styleUrls: ['./woodstock-gifting.component.scss'],
@@ -63,6 +63,7 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       WoodstockGiftingState.selectedMatTabIndex,
     );
+
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {

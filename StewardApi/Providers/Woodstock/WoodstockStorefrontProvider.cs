@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
-using Forza.UserGeneratedContent.FH5.Generated;
 using Forza.WebServices.FH5.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -11,7 +10,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.UGC.Contracts;
 using static Forza.WebServices.FH5.Generated.StorefrontService;
+using FileType = Forza.UserGeneratedContent.FH5.Generated.FileType;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -37,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<UGCItem>> SearchUGCItems(UGCType ugcType, UGCFilters filters, string endpoint)
+        public async Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));
             filters.ShouldNotBeNull(nameof(filters));
@@ -50,50 +51,68 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
             var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
-            var results = await this.woodstockService.SearchUgcLiveries(mappedFilters, mappedContentType, endpoint).ConfigureAwait(false);
+            var results = await this.woodstockService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<UGCItem>>(results.result);
+            return this.mapper.Map<IList<UgcItem>>(results.result);
         }
 
         /// <inheritdoc />
-        public async Task<UGCItem> GetUGCLivery(Guid liveryId, string endpoint)
+        public async Task<UgcItem> GetUGCLiveryAsync(Guid liveryId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var liveryOutput = await this.woodstockService.GetPlayerLivery(liveryId, endpoint).ConfigureAwait(false);
+            var liveryOutput = await this.woodstockService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
+            var livery = this.mapper.Map<UgcItem>(liveryOutput.result);
 
-            return this.mapper.Map<UGCItem>(liveryOutput.result);
+            if (livery.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Livery id could not found: {liveryId}");
+            }
+
+            return livery;
         }
 
         /// <inheritdoc />
-        public async Task<UGCItem> GetUGCPhoto(Guid photoId, string endpoint)
+        public async Task<UgcItem> GetUGCPhotoAsync(Guid photoId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var photoOutput = await this.woodstockService.GetPlayerPhoto(photoId, endpoint).ConfigureAwait(false);
+            var photoOutput = await this.woodstockService.GetPlayerPhotoAsync(photoId, endpoint).ConfigureAwait(false);
+            var photo = this.mapper.Map<UgcItem>(photoOutput.result);
 
-            return this.mapper.Map<UGCItem>(photoOutput.result);
+            if (photo.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Photo id could not found: {photoId}");
+            }
+
+            return photo;
         }
 
         /// <inheritdoc />
-        public async Task<UGCItem> GetUGCTune(Guid tuneId, string endpoint)
+        public async Task<UgcItem> GetUGCTuneAsync(Guid tuneId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var tuneOutput = await this.woodstockService.GetPlayerTune(tuneId, endpoint).ConfigureAwait(false);
+            var tuneOutput = await this.woodstockService.GetPlayerTuneAsync(tuneId, endpoint).ConfigureAwait(false);
+            var tune = this.mapper.Map<UgcItem>(tuneOutput.result);
 
-            return this.mapper.Map<UGCItem>(tuneOutput.result);
+            if (tune.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Tune id could not found: {tuneId}");
+            }
+
+            return tune;
         }
 
         /// <inheritdoc />
-        public async Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
+        public async Task SetUGCFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var featureEndDate = isFeatured && featuredExpiry.HasValue ? DateTime.UtcNow.Add(featuredExpiry.Value) : DateTime.MinValue;
-                await this.woodstockService.SetUGCFeaturedStatus(contentId, isFeatured, featureEndDate, endpoint).ConfigureAwait(false);
+                await this.woodstockService.SetUGCFeaturedStatusAsync(contentId, isFeatured, featureEndDate, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

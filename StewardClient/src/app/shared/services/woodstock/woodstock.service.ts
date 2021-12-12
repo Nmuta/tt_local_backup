@@ -46,6 +46,7 @@ import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCType } from '@models/ugc-filters';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { KustoCar } from '@models/kusto-car';
+import { Gift, GroupGift } from '@models/gift';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
@@ -498,6 +499,29 @@ export class WoodstockService {
     return this.apiService.postRequest$<void>(
       `${this.basePath}/storefront/itemId(${status.itemId})/featuredStatus`,
       status,
+    );
+  }
+
+  /** Gifts livery to players.  */
+  public postGiftLiveryToPlayersUsingBackgroundJob$(
+    liveryId: string,
+    groupGift: GroupGift,
+  ): Observable<BackgroundJob<void>> {
+    return this.apiService.postRequest$<BackgroundJob<void>>(
+      `${this.basePath}/gifting/livery(${liveryId})/players/useBackgroundProcessing`,
+      groupGift,
+    );
+  }
+
+  /** Gifts livery to an LSP group.  */
+  public postGiftLiveryToLspGroup$(
+    liveryId: string,
+    lspGroup: LspGroup,
+    gift: Gift,
+  ): Observable<GiftResponse<BigNumber>> {
+    return this.apiService.postRequest$<GiftResponse<BigNumber>>(
+      `${this.basePath}/gifting/livery(${liveryId})/groupId(${lspGroup.id})`,
+      gift,
     );
   }
 

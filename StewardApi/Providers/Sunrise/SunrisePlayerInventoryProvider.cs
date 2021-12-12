@@ -4,9 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.Notifications.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -26,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private readonly IMapper mapper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
+        private readonly ISunriseNotificationHistoryProvider notificationHistoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunrisePlayerInventoryProvider"/> class.
@@ -34,17 +37,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             ISunriseService sunriseService,
             IMapper mapper,
             IRefreshableCacheStore refreshableCacheStore,
-            ISunriseGiftHistoryProvider giftHistoryProvider)
+            ISunriseGiftHistoryProvider giftHistoryProvider,
+            ISunriseNotificationHistoryProvider notificationHistoryProvider)
         {
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
             mapper.ShouldNotBeNull(nameof(mapper));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
+            notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
 
             this.sunriseService = sunriseService;
             this.mapper = mapper;
             this.refreshableCacheStore = refreshableCacheStore;
             this.giftHistoryProvider = giftHistoryProvider;
+            this.notificationHistoryProvider = notificationHistoryProvider;
         }
 
         /// <inheritdoc />
@@ -262,6 +268,116 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
 
             return giftResponse;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(GroupGift groupGift, UgcItem livery, string requesterObjectId, string endpoint)
+        {
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var result = await this.sunriseService.SendCarLiveryAsync(groupGift.Xuids.ToArray(), livery.GuidId, endpoint).ConfigureAwait(false);
+
+            var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
+            var notificationBatchId = Guid.NewGuid();
+            foreach (var giftResponse in giftResponses)
+            {
+                // Do not log if the gift failed to send to the player.
+                if (giftResponse.Error != null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var createdDate = DateTime.UtcNow;
+                    var notificationHistory = new NotificationHistory
+                    {
+                        Id = string.Empty, // No notification ids yet for individual player gifting
+                        Title = TitleConstants.SunriseCodeName,
+                        RequesterObjectId = requesterObjectId,
+                        RecipientId = giftResponse.PlayerOrLspGroup.ToString(CultureInfo.InvariantCulture),
+                        Type = Enum.GetName(typeof(NotificationType), NotificationType.GiftingReceiveCar),
+                        RecipientType = GiftIdentityAntecedent.Xuid.ToString(),
+                        GiftType = GiftType.CarLivery.ToString(),
+                        DeviceType = DeviceType.All.ToString(),
+                        BatchReferenceId = notificationBatchId.ToString(),
+                        Action = NotificationAction.Send.ToString(),
+                        Endpoint = endpoint,
+                        CreatedDateUtc = DateTime.UtcNow,
+                        ExpireDateUtc = createdDate.AddYears(10),
+                        Metadata = $"{livery.GuidId}|{livery.CarId}|{livery.Title}",
+                    };
+
+                    await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                        notificationHistory).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    giftResponse.Error = new FailedToSendStewardError("Successfully gifted car livery; Logging of notification event failed.", ex);
+                }
+            }
+
+            return giftResponses;
+        }
+
+        /// <inheritdoc/>
+        public async Task<GiftResponse<int>> SendCarLiveryAsync(Gift gift, int groupId, UgcItem livery, string requesterObjectId, string endpoint)
+        {
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var result = new GiftResponse<int>()
+            {
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
+                PlayerOrLspGroup = groupId,
+            };
+
+            Guid? notificationId = null;
+            try
+            {
+                // TODO: Log gift to gift history
+                var response = await this.sunriseService.SendCarLiveryAsync(groupId, livery.GuidId, endpoint).ConfigureAwait(false);
+                notificationId = response.notificationId;
+            }
+            catch (Exception ex)
+            {
+                result.Error = new ServicesFailureStewardError($"LSP failed to gift livery to user group: {groupId}", ex);
+            }
+
+            try
+            {
+                if (!notificationId.HasValue)
+                {
+                    throw new UnknownFailureStewardException($"Failed to get notification id from gifted livery. LSP Group: {groupId}. Livery Id: {livery.GuidId}");
+                }
+
+                var createdDate = DateTime.UtcNow;
+                var notificationHistory = new NotificationHistory
+                {
+                    Id = notificationId.ToString(),
+                    Title = TitleConstants.SunriseCodeName,
+                    RequesterObjectId = requesterObjectId,
+                    RecipientId = groupId.ToString(CultureInfo.InvariantCulture),
+                    Type = Enum.GetName(typeof(NotificationType), NotificationType.GiftingReceiveCar),
+                    RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
+                    GiftType = GiftType.CarLivery.ToString(),
+                    BatchReferenceId = string.Empty,
+                    DeviceType = DeviceType.All.ToString(),
+                    Action = NotificationAction.Send.ToString(),
+                    Endpoint = endpoint,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    ExpireDateUtc = createdDate.AddYears(10),
+                    Metadata = $"{livery.GuidId}|{livery.CarId}|{livery.Title}"
+                };
+
+                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                    notificationHistory).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Message successfully edited; Logging of edit event failed.", ex);
+            }
+
+            return result;
         }
 
         private static async Task SendGifts(

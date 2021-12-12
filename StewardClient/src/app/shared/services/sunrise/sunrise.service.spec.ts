@@ -7,7 +7,7 @@ import { SunrisePlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/ti
 import { SunrisePlayerXuidProfileSummaryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileSummary';
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/userFlags';
-import { fakeXuid } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseGift, SunriseGroupGift, SunriseUserFlags } from '@models/sunrise';
 import { ApiService, createMockApiService } from '@services/api';
@@ -18,6 +18,7 @@ import { HttpParams } from '@angular/common/http';
 import { DateTime } from 'luxon';
 import { UGCType } from '@models/ugc-filters';
 import faker from 'faker';
+import { Gift, GroupGift } from '@models/gift';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 
 describe('SunriseService', () => {
@@ -526,6 +527,28 @@ describe('SunriseService', () => {
     });
   });
 
+  describe('Method: postGiftLiveryToPlayersUsingBackgroundJob$', () => {
+    const liveryId = faker.datatype.uuid();
+    const groupGift: GroupGift = {
+      xuids: [fakeBigNumber(), fakeBigNumber(), fakeBigNumber()],
+      giftReason: faker.random.words(10),
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.postRequest', done => {
+      service.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, groupGift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/livery(${liveryId})/players/useBackgroundProcessing`,
+          groupGift,
+        );
+        done();
+      });
+    });
+  });
+
   describe('Method: getAuctionBlocklist', () => {
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
@@ -553,6 +576,28 @@ describe('SunriseService', () => {
         expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/auctions/blockList`,
           entries,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftLiveryToLspGroup$', () => {
+    const liveryId = faker.datatype.uuid();
+    const lspGroup: LspGroup = { id: fakeBigNumber(), name: faker.random.words(2) };
+    const gift: Gift = {
+      giftReason: faker.random.words(10),
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.postRequest', done => {
+      service.postGiftLiveryToLspGroup$(liveryId, lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/livery(${liveryId})/groupId(${lspGroup.id})`,
+          gift,
         );
         done();
       });

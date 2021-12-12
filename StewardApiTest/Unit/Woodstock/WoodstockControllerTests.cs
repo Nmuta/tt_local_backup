@@ -1602,11 +1602,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>());
                 this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.StorefrontProvider.SearchUGCItems(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UGCItem>>());
-                this.StorefrontProvider.GetUGCLivery(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
-                this.StorefrontProvider.GetUGCPhoto(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
-                this.StorefrontProvider.GetUGCTune(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
-                this.StorefrontProvider.SetUGCFeaturedStatus(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
+                this.StorefrontProvider.SearchUgcContentAsync(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.StorefrontProvider.GetUGCLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.GetUGCPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.GetUGCTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.SetUGCFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockGiftHistory>>());

@@ -23,7 +23,7 @@ import { ApolloPlayerXuidInventoryFakeApi } from './apis/title/apollo/player/xui
 import { ApolloPlayerXuidInventoryProfilesFakeApi } from './apis/title/apollo/player/xuid/inventoryProfiles';
 import { ApolloPlayerXuidGiftHistoryFakeApi } from './apis/title/apollo/player/xuid/giftHistory';
 import { ApolloPlayersBanFakeApi } from './apis/title/apollo/players/ban';
-import { ApolloPlayersBanWithBackgroundProcessingFakeApi } from './apis/title/apollo/players/ban_backgroundProcessing';
+import { ApolloPlayersBanWithBackgroundProcessingFakeApi } from './apis/title/apollo/players/useBackgroundProcessing/ban';
 import { ApolloGroupGroupIdGiftHistoryFakeApi } from './apis/title/apollo/group/groupId/giftHistory';
 import { ApolloGroupsFakeApi } from './apis/title/apollo/groups';
 import { ApolloPlayersBanSummariesFakeApi } from './apis/title/apollo/players/ban-summaries';
@@ -31,7 +31,7 @@ import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/iden
 import { ApolloMasterInventoryFakeApi } from './apis/title/apollo/masterInventory';
 import { ApolloGiftingPlayersFakeApi } from './apis/title/apollo/gifting/players';
 import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupId';
-import { ApolloGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/apollo/gifting/players_returnsbackgroundjob';
+import { ApolloGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/apollo/gifting/useBackgroundProcessing/players';
 import { ApolloPlayerXuidBanHistoryFakeApi } from './apis/title/apollo/player/xuid/banHistory';
 import { ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/apollo/player/xuid/sharedConsoleUsers';
 import { ApolloPlayerXuidConsolesFakeApi } from './apis/title/apollo/player/xuid/consoleDetails';
@@ -78,15 +78,19 @@ import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/id
 import { SunriseMasterInventoryFakeApi } from './apis/title/sunrise/masterInventory';
 import { SunriseGiftingLspGroupFakeApi } from './apis/title/sunrise/gifting/groupId';
 import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/players';
-import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
+import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/useBackgroundProcessing/players';
 import { SunrisePlayerXuidAuctionsFakeApi } from './apis/title/sunrise/player/xuid/auctions';
 import { SunriseKustoCarsFakeApi } from './apis/title/sunrise/kusto/cars';
 import { SunrisePlayerXuidProfileNotesApi } from './apis/title/sunrise/player/xuid/profileNotes';
 import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from './apis/title/sunrise/player/xuid/backstagePassHistory';
 import { SunrisePlayerXuidAccountInventoryFakeApi } from './apis/title/sunrise/player/xuid/accountInventory';
+import { SunriseGiftLiveryToLspGroupFakeApi } from './apis/title/sunrise/gifting/livery/groupId';
+import { SunriseGiftLiveryToPlayersFakeApi } from './apis/title/sunrise/gifting/livery/useBackgroundProcessing/players';
 
 import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from './apis/title/woodstock/player/xuid/backstagePassHistory';
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from './apis/title/woodstock/player/xuid/accountInventory';
+import { WoodstockGiftLiveryToLspGroupFakeApi } from './apis/title/woodstock/gifting/livery/groupId';
+import { WoodstockGiftLiveryToPlayersFakeApi } from './apis/title/woodstock/gifting/livery/useBackgroundProcessing/players';
 import { WoodstockPlayerXuidProfileNotesApi } from './apis/title/woodstock/player/xuid/profileNotes';
 
 import { LoggerService, LogTopic } from '@services/logger';
@@ -102,6 +106,8 @@ const fakeApiConstructors = [
   // Woodstock
   WoodstockPlayerXuidBackstagePassHistoryFakeApi,
   WoodstockPlayerXuidAccountInventoryFakeApi,
+  WoodstockGiftLiveryToLspGroupFakeApi,
+  WoodstockGiftLiveryToPlayersFakeApi,
   WoodstockPlayerXuidProfileNotesApi,
 
   // Gravity
@@ -151,6 +157,8 @@ const fakeApiConstructors = [
   SunrisePlayerXuidProfileNotesApi,
   SunrisePlayerXuidBackstagePassHistoryFakeApi,
   SunrisePlayerXuidAccountInventoryFakeApi,
+  SunriseGiftLiveryToLspGroupFakeApi,
+  SunriseGiftLiveryToPlayersFakeApi,
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,

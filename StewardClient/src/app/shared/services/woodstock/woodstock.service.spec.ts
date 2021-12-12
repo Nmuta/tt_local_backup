@@ -7,7 +7,7 @@ import { WoodstockPlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/
 import { WoodstockPlayerXuidProfileSummaryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileSummary';
 import { WoodstockPlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/sharedConsoleUsers';
 import { WoodstockPlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/userFlags';
-import { fakeXuid } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { LspGroup } from '@models/lsp-group';
 import { WoodstockGift, WoodstockGroupGift, WoodstockUserFlags } from '@models/woodstock';
 import { ApiService, createMockApiService } from '@services/api';
@@ -19,6 +19,7 @@ import { WoodstockService } from './woodstock.service';
 import { DateTime } from 'luxon';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
+import { Gift, GroupGift } from '@models/gift';
 import { UGCType } from '@models/ugc-filters';
 
 describe('WoodstockService', () => {
@@ -526,6 +527,50 @@ describe('WoodstockService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getDetailedKustoCars$().subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/kusto/cars`);
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftLiveryToPlayersUsingBackgroundJob$', () => {
+    const liveryId = faker.datatype.uuid();
+    const groupGift: GroupGift = {
+      xuids: [fakeBigNumber(), fakeBigNumber(), fakeBigNumber()],
+      giftReason: faker.random.words(10),
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.postRequest', done => {
+      service.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, groupGift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/livery(${liveryId})/players/useBackgroundProcessing`,
+          groupGift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftLiveryToLspGroup$', () => {
+    const liveryId = faker.datatype.uuid();
+    const lspGroup: LspGroup = { id: fakeBigNumber(), name: faker.random.words(2) };
+    const gift: Gift = {
+      giftReason: faker.random.words(10),
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.postRequest', done => {
+      service.postGiftLiveryToLspGroup$(liveryId, lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/livery(${liveryId})/groupId(${lspGroup.id})`,
+          gift,
+        );
         done();
       });
     });

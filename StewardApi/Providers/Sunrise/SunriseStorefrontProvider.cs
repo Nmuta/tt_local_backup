@@ -11,7 +11,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
+using Turn10.UGC.Contracts;
 using static Forza.WebServices.FH4.Generated.StorefrontService;
+using FileType = Forza.UserGeneratedContent.FH4.Generated.FileType;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -37,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<UGCItem>> SearchUGCItems(UGCType ugcType, UGCFilters filters, string endpoint)
+        public async Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));
             filters.ShouldNotBeNull(nameof(filters));
@@ -50,50 +52,68 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
             var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
-            var results = await this.sunriseService.SearchUgcLiveries(mappedFilters, mappedContentType, endpoint).ConfigureAwait(false);
+            var results = await this.sunriseService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<UGCItem>>(results.result);
+            return this.mapper.Map<IList<UgcItem>>(results.result);
         }
 
         /// <inheritdoc />
-        public async Task<UGCItem> GetUGCLivery(Guid liveryId, string endpoint)
+        public async Task<UgcItem> GetUGCLiveryAsync(Guid liveryId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var liveryOutput = await this.sunriseService.GetPlayerLivery(liveryId, endpoint).ConfigureAwait(false);
+            var liveryOutput = await this.sunriseService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
+            var livery = this.mapper.Map<UgcItem>(liveryOutput.result);
 
-            return this.mapper.Map<UGCItem>(liveryOutput.result);
+            if (livery.GameTitle != (int)GameTitle.FH4)
+            {
+                throw new NotFoundStewardException($"Livery id could not found: {liveryId}");
+            }
+
+            return livery;
         }
 
         /// <inheritdoc />
-        public async Task<UGCItem> GetUGCPhoto(Guid photoId, string endpoint)
+        public async Task<UgcItem> GetUGCPhotoAsync(Guid photoId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var photoOutput = await this.sunriseService.GetPlayerPhoto(photoId, endpoint).ConfigureAwait(false);
+            var photoOutput = await this.sunriseService.GetPlayerPhotoAsync(photoId, endpoint).ConfigureAwait(false);
+            var photo = this.mapper.Map<UgcItem>(photoOutput.result);
 
-            return this.mapper.Map<UGCItem>(photoOutput.result);
+            if (photo.GameTitle != (int)GameTitle.FH4)
+            {
+                throw new NotFoundStewardException($"Photo id could not found: {photoId}");
+            }
+
+            return photo;
         }
 
         /// <inheritdoc />
-        public async Task<UGCItem> GetUGCTune(Guid tuneId, string endpoint)
+        public async Task<UgcItem> GetUGCTuneAsync(Guid tuneId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var tuneOutput = await this.sunriseService.GetPlayerTune(tuneId, endpoint).ConfigureAwait(false);
+            var tuneOutput = await this.sunriseService.GetPlayerTuneAsync(tuneId, endpoint).ConfigureAwait(false);
+            var tune = this.mapper.Map<UgcItem>(tuneOutput.result);
 
-            return this.mapper.Map<UGCItem>(tuneOutput.result);
+            if (tune.GameTitle != (int)GameTitle.FH4)
+            {
+                throw new NotFoundStewardException($"Tune id could not found: {tuneId}");
+            }
+
+            return tune;
         }
 
         /// <inheritdoc />
-        public async Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
+        public async Task SetUGCFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var featureEndDate = isFeatured && featuredExpiry.HasValue ? DateTime.UtcNow.Add(featuredExpiry.Value) : DateTime.MinValue;
-                await this.sunriseService.SetUGCFeaturedStatus(contentId, isFeatured, featureEndDate, endpoint).ConfigureAwait(false);
+                await this.sunriseService.SetUGCFeaturedStatusAsync(contentId, isFeatured, featureEndDate, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

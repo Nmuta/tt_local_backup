@@ -24,6 +24,7 @@ import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inv
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
 import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
+import { GiftLiveryModule } from './components/gift-livery/gift-livery.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -52,6 +53,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     LspGroupSelectionModule,
     MatTabsModule,
     GiftBasketModule,
+    GiftLiveryModule,
     ItemSelectionModule,
     PlayerSelectionModule,
     PlayerInventoryProfilesModule,

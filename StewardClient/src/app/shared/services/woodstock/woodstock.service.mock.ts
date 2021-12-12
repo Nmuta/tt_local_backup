@@ -23,6 +23,8 @@ import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fa
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/accountInventory';
 import { WoodstockPlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
 import { WoodstockKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
+import { WoodstockGiftLiveryToPlayersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/useBackgroundProcessing/players';
+import { WoodstockGiftLiveryToLspGroupFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/groupId';
 import { WoodstockPlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileNotes';
 
 /** Defines the mock for the API Service. */
@@ -188,6 +190,18 @@ export class MockWoodstockService {
   public getPlayerAuctionLogByXuid$ = jasmine
     .createSpy('getPlayerAuctionLogByXuid$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
+  public postGiftLiveryToPlayersUsingBackgroundJob$ = jasmine
+    .createSpy('postGiftLiveryToPlayersUsingBackgroundJob$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockGiftLiveryToPlayersFakeApi.make()))),
+    );
+
+  public postGiftLiveryToLspGroup$ = jasmine
+    .createSpy('postGiftLiveryToLspGroup$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockGiftLiveryToLspGroupFakeApi.make()))),
+    );
 
   constructor(private readonly generator$: () => unknown) {}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -58,5 +59,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             string requesterObjectId,
             bool useAdminCreditLimit,
             string endpoint);
+
+        /// <summary>
+        ///    Sends car livery to a player xuid.
+        /// </summary>
+        Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(GroupGift groupGift, UgcItem livery, string requesterObjectId, string endpoint);
+
+        /// <summary>
+        ///    Sends car livery to a user group.
+        /// </summary>
+        Task<GiftResponse<int>> SendCarLiveryAsync(Gift gift, int groupId, UgcItem livery, string requesterObjectId, string endpoint);
     }
 }
