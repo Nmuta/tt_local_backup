@@ -158,7 +158,7 @@
 
 <ng-template #inputState>
   <ng-container *ngIf="!getBanSummaries?.isActive; else waitingState">
-    <bulk-ban-history-input (selection)="lookupXuids($event)"></bulk-ban-history-input>
+    <bulk-ban-review-input (selection)="lookupXuids($event)"></bulk-ban-review-input>
   </ng-container>
 </ng-template>
 

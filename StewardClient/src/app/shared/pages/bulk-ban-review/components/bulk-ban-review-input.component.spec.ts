@@ -4,12 +4,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { BulkBanHistoryInputComponent } from './bulk-ban-history-input.component';
+import { BulkBanReviewInputComponent } from './bulk-ban-review-input.component';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 
-describe('BulkBanHistoryInputComponent', () => {
-  let component: BulkBanHistoryInputComponent;
-  let fixture: ComponentFixture<BulkBanHistoryInputComponent>;
+describe('BulkBanReviewInputComponent', () => {
+  let component: BulkBanReviewInputComponent;
+  let fixture: ComponentFixture<BulkBanReviewInputComponent>;
 
   beforeEach(
     waitForAsync(() => {
@@ -20,12 +20,12 @@ describe('BulkBanHistoryInputComponent', () => {
           NgxsModule.forRoot(),
           MatPaginatorModule,
         ],
-        declarations: [BulkBanHistoryInputComponent],
+        declarations: [BulkBanReviewInputComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(BulkBanHistoryInputComponent);
+      fixture = TestBed.createComponent(BulkBanReviewInputComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );

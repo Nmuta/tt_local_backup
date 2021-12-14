@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BulkBanHistoryComponent } from './bulk-ban-history.component';
+import { BulkBanReviewComponent } from './bulk-ban-review.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: BulkBanHistoryComponent,
+    component: BulkBanReviewComponent,
     data: {},
   },
 ];
@@ -15,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class BulkBanHistoryRouterModule {}
+export class BulkBanReviewRouterModule {}

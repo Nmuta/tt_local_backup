@@ -12,7 +12,7 @@ import { uniqBy } from 'lodash';
 import { Observable } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 
-export type BulkBanHistoryInput = {
+export type BulkBanReviewInput = {
   xuids: BigNumber[];
   woodstockEnvironments: string[];
   sunriseEnvironments: string[];
@@ -21,13 +21,13 @@ export type BulkBanHistoryInput = {
 
 /** The bulk ban history input component. */
 @Component({
-  selector: 'bulk-ban-history-input',
-  templateUrl: './bulk-ban-history-input.component.html',
-  styleUrls: ['./bulk-ban-history-input.component.scss'],
+  selector: 'bulk-ban-review-input',
+  templateUrl: './bulk-ban-review-input.component.html',
+  styleUrls: ['./bulk-ban-review-input.component.scss'],
 })
-export class BulkBanHistoryInputComponent extends BaseComponent implements OnInit {
+export class BulkBanReviewInputComponent extends BaseComponent implements OnInit {
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
-  @Output() selection = new EventEmitter<BulkBanHistoryInput>();
+  @Output() selection = new EventEmitter<BulkBanReviewInput>();
 
   public woodstockEnvs: string[];
   public sunriseEnvs: string[];
@@ -108,7 +108,7 @@ export class BulkBanHistoryInputComponent extends BaseComponent implements OnIni
       woodstockEnvironments: woodstockEnvironments,
       sunriseEnvironments: sunriseEnvironments,
       apolloEnvironments: apolloEnvironments,
-    } as BulkBanHistoryInput);
+    } as BulkBanReviewInput);
   }
 
   /** Returns true if XUID lookup is ready. */

@@ -4,14 +4,14 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { BanSummariesTableData, BulkBanHistoryComponent } from './bulk-ban-history.component';
+import { BanSummariesTableData, BulkBanReviewComponent } from './bulk-ban-review.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { BrowserModule } from '@angular/platform-browser';
 import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
-import { BulkBanHistoryInput } from './components/bulk-ban-history-input.component';
+import { BulkBanReviewInput } from './components/bulk-ban-review-input.component';
 import faker from 'faker';
 import { of } from 'rxjs';
 import BigNumber from 'bignumber.js';
@@ -26,9 +26,9 @@ const activatedRouteMock = {
   ] as ActivatedRoute[],
 };
 
-describe('BulkBanHistoryComponent', () => {
-  let component: BulkBanHistoryComponent;
-  let fixture: ComponentFixture<BulkBanHistoryComponent>;
+describe('BulkBanReviewComponent', () => {
+  let component: BulkBanReviewComponent;
+  let fixture: ComponentFixture<BulkBanReviewComponent>;
 
   let mockWoodstockService: WoodstockService;
   let mockSunriseService: SunriseService;
@@ -45,7 +45,7 @@ describe('BulkBanHistoryComponent', () => {
           BrowserModule,
           BrowserAnimationsModule,
         ],
-        declarations: [BulkBanHistoryComponent],
+        declarations: [BulkBanReviewComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWoodstockService(),
@@ -58,7 +58,7 @@ describe('BulkBanHistoryComponent', () => {
         ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(BulkBanHistoryComponent);
+      fixture = TestBed.createComponent(BulkBanReviewComponent);
       component = fixture.debugElement.componentInstance;
       component.banHistoryList = new MatTableDataSource<BanSummariesTableData>();
 
@@ -151,7 +151,7 @@ describe('BulkBanHistoryComponent', () => {
         sunriseEnvironments: ['Retail'],
         apolloEnvironments: ['Retail'],
         xuids: xuids,
-      } as BulkBanHistoryInput;
+      } as BulkBanReviewInput;
 
       it('should set totalEnvironmentsSearched', () => {
         component.lookupXuids(input);

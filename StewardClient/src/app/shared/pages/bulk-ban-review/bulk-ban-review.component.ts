@@ -12,7 +12,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { chunk, clone, flatten, orderBy } from 'lodash';
 import { SunriseService } from '@services/sunrise';
 import { ApolloService } from '@services/apollo';
-import { BulkBanHistoryInput } from './components/bulk-ban-history-input.component';
+import { BulkBanReviewInput } from './components/bulk-ban-review-input.component';
 import { ActivatedRoute } from '@angular/router';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 import { SharedNavbarTools } from '../shared-tool-list';
@@ -49,10 +49,10 @@ export type BanSummariesTableData = {
 
 /** The bulk ban history component. */
 @Component({
-  templateUrl: './bulk-ban-history.component.html',
-  styleUrls: ['./bulk-ban-history.component.scss'],
+  templateUrl: './bulk-ban-review.component.html',
+  styleUrls: ['./bulk-ban-review.component.scss'],
 })
-export class BulkBanHistoryComponent extends BaseComponent implements AfterViewInit {
+export class BulkBanReviewComponent extends BaseComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public readonly XUID_LOOKUP_BATCH_SIZE = 500;
@@ -89,7 +89,7 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
   }
 
   /** Looks up XUIDs ban history. */
-  public lookupXuids(input: BulkBanHistoryInput): void {
+  public lookupXuids(input: BulkBanReviewInput): void {
     if (!input) {
       return;
     }

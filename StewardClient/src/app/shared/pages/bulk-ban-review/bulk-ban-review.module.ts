@@ -10,11 +10,11 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { BulkBanHistoryComponent } from './bulk-ban-history.component';
+import { BulkBanReviewComponent } from './bulk-ban-review.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { BulkBanHistoryRouterModule } from './bulk-ban-history.routing';
+import { BulkBanReviewRouterModule } from './bulk-ban-review.routing';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
@@ -22,13 +22,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
-import { BulkBanHistoryInputComponent } from './components/bulk-ban-history-input.component';
+import { BulkBanReviewInputComponent } from './components/bulk-ban-review-input.component';
 
 /** Routed module for viewing bulk ban history of XUIDs. */
 @NgModule({
-  declarations: [BulkBanHistoryInputComponent, BulkBanHistoryComponent],
+  declarations: [BulkBanReviewInputComponent, BulkBanReviewComponent],
   imports: [
-    BulkBanHistoryRouterModule,
+    BulkBanReviewRouterModule,
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
@@ -53,4 +53,4 @@ import { BulkBanHistoryInputComponent } from './components/bulk-ban-history-inpu
     MatDividerModule,
   ],
 })
-export class BulkBanHistoryModule {}
+export class BulkBanReviewModule {}

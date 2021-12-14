@@ -25,7 +25,7 @@ export enum NavbarTool {
   AdminFH5Studio = 'admin-fh5-studio',
   AdminFH4 = 'admin-fh4',
   AdminFM7 = 'admin-fm7',
-  BanHistory = 'ban-history',
+  BanReview = 'ban-review',
   Messaging = 'messaging',
   AuctionDetails = 'auction-details',
   StewardManagement = 'steward-management',
@@ -196,8 +196,8 @@ export const unprocessedToolList: HomeTileInfo[] = [
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.BanHistory,
-    tool: NavbarTool.BanHistory,
-    oldToolRoutes: ['bulk-ban-history'],
+    tool: NavbarTool.BanReview,
+    oldToolRoutes: ['ban-history', 'bulk-ban-history'],
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
     title: 'Ban Review',
     subtitle: 'View past bans',
@@ -209,8 +209,8 @@ export const unprocessedToolList: HomeTileInfo[] = [
       `Review, approve, and remove players from a list based on their ban summaries in different environments`,
     ],
     loadChildren: () =>
-      import('../../app/shared/pages/bulk-ban-history/bulk-ban-history.module').then(
-        m => m.BulkBanHistoryModule,
+      import('../../app/shared/pages/bulk-ban-review/bulk-ban-review.module').then(
+        m => m.BulkBanReviewModule,
       ),
   },
   <HomeTileInfoInternal>{
