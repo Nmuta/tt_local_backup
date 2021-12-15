@@ -8,6 +8,8 @@ export class ClickStopDirective {
   /** Click event listener. */
   @HostListener('click', ['$event'])
   public onClick(event: Event): void {
+    event.preventDefault();
     event.stopPropagation();
+    event.stopImmediatePropagation();
   }
 }

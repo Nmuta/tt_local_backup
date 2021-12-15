@@ -1,8 +1,8 @@
 <div class="search-bar">
   <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input />
-    <mat-hint>Searches row data and left-column data</mat-hint>
+    <input matInput (keyup)="applyFilter($event)" #input />
+    <mat-hint>Searches row and left-column data</mat-hint>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Enter a date range</mat-label>
