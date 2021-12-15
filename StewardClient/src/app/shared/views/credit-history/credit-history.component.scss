@@ -11,6 +11,7 @@ mat-card {
 table {
   width: 100%;
   table-layout: fixed;
+  border-collapse: collapse;
 }
 
 .load-more-container {
@@ -19,5 +20,20 @@ table {
   button {
     margin-top: $gap-medium;
     margin-bottom: $gap-medium;
+  }
+}
+
+.timeMatchesAbove {
+  border-top: 2px solid transparent;
+
+  &:first-child {
+    border: none;
+  }
+}
+.timeMatchesBelow {
+  border-bottom: 2px solid transparent;
+
+  &:first-child {
+    border: none;
   }
 }

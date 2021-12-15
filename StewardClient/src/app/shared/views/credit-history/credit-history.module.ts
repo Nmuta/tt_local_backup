@@ -11,11 +11,15 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatButtonModule } from '@angular/material/button';
 import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
   declarations: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
   imports: [
+    ...STANDARD_DATE_IMPORTS,
+    StandardDateModule,
     CommonModule,
     MatCardModule,
     MatTableModule,

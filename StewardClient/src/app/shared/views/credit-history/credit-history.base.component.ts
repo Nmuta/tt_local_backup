@@ -10,6 +10,11 @@ import { SunriseCreditDetailsEntry } from '@models/sunrise';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 
 export type CreditDetailsEntryUnion = SunriseCreditDetailsEntry | WoodstockCreditDetailsEntry;
+export type CreditDetailsEntryMixin = {
+  timeMatchesAbove?: boolean;
+  timeMatchesBelow?: boolean;
+};
+
 /** Retreives and displays a player's credit history by XUID. */
 @Component({
   template: '',
@@ -20,7 +25,9 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   @Input() public identity?: IdentityResultUnion;
 
   /** A list of player credit events. */
-  public creditHistory = new TableVirtualScrollDataSource([]);
+  public creditHistory = new TableVirtualScrollDataSource<
+    CreditDetailsEntryUnion & CreditDetailsEntryMixin
+  >([]);
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -74,7 +81,20 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       .subscribe((creditUpdates: T[]) => {
         this.loadingMore = false;
         this.isLoading = false;
+        const priorLength = this.creditHistory.data.length;
         this.creditHistory.data = this.creditHistory.data.concat(creditUpdates);
+        for (let i = Math.max(0, priorLength - 1); i < this.creditHistory.data.length - 1; i++) {
+          const prev = i - 1;
+          const next = i + 1;
+          const currentDate = this.creditHistory.data[i].eventTimestampUtc;
+
+          const prevIsSame =
+            prev < 0 ? false : +this.creditHistory.data[prev].eventTimestampUtc == +currentDate;
+          const nextIsSame = +this.creditHistory.data[next].eventTimestampUtc == +currentDate;
+          this.creditHistory.data[i].timeMatchesAbove = prevIsSame;
+          this.creditHistory.data[i].timeMatchesBelow = nextIsSame;
+        }
+
         this.startIndex = this.creditHistory.data.length;
         this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
       });
@@ -100,5 +120,10 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   /** Load more credit updates */
   public loadMoreCreditUpdates(): void {
     this.getCreditUpdates$.next();
+  }
+
+  /** Type safety! */
+  public data(source: unknown): T & CreditDetailsEntryMixin {
+    return source as T & CreditDetailsEntryMixin;
   }
 }
