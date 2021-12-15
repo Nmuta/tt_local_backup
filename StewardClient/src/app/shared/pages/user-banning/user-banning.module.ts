@@ -31,6 +31,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
 import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.component';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -49,6 +51,7 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
     MatButtonModule,
     MatCardModule,
     MatSelectModule,
+    MatOptionModule,
     MatButtonToggleModule,
     MatInputModule,
     MatFormFieldModule,
@@ -70,6 +73,7 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
     DirectivesModule,
     MatTabsModule,
     EndpointSelectionModule,
+    MatAutocompleteModule,
   ],
 })
 export class UserBanningModule {}

@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -12,8 +12,74 @@ import {
 } from '@angular/forms';
 import { first } from 'lodash';
 import { Duration } from 'luxon';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { DurationPickerOptions } from '../duration-picker/duration-picker.component';
 
+type BanReasonGroup = { group: string; values: string[] };
+type StandardBanReasons = BanReasonGroup[];
+const STANDARD_BAN_REASONS: StandardBanReasons = [
+  {
+    group: 'Abusive',
+    values: [
+      'Harassment or bullying',
+      'Hate speech',
+      'Notorious iconography, organizations or events',
+      'Profanity',
+      'Racism',
+    ],
+  },
+  {
+    group: 'Cheating',
+    values: [
+      'Device exploitation',
+      'In-game glitches or exploits',
+      'Modifying game files',
+      'Purchasing content/accounts third-parties',
+      'Selling in-game content',
+    ],
+  },
+  {
+    group: 'Content Incident',
+    values: [
+      'Abhorrent violent material (AVM)',
+      'Child endangerment',
+      'Child sexual exploitation or abuse',
+    ],
+  },
+  {
+    group: 'Disruptive',
+    values: [
+      'Defamation, impersonation, false information',
+      'Fraud',
+      'Illegal activities',
+      'Illegal drugs or controlled substances',
+      'Personal information',
+      'Spam of advertising',
+      'Unsportsmanlike conduct',
+    ],
+  },
+  { group: 'Imminent Harm', values: ['Imminent harm to person/property', 'Self-harm or suicide'] },
+  {
+    group: 'Sexual Content',
+    values: [
+      'Non-consensual intimate imagery',
+      'Obscene imagery',
+      'Pornographic logos and similar',
+      'Sexually inappropriate',
+    ],
+  },
+  {
+    group: 'Violence',
+    values: ['Harm against people or animals', 'Terrorism or violent extremism', 'Violent acts'],
+  },
+];
+
+export const _filter = (opt: string[], value: string): string[] => {
+  const filterValue = value.toLowerCase();
+
+  return opt.filter(item => item.toLowerCase().includes(filterValue));
+};
 export enum BanArea {
   AllFeatures = 'AllRequests',
   UserGeneratedContent = 'UserGeneratedContent',
@@ -49,7 +115,7 @@ export interface BanOptions {
     },
   ],
 })
-export class BanOptionsComponent implements ControlValueAccessor, Validator {
+export class BanOptionsComponent implements ControlValueAccessor, Validator, OnInit {
   public defaults: BanOptions = {
     banArea: BanArea.AllFeatures,
     banReason: '',
@@ -89,6 +155,36 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator {
 
   public canSubmit = false;
   public canSubmitDisabledReason = 'N/A';
+
+  public banReasonOptions: Observable<BanReasonGroup[]>;
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
+      startWith(''),
+      map((searchValue: string) => {
+        if (searchValue) {
+          const lowercaseSearchValue = searchValue.toLowerCase();
+          return STANDARD_BAN_REASONS.map(g => {
+            if (g.group.toLowerCase().startsWith(lowercaseSearchValue)) {
+              return g;
+            } else {
+              const matchingValues = g.values.filter(v =>
+                v.toLowerCase().includes(lowercaseSearchValue),
+              );
+              if (matchingValues.length > 0) {
+                return <BanReasonGroup>{ group: g.group, values: matchingValues };
+              } else {
+                return null;
+              }
+            }
+          }).filter(v => !!v);
+        }
+
+        return STANDARD_BAN_REASONS;
+      }),
+    );
+  }
 
   /** Form control hook. */
   public writeValue(data: { [key: string]: unknown }): void {
