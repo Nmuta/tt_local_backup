@@ -1,4 +1,4 @@
-import { UserRole } from '@models/enums';
+import { UserModelOverrides } from '@models/user.model';
 import { UserStateModel } from './user.state.model';
 
 /** GetUser action declaration. */
@@ -72,9 +72,7 @@ export class SyncUserState {
 }
 
 /** Break the access token. */
-export class SetLiveOpsAdminSecondaryRole {
-  public static readonly type = '[User] Set Live Ops Admin Secondary Role';
-  constructor(public readonly secondaryRole: UserRole) {
-    // Empty
-  }
+export class ApplyProfileOverrides {
+  public static readonly type = '[User] Apply Profile Overrides';
+  constructor(public readonly profileOverrides: UserModelOverrides) {}
 }

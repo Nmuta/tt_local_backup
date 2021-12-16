@@ -63,7 +63,7 @@ describe('State: User', () => {
           name: `${faker.name.firstName()} ${faker.name.lastName()}`,
           role: UserRole.LiveOpsAdmin,
           objectId: `${faker.datatype.uuid()}`,
-          liveOpsAdminSecondaryRole: undefined,
+          isMicrosoftEmail: true,
         };
         mockUserService.getUserProfile$ = jasmine
           .createSpy('getUserProfile$')

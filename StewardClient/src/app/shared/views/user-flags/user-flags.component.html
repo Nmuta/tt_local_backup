@@ -1,7 +1,7 @@
-<mat-card>
-  <form [formGroup]="formGroup">
-    <mat-card-header>
-      <mat-card-title>Player Flags</mat-card-title>
+<form [formGroup]="formGroup">
+  <mat-card>
+    <mat-card-title-group>
+      <mat-card-title> Player Flags </mat-card-title>
       <mat-card-subtitle>
         <div>{{ gameTitle }}</div>
       </mat-card-subtitle>
@@ -18,9 +18,16 @@
       </button>
 
       <verify-action-button #submit [canSubmit]="formGroup.dirty" [action]="makeAction$.bind(this)"
-        >Apply</verify-action-button
-      >
-    </mat-card-header>
+        >Apply
+      </verify-action-button>
+
+      <help-popover-icon cardTitle="Player Flags" confluenceName="Player Flags Card">
+        <p>
+          Player Flags are user groups and other "on/off"-style user features presented as
+          checkboxes.
+        </p>
+      </help-popover-icon>
+    </mat-card-title-group>
     <mat-card-content>
       <ng-container *ngIf="!isLoading && !loadError; else failstate">
         <section class="checkboxes">
@@ -40,8 +47,8 @@
         </section>
       </ng-container>
     </mat-card-content>
-  </form>
-</mat-card>
+  </mat-card>
+</form>
 
 <ng-template #failstate>
   <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>

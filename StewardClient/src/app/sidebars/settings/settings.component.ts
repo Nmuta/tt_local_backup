@@ -22,7 +22,7 @@ import {
   UserSettingsState,
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
-import { SetLiveOpsAdminSecondaryRole } from '@shared/state/user/user.actions';
+import { ApplyProfileOverrides } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
@@ -37,6 +37,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
 
+  public guestAccountStatus: undefined | boolean = undefined;
   public activeRole: UserRole;
   public enableFakeApi: boolean;
   public enableStagingApi: boolean;
@@ -44,7 +45,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public sunriseEndpointKey: string;
   public woodstockEndpointKey: string;
   public steelheadEndpointKey: string;
-  public showRoleSelectionDropdown: boolean;
+  public showProfileOverrideOptions: boolean;
   public showFakeApiToggle: boolean; // Only show on dev or if user is a live ops admin
   public showStagingApiToggle: boolean; // Only show on staging slot
 
@@ -62,11 +63,10 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profileForceTrueData); // Force true data so live ops admins can change their settings around
     this.showFakeApiToggle = profile.role === UserRole.LiveOpsAdmin || !environment.production;
-    this.showRoleSelectionDropdown = profile.role === UserRole.LiveOpsAdmin;
-    if (this.showRoleSelectionDropdown) {
-      this.activeRole = !profile.liveOpsAdminSecondaryRole
-        ? profile.role
-        : profile.liveOpsAdminSecondaryRole;
+    this.showProfileOverrideOptions = profile.role === UserRole.LiveOpsAdmin;
+    if (this.showProfileOverrideOptions) {
+      this.activeRole = profile.overrides?.role;
+      this.guestAccountStatus = profile.overrides?.isMicrosoftEmail;
     }
 
     const location = this.windowService.location();
@@ -141,8 +141,17 @@ export class SettingsComponent extends BaseComponent implements OnInit {
 
   /** Sets the new active role to the live ops secondary role in state profile. */
   public changeActiveRole($event: MatSelectChange): void {
-    this.store.dispatch(new SetLiveOpsAdminSecondaryRole($event.value)).subscribe(() => {
+    this.store.dispatch(new ApplyProfileOverrides({ role: $event.value })).subscribe(() => {
       this.windowService.location().reload();
     });
+  }
+
+  /** Sets the new active role to the live ops secondary role in state profile. */
+  public changeGuestAccountStatus($event: MatSelectChange): void {
+    this.store
+      .dispatch(new ApplyProfileOverrides({ isMicrosoftEmail: $event.value }))
+      .subscribe(() => {
+        this.windowService.location().reload();
+      });
   }
 }

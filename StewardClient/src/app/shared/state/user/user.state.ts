@@ -22,12 +22,13 @@ import {
 import { LoggerService, LogTopic } from '@services/logger';
 import { WindowService } from '@services/window';
 import { UserService } from '@shared/services/user';
-import { clone, cloneDeep, first as _first } from 'lodash';
+import { merge, clone, cloneDeep, first as _first, assign } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, first, map, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { UserSettingsState } from '../user-settings/user-settings.state';
 
 import {
+  ApplyProfileOverrides,
   BreakAccessToken,
   GetUser,
   LogoutUser,
@@ -35,7 +36,6 @@ import {
   RequestAccessToken,
   ResetAccessToken,
   ResetUserProfile,
-  SetLiveOpsAdminSecondaryRole,
   SetNoUserProfile,
   SyncUserState,
 } from './user.actions';
@@ -113,7 +113,9 @@ export class UserState {
     return this.userService.getUserProfile$().pipe(
       tap(
         data => {
-          ctx.patchState({ profile: clone(data) });
+          ctx.patchState({
+            profile: UserState.analyzeProfile(clone(data)),
+          });
         },
         () => {
           ctx.patchState({ profile: null });
@@ -228,16 +230,17 @@ export class UserState {
   }
 
   /** Action thats sets state live ops secondary role. */
-  @Action(SetLiveOpsAdminSecondaryRole, { cancelUncompleted: true })
-  public setLiveOpsAdminSecondaryRole(
+  @Action(ApplyProfileOverrides, { cancelUncompleted: true })
+  public applyProfileOverrides(
     ctx: StateContext<UserStateModel>,
-    action: SetLiveOpsAdminSecondaryRole,
+    action: ApplyProfileOverrides,
   ): void {
     const state = ctx.getState();
-    const profile = cloneDeep(state.profile);
-    if (profile?.role === UserRole.LiveOpsAdmin) {
-      profile.liveOpsAdminSecondaryRole = action.secondaryRole;
-      ctx.patchState({ profile: profile });
+    if (state.profile?.role === UserRole.LiveOpsAdmin) {
+      const profile = cloneDeep(state.profile);
+      profile.overrides = profile.overrides || {};
+      assign(profile.overrides, action.profileOverrides);
+      ctx.patchState({ profile });
     }
   }
 
@@ -283,13 +286,19 @@ export class UserState {
   /** Sets the live ops secondary role to the returned profile's role property. */
   private static useSecondaryRoleIfAllowed(profile: UserModel): UserModel {
     const clonedProfile = cloneDeep(profile); // Clone required, selectors can mutate local storage of referenced state object
-    if (
-      clonedProfile?.role === UserRole.LiveOpsAdmin &&
-      !!clonedProfile?.liveOpsAdminSecondaryRole
-    ) {
-      clonedProfile.role = profile.liveOpsAdminSecondaryRole;
+    if (clonedProfile?.role === UserRole.LiveOpsAdmin) {
+      merge(clonedProfile, profile.overrides);
     }
 
     return clonedProfile;
+  }
+
+  /** Performs some analysis on the profile. Returns a modified profile. */
+  private static analyzeProfile(profile: UserModel): UserModel {
+    if (!!profile) {
+      profile.isMicrosoftEmail = profile?.emailAddress?.toLowerCase()?.endsWith('@microsoft.com');
+    }
+
+    return profile;
   }
 }

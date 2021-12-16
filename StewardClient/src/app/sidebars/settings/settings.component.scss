@@ -20,8 +20,13 @@ span.endpoint-selectors {
   display: block;
 }
 
-mat-form-field.set-active-role {
-  margin-top: $gap-large;
+.override-section {
+  display: flex;
+  flex-flow: row wrap;
+  margin: -$gap-small/2;
+  & > * {
+    margin: $gap-small/2;
+  }
 }
 
 .endpoint-selection-warning {

@@ -57,7 +57,6 @@ describe('DurationPickerComponent', () => {
           emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
           role: UserRole.SupportAgent,
           name: faker.name.firstName(),
-          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 
@@ -74,7 +73,6 @@ describe('DurationPickerComponent', () => {
           emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
           role: UserRole.LiveOpsAdmin,
           name: faker.name.firstName(),
-          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 

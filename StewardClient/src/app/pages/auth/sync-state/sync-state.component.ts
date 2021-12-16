@@ -34,7 +34,6 @@ export class SyncStateComponent extends BaseComponent implements OnInit {
           role: q.get('role') as UserRole,
           name: q.get('name'),
           objectId: q.get('objectId'),
-          liveOpsAdminSecondaryRole: undefined,
         },
       };
 

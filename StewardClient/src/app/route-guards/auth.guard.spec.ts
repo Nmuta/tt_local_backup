@@ -19,7 +19,6 @@ describe('AuthGuard:', () => {
     role: UserRole.LiveOpsAdmin,
     name: `${faker.name.firstName()} ${faker.name.lastName()}`,
     objectId: `${faker.datatype.uuid()}`,
-    liveOpsAdminSecondaryRole: undefined,
   };
   const testRoute: Partial<ActivatedRouteSnapshot> = {};
   const testSnapshot: Partial<RouterStateSnapshot> = { url: '/i/am/a/route?with=query' };

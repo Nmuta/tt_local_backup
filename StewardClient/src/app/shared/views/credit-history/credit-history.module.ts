@@ -11,6 +11,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatButtonModule } from '@angular/material/button';
 import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { HelpModule } from '@shared/modules/help/help.module';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 
@@ -30,6 +31,7 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     MatButtonModule,
     TableVirtualScrollModule,
     ScrollingModule,
+    HelpModule,
   ],
   exports: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
 })

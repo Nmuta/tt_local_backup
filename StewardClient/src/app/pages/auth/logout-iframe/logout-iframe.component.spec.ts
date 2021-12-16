@@ -19,7 +19,6 @@ describe('LogoutIframeComponent:', () => {
     role: UserRole.LiveOpsAdmin,
     name: `${faker.name.firstName()} ${faker.name.lastName()}`,
     objectId: `${faker.datatype.uuid()}`,
-    liveOpsAdminSecondaryRole: undefined,
   };
 
   beforeEach(async () => {

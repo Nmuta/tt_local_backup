@@ -19,7 +19,6 @@ describe('UserRoleGuard:', () => {
     role: UserRole.LiveOpsAdmin,
     name: `${faker.name.firstName()} ${faker.name.lastName()}`,
     objectId: `${faker.datatype.uuid()}`,
-    liveOpsAdminSecondaryRole: undefined,
   };
 
   const testRoute: Partial<ActivatedRouteSnapshot> = {};

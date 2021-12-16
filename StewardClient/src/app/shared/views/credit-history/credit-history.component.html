@@ -1,8 +1,15 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-title-group>
     <mat-card-title>Credit History</mat-card-title>
     <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
-  </mat-card-header>
+    <help-popover-icon cardTitle="Credit History" confluenceName="Credit History Card">
+      <p>Credit history is recovered from logs and is displayed from oldest to newest.</p>
+      <p>
+        Entries that occur at the same moment in time (and so have no known order) are grouped
+        together.
+      </p>
+    </help-popover-icon>
+  </mat-card-title-group>
   <mat-card-content>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
       <cdk-virtual-scroll-viewport tvsItemSize="48" headerHeight="56" class="cdk-wrapper">

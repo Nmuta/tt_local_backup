@@ -51,8 +51,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       this.userRole = profile.role;
       // The state replaces profile.role with profile.liveOpsAdminSecondaryRole to trick the app.
       // We must check for liveOpsAdminSecondaryRole instead of role to know if the user is a LiveOpsAdmin.
-      this.isLiveOpsAdmin =
-        !!profile.liveOpsAdminSecondaryRole && profile.liveOpsAdminSecondaryRole === profile.role;
+      this.isLiveOpsAdmin = !!profile.overrides?.role && profile.overrides?.role === profile.role;
       this.hasAccess = chain(environment.tools)
         .map(v => [v.tool, v.accessList.includes(profile?.role)])
         .fromPairs()

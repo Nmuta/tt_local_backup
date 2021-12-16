@@ -1,0 +1,50 @@
+<button
+  [matTooltip]="tooltip"
+  mat-icon-button
+  (click)="isOpen = !isOpen"
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+>
+  <mat-icon *ngIf="!confluenceLink">help</mat-icon>
+  <mat-icon
+    *ngIf="confluenceLink"
+    class="mat-badge-icon"
+    matBadgeSize="medium"
+    matBadgeColor="accent"
+    matBadgeOverlap="true"
+    matBadge="link"
+    >help</mat-icon
+  >
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen"
+  [cdkConnectedOverlayBackdropClass]="'disable-the-backdrop-fading'"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  (backdropClick)="isOpen = false"
+>
+  <mat-card class="mat-elevation-z16">
+    <mat-card-title *ngIf="cardTitle">{{ cardTitle }}</mat-card-title>
+    <mat-card-subtitle *ngIf="cardSubtitle">{{ cardSubtitle }}</mat-card-subtitle>
+    <mat-card-content>
+      <ng-content></ng-content>
+    </mat-card-content>
+    <mat-card-actions align="end" *ngIf="confluenceLink">
+      <a mat-button *ngIf="canProbablyViewConfluence" [href]="confluenceLink">
+        {{ confluenceName }} on Confluence
+      </a>
+      <a
+        mat-button
+        class="mat-button-disabled"
+        *ngIf="!canProbablyViewConfluence"
+        [href]="confluenceLink"
+        color="disabled"
+        matTooltip="It looks like you probably don't have access to confluence, but you can try following the link anyway."
+      >
+        {{ confluenceName }} on Confluence
+      </a>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>

@@ -17,6 +17,7 @@ import { SteelheadUserFlagsComponent } from './steelhead/steelhead-user-flags.co
 import { MatIconModule } from '@angular/material/icon';
 import { WoodstockUserFlagsComponent } from './woodstock/woodstock-user-flags.component';
 import { MatInputModule } from '@angular/material/input';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** A domain module for displaying user flags. */
 @NgModule({
@@ -43,6 +44,7 @@ import { MatInputModule } from '@angular/material/input';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
+    HelpModule,
   ],
   exports: [
     WoodstockUserFlagsComponent,

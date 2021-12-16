@@ -1,0 +1,19 @@
+@import '/src/styles/mixins';
+
+mat-card-content {
+  max-width: 20em;
+}
+
+::ng-deep mat-card > help-popover-icon,
+::ng-deep mat-card-title-group > help-popover-icon,
+::ng-deep mat-card-header > help-popover-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+::ng-deep .mat-badge-icon .mat-badge-content {
+  font-family: 'Material Icons';
+  background-color: transparent;
+}

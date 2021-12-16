@@ -98,7 +98,6 @@ describe('ProfileComponent', () => {
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       role: UserRole.LiveOpsAdmin,
       objectId: `${faker.datatype.uuid()}`,
-      liveOpsAdminSecondaryRole: undefined,
     };
 
     describe('When subscribing to profile returns a value', () => {

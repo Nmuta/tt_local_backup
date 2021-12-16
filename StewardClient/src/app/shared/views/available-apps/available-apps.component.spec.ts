@@ -69,7 +69,6 @@ describe('AvailableAppsComponent', () => {
           emailAddress: `${name}@testemail.com`,
           name: name,
           role: UserRole.LiveOpsAdmin,
-          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 
@@ -88,7 +87,6 @@ describe('AvailableAppsComponent', () => {
           emailAddress: `${name}@testemail.com`,
           name: name,
           role: UserRole.SupportAgent,
-          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 
@@ -106,7 +104,6 @@ describe('AvailableAppsComponent', () => {
           emailAddress: `${name}@testemail.com`,
           name: name,
           role: UserRole.DataPipelineAdmin,
-          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 
@@ -124,7 +121,6 @@ describe('AvailableAppsComponent', () => {
           emailAddress: `${name}@testemail.com`,
           name: name,
           role: UserRole.CommunityManager,
-          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 

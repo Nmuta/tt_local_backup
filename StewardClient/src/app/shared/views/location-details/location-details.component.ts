@@ -40,6 +40,6 @@ export class LocationDetailsComponent {
 
   /** Produces the current location, for reference when in iframe. */
   public get location(): string {
-    return `${this.windowService.location().pathname}${this.windowService.location()}`;
+    return `${this.windowService.location()}`;
   }
 }
