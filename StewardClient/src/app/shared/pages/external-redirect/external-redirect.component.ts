@@ -17,7 +17,7 @@ export class ExternalRedirectComponent implements OnInit {
   private readonly stewardTeamEmails: string[] = [
     'luke.geiken@microsoft.com',
     'madden.osei@microsoft.com',
-    'jordan.yates@turn10.msgamestudios.com',
+    'v-jyates@microsoft.com',
     'v-davsha@microsoft.com',
     'caleb.moore@microsoft.com',
   ];
