@@ -17,7 +17,15 @@
 
 <ng-container *ngIf="!!userProfile">
   <p>Hi, {{ userProfile.name || userProfile.emailAddress }}.</p>
-  <p>Your role is: {{ userProfile.role }}.</p>
+  <p *ngIf="userProfile.role !== 'none'">Your role is: {{ userProfile.role }}.</p>
+  <div *ngIf="userProfile.role === 'none'">
+    <p>You do not have an assigned role.</p>
+    <p>
+      Try contacting us on <a [routerLink]="['/external/teams']" target="_blank">Teams</a> or
+      <a [routerLink]="['/external/email']" target="_blank">Email</a>.
+    </p>
+  </div>
+
   <div class="app-list">
     <a
       [disabled]="!areAnyAppsAccessible"

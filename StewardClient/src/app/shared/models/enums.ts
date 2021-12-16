@@ -52,6 +52,7 @@ export enum GameTitle {
 }
 
 export enum UserRole {
+  None = 'none', // This value does not match the casing. It seems to be provided upstream.
   LiveOpsAdmin = 'LiveOpsAdmin',
   SupportAgentAdmin = 'SupportAgentAdmin',
   SupportAgent = 'SupportAgent',
