@@ -19,3 +19,7 @@ h2 {
 .reset-button {
   margin: 0 0.5em;
 }
+
+:host ::ng-deep .mat-card-title-group {
+  justify-content: unset;
+}
