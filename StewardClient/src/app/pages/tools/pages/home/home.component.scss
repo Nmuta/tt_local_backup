@@ -2,15 +2,18 @@
 @import '/src/styles/mixins';
 
 :host {
-  display: block;
-  margin: $gap-medium;
+  padding: $gap-medium;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .app-tiles-wrapper {
   // horizontal positioning and sizing of the box
   display: grid;
+  flex-grow: 0;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   gap: 1rem;
+  margin-bottom: 1rem;
 
   // aspect ratio trickery
   & > * {
@@ -190,4 +193,9 @@ mat-icon[mat-card-avatar] {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+:host {
+  flex-grow: 1;
+  background: url('/assets/promo/1.png') center center / cover fixed border-box;
 }
