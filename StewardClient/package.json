@@ -2,7 +2,7 @@
   "name": "turn10-steward-ui",
   "version": "0.0.1",
   "scripts": {
-    "refreshVSToken": "vsts-npm-auth -config .npmrc",
+    "refreshVSToken": "vsts-npm-auth -config .npmrc -F",
     "ng": "ng",
     "fix": "yarn prettier:fix && yarn lint --fix",
     "lint": "ng lint",
