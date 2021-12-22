@@ -58,7 +58,7 @@ center-contents {
   }
 }
 
-mat-card {
+mat-card.glassy {
   backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 60%);
+  background-color: app-color-default($app-background, 60%);
 }

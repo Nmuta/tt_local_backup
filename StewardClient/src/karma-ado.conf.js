@@ -54,6 +54,7 @@ module.exports = function (config) {
             '**/app/shared/pages/obligation/**/*.ts', // Data piplelines has intensive form controls, use e2e test
             '**/four-oh-four/**/*.ts',
             '**/app/shared/state/utilities/**/*.ts', // Ugly logic to test, use e2e testing
+            '**/environments/**/*.ts', // Configuration
           ],
         },
       },

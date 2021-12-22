@@ -25,7 +25,7 @@ mat-card.steward-layout-sticky-scroll {
     margin-right: -$outer-gap;
     padding: $outer-gap;
     z-index: 500;
-    background-color: white;
+    background-color: app-color-default($app-background);
   }
 
   mat-card-content {
@@ -43,6 +43,6 @@ mat-card.steward-layout-sticky-scroll {
     margin-right: -$outer-gap;
     padding: $outer-gap !important;
     z-index: 500;
-    background-color: white;
+    background-color: app-color-default($app-background);
   }
 }

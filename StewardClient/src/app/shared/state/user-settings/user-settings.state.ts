@@ -16,6 +16,8 @@ import {
   SetSteelheadEndpointKey,
   VerifyEndpointKeyDefaults,
   ConfigureAppUpdatePopup,
+  SetThemeOverride,
+  ThemeOverrideOptions,
 } from './user-settings.actions';
 
 /** Defines the user state model. */
@@ -29,6 +31,7 @@ export class UserSettingsStateModel {
   public woodstockEndpointKey: string;
   public steelheadEndpointKey: string;
   public navbarTools: Partial<Record<NavbarTool, number>>;
+  public themeOverride: ThemeOverrideOptions;
 }
 
 /** Defines the current users' settings. */
@@ -44,6 +47,7 @@ export class UserSettingsStateModel {
     woodstockEndpointKey: undefined,
     steelheadEndpointKey: undefined,
     showAppUpdatePopup: true,
+    themeOverride: undefined,
   },
 })
 @Injectable({
@@ -87,13 +91,22 @@ export class UserSettingsState {
     return of(ctx.patchState({ showAppUpdatePopup: action.show }));
   }
 
-  /** Sets the state of the current app version. */
+  /** Sets the navbar tool list. */
   @Action(SetNavbarTools, { cancelUncompleted: true })
   public setNavbarTools$(
     ctx: StateContext<UserSettingsStateModel>,
     action: SetNavbarTools,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ navbarTools: action.navbarTools }));
+  }
+
+  /** Sets the theme override. */
+  @Action(SetThemeOverride, { cancelUncompleted: true })
+  public setThemeOverride$(
+    ctx: StateContext<UserSettingsStateModel>,
+    action: SetThemeOverride,
+  ): Observable<UserSettingsStateModel> {
+    return of(ctx.patchState({ themeOverride: action.themeOverride }));
   }
 
   /** Sets the state of the current Apollo endpoint key. */

@@ -4,23 +4,28 @@
     <mat-icon>home</mat-icon>
   </a>
   <div *ngIf="!inEditMode" class="link-list-wrapper">
-    <a
-      *ngFor="let item of listedTools"
-      mat-button
-      [routerLink]="parentRoute + item.tool"
-      [target]="item.target"
-      routerLinkActive="mat-stroked-button"
-      [matTooltip]="item.tooltipDescription"
-    >
-      <span
-        *ngIf="!!item.extraIcon"
-        [matBadge]="item.extraIcon"
-        matBadgeIcon
-        matBadgeOverlap="false"
-        >{{ item.title }}</span
+    <ng-container *ngFor="let item of listedTools">
+      <a
+        *ngIf="!item.navComponent"
+        mat-button
+        [routerLink]="parentRoute + item.tool"
+        [target]="item.target"
+        routerLinkActive="mat-stroked-button"
+        [matTooltip]="item.tooltipDescription"
       >
-      <span *ngIf="!item.extraIcon">{{ item.title }}</span>
-    </a>
+        <span
+          *ngIf="!!item.extraIcon"
+          [matBadge]="item.extraIcon"
+          matBadgeIcon
+          matBadgeOverlap="false"
+          >{{ item.title }}</span
+        >
+        <span *ngIf="!item.extraIcon">{{ item.title }}</span>
+      </a>
+      <span *ngIf="item.navComponent"
+        ><span [anchor]="item.navComponent" [anchorDisabled]="!hasAccess[item.tool]"></span
+      ></span>
+    </ng-container>
   </div>
   <div
     *ngIf="inEditMode"
@@ -29,22 +34,27 @@
     class="drop-list-wrapper"
     (cdkDropListDropped)="onDrop($event)"
   >
-    <a
-      *ngFor="let item of listedTools"
-      mat-raised-button
-      routerLinkActive="mat-stroked-button"
-      [matTooltip]="item.tooltipDescription"
-      cdkDrag
-    >
-      <span
-        *ngIf="!!item.extraIcon"
-        [matBadge]="item.extraIcon"
-        matBadgeIcon
-        matBadgeOverlap="false"
-        >{{ item.title }}</span
+    <ng-container *ngFor="let item of listedTools">
+      <a
+        *ngIf="!item.navComponent"
+        mat-raised-button
+        routerLinkActive="mat-stroked-button"
+        [matTooltip]="item.tooltipDescription"
+        cdkDrag
       >
-      <span *ngIf="!item.extraIcon">{{ item.title }}</span>
-    </a>
+        <span
+          *ngIf="!!item.extraIcon"
+          [matBadge]="item.extraIcon"
+          matBadgeIcon
+          matBadgeOverlap="false"
+          >{{ item.title }}</span
+        >
+        <span *ngIf="!item.extraIcon">{{ item.title }}</span>
+      </a>
+      <span *ngIf="item.navComponent" cdkDrag
+        ><span [anchor]="item.navComponent" [anchorDisabled]="true"></span
+      ></span>
+    </ng-container>
     <mat-icon
       class="edit-mode-instructions"
       matTooltip="Currently in edit mode. Links are disabled. Drag and drop to re-order items. Changes are saved immediately."

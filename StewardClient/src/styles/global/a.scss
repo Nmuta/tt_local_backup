@@ -1,0 +1,12 @@
+@import '/src/styles/mixins';
+
+a,
+a:visited,
+a:hover {
+  color: app-color-default($app-accent);
+}
+
+a:active,
+a:focus {
+  color: app-color-lighter($app-accent);
+}

@@ -54,7 +54,7 @@ mat-panel-description {
 }
 
 .inventoryPreview {
-  color: app-color-darker($app-background);
+  color: app-color-lighter-contrast($app-background);
   > .label {
     font-weight: bold;
     margin-right: 0.5em;

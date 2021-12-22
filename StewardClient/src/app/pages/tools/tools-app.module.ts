@@ -22,13 +22,15 @@ import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ThemeModule } from '@shared/modules/theme/theme.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 /** A module for all tools, with a configurable navbar. */
 @NgModule({
   declarations: [ToolsAppHomeComponent, ToolsAppComponent, NavbarComponent],
   imports: [
     ToolsAppRouterModule,
-    CommonModule,
     CommonModule,
     DataPrivacyNoticeModule,
     FontAwesomeModule,
@@ -51,6 +53,9 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     FormsModule,
     PipesModule,
     DirectivesModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    ThemeModule,
   ],
 })
 export class ToolsAppModule {}

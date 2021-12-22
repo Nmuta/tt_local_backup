@@ -7,14 +7,18 @@
       </button>
     </h2>
     <form [formGroup]="kustoQueryForm" (ngSubmit)="runQuery()">
-      <textarea
-        cdkTextareaAutosize
-        placeholder="Select a query from below to get started..."
-        type="text"
-        formControlName="queryInput"
-        spellcheck="false"
-        required
-      ></textarea>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Query</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          placeholder="Select a query from below to get started..."
+          type="text"
+          formControlName="queryInput"
+          spellcheck="false"
+          required
+        ></textarea>
+      </mat-form-field>
 
       <div class="query-selection-actions">
         <kusto-query-selection

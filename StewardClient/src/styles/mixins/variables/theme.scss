@@ -1,5 +1,7 @@
 // theme initialization and helper aliases
+@use 'sass:map';
 @use '~@angular/material' as mat;
+@use './palettes.scss' as palettes;
 
 /// use for primary nagivation and "primary action" buttons that (1) are the default, and (2) perform irrevocable actions
 $app-primary: mat.define-palette(mat.$indigo-palette);
@@ -23,16 +25,187 @@ $app-theme: mat.define-light-theme(
       primary: $app-primary,
       accent: $app-accent,
       warn: $app-warn,
+      background: $app-background,
     ),
   )
 );
+
+// the dark theme
+$dark-primary: mat.define-palette(palettes.$forza-horizon-pink);
+$dark-accent: mat.define-palette(mat.$light-blue-palette);
+$dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $app-warn,
+    ),
+  )
+);
+
+@function toRGB($color) {
+  @return red($color) + ', ' + green($color) + ', ' + blue($color);
+}
+
+@mixin colorToVars($name, $color) {
+  --rgb-#{$name}: #{$color};
+  --#{$name}: #{toRGB($color)};
+}
+
+@function makeLookupName($palette-name, $style) {
+  @return $palette-name + '-' + $style;
+}
+
+@mixin entryToVars($color-config, $is-dark, $palette-name, $style, $darkmode-style-name) {
+  $lookup-name: makeLookupName($palette-name, $style);
+  @if ($is-dark) {
+    $lookup-name: makeLookupName($palette-name, $darkmode-style-name);
+  }
+
+  $palette: map.get($color-config, $palette-name);
+  $color: mat.get-color-from-palette($palette, $style);
+  @include colorToVars($lookup-name, $color);
+}
+
+@mixin init-theme($theme) {
+  @include mat.all-component-themes($theme);
+  $color-config: mat.get-color-config($theme);
+  $primary-palette: map.get($color-config, 'primary');
+  $is-dark: map-get($theme, is-dark);
+  @include entryToVars($color-config, $is-dark, 'primary', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'primary', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'primary', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'primary', 'text', 'text');
+  @include entryToVars($color-config, $is-dark, 'accent', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'accent', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'accent', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'accent', 'text', 'text');
+  @include entryToVars($color-config, $is-dark, 'warn', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'warn', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'warn', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'warn', 'text', 'text');
+  @include colorToVars(makeLookupName('unknown', 'default'), lime);
+  @include colorToVars(makeLookupName('unknown', 'lighter'), lime);
+  @include colorToVars(makeLookupName('unknown', 'darker'), lime);
+  @include colorToVars(makeLookupName('unknown', 'text'), lime);
+  @include entryToVars($color-config, $is-dark, 'primary', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'primary', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'primary', 'darker-contrast', 'lighter-contrast');
+  // @include entryToVars($color-config, $is-dark, 'primary', 'text-contrast', 'text-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'darker-contrast', 'lighter-contrast');
+  // @include entryToVars($color-config, $is-dark, 'accent', 'text-contrast', 'text-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'darker-contrast', 'lighter-contrast');
+  // @include entryToVars($color-config, $is-dark, 'warn', 'text-contrast', 'text-contrast');
+  @include colorToVars(makeLookupName('unknown', 'default-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'lighter-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'darker-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'text-contrast'), lime);
+
+  @if ($is-dark) {
+    @include colorToVars(
+      makeLookupName('background', 'default'),
+      map-get(mat.$dark-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter'),
+      darken(map-get(mat.$dark-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker'),
+      lighten(map-get(mat.$dark-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text'),
+      map-get(mat.$dark-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'default-contrast'),
+      map-get(mat.$dark-theme-foreground-palette, 'base')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter-contrast'),
+      darken(map-get(mat.$dark-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker-contrast'),
+      lighten(map-get(mat.$dark-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text-contrast'),
+      map-get(mat.$dark-theme-foreground-palette, 'base')
+    );
+  } @else {
+    @include colorToVars(
+      makeLookupName('background', 'default'),
+      map-get(mat.$light-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter'),
+      lighten(map-get(mat.$light-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker'),
+      darken(map-get(mat.$light-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text'),
+      map-get(mat.$light-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'default-contrast'),
+      map-get(mat.$light-theme-foreground-palette, 'base')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter-contrast'),
+      lighten(map-get(mat.$light-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker-contrast'),
+      darken(map-get(mat.$light-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text-contrast'),
+      map-get(mat.$light-theme-foreground-palette, 'base')
+    );
+  }
+  background-color: app-color-default($app-background);
+  color: app-color-default-contrast($app-background);
+}
+
+@function paletteToString($palette) {
+  @if ($palette == $app-primary) {
+    @return 'primary';
+  } @else if ($palette == $app-accent) {
+    @return 'accent';
+  } @else if ($palette == $app-warn) {
+    @return 'warn';
+  } @else if ($palette == $app-background) {
+    @return 'background';
+  } @else {
+    @return 'unknown';
+  }
+}
+
+@function app-color-helper($palette, $style, $opacity) {
+  $palette-name: paletteToString($palette);
+  $var-name: makeLookupName($palette-name, $style);
+  @if ($opacity) {
+    @return rgba(var(--#{$var-name}), $opacity);
+  } @else {
+    @return var(--rgb-#{$var-name});
+  }
+}
 
 /// Gets a color from a theme palette (the output of mat-palette).
 ///
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-default($palette, $opacity: null) {
-  @return mat.get-color-from-palette($palette, default, $opacity);
+  @return app-color-helper($palette, 'default', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -40,7 +213,7 @@ $app-theme: mat.define-light-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-lighter($palette, $opacity: null) {
-  @return mat.get-color-from-palette($palette, lighter, $opacity);
+  @return app-color-helper($palette, 'lighter', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -48,7 +221,7 @@ $app-theme: mat.define-light-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-darker($palette, $opacity: null) {
-  @return mat.get-color-from-palette($palette, darker, $opacity);
+  @return app-color-helper($palette, 'darker', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -56,37 +229,49 @@ $app-theme: mat.define-light-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-text($palette, $opacity: null) {
-  @return mat.get-color-from-palette($palette, text, $opacity);
+  @return app-color-helper($palette, 'text', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-default($app-primary)
+/// color: app-color-default-contrast($app-primary)
 ///
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-default-contrast($theme, $opacity: null) {
-  @return mat.get-color-from-palette($theme, default-contrast, $opacity);
+  @return app-color-helper($theme, default-contrast, $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-lighter($app-primary)
+/// color: app-color-lighter-contrast($app-primary)
 ///
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-lighter-contrast($theme, $opacity: null) {
-  @return mat.get-color-from-palette($theme, lighter-contrast, $opacity);
+  @return app-color-helper($theme, lighter-contrast, $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-darker($app-primary)
+/// color: app-color-darker-contrast($app-primary)
 ///
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-darker-contrast($theme, $opacity: null) {
-  @return mat.get-color-from-palette($theme, darker-contrast, $opacity);
+  @return app-color-helper($theme, darker-contrast, $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-text($app-primary)
+/// color: app-color-text-contrast($app-primary)
 ///
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-text-contrast($palette, $opacity: null) {
-  @return mat.get-color-from-palette($palette, text-contrast, $opacity);
+  @return app-color-helper($palette, text-contrast, $opacity);
 }

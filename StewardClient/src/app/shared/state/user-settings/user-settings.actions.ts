@@ -61,3 +61,12 @@ export class SetNavbarTools {
   public static readonly type = '[Settings] Set Navbar Tools';
   constructor(public readonly navbarTools: Partial<Record<NavbarTool, number>>) {}
 }
+
+/** The options when overriding theme. */
+export type ThemeOverrideOptions = 'dark' | 'light' | 'match' | undefined;
+
+/** Sets the current theme override. */
+export class SetThemeOverride {
+  public static readonly type = '[Settings] Set Theme Override';
+  constructor(public readonly themeOverride: ThemeOverrideOptions) {}
+}

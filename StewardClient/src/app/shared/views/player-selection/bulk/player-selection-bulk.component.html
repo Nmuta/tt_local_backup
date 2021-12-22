@@ -45,7 +45,7 @@
         [color]="identity.extra?.theme"
         (removed)="remove(identity)"
       >
-        <span>{{ identity.query[this.lookupType] }}</span>
+        <span class="lookup-value">{{ identity.query[this.lookupType] }}</span>
 
         <ng-template
           [ngTemplateOutlet]="templateRef"

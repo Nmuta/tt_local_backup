@@ -40,6 +40,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   public role: UserRole = undefined;
   public listedTools: HomeTileInfoForNav[] = [];
   public standardTools: Partial<Record<NavbarTool, number>> = undefined;
+  public hasAccess: Partial<Record<NavbarTool, boolean>> = {};
 
   public parentRoute: string = '/app/tools/';
 
@@ -81,6 +82,11 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     const settings = this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState);
     this.settings$.pipe(startWith(settings), takeUntil(this.onDestroy$)).subscribe(settings => {
       const navbarTools = settings.navbarTools || {};
+      this.hasAccess = chain(environment.tools)
+        .map(v => [v.tool, v.accessList.includes(profile?.role)])
+        .fromPairs()
+        .value();
+
       this.listedTools = chain(environment.tools)
         .filter(tool => !!navbarTools[tool.tool])
         .orderBy(tool => navbarTools[tool.tool])

@@ -62,17 +62,14 @@ mat-card {
 
         a.has-bans {
           color: app-color-default($app-warn);
-          background-color: app-color-default-contrast($app-warn);
         }
 
         a.not-found {
           color: app-color-default($app-primary);
-          background-color: app-color-default-contrast($app-primary);
         }
 
         a:not(.has-bans):not(.not-found) {
           color: app-color-darker($app-success);
-          background-color: app-color-darker-contrast($app-success);
         }
 
         span {

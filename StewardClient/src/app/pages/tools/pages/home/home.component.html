@@ -21,6 +21,11 @@
         />
         <mat-card-content>
           <p *ngFor="let paragraph of item.shortDescription">{{ paragraph }}</p>
+          <div
+            *ngIf="item.tileContentComponent"
+            [anchor]="item.tileContentComponent"
+            [anchorDisabled]="!hasAccess[item.tool]"
+          ></div>
           <div *ngIf="!hasAccess[item.tool]" class="no-access-warning">
             <ng-container *ngIf="isLiveOpsAdmin; else noAccessTemplate">
               <span><mat-icon>gpp_bad</mat-icon>Allowed Roles<mat-icon>gpp_bad</mat-icon></span>
@@ -41,7 +46,7 @@
           </mat-checkbox>
           <div class="spacer"></div>
           <a
-            *ngIf="hasAccess[item.tool]"
+            *ngIf="hasAccess[item.tool] && !item.hideLink"
             mat-button
             [routerLink]="parentRoute + item.tool"
             [target]="item.target"

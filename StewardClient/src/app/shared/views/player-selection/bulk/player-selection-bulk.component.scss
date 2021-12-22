@@ -38,3 +38,14 @@ mat-chip {
 :host ::ng-deep .display-in-single-line.has-result .mat-form-field-label-wrapper {
   display: none;
 }
+
+.lookup-value {
+  white-space: nowrap;
+}
+
+:host ::ng-deep .mat-chip-selected error-spinner {
+  &,
+  * {
+    color: app-color-default-contrast($app-warn);
+  }
+}

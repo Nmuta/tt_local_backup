@@ -2,4 +2,29 @@
 @import '/src/styles/mixins';
 
 @include mat.core();
-@include mat.all-component-themes($app-theme);
+
+// default based on system configuration
+body {
+  // no preference
+  @include init-theme($app-theme);
+
+  // light preference
+  @media (prefers-color-scheme: light) {
+    @include init-theme($app-theme);
+  }
+
+  // dark preference
+  @media (prefers-color-scheme: dark) {
+    @include init-theme($dark-theme);
+  }
+}
+
+// override with dark theme
+.apply-dark-theme {
+  @include init-theme($dark-theme);
+}
+
+// override with light theme
+.apply-light-theme {
+  @include init-theme($app-theme);
+}

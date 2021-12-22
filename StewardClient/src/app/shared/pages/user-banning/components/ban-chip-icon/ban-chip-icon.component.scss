@@ -4,7 +4,12 @@
   white-space: pre-line;
 }
 
-span {
-  margin: 0 0.125rem;
+.ban-subchip {
   color: app-color-default($app-warn);
+  background-color: app-color-default-contrast($app-warn);
+  border-radius: 2em;
+  padding-left: 0.125em;
+  padding-right: 0.125em;
+  white-space: nowrap;
+  margin: 0 0.125rem;
 }

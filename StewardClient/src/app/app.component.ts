@@ -11,6 +11,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { UserState } from '@shared/state/user/user.state';
 import { UserModel } from '@models/user.model';
 import { VerifyEndpointKeyDefaults } from '@shared/state/user-settings/user-settings.actions';
+import { ThemeService } from '@shared/modules/theme/theme.service';
 
 /** Defines the app component. */
 @Component({
@@ -24,6 +25,7 @@ export class AppComponent extends BaseComponent implements OnInit {
     private readonly store: Store,
     private readonly registryService: MatIconRegistryService,
     private readonly snackbar: MatSnackBar,
+    private readonly themeService: ThemeService, // just loading this as a dependency is enough to force synchronization
   ) {
     super();
     this.registryService.initialize();

@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { LoadChildren } from '@angular/router';
 import { UserRole } from '@models/enums';
 import { chain } from 'lodash';
@@ -29,6 +30,7 @@ export enum NavbarTool {
   Messaging = 'messaging',
   AuctionDetails = 'auction-details',
   StewardManagement = 'steward-management',
+  Theming = 'theming',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -88,6 +90,7 @@ export enum AppIcon {
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
 export enum ExtraIcon {
   External = 'open_in_new',
+  Custom = 'toggle_on',
 }
 
 /** Base model for Home Tiles. */
@@ -133,6 +136,19 @@ export interface HomeTileInfoBase {
   readonly hideFromUnauthorized?: boolean;
 }
 
+/** Type for a custom tile. */
+export type CustomTileComponent = { disabled: boolean };
+
+/** Model for Home Tiles that send the user to internal tools. */
+export interface HomeTileInfoCustomTile extends HomeTileInfoBase {
+  /** Component to render below the tile summary. */
+  readonly tileContentComponent?: () => Promise<Type<CustomTileComponent>>;
+  /** Component to render in the nav instead of the usual tile. */
+  readonly navComponent?: () => Promise<Type<CustomTileComponent>>;
+  /** When true, disables the "open" link. */
+  readonly hideLink?: true;
+}
+
 /** Model for Home Tiles that send the user to internal tools. */
 export interface HomeTileInfoInternal extends HomeTileInfoBase {
   /** Angular hook which chooses the target module for lazy-loading. */
@@ -146,7 +162,17 @@ export interface HomeTileInfoExternal extends HomeTileInfoBase {
 }
 
 /** Union type for home tiles. */
-export type HomeTileInfo = HomeTileInfoInternal | HomeTileInfoExternal;
+export type HomeTileInfoCore = HomeTileInfoInternal | HomeTileInfoExternal | HomeTileInfoCustomTile;
+
+/** Intersection type for all possible home-tile tweaks. */
+export type HomeTileModifiersIntersection = HomeTileInfoCustomTile;
+
+/** Union type for all possible home-tile tweaks. */
+export type HomeTileModifiersUnion = HomeTileInfoCustomTile;
+
+/** Union type for home tiles. */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type HomeTileInfo = HomeTileInfoCore & ({} | HomeTileModifiersIntersection);
 
 /** True if the given tile is an external tool. */
 export function isHomeTileInfoExternal(
@@ -467,6 +493,27 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'FM7 Admin Pages',
     shortDescription: [`FM7 Admin Pages`],
     externalUrl: 'https://admin.fm7.forzamotorsport.net/',
+  },
+  <HomeTileInfoCustomTile>{
+    icon: AppIcon.DeveloperTool,
+    extraIcon: ExtraIcon.Custom,
+    tool: NavbarTool.Theming,
+    accessList: CommonAccessLevels.AdminPageAccess,
+    title: 'Theming',
+    subtitle: 'Darkmode Toggle, etc',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Adjust your theme settings',
+    shortDescription: [`Adjust your theme settings here or in the cog menu.`],
+    tileContentComponent: () =>
+      import('../../app/shared/modules/theme/theme-tile-content/theme-tile-content.component').then(
+        m => m.ThemeTileContentComponent,
+      ),
+    navComponent: () =>
+      import('../../app/shared/modules/theme/theme-nav-content/theme-nav-content.component').then(
+        m => m.ThemeNavContentComponent,
+      ),
+    hideLink: true,
   },
 ];
 

@@ -14,11 +14,13 @@
     font-weight: 700;
   }
 
-  mat-expansion-panel {
-    margin-bottom: $gap-medium;
-  }
-
   .new-release-found-text {
     color: app-color-default($app-accent);
   }
+}
+
+.chipify {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-radius: 1em;
 }

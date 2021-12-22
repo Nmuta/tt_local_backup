@@ -1,3 +1,5 @@
+@import '/src/styles/mixins';
+
 table {
   width: 100%;
 }
@@ -7,11 +9,11 @@ tr.example-detail-row {
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
+  background: $table-tr-hover;
 }
 
 tr.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
+  background: $table-tr-active;
 }
 
 .example-element-row td {

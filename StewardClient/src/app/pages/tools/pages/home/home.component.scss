@@ -76,7 +76,6 @@
           padding-top: 1em;
           padding-left: 1em;
           padding-right: 1em;
-          background-color: white; // TODO: Base this off theme color
 
           mat-card-subtitle {
             white-space: nowrap;
@@ -89,7 +88,6 @@
         mat-card-actions {
           position: sticky;
           bottom: 0;
-          background-color: white; // TODO: Base this off theme color
 
           // baseline fix for checkbox
           align-items: center;
@@ -158,7 +156,9 @@ mat-icon[mat-card-avatar] {
   @include mat.elevation(6);
   mat-card,
   mat-card-actions,
-  mat-card-header {
+  mat-card-header,
+  mat-card-title,
+  mat-card-subtitle {
     background-color: app-color-lighter($app-accent) !important;
     color: app-color-lighter-contrast($app-accent) !important;
   }

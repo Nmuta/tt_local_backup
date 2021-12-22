@@ -1,5 +1,5 @@
 <error-spinner [isActive]="!banSummary" spinnerMessage="Looking for bans"></error-spinner>
-<span *ngIf="hasBans" [matTooltip]="banCount.toString() + ' bans found'">
+<span class="ban-subchip" *ngIf="hasBans" [matTooltip]="banCount.toString() + ' bans found'">
   <span *ngIf="banSummary">{{ banSummary?.banCount }}</span>
   <span class="ban-count">
     <mat-icon svgIcon="steward-gavel"></mat-icon>

@@ -73,6 +73,7 @@ import { EndpointSelectionInterceptor } from '@interceptors/endpoint-selection.i
 import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interceptor';
 import { ToolsAvailabilityInterceptor } from '@interceptors/tools-availability.interceptor';
 import { ToolsAvailabilityModalModule } from '@views/tools-availability-modal/tools-availability-modal.module';
+import { ThemeModule } from '@shared/modules/theme/theme.module';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -132,6 +133,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   declarations: [AppComponent, ErrorComponent],
   imports: [
     BrowserAnimationsModule,
+    ThemeModule,
     AppRoutingModule,
     SidebarsModule,
     FontAwesomeModule,

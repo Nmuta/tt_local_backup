@@ -37,7 +37,12 @@
   display: flex;
   flex-shrink: 1;
   overflow: hidden;
-  a {
+  a,
+  span {
     flex-shrink: 0;
   }
+}
+
+:host ::ng-deep .drop-list-wrapper span * {
+  pointer-events: none;
 }

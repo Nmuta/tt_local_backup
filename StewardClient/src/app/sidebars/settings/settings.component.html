@@ -1,7 +1,6 @@
 <section>
   <mat-card>
     <mat-card-title>Settings</mat-card-title>
-
     <mat-slide-toggle
       *ngIf="showFakeApiToggle"
       [(ngModel)]="enableFakeApi"
@@ -76,6 +75,7 @@
 
     <p>No settings available</p>
   </mat-card>
+
   <mat-card *ngIf="showProfileOverrideOptions">
     <mat-card-title>Profile Overrides</mat-card-title>
     <mat-card-subtitle>
@@ -106,9 +106,21 @@
       </mat-form-field>
     </div>
   </mat-card>
+
+  <mat-card>
+    <mat-card-title-group>
+      <mat-card-title>Theming</mat-card-title>
+      <mat-card-subtitle>Darkmode, etc.</mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content>
+      <toggle-darkmode></toggle-darkmode>
+    </mat-card-content>
+  </mat-card>
+
   <mat-card>
     <location-details></location-details>
   </mat-card>
+
   <mat-card>
     <mat-card-title>Steward Changelog</mat-card-title>
     <mat-card-subtitle>Checkout what's new in Steward</mat-card-subtitle>

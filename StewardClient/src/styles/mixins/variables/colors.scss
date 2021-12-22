@@ -2,7 +2,7 @@
 @use '~@angular/material' as mat;
 @import './theme.scss';
 
-$table-tr-hover: mat.get-color-from-palette($app-background, 100);
-$table-tr-active: mat.get-color-from-palette($app-background, 200);
-$table-row-separator: rgb(197, 197, 197);
-$sidebar-background: rgb(247 247 247 / 87%);
+$table-tr-hover: app-color-darker($app-background, 0.5);
+$table-tr-active: app-color-darker($app-background, 0.75);
+$table-row-separator: app-color-darker($app-background);
+$sidebar-background: app-color-default($app-background);
