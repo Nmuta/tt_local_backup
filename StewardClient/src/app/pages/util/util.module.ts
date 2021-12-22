@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { SetFakeApiComponent } from './set-fake-api/set-fake-api.component';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { TypographyComponent } from './typography/typography.component';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -25,6 +26,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
     IconsComponent,
     SelectorHelperComponent,
     SetFakeApiComponent,
+    TypographyComponent,
   ],
   imports: [
     DemoRouterModule,

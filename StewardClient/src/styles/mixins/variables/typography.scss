@@ -1,0 +1,7 @@
+@use '~@angular/material' as mat;
+
+$default-typography: mat.define-typography-config();
+
+$custom-typography: mat.define-typography-config(
+  $font-family: 'Segoe UI, Segoe, Roboto, "Helvetica Neue", sans-serif',
+);

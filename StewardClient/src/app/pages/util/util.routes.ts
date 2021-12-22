@@ -3,6 +3,7 @@ import { ColorsComponent } from './colors/colors.component';
 import { IconsComponent } from './icons/icons.component';
 import { SelectorHelperComponent } from './selector-helper/selector-helper.component';
 import { SetFakeApiComponent } from './set-fake-api/set-fake-api.component';
+import { TypographyComponent } from './typography/typography.component';
 
 export const demoRoutes: Routes = [
   {
@@ -20,5 +21,9 @@ export const demoRoutes: Routes = [
   {
     path: 'set-fake-api',
     component: SetFakeApiComponent,
+  },
+  {
+    path: 'typography',
+    component: TypographyComponent,
   },
 ];

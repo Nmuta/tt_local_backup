@@ -1,6 +1,8 @@
+@import '/src/styles/mixins/variables/theme.scss';
+
 // CSS copied from <mat-card-subtitle> element
 @mixin modal-subtitle {
-  color: rgba(0, 0, 0, 0.54);
+  color: app-color-default-contrast($app-background);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

@@ -1,0 +1,78 @@
+<div
+  *ngFor="let typography of ['apply-custom-typography', 'apply-default-typography']"
+  [class]="typography"
+>
+  <div *ngFor="let mode of ['apply-light-theme', 'apply-dark-theme', '']" [class]="mode">
+    <code>{{ typography }} - {{ mode }}</code>
+    <h1>This is an h1</h1>
+    <h2>This is an h2</h2>
+    <h3>This is an h3</h3>
+    <h4>This is an h4</h4>
+    <h5>This is an h5</h5>
+    <h6>This is an h6</h6>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in diam at leo suscipit dignissim.
+      Fusce id quam auctor ligula tempus consectetur. Pellentesque at fringilla justo. In sed
+      bibendum sapien. Orci varius natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus. Sed posuere quam mattis, dapibus diam eget, mollis felis. Nullam hendrerit
+      libero vel nisi dapibus, scelerisque tempor leo euismod. Quisque tempor, ante ut sodales
+      congue, odio ipsum ornare sapien, eget aliquam justo nisi nec libero. Etiam a metus ligula.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+      Phasellus eget tristique ipsum.
+    </p>
+    <p>
+      In facilisis leo quis nisl gravida sodales. Sed nec maximus est. Sed tempus nulla at velit
+      ornare facilisis. Fusce non enim non elit porta aliquam. Ut eleifend ligula metus, eget
+      dapibus sem tincidunt tristique. Sed in pharetra nisi. Duis luctus fermentum tortor sit amet
+      varius. Aliquam ornare magna sollicitudin lorem condimentum, nec rutrum quam ullamcorper.
+    </p>
+    <p>
+      Aenean iaculis sit amet ante nec venenatis. Mauris eros metus, malesuada a dui non, lobortis
+      mollis magna. Donec ullamcorper molestie nisl vitae pellentesque. Pellentesque at efficitur
+      arcu, in mollis dolor. Phasellus risus est, rutrum a dui eget, fermentum facilisis mi. Aliquam
+      erat volutpat. In volutpat, est quis mollis interdum, erat odio blandit sem, nec commodo purus
+      leo ullamcorper felis. Integer vehicula nibh vel lobortis luctus. Vestibulum mollis lectus sed
+      mattis auctor.
+    </p>
+    <p>
+      Praesent maximus rhoncus tincidunt. Mauris vulputate feugiat cursus. Nulla iaculis elementum
+      leo. Duis volutpat euismod sapien, et mattis ante tempus ut. Pellentesque cursus lectus magna,
+      quis viverra metus consequat tincidunt. Pellentesque habitant morbi tristique senectus et
+      netus et malesuada fames ac turpis egestas. Aliquam ac dictum arcu, vitae accumsan lectus.
+      Mauris tempor nulla quam, et eleifend velit convallis at.
+    </p>
+    <p>
+      Etiam dolor arcu, imperdiet ac odio vel, ultricies laoreet leo. Maecenas posuere nunc ut
+      accumsan viverra. Etiam eget purus ultricies est condimentum consectetur. Nullam pulvinar odio
+      a quam sagittis, id cursus eros tincidunt. Vivamus malesuada, mauris at placerat semper, arcu
+      dolor finibus felis, id consectetur est nisi id ligula. Pellentesque fringilla, leo ac
+      efficitur bibendum, dui elit ullamcorper turpis, sit amet vulputate sapien tortor vel ex.
+      Integer id ipsum mauris. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+      posuere cubilia curae; Proin nulla justo, viverra at venenatis suscipit, elementum et nulla.
+      Proin varius lorem quam, id efficitur dui lobortis aliquam. Praesent accumsan tellus et erat
+      dapibus, in ornare orci laoreet. Proin faucibus dolor quis libero finibus eleifend. Aliquam
+      dictum leo non sem vehicula tincidunt.
+    </p>
+    <ul>
+      <li>One</li>
+      <li>Two</li>
+      <li>Three</li>
+      <li>Four</li>
+      <li>Five</li>
+    </ul>
+    <ol>
+      <li>One</li>
+      <li>Two</li>
+      <li>Three</li>
+      <li>Four</li>
+      <li>Five</li>
+    </ol>
+    <h2>Bold section</h2>
+    <ul>
+      <li *ngFor="let weight of [100, 200, 300, 400, 500, 600, 700, 800, 900]">
+        <b [style]="'font-weight: ' + weight">[ Bold text ]</b> at font weight {{ weight }}
+      </li>
+    </ul>
+    <hr />
+  </div>
+</div>

@@ -1,7 +1,7 @@
 @use '~@angular/material' as mat;
 @import '/src/styles/mixins';
 
-@include mat.core();
+@include mat.core($default-typography);
 
 // default based on system configuration
 body {
