@@ -46,6 +46,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Gets hidden UGC of a player.
         /// </summary>
-        Task<IList<HideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint);
+        Task<IList<HideableUgc>> GetHiddenUGCForUserAsync(ulong xuid, string endpoint);
     }
 }

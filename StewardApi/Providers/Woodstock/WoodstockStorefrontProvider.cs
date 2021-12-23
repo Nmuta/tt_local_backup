@@ -19,20 +19,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     /// <inheritdoc />
     public sealed class WoodstockStorefrontProvider : IWoodstockStorefrontProvider
     {
-        private readonly IWoodstockServiceFactory woodstockFactory;
         private readonly IWoodstockService woodstockService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockStorefrontProvider"/> class.
         /// </summary>
-        public WoodstockStorefrontProvider(IWoodstockServiceFactory woodstockFactory, IWoodstockService woodstockService, IMapper mapper)
+        public WoodstockStorefrontProvider(IWoodstockService woodstockService, IMapper mapper)
         {
-            woodstockFactory.ShouldNotBeNull(nameof(woodstockFactory));
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             mapper.ShouldNotBeNull(nameof(mapper));
-
-            this.woodstockFactory = woodstockFactory;
+            
             this.woodstockService = woodstockService;
             this.mapper = mapper;
         }
@@ -141,16 +138,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<HideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint)
+        public async Task<IList<HideableUgc>> GetHiddenUGCForUserAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var storefrontService = await this.woodstockFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
             var exceptions = new List<Exception>();
             var defaultValue = new GetHiddenUGCForUserOutput() { ugcData = Array.Empty<ForzaStorefrontFile>() };
-            var liveries = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Livery).SuccessOrDefault(defaultValue, exceptions);
-            var layerGroups = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.LayerGroup).SuccessOrDefault(defaultValue, exceptions);
-            var photos = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Photo).SuccessOrDefault(defaultValue, exceptions);
+            var liveries = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Livery, endpoint).SuccessOrDefault(defaultValue, exceptions);
+            var layerGroups = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.LayerGroup, endpoint).SuccessOrDefault(defaultValue, exceptions);
+            var photos = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Photo, endpoint).SuccessOrDefault(defaultValue, exceptions);
 
             await Task.WhenAll(liveries, layerGroups, photos).ConfigureAwait(false);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Forza.LiveOps.FH4.Generated;
+using Forza.UserGeneratedContent.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
 using AuctionManagementService = Forza.LiveOps.FH4.Generated.AuctionManagementService;
@@ -344,6 +345,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// </summary>
         Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
+            string endpoint);
+
+        /// <summary>
+        ///     Get hidden UGC.
+        /// </summary>
+        Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(
+            int maxUgcCount,
+            ulong xuid,
+            FileType fileType,
             string endpoint);
 
         /// <summary>

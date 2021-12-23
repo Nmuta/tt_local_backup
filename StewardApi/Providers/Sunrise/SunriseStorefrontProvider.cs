@@ -20,20 +20,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     /// <inheritdoc />
     public sealed class SunriseStorefrontProvider : ISunriseStorefrontProvider
     {
-        private readonly ISunriseServiceFactory sunriseFactory;
         private readonly ISunriseService sunriseService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseStorefrontProvider"/> class.
         /// </summary>
-        public SunriseStorefrontProvider(ISunriseServiceFactory sunriseFactory, ISunriseService sunriseService, IMapper mapper)
+        public SunriseStorefrontProvider(ISunriseService sunriseService, IMapper mapper)
         {
-            sunriseFactory.ShouldNotBeNull(nameof(sunriseFactory));
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
             mapper.ShouldNotBeNull(nameof(mapper));
-
-            this.sunriseFactory = sunriseFactory;
+            
             this.sunriseService = sunriseService;
             this.mapper = mapper;
         }
@@ -142,16 +139,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<HideableUgc>> GetHiddenUGCForUser(ulong xuid, string endpoint)
+        public async Task<IList<HideableUgc>> GetHiddenUGCForUserAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            var storefrontService = await this.sunriseFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
+            
             var exceptions = new List<Exception>();
             var defaultValue = new GetHiddenUGCForUserOutput() { ugcData = Array.Empty<ForzaStorefrontFile>() };
-            var liveries = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Livery).SuccessOrDefault(defaultValue, exceptions);
-            var layerGroups = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.LayerGroup).SuccessOrDefault(defaultValue, exceptions);
-            var photos = storefrontService.GetHiddenUGCForUser(100, xuid, FileType.Photo).SuccessOrDefault(defaultValue, exceptions);
+            var liveries = this.sunriseService.GetHiddenUgcForUserAsync(100, xuid, FileType.Livery, endpoint).SuccessOrDefault(defaultValue, exceptions);
+            var layerGroups = this.sunriseService.GetHiddenUgcForUserAsync(100, xuid, FileType.LayerGroup, endpoint).SuccessOrDefault(defaultValue, exceptions);
+            var photos = this.sunriseService.GetHiddenUgcForUserAsync(100, xuid, FileType.Photo, endpoint).SuccessOrDefault(defaultValue, exceptions);
 
             await Task.WhenAll(liveries, layerGroups, photos).ConfigureAwait(false);
 

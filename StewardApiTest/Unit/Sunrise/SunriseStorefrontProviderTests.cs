@@ -5,17 +5,11 @@ using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.LiveOps.FH4.Generated;
-using Microsoft.Extensions.Configuration;
+using Forza.WebServices.FH4.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
-using Turn10.Data.Kusto;
-using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
-using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.UGC.Contracts;
@@ -206,6 +200,22 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             act.Should().NotThrow();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetHiddenUGCForUser_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task> act = async () => await provider.GetHiddenUGCForUserAsync(xuid, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            act.Should().NotThrow();
+        }
+
         private sealed class Dependencies
         {
             public Dependencies()
@@ -214,9 +224,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetPlayerLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCLiveryOutput>());
                 this.SunriseService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCPhotoOutput>());
                 this.SunriseService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCTuneOutput>());
+                this.SunriseService.GetHiddenUgcForUserAsync(Arg.Any<int>(), Arg.Any<ulong>(), Arg.Any<Forza.UserGeneratedContent.FH4.Generated.FileType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontService.GetHiddenUGCForUserOutput>());
                 this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaPhotoData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
                 this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaLiveryData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
                 this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaTuneData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
                 var ugcItem = Fixture.Create<UgcItem>();
                 ugcItem.GameTitle = (int)GameTitle.FH4;
                 this.Mapper.Map<UgcItem>(Arg.Any<ForzaPhotoData>()).Returns(ugcItem);
@@ -225,12 +237,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
-
-            public ISunriseServiceFactory SunriseServiceFactory { get; set; } = Substitute.For<ISunriseServiceFactory>();
-
+            
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public SunriseStorefrontProvider Build() => new SunriseStorefrontProvider(this.SunriseServiceFactory, this.SunriseService, this.Mapper);
+            public SunriseStorefrontProvider Build() => new SunriseStorefrontProvider(this.SunriseService, this.Mapper);
         }
     }
 }

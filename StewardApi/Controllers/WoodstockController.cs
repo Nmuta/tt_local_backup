@@ -790,7 +790,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
-            var hiddenUgc = await this.storefrontProvider.GetHiddenUGCForUser(xuid, endpoint).ConfigureAwait(true);
+            var hiddenUgc = await this.storefrontProvider.GetHiddenUGCForUserAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(hiddenUgc);
         }
