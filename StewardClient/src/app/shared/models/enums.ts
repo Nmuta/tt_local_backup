@@ -84,3 +84,24 @@ export enum DeviceType {
   Steam = 'Steam',
   XboxCloud = 'XboxCloud',
 }
+
+/** Enum for Steward error codes. */
+export enum StewardErrorCode {
+  BadRequest = 'BadRequest',
+
+  DocumentNotFound = 'DocumentNotFound',
+
+  RequiredParameterMissing = 'RequiredParameterMissing',
+
+  UnknownFailure = 'UnknownFailure',
+
+  FailedToSend = 'FailedToSend',
+
+  ConversionFailed = 'ConversionFailed',
+
+  QueryFailed = 'QueryFailed',
+
+  DuplicateEntry = 'DuplicateEntry',
+
+  ServicesFailure = 'ServicesFailure',
+}

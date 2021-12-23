@@ -29,7 +29,7 @@ export class WoodstockGiftLiveryToLspGroupFakeApi extends FakeApiBase {
     return {
       playerOrLspGroup: fakeBigNumber(),
       identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-      error: undefined,
+      errors: undefined,
     };
   }
 }

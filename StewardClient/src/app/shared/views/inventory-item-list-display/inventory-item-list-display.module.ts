@@ -6,6 +6,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { InventoryItemListDisplayComponent } from './inventory-item-list-display.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** A domain module for displaying related gamertags. */
 @NgModule({
@@ -17,6 +19,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FontAwesomeModule,
     PipesModule,
     JsonDumpModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   exports: [InventoryItemListDisplayComponent],
 })

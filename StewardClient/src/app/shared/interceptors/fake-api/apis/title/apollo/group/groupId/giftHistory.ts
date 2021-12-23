@@ -44,6 +44,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.word(),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             cars: [
@@ -52,6 +53,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.word(),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             vanityItems: [
@@ -60,6 +62,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.word(),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
           },

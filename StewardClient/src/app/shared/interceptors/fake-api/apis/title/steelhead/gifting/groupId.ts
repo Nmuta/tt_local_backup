@@ -27,7 +27,7 @@ export class SteelheadGiftingLspGroupFakeApi extends FakeApiBase {
     return {
       playerOrLspGroup: 123,
       identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-      error: undefined,
+      errors: undefined,
     };
   }
 }

@@ -1,7 +1,15 @@
 <mat-accordion *ngIf="whatToShow">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title>{{ whatToShow.title }}</mat-panel-title>
+      <mat-panel-title>
+        <mat-icon
+          color="warn"
+          *ngIf="errors?.length > 0"
+          [matTooltip]="errors?.length + ' errors found.'"
+          >warning</mat-icon
+        >
+        {{ whatToShow.title }}
+      </mat-panel-title>
       <mat-panel-description>{{ whatToShow.description }}</mat-panel-description>
     </mat-expansion-panel-header>
     <table mat-table [dataSource]="whatToShow.items">
@@ -20,7 +28,16 @@
           <span *ngIf="!item.acquiredUtc">N/A</span>
         </td>
       </ng-container>
-      <tr mat-row *matRowDef="let row; columns: inventoryColumns"></tr>
+      <ng-container matColumnDef="errors">
+        <td mat-cell *matCellDef="let item">
+          <pre *ngIf="item.error">{{ item.error | json }}</pre>
+        </td>
+      </ng-container>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: inventoryColumns; let entry"
+        [class.giftError]="!!entry.error"
+      ></tr>
     </table>
   </mat-expansion-panel>
 </mat-accordion>

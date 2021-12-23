@@ -1,4 +1,5 @@
 import { environment } from '@environments/environment';
+import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { WoodstockGiftHistory } from '@models/woodstock';
@@ -32,7 +33,7 @@ export class WoodstockGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
         idType: GiftIdentityAntecedent.LspGroupId,
         id: lspId,
         title: 'woodstock',
-        giftSendDateUtc: faker.date.past(),
+        giftSendDateUtc: toDateTime(faker.date.past()),
         requesterObjectId: faker.datatype.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),
@@ -43,6 +44,7 @@ export class WoodstockGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             cars: [
@@ -51,6 +53,7 @@ export class WoodstockGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             carHorns: [
@@ -59,6 +62,7 @@ export class WoodstockGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             emotes: [
@@ -67,6 +71,7 @@ export class WoodstockGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             vanityItems: [
@@ -75,6 +80,7 @@ export class WoodstockGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             quickChatLines: [
@@ -83,6 +89,7 @@ export class WoodstockGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
           },

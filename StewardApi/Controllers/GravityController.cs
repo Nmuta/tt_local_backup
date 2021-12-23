@@ -288,7 +288,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
 
-                    var jobStatus = response.Error != null ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
+                    var jobStatus = response.Errors?.Count > 0 ?
+                        BackgroundJobStatus.CompletedWithErrors :
+                        BackgroundJobStatus.Completed;
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
                 }
                 catch (Exception)

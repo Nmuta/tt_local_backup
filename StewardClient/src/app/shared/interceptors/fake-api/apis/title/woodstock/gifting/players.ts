@@ -3,6 +3,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GiftResponse } from '@models/gift-response';
 import { GiftIdentityAntecedent } from '@shared/constants';
+import { StewardErrorCode } from '@models/enums';
 
 /** Fake API for gifting to players. */
 export class WoodstockGiftingPlayersFakeApi extends FakeApiBase {
@@ -29,12 +30,12 @@ export class WoodstockGiftingPlayersFakeApi extends FakeApiBase {
       {
         playerOrLspGroup: new BigNumber(1234),
         identityAntecedent: GiftIdentityAntecedent.Xuid,
-        error: undefined,
+        errors: undefined,
       },
       {
         playerOrLspGroup: new BigNumber(5678),
         identityAntecedent: GiftIdentityAntecedent.Xuid,
-        error: { message: 'fake api error' },
+        errors: [{ message: 'fake api error', code: StewardErrorCode.BadRequest }],
       },
     ];
   }

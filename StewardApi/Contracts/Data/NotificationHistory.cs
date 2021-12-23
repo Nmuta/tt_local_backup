@@ -39,6 +39,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
         public DateTime ExpireDateUtc { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the metadata.
+        /// </summary>
         /// <remarks>Used for tracking human friendly data for PowerBi, use chars to split metadata info.</remarks>
         public string Metadata { get; set; }
 

@@ -44,6 +44,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             cars: [
@@ -52,6 +53,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             carHorns: [
@@ -60,6 +62,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             emotes: [
@@ -68,6 +71,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             vanityItems: [
@@ -76,6 +80,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             quickChatLines: [
@@ -84,6 +89,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.random.word(),
                 description: faker.random.words(5),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
           },

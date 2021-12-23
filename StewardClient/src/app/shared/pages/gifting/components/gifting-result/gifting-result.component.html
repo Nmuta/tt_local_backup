@@ -3,19 +3,21 @@
   <h4 *ngIf="giftingErrorCount > 0">{{ giftingErrorCount }} Gifting Errors</h4>
   <mat-expansion-panel
     *ngFor="let result of giftingResult"
-    [disabled]="!result.error"
-    [ngClass]="{ 'gift-result-error': !!result.error }"
+    [disabled]="giftingErrorCount <= 0"
+    [ngClass]="{ 'gift-result-error': giftingErrorCount > 0 }"
   >
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{ result.playerOrLspGroup }} ({{ result.identityAntecedent }})
       </mat-panel-title>
       <mat-panel-description>
-        {{ !!result.error ? 'Click to see error' : 'Gift sent successfully' }}
+        {{ giftingErrorCount > 0 ? 'Click to see error' : 'Gift sent successfully' }}
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <p>{{ result.error | bigjson }}</p>
+    <div *ngFor="let error of result.errors">
+      <pre>{{ error | json }}</pre>
+    </div>
   </mat-expansion-panel>
 </div>
 <button

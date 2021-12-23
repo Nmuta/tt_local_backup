@@ -27,7 +27,7 @@ export class GravityGiftingPlayerFakeApi extends FakeApiBase {
     return {
       playerOrLspGroup: 'Fake T10 ID',
       identityAntecedent: GiftIdentityAntecedent.T10Id,
-      error: undefined,
+      errors: undefined,
     };
   }
 }

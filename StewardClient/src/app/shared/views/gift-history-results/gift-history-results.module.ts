@@ -18,6 +18,7 @@ import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift
 import { WoodstockGiftHistoryResultsComponent } from './woodstock/woodstock-gift-history-results.component';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
@@ -43,6 +44,7 @@ import { CommonModule } from '@angular/common';
     StewardUserModule,
     PlayerInventoryModule,
     InventoryItemListDisplayModule,
+    MatIconModule,
   ],
   exports: [
     WoodstockGiftHistoryResultsComponent,

@@ -66,7 +66,7 @@ export class SunriseGiftBasketComponent
       .pipe(
         tap(basket => {
           this.giftBasket.data = cloneDeep(basket);
-          this.giftBasketHasErrors = basket.some(item => !!item.error);
+          this.giftBasketHasErrors = basket.some(item => !!item.restriction);
         }),
         takeUntil(this.onDestroy$),
       )
@@ -151,7 +151,7 @@ export class SunriseGiftBasketComponent
     this.store.dispatch(new SetSunriseGiftBasket(giftBasket));
   }
 
-  /** Verifies gift basket and sets item.error if one is found. */
+  /** Verifies gift basket and sets item.restriction if one is found. */
   public setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
     // Check item ids & types to verify item is real
     for (let i = 0; i < giftBasket.length; i++) {
@@ -162,7 +162,7 @@ export class SunriseGiftBasketComponent
           (masterItem.id >= ZERO ||
             (masterItem.id < ZERO && masterItem.description === item.description)),
       );
-      giftBasket[i].error = !itemExists
+      giftBasket[i].restriction = !itemExists
         ? 'Item does not exist in the master inventory.'
         : undefined;
     }
@@ -176,7 +176,7 @@ export class SunriseGiftBasketComponent
           item.quantity > 500_000_000,
       );
       if (creditsAboveLimit >= 0) {
-        giftBasket[creditsAboveLimit].error = 'Credit limit for a gift is 500,000,000.';
+        giftBasket[creditsAboveLimit].restriction = 'Credit limit for a gift is 500,000,000.';
       }
     }
 
@@ -187,7 +187,7 @@ export class SunriseGiftBasketComponent
         item.quantity > 999_999_999,
     );
     if (creditsAboveMax >= 0) {
-      giftBasket[creditsAboveMax].error = 'Credit max is 999,999,999.';
+      giftBasket[creditsAboveMax].restriction = 'Credit max is 999,999,999.';
     }
 
     const wheelSpinsAboveLimit = giftBasket.findIndex(
@@ -197,7 +197,7 @@ export class SunriseGiftBasketComponent
         item.quantity > 200,
     );
     if (wheelSpinsAboveLimit >= 0) {
-      giftBasket[wheelSpinsAboveLimit].error = 'Wheel Spin limit for a gift is 200.';
+      giftBasket[wheelSpinsAboveLimit].restriction = 'Wheel Spin limit for a gift is 200.';
     }
 
     const superWheelSpinsAboveLimit = giftBasket.findIndex(
@@ -207,7 +207,8 @@ export class SunriseGiftBasketComponent
         item.quantity > 200,
     );
     if (superWheelSpinsAboveLimit >= 0) {
-      giftBasket[superWheelSpinsAboveLimit].error = 'Super Wheel Spin limit for a gift is 200.';
+      giftBasket[superWheelSpinsAboveLimit].restriction =
+        'Super Wheel Spin limit for a gift is 200.';
     }
 
     const backstagePassesAboveLimit = giftBasket.findIndex(
@@ -217,7 +218,8 @@ export class SunriseGiftBasketComponent
         item.quantity > 20,
     );
     if (backstagePassesAboveLimit >= 0) {
-      giftBasket[backstagePassesAboveLimit].error = 'Backstage Passes limit for a gift is 20.';
+      giftBasket[backstagePassesAboveLimit].restriction =
+        'Backstage Passes limit for a gift is 20.';
     }
 
     return giftBasket;

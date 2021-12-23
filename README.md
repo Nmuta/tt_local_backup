@@ -15,7 +15,7 @@ GitHooks/setup.sh
 ```
 
 ### Zendesk
-Follow the instructions listed in the [LiveOps OneNote Setup Page](https://microsoft.sharepoint.com/teams/Turn10LiveOpsTools/_layouts/15/Doc.aspx?sourcedoc={768af33f-6711-4663-815b-7c0007bfa8bf}&action=edit&wd=target%28ZAF.one%7Ce6ecf726-05a8-4a4f-8947-6b605f34e456%2FZendesk%20First%20Time%20setup%7C2f92f1a6-1364-46b7-af36-d29c8a5d89dc%2F%29).
+Follow the instructions listed in the [LiveOps OneNote Setup Page](https://microsoft.sharepoint.com/teams/Turn10LiveOpsTools/_layouts/15/Doc.aspx?sourcedoc={768af33f-6711-4663-815b-7c0007bfa8bf}&action=edit&wd=target%28ZAF.one%7Ce6ecf726-05a8-4a4f-8947-6b605f34e456%2FZendesk%20First%20Time%20setup%7C2f92f1a6-1364-46b7-af36-d29c8a5dgit89dc%2F%29).
 
 
 ### UI

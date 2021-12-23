@@ -44,6 +44,7 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             cars: [
@@ -52,6 +53,7 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             vanityItems: [
@@ -60,6 +62,7 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
           },

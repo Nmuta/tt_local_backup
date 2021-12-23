@@ -492,7 +492,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var response = await stewardClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
 
             Assert.IsNotNull(response);
-            Assert.IsNull(response.Error);
+            Assert.IsNull(response.Errors);
         }
 
         [TestMethod]
@@ -557,7 +557,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var response = await this.UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, t10Id, gift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(response);
-            Assert.IsNull(response.Error);
+            Assert.IsNull(response.Errors);
         }
 
         [TestMethod]

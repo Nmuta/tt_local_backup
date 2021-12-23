@@ -123,10 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
-
-                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] =
-                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
@@ -134,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                         .ConfigureAwait(false);
                 }
 
-                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                giftResponse.Errors = await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
@@ -146,7 +143,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
             catch (Exception ex)
             {
-                giftResponse.Error = new FailedToSendStewardError($"Failed to send gift to XUID: {xuid}.", ex);
+                giftResponse.Errors.Add(new FailedToSendStewardError($"Failed to send gift to XUID: {xuid}.", ex));
             }
 
             return giftResponse;
@@ -204,10 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
-
-                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] =
-                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
@@ -218,7 +212,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                         endpoint).ConfigureAwait(false);
                 }
 
-                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                giftResponse.Errors = await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
@@ -230,46 +224,72 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
             catch (Exception ex)
             {
-                giftResponse.Error = new FailedToSendStewardError($"Failed to send gift to group ID: {groupId}.", ex);
+                giftResponse.Errors.Add(new FailedToSendStewardError($"Failed to send gift to group ID: {groupId}.", ex));
             }
 
             return giftResponse;
         }
 
-        private async Task SendGifts(
+        private async Task<IList<StewardError>> SendGifts(
             Func<InventoryItemType, int, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
-            IDictionary<InventoryItemType, int> currencyGifts)
+            IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)
         {
+            var errors = new List<StewardError>();
             foreach (var (key, value) in inventoryGifts)
             {
                 foreach (var item in value)
                 {
-                    for (var i = 0; i < item.Quantity; i++)
+                    try
                     {
-                        await serviceCall(key, item.Id).ConfigureAwait(false);
+                        for (var i = 0; i < item.Quantity; i++)
+                        {
+                            await serviceCall(key, item.Id).ConfigureAwait(false);
+                        }
+                    }
+                    catch
+                    {
+                        var error = new FailedToSendStewardError($"Failed to send item of type: {key} with ID: {item.Id}");
+                        item.Error = error;
+                        errors.Add(error);
                     }
                 }
             }
 
             foreach (var (key, value) in currencyGifts)
             {
-                if (value <= 0)
+                if (value == null || value.Quantity <= 0)
                 {
                     continue;
                 }
 
                 var batchLimit = AgentCreditSendAmount;
-                var playerCurrency = value;
+                var remainingCurrencyToSend = value.Quantity;
+                var failedToSendAmount = 0;
 
-                while (playerCurrency > 0)
+                while (remainingCurrencyToSend > 0)
                 {
-                    var creditsToSend = playerCurrency >= batchLimit ? batchLimit : playerCurrency;
-                    await serviceCall(key, creditsToSend).ConfigureAwait(false);
+                    var creditsToSend = remainingCurrencyToSend >= batchLimit ? batchLimit : remainingCurrencyToSend;
+                    try
+                    {
+                        remainingCurrencyToSend -= creditsToSend;
+                        await serviceCall(key, creditsToSend).ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        failedToSendAmount += creditsToSend;
+                    }
+                }
 
-                    playerCurrency -= creditsToSend;
+                if (failedToSendAmount > 0)
+                {
+                    var error = new FailedToSendStewardError($"Failed to send {failedToSendAmount} of type: {key}");
+                    value.Error = error;
+                    errors.Add(error);
                 }
             }
+
+            return errors;
         }
 
         private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(
@@ -282,14 +302,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             };
         }
 
-        private IDictionary<InventoryItemType, int> BuildCurrencyItems(SteelheadMasterInventory giftInventory)
+        private IDictionary<InventoryItemType, MasterInventoryItem> BuildCurrencyItems(SteelheadMasterInventory giftInventory)
         {
             var credits = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "Credits"; });
 
-            return new Dictionary<InventoryItemType, int>
+            return new Dictionary<InventoryItemType, MasterInventoryItem>
             {
-                { InventoryItemType.Credits, credits != default(MasterInventoryItem) ? credits.Quantity : 0 },
+                { InventoryItemType.Credits, credits },
             };
+        }
+
+        private void SetCurrencySendLimits(IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts, bool useAdminCreditLimit)
+        {
+            var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
+            if (currencyGifts[InventoryItemType.Credits] != null)
+            {
+                currencyGifts[InventoryItemType.Credits].Quantity =
+                    Math.Min(currencyGifts[InventoryItemType.Credits].Quantity, creditSendLimit);
+            }
+
+            // TODO Discuss Steelhead sending limits after we know what items will be sendable Task(961251)
         }
 
         private List<T> EmptyIfNull<T>(IList<T> inputList)

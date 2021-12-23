@@ -46,6 +46,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
             description: faker.lorem.sentences(2),
             itemType: undefined,
             acquiredUtc: toDateTime(faker.date.past()),
+            error: undefined,
           };
         });
     }
@@ -57,30 +58,35 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'Credits',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          error: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'WheelSpins',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          error: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'SuperWheelSpins',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          error: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'SkillPoints',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          error: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'ForzathonPoints',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          error: undefined,
         },
       ],
       cars: makeFakeItems(200),

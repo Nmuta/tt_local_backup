@@ -11,8 +11,14 @@
       >
         <mat-accordion>
           <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header [class.itemErrors]="history?.errors?.length > 0">
               <mat-panel-title>
+                <mat-icon
+                  color="warn"
+                  *ngIf="history?.errors?.length > 0"
+                  [matTooltip]="history?.errors?.length + ' errors found.'"
+                  >warning</mat-icon
+                >
                 <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
                 <span [matTooltip]="history.giftSendDateUtc | dateTimeToJsDate | date: 'long'">
                   {{ history.giftSendDateUtc | dateTimeToJsDate | date: 'short' }}

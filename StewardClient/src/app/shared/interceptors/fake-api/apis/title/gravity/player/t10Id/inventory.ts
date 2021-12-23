@@ -45,6 +45,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            error: undefined,
             acquiredUtc: toDateTime(faker.date.past()),
           };
         });
@@ -59,6 +60,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
           description: 'Soft Currency',
           quantity: faker.datatype.number(100_000),
           itemType: undefined,
+          error: undefined,
         },
       ],
       cars: makeFakeItems(200),

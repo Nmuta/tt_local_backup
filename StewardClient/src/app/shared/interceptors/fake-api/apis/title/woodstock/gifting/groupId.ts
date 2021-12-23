@@ -27,7 +27,7 @@ export class WoodstockGiftingLspGroupFakeApi extends FakeApiBase {
     return {
       playerOrLspGroup: 123,
       identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-      error: undefined,
+      errors: undefined,
     };
   }
 }

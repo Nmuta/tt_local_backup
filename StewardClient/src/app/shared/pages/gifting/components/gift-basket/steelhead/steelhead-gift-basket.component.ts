@@ -66,7 +66,7 @@ export class SteelheadGiftBasketComponent
       .pipe(
         tap(basket => {
           this.giftBasket.data = cloneDeep(basket);
-          this.giftBasketHasErrors = basket.some(item => !!item.error);
+          this.giftBasketHasErrors = basket.some(item => !!item.restriction);
         }),
         takeUntil(this.onDestroy$),
       )
@@ -139,7 +139,7 @@ export class SteelheadGiftBasketComponent
     this.store.dispatch(new SetSteelheadGiftBasket(giftBasket));
   }
 
-  /** Verifies gift basket and sets item.error if one is found. */
+  /** Verifies gift basket and sets item.restriction if one is found. */
   public setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
     // Check item ids & types to verify item is real
     for (let i = 0; i < giftBasket.length; i++) {
@@ -150,7 +150,7 @@ export class SteelheadGiftBasketComponent
           (masterItem.id >= ZERO ||
             (masterItem.id < ZERO && masterItem.description === item.description)),
       );
-      giftBasket[i].error = !itemExists
+      giftBasket[i].restriction = !itemExists
         ? 'Item does not exist in the master inventory.'
         : undefined;
     }
@@ -164,7 +164,7 @@ export class SteelheadGiftBasketComponent
           item.quantity > 500_000_000,
       );
       if (creditsAboveLimit >= 0) {
-        giftBasket[creditsAboveLimit].error = 'Credit limit for a gift is 500,000,000.';
+        giftBasket[creditsAboveLimit].restriction = 'Credit limit for a gift is 500,000,000.';
       }
     }
 
@@ -176,7 +176,7 @@ export class SteelheadGiftBasketComponent
         item.quantity > 999_999_999,
     );
     if (creditsAboveMax >= 0) {
-      giftBasket[creditsAboveMax].error = 'Credit max is 999,999,999.';
+      giftBasket[creditsAboveMax].restriction = 'Credit max is 999,999,999.';
     }
 
     return giftBasket;

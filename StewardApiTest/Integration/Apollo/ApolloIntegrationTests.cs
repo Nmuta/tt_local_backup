@@ -1011,7 +1011,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsNull(result[0].Error);
+            Assert.IsTrue(result[0].Errors?.Count == 0);
         }
 
         [TestMethod]
@@ -1024,7 +1024,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsNull(result[0].Error);
+            Assert.IsTrue(result[0].Errors?.Count == 0);
         }
 
         [TestMethod]
@@ -1138,7 +1138,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsNull(result.Error);
+            Assert.IsTrue(result.Errors?.Count == 0);
         }
 
         [TestMethod]
@@ -1185,7 +1185,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var gift = CreateGift();
             var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
 
-            Assert.IsNotNull(result.Error);
+            Assert.IsTrue(result.Errors?.Count > 0);
         }
 
         [TestMethod]

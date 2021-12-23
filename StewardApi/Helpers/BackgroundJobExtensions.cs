@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static BackgroundJobStatus GetBackgroundJobStatus<T>(
             IList<GiftResponse<T>> results)
         {
-            var foundErrors = results.Any(gift => gift.Error != null);
+            var foundErrors = results.Any(gift => gift.Errors.Count > 0);
             return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
         }
 

@@ -13,6 +13,8 @@ import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GameTitleCodeName } from '@models/enums';
+import { MSError } from '@models/error.model';
+import { flatMap } from 'lodash';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 type GiftHistoryResultUnion =
@@ -25,6 +27,7 @@ type GiftHistoryResultUnion =
 export type GiftHistoryView = {
   descriptionToShow: GiftHistoryDescription[];
   itemsToShow: PlayerInventoryItemList[];
+  errors: MSError[];
 };
 
 export type GiftHistoryDescription = {
@@ -96,11 +99,14 @@ export abstract class GiftHistoryResultsBaseComponent<
           );
         }),
         switchMap(giftHistories => {
-          // Add gift history view content
           const giftHistoriesView = giftHistories.map(history => {
             const historyView = history as U & GiftHistoryView;
             historyView.descriptionToShow = this.generateDescriptionList(history);
             historyView.itemsToShow = this.generateItemsList(history);
+            const errors = flatMap(historyView.itemsToShow, itemToShow =>
+              itemToShow.items.map(item => item.error).filter(error => !!error),
+            );
+            historyView.errors = errors;
             return historyView;
           });
           return of(giftHistoriesView);

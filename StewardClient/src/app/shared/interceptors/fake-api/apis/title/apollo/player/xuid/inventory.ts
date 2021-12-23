@@ -46,6 +46,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(1_000),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            error: undefined,
             acquiredUtc: toDateTime(faker.date.past()),
           };
         });
@@ -58,6 +59,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'Credits',
           quantity: faker.datatype.number(100_000_000),
           itemType: undefined,
+          error: undefined,
         },
       ],
       cars: makeFakeItems(200),

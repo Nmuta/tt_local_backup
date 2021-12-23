@@ -2,6 +2,10 @@
 
 table {
   width: 100%;
+
+  tr.giftError {
+    background-color: app-color-lighter($app-warn);
+  }
 }
 
 .item-id-text {
@@ -16,4 +20,8 @@ mat-panel-description {
 .mat-column-quantity {
   padding-left: 0;
   padding-right: 2em;
+}
+
+mat-icon {
+  padding-right: $gap-small;
 }

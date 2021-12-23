@@ -69,6 +69,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         ///    Sends car livery to a user group.
         /// </summary>
         Task<GiftResponse<int>> SendCarLiveryAsync(Gift gift, int groupId, UgcItem livery, string requesterObjectId, string endpoint);
-
     }
 }

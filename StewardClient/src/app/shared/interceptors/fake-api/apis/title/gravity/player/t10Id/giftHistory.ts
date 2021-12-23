@@ -43,6 +43,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             cars: [
@@ -51,6 +52,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             masteryKits: [
@@ -59,6 +61,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             upgradeKits: [
@@ -67,6 +70,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             repairKits: [
@@ -75,6 +79,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
             energyRefills: [
@@ -83,6 +88,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
                 itemType: faker.datatype.uuid(),
                 description: faker.random.words(3),
                 quantity: faker.datatype.number(),
+                error: undefined,
               },
             ],
           },

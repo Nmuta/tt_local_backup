@@ -1817,7 +1817,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 VanityItems = await getVanityItems.ConfigureAwait(true),
                 Emotes = await getEmotes.ConfigureAwait(true),
                 QuickChatLines = await getQuickChatLines.ConfigureAwait(true),
-        };
+            };
 
             return masterInventory;
         }

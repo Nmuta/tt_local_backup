@@ -47,6 +47,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
             description: faker.lorem.sentences(2),
             itemType: undefined,
             acquiredUtc: toDateTime(faker.date.past()),
+            error: undefined,
           };
         });
     }
@@ -58,6 +59,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'Credits',
           quantity: faker.datatype.number(100_000_000),
           itemType: undefined,
+          error: undefined,
         },
       ],
       cars: makeFakeItems(200),

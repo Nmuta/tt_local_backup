@@ -18,8 +18,8 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
 
   /** Test */
   public ngOnInit(): void {
-    this.giftingResult = sortBy(this.giftingResult, result => !result.error);
-    this.giftingErrorCount = this.giftingResult.filter(data => !!data.error).length;
+    this.giftingResult = sortBy(this.giftingResult, result => !result.errors);
+    this.giftingErrorCount = this.giftingResult.filter(data => !!data.errors).length;
 
     this.buildCsvData();
   }
@@ -32,7 +32,7 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
       this.giftingCsvData[this.giftingCsvData.length] = [
         `'${result.playerOrLspGroup}`,
         result.identityAntecedent,
-        JSON.stringify(result?.error),
+        JSON.stringify(result?.errors),
       ];
     }
   }

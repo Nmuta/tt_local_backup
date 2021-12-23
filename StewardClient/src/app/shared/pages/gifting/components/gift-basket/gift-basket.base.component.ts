@@ -26,7 +26,7 @@ export type InventoryItemGroup = {
   items: MasterInventoryItem[];
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
-export type GiftBasketModel = MasterInventoryItem & { edit?: boolean; error?: string };
+export type GiftBasketModel = MasterInventoryItem & { edit?: boolean; restriction?: string };
 export enum GiftReason {
   LostSave = 'Lost Save',
   AuctionHouse = 'Auction House',

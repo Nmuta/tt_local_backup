@@ -381,7 +381,7 @@ describe('WoodstockGiftLiveryComponent', () => {
             {
               playerOrLspGroup: fakeBigNumber(),
               identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-              error: undefined,
+              errors: undefined,
             },
           ],
           isMarkingRead: false,
@@ -506,7 +506,7 @@ describe('WoodstockGiftLiveryComponent', () => {
         {
           playerOrLspGroup: fakeBigNumber(),
           identityAntecedent: GiftIdentityAntecedent.Xuid,
-          error: undefined,
+          errors: undefined,
         } as GiftResponse<BigNumber>,
       ];
 

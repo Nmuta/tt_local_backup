@@ -16,7 +16,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
             this.Type = EntitlementType.Purchased;
         }
 
-
         public DateTime PurchaseDateTimeUtc { get; set; }
 
         public ulong PurchaseQuantity { get; set; }

@@ -151,12 +151,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaLiveryGiftResult, GiftResponse<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid))
-                .ForMember(dest => dest.Error,
-                    opt => opt.MapFrom(source =>
+                .ForMember(dest => dest.Errors, opt => opt.MapFrom(source =>
                         source.Success
-                            ? null
-                            : new ServicesFailureStewardError(
-                                $"LSP failed to gift livery to player with XUID: {source.xuid}")));
+                            ? new List<StewardError>()
+                            : new List<StewardError>
+                            {
+                                new ServicesFailureStewardError(
+                                    $"LSP failed to gift livery to player with XUID: {source.xuid}")
+                            }));
 
             this.CreateMap<ForzaAuctionBlocklistEntry, AuctionBlockListEntry>()
                 .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))

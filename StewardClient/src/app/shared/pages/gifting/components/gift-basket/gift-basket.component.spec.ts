@@ -669,7 +669,7 @@ describe('GiftBasketBaseComponent', () => {
             {
               playerOrLspGroup: 'testing123',
               identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-              error: undefined,
+              errors: undefined,
             },
           ],
           isMarkingRead: false,

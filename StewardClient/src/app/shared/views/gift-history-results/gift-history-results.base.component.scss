@@ -35,6 +35,11 @@ mat-panel-title {
     min-width: 5em;
   }
 
+  mat-icon {
+    min-width: unset;
+    padding-right: $gap-small;
+  }
+
   flex-basis: auto;
 
   .gift-reason {

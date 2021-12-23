@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GiftingResultComponent } from './gifting-result.component';
 import faker from 'faker';
 import { GiftIdentityAntecedent } from '@shared/constants';
+import { StewardErrorCode } from '@models/enums';
 
 describe('GiftingResultComponent', () => {
   let fixture: ComponentFixture<GiftingResultComponent>;
@@ -31,7 +32,7 @@ describe('GiftingResultComponent', () => {
 
   const result1Id = faker.datatype.uuid().toString();
   const result2Id = faker.datatype.uuid().toString();
-  const result2Error = { message: faker.random.words(5) };
+  const result2Error = { message: faker.random.words(5), code: StewardErrorCode.BadRequest };
   const result3Id = faker.datatype.uuid().toString();
 
   beforeEach(() => {
@@ -39,17 +40,17 @@ describe('GiftingResultComponent', () => {
       {
         playerOrLspGroup: result1Id,
         identityAntecedent: GiftIdentityAntecedent.T10Id,
-        error: undefined,
+        errors: undefined,
       },
       {
         playerOrLspGroup: result2Id,
         identityAntecedent: GiftIdentityAntecedent.T10Id,
-        error: result2Error,
+        errors: [result2Error],
       },
       {
         playerOrLspGroup: result3Id,
         identityAntecedent: GiftIdentityAntecedent.T10Id,
-        error: undefined,
+        errors: undefined,
       },
     ];
   });

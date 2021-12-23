@@ -459,7 +459,7 @@ describe('GravityGiftBasketComponent', () => {
 
         expect(response.length).toEqual(1);
         expect(response[0]).not.toBeUndefined();
-        expect(response[0].error).toEqual('Item does not exist in the master inventory.');
+        expect(response[0].restriction).toEqual('Item does not exist in the master inventory.');
       });
     });
 
@@ -500,7 +500,7 @@ describe('GravityGiftBasketComponent', () => {
 
         expect(response.length).toEqual(1);
         expect(response[0]).not.toBeUndefined();
-        expect(response[0].error).toEqual('Soft Currency limit for a gift is 500,000,000.');
+        expect(response[0].restriction).toEqual('Soft Currency limit for a gift is 500,000,000.');
       });
     });
 
@@ -543,7 +543,7 @@ describe('GravityGiftBasketComponent', () => {
 
         expect(response.length).toEqual(1);
         expect(response[0]).not.toBeUndefined();
-        expect(response[0].error).toEqual('Soft Currency max is 999,999,999.');
+        expect(response[0].restriction).toEqual('Soft Currency max is 999,999,999.');
       });
     });
   });

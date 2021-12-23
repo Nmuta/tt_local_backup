@@ -36,6 +36,7 @@ export class SunriseMasterInventoryFakeApi extends FakeApiBase {
             quantity: 0,
             description: faker.random.words(5),
             itemType: undefined,
+            error: undefined,
           };
         });
     }
@@ -47,6 +48,7 @@ export class SunriseMasterInventoryFakeApi extends FakeApiBase {
           quantity: 0,
           description: faker.random.word(),
           itemType: undefined,
+          error: undefined,
         },
       ],
       cars: makeFakeItems(50),

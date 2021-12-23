@@ -338,6 +338,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int itemValue,
             string endpoint)
         {
+            throw new NotImplementedException("Broke on purpose!");
             var giftingService = await this.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             await giftingService.AdminSendItemGift(xuid, itemType, itemValue).ConfigureAwait(false);

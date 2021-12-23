@@ -37,6 +37,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'Credits',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          error: undefined,
         },
       ],
       cars: Array(faker.datatype.number(200))
@@ -47,6 +48,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: 1,
             description: faker.random.words(3),
             itemType: undefined,
+            error: undefined,
             acquiredUtc: toDateTime(faker.date.past()),
           };
         }),

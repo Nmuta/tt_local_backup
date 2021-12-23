@@ -1,4 +1,5 @@
-﻿using Turn10.LiveOps.StewardApi.Contracts.Errors;
+﻿using System.Collections.Generic;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -19,8 +20,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public GiftIdentityAntecedent IdentityAntecedent { get; set; }
 
         /// <summary>
-        ///     Gets or sets the gifting error.
+        ///     Gets or sets the errors.
         /// </summary>
-        public StewardError Error { get; set; }
+        public IList<StewardError> Errors { get; set; }
     }
 }

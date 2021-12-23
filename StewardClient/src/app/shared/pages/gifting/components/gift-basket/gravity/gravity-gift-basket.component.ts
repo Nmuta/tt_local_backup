@@ -105,7 +105,7 @@ export class GravityGiftBasketComponent
       .pipe(
         tap(basket => {
           this.giftBasket.data = cloneDeep(basket);
-          this.giftBasketHasErrors = basket.some(item => !!item.error);
+          this.giftBasketHasErrors = basket.some(item => !!item.restriction);
         }),
         takeUntil(this.onDestroy$),
       )
@@ -200,7 +200,7 @@ export class GravityGiftBasketComponent
     this.store.dispatch(new SetGravityGiftBasket(giftBasket));
   }
 
-  /** Verifies gift basket and sets item.error if one is found. */
+  /** Verifies gift basket and sets item.restriction if one is found. */
   public setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
     // Check item ids & types to verify item is real
     for (let i = 0; i < giftBasket.length; i++) {
@@ -208,7 +208,7 @@ export class GravityGiftBasketComponent
       const itemExists = this.masterInventory[
         item.itemType
       ]?.some((masterItem: MasterInventoryItem) => masterItem.id.isEqualTo(item.id));
-      giftBasket[i].error = !itemExists
+      giftBasket[i].restriction = !itemExists
         ? 'Item does not exist in the master inventory.'
         : undefined;
     }
@@ -224,7 +224,8 @@ export class GravityGiftBasketComponent
           item.quantity > 500_000_000,
       );
       if (softCurrencyAboveLimit >= 0) {
-        giftBasket[softCurrencyAboveLimit].error = 'Soft Currency limit for a gift is 500,000,000.';
+        giftBasket[softCurrencyAboveLimit].restriction =
+          'Soft Currency limit for a gift is 500,000,000.';
       }
     }
 
@@ -237,7 +238,7 @@ export class GravityGiftBasketComponent
     );
 
     if (softCurrencyAboveMax >= 0) {
-      giftBasket[softCurrencyAboveMax].error = 'Soft Currency max is 999,999,999.';
+      giftBasket[softCurrencyAboveMax].restriction = 'Soft Currency max is 999,999,999.';
     }
 
     const hardCurrencyAboveLimit = giftBasket.findIndex(
@@ -247,7 +248,7 @@ export class GravityGiftBasketComponent
         item.quantity > 15_000,
     );
     if (hardCurrencyAboveLimit >= 0) {
-      giftBasket[hardCurrencyAboveLimit].error = 'Hard Currency limit for a gift is 15,000.';
+      giftBasket[hardCurrencyAboveLimit].restriction = 'Hard Currency limit for a gift is 15,000.';
     }
 
     return giftBasket;

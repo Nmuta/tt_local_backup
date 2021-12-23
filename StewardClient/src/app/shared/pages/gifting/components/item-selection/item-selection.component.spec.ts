@@ -67,6 +67,7 @@ describe('ItemSelectionComponent', () => {
         description: 'test-description',
         quantity: 0,
         itemType: 'fake type',
+        error: undefined,
       };
       beforeEach(() => {
         component.selectedItem = testInventoryItem;
@@ -107,6 +108,7 @@ describe('ItemSelectionComponent', () => {
       description: 'test-description',
       quantity: 0,
       itemType: 'fake type',
+      error: undefined,
     };
     beforeEach(() => {
       component.selectedItem = undefined;
@@ -143,6 +145,7 @@ describe('ItemSelectionComponent', () => {
         description: testDescription,
         quantity: 1,
         itemType: 'test type',
+        error: undefined,
       };
     });
     describe('If item is undefined', () => {

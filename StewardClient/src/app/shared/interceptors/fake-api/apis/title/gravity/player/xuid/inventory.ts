@@ -38,6 +38,7 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
             description: faker.lorem.sentences(2),
             itemType: undefined,
             acquiredUtc: toDateTime(faker.date.past()),
+            error: undefined,
           };
         });
     }
@@ -51,6 +52,7 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'Soft Currency',
           quantity: faker.datatype.number(100_000),
           itemType: undefined,
+          error: undefined,
         },
       ],
       cars: makeFakeItems(200),
