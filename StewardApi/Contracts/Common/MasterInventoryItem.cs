@@ -1,4 +1,7 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿using System.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents a master inventory item.
@@ -24,5 +27,20 @@
         ///     Gets or sets the item error.
         /// </summary>
         public object Error { get; set; }
+
+        /// <summary>
+        ///     Parses query results into a master inventory item object.
+        /// </summary>
+        /// <remarks>
+        ///     Doesn't read data by column name because column name varies by inventory item type.
+        /// </remarks>
+        public static MasterInventoryItem FromQueryResult(IDataReader reader)
+        {
+            return new MasterInventoryItem
+            {
+                Id = (int)reader.GetInt64(0),
+                Description = reader.GetString(1)
+            };
+        }
     }
 }

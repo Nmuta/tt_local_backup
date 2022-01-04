@@ -1,4 +1,8 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿using System.Data;
+using Microsoft.AspNetCore.Components;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents a detailed Kusto car.
@@ -6,16 +10,27 @@
     public sealed class KustoCar
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="KustoCar"/> class.
+        /// </summary>
+        public KustoCar(long id, long makeId, string make, string model)
+        {
+            this.Id = id;
+            this.MakeId = makeId;
+            this.Make = make;
+            this.Model = model;
+        }
+
+        /// <summary>
         ///     Gets or sets car id.
         /// </summary>
         /// <remarks>Kusto data type is Int64.</remarks>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         ///     Gets or sets car make id.
         /// </summary>
         /// <remarks>Kusto data type is Int64.</remarks>
-        public int MakeId { get; set; }
+        public long MakeId { get; set; }
 
         /// <summary>
         ///     Gets or sets car make description.
@@ -26,5 +41,18 @@
         ///     Gets or sets car model description.
         /// </summary>
         public string Model { get; set; }
+
+        /// <summary>
+        ///     Parses query results into a Kusto car object.
+        /// </summary>
+        public static KustoCar FromQueryResult(IDataReader reader)
+        {
+            return new KustoCar(
+                reader.Get<long>(nameof(Id)),
+                reader.Get<long>(nameof(MakeId)),
+                reader.Get<string>(nameof(Make)),
+                reader.Get<string>(nameof(Model))
+            );
+        }
     }
 }

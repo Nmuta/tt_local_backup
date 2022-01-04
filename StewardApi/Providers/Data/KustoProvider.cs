@@ -56,12 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 {
                     while (schemaReader.Read())
                     {
-                        columns.Add(new KustoColumn
-                        {
-                            ColumnName = schemaReader.GetString(0),
-                            Ordinal = schemaReader.GetInt32(1),
-                            DataType = schemaReader.GetString(2)
-                        });
+                        columns.Add(KustoColumn.FromQueryResult(schemaReader));
                     }
                 }
 
@@ -222,11 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     {
                         while (reader.Read())
                         {
-                            items.Add(new MasterInventoryItem
-                            {
-                                Id = (int)reader.GetInt64(0),
-                                Description = reader.GetString(1),
-                            });
+                            items.Add(MasterInventoryItem.FromQueryResult(reader));
                         }
 
                         reader.Close();
@@ -264,13 +255,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 {
                     while (reader.Read())
                     {
-                        items.Add(new KustoCar
-                        {
-                            Id = (int)reader.GetInt64(0),
-                            MakeId = (int)reader.GetInt64(1),
-                            Make = reader.GetString(2),
-                            Model = reader.GetString(3),
-                        });
+                        items.Add(KustoCar.FromQueryResult(reader));
                     }
 
                     reader.Close();
@@ -290,7 +275,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         {
             try
             {
-                var query = await this.BuildQuery(supportedTitle, KustoQueries.GetCreditRewards).ConfigureAwait(false);
+                var gameDbName = await this.GetGameDbNameAsync(supportedTitle).ConfigureAwait(false);
+                var query = CreditReward.MakeQuery(gameDbName);
 
                 async Task<IList<CreditReward>> CreditRewards()
                 {
@@ -302,12 +288,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     {
                         while (reader.Read())
                         {
-                            creditRewards.Add(new CreditReward
-                            {
-                                Id = reader.GetInt64(0),
-                                Rarity = reader.GetString(1),
-                                Amount = reader.GetInt64(2)
-                            });
+                            creditRewards.Add(CreditReward.FromQueryResult(reader));
                         }
 
                         reader.Close();
@@ -468,15 +449,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
         }
 
-        private async Task<string> BuildQuery(KustoGameDbSupportedTitle supportedTitle, string partialQuery)
+        private async Task<string> GetGameDbNameAsync(KustoGameDbSupportedTitle supportedTitle)
         {
             var titleMap = await this.GetTitleMapAsync().ConfigureAwait(false);
+            var gameDb = titleMap.First(title => title.NameInternal == supportedTitle.ToString());
 
-            var gameDbName = titleMap.First(title => title.NameInternal == supportedTitle.ToString());
-
-            var query = string.Format(CultureInfo.InvariantCulture, partialQuery, gameDbName.NameExternal);
-
-            return query;
+            return gameDb.NameExternal;
         }
 
         private async Task<IList<TitleMap>> GetTitleMapAsync()
@@ -486,29 +464,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 var titleMap = new List<TitleMap>();
 
                 using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(GameDatabaseName, KustoQueries.GetTitleMapping, new ClientRequestProperties())
+                    .ExecuteQueryAsync(GameDatabaseName, TitleMap.Query, new ClientRequestProperties())
                     .ConfigureAwait(false))
                 {
                     while (reader.Read())
                     {
-                        titleMap.Add(new TitleMap
-                        {
-                            TitleId = reader.GetString(0),
-                            NameInternal = reader.GetString(1),
-                            NameExternal = reader.GetString(2),
-                            NameExternalFull = reader.GetString(3)
-                        });
+                        titleMap.Add(TitleMap.FromQueryResult(reader));
                     }
 
                     reader.Close();
                 }
 
-                this.refreshableCacheStore.PutItem(KustoQueries.GetTitleMapping, TimeSpan.FromHours(24), titleMap);
+                this.refreshableCacheStore.PutItem(TitleMap.Query, TimeSpan.FromHours(24), titleMap);
 
                 return titleMap;
             }
 
-            return this.refreshableCacheStore.GetItem<IList<TitleMap>>(KustoQueries.GetTitleMapping)
+            return this.refreshableCacheStore.GetItem<IList<TitleMap>>(TitleMap.Query)
                    ?? await TitleMaps().ConfigureAwait(false);
         }
     }
