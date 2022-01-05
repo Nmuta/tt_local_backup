@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.GetUserIdsOutput> GetUserIds(
+        public async Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
             ForzaPlayerLookupParameters[] parameters,
             string endpoint)
         {
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task AddProfileNote(ulong xuid, string text, string author, string endpoint)
+        public async Task AddProfileNoteAsync(ulong xuid, string text, string author, string endpoint)
         {
             var userManagementService = await this.serviceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -432,7 +432,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(
+        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
             ForzaAuctionFilters filters,
             string endpoint)
         {

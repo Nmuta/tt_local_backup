@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var forzaAuctions = await this.woodstockService.GetAuctionBlockList(maxResults, endpoint).ConfigureAwait(false);
+                var forzaAuctions = await this.woodstockService.GetAuctionBlockListAsync(maxResults, endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<AuctionBlockListEntry>>(forzaAuctions.blocklistEntries);
             }
@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                await this.woodstockService.DeleteAuctionBlocklistEntries(carIds.ToArray(), endpoint).ConfigureAwait(false);
+                await this.woodstockService.DeleteAuctionBlocklistEntriesAsync(carIds.ToArray(), endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

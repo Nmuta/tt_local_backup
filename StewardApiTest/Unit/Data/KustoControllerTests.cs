@@ -209,7 +209,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             public Dependencies()
             {
                 this.KustoQueryProvider.GetKustoQueriesAsync().Returns(Fixture.Create<IList<KustoQuery>>());
-                this.KustoProvider.RunKustoQuery(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<JObject>>());
+                this.KustoProvider.RunKustoQueryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<JObject>>());
             }
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();

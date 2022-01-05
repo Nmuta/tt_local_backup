@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(ToolsAvailability))]
         public async Task<IActionResult> SetToolsAvailable([FromBody] ToolsAvailability updatedToolsAvailability)
         {
-            var results = await this.blobStorageProvider.SetToolsAvailability(updatedToolsAvailability).ConfigureAwait(true);
+            var results = await this.blobStorageProvider.SetToolsAvailabilityAsync(updatedToolsAvailability).ConfigureAwait(true);
 
             return this.Ok(results);
         }

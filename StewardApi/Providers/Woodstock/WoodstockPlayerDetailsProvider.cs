@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
-                var result = await this.woodstockService.GetUserIds(convertedQueries, endpoint)
+                var result = await this.woodstockService.GetUserIdsAsync(convertedQueries, endpoint)
                     .ConfigureAwait(false);
 
                 var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                await this.woodstockService.AddProfileNote(xuid, note.Text, note.Author, endpoint)
+                await this.woodstockService.AddProfileNoteAsync(xuid, note.Text, note.Author, endpoint)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -555,7 +555,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.woodstockService.GetPlayerAuctions(forzaAuctionFilters, endpoint)
+                var forzaAuctions = await this.woodstockService.GetPlayerAuctionsAsync(forzaAuctionFilters, endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);

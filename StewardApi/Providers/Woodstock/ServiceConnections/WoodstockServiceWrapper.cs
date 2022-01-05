@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.GetUserIdsOutput> GetUserIds(
+        public async Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
             ForzaPlayerLookupParameters[] parameters,
             string endpoint)
         {
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task AddProfileNote(ulong xuid, string text, string author, string endpoint)
+        public async Task AddProfileNoteAsync(ulong xuid, string text, string author, string endpoint)
         {
             var userManagementService = await this.serviceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -281,7 +281,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         /// <inheritdoc />
         public async Task<GiftingService.AdminGetSupportedGiftTypesOutput>
-            AdminGetSupportedGiftTypes(int maxResults, string endpoint)
+            AdminGetSupportedGiftTypesAsync(int maxResults, string endpoint)
         {
             var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -430,7 +430,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(
+        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
             ForzaAuctionFilters filters,
             string endpoint)
         {
@@ -450,7 +450,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockList(int maxResults, string endpoint)
+        public async Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint)
         {
             var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -466,7 +466,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task DeleteAuctionBlocklistEntries(int[] carIds, string endpoint)
+        public async Task DeleteAuctionBlocklistEntriesAsync(int[] carIds, string endpoint)
         {
             var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 

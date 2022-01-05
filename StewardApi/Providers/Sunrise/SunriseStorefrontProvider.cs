@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH4.Generated;
@@ -30,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
             mapper.ShouldNotBeNull(nameof(mapper));
-            
+
             this.sunriseService = sunriseService;
             this.mapper = mapper;
         }
@@ -139,10 +140,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
         public async Task<IList<HideableUgc>> GetHiddenUGCForUserAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-            
+
             var exceptions = new List<Exception>();
             var defaultValue = new GetHiddenUGCForUserOutput() { ugcData = Array.Empty<ForzaStorefrontFile>() };
             var liveries = this.sunriseService.GetHiddenUgcForUserAsync(100, xuid, FileType.Livery, endpoint).SuccessOrDefault(defaultValue, exceptions);

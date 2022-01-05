@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
@@ -7,6 +8,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// <summary>
     ///     Useful extensions for dealing with tasks.
     /// </summary>
+    [SuppressMessage("Style", @"VSTHRD200:Use ""Async"" suffix for async methods", Justification = "By design as these are task extensions.")]
+    [SuppressMessage("Usage", "VSTHRD003:Avoid awaiting foreign Tasks", Justification = "By design as this is a task extension.")]
     public static class TaskExtensions
     {
         /// <summary>Prevents a task from throwing. Instead: Produce the default value for its result type.</summary>

@@ -56,8 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 reader.Get<string>(nameof(TitleId)),
                 reader.Get<string>(nameof(NameInternal)),
                 reader.Get<string>(nameof(NameExternal)),
-                reader.Get<string>(nameof(NameExternalFull))
-            );
+                reader.Get<string>(nameof(NameExternalFull)));
         }
     }
 }

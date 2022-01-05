@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
@@ -19,10 +20,10 @@ using WebServicesContracts = Forza.WebServices.FH5.Generated;
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
     /// <summary>
-    ///     Mapper for Steelhead DTOs.
+    ///     Mapper for Woodstock DTOs.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "High class coupling by design.")]
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
+    [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "High class coupling by design.")]
     public sealed class WoodstockProfileMapper : Profile
     {
         /// <summary>

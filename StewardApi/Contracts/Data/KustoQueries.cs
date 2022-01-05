@@ -12,7 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// </summary>
         /// <remarks>Should be used with string.Format to fill the missing title name.</remarks>
         public const string GetCreditRewards = "{0}_CreditReward | project ['id'], Rarity, Amount";
- 
+
         /// <summary>
         ///     Basic query for getting the FH4 Car data.
         /// </summary>

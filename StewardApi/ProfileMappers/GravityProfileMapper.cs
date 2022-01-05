@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Forza.WebServices.FMG.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -10,7 +11,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     /// <summary>
     ///     Mapper for Gravity DTOs.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
     public sealed class GravityProfileMapper : Profile
     {
         /// <summary>

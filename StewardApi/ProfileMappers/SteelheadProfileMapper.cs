@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using AutoMapper;
 using Forza.LiveOps.FM8.Generated;
@@ -16,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     ///     Mapper for Steelhead DTOs.
     /// </summary>
     ///
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
     public sealed class SteelheadProfileMapper : Profile
     {
         /// <summary>

@@ -11,11 +11,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Gets tools availability.
         /// </summary>
-        Task<ToolsAvailability> GetToolsAvailability();
+        Task<ToolsAvailability> GetToolsAvailabilityAsync();
 
         /// <summary>
         ///     Sets tools availability.
         /// </summary>
-        Task<ToolsAvailability> SetToolsAvailability(ToolsAvailability updatedToolsAvailability);
+        Task<ToolsAvailability> SetToolsAvailabilityAsync(ToolsAvailability updatedToolsAvailability);
     }
 }

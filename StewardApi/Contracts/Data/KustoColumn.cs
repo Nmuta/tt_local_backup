@@ -48,8 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             return new KustoColumn(
                 reader.Get<string>(nameof(ColumnName)),
                 reader.Get<int>(nameof(ColumnOrdinal)),
-                reader.Get<string>(nameof(DataType))
-            );
+                reader.Get<string>(nameof(DataType)));
         }
     }
 }

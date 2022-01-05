@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
-                var result = await this.sunriseService.GetUserIds(convertedQueries, endpoint).ConfigureAwait(false);
+                var result = await this.sunriseService.GetUserIdsAsync(convertedQueries, endpoint).ConfigureAwait(false);
                 var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
                 identityResults.SetErrorsForInvalidXuids();
 
@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                await this.sunriseService.AddProfileNote(xuid, note.Text, note.Author, endpoint)
+                await this.sunriseService.AddProfileNoteAsync(xuid, note.Text, note.Author, endpoint)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -557,7 +557,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.sunriseService.GetPlayerAuctions(forzaAuctionFilters, endpoint)
+                var forzaAuctions = await this.sunriseService.GetPlayerAuctionsAsync(forzaAuctionFilters, endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);

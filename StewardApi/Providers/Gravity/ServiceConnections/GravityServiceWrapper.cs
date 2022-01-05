@@ -123,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task LiveOpsGrantItem(string t10Id, Guid gameSettingsId, ForzaUserInventoryItemType type, int id, int quantity)
+        public async Task LiveOpsGrantItemAsync(string t10Id, Guid gameSettingsId, ForzaUserInventoryItemType type, int id, int quantity)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gameSettingsId.ToString().ShouldNotBeNullEmptyOrWhiteSpace(nameof(gameSettingsId));

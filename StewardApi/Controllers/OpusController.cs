@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         (entry) =>
                         {
                             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
-                            return this.RetrieveIdentity(query);
+                            return this.RetrieveIdentityAsync(query);
                         }));
             }
 
@@ -166,7 +166,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return this.Ok(inventory);
         }
 
-        private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query)
+        private async Task<IdentityResultAlpha> RetrieveIdentityAsync(IdentityQueryAlpha query)
         {
             try
             {

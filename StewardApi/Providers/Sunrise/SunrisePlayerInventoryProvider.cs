@@ -155,8 +155,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         .ConfigureAwait(false);
                 }
 
-                giftResponse.Errors = await SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-                await this.UpdateBackstagePasses(xuid, backstagePassDelta, endpoint).ConfigureAwait(false);
+                giftResponse.Errors = await SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                await this.UpdateBackstagePassesAsync(xuid, backstagePassDelta, endpoint).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
@@ -236,7 +236,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         endpoint).ConfigureAwait(false);
                 }
 
-                giftResponse.Errors = await SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                giftResponse.Errors = await SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
@@ -364,7 +364,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             return result;
         }
 
-        private static async Task<IList<StewardError>> SendGifts(
+        private static async Task<IList<StewardError>> SendGiftsAsync(
             Func<InventoryItemType, int, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)
@@ -426,7 +426,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             return errors;
         }
 
-        private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta, string endpoint)
+        private async Task UpdateBackstagePassesAsync(ulong xuid, int balanceDelta, string endpoint)
         {
             if (balanceDelta <= 0)
             {

@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         (entry) =>
                         {
                             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
-                            return this.RetrieveIdentity(query);
+                            return this.RetrieveIdentityAsync(query);
                         }));
             }
 
@@ -271,7 +271,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -341,7 +341,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -396,7 +396,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return jobId;
         }
 
-        private async Task<IdentityResultBeta> RetrieveIdentity(IdentityQueryBeta query)
+        private async Task<IdentityResultBeta> RetrieveIdentityAsync(IdentityQueryBeta query)
         {
             try
             {
@@ -429,7 +429,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        private async Task<string> VerifyGiftAgainstMasterInventory(Guid gameSettingsId, GravityMasterInventory gift)
+        private async Task<string> VerifyGiftAgainstMasterInventoryAsync(Guid gameSettingsId, GravityMasterInventory gift)
         {
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(true);
             var error = string.Empty;

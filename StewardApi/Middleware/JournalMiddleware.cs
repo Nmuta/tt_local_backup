@@ -42,14 +42,14 @@ namespace Turn10.LiveOps.StewardApi.Middleware
         /// <summary>
         ///     Invoke the middleware.
         /// </summary>
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             context.ShouldNotBeNull(nameof(context));
 
             // Make sure the request body is buffered, read it out and then reset it so the next caller can read it as needed.
             context.Request.EnableBuffering();
             using var requestStreamReader = new StreamReader(context.Request.Body);
-            var requestBody = requestStreamReader.ReadToEnd();
+            var requestBody = await requestStreamReader.ReadToEndAsync().ConfigureAwait(false);
             context.Request.Body.Position = 0;
 
             // The rest of this code is to handle manually upgrading the response body to
@@ -69,12 +69,12 @@ namespace Turn10.LiveOps.StewardApi.Middleware
 
                     using var responseStreamReader = new StreamReader(newResponseBody);
 
-                    var responseBody = responseStreamReader.ReadToEnd();
+                    var responseBody = await responseStreamReader.ReadToEndAsync().ConfigureAwait(false);
 
                     newResponseBody.Position = 0;
                     await newResponseBody.CopyToAsync(originalResponseBody).ConfigureAwait(false);
 
-                    await this.HandleRequest(context, requestBody, responseBody).ConfigureAwait(false);
+                    await this.HandleRequestAsync(context, requestBody, responseBody).ConfigureAwait(false);
                 }
             }
             finally
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware
         /// <summary>
         ///     Handles a request.
         /// </summary>
-        public async Task HandleRequest(HttpContext context, string requestBody, string responseBody)
+        public async Task HandleRequestAsync(HttpContext context, string requestBody, string responseBody)
         {
             context.ShouldNotBeNull(nameof(context));
 

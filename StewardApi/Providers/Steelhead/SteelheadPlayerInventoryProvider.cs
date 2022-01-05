@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                         .ConfigureAwait(false);
                 }
 
-                giftResponse.Errors = await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
@@ -212,7 +212,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                         endpoint).ConfigureAwait(false);
                 }
 
-                giftResponse.Errors = await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
@@ -230,7 +230,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             return giftResponse;
         }
 
-        private async Task<IList<StewardError>> SendGifts(
+        private async Task<IList<StewardError>> SendGiftsAsync(
             Func<InventoryItemType, int, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)

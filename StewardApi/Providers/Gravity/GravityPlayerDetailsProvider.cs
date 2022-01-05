@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 }
                 else if (!string.IsNullOrWhiteSpace(query.T10Id))
                 {
-                    var details = await this.GetUserDetailsByT10Id(query.T10Id).ConfigureAwait(false);
+                    var details = await this.GetUserDetailsByT10IdAsync(query.T10Id).ConfigureAwait(false);
 
                     result = this.mapper.Map<IdentityResultBeta>(details);
                 }
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                     // XUID lookup of 0 always results in a timeout with LSP. (9/9/21) (lugeiken)
                     if (query.Xuid.Value != 0UL)
                     {
-                        var details = await this.GetUserDetailsByXuid(query.Xuid.Value).ConfigureAwait(false);
+                        var details = await this.GetUserDetailsByXuidAsync(query.Xuid.Value).ConfigureAwait(false);
 
                         result.T10Ids = details;
 
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 }
                 else if (!string.IsNullOrWhiteSpace(query.Gamertag))
                 {
-                    var details = await this.GetUserDetailsByGamertag(query.Gamertag).ConfigureAwait(false);
+                    var details = await this.GetUserDetailsByGamertagAsync(query.Gamertag).ConfigureAwait(false);
 
                     result.T10Ids = details;
 
@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.GetUserDetailsByGamertag(gamertag).ConfigureAwait(false);
+                var response = await this.GetUserDetailsByGamertagAsync(gamertag).ConfigureAwait(false);
                 var details = response.OrderByDescending(e => e.LastLogin).FirstOrDefault();
 
                 return this.mapper.Map<GravityPlayerDetails>(details);
@@ -128,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             try
             {
-                var response = await this.GetUserDetailsByXuid(xuid).ConfigureAwait(false);
+                var response = await this.GetUserDetailsByXuidAsync(xuid).ConfigureAwait(false);
                 var details = response.OrderByDescending(e => e.LastLogin).FirstOrDefault();
 
                 return this.mapper.Map<GravityPlayerDetails>(details);
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.GetUserDetailsByT10Id(t10Id).ConfigureAwait(false);
+                var response = await this.GetUserDetailsByT10IdAsync(t10Id).ConfigureAwait(false);
 
                 return this.mapper.Map<GravityPlayerDetails>(response);
             }
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             }
         }
 
-        private async Task<LiveOpsUserDetails> GetUserDetailsByT10Id(string t10Id)
+        private async Task<LiveOpsUserDetails> GetUserDetailsByT10IdAsync(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
@@ -222,7 +222,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             }
         }
 
-        private async Task<LiveOpsUserDetails[]> GetUserDetailsByXuid(ulong xuid)
+        private async Task<LiveOpsUserDetails[]> GetUserDetailsByXuidAsync(ulong xuid)
         {
             try
             {
@@ -237,7 +237,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             }
         }
 
-        private async Task<LiveOpsUserDetails[]> GetUserDetailsByGamertag(string gamertag)
+        private async Task<LiveOpsUserDetails[]> GetUserDetailsByGamertagAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 

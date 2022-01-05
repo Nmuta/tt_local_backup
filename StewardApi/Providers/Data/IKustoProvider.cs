@@ -16,32 +16,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Runs a Kusto query.
         /// </summary>
-        Task<IList<JObject>> RunKustoQuery(string query, string dbName);
+        Task<IList<JObject>> RunKustoQueryAsync(string query, string dbName);
 
         /// <summary>
         ///     Gets player purchased entitlements.
         /// </summary>
-        Task<IEnumerable<PurchasedEntitlement>> GetPlayerPurchasedEntitlements(ulong xuid);
+        Task<IEnumerable<PurchasedEntitlement>> GetPlayerPurchasedEntitlementsAsync(ulong xuid);
 
         /// <summary>
         ///     Gets player cancelled entitlements.
         /// </summary>
-        Task<IEnumerable<CancelledEntitlement>> GetPlayerCancelledEntitlements(ulong xuid);
+        Task<IEnumerable<CancelledEntitlement>> GetPlayerCancelledEntitlementsAsync(ulong xuid);
 
         /// <summary>
         ///     Gets player refunded entitlements.
         /// </summary>
-        Task<IEnumerable<RefundedEntitlement>> GetPlayerRefundedEntitlements(ulong xuid);
+        Task<IEnumerable<RefundedEntitlement>> GetPlayerRefundedEntitlementsAsync(ulong xuid);
 
         /// <summary>
         ///     Gets master inventory item list.
         /// </summary>
-        Task<IList<MasterInventoryItem>> GetMasterInventoryList(string kustoQuery);
+        Task<IList<MasterInventoryItem>> GetMasterInventoryListAsync(string kustoQuery);
 
         /// <summary>
         ///     Gets detailed Kusto car list.
         /// </summary>
-        Task<IList<KustoCar>> GetDetailedKustoCars(string kustoQuery);
+        Task<IList<KustoCar>> GetDetailedKustoCarsAsync(string kustoQuery);
 
         /// <summary>
         ///     Gets the credit rewards.

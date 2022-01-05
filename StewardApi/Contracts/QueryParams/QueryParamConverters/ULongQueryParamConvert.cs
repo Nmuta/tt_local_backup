@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
@@ -8,7 +9,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.QueryParams.QueryParamConverters
     /// <summary>
     ///     The ulong type converter.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812", Justification = "Not instantiated by design.")]
+    [SuppressMessage("Microsoft.Performance", "CA1812", Justification = "Not instantiated by design, used as input for TypeConverter attribute.")]
     internal sealed class ULongQueryParamConvert : TypeConverter
     {
         /// <summary>

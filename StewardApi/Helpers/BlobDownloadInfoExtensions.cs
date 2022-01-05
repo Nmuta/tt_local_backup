@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         /// <typeparam name="T">The type to be deserialized into.</typeparam>
 #pragma warning disable SA1618 // Generic type parameters should be documented
-        public static async Task<T> Deserialize<T>(this BlobDownloadInfo download)
+        public static async Task<T> DeserializeAsync<T>(this BlobDownloadInfo download)
         {
             var result = new byte[download.ContentLength];
             await download.Content.ReadAsync(result.AsMemory(0, (int)download.ContentLength)).ConfigureAwait(false);

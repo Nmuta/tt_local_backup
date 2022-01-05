@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -98,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
         /// <summary>
         ///     Creates the HttpClient to use.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test code")]
         private HttpClient CreateClient()
         {
             var handler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate };
@@ -174,7 +175,7 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test code")]
         private HttpRequestMessage CreateRequestMessage(HttpMethod method, Uri uri, string authToken, string contractVersion, object requestBody = null, IDictionary<string, string> headers = null)
         {
             var request = new HttpRequestMessage(method, uri);

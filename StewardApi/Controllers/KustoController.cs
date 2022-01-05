@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var database = pattern.Match(query).Groups["dbName"].Value;
             database.ShouldNotBeNullEmptyOrWhiteSpace(nameof(database));
 
-            var result = await this.kustoProvider.RunKustoQuery(query, database).ConfigureAwait(true);
+            var result = await this.kustoProvider.RunKustoQueryAsync(query, database).ConfigureAwait(true);
             return this.Ok(result);
         }
 
@@ -134,9 +134,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             xuid.ShouldNotBeNull(nameof(xuid));
 
             var exceptions = new List<Exception>();
-            var getPurchasedEntitlements = this.kustoProvider.GetPlayerPurchasedEntitlements(xuid).SuccessOrDefault(Array.Empty<PurchasedEntitlement>(), exceptions);
-            var getRefundedEntitlements = this.kustoProvider.GetPlayerRefundedEntitlements(xuid).SuccessOrDefault(Array.Empty<RefundedEntitlement>(), exceptions);
-            var getCancelledEntitlements = this.kustoProvider.GetPlayerCancelledEntitlements(xuid).SuccessOrDefault(Array.Empty<CancelledEntitlement>(), exceptions);
+            var getPurchasedEntitlements = this.kustoProvider.GetPlayerPurchasedEntitlementsAsync(xuid).SuccessOrDefault(Array.Empty<PurchasedEntitlement>(), exceptions);
+            var getRefundedEntitlements = this.kustoProvider.GetPlayerRefundedEntitlementsAsync(xuid).SuccessOrDefault(Array.Empty<RefundedEntitlement>(), exceptions);
+            var getCancelledEntitlements = this.kustoProvider.GetPlayerCancelledEntitlementsAsync(xuid).SuccessOrDefault(Array.Empty<CancelledEntitlement>(), exceptions);
 
             await Task.WhenAll(getPurchasedEntitlements, getRefundedEntitlements, getCancelledEntitlements).ConfigureAwait(true);
 

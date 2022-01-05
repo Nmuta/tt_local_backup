@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.GetUserIdsOutput> GetUserIds(ForzaPlayerLookupParameters[] parameters, string endpoint)
+        public async Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(ForzaPlayerLookupParameters[] parameters, string endpoint)
         {
             var userService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -306,7 +306,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters, string endpoint)
+        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(ForzaAuctionFilters filters, string endpoint)
         {
             var auctionService = await this.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 

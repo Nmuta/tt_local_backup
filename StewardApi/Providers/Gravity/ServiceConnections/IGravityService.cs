@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
         /// <summary>
         ///     Grants an item to a player's inventory.
         /// </summary>
-        Task LiveOpsGrantItem(string t10Id, Guid gameSettingsId, ForzaUserInventoryItemType type, int id, int quantity);
+        Task LiveOpsGrantItemAsync(string t10Id, Guid gameSettingsId, ForzaUserInventoryItemType type, int id, int quantity);
 
         /// <summary>
         ///     Gets the the game settings.

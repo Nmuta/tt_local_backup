@@ -1914,8 +1914,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
-                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
-                this.KustoProvider.GetDetailedKustoCars(Arg.Any<string>()).Returns(Fixture.Create<IList<KustoCar>>());
+                this.KustoProvider.GetMasterInventoryListAsync(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
+                this.KustoProvider.GetDetailedKustoCarsAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<KustoCar>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerIdentitiesAsync(Arg.Any<List<IdentityQueryAlpha>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerDetails>());

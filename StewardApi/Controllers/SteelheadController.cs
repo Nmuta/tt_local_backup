@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/title/steelhead")]
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
@@ -144,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SteelheadMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
         {
-            var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventory = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
             return this.Ok(masterInventory);
         }
 
@@ -533,7 +534,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -564,7 +565,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(
                 profileId,
                 endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -638,7 +639,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 xuid,
                 new AuctionFilters(carId, makeId, statusEnum, sortEnum),
                 endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFM8CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFM8CarsDetailed);
 
             await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
 
@@ -698,7 +699,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory)
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory)
                 .ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
@@ -786,7 +787,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -830,7 +831,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -1194,10 +1195,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory list.
         /// </summary>
-        private async Task<SteelheadMasterInventory> RetrieveMasterInventoryList()
+        private async Task<SteelheadMasterInventory> RetrieveMasterInventoryListAsync()
         {
-            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM8Cars);
-            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM8VanityItems);
+            var cars = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFM8Cars);
+            var vanityItems = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFM8VanityItems);
 
             await Task.WhenAll(cars, vanityItems).ConfigureAwait(true);
 
@@ -1221,9 +1222,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        private async Task<string> VerifyGiftAgainstMasterInventory(SteelheadMasterInventory gift)
+        private async Task<string> VerifyGiftAgainstMasterInventoryAsync(SteelheadMasterInventory gift)
         {
-            var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventoryItem = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
             var error = string.Empty;
 
             foreach (var car in gift.Cars)

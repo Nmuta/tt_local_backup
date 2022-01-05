@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Reflection;
 using AutoMapper;
@@ -62,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi
     /// <summary>
     ///     Entry point for the app.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
     public sealed class Startup
     {
         private readonly IConfiguration configuration;

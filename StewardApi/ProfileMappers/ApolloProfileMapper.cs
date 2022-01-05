@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
@@ -14,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     /// <summary>
     ///     Mapper for Apollo DTOs.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
     public sealed class ApolloProfileMapper : Profile
     {
         /// <summary>

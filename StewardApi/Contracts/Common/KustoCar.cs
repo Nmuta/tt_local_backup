@@ -51,8 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
                 reader.Get<long>(nameof(Id)),
                 reader.Get<long>(nameof(MakeId)),
                 reader.Get<string>(nameof(Make)),
-                reader.Get<string>(nameof(Model))
-            );
+                reader.Get<string>(nameof(Model)));
         }
     }
 }

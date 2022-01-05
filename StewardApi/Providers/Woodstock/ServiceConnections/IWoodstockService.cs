@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets user IDs.
         /// </summary>
-        Task<UserManagementService.GetUserIdsOutput> GetUserIds(
+        Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
             ForzaPlayerLookupParameters[] parameters,
             string endpoint);
 
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Adds a note to a user's profile.
         /// </summary>
-        Task AddProfileNote(ulong xuid, string text, string author, string endpoint);
+        Task AddProfileNoteAsync(ulong xuid, string text, string author, string endpoint);
 
         /// <summary>
         ///     Gets LSP groups.
@@ -168,7 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets supported gift types.
         /// </summary>
-        Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypes(
+        Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(
             int maxResults,
             string endpoint);
 
@@ -279,7 +279,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets player auctions.
         /// </summary>
-        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters, string endpoint);
+        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(ForzaAuctionFilters filters, string endpoint);
 
         /// <summary>
         ///     Gets comprehensive data about an auction.
@@ -291,7 +291,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets auction house block list.
         /// </summary>
-        Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockList(int maxResults, string endpoint);
+        Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint);
 
         /// <summary>
         ///     Adds or updates an entry in the auction house block list.
@@ -301,7 +301,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Removes an entry from the auction house block list.
         /// </summary>
-        Task DeleteAuctionBlocklistEntries(int[] carIds, string endpoint);
+        Task DeleteAuctionBlocklistEntriesAsync(int[] carIds, string endpoint);
 
         /// <summary>
         ///     Search player UGC content.

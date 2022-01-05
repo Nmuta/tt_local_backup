@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
-                var result = await this.steelheadService.GetUserIds(convertedQueries, endpoint)
+                var result = await this.steelheadService.GetUserIdsAsync(convertedQueries, endpoint)
                     .ConfigureAwait(false);
 
                 var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
@@ -426,7 +426,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.steelheadService.GetPlayerAuctions(forzaAuctionFilters, endpoint)
+                var forzaAuctions = await this.steelheadService.GetPlayerAuctionsAsync(forzaAuctionFilters, endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
         UserRole.CommunityManager)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
@@ -137,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
         {
-            var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventory = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
 
             return this.Ok(masterInventory);
         }
@@ -169,7 +170,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         {
                             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(
                                 CacheSeconds.PlayerIdentity);
-                            return this.RetrieveIdentity(query, endpoint);
+                            return this.RetrieveIdentityAsync(query, endpoint);
                         }));
             }
 
@@ -536,7 +537,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -565,7 +566,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(profileId, endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -647,7 +648,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -733,7 +734,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -779,7 +780,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 return this.BadRequest($"Invalid items found. {invalidItems}");
@@ -867,7 +868,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return banHistories;
         }
 
-        private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query, string endpoint)
+        private async Task<IdentityResultAlpha> RetrieveIdentityAsync(IdentityQueryAlpha query, string endpoint)
         {
             try
             {
@@ -901,10 +902,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory list.
         /// </summary>
-        private async Task<ApolloMasterInventory> RetrieveMasterInventoryList()
+        private async Task<ApolloMasterInventory> RetrieveMasterInventoryListAsync()
         {
-            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7Cars);
-            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7VanityItems);
+            var cars = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFM7Cars);
+            var vanityItems = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFM7VanityItems);
 
             await Task.WhenAll(cars, vanityItems).ConfigureAwait(true);
 
@@ -924,9 +925,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        private async Task<string> VerifyGiftAgainstMasterInventory(ApolloMasterInventory gift)
+        private async Task<string> VerifyGiftAgainstMasterInventoryAsync(ApolloMasterInventory gift)
         {
-            var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventoryItem = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
             var error = string.Empty;
 
             foreach (var car in gift.Cars)

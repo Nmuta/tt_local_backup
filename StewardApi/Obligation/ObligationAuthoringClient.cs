@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -34,6 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Initializes a new instance of the <see cref="ObligationAuthoringClient"/> class.
         /// </summary>
+        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public ObligationAuthoringClient(IKeyVaultProvider keyVaultProvider, IConfiguration configuration)
         {
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
@@ -124,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         {
             if (string.IsNullOrWhiteSpace(pipeline.Etag))
             {
-                pipeline.Etag = await this.GetEtag(pipeline.Name).ConfigureAwait(false);
+                pipeline.Etag = await this.GetEtagAsync(pipeline.Name).ConfigureAwait(false);
                 if (requireNew && !string.IsNullOrWhiteSpace(pipeline.Etag))
                 {
                     throw new ConflictStewardException($"Pipeline named {pipeline.Name} already exists.");
@@ -188,7 +190,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             }
         }
 
-        private async Task<string> GetEtag(string pipelineName)
+        private async Task<string> GetEtagAsync(string pipelineName)
         {
             using var httpRequestMessage =
                 new HttpRequestMessage(HttpMethod.Get, new Uri($"{WebHost}obligation/authoring/pipelines?name={pipelineName}"));

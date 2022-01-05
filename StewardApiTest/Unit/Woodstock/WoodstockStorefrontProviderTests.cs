@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetUGCPhotoAsync_WithValidParameters_ReturnsCorrectType()
+        public void GetUGCPhotoAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();

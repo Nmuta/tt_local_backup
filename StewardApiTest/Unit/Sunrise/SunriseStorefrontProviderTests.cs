@@ -69,7 +69,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var ugcType = UGCType.Livery;
             var filters = Fixture.Create<UGCFilters>();
             var endpointKey = Fixture.Create<string>();
 

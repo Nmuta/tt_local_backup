@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -32,6 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobTracker"/> class.
         /// </summary>
+        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public JobTracker(
             HubManager hubManager,
             ITableStorageClientFactory tableStorageClientFactory,
@@ -154,7 +156,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
             try
             {
-                await this.UpdateTableStorageSafely(UpdateTable, jobId).ConfigureAwait(false);
+                await this.UpdateTableStorageSafelyAsync(UpdateTable, jobId).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -298,7 +300,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             }
         }
 
-        private async Task UpdateTableStorageSafely<T>(Func<Task<T>> tableUpdate, string jobId)
+        private async Task UpdateTableStorageSafelyAsync<T>(Func<Task<T>> tableUpdate, string jobId)
         {
             var leaseId = string.Empty;
             var retries = 0;

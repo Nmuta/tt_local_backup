@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Gets user IDs.
         /// </summary>
-        Task<UserManagementService.GetUserIdsOutput> GetUserIds(
+        Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
             ForzaPlayerLookupParameters[] parameters,
             string endpoint);
 
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Adds a note to a user's profile.
         /// </summary>
-        Task AddProfileNote(ulong xuid, string text, string author, string endpoint);
+        Task AddProfileNoteAsync(ulong xuid, string text, string author, string endpoint);
 
         /// <summary>
         ///     Sets the console ban status.
@@ -277,7 +277,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Gets player auctions.
         /// </summary>
-        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(
+        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
             ForzaAuctionFilters filters,
             string endpoint);
 

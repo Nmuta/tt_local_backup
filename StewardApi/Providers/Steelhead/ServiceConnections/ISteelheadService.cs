@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets user IDs.
         /// </summary>
-        Task<UserManagementService.GetUserIdsOutput> GetUserIds(
+        Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
             ForzaPlayerLookupParameters[] parameters,
             string endpoint);
 
@@ -220,7 +220,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets player auctions.
         /// </summary>
-        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(
+        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
             ForzaAuctionFilters filters,
             string endpoint);
     }

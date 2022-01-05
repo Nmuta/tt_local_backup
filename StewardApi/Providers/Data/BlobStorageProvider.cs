@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
@@ -27,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="BlobStorageProvider"/> class.
         /// </summary>
+        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public BlobStorageProvider(IKeyVaultProvider keyVaultProvider, IConfiguration configuration)
         {
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
@@ -42,9 +44,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<ToolsAvailability> GetToolsAvailability()
+        public async Task<ToolsAvailability> GetToolsAvailabilityAsync()
         {
-            if (!await this.EnsureBlobClientExists().ConfigureAwait(false))
+            if (!await this.EnsureBlobClientExistsAsync().ConfigureAwait(false))
             {
                 throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.");
             }
@@ -54,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 var response = await this.blobClient.DownloadAsync().ConfigureAwait(false);
                 var download = response.Value;
 
-                return await download.Deserialize<ToolsAvailability>().ConfigureAwait(false);
+                return await download.DeserializeAsync<ToolsAvailability>().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -63,9 +65,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<ToolsAvailability> SetToolsAvailability(ToolsAvailability updatedToolsAvailability)
+        public async Task<ToolsAvailability> SetToolsAvailabilityAsync(ToolsAvailability updatedToolsAvailability)
         {
-            if (!await this.EnsureBlobClientExists().ConfigureAwait(false))
+            if (!await this.EnsureBlobClientExistsAsync().ConfigureAwait(false))
             {
                 throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.");
             }
@@ -93,10 +95,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new UnknownFailureStewardException($"Could not update tools availability JSON in blob storage. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.", ex);
             }
 
-            return await this.GetToolsAvailability().ConfigureAwait(false);
+            return await this.GetToolsAvailabilityAsync().ConfigureAwait(false);
         }
 
-        private async Task<bool> EnsureBlobClientExists()
+        private async Task<bool> EnsureBlobClientExistsAsync()
         {
             var response = await this.blobClient.ExistsAsync().ConfigureAwait(false);
             return response.Value;

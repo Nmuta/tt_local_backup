@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
         UserRole.CommunityManager)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
@@ -153,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
         {
-            var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventory = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
             return this.Ok(masterInventory);
         }
 
@@ -164,7 +165,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<KustoCar>))]
         public async Task<IActionResult> GetDetailedKustoCars()
         {
-            var cars = await this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed).ConfigureAwait(true);
+            var cars = await this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed).ConfigureAwait(true);
             return this.Ok(cars);
         }
 
@@ -477,7 +478,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 xuid,
                 new AuctionFilters(carId, makeId, statusEnum, sortEnum),
                 endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
 
@@ -553,7 +554,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 typeEnum,
                 new UGCFilters(xuid, null),
                 endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
 
@@ -588,7 +589,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 typeEnum,
                 new UGCFilters(ulong.MaxValue, shareCode),
                 endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
 
@@ -614,7 +615,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUGCLiveryAsync(id, endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
 
@@ -637,7 +638,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUGCPhotoAsync(id, endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
 
@@ -660,7 +661,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUGCTuneAsync(id, endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
 
@@ -733,7 +734,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             var getBlockList = this.sunriseServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getBlockList, getKustoCars).ConfigureAwait(true);
 
@@ -1005,7 +1006,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -1036,7 +1037,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(
                 profileId,
                 endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -1159,7 +1160,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -1246,7 +1247,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -1290,7 +1291,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
@@ -1761,13 +1762,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory list.
         /// </summary>
-        private async Task<SunriseMasterInventory> RetrieveMasterInventoryList()
+        private async Task<SunriseMasterInventory> RetrieveMasterInventoryListAsync()
         {
-            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Cars);
-            var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4CarHorns);
-            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4VanityItems);
-            var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Emotes);
-            var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4QuickChatLines);
+            var cars = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH4Cars);
+            var carHorns = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH4CarHorns);
+            var vanityItems = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH4VanityItems);
+            var emotes = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH4Emotes);
+            var quickChatLines = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH4QuickChatLines);
 
             await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
 
@@ -1795,9 +1796,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        private async Task<string> VerifyGiftAgainstMasterInventory(SunriseMasterInventory gift)
+        private async Task<string> VerifyGiftAgainstMasterInventoryAsync(SunriseMasterInventory gift)
         {
-            var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventoryItem = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
             var error = string.Empty;
 
             foreach (var car in gift.Cars)

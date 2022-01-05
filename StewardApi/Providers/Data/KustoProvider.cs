@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<JObject>> RunKustoQuery(string query, string dbName)
+        public async Task<IList<JObject>> RunKustoQueryAsync(string query, string dbName)
         {
             var items = new List<JObject>();
             var columns = new List<KustoColumn>();
@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<PurchasedEntitlement>> GetPlayerPurchasedEntitlements(ulong xuid)
+        public async Task<IEnumerable<PurchasedEntitlement>> GetPlayerPurchasedEntitlementsAsync(ulong xuid)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<CancelledEntitlement>> GetPlayerCancelledEntitlements(ulong xuid)
+        public async Task<IEnumerable<CancelledEntitlement>> GetPlayerCancelledEntitlementsAsync(ulong xuid)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<RefundedEntitlement>> GetPlayerRefundedEntitlements(ulong xuid)
+        public async Task<IEnumerable<RefundedEntitlement>> GetPlayerRefundedEntitlementsAsync(ulong xuid)
         {
             try
             {
@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<MasterInventoryItem>> GetMasterInventoryList(string kustoQuery)
+        public async Task<IList<MasterInventoryItem>> GetMasterInventoryListAsync(string kustoQuery)
         {
             try
             {
@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<KustoCar>> GetDetailedKustoCars(string kustoQuery)
+        public async Task<IList<KustoCar>> GetDetailedKustoCarsAsync(string kustoQuery)
         {
             if (!KustoQueries.AllowedDetailedKustoCarQueries.Contains(kustoQuery))
             {

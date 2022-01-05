@@ -1428,7 +1428,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
-                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
+                this.KustoProvider.GetMasterInventoryListAsync(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
                 this.SteelheadPlayerDetailsProvider.GetPlayerIdentitiesAsync(Arg.Any<IList<IdentityQueryAlpha>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
                 this.SteelheadPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
                 this.SteelheadPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerDetails>());

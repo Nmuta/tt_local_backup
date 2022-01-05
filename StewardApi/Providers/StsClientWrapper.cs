@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Initializes a new instance of the <see cref="StsClientWrapper"/> class.
         /// </summary>
+        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public StsClientWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
         {
             configuration.ShouldNotBeNull(nameof(configuration));

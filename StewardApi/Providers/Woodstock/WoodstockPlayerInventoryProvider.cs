@@ -165,8 +165,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         .ConfigureAwait(false);
                 }
 
-                giftResponse.Errors = await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-                await this.UpdateBackstagePasses(xuid, backstagePassDelta, endpoint).ConfigureAwait(false);
+                giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                await this.UpdateBackstagePassesAsync(xuid, backstagePassDelta, endpoint).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
@@ -247,7 +247,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         endpoint).ConfigureAwait(false);
                 }
 
-                giftResponse.Errors = await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
@@ -380,7 +380,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             return result;
         }
 
-        private async Task<IList<StewardError>> SendGifts(
+        private async Task<IList<StewardError>> SendGiftsAsync(
             Func<InventoryItemType, int, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)
@@ -442,7 +442,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             return errors;
         }
 
-        private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta, string endpoint)
+        private async Task UpdateBackstagePassesAsync(ulong xuid, int balanceDelta, string endpoint)
         {
             if (balanceDelta <= 0)
             {

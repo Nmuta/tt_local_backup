@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
@@ -10,6 +11,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
     ///     background thread.
     /// </summary>
     /// <seealso cref="IScheduler" />
+    [SuppressMessage("Usage", "VSTHRD110:Observe result of async calls", Justification = "Fire and forget by design.")]
     public sealed class TaskExecutionScheduler : IScheduler
     {
         /// <summary>

@@ -175,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             foreach (var item in items ?? Enumerable.Empty<MasterInventoryItem>())
             {
-                await this.gravityService.LiveOpsGrantItem(t10Id, gameSettingsId, itemType, item.Id, item.Quantity).ConfigureAwait(true);
+                await this.gravityService.LiveOpsGrantItemAsync(t10Id, gameSettingsId, itemType, item.Id, item.Quantity).ConfigureAwait(true);
             }
         }
     }

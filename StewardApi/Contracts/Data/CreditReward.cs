@@ -48,8 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             return new CreditReward(
                 reader.Get<long>(nameof(Id)),
                 reader.Get<string>(nameof(Rarity)),
-                reader.Get<long>(nameof(Amount))
-            );
+                reader.Get<long>(nameof(Amount)));
         }
     }
 }

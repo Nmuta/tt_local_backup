@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
@@ -29,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             mapper.ShouldNotBeNull(nameof(mapper));
-            
+
             this.woodstockService = woodstockService;
             this.mapper = mapper;
         }
@@ -138,6 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
         public async Task<IList<HideableUgc>> GetHiddenUGCForUserAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));

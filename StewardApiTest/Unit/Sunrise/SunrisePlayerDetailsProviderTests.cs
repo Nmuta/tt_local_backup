@@ -555,12 +555,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetProfileSummaryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.SunriseService.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminCommentsOutput>());
                 this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
-                this.SunriseService.GetUserIds(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserIdsOutput>());
+                this.SunriseService.GetUserIdsAsync(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserIdsOutput>());
                 this.SunriseService.BanUsersAsync(Arg.Any<LiveOpsContracts.ForzaUserBanParameters[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
                 this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.SunriseService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
-                this.SunriseService.GetPlayerAuctions(Arg.Any<LiveOpsContracts.ForzaAuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsContracts.AuctionManagementService.SearchAuctionHouseOutput>());
+                this.SunriseService.GetPlayerAuctionsAsync(Arg.Any<LiveOpsContracts.ForzaAuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsContracts.AuctionManagementService.SearchAuctionHouseOutput>());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<LiveOpsContracts.ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<LiveOpsContracts.ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());

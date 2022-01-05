@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
@@ -21,6 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardUserProvider"/> class.
         /// </summary>
+        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public StewardUserProvider(
             ITableStorageClientFactory tableStorageClientFactory,
             IConfiguration configuration,

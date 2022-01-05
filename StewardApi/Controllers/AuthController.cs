@@ -39,10 +39,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the user.
         /// </summary>
         [HttpGet("me")]
-        public IActionResult GetLiveOpsUser()
+        public async Task<IActionResult> GetLiveOpsUser()
         {
             var userClaims = this.User.UserClaims();
-            this.stewardUserProvider.EnsureStewardUserAsync(userClaims).ConfigureAwait(true);
+            await this.stewardUserProvider.EnsureStewardUserAsync(userClaims).ConfigureAwait(true);
 
             return this.Ok(userClaims);
         }
