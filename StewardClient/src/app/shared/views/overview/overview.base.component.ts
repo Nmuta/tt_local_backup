@@ -16,7 +16,8 @@ export type ProfileSummaryUnion = SunriseProfileSummary | WoodstockProfileSummar
 })
 export abstract class ProfileOverviewBaseComponent<T extends ProfileSummaryUnion>
   extends BaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   @Input() public identity?: IdentityResultUnion;
 
   /** The overview data. */

@@ -11,9 +11,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
   templateUrl: '../player-sidebar-details.component.html',
   styleUrls: ['../player-sidebar-details.component.scss'],
 })
-export class OpusPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
-  OpusPlayerDetails
-> {
+export class OpusPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<OpusPlayerDetails> {
   public gameTitle = GameTitleCodeName.FH3;
 
   constructor(private readonly opusService: OpusService) {

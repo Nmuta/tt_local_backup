@@ -21,7 +21,8 @@ export type CreditDetailsEntryMixin = {
 })
 export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUnion>
   extends BaseComponent
-  implements OnInit, OnChanges {
+  implements OnInit, OnChanges
+{
   @Input() public identity?: IdentityResultUnion;
 
   /** A list of player credit events. */

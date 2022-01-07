@@ -18,6 +18,9 @@ export class EndpointKeyMemoryModel {
   public [GameTitleCodeName.FM8]: string[];
 }
 
+/**
+ *
+ */
 @Injectable()
 @State<EndpointKeyMemoryModel>({
   name: 'endpointKeyMemory',

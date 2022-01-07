@@ -35,7 +35,8 @@ import { cloneDeep } from 'lodash';
 })
 export class SunriseGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultAlpha, SunriseMasterInventory>
-  implements OnInit {
+  implements OnInit
+{
   @Select(SunriseGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FH4;
 

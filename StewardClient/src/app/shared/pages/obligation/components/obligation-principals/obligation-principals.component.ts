@@ -45,7 +45,8 @@ export type ObligationPrincipalsOptions = ObligationPrincipalOptions[];
 })
 export class ObligationPrincipalsComponent
   extends BaseComponent
-  implements ControlValueAccessor, Validator, OnInit {
+  implements ControlValueAccessor, Validator, OnInit
+{
   public static readonly defaultsSingle: ObligationPrincipalOptions = {
     principalType: PrincipalType.User,
     principalValue: '',

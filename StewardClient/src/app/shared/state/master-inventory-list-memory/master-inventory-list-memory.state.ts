@@ -33,6 +33,9 @@ export class MasterInventoryListMemoryModel {
   public [GameTitleCodeName.FH5]: WoodstockMasterInventory;
 }
 
+/**
+ *
+ */
 @State<MasterInventoryListMemoryModel>({
   name: 'giftingMasterListMemory',
   defaults: {

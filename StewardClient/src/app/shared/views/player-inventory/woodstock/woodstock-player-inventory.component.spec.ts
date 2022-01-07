@@ -27,7 +27,7 @@ describe('WoodstockPlayerInventoryComponent', () => {
 
     service = TestBed.inject(WoodstockService);
     waitUntil$ = new Subject<void>();
-    ((service as unknown) as MockWoodstockService).waitUntil$ = waitUntil$;
+    (service as unknown as MockWoodstockService).waitUntil$ = waitUntil$;
   });
 
   beforeEach(() => {

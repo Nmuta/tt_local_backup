@@ -41,7 +41,7 @@ export enum GiftReason {
 })
 export abstract class GiftBasketBaseComponent<
   IdentityT extends IdentityResultUnion,
-  MasterInventoryT extends MasterInventoryUnion
+  MasterInventoryT extends MasterInventoryUnion,
 > extends BaseComponent {
   @Input() public playerIdentities: IdentityT[];
   @Input() public lspGroup: LspGroup;
@@ -167,9 +167,9 @@ export abstract class GiftBasketBaseComponent<
 
   /** Edit item quantity */
   public editItemQuantity(index: number): void {
-    const newQuantityStr = (document.getElementById(
-      `new-item-quantity-${index}`,
-    ) as HTMLInputElement).value;
+    const newQuantityStr = (
+      document.getElementById(`new-item-quantity-${index}`) as HTMLInputElement
+    ).value;
     const newQuantity = parseInt(newQuantityStr);
 
     if (newQuantity > 0) {

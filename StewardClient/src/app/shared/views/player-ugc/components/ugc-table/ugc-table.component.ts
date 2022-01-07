@@ -40,7 +40,8 @@ export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailImageOneBa
 })
 export abstract class UGCTableBaseComponent
   extends BaseComponent
-  implements OnInit, OnChanges, AfterViewInit {
+  implements OnInit, OnChanges, AfterViewInit
+{
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() content: PlayerUGCItem[];

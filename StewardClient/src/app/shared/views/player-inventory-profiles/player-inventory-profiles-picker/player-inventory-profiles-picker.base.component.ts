@@ -37,10 +37,9 @@ type AcceptableInventoryProfileTypesIntersectionIntermediate = WoodstockPlayerIn
   GravityPseudoPlayerInventoryProfile &
   ApolloPlayerInventoryProfile;
 
-type AcceptableInventoryProfileTypesIntersection = Partial<
-  AcceptableInventoryProfileTypesIntersectionIntermediate
-> &
-  AcceptableInventoryProfileTypes;
+type AcceptableInventoryProfileTypesIntersection =
+  Partial<AcceptableInventoryProfileTypesIntersectionIntermediate> &
+    AcceptableInventoryProfileTypes;
 
 /** Base component for picking player profiles. */
 @Component({
@@ -49,10 +48,11 @@ type AcceptableInventoryProfileTypesIntersection = Partial<
 export abstract class PlayerInventoryProfilesPickerBaseComponent<
     ProfileIdType extends string | BigNumber,
     IdentityResultType extends IdentityResultUnion,
-    InventoryProfileType extends AcceptableInventoryProfileTypes
+    InventoryProfileType extends AcceptableInventoryProfileTypes,
   >
   extends BaseComponent
-  implements OnInit, OnChanges {
+  implements OnInit, OnChanges
+{
   @Input() public identity: IdentityResultType;
   @Input() public profileId: ProfileIdType;
   @Output() public profileIdChange = new EventEmitter<ProfileIdType>();
@@ -93,7 +93,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
         takeUntil(this.onDestroy$),
       )
       .subscribe(profiles => {
-        this.profiles = (profiles as unknown) as AcceptableInventoryProfileTypesIntersection[];
+        this.profiles = profiles as unknown as AcceptableInventoryProfileTypesIntersection[];
 
         // clear selected profile if the currently set ID does not exist
         if (

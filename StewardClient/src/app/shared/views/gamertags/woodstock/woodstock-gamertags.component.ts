@@ -13,9 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: '../gamertags.component.html',
   styleUrls: ['../gamertags.component.scss'],
 })
-export class WoodstockGamertagsComponent extends GamertagsBaseComponent<
-  WoodstockSharedConsoleUser
-> {
+export class WoodstockGamertagsComponent extends GamertagsBaseComponent<WoodstockSharedConsoleUser> {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstockService: WoodstockService, route: ActivatedRoute) {

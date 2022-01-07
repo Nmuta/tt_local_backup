@@ -64,17 +64,17 @@ export interface KustoRestateOMaticDataActivityOptions {
 })
 export class RestateOMaticComponent
   extends BaseComponent
-  implements ControlValueAccessor, Validator, AfterViewInit {
+  implements ControlValueAccessor, Validator, AfterViewInit
+{
   public static readonly NAME_PREFIX = 'ROM_';
   private static readonly UTC_NOW = DateTime.utc();
   private readonly attachedToFormControl$ = new ReplaySubject<FormControl>(1);
-  private readonly attachedToFormControlValue$: Observable<
-    KustoDataActivityOptions
-  > = this.attachedToFormControl$.pipe(
-    mergeMap(fc => fc?.valueChanges.pipe(startWith(fc.value)) ?? of([null])),
-    map(value => value as KustoDataActivityOptions),
-    takeUntil(this.onDestroy$),
-  );
+  private readonly attachedToFormControlValue$: Observable<KustoDataActivityOptions> =
+    this.attachedToFormControl$.pipe(
+      mergeMap(fc => fc?.valueChanges.pipe(startWith(fc.value)) ?? of([null])),
+      map(value => value as KustoDataActivityOptions),
+      takeUntil(this.onDestroy$),
+    );
 
   /** Sets the attached form control. Used for populating some values. */
   @Input() public set attachedToFormControl(value: FormControl) {

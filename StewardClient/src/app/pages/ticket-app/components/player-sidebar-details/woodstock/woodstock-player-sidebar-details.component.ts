@@ -11,9 +11,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
   templateUrl: '../player-sidebar-details.component.html',
   styleUrls: ['../player-sidebar-details.component.scss'],
 })
-export class WoodstockPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
-  WoodstockPlayerDetails
-> {
+export class WoodstockPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<WoodstockPlayerDetails> {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstockService: WoodstockService) {

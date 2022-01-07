@@ -12,9 +12,7 @@ import { PlayerNotification } from '@models/notifications.model';
   templateUrl: '../player-notifications.component.html',
   styleUrls: ['../player-notifications.component.scss'],
 })
-export class SunrisePlayerNotificationsComponent extends PlayerNotificationsBaseComponent<
-  PlayerNotification
-> {
+export class SunrisePlayerNotificationsComponent extends PlayerNotificationsBaseComponent<PlayerNotification> {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(private readonly sunrise: SunriseService) {

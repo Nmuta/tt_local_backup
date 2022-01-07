@@ -127,9 +127,10 @@ describe('SunriseGiftLiveryComponent', () => {
       it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
         component.giftLiveryToPlayers$(liveryId, xuids, giftReason);
 
-        expect(
-          mockSunriseService.postGiftLiveryToPlayersUsingBackgroundJob$,
-        ).toHaveBeenCalledWith(liveryId, { xuids: xuids, giftReason: giftReason } as GroupGift);
+        expect(mockSunriseService.postGiftLiveryToPlayersUsingBackgroundJob$).toHaveBeenCalledWith(
+          liveryId,
+          { xuids: xuids, giftReason: giftReason } as GroupGift,
+        );
       });
     });
   });

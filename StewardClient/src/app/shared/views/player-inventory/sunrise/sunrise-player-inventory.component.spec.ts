@@ -23,7 +23,7 @@ describe('SunrisePlayerInventoryComponent', () => {
 
     service = TestBed.inject(SunriseService);
     waitUntil$ = new Subject<void>();
-    ((service as unknown) as MockSunriseService).waitUntil$ = waitUntil$;
+    (service as unknown as MockSunriseService).waitUntil$ = waitUntil$;
   });
 
   beforeEach(() => {

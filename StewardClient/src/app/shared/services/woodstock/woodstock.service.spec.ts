@@ -264,7 +264,8 @@ describe('WoodstockService', () => {
   });
 
   it('handles getSharedConsoleUsersByXuid', done => {
-    const typedReturnValue = (nextReturnValue = WoodstockPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
+    const typedReturnValue = (nextReturnValue =
+      WoodstockPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
     service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,

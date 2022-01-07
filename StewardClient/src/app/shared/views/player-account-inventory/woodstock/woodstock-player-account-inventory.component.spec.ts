@@ -51,7 +51,8 @@ describe('WoodstockPlayerAccountInventoryComponent', () => {
       waitForAsync(() => {
         // account-inventory list prep
         playerAccountInventory$ = new Subject<WoodstockPlayerAccountInventory>();
-        playerAccountInventoryValue = WoodstockPlayerXuidAccountInventoryFakeApi.make() as WoodstockPlayerAccountInventory;
+        playerAccountInventoryValue =
+          WoodstockPlayerXuidAccountInventoryFakeApi.make() as WoodstockPlayerAccountInventory;
         service.getPlayerAccountInventoryByXuid$ = jasmine
           .createSpy('getPlayerAccountInventoryByXuid$')
           .and.returnValue(playerAccountInventory$);

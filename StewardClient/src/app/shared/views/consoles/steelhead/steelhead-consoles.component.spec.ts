@@ -54,7 +54,8 @@ describe('SteelheadConsolesComponent', () => {
       waitForAsync(() => {
         // console details prep
         consoleDetails$ = new Subject<SteelheadConsoleDetailsEntry[]>();
-        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as SteelheadConsoleDetailsEntry[];
+        consoleDetailsValue =
+          SunrisePlayerXuidConsolesFakeApi.makeMany() as SteelheadConsoleDetailsEntry[];
         mockSteelheadService.getConsoleDetailsByXuid$ = jasmine
           .createSpy('getConsoleDetailsByXuid$')
           .and.returnValue(consoleDetails$);

@@ -16,9 +16,8 @@ export class AuctionDataComponent implements OnChanges, AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
   public bidsDisplayedColumns = ['top', 'dateUtc', 'xuid', 'amount', 'status'];
-  public bidsData: BetterMatTableDataSource<AuctionDataBid> = new BetterMatTableDataSource<
-    AuctionDataBid
-  >([]);
+  public bidsData: BetterMatTableDataSource<AuctionDataBid> =
+    new BetterMatTableDataSource<AuctionDataBid>([]);
 
   /** Angular lifecycle hook. */
   public ngAfterViewInit(): void {

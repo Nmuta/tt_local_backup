@@ -18,7 +18,8 @@ import { GravityPlayerInventory, GravityPseudoPlayerInventoryProfile } from '@mo
 })
 export class GravityGiftHistoryComponent
   extends GiftHistoryBaseComponent<string>
-  implements OnInit {
+  implements OnInit
+{
   @Select(GravityGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
 

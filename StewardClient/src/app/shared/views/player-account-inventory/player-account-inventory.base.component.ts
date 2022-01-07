@@ -17,7 +17,8 @@ export type AccountInventoryUnion = SunrisePlayerAccountInventory | WoodstockPla
 })
 export abstract class PlayerAccountInventoryBaseComponent<T extends AccountInventoryUnion>
   extends BaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   @Input() public identity?: IdentityResultUnion;
 
   public accountInventory: T;

@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js';
   template: '',
 })
 export abstract class GiftingBaseComponent<
-  ProfileIdType extends BigNumber | string
+  ProfileIdType extends BigNumber | string,
 > extends BaseComponent {
   public matTabSelectedIndex: number = 0;
   public disableLspGroupSelection: boolean = true;

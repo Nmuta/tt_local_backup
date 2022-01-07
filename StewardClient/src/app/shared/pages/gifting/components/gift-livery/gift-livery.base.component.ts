@@ -25,7 +25,7 @@ enum BackgroundJobRetryStatus {
   template: '',
 })
 export abstract class GiftLiveryBaseComponent<
-  IdentityT extends IdentityResultUnion
+  IdentityT extends IdentityResultUnion,
 > extends BaseComponent {
   @Input() public playerIdentities: IdentityT[];
   @Input() public lspGroup: LspGroup;

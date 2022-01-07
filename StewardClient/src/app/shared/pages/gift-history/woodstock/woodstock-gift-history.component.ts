@@ -23,7 +23,8 @@ import BigNumber from 'bignumber.js';
 })
 export class WoodstockGiftHistoryComponent
   extends GiftHistoryBaseComponent<BigNumber>
-  implements OnInit {
+  implements OnInit
+{
   @Select(WoodstockGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

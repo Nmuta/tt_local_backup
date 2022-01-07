@@ -24,9 +24,8 @@ import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/e
   styleUrls: ['./apollo-gifting.component.scss'],
 })
 export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
-  @Select(ApolloGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
-    IdentityResultAlphaBatch
-  >;
+  @Select(ApolloGiftingState.selectedPlayerIdentities)
+  public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
   public title: GameTitleCodeName = GameTitleCodeName.FM7;
   public selectedPlayerIdentities: IdentityResultAlphaBatch;

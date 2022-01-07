@@ -49,9 +49,9 @@ export class MockSunriseService {
     .createSpy('putFlagsByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
   public getBanHistoryByXuid$ = jasmine.createSpy('getBanHistoryByXuid').and.callFake(() => {
-    const unprocessed = (SunrisePlayerXuidBanHistoryFakeApi.make(
+    const unprocessed = SunrisePlayerXuidBanHistoryFakeApi.make(
       new BigNumber(12345),
-    ) as unknown) as SunriseBanHistory;
+    ) as unknown as SunriseBanHistory;
 
     return of(unprocessed);
   });

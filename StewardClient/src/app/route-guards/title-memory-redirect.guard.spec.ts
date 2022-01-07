@@ -12,15 +12,15 @@ describe('TitleMemoryRedirectGuard', () => {
   let store: Store;
   const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' } };
   const testRouteParent: Partial<ActivatedRouteSnapshot> = {
-    parent: (testRouteParentParent as unknown) as ActivatedRouteSnapshot,
+    parent: testRouteParentParent as unknown as ActivatedRouteSnapshot,
   };
   const testRoute: Partial<ActivatedRouteSnapshot> = {
-    parent: (testRouteParent as unknown) as ActivatedRouteSnapshot,
-    pathFromRoot: ([
+    parent: testRouteParent as unknown as ActivatedRouteSnapshot,
+    pathFromRoot: [
       {
         url: [new UrlSegment('hello', {}), new UrlSegment('world', {})],
       },
-    ] as unknown) as ActivatedRouteSnapshot[],
+    ] as unknown as ActivatedRouteSnapshot[],
   };
   const testSnapshot: Partial<RouterStateSnapshot> = {};
 

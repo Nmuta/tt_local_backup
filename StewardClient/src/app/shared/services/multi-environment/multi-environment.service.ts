@@ -76,6 +76,10 @@ type ResultsUnion<T extends keyof ResultSet> = ResultsRetailOnly<T> &
   ResultsStandardOnly<T> &
   ResultsComplete<T>;
 
+type ResultsIntersection<T extends keyof ResultSet> =
+  | ResultsComplete<T>
+  | ResultsStandardOnly<T>
+  | ResultsRetailOnly<T>;
 /** A set of Identity Results across all titles for a single user. */
 export interface SingleUserResultSet {
   sunrise: IdentityResultAlpha;
@@ -121,13 +125,13 @@ export class MultiEnvironmentService {
       (state: AppState) => state.userSettings,
     );
 
-    const queries: Observable<ResultsUnion<GameTitle>>[] = [];
+    const queries: Observable<RecursivePartial<ResultsIntersection<GameTitle>>>[] = [];
 
     /** Produces a filled out results block for the given title. */
     function mapTitleToStandardAndMaybeRetail<
       T extends keyof ResultSet,
       IdentityResultT extends ResultSet[T],
-      TitleEndpointKey
+      TitleEndpointKey,
     >(
       results: IdentityResultT,
       entry: T,
@@ -153,7 +157,7 @@ export class MultiEnvironmentService {
       T extends keyof ResultSet,
       TitleEndpointKey,
       IdentityQueryT extends AnyIdentityQuery,
-      IdentityResultTBatch extends IdentityResultAlphaBatch | IdentityResultBetaBatch
+      IdentityResultTBatch extends IdentityResultAlphaBatch | IdentityResultBetaBatch,
     >(
       entry: T,
       method$: (
@@ -244,9 +248,10 @@ export class MultiEnvironmentService {
     return combineLatest(queries).pipe(
       map(results => {
         // group all the partial results together into a single object
-        const groupedResults = results.reduce((accum, v) => merge(accum, v), {}) as ResultsUnion<
-          GameTitle
-        >;
+        const groupedResults = results.reduce(
+          (accum, v) => merge(accum, v),
+          {},
+        ) as ResultsUnion<GameTitle>;
 
         // a lookup where we will store the by-user results
         const lookup: Record<string, SingleUserResult> = chain(newQueries)

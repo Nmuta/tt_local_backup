@@ -1,6 +1,6 @@
 // This file contains some build-time print statements for introspection and some samples of their output.
 // Do not import this file outside global.scss
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import '/src/styles/mixins';
 
 @debug '$app-background: ' $app-background; // this is a of background-relevant colors. uncomment this line to see what's available on build.

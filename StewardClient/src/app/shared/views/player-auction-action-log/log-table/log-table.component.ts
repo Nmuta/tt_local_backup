@@ -43,7 +43,8 @@ export interface LogTableServiceContract
 })
 export class AuctionActionLogTableComponent
   extends BaseComponent
-  implements OnInit, OnChanges, AfterViewInit {
+  implements OnInit, OnChanges, AfterViewInit
+{
   @Input() public auctionLog: PlayerAuctionAction[] = [];
   @Input() public service: LogTableServiceContract;
   @Input() public linkGenerator: AuctionDetailsLinkGenerator;

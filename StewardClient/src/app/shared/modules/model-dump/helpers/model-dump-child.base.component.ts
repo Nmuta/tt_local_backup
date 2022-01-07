@@ -20,9 +20,10 @@ export class ModelDumpChildBaseComponent extends BaseComponent implements OnInit
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.processedModel$ = this.injector.get(MODEL_DUMP_PROCESSED_MODEL$, null) as Observable<
-      ExtractedModel
-    >;
+    this.processedModel$ = this.injector.get(
+      MODEL_DUMP_PROCESSED_MODEL$,
+      null,
+    ) as Observable<ExtractedModel>;
     this.processedModel$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
       this.processedModel = v;
     });

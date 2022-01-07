@@ -38,7 +38,7 @@ describe('BanOptionsComponent', () => {
     });
 
     it('should not call onChange when writeValue(data) called', () => {
-      component.writeValue((component.defaults as unknown) as Record<string, unknown>);
+      component.writeValue(component.defaults as unknown as Record<string, unknown>);
       expect(onChangeFunction).toHaveBeenCalledTimes(0);
     });
 

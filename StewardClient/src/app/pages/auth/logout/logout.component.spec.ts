@@ -32,7 +32,7 @@ describe('LogoutComponent:', () => {
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('store.dispatch');
     msal = TestBed.inject(MsalService);
-    windowService = (TestBed.inject(WindowService) as unknown) as MockWindowService;
+    windowService = TestBed.inject(WindowService) as unknown as MockWindowService;
   });
 
   beforeEach(() => {

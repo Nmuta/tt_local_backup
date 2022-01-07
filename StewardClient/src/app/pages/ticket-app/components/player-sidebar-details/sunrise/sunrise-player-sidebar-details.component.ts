@@ -11,9 +11,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
   templateUrl: '../player-sidebar-details.component.html',
   styleUrls: ['../player-sidebar-details.component.scss'],
 })
-export class SunrisePlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
-  SunrisePlayerDetails
-> {
+export class SunrisePlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<SunrisePlayerDetails> {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(private readonly sunriseService: SunriseService) {

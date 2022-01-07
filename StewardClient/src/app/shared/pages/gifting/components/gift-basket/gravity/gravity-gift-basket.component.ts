@@ -35,7 +35,8 @@ import { cloneDeep } from 'lodash';
 })
 export class GravityGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultBeta, GravityMasterInventory>
-  implements OnInit, OnChanges {
+  implements OnInit, OnChanges
+{
   @Select(GravityGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
 
   public newIdentitySelectedSubject$ = new Subject<string>();
@@ -205,9 +206,9 @@ export class GravityGiftBasketComponent
     // Check item ids & types to verify item is real
     for (let i = 0; i < giftBasket.length; i++) {
       const item = giftBasket[i];
-      const itemExists = this.masterInventory[
-        item.itemType
-      ]?.some((masterItem: MasterInventoryItem) => masterItem.id.isEqualTo(item.id));
+      const itemExists = this.masterInventory[item.itemType]?.some(
+        (masterItem: MasterInventoryItem) => masterItem.id.isEqualTo(item.id),
+      );
       giftBasket[i].restriction = !itemExists
         ? 'Item does not exist in the master inventory.'
         : undefined;

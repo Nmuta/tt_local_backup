@@ -24,7 +24,7 @@ describe('GravityPlayerInventoryComponent', () => {
 
     service = TestBed.inject(GravityService);
     waitUntil$ = new Subject<void>();
-    ((service as unknown) as MockGravityService).waitUntil$ = waitUntil$;
+    (service as unknown as MockGravityService).waitUntil$ = waitUntil$;
   });
 
   beforeEach(() => {

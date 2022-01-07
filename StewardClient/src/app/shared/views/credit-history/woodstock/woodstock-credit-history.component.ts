@@ -12,9 +12,7 @@ import { GameTitleCodeName } from '@models/enums';
   templateUrl: '../credit-history.component.html',
   styleUrls: ['../credit-history.component.scss'],
 })
-export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<
-  WoodstockCreditDetailsEntry
-> {
+export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<WoodstockCreditDetailsEntry> {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstock: WoodstockService) {

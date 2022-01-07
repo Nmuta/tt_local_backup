@@ -27,7 +27,7 @@ describe('SteelheadPlayerInventoryComponent', () => {
 
     service = TestBed.inject(SteelheadService);
     waitUntil$ = new Subject<void>();
-    ((service as unknown) as MockSteelheadService).waitUntil$ = waitUntil$;
+    (service as unknown as MockSteelheadService).waitUntil$ = waitUntil$;
   });
 
   beforeEach(() => {

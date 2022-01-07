@@ -24,8 +24,8 @@ import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
 export class ReleaseManagementComponent extends BaseComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  private readonly getToolsAvailability$ = new Subject();
-  private readonly getInProgressJobs$ = new Subject();
+  private readonly getToolsAvailability$ = new Subject<void>();
+  private readonly getInProgressJobs$ = new Subject<void>();
 
   public toolsAvailability: ToolsAvailability;
   public getToolsAvailabilityMonitor = new ActionMonitor('GET tools availability');

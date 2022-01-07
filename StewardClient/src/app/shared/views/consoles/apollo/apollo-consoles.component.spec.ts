@@ -54,7 +54,8 @@ describe('ApolloConsolesComponent', () => {
       waitForAsync(() => {
         // console details prep
         consoleDetails$ = new Subject<ApolloConsoleDetailsEntry[]>();
-        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as ApolloConsoleDetailsEntry[];
+        consoleDetailsValue =
+          SunrisePlayerXuidConsolesFakeApi.makeMany() as ApolloConsoleDetailsEntry[];
         mockApolloService.getConsoleDetailsByXuid$ = jasmine
           .createSpy('getConsoleDetailsByXuid$')
           .and.returnValue(consoleDetails$);

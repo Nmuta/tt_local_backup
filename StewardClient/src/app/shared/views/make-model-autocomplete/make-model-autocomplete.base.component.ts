@@ -18,7 +18,8 @@ export type MakeModelFilterGroup = {
 })
 export abstract class MakeModelAutocompleteBaseComponent
   extends BaseComponent
-  implements OnInit, ControlValueAccessor {
+  implements OnInit, ControlValueAccessor
+{
   @Input() public makeOnlyOptions = true;
   @Output() public changes = new EventEmitter<KustoCar>();
 

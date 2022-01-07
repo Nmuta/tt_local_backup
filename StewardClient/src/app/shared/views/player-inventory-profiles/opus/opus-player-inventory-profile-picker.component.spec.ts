@@ -21,7 +21,7 @@ describe('OpusPlayerInventoryProfilePickerComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = (TestBed.inject(OpusService) as unknown) as MockOpusService;
+    service = TestBed.inject(OpusService) as unknown as MockOpusService;
   });
 
   beforeEach(() => {

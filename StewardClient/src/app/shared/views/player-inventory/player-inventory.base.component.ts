@@ -39,10 +39,11 @@ export interface PropertyToExpandoData<T> {
 })
 export abstract class PlayerInventoryBaseComponent<
     PlayerInventoryType extends AcceptablePlayerInventoryTypeUnion,
-    IdentityResultType extends IdentityResultUnion
+    IdentityResultType extends IdentityResultUnion,
   >
   extends BaseComponent
-  implements OnInit, OnChanges {
+  implements OnInit, OnChanges
+{
   @Input() public identity: IdentityResultType;
   @Input() public profileId: BigNumber | string | undefined | null;
   @Output() public inventoryFound = new EventEmitter<PlayerInventoryType>();

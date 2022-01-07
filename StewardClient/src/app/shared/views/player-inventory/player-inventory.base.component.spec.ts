@@ -6,10 +6,9 @@ import { PlayerInventoryBaseComponent } from './player-inventory.base.component'
 
 describe('PlayerInventoryBaseComponent', () => {
   let component: PlayerInventoryBaseComponent<SunriseMasterInventory, IdentityResultAlpha>;
-  let fixture: ComponentFixture<PlayerInventoryBaseComponent<
-    SunriseMasterInventory,
-    IdentityResultAlpha
-  >>;
+  let fixture: ComponentFixture<
+    PlayerInventoryBaseComponent<SunriseMasterInventory, IdentityResultAlpha>
+  >;
 
   beforeEach(
     waitForAsync(() => {

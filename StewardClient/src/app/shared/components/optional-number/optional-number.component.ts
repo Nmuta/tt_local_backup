@@ -42,7 +42,8 @@ export interface OptionalNumberOptionsInternal {
 })
 export class OptionalNumberComponent
   extends BaseComponent
-  implements ControlValueAccessor, Validator {
+  implements ControlValueAccessor, Validator
+{
   @ContentChild(TemplateRef) template: TemplateRef<unknown>;
 
   @Input() public label: string;

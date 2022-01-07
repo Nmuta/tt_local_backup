@@ -135,18 +135,16 @@ describe('UtcInterceptor', () => {
   });
 
   it('properly converts top level object', done => {
-    http
-      .get<TestResponse>(testUrl, { responseType: 'json' })
-      .subscribe(response => {
-        expect(response).toBeTruthy();
-        expect(interceptor.handle).toHaveBeenCalledTimes(1);
+    http.get<TestResponse>(testUrl, { responseType: 'json' }).subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        expect(response.testUtc instanceof DateTime).toBeTruthy();
-        expect(response.test instanceof DateTime).toBeFalsy();
-        expect(response.test).toBe(testResponse.test);
+      expect(response.testUtc instanceof DateTime).toBeTruthy();
+      expect(response.test instanceof DateTime).toBeFalsy();
+      expect(response.test).toBe(testResponse.test);
 
-        done();
-      });
+      done();
+    });
 
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
@@ -156,22 +154,20 @@ describe('UtcInterceptor', () => {
   });
 
   it('properly converts nested objects', done => {
-    http
-      .get<TestResponse>(testUrl, { responseType: 'json' })
-      .subscribe(response => {
-        expect(response).toBeTruthy();
-        expect(interceptor.handle).toHaveBeenCalledTimes(1);
+    http.get<TestResponse>(testUrl, { responseType: 'json' }).subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        expect(response.nested.testUtc instanceof DateTime).toBeTruthy();
-        expect(response.nested.test instanceof DateTime).toBeFalsy();
-        expect(response.nested.test).toBe(testResponse.nested.test);
+      expect(response.nested.testUtc instanceof DateTime).toBeTruthy();
+      expect(response.nested.test instanceof DateTime).toBeFalsy();
+      expect(response.nested.test).toBe(testResponse.nested.test);
 
-        expect(response.deeplyNested.testUtc instanceof DateTime).toBeTruthy();
-        expect(response.deeplyNested.test instanceof DateTime).toBeFalsy();
-        expect(response.deeplyNested.test).toBe(testResponse.deeplyNested.test);
+      expect(response.deeplyNested.testUtc instanceof DateTime).toBeTruthy();
+      expect(response.deeplyNested.test instanceof DateTime).toBeFalsy();
+      expect(response.deeplyNested.test).toBe(testResponse.deeplyNested.test);
 
-        done();
-      });
+      done();
+    });
 
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
@@ -181,18 +177,16 @@ describe('UtcInterceptor', () => {
   });
 
   it('properly converts deeply nested objects', done => {
-    http
-      .get<TestResponse>(testUrl, { responseType: 'json' })
-      .subscribe(response => {
-        expect(response).toBeTruthy();
-        expect(interceptor.handle).toHaveBeenCalledTimes(1);
+    http.get<TestResponse>(testUrl, { responseType: 'json' }).subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        expect(response.deeplyNested.nested.testUtc instanceof DateTime).toBeTruthy();
-        expect(response.deeplyNested.nested.test instanceof DateTime).toBeFalsy();
-        expect(response.test).toBe(testResponse.test);
+      expect(response.deeplyNested.nested.testUtc instanceof DateTime).toBeTruthy();
+      expect(response.deeplyNested.nested.test instanceof DateTime).toBeFalsy();
+      expect(response.test).toBe(testResponse.test);
 
-        done();
-      });
+      done();
+    });
 
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
@@ -204,20 +198,18 @@ describe('UtcInterceptor', () => {
   });
 
   it('properly converts top-level arrays', done => {
-    http
-      .get<TestResponseArray>(testUrl, { responseType: 'json' })
-      .subscribe(response => {
-        expect(response).toBeTruthy();
-        expect(interceptor.handle).toHaveBeenCalledTimes(1);
+    http.get<TestResponseArray>(testUrl, { responseType: 'json' }).subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        for (const item of response) {
-          expect(item.testUtc instanceof DateTime).toBeTruthy();
-          expect(item.test instanceof DateTime).toBeFalsy();
-          expect(item.test).toBe(testResponseSimple.test);
-        }
+      for (const item of response) {
+        expect(item.testUtc instanceof DateTime).toBeTruthy();
+        expect(item.test instanceof DateTime).toBeFalsy();
+        expect(item.test).toBe(testResponseSimple.test);
+      }
 
-        done();
-      });
+      done();
+    });
 
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
@@ -227,25 +219,23 @@ describe('UtcInterceptor', () => {
   });
 
   it('properly converts nested top-level nested arrays', done => {
-    http
-      .get<TestResponseCompositeArray>(testUrl, { responseType: 'json' })
-      .subscribe(response => {
-        expect(response).toBeTruthy();
-        expect(interceptor.handle).toHaveBeenCalledTimes(1);
+    http.get<TestResponseCompositeArray>(testUrl, { responseType: 'json' }).subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        for (const item of response) {
-          expect(item.testUtc instanceof DateTime).toBeTruthy();
-          expect(item.test instanceof DateTime).toBeFalsy();
-          expect(item.test).toBe(testResponseComposite.test);
-          for (const item2 of item.array) {
-            expect(item2.testUtc instanceof DateTime).toBeTruthy();
-            expect(item2.test instanceof DateTime).toBeFalsy();
-            expect(item2.test).toBe(testResponseSimple.test);
-          }
+      for (const item of response) {
+        expect(item.testUtc instanceof DateTime).toBeTruthy();
+        expect(item.test instanceof DateTime).toBeFalsy();
+        expect(item.test).toBe(testResponseComposite.test);
+        for (const item2 of item.array) {
+          expect(item2.testUtc instanceof DateTime).toBeTruthy();
+          expect(item2.test instanceof DateTime).toBeFalsy();
+          expect(item2.test).toBe(testResponseSimple.test);
         }
+      }
 
-        done();
-      });
+      done();
+    });
 
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
@@ -255,31 +245,29 @@ describe('UtcInterceptor', () => {
   });
 
   it('properly converts deeply nested arrays', done => {
-    http
-      .get<TestResponse>(testUrl, { responseType: 'json' })
-      .subscribe(response => {
-        expect(response).toBeTruthy();
-        expect(interceptor.handle).toHaveBeenCalledTimes(1);
+    http.get<TestResponse>(testUrl, { responseType: 'json' }).subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        for (const item of response.deeplyNestedArray) {
-          expect(item.testUtc instanceof DateTime).toBeTruthy();
-          expect(item.test instanceof DateTime).toBeFalsy();
-          expect(item.test).toBe(testResponseComposite.test);
-          for (const item2 of item.array) {
-            expect(item2.testUtc instanceof DateTime).toBeTruthy();
-            expect(item2.test instanceof DateTime).toBeFalsy();
-            expect(item2.test).toBe(testResponseSimple.test);
-          }
-        }
-
-        for (const item2 of response.array) {
+      for (const item of response.deeplyNestedArray) {
+        expect(item.testUtc instanceof DateTime).toBeTruthy();
+        expect(item.test instanceof DateTime).toBeFalsy();
+        expect(item.test).toBe(testResponseComposite.test);
+        for (const item2 of item.array) {
           expect(item2.testUtc instanceof DateTime).toBeTruthy();
           expect(item2.test instanceof DateTime).toBeFalsy();
           expect(item2.test).toBe(testResponseSimple.test);
         }
+      }
 
-        done();
-      });
+      for (const item2 of response.array) {
+        expect(item2.testUtc instanceof DateTime).toBeTruthy();
+        expect(item2.test instanceof DateTime).toBeFalsy();
+        expect(item2.test).toBe(testResponseSimple.test);
+      }
+
+      done();
+    });
 
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');

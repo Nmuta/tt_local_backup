@@ -13,9 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: '../gamertags.component.html',
   styleUrls: ['../gamertags.component.scss'],
 })
-export class SteelheadGamertagsComponent extends GamertagsBaseComponent<
-  SteelheadSharedConsoleUser
-> {
+export class SteelheadGamertagsComponent extends GamertagsBaseComponent<SteelheadSharedConsoleUser> {
   public gameTitle = GameTitleCodeName.FM8;
 
   constructor(private readonly steelheadService: SteelheadService, route: ActivatedRoute) {

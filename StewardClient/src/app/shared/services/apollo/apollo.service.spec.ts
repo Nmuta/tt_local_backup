@@ -55,7 +55,8 @@ describe('ApolloService', () => {
   });
 
   it('handles getSharedConsoleUsersByXuid', done => {
-    const typedReturnValue = (nextReturnValue = ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
+    const typedReturnValue = (nextReturnValue =
+      ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
     service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,

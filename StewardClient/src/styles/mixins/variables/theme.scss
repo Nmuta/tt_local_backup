@@ -1,6 +1,6 @@
 // theme initialization and helper aliases
 @use 'sass:map';
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @use './palettes.scss' as palettes;
 
 /// use for primary nagivation and "primary action" buttons that (1) are the default, and (2) perform irrevocable actions

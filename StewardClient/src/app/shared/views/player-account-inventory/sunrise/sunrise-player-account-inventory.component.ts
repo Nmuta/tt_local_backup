@@ -12,9 +12,7 @@ import { SunrisePlayerAccountInventory } from '@models/sunrise/sunrise-player-ac
   templateUrl: '../player-account-inventory.component.html',
   styleUrls: ['../player-account-inventory.component.scss'],
 })
-export class SunrisePlayerAccountInventoryComponent extends PlayerAccountInventoryBaseComponent<
-  SunrisePlayerAccountInventory
-> {
+export class SunrisePlayerAccountInventoryComponent extends PlayerAccountInventoryBaseComponent<SunrisePlayerAccountInventory> {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(private readonly sunrise: SunriseService) {

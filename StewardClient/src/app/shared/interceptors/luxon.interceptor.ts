@@ -43,7 +43,8 @@ function deepMapPairs(
   return input;
 }
 
-/** An interceptor that converts all model fields that match one of these rules to the corresponding luxon type:
+/**
+ * An interceptor that converts all model fields that match one of these rules to the corresponding luxon type:
  * - *Utc to DateTime
  * - *Duration to Duration
  */

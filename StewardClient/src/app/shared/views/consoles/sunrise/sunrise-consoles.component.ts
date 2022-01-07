@@ -17,7 +17,8 @@ import { PermissionsService } from '@services/permissions';
 })
 export class SunriseConsolesComponent
   extends ConsolesBaseComponent<SunriseConsoleDetailsEntry>
-  implements OnChanges {
+  implements OnChanges
+{
   public gameTitle = GameTitleCodeName.FH4;
   public supportsConsoleBanning = true;
 

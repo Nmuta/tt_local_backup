@@ -12,9 +12,8 @@ export class HiddenUgcTableComponent implements OnChanges {
   @Input() public hiddenUgc: HideableUgc[] = [];
 
   public displayedColumns = ['preview', 'info', 'times'];
-  public dataSource: BetterMatTableDataSource<HideableUgc> = new BetterMatTableDataSource<
-    HideableUgc
-  >();
+  public dataSource: BetterMatTableDataSource<HideableUgc> =
+    new BetterMatTableDataSource<HideableUgc>();
 
   /** Angular lifecycle hook. */
   public ngOnChanges(): void {

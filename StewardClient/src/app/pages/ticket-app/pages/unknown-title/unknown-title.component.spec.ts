@@ -21,7 +21,7 @@ describe('UnknownTitleComponent', () => {
       providers: [createMockTicketService()],
     }).compileComponents();
 
-    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
+    ticketService = TestBed.inject(TicketService) as unknown as MockTicketService;
 
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());

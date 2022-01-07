@@ -12,9 +12,7 @@ import { GameTitleCodeName } from '@models/enums';
   templateUrl: '../credit-history.component.html',
   styleUrls: ['../credit-history.component.scss'],
 })
-export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<
-  SunriseCreditDetailsEntry
-> {
+export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<SunriseCreditDetailsEntry> {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(private readonly sunrise: SunriseService) {

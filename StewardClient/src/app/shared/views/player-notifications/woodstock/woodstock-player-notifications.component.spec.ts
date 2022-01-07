@@ -54,7 +54,8 @@ describe('WoodstockPlayerNotificationsComponent', () => {
       waitForAsync(() => {
         // notifications list prep
         playerNotifications$ = new Subject<PlayerNotification[]>();
-        playerNotificationsValue = WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
+        playerNotificationsValue =
+          WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
         service.getPlayerNotifications$ = jasmine
           .createSpy('getPlayerNotifications')
           .and.returnValue(playerNotifications$);

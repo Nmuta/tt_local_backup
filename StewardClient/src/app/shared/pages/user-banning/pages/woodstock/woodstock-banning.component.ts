@@ -98,7 +98,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
         deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
         sendReasonNotification: true,
         reason: banOptions.banReason,
-        featureArea: (banOptions.banArea as unknown) as WoodstockBanArea,
+        featureArea: banOptions.banArea as unknown as WoodstockBanArea,
         duration: banOptions.banDuration,
       };
     });

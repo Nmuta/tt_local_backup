@@ -35,7 +35,8 @@ import { cloneDeep } from 'lodash';
 })
 export class SteelheadGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultAlpha, SteelheadMasterInventory>
-  implements OnInit {
+  implements OnInit
+{
   @Select(SteelheadGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FM8;
 

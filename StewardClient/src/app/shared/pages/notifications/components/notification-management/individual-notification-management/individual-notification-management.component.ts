@@ -39,14 +39,15 @@ export interface FormGroupNotificationEntry {
 })
 export class IndividualNotificationManagementComponent
   extends BaseComponent
-  implements OnInit, AfterViewInit, OnChanges {
+  implements OnInit, AfterViewInit, OnChanges
+{
   /** The individual notification management service. */
   @Input() public service: IndividualNotificationManagementContract;
   /** The selected xuid. */
   @Input() public selectedXuid: BigNumber;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
-  private readonly getNotifications$ = new Subject<PlayerNotification[]>();
+  private readonly getNotifications$ = new Subject<void>();
   public readonly messageMaxLength: number = 512;
 
   public rawNotifications: PlayerNotification[];

@@ -35,7 +35,8 @@ import { cloneDeep } from 'lodash';
 })
 export class WoodstockGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultAlpha, WoodstockMasterInventory>
-  implements OnInit {
+  implements OnInit
+{
   @Select(WoodstockGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FH5;
 

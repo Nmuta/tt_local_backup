@@ -98,7 +98,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
         deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
         sendReasonNotification: true,
         reason: banOptions.banReason,
-        featureArea: (banOptions.banArea as unknown) as SunriseBanArea,
+        featureArea: banOptions.banArea as unknown as SunriseBanArea,
         duration: banOptions.banDuration,
       };
     });

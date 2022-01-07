@@ -8,7 +8,7 @@ import BigNumber from 'bignumber.js';
   template: '',
 })
 export abstract class GiftHistoryBaseComponent<
-  ProfileIdType extends BigNumber | string
+  ProfileIdType extends BigNumber | string,
 > extends BaseComponent {
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   public matTabSelectedIndex: number = 0;

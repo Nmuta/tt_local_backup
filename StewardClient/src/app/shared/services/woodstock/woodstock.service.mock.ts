@@ -50,9 +50,9 @@ export class MockWoodstockService {
     .createSpy('putFlagsByXuid$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator$())))));
   public getBanHistoryByXuid$ = jasmine.createSpy('getBanHistoryByXuid$').and.callFake(() => {
-    const unprocessed = (WoodstockPlayerXuidBanHistoryFakeApi.make(
+    const unprocessed = WoodstockPlayerXuidBanHistoryFakeApi.make(
       new BigNumber(12345),
-    ) as unknown) as WoodstockBanHistory;
+    ) as unknown as WoodstockBanHistory;
 
     return of(unprocessed);
   });

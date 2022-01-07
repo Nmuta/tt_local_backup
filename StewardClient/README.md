@@ -17,3 +17,7 @@ To stage non-scss files for commit, use `test:prepare:add`.
 (Commit as normal afterward, as by using `git commit -m 'message here'` or your normal method. Do not commit the emptied scss files)
 
 Once you are done running karma tests, revert all the scss files with `test:prepare:reset`.
+
+## Type/Jasmine versioning
+
+We need to stick with version 3.3.0 until this issue is resolved: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/42455

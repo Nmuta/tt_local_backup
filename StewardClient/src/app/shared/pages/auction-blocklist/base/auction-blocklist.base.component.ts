@@ -34,7 +34,7 @@ export class AuctionBlocklistBaseComponent extends BaseComponent implements OnIn
   @Input() service: AuctionBlocklistService;
   @Input() newEntries$: Observable<AuctionBlocklistEntry[]>;
 
-  private readonly getBlocklist$ = new Subject<AuctionBlocklistEntry[]>();
+  private readonly getBlocklist$ = new Subject<void>();
   private readonly noExpireDefaultTime = DateTime.local(9999, 12, 31);
 
   public rawBlocklist: AuctionBlocklistEntry[];

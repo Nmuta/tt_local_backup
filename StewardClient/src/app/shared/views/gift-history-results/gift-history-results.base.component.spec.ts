@@ -12,10 +12,9 @@ import { toDateTime } from '@helpers/luxon';
 
 describe('GiftHistoryResultsBaseComponent', () => {
   let component: GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory>;
-  let fixture: ComponentFixture<GiftHistoryResultsBaseComponent<
-    IdentityResultAlpha,
-    SunriseGiftHistory
-  >>;
+  let fixture: ComponentFixture<
+    GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory>
+  >;
 
   beforeEach(
     waitForAsync(() => {

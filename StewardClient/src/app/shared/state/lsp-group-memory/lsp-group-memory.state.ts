@@ -21,6 +21,9 @@ export class LspGroupMemoryModel {
   public [GameTitleCodeName.FH5]: LspGroup[];
 }
 
+/**
+ *
+ */
 @State<LspGroupMemoryModel>({
   name: 'lspGroupMemory',
   defaults: {

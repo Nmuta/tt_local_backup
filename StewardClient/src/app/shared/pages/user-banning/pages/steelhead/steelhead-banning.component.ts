@@ -100,7 +100,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
         deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
         sendReasonNotification: true,
         reason: banOptions.banReason,
-        featureArea: (banOptions.banArea as unknown) as SteelheadBanArea,
+        featureArea: banOptions.banArea as unknown as SteelheadBanArea,
         duration: banOptions.banDuration,
       };
     });

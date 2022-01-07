@@ -20,7 +20,7 @@ export class EntitlementsComponent extends BaseComponent implements OnChanges {
   @Input() defaultFilter: string;
   @Input() identity: IdentityResultUnion;
 
-  public getEntitlements$ = new Subject();
+  public getEntitlements$ = new Subject<void>();
   public entitlementsTable = new BetterMatTableDataSource<Entitlement>();
   public displayedColumns: string[] = ['entitlement', 'metadata', 'flags'];
 

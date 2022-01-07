@@ -16,7 +16,8 @@ import { PlayerAuction } from '@models/player-auction';
 })
 export class SunrisePlayerAuctionsComponent
   extends PlayerAuctionsBaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(private readonly sunriseSerice: SunriseService, dialog: MatDialog) {

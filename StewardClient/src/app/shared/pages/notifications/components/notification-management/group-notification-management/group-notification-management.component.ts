@@ -39,14 +39,15 @@ export interface FormGroupNotificationEntry {
 })
 export class GroupNotificationManagementComponent
   extends BaseComponent
-  implements OnInit, AfterViewInit, OnChanges {
+  implements OnInit, AfterViewInit, OnChanges
+{
   /** The group notification service. */
   @Input() public service: GroupNotificationManagementContract;
   /** The selected LSP group. */
   @Input() public selectedLspGroup: LspGroup;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
-  private readonly getNotifications$ = new Subject<GroupNotification[]>();
+  private readonly getNotifications$ = new Subject<void>();
   public readonly messageMaxLength: number = 512;
 
   public deviceTypes: string[] = Object.values(DeviceType);

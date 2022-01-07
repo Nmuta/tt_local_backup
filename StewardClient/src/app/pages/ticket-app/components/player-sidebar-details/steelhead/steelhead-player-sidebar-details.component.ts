@@ -11,9 +11,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
   templateUrl: '../player-sidebar-details.component.html',
   styleUrls: ['../player-sidebar-details.component.scss'],
 })
-export class SteelheadPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
-  SteelheadPlayerDetails
-> {
+export class SteelheadPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<SteelheadPlayerDetails> {
   public gameTitle = GameTitleCodeName.FM8;
 
   constructor(private readonly steelheadService: SteelheadService) {

@@ -11,9 +11,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
   templateUrl: '../player-sidebar-details.component.html',
   styleUrls: ['../player-sidebar-details.component.scss'],
 })
-export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
-  ApolloPlayerDetails
-> {
+export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<ApolloPlayerDetails> {
   public gameTitle = GameTitleCodeName.FM7;
 
   constructor(private readonly apolloService: ApolloService) {

@@ -23,7 +23,8 @@ import BigNumber from 'bignumber.js';
 })
 export class ApolloGiftHistoryComponent
   extends GiftHistoryBaseComponent<BigNumber>
-  implements OnInit {
+  implements OnInit
+{
   @Select(ApolloGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

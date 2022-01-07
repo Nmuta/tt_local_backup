@@ -56,7 +56,8 @@ export interface ObligationOptions {
 })
 export class FullObligationInputComponent
   extends BaseComponent
-  implements ControlValueAccessor, Validator, OnInit {
+  implements ControlValueAccessor, Validator, OnInit
+{
   public static readonly defaults: ObligationOptions = {
     name: '',
     description: '',

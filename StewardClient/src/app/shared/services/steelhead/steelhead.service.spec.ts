@@ -60,7 +60,8 @@ describe('SteelheadService', () => {
   });
 
   it('handles getSharedConsoleUsersByXuid$', done => {
-    const typedReturnValue = (nextReturnValue = SteelheadPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
+    const typedReturnValue = (nextReturnValue =
+      SteelheadPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
     service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,

@@ -12,9 +12,7 @@ import { Observable } from 'rxjs';
   templateUrl: '../overview.component.html',
   styleUrls: ['../overview.component.scss'],
 })
-export class WoodstockOverviewComponent extends ProfileOverviewBaseComponent<
-  WoodstockProfileSummary
-> {
+export class WoodstockOverviewComponent extends ProfileOverviewBaseComponent<WoodstockProfileSummary> {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstock: WoodstockService) {

@@ -44,7 +44,8 @@ export class TimepickerComponent
     OnDestroy,
     ControlValueAccessor,
     Validator,
-    AfterViewInit {
+    AfterViewInit
+{
   private static nextId = 0;
 
   @ViewChild('picker')

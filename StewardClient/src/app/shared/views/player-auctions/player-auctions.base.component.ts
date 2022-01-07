@@ -18,7 +18,8 @@ import { ImageModalComponent, ImageModalData } from '@views/image-modal/image-mo
 })
 export abstract class PlayerAuctionsBaseComponent
   extends BaseComponent
-  implements OnChanges, AfterViewInit {
+  implements OnChanges, AfterViewInit
+{
   @Input() public identity?: IdentityResultUnion;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
@@ -35,7 +36,7 @@ export abstract class PlayerAuctionsBaseComponent
     'actions',
   ];
 
-  public getAuctionsByXuid$ = new Subject();
+  public getAuctionsByXuid$ = new Subject<void>();
 
   /** True while waiting on a request. */
   public isLoading = true;

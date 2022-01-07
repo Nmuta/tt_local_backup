@@ -25,7 +25,7 @@ describe('WoodstockPlayerInventoryProfilePickerComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = (TestBed.inject(WoodstockService) as unknown) as MockWoodstockService;
+    service = TestBed.inject(WoodstockService) as unknown as MockWoodstockService;
   });
 
   beforeEach(() => {

@@ -41,10 +41,11 @@ export type GiftHistoryDescription = {
 })
 export abstract class GiftHistoryResultsBaseComponent<
     T extends IdentityResultUnion,
-    U extends GiftHistoryResultUnion
+    U extends GiftHistoryResultUnion,
   >
   extends BaseComponent
-  implements OnChanges, OnInit {
+  implements OnChanges, OnInit
+{
   @Input() public selectedPlayer: T;
   @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
@@ -86,9 +87,10 @@ export abstract class GiftHistoryResultsBaseComponent<
         switchMap(() => {
           this.isLoading = true;
 
-          return (this.usingPlayerIdentities
-            ? this.retrieveHistoryByPlayer$()
-            : this.retrieveHistoryByLspGroup$()
+          return (
+            this.usingPlayerIdentities
+              ? this.retrieveHistoryByPlayer$()
+              : this.retrieveHistoryByLspGroup$()
           ).pipe(
             catchError(error => {
               this.isLoading = false;

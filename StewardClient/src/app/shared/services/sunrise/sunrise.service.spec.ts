@@ -293,7 +293,8 @@ describe('SunriseService', () => {
   });
 
   it('handles getSharedConsoleUsersByXuid$', done => {
-    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
+    const typedReturnValue = (nextReturnValue =
+      SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
     service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,

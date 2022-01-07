@@ -11,9 +11,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
   templateUrl: '../player-sidebar-details.component.html',
   styleUrls: ['../player-sidebar-details.component.scss'],
 })
-export class GravityPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
-  GravityPlayerDetails
-> {
+export class GravityPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<GravityPlayerDetails> {
   public gameTitle = GameTitleCodeName.Street;
 
   constructor(private readonly gravityService: GravityService) {

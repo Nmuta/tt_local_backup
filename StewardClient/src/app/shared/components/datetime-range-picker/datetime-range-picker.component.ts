@@ -31,10 +31,10 @@ interface DatetimeRangePickerOptionsInternal {
   };
 }
 
-function stringifyInternal(rawData: {
-  start: DateTime;
-  end: DateTime;
-}): { start: string; end: string } {
+function stringifyInternal(rawData: { start: DateTime; end: DateTime }): {
+  start: string;
+  end: string;
+} {
   return {
     start: rawData?.start?.toString(),
     end: rawData?.end?.toString(),
@@ -60,7 +60,8 @@ function stringifyInternal(rawData: {
   ],
 })
 export class DatetimeRangePickerComponent
-  implements ControlValueAccessor, Validator, AfterViewInit {
+  implements ControlValueAccessor, Validator, AfterViewInit
+{
   private static readonly UTC_NOW = DateTime.utc();
   public defaults: DatetimeRangePickerOptionsInternal = {
     dateRange: {

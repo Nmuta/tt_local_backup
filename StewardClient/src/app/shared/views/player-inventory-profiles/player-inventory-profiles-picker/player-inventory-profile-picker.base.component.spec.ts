@@ -19,7 +19,7 @@ type AcceptableComponents =
 /** Performs common behavior testing for Player Inventory Profile Pickers. */
 export function baseTests<
   ComponentT extends AcceptableComponents,
-  IdentityT extends IdentityResultUnion
+  IdentityT extends IdentityResultUnion,
 >(
   fixtureFn: () => ComponentFixture<ComponentT>,
   makeIdentityFn: (_?: unknown) => IdentityT,

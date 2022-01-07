@@ -22,7 +22,7 @@ describe('GravityPlayerInventoryProfilePickerComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = (TestBed.inject(GravityService) as unknown) as MockGravityService;
+    service = TestBed.inject(GravityService) as unknown as MockGravityService;
   });
 
   beforeEach(() => {

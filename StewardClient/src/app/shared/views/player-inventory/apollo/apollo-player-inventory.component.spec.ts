@@ -23,7 +23,7 @@ describe('ApolloPlayerInventoryComponent', () => {
 
     service = TestBed.inject(ApolloService);
     waitUntil$ = new Subject<void>();
-    ((service as unknown) as MockApolloService).waitUntil$ = waitUntil$;
+    (service as unknown as MockApolloService).waitUntil$ = waitUntil$;
   });
 
   beforeEach(() => {

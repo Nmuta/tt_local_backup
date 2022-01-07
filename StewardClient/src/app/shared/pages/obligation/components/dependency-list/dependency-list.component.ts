@@ -43,7 +43,8 @@ export type DependencyListOptions = string[];
 })
 export class DependencyListComponent
   extends BaseComponent
-  implements ControlValueAccessor, Validator {
+  implements ControlValueAccessor, Validator
+{
   public static readonly defaults: DependencyListOptions = [];
 
   @ViewChild('input') private input: ElementRef<HTMLInputElement>;

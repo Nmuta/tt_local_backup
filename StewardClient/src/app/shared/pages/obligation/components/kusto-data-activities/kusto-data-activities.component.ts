@@ -42,7 +42,8 @@ export type KustoDataActivityBundles = KustoDataActivityBundle[];
 })
 export class KustoDataActivitiesComponent
   extends BaseComponent
-  implements ControlValueAccessor, Validator {
+  implements ControlValueAccessor, Validator
+{
   public static readonly defaults: KustoDataActivityBundles = [cloneDeep(BundleComponent.defaults)];
 
   public formControls = [];

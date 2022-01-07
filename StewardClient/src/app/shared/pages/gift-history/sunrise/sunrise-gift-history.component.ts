@@ -23,7 +23,8 @@ import BigNumber from 'bignumber.js';
 })
 export class SunriseGiftHistoryComponent
   extends GiftHistoryBaseComponent<BigNumber>
-  implements OnInit {
+  implements OnInit
+{
   @Select(SunriseGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

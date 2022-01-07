@@ -6,6 +6,9 @@ import { Observable, of } from 'rxjs';
 import { UpdateTitleMemory } from './title-memory.actions';
 import { TitleMemoryModel } from './title-memory.model';
 
+/**
+ *
+ */
 @State<TitleMemoryModel>({
   name: 'titleMemory',
   defaults: {

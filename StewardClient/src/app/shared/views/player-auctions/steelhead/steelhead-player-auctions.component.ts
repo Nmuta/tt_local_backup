@@ -16,7 +16,8 @@ import { SteelheadService } from '@services/steelhead';
 })
 export class SteelheadPlayerAuctionsComponent
   extends PlayerAuctionsBaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   public gameTitle = GameTitleCodeName.FM8;
 
   constructor(private readonly steelheadService: SteelheadService, dialog: MatDialog) {

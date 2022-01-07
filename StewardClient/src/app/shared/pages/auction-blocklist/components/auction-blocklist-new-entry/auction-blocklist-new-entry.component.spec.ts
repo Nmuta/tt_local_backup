@@ -23,7 +23,8 @@ describe('AuctionBlocklistNewEntryComponent', () => {
   let component: AuctionBlocklistNewEntryComponent;
   let fixture: ComponentFixture<AuctionBlocklistNewEntryComponent>;
 
-  const mockService: TestAuctionBlocklistNewEntryService = new TestAuctionBlocklistNewEntryService();
+  const mockService: TestAuctionBlocklistNewEntryService =
+    new TestAuctionBlocklistNewEntryService();
 
   beforeEach(
     waitForAsync(() => {

@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloSharedConsoleUser } from '@models/apollo';
+import faker from 'faker';
 
 /** Fake API for finding User Flags. */
 export class ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
@@ -26,10 +27,10 @@ export class ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBas
   public static makeMany(): ApolloSharedConsoleUser[] {
     return [
       {
-        sharedConsoleId: new BigNumber(17942385017267761210),
-        xuid: new BigNumber(2535460485267489),
-        gamertag: 'temporary1021',
-        everBanned: false,
+        sharedConsoleId: new BigNumber(faker.datatype.number()),
+        xuid: new BigNumber(faker.datatype.number()),
+        gamertag: faker.random.word(),
+        everBanned: faker.datatype.boolean(),
       },
     ];
   }

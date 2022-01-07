@@ -7,7 +7,8 @@ import { WoodstockService } from '@services/woodstock';
  */
 @Injectable()
 export class WoodstockGroupNotificationManagementContract
-  implements GroupNotificationManagementContract {
+  implements GroupNotificationManagementContract
+{
   constructor(private readonly woodstockService: WoodstockService) {}
 
   /** Get group notifications. */

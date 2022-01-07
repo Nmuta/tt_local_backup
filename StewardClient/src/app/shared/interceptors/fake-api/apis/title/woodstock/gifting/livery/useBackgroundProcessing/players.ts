@@ -14,7 +14,8 @@ export class WoodstockGiftLiveryToPlayersFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/woodstock\/livery\((\d+)\)\/players\/useBackgroundProcessing$/i;
+    const regex =
+      /^\/?api\/v1\/title\/woodstock\/livery\((\d+)\)\/players\/useBackgroundProcessing$/i;
     return regex.test(url.pathname);
   }
 

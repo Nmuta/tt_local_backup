@@ -27,7 +27,8 @@ export type UGCLookup = {
 })
 export abstract class PlayerUGCBaseComponent
   extends BaseComponent
-  implements OnChanges, AfterViewInit {
+  implements OnChanges, AfterViewInit
+{
   @Input() public usingIdentities?: boolean;
   @Input() public identity?: IdentityResultUnion;
   @Input() public shareCode?: string;
@@ -36,7 +37,7 @@ export abstract class PlayerUGCBaseComponent
   public useCondensedTableView: boolean;
   public ugcContent: PlayerUGCItem[] = [];
   public filteredUgcContent: PlayerUGCItem[] = [];
-  public searchUGC$ = new Subject();
+  public searchUGC$ = new Subject<void>();
   public getMonitor = new ActionMonitor('GET UGC Content');
   public ugcFilters = DefaultUGCFilters;
 

@@ -25,7 +25,8 @@ export type UserFlagsUnion =
 })
 export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   extends BaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   @ViewChild('submit') submit: VerifyActionButtonComponent;
 
   /** The XUID to look up. */

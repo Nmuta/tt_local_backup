@@ -15,7 +15,8 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 })
 export abstract class BackstagePassHistoryBaseComponent
   extends BaseComponent
-  implements OnInit, OnChanges {
+  implements OnInit, OnChanges
+{
   @Input() public identity?: IdentityResultUnion;
 
   /** A list of player backstage pass events. */

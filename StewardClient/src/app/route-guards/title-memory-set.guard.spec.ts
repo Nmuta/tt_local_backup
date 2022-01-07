@@ -14,10 +14,10 @@ describe('TitleMemorySetGuard', () => {
   let store: Store;
   const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' } };
   const testRouteParent: Partial<ActivatedRouteSnapshot> = {
-    parent: (testRouteParentParent as unknown) as ActivatedRouteSnapshot,
+    parent: testRouteParentParent as unknown as ActivatedRouteSnapshot,
   };
   const testRoute: Partial<ActivatedRouteSnapshot> = {
-    parent: (testRouteParent as unknown) as ActivatedRouteSnapshot,
+    parent: testRouteParent as unknown as ActivatedRouteSnapshot,
     url: [
       new UrlSegment('tool', null),
       new UrlSegment('gifting', null),

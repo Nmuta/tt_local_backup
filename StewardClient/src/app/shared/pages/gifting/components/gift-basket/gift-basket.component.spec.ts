@@ -21,10 +21,9 @@ import { UserModel } from '@models/user.model';
 import { toDateTime } from '@helpers/luxon';
 
 describe('GiftBasketBaseComponent', () => {
-  let fixture: ComponentFixture<GiftBasketBaseComponent<
-    IdentityResultBeta,
-    SunriseMasterInventory
-  >>;
+  let fixture: ComponentFixture<
+    GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
+  >;
   let component: GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>;
 
   const formBuilder: FormBuilder = new FormBuilder();

@@ -16,7 +16,8 @@ import { WoodstockService } from '@services/woodstock';
 })
 export class WoodstockPlayerAuctionsComponent
   extends PlayerAuctionsBaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstockService: WoodstockService, dialog: MatDialog) {

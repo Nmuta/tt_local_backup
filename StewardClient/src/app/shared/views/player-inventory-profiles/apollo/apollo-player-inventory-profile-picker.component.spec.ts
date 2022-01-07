@@ -21,7 +21,7 @@ describe('ApolloPlayerInventoryProfilePickerComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = (TestBed.inject(ApolloService) as unknown) as MockApolloService;
+    service = TestBed.inject(ApolloService) as unknown as MockApolloService;
   });
 
   beforeEach(() => {

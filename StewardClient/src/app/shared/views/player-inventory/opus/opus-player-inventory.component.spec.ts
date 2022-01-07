@@ -23,7 +23,7 @@ describe('OpusPlayerInventoryComponent', () => {
 
     service = TestBed.inject(OpusService);
     waitUntil$ = new Subject<void>();
-    ((service as unknown) as MockOpusService).waitUntil$ = waitUntil$;
+    (service as unknown as MockOpusService).waitUntil$ = waitUntil$;
   });
 
   beforeEach(() => {

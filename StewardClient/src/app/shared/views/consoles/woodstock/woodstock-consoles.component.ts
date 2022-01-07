@@ -17,7 +17,8 @@ import { PermissionsService } from '@services/permissions';
 })
 export class WoodstockConsolesComponent
   extends ConsolesBaseComponent<WoodstockConsoleDetailsEntry>
-  implements OnChanges {
+  implements OnChanges
+{
   public gameTitle = GameTitleCodeName.FH5;
   public supportsConsoleBanning = true;
 

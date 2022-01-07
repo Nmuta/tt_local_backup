@@ -13,9 +13,7 @@ import { PermissionsService } from '@services/permissions';
   templateUrl: '../consoles.component.html',
   styleUrls: ['../consoles.component.scss'],
 })
-export class SteelheadConsolesComponent extends ConsolesBaseComponent<
-  SteelheadConsoleDetailsEntry
-> {
+export class SteelheadConsolesComponent extends ConsolesBaseComponent<SteelheadConsoleDetailsEntry> {
   public gameTitle = GameTitleCodeName.FM8;
   public supportsConsoleBanning = false;
 

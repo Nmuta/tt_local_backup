@@ -47,7 +47,7 @@ export class BackgroundJobService {
     return this.apiService.getRequest$<BackgroundJob<T>>(`${this.basePath}/jobId(${jobId})`).pipe(
       tap(job => {
         try {
-          job.result = (job.rawResult as unknown) as T;
+          job.result = job.rawResult as unknown as T;
         } catch (err) {
           /** Do nothing, just try to parse */
         }

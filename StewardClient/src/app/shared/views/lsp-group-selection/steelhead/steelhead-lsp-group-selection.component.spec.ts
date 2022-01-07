@@ -52,7 +52,7 @@ describe('SteelheadLspGroupSelectionComponent', () => {
 
   describe('Method: lspGroupSelector', () => {
     beforeEach(() => {
-      mockStore.select = jasmine.createSpy('select');
+      mockStore.select = jasmine.createSpy('select').and.callThrough();
     });
 
     it('should select steelhead lsp groups from memory', () => {

@@ -21,7 +21,7 @@ describe('SunrisePlayerInventoryProfilePickerComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = (TestBed.inject(SunriseService) as unknown) as MockSunriseService;
+    service = TestBed.inject(SunriseService) as unknown as MockSunriseService;
   });
 
   beforeEach(() => {

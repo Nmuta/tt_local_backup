@@ -8,7 +8,8 @@ import { GroupNotificationManagementContract } from '../group-notification-manag
  */
 @Injectable()
 export class SunriseGroupNotificationManagementContract
-  implements GroupNotificationManagementContract {
+  implements GroupNotificationManagementContract
+{
   constructor(private readonly sunriseService: SunriseService) {}
 
   /** Get group notifications. */

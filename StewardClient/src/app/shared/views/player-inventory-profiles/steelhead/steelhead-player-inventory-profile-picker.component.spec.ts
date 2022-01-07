@@ -25,7 +25,7 @@ describe('SteelheadPlayerInventoryProfilePickerComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = (TestBed.inject(SteelheadService) as unknown) as MockSteelheadService;
+    service = TestBed.inject(SteelheadService) as unknown as MockSteelheadService;
   });
 
   beforeEach(() => {

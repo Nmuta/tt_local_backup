@@ -34,7 +34,6 @@ module.exports = {
         'plugin:@angular-eslint/recommended',
         'plugin:@typescript-eslint/recommended',
         'prettier',
-        'prettier/@typescript-eslint',
         'plugin:jsdoc/recommended',
       ],
       plugins: ['jsdoc', 'rxjs'],

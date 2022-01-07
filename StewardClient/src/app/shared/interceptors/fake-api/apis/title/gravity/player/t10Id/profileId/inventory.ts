@@ -16,7 +16,8 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/profileId\((.+)\)\/inventory$/i;
+    const regex =
+      /^\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/profileId\((.+)\)\/inventory$/i;
     const isMatch = regex.test(url.pathname);
     if (!isMatch) {
       return false;

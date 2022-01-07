@@ -23,7 +23,8 @@ import BigNumber from 'bignumber.js';
 })
 export class SteelheadGiftHistoryComponent
   extends GiftHistoryBaseComponent<BigNumber>
-  implements OnInit {
+  implements OnInit
+{
   @Select(SteelheadGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

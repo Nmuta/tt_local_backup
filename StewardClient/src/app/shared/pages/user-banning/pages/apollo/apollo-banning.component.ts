@@ -97,7 +97,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
         deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
         sendReasonNotification: true,
         reason: banOptions.banReason,
-        featureArea: (banOptions.banArea as unknown) as ApolloBanArea,
+        featureArea: banOptions.banArea as unknown as ApolloBanArea,
         duration: banOptions.banDuration,
       };
     });

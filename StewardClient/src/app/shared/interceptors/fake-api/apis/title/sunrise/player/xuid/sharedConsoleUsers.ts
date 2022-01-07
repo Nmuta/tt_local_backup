@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseSharedConsoleUser } from '@models/sunrise';
+import faker from 'faker';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
@@ -26,10 +27,10 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
   public static makeMany(): SunriseSharedConsoleUser[] {
     return [
       {
-        sharedConsoleId: new BigNumber(17942385017267761210),
-        xuid: new BigNumber(2535460485267489),
-        gamertag: 'temporary1021',
-        everBanned: false,
+        sharedConsoleId: new BigNumber(faker.datatype.number()),
+        xuid: new BigNumber(faker.datatype.number()),
+        gamertag: faker.random.word(),
+        everBanned: faker.datatype.boolean(),
       },
     ];
   }

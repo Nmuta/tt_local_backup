@@ -43,7 +43,7 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
 
   public profile: UserModel;
   public jobs = new MatTableDataSource<BackgroundJob<unknown>>();
-  public getBackgroundJobs$ = new Subject();
+  public getBackgroundJobs$ = new Subject<void>();
   public selectedBackgroundJob: JsonTableAndBackgroundJob = null;
 
   public displayedColumns: string[] = ['createdDateUtc', 'status', 'description', 'jobId'];

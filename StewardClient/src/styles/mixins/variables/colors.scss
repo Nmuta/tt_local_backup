@@ -1,5 +1,5 @@
 // file of standardized color aliases
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import './theme.scss';
 
 $table-tr-hover: app-color-darker($app-background, 0.5);

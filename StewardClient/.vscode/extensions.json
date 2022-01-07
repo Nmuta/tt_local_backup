@@ -9,6 +9,7 @@
     "ryanluker.vscode-coverage-gutters",
     "firefox-devtools.vscode-firefox-debug",
     "bierner.markdown-mermaid",
-    "shd101wyy.markdown-preview-enhanced"
+    "shd101wyy.markdown-preview-enhanced",
+    "mrmlnc.vscode-scss"
   ]
 }

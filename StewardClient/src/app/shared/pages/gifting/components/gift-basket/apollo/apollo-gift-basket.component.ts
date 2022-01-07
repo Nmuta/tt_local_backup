@@ -35,7 +35,8 @@ import { cloneDeep } from 'lodash';
 })
 export class ApolloGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultAlpha, ApolloMasterInventory>
-  implements OnInit {
+  implements OnInit
+{
   @Select(ApolloGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FM7;
 

@@ -12,9 +12,7 @@ import { WoodstockPlayerAccountInventory } from '@models/woodstock/woodstock-pla
   templateUrl: '../player-account-inventory.component.html',
   styleUrls: ['../player-account-inventory.component.scss'],
 })
-export class WoodstockPlayerAccountInventoryComponent extends PlayerAccountInventoryBaseComponent<
-  WoodstockPlayerAccountInventory
-> {
+export class WoodstockPlayerAccountInventoryComponent extends PlayerAccountInventoryBaseComponent<WoodstockPlayerAccountInventory> {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstock: WoodstockService) {

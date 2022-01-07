@@ -19,7 +19,7 @@ export class StewardUserComponent extends BaseComponent implements OnInit, OnCha
 
   public user: UserModel;
 
-  private readonly getStewardUser$ = new Subject<UserModel>();
+  private readonly getStewardUser$ = new Subject<void>();
 
   constructor(private readonly userService: UserService) {
     super();

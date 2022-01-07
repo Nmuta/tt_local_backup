@@ -57,7 +57,8 @@ describe('WoodstockConsolesComponent', () => {
       waitForAsync(() => {
         // console details prep
         consoleDetails$ = new Subject<WoodstockConsoleDetailsEntry[]>();
-        consoleDetailsValue = WoodstockPlayerXuidConsolesFakeApi.makeMany() as WoodstockConsoleDetailsEntry[];
+        consoleDetailsValue =
+          WoodstockPlayerXuidConsolesFakeApi.makeMany() as WoodstockConsoleDetailsEntry[];
         mockWoodstockService.getConsoleDetailsByXuid$ = jasmine
           .createSpy('getConsoleDetailsByXuid')
           .and.returnValue(consoleDetails$);

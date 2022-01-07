@@ -51,7 +51,8 @@ describe('SunrisePlayerAccountInventoryComponent', () => {
       waitForAsync(() => {
         // account-inventory list prep
         playerAccountInventory$ = new Subject<SunrisePlayerAccountInventory>();
-        playerAccountInventoryValue = SunrisePlayerXuidAccountInventoryFakeApi.make() as SunrisePlayerAccountInventory;
+        playerAccountInventoryValue =
+          SunrisePlayerXuidAccountInventoryFakeApi.make() as SunrisePlayerAccountInventory;
         service.getPlayerAccountInventoryByXuid$ = jasmine
           .createSpy('getPlayerAccountInventoryByXuid$')
           .and.returnValue(playerAccountInventory$);

@@ -17,7 +17,8 @@ type AnnotatedType<T> = T & { isCommunityMessage: boolean };
 })
 export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotification>
   extends BaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   @Input() public identity?: IdentityResultUnion;
 
   /** True while waiting on a request. */
@@ -65,7 +66,7 @@ export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotificat
       .subscribe(notifications => {
         this.isLoading = false;
         const annotatedNotifications: AnnotatedType<T>[] = notifications.map(notification => {
-          const x: AnnotatedType<T> = (cloneDeep(notification) as unknown) as AnnotatedType<T>;
+          const x: AnnotatedType<T> = cloneDeep(notification) as unknown as AnnotatedType<T>;
           x.isCommunityMessage = this.isCommunityMessage(x);
           return x;
         });

@@ -43,7 +43,8 @@ type PlayerDetailsIntersection = PlayerDetailsUnion & Partial<PlayerDetailsTitle
 })
 export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsUnion>
   extends BaseComponent
-  implements OnChanges {
+  implements OnChanges
+{
   /** Gamertag to lookup for player details. */
   @Input() public gamertag: string;
 

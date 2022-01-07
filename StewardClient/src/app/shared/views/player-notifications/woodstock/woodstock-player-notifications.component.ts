@@ -12,9 +12,7 @@ import { PlayerNotification } from '@models/notifications.model';
   templateUrl: '../player-notifications.component.html',
   styleUrls: ['../player-notifications.component.scss'],
 })
-export class WoodstockPlayerNotificationsComponent extends PlayerNotificationsBaseComponent<
-  PlayerNotification
-> {
+export class WoodstockPlayerNotificationsComponent extends PlayerNotificationsBaseComponent<PlayerNotification> {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstock: WoodstockService) {
