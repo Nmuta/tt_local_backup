@@ -36,7 +36,7 @@ function doQueryByDirective<T>(
   return parentDebugElement.query(By.directive(targetType));
 }
 
-describe('DataPipelineObligationComponent', () => {
+xdescribe('DataPipelineObligationComponent', () => {
   let component: TestHarnessComponent;
   let fixture: ComponentFixture<TestHarnessComponent>;
   let rootElement: DebugElementOverride<DataPipelineObligationComponent>;

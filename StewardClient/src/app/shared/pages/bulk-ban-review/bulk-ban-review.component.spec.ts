@@ -272,15 +272,15 @@ describe('BulkBanReviewComponent', () => {
   });
 
   describe('Method: approvePlayer', () => {
-    const playerToApprove = {
-      xuid: fakeXuid(),
-      gamertag: faker.random.word(),
-      summaries: [],
-      approved: false,
-      totalBans: fakeBigNumber(),
-    } as BanSummariesTableData;
-
     beforeEach(() => {
+      const playerToApprove = {
+        xuid: fakeXuid(),
+        gamertag: faker.random.word(),
+        summaries: [],
+        approved: false,
+        totalBans: fakeBigNumber(),
+      } as BanSummariesTableData;
+
       component.buildCsvDownloadData = jasmine.createSpy('buildCsvDownloadData');
       component.sortNonApprovedPlayers = jasmine.createSpy('sortNonApprovedPlayers');
       component.calculateStatistics = jasmine.createSpy('calculateStatistics');
