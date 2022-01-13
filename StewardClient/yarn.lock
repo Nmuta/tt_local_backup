@@ -5883,15 +5883,10 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-jasmine-core@3.3.0:
+jasmine-core@3.3.0, jasmine-core@^3.6.0:
   version "3.3.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/jasmine-core/-/jasmine-core-3.3.0.tgz#dea1cdc634bc93c7e0d4ad27185df30fa971b10e"
   integrity sha1-3qHNxjS8k8fg1K0nGF3zD6lxsQ4=
-
-jasmine-core@^3.6.0:
-  version "3.99.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/jasmine-core/-/jasmine-core-3.99.0.tgz#99a3da0d38ba2de82614d9198b7b1bc1c32a5960"
-  integrity sha1-maPaDTi6LegmFNkZi3sbwcMqWWA=
 
 jasmine-spec-reporter@^7.0.0:
   version "7.0.0"
