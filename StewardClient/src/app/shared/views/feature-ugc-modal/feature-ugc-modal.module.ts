@@ -16,7 +16,7 @@ import { WoodstockFeatureUGCModalComponent } from './woodstock/woodstock-feature
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LuxonModule } from 'luxon-angular';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { OverrideManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** Module for setting UGC item's featured status with a modal. */
@@ -40,7 +40,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     JsonDumpModule,
     LuxonModule,
     DirectivesModule,
-    OverrideManagersModule,
+    StateManagersModule,
     MonitorActionModule,
   ],
   exports: [SunriseFeatureUGCModalComponent, WoodstockFeatureUGCModalComponent],

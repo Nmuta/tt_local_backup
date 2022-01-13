@@ -18,6 +18,8 @@ $app-warn: mat.define-palette(mat.$red-palette);
 /// use as a default, especially for local action buttons that do not perform irrevocable actions
 $app-background: mat.define-palette(mat.$grey-palette);
 
+$app-foreground: mat.$light-theme-foreground-palette;
+
 /// the theme
 $app-theme: mat.define-light-theme(
   (
@@ -138,6 +140,10 @@ $dark-theme: mat.define-dark-theme(
       makeLookupName('background', 'text-contrast'),
       map-get(mat.$dark-theme-foreground-palette, 'base')
     );
+    @include colorToVars(
+      makeLookupName('foreground', 'disabled-text'),
+      map-get(mat.$dark-theme-foreground-palette, 'disabled-text')
+    );
   } @else {
     @include colorToVars(
       makeLookupName('background', 'default'),
@@ -171,6 +177,10 @@ $dark-theme: mat.define-dark-theme(
       makeLookupName('background', 'text-contrast'),
       map-get(mat.$light-theme-foreground-palette, 'base')
     );
+    @include colorToVars(
+      makeLookupName('foreground', 'disabled-text'),
+      map-get(mat.$light-theme-foreground-palette, 'disabled-text')
+    );
   }
   background-color: app-color-default($app-background);
   color: app-color-default-contrast($app-background);
@@ -185,12 +195,14 @@ $dark-theme: mat.define-dark-theme(
     @return 'warn';
   } @else if ($palette == $app-background) {
     @return 'background';
+  } @else if ($palette == $app-foreground) {
+    @return 'foreground';
   } @else {
     @return 'unknown';
   }
 }
 
-@function app-color-helper($palette, $style, $opacity) {
+@function app-color($palette, $style, $opacity: null) {
   $palette-name: paletteToString($palette);
   $var-name: makeLookupName($palette-name, $style);
   @if ($opacity) {
@@ -205,7 +217,7 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-default($palette, $opacity: null) {
-  @return app-color-helper($palette, 'default', $opacity);
+  @return app-color($palette, 'default', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -213,7 +225,7 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-lighter($palette, $opacity: null) {
-  @return app-color-helper($palette, 'lighter', $opacity);
+  @return app-color($palette, 'lighter', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -221,7 +233,7 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-darker($palette, $opacity: null) {
-  @return app-color-helper($palette, 'darker', $opacity);
+  @return app-color($palette, 'darker', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -229,7 +241,7 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-text($palette, $opacity: null) {
-  @return app-color-helper($palette, 'text', $opacity);
+  @return app-color($palette, 'text', $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -240,7 +252,7 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-default-contrast($theme, $opacity: null) {
-  @return app-color-helper($theme, default-contrast, $opacity);
+  @return app-color($theme, default-contrast, $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -251,7 +263,7 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-lighter-contrast($theme, $opacity: null) {
-  @return app-color-helper($theme, lighter-contrast, $opacity);
+  @return app-color($theme, lighter-contrast, $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -262,7 +274,7 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-darker-contrast($theme, $opacity: null) {
-  @return app-color-helper($theme, darker-contrast, $opacity);
+  @return app-color($theme, darker-contrast, $opacity);
 }
 
 /// Gets a color from a theme palette (the output of mat-palette).
@@ -273,5 +285,5 @@ $dark-theme: mat.define-dark-theme(
 /// @param $color-map The theme palette (output of mat-palette).
 /// @param $opacity The alpha channel value for the color.
 @function app-color-text-contrast($palette, $opacity: null) {
-  @return app-color-helper($palette, text-contrast, $opacity);
+  @return app-color($palette, text-contrast, $opacity);
 }

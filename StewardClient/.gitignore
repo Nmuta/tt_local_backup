@@ -132,3 +132,6 @@ dist
 # secrets
 *cypress.env.json
 !.cypress.env.json
+
+# angular
+.angular

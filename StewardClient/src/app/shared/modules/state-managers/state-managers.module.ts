@@ -9,4 +9,4 @@ import { CheckboxStateManagerDirective } from './checkbox-state-manager.directiv
   imports: [CommonModule],
   exports: [ButtonStateManagerDirective, CheckboxStateManagerDirective],
 })
-export class OverrideManagersModule {}
+export class StateManagersModule {}

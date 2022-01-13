@@ -1,3 +1,5 @@
+@import '/src/styles/mixins';
+
 mat-spinner.force-inline {
   display: inline-block;
   &,
@@ -13,5 +15,20 @@ mat-spinner.force-inline-2x {
   svg {
     width: 1.5em !important;
     height: 1.5em !important;
+  }
+}
+
+.mat-fab,
+.mat-mini-fab,
+.mat-raised-button,
+.mat-flat-button {
+  &.mat-accent mat-spinner * {
+    stroke: app-color-default-contrast($app-accent);
+  }
+  &.mat-primary mat-spinner * {
+    stroke: app-color-default-contrast($app-primary);
+  }
+  &.mat-warn mat-spinner * {
+    stroke: app-color-default-contrast($app-warn);
   }
 }

@@ -20,7 +20,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OverrideManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
@@ -60,7 +60,7 @@ import { WoodstockAuctionBlocklistNewEntryComponent } from './components/auction
     MatTableModule,
     MatToolbarModule,
     MonitorActionModule,
-    OverrideManagersModule,
+    StateManagersModule,
     PipesModule,
     ReactiveFormsModule,
     AuctionBlocklistRoutingModule,

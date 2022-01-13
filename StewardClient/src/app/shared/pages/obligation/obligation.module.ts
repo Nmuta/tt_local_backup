@@ -33,7 +33,7 @@ import { ObligationPrincipalsComponent } from './components/obligation-principal
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { OverrideManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { RestateOMaticComponent } from './components/kusto-data-activities/restate-o-matic/restate-o-matic.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DirectivesModule } from '@shared/directives/directives.module';
@@ -77,7 +77,7 @@ import { BundleComponent } from './components/kusto-data-activities/bundle/bundl
     MatTooltipModule,
     MonitorActionModule,
     OptionalNumberModule,
-    OverrideManagersModule,
+    StateManagersModule,
     PipesModule,
     ReactiveFormsModule,
     RouterModule,

@@ -166,11 +166,16 @@ mat-icon[mat-card-avatar] {
 
 .no-access {
   @include mat.elevation(0);
-  mat-card,
+  mat-card {
+    background-color: app-color-darker($app-background, 0.2) !important;
+    &,
+    * {
+      color: app-color($app-foreground, 'disabled-text') !important;
+    }
+  }
   mat-card-actions,
   mat-card-header {
-    background-color: app-color-text-contrast($app-background) !important;
-    color: app-color-text($app-background) !important;
+    background-color: transparent;
   }
 }
 

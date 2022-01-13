@@ -18,7 +18,9 @@
   "extensions": {
     "recommendations": [
       "dbaeumer.vscode-eslint",
-      "mrmlnc.vscode-scss"
+      "mrmlnc.vscode-scss",
+      "angular.ng-template",
+      "maptz.camelcasenavigation"
     ]
   },
 }

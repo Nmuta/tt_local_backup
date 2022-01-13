@@ -10,6 +10,8 @@
     "firefox-devtools.vscode-firefox-debug",
     "bierner.markdown-mermaid",
     "shd101wyy.markdown-preview-enhanced",
-    "mrmlnc.vscode-scss"
+    "mrmlnc.vscode-scss",
+    "angular.ng-template",
+    "maptz.camelcasenavigation"
   ]
 }
