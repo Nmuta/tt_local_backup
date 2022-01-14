@@ -349,5 +349,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             bool isFeatured,
             DateTime featureEndDate,
             string endpoint);
+
+        /// <summary>
+        ///     Gets leaderboard scores.
+        /// </summary>
+        Task<IList<ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
+            ForzaSearchLeaderboardsParameters searchParams,
+            int startIndex,
+            int maxResults,
+            string endpoint);
+
+        /// <summary>
+        ///     Deletes leaderboard scores.
+        /// </summary>
+        Task DeleteLeaderboardScoresAsync(Guid[] scoreIDs, string endpoint);
     }
 }

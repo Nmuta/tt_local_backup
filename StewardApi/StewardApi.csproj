@@ -102,20 +102,21 @@
 	<PackageReference Include="Turn10.Data.Azure" Version="2.5.0" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.KustoLogger" Version="4.0.0" />
+    <PackageReference Include="Turn10.Services.CMSRetrieval" Version="1.2.1" />
     <PackageReference Include="Turn10.Services.ForzaClient" Version="3.0.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FH3" Version="1.3.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.2.23">
+    <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.2.25">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5" Version="4.5.9">
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5" Version="4.5.12">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.5.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.3.5">
+    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.3.6">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4">
@@ -128,6 +129,7 @@
     </PackageReference>
     <PackageReference Include="Turn10.Services.UGC.Contracts" Version="1.11.13" />
     <PackageReference Include="Turn10.Services.WebApi-Core" Version="1.2.1" />
+    <PackageReference Include="WoodstockContent" Version="2.0.6" />
   </ItemGroup>
 
   <Target Name="RealClean" AfterTargets="Clean">

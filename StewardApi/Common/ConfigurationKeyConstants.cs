@@ -224,5 +224,10 @@
         ///     The Woodstock title ID.
         /// </summary>
         public const string WoodstockTitleId = "WoodstockEnvironment:TitleId";
+
+        /// <summary>
+        ///     The Pegasus CMS environment.
+        /// </summary>
+        public const string PegasusCmsEnvironment = "PegasusCms:Environment";
     }
 }

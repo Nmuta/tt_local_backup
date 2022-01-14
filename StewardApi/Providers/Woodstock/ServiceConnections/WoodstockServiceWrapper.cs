@@ -374,10 +374,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc/>
         public async Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
             SendMessageNotificationToMultipleUsersAsync(
-            IList<ulong> xuids,
-            string message,
-            DateTime expireTimeUtc,
-            string endpoint)
+                IList<ulong> xuids,
+                string message,
+                DateTime expireTimeUtc,
+                string endpoint)
         {
             var notificationsService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
@@ -390,17 +390,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
-            int groupId,
-            string message,
-            DateTime expireTimeUtc,
-            ForzaLiveDeviceType deviceType,
-            string endpoint)
+        public async Task<NotificationsManagementService.SendGroupMessageNotificationOutput>
+            SendGroupMessageNotificationAsync(
+                int groupId,
+                string message,
+                DateTime expireTimeUtc,
+                ForzaLiveDeviceType deviceType,
+                string endpoint)
         {
             var notificationsService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
-            return await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc, deviceType != ForzaLiveDeviceType.Invalid, deviceType)
+            return await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc,
+                    deviceType != ForzaLiveDeviceType.Invalid, deviceType)
                 .ConfigureAwait(false);
         }
 
@@ -536,7 +538,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             // NOTE: User scenario for setting featured state always uses the same DateTime for featureEndDate & forceFeatureEndDate
-            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, featureEndDate).ConfigureAwait(false);
+            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, featureEndDate)
+                .ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IList<ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
+            ForzaSearchLeaderboardsParameters searchParams,
+            int startIndex,
+            int maxResults,
+            string endpoint)
+        {
+            var service = await this.serviceFactory.PrepareScoreboardManagementService(endpoint).ConfigureAwait(false);
+
+            var result = await service.SearchLeaderboards(searchParams, startIndex, maxResults).ConfigureAwait(false);
+
+            return result.Rows;
+
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteLeaderboardScoresAsync(Guid[] scoreIDs, string endpoint)
+        {
+            var service = await this.serviceFactory.PrepareScoreboardManagementService(endpoint).ConfigureAwait(false);
+
+            await service.DeleteScores(scoreIDs).ConfigureAwait(false);
         }
     }
 }

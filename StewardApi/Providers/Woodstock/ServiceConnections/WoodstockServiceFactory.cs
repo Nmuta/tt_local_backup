@@ -162,6 +162,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return new StorefrontService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
+        /// <inheritdoc/>
+        public async Task<ScoreboardManagementService> PrepareScoreboardManagementService(string endpoint)
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new ScoreboardManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+        }
+
         private async Task<string> GetAuthTokenAsync()
         {
             var tokenForgeryParameters = new TokenForgeryRequest

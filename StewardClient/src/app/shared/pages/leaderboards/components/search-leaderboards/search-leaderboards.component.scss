@@ -1,0 +1,27 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+mat-card {
+  flex-grow: 1;
+
+  mat-card-content {
+    padding: $gap-medium 0;
+  }
+}
+
+mat-icon {
+  margin-left: $gap-small;
+  position: relative;
+  top: $gap-micro;
+}
+
+error-spinner {
+  margin-left: $gap-small;
+}
+
+mat-form-field {
+  margin-right: $gap-medium;
+}

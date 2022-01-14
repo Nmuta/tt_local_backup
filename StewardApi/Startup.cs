@@ -53,8 +53,10 @@ using Turn10.LiveOps.StewardApi.Validation.Gravity;
 using Turn10.LiveOps.StewardApi.Validation.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation.Woodstock;
+using Turn10.Services.CMSRetrieval;
 using Turn10.Services.Diagnostics;
 using Turn10.Services.Diagnostics.Geneva;
+using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 
@@ -244,6 +246,8 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
             services.AddSingleton<IWoodstockNotificationHistoryProvider, WoodstockNotificationHistoryProvider>();
             services.AddSingleton<IWoodstockStorefrontProvider, WoodstockStorefrontProvider>();
+            services.AddSingleton<IWoodstockLeaderboardProvider, WoodstockLeaderboardProvider>();
+
             services.AddSingleton<IRequestValidator<WoodstockBanParametersInput>, WoodstockBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<WoodstockGroupGift>, WoodstockGroupGiftRequestValidator>();
             services.AddSingleton<IRequestValidator<WoodstockGift>, WoodstockGiftRequestValidator>();
@@ -339,6 +343,9 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IJobTracker, JobTracker>();
             services.AddSingleton<IKustoQueryProvider, KustoQueryProvider>();
             services.AddSingleton<IStewardUserProvider, StewardUserProvider>();
+
+            var pegasusProvider = this.SetupPegasusCmsProvider(keyVaultProvider);
+            services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
         }
 
         /// <summary>
@@ -387,6 +394,32 @@ namespace Turn10.LiveOps.StewardApi
             }
 
             return null;
+        }
+
+        private PegasusCmsProvider SetupPegasusCmsProvider(KeyVaultProvider keyVaultProvider)
+        {
+            var environment = this.configuration[ConfigurationKeyConstants.PegasusCmsEnvironment];
+            Dictionary<string, IAzureBlobProvider> cmsBlobProviders = new Dictionary<string, IAzureBlobProvider>();
+
+            var pegasusSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], $"pegasus-sas-{environment}").GetAwaiter().GetResult();
+            IAzureBlobProvider cmsAzureBlobProvider = new AzureBlobProvider(pegasusSecret, new MetricsManager(null));
+
+            cmsBlobProviders.Add(environment, cmsAzureBlobProvider);
+
+            var defaultCMSInstance = new CMSInstance
+            {
+                Environment = environment,
+            };
+
+            // cmsPrefix - "woodstock/sunrise/etc.."
+            CMSRetrievalHelper woodstockCmsRetrievalHelper = new CMSRetrievalHelper("woodstock", cmsBlobProviders, defaultCMSInstance: defaultCMSInstance);
+            CMSRetrievalHelper sunriseCmsRetrievalHelper = new CMSRetrievalHelper("sunrise", cmsBlobProviders, defaultCMSInstance: defaultCMSInstance);
+
+            return new PegasusCmsProvider()
+            {
+                WoodstockCmsRetrievalHelper = woodstockCmsRetrievalHelper,
+                SunriseCmsRetrievalHelper = sunriseCmsRetrievalHelper,
+            };
         }
     }
 }

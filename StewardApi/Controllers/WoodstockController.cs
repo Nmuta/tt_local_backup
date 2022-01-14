@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.Scoreboard.FH5.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -47,7 +48,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         Justification = "This can't be avoided.")]
     public sealed class WoodstockController : ControllerBase
     {
-        private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
         private const string DefaultEndpointKey = "Woodstock|Retail";
 
@@ -68,6 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly IWoodstockNotificationHistoryProvider notificationHistoryProvider;
         private readonly IWoodstockStorefrontProvider storefrontProvider;
+        private readonly IWoodstockLeaderboardProvider leaderboardProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
@@ -93,6 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IWoodstockBanHistoryProvider banHistoryProvider,
             IWoodstockNotificationHistoryProvider notificationHistoryProvider,
             IWoodstockStorefrontProvider storefrontProvider,
+            IWoodstockLeaderboardProvider leaderboardProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
@@ -115,6 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
+            leaderboardProvider.ShouldNotBeNull(nameof(leaderboardProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -137,6 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.banHistoryProvider = banHistoryProvider;
             this.notificationHistoryProvider = notificationHistoryProvider;
             this.storefrontProvider = storefrontProvider;
+            this.leaderboardProvider = leaderboardProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.mapper = mapper;
@@ -298,7 +302,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<SharedConsoleUser>))]
         public async Task<IActionResult> GetSharedConsoleUsers(
             ulong xuid,
-            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int startIndex = 0,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
@@ -451,7 +455,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
         public async Task<IActionResult> GetCreditUpdates(
             ulong xuid,
-            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int startIndex = 0,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
@@ -1720,6 +1724,86 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 notificationId,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Gets the leaderboards.
+        /// </summary>
+        [HttpGet("leaderboards")]
+        [SwaggerResponse(200, type: typeof(IEnumerable<Leaderboard>))]
+        public async Task<IActionResult> GetLeaderboards()
+        {
+            var leaderboards = await this.leaderboardProvider.GetLeaderboardsAsync().ConfigureAwait(true);
+
+            return this.Ok(leaderboards);
+        }
+
+        /// <summary>
+        ///     Gets the leaderboard scores.
+        /// </summary>
+        [HttpGet("leaderboard/scores/top")]
+        [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
+        public async Task<IActionResult> GetLeaderboardScores(
+            [FromQuery] ScoreboardType scoreboardType,
+            [FromQuery] ScoreType scoreType,
+            [FromQuery] int trackId,
+            [FromQuery] string pivotId,
+            [FromQuery] int startAt = 0,
+            [FromQuery] int maxResults = DefaultMaxResults)
+        {
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+
+            var leaderboards = await this.leaderboardProvider.GetLeaderboardScoresAsync(
+                scoreboardType,
+                scoreType,
+                trackId,
+                pivotId,
+                startAt,
+                maxResults,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok(leaderboards);
+        }
+
+        /// <summary>
+        ///     Gets the leaderboard scores around a player.
+        /// </summary>
+        [HttpGet("leaderboard/scores/near-player/{xuid}")]
+        [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
+        public async Task<IActionResult> GetLeaderboardScoresAroundXuid(
+            ulong xuid,
+            [FromQuery] ScoreboardType scoreboardType,
+            [FromQuery] ScoreType scoreType,
+            [FromQuery] int trackId,
+            [FromQuery] string pivotId,
+            [FromQuery] int maxResults = DefaultMaxResults)
+        {
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+
+            var leaderboards = await this.leaderboardProvider.GetLeaderboardScoresAsync(
+                xuid,
+                scoreboardType,
+                scoreType,
+                trackId,
+                pivotId,
+                maxResults,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok(leaderboards);
+        }
+
+        /// <summary>
+        ///     Deletes leaderboard scores.
+        /// </summary>
+        [HttpPost("leaderboard/scores/delete")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)
+        {
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+
+            await this.leaderboardProvider.DeleteLeaderboardScoresAsync(scoreIds, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }

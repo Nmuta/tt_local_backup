@@ -1,0 +1,64 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Search Leaderboards</mat-card-title>
+    <mat-card-subtitle>Search and delete scores from leaderboards</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill">
+        <mat-label>Score Type</mat-label>
+        <mat-select matInput formControlName="scoreType">
+          <mat-option *ngFor="let type of scoreTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Scoreboard Type</mat-label>
+        <mat-select matInput formControlName="scoreboardType">
+          <mat-option *ngFor="let type of scoreboardTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Views</mat-label>
+        <mat-select
+          matInput
+          formControlName="view"
+        >
+          <mat-option *ngFor="let view of views" [value]="view">
+            {{ view }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
+      <mat-form-field>
+        <mat-label>Event Id</mat-label>
+        <input matInput type="text" formControlName="pivotId" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Track Id</mat-label>
+        <input matInput type="text" formControlName="trackId" />
+      </mat-form-field>
+
+      <div style="display: block">
+        <mat-form-field>
+          <mat-label>XUID</mat-label>
+          <input matInput type="text" formControlName="xuid" />
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #waitingTemplate>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <!-- <json-dump [input]="getToolsAvailabilityMonitor.status.error">Failure occured.</json-dump> -->
+</ng-template>

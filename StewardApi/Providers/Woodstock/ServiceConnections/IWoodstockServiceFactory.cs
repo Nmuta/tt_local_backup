@@ -63,5 +63,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Prepares a <see creaf="LiveOpsService" />.
         /// </summary>
         Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see creaf="ScoreboardManagementService" />.
+        /// </summary>
+        Task<ScoreboardManagementService> PrepareScoreboardManagementService(string endpoint);
     }
 }

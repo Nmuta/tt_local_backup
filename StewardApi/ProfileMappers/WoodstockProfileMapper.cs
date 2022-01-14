@@ -5,10 +5,13 @@ using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
+using Forza.Scoreboard.FH5.Generated;
 using Forza.UserInventory.FH5.Generated;
+using Forza.WebServices.ForzaDbObjects.FH5.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -328,6 +331,20 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.PreviewPayload.ToImageDataUrl()))
                 .ReverseMap();
+
+            this.CreateMap<PegasusLeaderboard, Leaderboard>()
+                .ForMember(dest => dest.ScoreType, opt => opt.MapFrom(src => Enum.GetName(typeof(ScoreType), src.ScoreType)))
+                .ForMember(dest => dest.ScoreTypeId, opt => opt.MapFrom(src => src.ScoreType))
+                .ForMember(dest => dest.ScoreboardType, opt => opt.MapFrom(src => Enum.GetName(typeof(ScoreboardType), src.ScoreboardType)))
+                .ForMember(dest => dest.ScoreboardTypeId, opt => opt.MapFrom(src => src.ScoreboardType))
+                .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => src.ExpectedCarClass.ValueOrDefault(-1)));
+
+            this.CreateMap<ForzaRankedLeaderboardRow, LeaderboardScore>()
+                .ForMember(dest => dest.CarPerformanceIndex, opt => opt.MapFrom(src => src.CarPI))
+                .ForMember(dest => dest.StabilityManagement, opt => opt.MapFrom(src => src.STM))
+                .ForMember(dest => dest.AntiLockBrakingSystem, opt => opt.MapFrom(src => src.ABS))
+                .ForMember(dest => dest.TractionControlSystem, opt => opt.MapFrom(src => src.TCS))
+                .ForMember(dest => dest.AutomaticTransmission, opt => opt.MapFrom(src => src.Auto));
         }
     }
 }

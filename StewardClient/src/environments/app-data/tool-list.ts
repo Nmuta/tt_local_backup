@@ -30,6 +30,7 @@ export enum NavbarTool {
   Messaging = 'messaging',
   AuctionDetails = 'auction-details',
   StewardManagement = 'steward-management',
+  Leaderboards = 'leaderboards',
   Theming = 'theming',
 }
 
@@ -85,6 +86,7 @@ export enum AppIcon {
   Messaging = 'mail',
   AuctionDetails = 'price_check',
   StewardManagement = 'cloud_sync',
+  Leaderboards = 'leaderboard',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -493,6 +495,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'FM7 Admin Pages',
     shortDescription: [`FM7 Admin Pages`],
     externalUrl: 'https://admin.fm7.forzamotorsport.net/',
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.Leaderboards,
+    tool: NavbarTool.Leaderboards,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Leaderboards (Dev)',
+    subtitle: 'Manage leaderboard scores',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Review reported scores and manage leaderboards.',
+    shortDescription: ['Review reported scores and manage leaderboards.'],
+    loadChildren: () =>
+      import('../../app/shared/pages/leaderboards/leaderboards.module').then(
+        m => m.LeaderboardsModule,
+      ),
+    hideFromUnauthorized: true, // True until tool is ready for support agents.
   },
   <HomeTileInfoCustomTile>{
     icon: AppIcon.DeveloperTool,
