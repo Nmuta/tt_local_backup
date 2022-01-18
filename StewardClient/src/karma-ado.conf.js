@@ -43,7 +43,11 @@ module.exports = function (config) {
           statements: 60,
           lines: 60,
           functions: 60,
-          excludes: ['**/*.spec.ts', '**/app/shared/interceptors/fake-api/**/*.ts'],
+          excludes: [
+            '**/*.spec.ts',
+            '**/app/shared/interceptors/fake-api/**/*.ts',
+            '**/app/pages/util/**/*',
+          ],
         },
         each: {
           statements: 20,
@@ -57,6 +61,7 @@ module.exports = function (config) {
             '**/four-oh-four/**/*.ts',
             '**/app/shared/state/utilities/**/*.ts', // Ugly logic to test, use e2e testing
             '**/environments/**/*.ts', // Configuration
+            '**/app/pages/util/**/*',
           ],
         },
       },

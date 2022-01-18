@@ -18,8 +18,12 @@ mat-spinner.force-inline-2x {
   }
 }
 
+// spinner should always be contrasting
 .mat-fab,
+.mat-icon-button,
 .mat-mini-fab,
+.mat-button,
+.mat-stroked-button,
 .mat-raised-button,
 .mat-flat-button {
   &.mat-accent mat-spinner * {
@@ -30,5 +34,19 @@ mat-spinner.force-inline-2x {
   }
   &.mat-warn mat-spinner * {
     stroke: app-color-default-contrast($app-warn);
+  }
+  &.mat-button-disabled mat-spinner * {
+    stroke: app-color($app-foreground, 'disabled-text') !important;
+  }
+}
+
+// align spinner with text
+.mat-button,
+.mat-stroked-button,
+.mat-raised-button,
+.mat-flat-button {
+  mat-spinner {
+    position: relative;
+    top: 0.3em;
   }
 }

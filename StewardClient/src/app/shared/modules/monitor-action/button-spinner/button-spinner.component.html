@@ -1,0 +1,37 @@
+<span [ngSwitch]="monitor.status.state">
+  <mat-icon *ngSwitchCase="'inactive'" [class]="monitor.status.state">{{ defaultIcon }}</mat-icon>
+  <mat-spinner
+    *ngSwitchCase="'active'"
+    class="force-inline-2x"
+    [matTooltip]="monitor.label + ' in progress'"
+  >
+  </mat-spinner>
+  <mat-icon *ngSwitchCase="'complete'" [class]="monitor.status.state"
+    >{{ successIcon ?? defaultIcon ?? 'check_circle' }}
+  </mat-icon>
+  <mat-icon
+    *ngSwitchCase="'error'"
+    [class]="monitor.status.state"
+    clickStop
+    (click)="onErrorClick()"
+    color="warn"
+    [matTooltip]="monitor.label + ' failed. Click for details.'"
+    >{{ errorIcon ?? 'warning' }}</mat-icon
+  >
+  <mat-icon
+    *ngSwitchCase="'inactive-error'"
+    [class]="monitor.status.state"
+    clickStop
+    (click)="onErrorClick()"
+    color="warn"
+    [matTooltip]="monitor.label + ' failed. Click for details.'"
+    >{{ errorIcon ?? 'warning' }}
+  </mat-icon>
+  <mat-icon
+    *ngSwitchDefault
+    [class]="monitor.status.state"
+    color="warn"
+    [matTooltip]="monitor.label + ' could not determine icon.'"
+    >question_mark</mat-icon
+  >
+</span>

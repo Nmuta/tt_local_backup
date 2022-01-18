@@ -52,6 +52,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     The services failure error code.
         /// </summary>
-        ServicesFailure
+        ServicesFailure,
+
+        /// <summary>
+        ///     A test error code, only for use within the /util/ routes.
+        /// </summary>
+        RelayedFromUtil
     }
 }

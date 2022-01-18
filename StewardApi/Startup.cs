@@ -149,7 +149,7 @@ namespace Turn10.LiveOps.StewardApi
                     {
                         Email = "t10liveopstools@microsoft.com",
                         Name = "Turn 10 LiveOps Tools"
-                    }
+                    },
                 });
 
                 options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme

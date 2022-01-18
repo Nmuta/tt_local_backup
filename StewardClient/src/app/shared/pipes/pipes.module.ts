@@ -12,6 +12,7 @@ import { DomainEnumPrettyPrintOrHumanizePipe } from './domain-enum-pretty-print-
 import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
 import { DurationToMillisPipe } from './duration-to-millis.pipe';
 import { ImpureBigJsonPipe } from './impure-big-json.pipe';
+import { AsyncBigJsonPipe } from './async-big-json.pipe';
 
 /** Module for various shared pipes. */
 @NgModule({
@@ -19,6 +20,7 @@ import { ImpureBigJsonPipe } from './impure-big-json.pipe';
     HumanizePipe,
     BigNumberPipe,
     BigJsonPipe,
+    AsyncBigJsonPipe,
     FormGroupErrorsPipe,
     ImpureJsonPipe,
     ImpureBigJsonPipe,
@@ -33,6 +35,7 @@ import { ImpureBigJsonPipe } from './impure-big-json.pipe';
     HumanizePipe,
     BigNumberPipe,
     BigJsonPipe,
+    AsyncBigJsonPipe,
     FormGroupErrorsPipe,
     ImpureJsonPipe,
     ImpureBigJsonPipe,

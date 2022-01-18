@@ -17,6 +17,15 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { SetFakeApiComponent } from './set-fake-api/set-fake-api.component';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { TypographyComponent } from './typography/typography.component';
+import { ActionMonitorSinglefireComponent } from './action-monitor-singlefire/action-monitor-singlefire.component';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { ActionMonitorMultifireComponent } from './action-monitor-multifire/action-monitor-multifire.component';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -27,6 +36,8 @@ import { TypographyComponent } from './typography/typography.component';
     SelectorHelperComponent,
     SetFakeApiComponent,
     TypographyComponent,
+    ActionMonitorSinglefireComponent,
+    ActionMonitorMultifireComponent,
   ],
   imports: [
     DemoRouterModule,
@@ -41,6 +52,13 @@ import { TypographyComponent } from './typography/typography.component';
     MatTooltipModule,
     DirectivesModule,
     ErrorSpinnerModule,
+    MatButtonModule,
+    MatInputModule,
+    FormsModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MonitorActionModule,
+    StateManagersModule,
   ],
 })
 export class UtilModule {}

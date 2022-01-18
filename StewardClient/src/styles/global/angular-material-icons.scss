@@ -3,3 +3,29 @@
 mat-icon {
   height: auto;
 }
+
+// align icons with text
+*[mat-raised-button],
+*[mat-flat-button],
+*[mat-stroked-button],
+*[mat-button] {
+  mat-icon {
+    position: relative;
+    top: 0.25em;
+  }
+}
+
+// fix colors when they would otherwise overlap
+*[mat-fab],
+*[mat-mini-fab],
+*[mat-raised-button] {
+  &.mat-warn mat-icon.mat-warn {
+    color: app-color-default-contrast($app-warn);
+  }
+  &.mat-accent mat-icon.mat-accent {
+    color: app-color-default-contrast($app-accent);
+  }
+  &.mat-primary mat-icon.mat-primary {
+    color: app-color-default-contrast($app-primary);
+  }
+}

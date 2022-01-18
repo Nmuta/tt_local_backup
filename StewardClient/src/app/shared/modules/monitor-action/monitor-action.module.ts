@@ -13,6 +13,8 @@ import { BigSpinnerComponent } from './big-spinner/big-spinner.component';
 import { InlineSpinnerComponent } from './inline-spinner/inline-spinner.component';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { ButtonSpinnerComponent } from './button-spinner/button-spinner.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /** A feature module that enables monitoring RXJS actions. */
 @NgModule({
@@ -23,6 +25,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     MonitorCheckboxDirective,
     BigSpinnerComponent,
     InlineSpinnerComponent,
+    ButtonSpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -33,12 +36,14 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     MatTooltipModule,
     ErrorSpinnerModule,
     JsonDumpModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     MonitorButtonDirective,
     MonitorCheckboxDirective,
     BigSpinnerComponent,
     InlineSpinnerComponent,
+    ButtonSpinnerComponent,
   ],
 })
 export class MonitorActionModule {}
