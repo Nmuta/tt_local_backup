@@ -14,6 +14,10 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
@@ -32,6 +36,10 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     TableVirtualScrollModule,
     ScrollingModule,
     HelpModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatTooltipModule,
+    DirectivesModule,
   ],
   exports: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
 })

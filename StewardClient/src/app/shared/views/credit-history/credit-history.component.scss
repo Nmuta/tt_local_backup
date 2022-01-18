@@ -37,3 +37,22 @@ table {
     border: none;
   }
 }
+
+.totalXp mat-icon {
+  height: 1em;
+  width: 1em;
+  font-size: 1em;
+  line-height: 1em;
+}
+
+mat-expansion-panel {
+  margin-bottom: 2em;
+}
+
+::ng-deep {
+  .mat-expansion-panel-header-description,
+  .mat-expansion-panel-header-title {
+    justify-content: space-between;
+    align-items: center;
+  }
+}
