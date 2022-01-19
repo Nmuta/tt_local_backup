@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.Scoreboard.FH5.Generated;
+using Forza.Scoreboard.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;

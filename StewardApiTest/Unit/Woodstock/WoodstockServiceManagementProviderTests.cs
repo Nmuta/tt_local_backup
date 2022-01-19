@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5.Generated;
+using Forza.LiveOps.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;

@@ -4,21 +4,21 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
-using Forza.LiveOps.FH5.Generated;
-using Forza.Scoreboard.FH5.Generated;
-using Forza.UserInventory.FH5.Generated;
-using Forza.WebServices.ForzaDbObjects.FH5.Generated;
-using Forza.WebServices.RareCarShopTransactionObjects.FH5.Generated;
+using Forza.LiveOps.FH5_main.Generated;
+using Forza.Scoreboard.FH5_main.Generated;
+using Forza.UserInventory.FH5_main.Generated;
+using Forza.WebServices.ForzaDbObjects.FH5_main.Generated;
+using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
-using Xls.Security.FH5.Generated;
-using Xls.WebServices.FH5.Generated;
-using LiveOpsContracts = Forza.LiveOps.FH5.Generated;
-using WebServicesContracts = Forza.WebServices.FH5.Generated;
+using Xls.Security.FH5_main.Generated;
+using Xls.WebServices.FH5_main.Generated;
+using LiveOpsContracts = Forza.LiveOps.FH5_main.Generated;
+using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
@@ -318,7 +318,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaLiveOpsCar, AuctionDataCar>()
                 .ReverseMap();
 
-            this.CreateMap<Forza.FH5.Generated.CarHistory, AuctionDataCarHistory>()
+            this.CreateMap<Forza.FH5_main.Generated.CarHistory, AuctionDataCarHistory>()
                 .ReverseMap();
 
             this.CreateMap<ForzaAuctionStatus, AuctionReviewState>().ReverseMap();

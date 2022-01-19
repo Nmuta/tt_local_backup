@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         /// <summary>
         ///     Gets development LSP endpoint.
         /// </summary>
-        public static string Development => "https://Steelhead-Flight-12.dev.services.forzamotorsport.net/Services/o.xtsw";
+        public static string Development => "https://steelhead-13.dev.services.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
         ///     Gets studio LSP endpoint.

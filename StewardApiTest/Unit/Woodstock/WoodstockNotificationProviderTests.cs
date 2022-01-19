@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5.Generated;
+using Forza.LiveOps.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using static Forza.LiveOps.FH5.Generated.NotificationsManagementService;
+using static Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {

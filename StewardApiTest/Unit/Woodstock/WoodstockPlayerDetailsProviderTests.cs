@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5.Generated;
-using Forza.WebServices.FH5.Generated;
+using Forza.LiveOps.FH5_main.Generated;
+using Forza.WebServices.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
@@ -14,15 +14,15 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using Xls.WebServices.FH5.Generated;
-using static Forza.LiveOps.FH5.Generated.UserManagementService;
-using static Forza.WebServices.FH5.Generated.LiveOpsService;
-using static Forza.WebServices.FH5.Generated.RareCarShopService;
-using ForzaUserBanDescription = Forza.LiveOps.FH5.Generated.ForzaUserBanDescription;
-using ForzaUserBanParameters = Forza.LiveOps.FH5.Generated.ForzaUserBanParameters;
-using ForzaUserBanResult = Forza.LiveOps.FH5.Generated.ForzaUserBanResult;
-using ForzaUserBanSummary = Forza.LiveOps.FH5.Generated.ForzaUserBanSummary;
-using WebServicesContracts = Forza.WebServices.FH5.Generated;
+using Xls.WebServices.FH5_main.Generated;
+using static Forza.LiveOps.FH5_main.Generated.UserManagementService;
+using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
+using static Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using ForzaUserBanDescription = Forza.LiveOps.FH5_main.Generated.ForzaUserBanDescription;
+using ForzaUserBanParameters = Forza.LiveOps.FH5_main.Generated.ForzaUserBanParameters;
+using ForzaUserBanResult = Forza.LiveOps.FH5_main.Generated.ForzaUserBanResult;
+using ForzaUserBanSummary = Forza.LiveOps.FH5_main.Generated.ForzaUserBanSummary;
+using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
