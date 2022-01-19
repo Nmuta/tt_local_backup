@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Returns the provided response code. Similar to httpstat.us.
         /// </summary>
-        [HttpGet("status/{code}")]
+        [HttpDelete("status/{code}")]
         [SwaggerResponse(200)]
         public Task<IActionResult> DeleteStatus(
             int code,
