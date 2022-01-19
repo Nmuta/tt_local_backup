@@ -41,7 +41,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         private sealed class Dependencies
         {
             public IWoodstockServiceFactory WoodstockServiceFactory { get; set; } = Substitute.For<IWoodstockServiceFactory>();
-            
 
             public WoodstockServiceWrapper Build() => new WoodstockServiceWrapper(this.WoodstockServiceFactory);
         }

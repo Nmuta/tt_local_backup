@@ -34,100 +34,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenConfigurationNull_Throws()
+        public void Ctor_WhenWoodstockServiceFactoryNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { Configuration = null };
+            var dependencies = new Dependencies { SteelheadServiceFactory = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "configuration"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenKeyVaultProviderNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { KeyVaultProvider = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "keyVaultProvider"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenRefreshableCacheStoreNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { RefreshableCacheStore = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "refreshableCacheStore"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenStsClientNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { StsClient = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "stsClient"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenConfigurationValuesNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies(false);
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.SteelheadClientVersion},{ConfigurationKeyConstants.SteelheadAdminXuid},{ConfigurationKeyConstants.SteelheadSandbox},{ConfigurationKeyConstants.SteelheadTitleId}");
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadServiceFactory"));
         }
 
         private sealed class Dependencies
         {
-            public Dependencies(bool validConfiguration = true)
-            {
-                this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.TestCertificateString);
-                if (validConfiguration)
-                {
-                    this.Configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
-                    this.Configuration["SteelheadEnvironment:AdminXuid"].Returns("1234567890");
-                    this.Configuration["SteelheadEnvironment:TitleId"].Returns("1234567890");
-                }
-                else
-                {
-                    this.Configuration[Arg.Any<string>()].ReturnsNull();
-                }
-            }
+            public ISteelheadServiceFactory SteelheadServiceFactory { get; set; } = Substitute.For<ISteelheadServiceFactory>();
 
-            public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
-
-            public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
-
-            public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();
-
-            public IStsClient StsClient { get; set; } = Substitute.For<IStsClient>();
-
-            public SteelheadServiceWrapper Build() => new SteelheadServiceWrapper(this.Configuration, this.KeyVaultProvider, this.RefreshableCacheStore, this.StsClient);
+            public SteelheadServiceWrapper Build() => new SteelheadServiceWrapper(this.SteelheadServiceFactory);
         }
     }
 }

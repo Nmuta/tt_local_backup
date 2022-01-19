@@ -255,6 +255,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<WoodstockUserFlagsInput>, WoodstockUserFlagsRequestValidator>();
 
             services.AddSingleton<ISteelheadService, SteelheadServiceWrapper>();
+            services.AddSingleton<ISteelheadServiceFactory, SteelheadServiceFactory>();
             services.AddSingleton<ISteelheadPlayerDetailsProvider, SteelheadPlayerDetailsProvider>();
             services.AddSingleton<ISteelheadPlayerInventoryProvider, SteelheadPlayerInventoryProvider>();
             services.AddSingleton<ISteelheadServiceManagementProvider, SteelheadServiceManagementProvider>();
