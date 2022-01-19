@@ -50,7 +50,8 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
     const key = this.makeKey(route);
-    const shouldAttach = !!route.routeConfig && this.safeHandles.has(key);
+    const shouldAttach = !!route.routeConfig && !!route.component && this.safeHandles.has(key);
+
     // console.warn(
     //   `[RouteReuse|${this.instanceId}] shouldAttach(${shouldAttach}) | ${this.makeId(route)}`,
     //   route,
@@ -62,7 +63,7 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
     const key = this.makeKey(route);
-    const shouldRetrieve = !!route.routeConfig;
+    const shouldRetrieve = !!route.routeConfig && !!route.component;
     const data = this.safeHandles.get(key);
 
     // console.warn(
