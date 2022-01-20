@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 import { LoadChildren } from '@angular/router';
 import { UserRole } from '@models/enums';
-import { chain } from 'lodash';
+import { chain, values } from 'lodash';
 
 /**
  * App names to load.
@@ -36,6 +36,7 @@ export enum NavbarTool {
 
 /** The common access levels for the app. Used to generate role guards. */
 export const CommonAccessLevels = {
+  Everyone: values(UserRole),
   OldNavbarAppOnly: [
     UserRole.LiveOpsAdmin,
     UserRole.SupportAgentAdmin,
@@ -516,7 +517,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     icon: AppIcon.DeveloperTool,
     extraIcon: ExtraIcon.Custom,
     tool: NavbarTool.Theming,
-    accessList: CommonAccessLevels.AdminPageAccess,
+    accessList: CommonAccessLevels.Everyone,
     title: 'Theming',
     subtitle: 'Darkmode Toggle, etc',
     imageUrl: undefined,
