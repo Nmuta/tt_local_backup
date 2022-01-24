@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { BackgroundJob } from '@models/background-job';
 import { ToolsAvailability } from '@models/blob-storage';
@@ -36,8 +35,6 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
   public jobsTableLastUpdated: DateTime;
   public getInProgressJobsMonitor = new ActionMonitor('GET in progress jobs');
 
-  public featureSupported: boolean = false;
-
   constructor(
     private readonly blobStorageService: BlobStorageService,
     private readonly settingsService: SettingsService,
@@ -48,16 +45,11 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    this.featureSupported = environment.production;
-
     this.setupGetInProgressJobs();
     this.getInProgressJobs$.next();
 
-    // Ignore tools availability if feature is not supported
-    if (this.featureSupported) {
-      this.setupGetToolsAvailability();
-      this.getToolsAvailability$.next();
-    }
+    this.setupGetToolsAvailability();
+    this.getToolsAvailability$.next();
   }
 
   /** Lifecycle hook */
@@ -67,10 +59,6 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
 
   /** Change event when all tools availability changes */
   public toggleAllToolsAvailability(event: MatSlideToggleChange): void {
-    if (!this.featureSupported) {
-      return;
-    }
-
     this.setToolsAvailabilityMonitor = new ActionMonitor(
       this.setToolsAvailabilityMonitor.dispose().label,
     );

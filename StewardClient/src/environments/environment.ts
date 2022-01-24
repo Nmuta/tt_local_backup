@@ -20,6 +20,7 @@ export const environment: StewardEnvironment = {
   stewardApiUrl: 'https://localhost:44321',
   stewardUiStagingUrl: 'NO_DEV_STAGING_SLOT',
   stewardApiStagingUrl: 'NO_DEV_STAGING_SLOT',
+  stewardBlobStorageUrl: 'https://stewardblobdev.blob.core.windows.net',
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',
   adoVersion: 'ADO_VERSION_TO_REPLACE',
   enableFakeApi: true,

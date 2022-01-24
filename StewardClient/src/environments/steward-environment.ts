@@ -11,6 +11,7 @@ export interface StewardEnvironment {
   stewardUiStagingUrl: string;
   stewardApiUrl: string;
   stewardApiStagingUrl: string;
+  stewardBlobStorageUrl: string;
   oldScrutineerApiUrl: string;
 
   /** Placeholder value replaced in ADO pipeline. */

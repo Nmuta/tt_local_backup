@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { ToolsAvailability } from '@models/blob-storage';
 import { Observable } from 'rxjs';
 
@@ -8,15 +9,21 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BlobStorageService {
-  public basePath: string = 'https://stewardblobprod.blob.core.windows.net';
-
   constructor(private readonly http: HttpClient) {}
 
   /** Gets tool availability. */
   public getToolAvailability$(): Observable<ToolsAvailability> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.get<ToolsAvailability>(`${this.basePath}/settings/tool-availability.json`, {
-      headers,
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
+      Pragma: 'no-cache',
+      Expires: 'Sat, 01 Jan 2000 00:00:00 GMT',
     });
+    return this.http.get<ToolsAvailability>(
+      `${environment.stewardBlobStorageUrl}/settings/tool-availability.json`,
+      {
+        headers,
+      },
+    );
   }
 }

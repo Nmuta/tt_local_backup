@@ -23,9 +23,7 @@ export class ToolsAvailabilityInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const shouldHandle =
-      request.url.startsWith(environment.stewardApiUrl) &&
-      environment.production &&
-      request.method === 'POST';
+      request.url.startsWith(environment.stewardApiUrl) && request.method === 'POST';
 
     if (!shouldHandle) {
       return next.handle(request);

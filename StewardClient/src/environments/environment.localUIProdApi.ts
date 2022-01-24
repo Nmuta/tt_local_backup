@@ -15,6 +15,7 @@ modifiedEnvironment.production = baseEnvProd.production;
 modifiedEnvironment.stewardApiUrl = baseEnvProd.stewardApiUrl;
 modifiedEnvironment.stewardUiStagingUrl = baseEnvProd.stewardUiStagingUrl;
 modifiedEnvironment.stewardApiStagingUrl = baseEnvProd.stewardApiStagingUrl;
+modifiedEnvironment.stewardBlobStorageUrl = baseEnvProd.stewardBlobStorageUrl;
 modifiedEnvironment.azureAppId = baseEnvProd.azureAppId;
 modifiedEnvironment.azureAppScope = baseEnvProd.azureAppScope;
 modifiedEnvironment.tools = baseEnvProd.tools;

@@ -4,22 +4,20 @@
     <mat-card-subtitle>Set tool availability pre & post release</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngIf="featureSupported; else unsupportedFeatureTemplate">
-      <ng-container *ngIf="!getToolsAvailabilityMonitor.isActive; else waitingTemplate">
-        <ng-container *ngIf="!getToolsAvailabilityMonitor.status.error; else errorTemplate">
-          <mat-slide-toggle
-            [checked]="toolsAvailability.allTools"
-            [disabled]="setToolsAvailabilityMonitor.isActive"
-            (change)="toggleAllToolsAvailability($event)"
-          >
-            All tools available
-          </mat-slide-toggle>
-          <mat-icon
-            matTooltip="Disabling will display errors to users when sending requests to Steward API"
-            >info</mat-icon
-          >
-          <inline-spinner [monitor]="setToolsAvailabilityMonitor"></inline-spinner>
-        </ng-container>
+    <ng-container *ngIf="!getToolsAvailabilityMonitor.isActive; else waitingTemplate">
+      <ng-container *ngIf="!getToolsAvailabilityMonitor.status.error; else errorTemplate">
+        <mat-slide-toggle
+          [checked]="toolsAvailability.allTools"
+          [disabled]="setToolsAvailabilityMonitor.isActive"
+          (change)="toggleAllToolsAvailability($event)"
+        >
+          All tools available
+        </mat-slide-toggle>
+        <mat-icon
+          matTooltip="Disabling will display errors to users when sending requests to Steward API"
+          >info</mat-icon
+        >
+        <inline-spinner [monitor]="setToolsAvailabilityMonitor"></inline-spinner>
       </ng-container>
     </ng-container>
   </mat-card-content>
