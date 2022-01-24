@@ -16,7 +16,9 @@ a[mat-raised-button] {
   margin-left: auto;
   margin-right: auto;
   .mat-icon {
-    vertical-align: text-bottom;
+    svg {
+      vertical-align: text-bottom;
+    }
   }
 }
 
