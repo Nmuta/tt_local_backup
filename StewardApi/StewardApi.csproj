@@ -69,9 +69,9 @@
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.22" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.22" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
