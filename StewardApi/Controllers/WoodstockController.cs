@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -555,6 +556,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var auctionLog = await this.storefrontProvider.GetAuctionDataAsync(parsedAuctionId, endpoint).ConfigureAwait(true);
 
             return this.Ok(auctionLog);
+        }
+
+        /// <summary>
+        ///     Cancels a specific auction.
+        /// </summary>
+        [HttpDelete("auction/{auctionId}")]
+        [SwaggerResponse(200, type: typeof(AuctionData))]
+        public async Task<IActionResult> DeleteAuction(string auctionId)
+        {
+            if (!Guid.TryParse(auctionId, out var parsedAuctionId))
+            {
+                throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
+            }
+
+            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var result = await this.storefrontProvider.DeleteAuctionAsync(parsedAuctionId, endpoint).ConfigureAwait(true);
+            var realResult = result.result.First();
+            if (!realResult.Success)
+            {
+                throw new CustomStewardException(
+                    HttpStatusCode.BadGateway,
+                    StewardErrorCode.ServicesFailure,
+                    $"LSP failed to cancel auction {auctionId}");
+            }
+
+            return this.Ok();
         }
 
         /// <summary>

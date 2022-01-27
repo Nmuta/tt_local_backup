@@ -145,6 +145,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<AuctionService> PrepareAuctionServiceAsync(string endpoint)
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new AuctionService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+        }
+
+        /// <inheritdoc/>
         public async Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())

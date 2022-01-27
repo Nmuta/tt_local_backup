@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /**
  *  Routed module for interacting with auctions.
@@ -54,6 +55,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatTooltipModule,
     MatTableModule,
     MatSortModule,
+    HelpModule,
   ],
 })
 export class AuctionModule {}

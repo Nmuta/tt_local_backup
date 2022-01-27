@@ -17,3 +17,23 @@ mat-card-content {
   font-family: 'Material Icons';
   background-color: transparent;
 }
+
+// content tweaks for the card itself
+::ng-deep .help-popover-card {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &:first-child {
+      margin-top: 0;
+    }
+
+    margin-bottom: 0;
+  }
+  ul {
+    margin-top: 0;
+    padding-left: 1em;
+  }
+}

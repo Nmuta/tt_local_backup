@@ -30,7 +30,7 @@ export interface AuctionData {
   liveryLayers: BigNumber;
   numberOfLiveryContributors: BigNumber;
   nextBidAmount: BigNumber;
-  allowedActions: AuctionDataAuctionAction;
+  allowedActions: AuctionDataAuctionAction[];
   topBidAmount: BigNumber;
   topBidderXuid: BigNumber;
   paBigNumbererLevel: BigNumber;

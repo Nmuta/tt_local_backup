@@ -9,6 +9,7 @@ import {
   extractDurations,
   ExtractedModel,
 } from './helpers';
+import { extractStringArrays } from './helpers/extract-string-arrays';
 
 export const MODEL_DUMP_PROCESSED_MODEL$ = 'MODEL_DUMP_PROCESSED_MODEL$';
 
@@ -49,6 +50,7 @@ export class ModelDumpComponent extends BaseComponent implements OnChanges {
       extractedStrings: extractStrings(this.model),
       extractedDates: extractDates(this.model),
       extractedDurations: extractDurations(this.model),
+      extractedStringArrays: extractStringArrays(this.model),
     };
     this.processedModel$.next(this.processedModel);
   }

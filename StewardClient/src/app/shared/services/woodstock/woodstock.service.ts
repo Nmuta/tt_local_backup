@@ -450,6 +450,11 @@ export class WoodstockService {
     );
   }
 
+  /** Gets an auction's data by ID. */
+  public deleteAuctionByAuctionId$(auctionId: GuidLikeString): Observable<void> {
+    return this.apiService.deleteRequest$<void>(`${this.basePath}/auction/${auctionId}`);
+  }
+
   /** Gets player UGC items by XUID. */
   public getPlayerUGCByXuid$(xuid: BigNumber, contentType: UGCType): Observable<PlayerUGCItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());

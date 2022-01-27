@@ -45,6 +45,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint);
 
         /// <summary>
+        ///     Prepares a <see creaf="AuctionService" />.
+        /// </summary>
+        Task<AuctionService> PrepareAuctionServiceAsync(string endpoint);
+
+        /// <summary>
         ///     Prepares a <see creaf="RareCarShopService" />.
         /// </summary>
         Task<RareCarShopService> PrepareRareCarShopServiceAsync(string endpoint);

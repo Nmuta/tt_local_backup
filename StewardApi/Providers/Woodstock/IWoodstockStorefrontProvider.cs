@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
+using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -40,6 +41,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         ///     Gets comprehensive data about an auction.
         /// </summary>
         Task<AuctionData> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint);
+
+        /// <summary>
+        ///     Deletes the given auction.
+        /// </summary>
+        Task<DeleteAuctionsOutput> DeleteAuctionAsync(
             Guid auctionId,
             string endpoint);
 

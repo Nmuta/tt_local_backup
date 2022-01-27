@@ -1,0 +1,12 @@
+<table class="info-table" *ngIf="values">
+  <tr *ngFor="let e of values">
+    <th>{{ e.name }}</th>
+    <td>
+      <ul>
+        <li *ngFor="let v of e.value">
+          <standard-copy [text]="v">{{ v | humanize }}</standard-copy>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>

@@ -7,6 +7,7 @@ using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Turn10.Data.Common;
+using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
@@ -449,6 +450,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
             var result = await auctionService.GetAuctionData(auctionId).ConfigureAwait(false);
             return result?.auction;
+        }
+
+        /// <inheritdoc/>
+        public async Task<DeleteAuctionsOutput> DeleteAuctionAsync(
+            Guid auctionId,
+            string endpoint)
+        {
+            var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
+            return await auctionService.DeleteAuctions(new[] { auctionId }).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

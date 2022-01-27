@@ -17,6 +17,7 @@ import { NgxHumanizeDurationModule } from 'ngx-humanize-duration';
 import { ModelDumpDatetimeTableComponent } from './model-dump-simple/model-dump-datetime-table/model-dump-datetime-table.component';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
+import { ModelDumpHumanizeArrayTableComponent } from './model-dump-simple/model-dump-humanize-array-table/model-dump-humanize-array-table.component';
 
 /** A collection of utilities for rapidly outputting a raw model onto a page. */
 @NgModule({
@@ -30,6 +31,7 @@ import { StandardFlagModule } from '@components/standard-flag/standard-flag.modu
     ModelDumpHumanizeTableComponent,
     ModelDumpDurationTableComponent,
     ModelDumpDatetimeTableComponent,
+    ModelDumpHumanizeArrayTableComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +54,7 @@ import { StandardFlagModule } from '@components/standard-flag/standard-flag.modu
     ModelDumpHumanizeTableComponent,
     ModelDumpDurationTableComponent,
     ModelDumpDatetimeTableComponent,
+    ModelDumpHumanizeArrayTableComponent,
   ],
 })
 export class ModelDumpModule {}

@@ -55,6 +55,11 @@ export interface ExtractedObjectDurations extends ExtractedObjectBase<Duration> 
   all: ObjectEntry<Duration>[];
 }
 
+/** Various grouped durations extracted from an object. */
+export interface ExtractedStringArrays extends ExtractedObjectBase<string[]> {
+  all: ObjectEntry<string[]>[];
+}
+
 /** Container for all values extracted from a given model. */
 export interface ExtractedModel {
   extractedFlags: ExtractedObjectFlags;
@@ -62,4 +67,5 @@ export interface ExtractedModel {
   extractedStrings: ExtractedObjectStrings;
   extractedDates: ExtractedObjectDates;
   extractedDurations: ExtractedObjectDurations;
+  extractedStringArrays: ExtractedStringArrays;
 }

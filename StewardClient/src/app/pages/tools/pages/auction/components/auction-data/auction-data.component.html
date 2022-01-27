@@ -3,6 +3,7 @@
     <mat-card-header>
       <mat-card-title>Auction State</mat-card-title>
       <mat-card-subtitle>Related IDs and flags</mat-card-subtitle>
+      <ng-content select="help-popover-icon"></ng-content>
     </mat-card-header>
     <model-dump-xuids></model-dump-xuids>
     <model-dump-simple-table
@@ -11,9 +12,15 @@
     <model-dump-humanize-table
       [values]="source.processedModel.extractedStrings.other"
     ></model-dump-humanize-table>
+    <model-dump-humanize-array-table
+      [values]="source.processedModel.extractedStringArrays.all"
+    ></model-dump-humanize-array-table>
     <model-dump-simple-table
       [values]="source.processedModel.extractedNumbers.ids"
     ></model-dump-simple-table>
+    <mat-card-actions align="end">
+      <ng-content select="button"></ng-content>
+    </mat-card-actions>
   </mat-card>
 
   <mat-card>

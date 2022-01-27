@@ -3,6 +3,23 @@
   [auctionData]="auctionData"
   [title]="GameTitleAbbreviation.FH5"
 >
+  <help-popover-icon cardTitle="Auction State" confluenceName="Auction State Card">
+    <h3>Action: Delete</h3>
+    <ul>
+      <li>The "delete" action removes an auction by flagging it for review.</li>
+      <li>
+        Once an auction is flagged for review, it must be removed by player interaction from the
+        client.
+      </li>
+      <li>
+        The credits and car should be returned to the player when they interact with the auction.
+      </li>
+    </ul>
+  </help-popover-icon>
+  <button mat-flat-button color="warn" clickStop (click)="onCancel()" [disabled]="!canCancel">
+    Delete
+    <button-spinner [monitor]="postCancelMonitor" defaultIcon="delete"></button-spinner>
+  </button>
 </page-auction-data>
 <ng-template #spinner>
   <big-spinner [monitor]="getMonitor"></big-spinner>

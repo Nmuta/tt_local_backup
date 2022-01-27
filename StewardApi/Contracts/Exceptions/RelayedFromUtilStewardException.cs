@@ -5,31 +5,29 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents an 'friendly' unknown failure exception.
+    ///     Represents an 'friendly' exception that was relayed from steward's /util/ page for testing.
     /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
-    public sealed class CustomStewardException : StewardBaseException
+    public sealed class RelayedFromUtilStewardException : StewardBaseException
 #pragma warning restore CA1032 // Implement standard exception constructors
     {
         private readonly HttpStatusCode statusCode;
-        private readonly StewardErrorCode errorCode;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomStewardException"/> class.
+        ///     Initializes a new instance of the <see cref="RelayedFromUtilStewardException"/> class.
         /// </summary>
-        public CustomStewardException(HttpStatusCode statusCode, StewardErrorCode errorCode, string message)
-            : this(statusCode, errorCode, message, null)
+        public RelayedFromUtilStewardException(HttpStatusCode statusCode, string message)
+            : this(statusCode, message, null)
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomStewardException"/> class.
+        ///     Initializes a new instance of the <see cref="RelayedFromUtilStewardException"/> class.
         /// </summary>
-        public CustomStewardException(HttpStatusCode statusCode, StewardErrorCode errorCode, string message, Exception innerException)
+        public RelayedFromUtilStewardException(HttpStatusCode statusCode, string message, Exception innerException)
             : base(message, innerException)
         {
             this.statusCode = statusCode;
-            this.errorCode = errorCode;
         }
 
         /// <summary>
@@ -40,6 +38,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Gets the error code.
         /// </summary>
-        public override StewardErrorCode ErrorCode => this.errorCode;
+        public override StewardErrorCode ErrorCode => StewardErrorCode.RelayedFromUtil;
     }
 }

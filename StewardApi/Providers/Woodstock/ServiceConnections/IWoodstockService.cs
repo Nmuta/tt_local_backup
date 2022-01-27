@@ -5,6 +5,7 @@ using Forza.LiveOps.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
@@ -285,6 +286,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Gets comprehensive data about an auction.
         /// </summary>
         Task<Forza.LiveOps.FH5_main.Generated.ForzaAuction> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint);
+
+        /// <summary>
+        ///     Deletes an auction.
+        /// </summary>
+        Task<DeleteAuctionsOutput> DeleteAuctionAsync(
             Guid auctionId,
             string endpoint);
 

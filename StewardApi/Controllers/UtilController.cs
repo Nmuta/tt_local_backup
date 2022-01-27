@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 if (error.GetType() == typeof(JValue))
                 {
                     await Task.Delay(delay).ConfigureAwait(true);
-                    throw new CustomStewardException((HttpStatusCode)code, error.ToString());
+                    throw new RelayedFromUtilStewardException((HttpStatusCode)code, error.ToString());
                 }
 
                 if (error.GetType() != typeof(JObject))
