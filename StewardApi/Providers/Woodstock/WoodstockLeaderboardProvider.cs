@@ -132,6 +132,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             var result = await this.woodstockService.GetLeaderboardScoresAsync(searchParams, 0, maxResults, endpoint).ConfigureAwait(false);
 
+            if (result.Count <= 0)
+            {
+                throw new NotFoundStewardException($"Could not find player XUID in leaderboard: {xuid}");
+            }
+
             return this.mapper.Map<IEnumerable<LeaderboardScore>>(result);
         }
 

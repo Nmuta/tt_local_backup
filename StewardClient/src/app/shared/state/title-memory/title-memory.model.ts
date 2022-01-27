@@ -18,4 +18,5 @@ export class TitleMemoryModel {
   public notifications: Horizons;
   public auctionBlocklist: Horizons;
   public auctionDetails: Horizons;
+  public leaderboards: GameTitleCodeName.FH5;
 }

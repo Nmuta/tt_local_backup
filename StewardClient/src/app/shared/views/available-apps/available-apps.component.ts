@@ -73,6 +73,9 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
         case UserRole.CommunityManager:
           this.areAnyAppsAccessible = true;
           break;
+        case UserRole.HorizonDesigner:
+          this.areAnyAppsAccessible = true;
+          break;
       }
     }
   }

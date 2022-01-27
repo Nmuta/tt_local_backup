@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 import { VerifyActionButtonComponent } from './verify-action-button.component';
 
@@ -20,6 +21,7 @@ import { VerifyActionButtonComponent } from './verify-action-button.component';
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
+    DirectivesModule,
   ],
   exports: [VerifyActionButtonComponent],
 })

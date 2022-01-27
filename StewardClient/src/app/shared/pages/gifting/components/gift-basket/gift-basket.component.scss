@@ -24,7 +24,7 @@ mat-card {
 
   .table-container {
     .row-error {
-      background-color: #fff5ad;
+      background-color: app-color-highlight-background();
     }
 
     table {

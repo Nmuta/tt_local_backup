@@ -13,6 +13,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public Guid Id { get; set; }
 
+        public int Position { get; set; }
+
         public DateTime SubmissionTime { get; set; }
 
         public double Score { get; set; }

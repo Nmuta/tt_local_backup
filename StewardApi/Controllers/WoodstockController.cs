@@ -41,7 +41,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
-        UserRole.CommunityManager)]
+        UserRole.CommunityManager,
+        UserRole.HorizonDesigner)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
@@ -1732,6 +1733,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the leaderboards.
         /// </summary>
         [HttpGet("leaderboards")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<Leaderboard>))]
         public async Task<IActionResult> GetLeaderboards()
         {
@@ -1741,9 +1745,43 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets leaderboard metadata.
+        /// </summary>
+        [HttpGet("leaderboard/metadata")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.HorizonDesigner)]
+        [SwaggerResponse(200, type: typeof(Leaderboard))]
+        public async Task<IActionResult> GetLeaderboardMetadata(
+            [FromQuery] ScoreboardType scoreboardType,
+            [FromQuery] ScoreType scoreType,
+            [FromQuery] int trackId,
+            [FromQuery] string pivotId)
+        {
+            var allLeaderboards = await this.leaderboardProvider.GetLeaderboardsAsync().ConfigureAwait(true);
+
+            var leaderboard = allLeaderboards.FirstOrDefault(leaderboard => leaderboard.ScoreboardTypeId == (int)scoreboardType
+                && leaderboard.ScoreTypeId == (int)scoreType
+                && leaderboard.TrackId == trackId
+                && leaderboard.GameScoreboardId.ToString() == pivotId);
+
+            if (leaderboard == null)
+            {
+                throw new BadRequestStewardException($"Could not find leaderboard from provided params. ScoreboardType: " +
+                                                     $"{scoreboardType}, ScoreType: {scoreType}, TrackId: {trackId}, PivotId: {pivotId},");
+            }
+
+            return this.Ok(leaderboard);
+        }
+
+
+        /// <summary>
         ///     Gets the leaderboard scores.
         /// </summary>
         [HttpGet("leaderboard/scores/top")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
         public async Task<IActionResult> GetLeaderboardScores(
             [FromQuery] ScoreboardType scoreboardType,
@@ -1755,7 +1793,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
-            var leaderboards = await this.leaderboardProvider.GetLeaderboardScoresAsync(
+            var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(
                 scoreboardType,
                 scoreType,
                 trackId,
@@ -1764,13 +1802,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 maxResults,
                 endpoint).ConfigureAwait(true);
 
-            return this.Ok(leaderboards);
+            return this.Ok(scores);
         }
 
         /// <summary>
         ///     Gets the leaderboard scores around a player.
         /// </summary>
         [HttpGet("leaderboard/scores/near-player/{xuid}")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
         public async Task<IActionResult> GetLeaderboardScoresAroundXuid(
             ulong xuid,
@@ -1782,7 +1823,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
-            var leaderboards = await this.leaderboardProvider.GetLeaderboardScoresAsync(
+            var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(
                 xuid,
                 scoreboardType,
                 scoreType,
@@ -1791,13 +1832,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 maxResults,
                 endpoint).ConfigureAwait(true);
 
-            return this.Ok(leaderboards);
+            return this.Ok(scores);
         }
 
         /// <summary>
         ///     Deletes leaderboard scores.
         /// </summary>
         [HttpPost("leaderboard/scores/delete")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.HorizonDesigner)]
         [SwaggerResponse(200)]
         public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)
         {

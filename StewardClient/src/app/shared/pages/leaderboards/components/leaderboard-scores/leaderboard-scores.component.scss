@@ -1,0 +1,77 @@
+@import '/src/styles/mixins';
+
+json-dump {
+  display: block;
+  margin-top: $gap-medium;
+}
+
+table.full-width {
+  width: 100%;
+}
+
+div.above-leaderboard-scores {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+
+  > div {
+    margin-bottom: $gap-medium;
+    padding-left: $gap-medium;
+
+    span {
+      display: block;
+    }
+  }
+
+  .multi-select-options {
+    margin-left: auto;
+
+    button {
+      width: 100%;
+      display: block;
+      margin-bottom: $gap-small;
+    }
+  }
+}
+
+tr.mat-row {
+  cursor: pointer;
+
+  &.highlighted {
+    background-color: app-color-highlight-background();
+  }
+
+  &.selected {
+    background-color: $table-tr-hover;
+  }
+}
+
+td.mat-column-actions {
+  > button {
+    margin-right: $gap-small;
+  }
+
+  div.delete-score {
+    display: inline-block;
+
+    button {
+      margin-right: $gap-small;
+    }
+  }
+}
+
+.mat-column-actions {
+  width: 200px;
+}
+
+.mat-column-position {
+  width: 100px;
+}
+
+.car-description {
+  display: block;
+  width: 200px; // Limit extrememly long car names
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

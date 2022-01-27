@@ -92,6 +92,10 @@ import { WoodstockPlayerXuidAccountInventoryFakeApi } from './apis/title/woodsto
 import { WoodstockGiftLiveryToLspGroupFakeApi } from './apis/title/woodstock/gifting/livery/groupId';
 import { WoodstockGiftLiveryToPlayersFakeApi } from './apis/title/woodstock/gifting/livery/useBackgroundProcessing/players';
 import { WoodstockPlayerXuidProfileNotesApi } from './apis/title/woodstock/player/xuid/profileNotes';
+import { WoodstockLeaderboardsFakeApi } from './apis/title/woodstock/leaderboards';
+import { WoodstockLeaderboardScoresTopTopFakeApi } from './apis/title/woodstock/leaderboard/scores/top';
+import { WoodstockLeaderboardScoresDeleteFakeApi } from './apis/title/woodstock/leaderboard/scores/delete';
+import { WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi } from './apis/title/woodstock/leaderboard/scores/near-player/xuid';
 
 import { LoggerService, LogTopic } from '@services/logger';
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
@@ -109,6 +113,10 @@ const fakeApiConstructors = [
   WoodstockGiftLiveryToLspGroupFakeApi,
   WoodstockGiftLiveryToPlayersFakeApi,
   WoodstockPlayerXuidProfileNotesApi,
+  WoodstockLeaderboardsFakeApi,
+  WoodstockLeaderboardScoresTopTopFakeApi,
+  WoodstockLeaderboardScoresDeleteFakeApi,
+  WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi,
 
   // Gravity
   GravityPlayerGamertagDetailsFakeApi,

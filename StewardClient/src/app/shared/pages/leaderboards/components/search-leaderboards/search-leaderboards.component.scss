@@ -1,19 +1,12 @@
 @import '/src/styles/mixins';
 
-:host {
-  @include flex-column-fill();
-}
-
 mat-card {
-  flex-grow: 1;
-
   mat-card-content {
     padding: $gap-medium 0;
   }
 }
 
 mat-icon {
-  margin-left: $gap-small;
   position: relative;
   top: $gap-micro;
 }
@@ -22,6 +15,32 @@ error-spinner {
   margin-left: $gap-small;
 }
 
-mat-form-field {
-  margin-right: $gap-medium;
+div.selected-filters {
+  margin: $gap-small 0;
+}
+
+form {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+
+  mat-form-field {
+    max-width: 500px;
+    width: 100%;
+    flex-grow: 1;
+    margin-right: $gap-medium;
+  }
+
+  .line-break {
+    flex-basis: 100%;
+  }
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+mat-chip > mat-icon,
+button mat-icon {
+  top: unset;
 }

@@ -56,6 +56,12 @@ import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
 import { PlayerAuctionAction } from '@models/player-auction-action';
+import {
+  DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS,
+  DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS,
+  Leaderboard,
+  LeaderboardScore,
+} from '@models/leaderboards';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -543,6 +549,83 @@ export class WoodstockService {
   public deleteAuctionBlocklistEntry$(carId: BigNumber): Observable<AuctionBlocklistEntry[]> {
     return this.apiService.deleteRequest$<AuctionBlocklistEntry[]>(
       `${this.basePath}/auctions/blockList/carId(${carId})`,
+    );
+  }
+
+  /** Gets leaderboards. */
+  public getLeaderboards$(): Observable<Leaderboard[]> {
+    return this.apiService.getRequest$<Leaderboard[]>(`${this.basePath}/leaderboards`);
+  }
+
+  /** Gets leaderboard metadata. */
+  public getLeaderboardMetadata$(
+    scoreboardTypeId: BigNumber,
+    scoreTypeId: BigNumber,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+  ): Observable<Leaderboard> {
+    const params = new HttpParams()
+      .set('scoreboardType', scoreboardTypeId.toString())
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString());
+
+    return this.apiService.getRequest$<Leaderboard>(
+      `${this.basePath}/leaderboard/metadata`,
+      params,
+    );
+  }
+
+  /** Gets leaderboard scores. */
+  public getLeaderboardScores$(
+    scoreboardTypeId: BigNumber,
+    scoreTypeId: BigNumber,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+    startAt: BigNumber,
+    maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS),
+  ): Observable<LeaderboardScore[]> {
+    const params = new HttpParams()
+      .set('scoreboardType', scoreboardTypeId.toString())
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString())
+      .set('startAt', startAt.toString())
+      .set('maxResults', maxResults.toString());
+
+    return this.apiService.getRequest$<LeaderboardScore[]>(
+      `${this.basePath}/leaderboard/scores/top`,
+      params,
+    );
+  }
+
+  /** Gets leaderboard scores. */
+  public getLeaderboardScoresNearPlayer$(
+    xuid: BigNumber,
+    scoreboardTypeId: BigNumber,
+    scoreTypeId: BigNumber,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+    maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS),
+  ): Observable<LeaderboardScore[]> {
+    const params = new HttpParams()
+      .set('scoreboardType', scoreboardTypeId.toString())
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString())
+      .set('maxResults', maxResults.toString());
+
+    return this.apiService.getRequest$<LeaderboardScore[]>(
+      `${this.basePath}/leaderboard/scores/near-player/${xuid}`,
+      params,
+    );
+  }
+
+  /** Deletes leaderboard scores. */
+  public deleteLeaderboardScores$(scoreIds: GuidLikeString[]): Observable<void> {
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/leaderboard/scores/delete`,
+      scoreIds,
     );
   }
 }

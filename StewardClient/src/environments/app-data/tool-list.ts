@@ -63,6 +63,7 @@ export const CommonAccessLevels = {
     UserRole.SupportAgentAdmin,
     UserRole.CommunityManager,
   ],
+  HorizonDesigners: [UserRole.LiveOpsAdmin, UserRole.HorizonDesigner],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
 };
 
@@ -375,6 +376,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
     hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
+    icon: AppIcon.Leaderboards,
+    tool: NavbarTool.Leaderboards,
+    accessList: CommonAccessLevels.HorizonDesigners,
+    title: 'Leaderboards',
+    subtitle: 'Manage leaderboards',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Review and delete leaderboard score.',
+    shortDescription: ['Review and delete leaderboard score.'],
+    loadChildren: () =>
+      import('../../app/shared/pages/leaderboards/leaderboards.module').then(
+        m => m.LeaderboardsModule,
+      ),
+    hideFromUnauthorized: false,
+  },
+  <HomeTileInfoInternal>{
     icon: AppIcon.StewardManagement,
     tool: NavbarTool.StewardManagement,
     accessList: [UserRole.LiveOpsAdmin],
@@ -496,22 +513,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'FM7 Admin Pages',
     shortDescription: [`FM7 Admin Pages`],
     externalUrl: 'https://admin.fm7.forzamotorsport.net/',
-  },
-  <HomeTileInfoInternal>{
-    icon: AppIcon.Leaderboards,
-    tool: NavbarTool.Leaderboards,
-    accessList: [UserRole.LiveOpsAdmin],
-    title: 'Leaderboards (Dev)',
-    subtitle: 'Manage leaderboard scores',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'Review reported scores and manage leaderboards.',
-    shortDescription: ['Review reported scores and manage leaderboards.'],
-    loadChildren: () =>
-      import('../../app/shared/pages/leaderboards/leaderboards.module').then(
-        m => m.LeaderboardsModule,
-      ),
-    hideFromUnauthorized: true, // True until tool is ready for support agents.
   },
   <HomeTileInfoCustomTile>{
     icon: AppIcon.DeveloperTool,

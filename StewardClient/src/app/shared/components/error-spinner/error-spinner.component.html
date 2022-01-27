@@ -4,7 +4,7 @@
   [matTooltip]="spinnerMessage"
 ></mat-progress-spinner>
 <mat-icon
-  *ngIf="!isActive && !!error"
+  *ngIf="showIconOnError && !isActive && !!error"
   svgIcon="steward-warning"
   title="Click to copy error to clipboard"
   [matTooltip]="errorMessage"

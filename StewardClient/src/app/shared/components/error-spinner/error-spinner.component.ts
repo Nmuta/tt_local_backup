@@ -18,4 +18,7 @@ export class ErrorSpinnerComponent {
 
   /** The tooltip to display while spinning. */
   @Input() public spinnerMessage: string = undefined;
+
+  /** Shows warning icon when error is found. */
+  @Input() public showIconOnError: boolean = true;
 }

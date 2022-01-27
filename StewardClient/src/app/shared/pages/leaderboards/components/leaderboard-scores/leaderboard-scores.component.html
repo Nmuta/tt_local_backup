@@ -1,0 +1,185 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Leaderboard Scores</mat-card-title>
+    <mat-card-subtitle>Select a leaderboard to show its scores</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="above-leaderboard-scores">
+      <div class="search-metadata">
+        <table>
+          <ng-container *ngIf="!!activeLeaderboard">
+            <tr>
+              <th>Leaderboard:</th>
+              <td>{{ activeLeaderboard.name }}</td>
+            </tr>
+            <tr>
+              <th>Car Class:</th>
+              <td>{{ activeLeaderboard.carClass || 'Not specified' }}</td>
+            </tr>
+            <tr>
+              <th>Board Type:</th>
+              <td>{{ activeLeaderboard.scoreboardType }}</td>
+            </tr>
+            <tr>
+              <th>Score Type:</th>
+              <td>{{ activeLeaderboard.scoreType }}</td>
+            </tr>
+          </ng-container>
+          <tr *ngIf="activeLeaderboardView">
+            <th>Current View:</th>
+            <td>
+              {{ activeLeaderboardView }}
+            </td>
+          </tr>
+          <tr *ngIf="activeXuid">
+            <th>Player XUID:</th>
+            <td>{{ activeXuid.toString() }}</td>
+          </tr>
+        </table>
+        <button
+          *ngIf="activeXuid"
+          mat-stroked-button
+          color="primary"
+          (click)="switchToTopOfListView()"
+        >
+          View full leaderboard
+        </button>
+      </div>
+      <!-- Actions for multi-selection of scores. -->
+      <div class="multi-select-options">
+        <span>* Click on a row to select</span>
+        <button
+          mat-stroked-button
+          color="primary"
+          [disabled]="selectedScores?.length <= 0"
+          (click)="unselectAllScores()"
+        >
+          Unselect all
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="selectedScores?.length <= 0 || !verifyMultiDelete.checked"
+          (click)="deleteScores(selectedScores)"
+          clickStop
+          stateManager
+          [monitor]="deleteLeaderboardScoresMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+        >
+          Delete all {{ selectedScores?.length }} selected
+        </button>
+        <mat-checkbox
+          clickStop
+          #verifyMultiDelete
+          [(ngModel)]="isMultiDeleteActive"
+          ngDefaultControl
+          matTooltip="Check to enable deletion"
+        >
+          Verify Multi-Delete
+        </mat-checkbox>
+      </div>
+    </div>
+
+    <ng-container
+      *ngIf="
+        !getLeaderboardScoresMonitor.isActive && !deleteLeaderboardScoresMonitor.isActive;
+        else waitingTemplate
+      "
+    >
+      <ng-container *ngIf="!getLeaderboardScoresMonitor.isErrored; else errorTemplate">
+        <table mat-table [dataSource]="leaderboardScores" class="full-width">
+          position
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef>Position</th>
+            <td mat-cell *matCellDef="let entry">{{ entry.position }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="score">
+            <th mat-header-cell *matHeaderCellDef>Score</th>
+            <td mat-cell *matCellDef="let entry">
+              <div>
+                <b>{{ entry.score.toNumber() | number: '1.2-2' }}</b> {{ scoreTypeQualifier }}
+              </div>
+              <div>{{ entry.submissionTime | utcDate: 'short' }}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="metadata">
+            <th mat-header-cell *matHeaderCellDef>Metadata</th>
+            <td mat-cell *matCellDef="let entry">
+              <table class="info-table full-width">
+                <tr>
+                  <th>XUID</th>
+                  <td>{{ entry.xuid }}</td>
+                </tr>
+                <tr>
+                  <th>Car</th>
+                  <td class="car-description" [matTooltip]="entry.car">{{ entry.car }}</td>
+                </tr>
+              </table>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let entry">
+              <button
+                mat-mini-fab
+                clickStop
+                matTooltip="Auto selects position this position and above. This only affects scores that have been loaded into the table."
+                (click)="autoSelectMultiScores(entry)"
+              >
+                <mat-icon>vertical_align_top</mat-icon>
+              </button>
+
+              <div class="delete-score">
+                <button
+                  mat-raised-button
+                  color="warn"
+                  [disabled]="selectedScores?.length > 0 || !verifyDelete.checked"
+                  (click)="deleteScores([entry])"
+                  clickStop
+                  stateManager
+                  [monitor]="deleteLeaderboardScoresMonitor"
+                  monitorDisable
+                  monitorWarn
+                  monitorWarnSnackbar
+                >
+                  Delete
+                </button>
+                <mat-checkbox clickStop #verifyDelete matTooltip="Check to enable deletion">
+                  Verify
+                </mat-checkbox>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="leaderboardDisplayColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: leaderboardDisplayColumns"
+            [class.highlighted]="row.highlighted"
+            [class.selected]="row.selected"
+            (click)="onRowClicked(row)"
+          ></tr>
+        </table>
+      </ng-container>
+    </ng-container>
+    <mat-paginator [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #waitingTemplate>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <json-dump [input]="getLeaderboardScoresMonitor.status.error">
+    <span *ngIf="!activeXuid">Failed to search leaderboard.</span>
+    <span *ngIf="!!activeXuid"
+      >Player's score doesnt exist or has been deleted: {{ activeXuid }}</span
+    >
+  </json-dump>
+</ng-template>

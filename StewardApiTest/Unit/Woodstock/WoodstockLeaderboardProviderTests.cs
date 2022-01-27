@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
+using Forza.LiveOps.FH5_main.Generated;
 using Forza.Scoreboard.FH5_main.Generated;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using Turn10.Services.CMSRetrieval;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
@@ -200,6 +199,29 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetLeaderboardScoresAsyncWithXuid_WithValidParams_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var scoreboardType = Fixture.Create<ScoreboardType>();
+            var scoreType = Fixture.Create<ScoreType>();
+            var trackId = Fixture.Create<int>();
+            var pivotId = Fixture.Create<string>();
+            var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            async Task<IEnumerable<LeaderboardScore>> Action() =>
+                await provider.GetLeaderboardScoresAsync(xuid, scoreboardType, scoreType, trackId, pivotId, maxResults, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            var result = await Action().ConfigureAwait(false);
+            result.ToArray().Should().BeOfType<LeaderboardScore[]>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void DeleteLeaderboardScoresAsync_WithNullEndpoint_Throws()
         {
             // Arrange.
@@ -214,6 +236,22 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "endpoint"));
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void DeleteLeaderboardScoresAsync_WithEmptyArrayOfScoreIds_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task> action = async () =>
+                await provider.DeleteLeaderboardScoresAsync(new Guid[]{}, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<BadRequestStewardException>().WithMessage($"Cannot provided empty array of score ids.");
+        }
+
         private sealed class Dependencies
         {
             public Dependencies(bool validConfiguration = true)
@@ -226,6 +264,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 {
                     this.Configuration[Arg.Any<string>()].ReturnsNull();
                 }
+
+                this.WoodstockService
+                    .GetLeaderboardScoresAsync(Arg.Any<ForzaSearchLeaderboardsParameters>(), Arg.Any<int>(),
+                        Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ForzaRankedLeaderboardRow>>());
+
+                this.Mapper.Map<IEnumerable<LeaderboardScore>>(Arg.Any<IList<ForzaRankedLeaderboardRow>>())
+                    .Returns(Fixture.Create<IEnumerable<LeaderboardScore>>());
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();

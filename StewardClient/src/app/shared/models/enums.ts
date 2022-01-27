@@ -61,6 +61,7 @@ export enum UserRole {
   DataPipelineContributor = 'DataPipelineContributor',
   DataPipelineRead = 'DataPipelineRead',
   CommunityManager = 'CommunityManager',
+  HorizonDesigner = 'HorizonDesigner',
 }
 
 export enum NotificationHubEvents {

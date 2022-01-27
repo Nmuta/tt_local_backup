@@ -533,6 +533,19 @@ describe('WoodstockService', () => {
     });
   });
 
+  describe('Method: getLeaderboards', () => {
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest$ with the expected params', done => {
+      service.getLeaderboards$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/leaderboards`);
+        done();
+      });
+    });
+  });
+
   describe('Method: postGiftLiveryToPlayersUsingBackgroundJob$', () => {
     const liveryId = faker.datatype.uuid();
     const groupGift: GroupGift = {
@@ -549,6 +562,96 @@ describe('WoodstockService', () => {
         expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/livery(${liveryId})/players/useBackgroundProcessing`,
           groupGift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getLeaderboards', () => {
+    const scoreboardTypeId = fakeBigNumber();
+    const scoreTypeId = fakeBigNumber();
+    const trackId = fakeBigNumber();
+    const pivotId = fakeBigNumber();
+    const startAt = fakeBigNumber();
+    const maxResults = fakeBigNumber();
+
+    const expectedParams = new HttpParams()
+      .set('scoreboardType', scoreboardTypeId.toString())
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString())
+      .set('startAt', startAt.toString())
+      .set('maxResults', maxResults.toString());
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest$ with the expected params', done => {
+      service
+        .getLeaderboardScores$(scoreboardTypeId, scoreTypeId, trackId, pivotId, startAt, maxResults)
+        .subscribe(() => {
+          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+            `${service.basePath}/leaderboard/scores/top`,
+            expectedParams,
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Method: getLeaderboardScoresNearPlayer', () => {
+    const xuid = fakeBigNumber();
+    const scoreboardTypeId = fakeBigNumber();
+    const scoreTypeId = fakeBigNumber();
+    const trackId = fakeBigNumber();
+    const pivotId = fakeBigNumber();
+    const maxResults = fakeBigNumber();
+
+    const expectedParams = new HttpParams()
+      .set('scoreboardType', scoreboardTypeId.toString())
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString())
+      .set('maxResults', maxResults.toString());
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest$ with the expected params', done => {
+      service
+        .getLeaderboardScoresNearPlayer$(
+          xuid,
+          scoreboardTypeId,
+          scoreTypeId,
+          trackId,
+          pivotId,
+          maxResults,
+        )
+        .subscribe(() => {
+          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+            `${service.basePath}/leaderboard/scores/near-player/${xuid}`,
+            expectedParams,
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Method: deleteLeaderboardScores', () => {
+    const scoreIds = [faker.datatype.uuid(), faker.datatype.uuid(), faker.datatype.uuid()];
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest$ with the expected params', done => {
+      service.deleteLeaderboardScores$(scoreIds).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/leaderboard/scores/delete`,
+          scoreIds,
         );
         done();
       });

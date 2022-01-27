@@ -1,9 +1,14 @@
-<mat-tab-group>
-  <!-- Reported scores coming later. Services wants to rebuild how reported scores are managed. -->
-  <!-- <mat-tab label="Reported Scores">
-    <reported-scores></reported-scores>
-  </mat-tab> -->
-  <mat-tab label="Search Leaderboard">
-    <search-leaderboards></search-leaderboards>
-  </mat-tab>
-</mat-tab-group>
+<mat-toolbar>
+  <a
+    *ngFor="let link of navbarRouterLinks"
+    [routerLink]="link.route"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    >{{ link.name }}
+    <endpoint-selection [titleCodeName]="link.codename"> </endpoint-selection>
+  </a>
+</mat-toolbar>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

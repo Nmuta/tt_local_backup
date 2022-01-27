@@ -20,6 +20,8 @@ $app-background: mat.define-palette(mat.$grey-palette);
 
 $app-foreground: mat.$light-theme-foreground-palette;
 
+$app-highlight: #ffe73a;
+
 /// the theme
 $app-theme: mat.define-light-theme(
   (
@@ -35,6 +37,7 @@ $app-theme: mat.define-light-theme(
 // the dark theme
 $dark-primary: mat.define-palette(palettes.$forza-horizon-pink);
 $dark-accent: mat.define-palette(mat.$light-blue-palette);
+$dark-highlight: #ffce2e;
 $dark-theme: mat.define-dark-theme(
   (
     color: (
@@ -144,6 +147,7 @@ $dark-theme: mat.define-dark-theme(
       makeLookupName('foreground', 'disabled-text'),
       map-get(mat.$dark-theme-foreground-palette, 'disabled-text')
     );
+    @include colorToVars(makeLookupName('highlight', 'default'), $dark-highlight);
   } @else {
     @include colorToVars(
       makeLookupName('background', 'default'),
@@ -181,6 +185,7 @@ $dark-theme: mat.define-dark-theme(
       makeLookupName('foreground', 'disabled-text'),
       map-get(mat.$light-theme-foreground-palette, 'disabled-text')
     );
+    @include colorToVars(makeLookupName('highlight', 'default'), $app-highlight);
   }
   background-color: app-color-default($app-background);
   color: app-color-default-contrast($app-background);
@@ -200,6 +205,11 @@ $dark-theme: mat.define-dark-theme(
   } @else {
     @return 'unknown';
   }
+}
+
+@function app-color-highlight-background() {
+  $var-name: makeLookupName('highlight', 'default');
+  @return rgba(var(--#{$var-name}), 0.45);
 }
 
 @function app-color($palette, $style, $opacity: null) {

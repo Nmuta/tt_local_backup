@@ -12,7 +12,6 @@ export function fakeBigNumber(
 ): BigNumber {
   const min = new BigNumber(params.min ?? 0);
   const max = params.max ? new BigNumber(params.max) : undefined;
-
   let result = min;
 
   if (max) {

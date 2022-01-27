@@ -7,7 +7,6 @@ using AutoMapper;
 using Forza.LiveOps.FH5_main.Generated;
 using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
-using Forza.WebServices.ForzaDbObjects.FH5_main.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;

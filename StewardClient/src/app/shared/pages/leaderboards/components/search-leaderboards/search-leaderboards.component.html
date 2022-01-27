@@ -1,64 +1,154 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Search Leaderboards</mat-card-title>
-    <mat-card-subtitle>Search and delete scores from leaderboards</mat-card-subtitle>
+    <button
+      mat-card-avatar
+      *ngIf="expanded"
+      mat-icon-button
+      matTooltip="Collpase leaderboard search options"
+      (click)="expanded = false"
+    >
+      <mat-icon>expand_less</mat-icon>
+    </button>
+    <button
+      mat-card-avatar
+      *ngIf="!expanded"
+      mat-icon-button
+      matTooltip="Expand leaderboard search options"
+      (click)="expanded = true"
+    >
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-card-title> Search Leaderboards </mat-card-title>
+    <mat-card-subtitle>Filter and search leaderboards</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="formGroup">
-      <mat-form-field appearance="fill">
-        <mat-label>Score Type</mat-label>
-        <mat-select matInput formControlName="scoreType">
-          <mat-option *ngFor="let type of scoreTypes" [value]="type">
-            {{ type }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <ng-container *ngIf="getLeaderboards.isSuccess; else getLeaderboardsMonitorTemplate">
+    <ng-container *ngIf="expanded; else collapsedTemplate">
+      <mat-card-content>
+        <form [formGroup]="formGroup">
+          <div class="line-break">
+            <mat-form-field appearance="fill">
+              <mat-label>Leaderboard Filters</mat-label>
+              <mat-select
+                [formControl]="formControls.filters"
+                multiple
+                (selectionChange)="selectedFiltersChange()"
+              >
+                <mat-optgroup *ngFor="let group of leaderboardFilterGroups" [label]="group.name">
+                  <mat-option *ngFor="let item of group.items" [value]="item">
+                    {{ item.name }}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-select>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Scoreboard Type</mat-label>
-        <mat-select matInput formControlName="scoreboardType">
-          <mat-option *ngFor="let type of scoreboardTypes" [value]="type">
-            {{ type }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+              <button
+                matSuffix
+                mat-icon-button
+                clickStop
+                (click)="removeAllFilters()"
+                matTooltip="Clear all filters"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-hint>Filters leaderboad options below</mat-hint>
+            </mat-form-field>
+          </div>
 
-      <!-- <mat-form-field appearance="fill">
-        <mat-label>Views</mat-label>
-        <mat-select
-          matInput
-          formControlName="view"
+          <div class="line-break selected-filters">
+            <mat-chip-list aria-label="Selected leaderboard filters">
+              <mat-chip
+                *ngFor="let selectedFilter of formControls.filters.value"
+                color="accent"
+                [removable]="true"
+                [value]="selectedFilter"
+                (removed)="removeFilter(selectedFilter)"
+              >
+                {{ selectedFilter.name }}
+                <mat-icon matTooltip="Remove filter" matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Leaderboards ({{ autocompleteLeadeboards?.length }} results)</mat-label>
+            <input
+              type="text"
+              matInput
+              [formControl]="formControls.leaderboard"
+              [matAutocomplete]="leaderboards"
+              spellcheck="false"
+              autocomplete="off"
+            />
+            <mat-autocomplete #leaderboards="matAutocomplete" [displayWith]="displayLeaderboards">
+              <mat-option *ngFor="let leaderboard of autocompleteLeadeboards" [value]="leaderboard">
+                {{ leaderboard.scoreType }} - {{ leaderboard.name }}
+                <span *ngIf="!!leaderboard.carClass">({{ leaderboard.carClass }} Class)</span>
+              </mat-option>
+            </mat-autocomplete>
+
+            <button
+              mat-button
+              matSuffix
+              mat-icon-button
+              matTooltip="Clear leaderboard input"
+              (click)="formControls.leaderboard.setValue('')"
+              clickStop
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Player XUID</mat-label>
+            <input
+              matInput
+              [formControl]="formControls.xuid"
+              spellcheck="false"
+              autocomplete="off"
+            />
+
+            <button
+              mat-button
+              matSuffix
+              mat-icon-button
+              matTooltip="Clear XUID input"
+              (click)="formControls.xuid.setValue('')"
+              clickStop
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-hint>(Optional) Searches scores above and below player</mat-hint>
+            <mat-error *ngIf="formControls.xuid.hasError('isNan')">Not a valid XUID</mat-error>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="setLeaderboardQueryParams()"
+          [disabled]="!selectedLeaderboard"
+          matTooltip="Search leaderboard for scores"
         >
-          <mat-option *ngFor="let view of views" [value]="view">
-            {{ view }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field> -->
-
-      <mat-form-field>
-        <mat-label>Event Id</mat-label>
-        <input matInput type="text" formControlName="pivotId" />
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Track Id</mat-label>
-        <input matInput type="text" formControlName="trackId" />
-      </mat-form-field>
-
-      <div style="display: block">
-        <mat-form-field>
-          <mat-label>XUID</mat-label>
-          <input matInput type="text" formControlName="xuid" />
-        </mat-form-field>
-      </div>
-    </form>
-  </mat-card-content>
+          Search Leaderboard
+        </button>
+      </mat-card-actions>
+    </ng-container>
+  </ng-container>
 </mat-card>
 
-<ng-template #waitingTemplate>
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+<ng-template #getLeaderboardsMonitorTemplate>
+  <big-spinner [monitor]="getLeaderboards"></big-spinner>
 </ng-template>
 
-<ng-template #errorTemplate>
-  <!-- <json-dump [input]="getToolsAvailabilityMonitor.status.error">Failure occured.</json-dump> -->
+<ng-template #collapsedTemplate>
+  <table class="info-table">
+    <tr>
+      <th>Leaderboard:</th>
+      <td>{{ leaderboard?.name ?? 'Not selected' }}</td>
+    </tr>
+    <tr>
+      <th>XUID:</th>
+      <td>{{ xuid || 'Not selected' }}</td>
+    </tr>
+  </table>
 </ng-template>
