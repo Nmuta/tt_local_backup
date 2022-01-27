@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
@@ -316,7 +317,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             try
             {
-                var query = GiftHistory.MakeQuery(playerId, title, endpoint);
+                string query;
+                if (endpoint == WoodstockEndpoint.GetEndpoint(nameof(WoodstockEndpoint.Retail)))
+                {
+                    const string oldEndpoint = "https://gameservices.fh5.forzamotorsport.net/Services/o.xtsw";
+                    query = GiftHistory.MakeQuery(playerId, title, endpoint, oldEndpoint);
+                }
+                else
+                {
+                    query = GiftHistory.MakeQuery(playerId, title, endpoint, null);
+                }
 
                 async Task<IList<GiftHistory>> GiftHistories()
                 {

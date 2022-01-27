@@ -61,10 +61,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Makes a query for gift history that this model can read.
         /// </summary>
-        public static string MakeQuery(string playerId, string title, string endpoint)
+        #nullable enable
+        public static string MakeQuery(string playerId, string title, string endpoint1, string? endpoint2)
         {
-            return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and Endpoint == '{endpoint}' | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
+            // TODO: Revert this in 30 days (on 2022-02-26) https://dev.azure.com/t10motorsport/Motorsport/_backlogs/backlog/LiveOps%20Tools/Product%20Backlog%20Items/?showParents=true
+            if (!string.IsNullOrWhiteSpace(endpoint1) && !string.IsNullOrWhiteSpace(endpoint2))
+            {
+                return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and (Endpoint == '{endpoint1}' or Endpoint == '{endpoint2}') | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
+            }
+            else
+            {
+                return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and Endpoint == '{endpoint1}' | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
+            }
         }
+        #nullable restore
 
         /// <summary>
         ///     Parses query results into a gift history object.
