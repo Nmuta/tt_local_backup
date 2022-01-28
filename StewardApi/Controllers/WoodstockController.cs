@@ -1762,6 +1762,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("leaderboards")]
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<Leaderboard>))]
         public async Task<IActionResult> GetLeaderboards()
@@ -1777,6 +1779,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("leaderboard/metadata")]
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(Leaderboard))]
         public async Task<IActionResult> GetLeaderboardMetadata(
@@ -1808,6 +1812,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("leaderboard/scores/top")]
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
         public async Task<IActionResult> GetLeaderboardScores(
@@ -1838,6 +1844,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("leaderboard/scores/near-player/{xuid}")]
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
         public async Task<IActionResult> GetLeaderboardScoresAroundXuid(
@@ -1868,6 +1876,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("leaderboard/scores/delete")]
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200)]
         public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)

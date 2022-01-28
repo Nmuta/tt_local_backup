@@ -63,7 +63,12 @@ export const CommonAccessLevels = {
     UserRole.SupportAgentAdmin,
     UserRole.CommunityManager,
   ],
-  HorizonDesigners: [UserRole.LiveOpsAdmin, UserRole.HorizonDesigner],
+  Leaderboards: [
+    UserRole.LiveOpsAdmin,
+    UserRole.HorizonDesigner,
+    UserRole.SupportAgentAdmin,
+    UserRole.CommunityManager,
+  ],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
 };
 
@@ -378,7 +383,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.Leaderboards,
     tool: NavbarTool.Leaderboards,
-    accessList: CommonAccessLevels.HorizonDesigners,
+    accessList: CommonAccessLevels.Leaderboards,
     title: 'Leaderboards',
     subtitle: 'Manage leaderboards',
     imageUrl: undefined,
