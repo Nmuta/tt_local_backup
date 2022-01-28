@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
@@ -21,8 +22,9 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './available-apps.component.html',
   styleUrls: ['./available-apps.component.scss'],
 })
-export class AvailableAppsComponent extends BaseComponent implements OnInit {
+export class AvailableAppsComponent extends BaseComponent implements OnInit, DoCheck {
   @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
+  @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public userProfile: UserModel;
 
@@ -38,13 +40,48 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
   public enableStagingApi: boolean;
   public showStagingApiToggle: boolean; // Only show on prod and if user is a live ops admin
 
-  constructor(private readonly store: Store, private readonly windowService: WindowService) {
+  private shouldReloadData = false;
+
+  constructor(
+    private readonly store: Store,
+    private readonly windowService: WindowService,
+    private readonly router: Router,
+  ) {
     super();
   }
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.userProfile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.configure(this.store.selectSnapshot<UserModel>(UserState.profile));
+
+    this.router.events.subscribe(_ => {
+      if (!this.shouldReloadData) {
+        this.shouldReloadData = true;
+      }
+    });
+
+    UserState.latestValidProfile$(this.profile$)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(userProfile => {
+        this.configure(userProfile);
+      });
+  }
+
+  /** Angular lifecycle hook. */
+  public ngDoCheck(): void {
+    if (this.shouldReloadData) {
+      this.shouldReloadData = false;
+      this.configure(this.store.selectSnapshot<UserModel>(UserState.profile));
+    }
+  }
+
+  /** Fired when any setting changes. */
+  public syncStagingApiSettings(): void {
+    this.store.dispatch(new SetStagingApi(this.enableStagingApi));
+  }
+
+  private configure(userProfile: UserModel): void {
+    this.userProfile = userProfile;
     const location = this.windowService.location();
     this.showStagingApiToggle = location?.origin === environment.stewardUiStagingUrl;
 
@@ -78,10 +115,5 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
           break;
       }
     }
-  }
-
-  /** Fired when any setting changes. */
-  public syncStagingApiSettings(): void {
-    this.store.dispatch(new SetStagingApi(this.enableStagingApi));
   }
 }
