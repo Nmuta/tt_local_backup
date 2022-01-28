@@ -17,6 +17,15 @@ mat-icon {
   }
 }
 
+// Default sizing to match the matChipRemove directive
+mat-chip {
+  .mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+}
+
 // fix colors when they would otherwise overlap
 *[mat-fab],
 *[mat-mini-fab],

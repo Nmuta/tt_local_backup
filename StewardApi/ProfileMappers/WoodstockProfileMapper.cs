@@ -52,7 +52,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     new PlayerInventoryItem { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints },
                 }))
                 .ReverseMap();
-            this.CreateMap<AdminForzaProfile, WoodstockInventoryProfile>().ReverseMap();
+            this.CreateMap<AdminForzaProfile, WoodstockInventoryProfile>()
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
+                .ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<WoodstockBanParametersInput, WoodstockBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
@@ -344,6 +346,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.AntiLockBrakingSystem, opt => opt.MapFrom(src => src.ABS))
                 .ForMember(dest => dest.TractionControlSystem, opt => opt.MapFrom(src => src.TCS))
                 .ForMember(dest => dest.AutomaticTransmission, opt => opt.MapFrom(src => src.Auto));
+        }
+
+        private string PrepareDeviceType(string deviceType)
+        {
+            switch (deviceType)
+            {
+                case "Invalid":
+                    return "Legacy";
+                case "Win32":
+                    return "Steam";
+                default:
+                    return deviceType;
+            }
         }
     }
 }

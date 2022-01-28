@@ -48,7 +48,7 @@ export class AppComponent extends BaseComponent implements OnInit {
               break;
 
             case InitEndpointKeysError.SelectionRemoved:
-              this.snackbar.open('Defaulted invalid endpoint selections.', 'Dismiss', {
+              this.snackbar.open('Restored endpoints to default', 'Dismiss', {
                 panelClass: 'snackbar-info',
               });
               break;

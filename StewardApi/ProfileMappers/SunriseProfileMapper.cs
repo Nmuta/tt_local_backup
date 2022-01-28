@@ -79,8 +79,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
             this.CreateMap<WebServicesContracts.ForzaCreditUpdateEntry, CreditUpdate>().ReverseMap();
             this.CreateMap<LiveOpsContracts.AdminForzaProfile, SunriseInventoryProfile>()
-                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(
-                    src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType == "Win32" ? "Steam" : src.deviceType))
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
                 .ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaUserGroup, LspGroup>();
             this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
@@ -335,6 +334,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.PreviewPayload.ToImageDataUrl()))
                 .ReverseMap();
+        }
+
+        private string PrepareDeviceType(string deviceType)
+        {
+            switch (deviceType)
+            {
+                case "Invalid":
+                    return "Legacy";
+                case "Win32":
+                    return "Steam";
+                default:
+                    return deviceType;
+            }
         }
     }
 }
