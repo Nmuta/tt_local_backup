@@ -1,0 +1,57 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@import './_palettes.scss';
+
+/// Produces an "r, g, b" string for embedding in a CSS var
+@function toRGB($color) {
+  @return red($color) + ', ' + green($color) + ', ' + blue($color);
+}
+
+/// Produces an "r, g, b, a" string for embedding in a CSS var
+@function toRGBA($color) {
+  @return red($color) + ', ' + green($color) + ', ' + blue($color) + ', ' + alpha($color);
+}
+
+/// Produces CSS vars for a given color
+/// --hex-name: hexcode
+/// --rgb-name: r, g, b
+/// --rgba-name: r, g, b, a
+@mixin colorToVars($name, $color) {
+  --hex-#{$name}: #{$color};
+  --rgb-#{$name}: #{toRGB($color)};
+  --rgba-#{$name}: #{toRGBA($color)};
+}
+
+/// Determines the CSS var-name suffix for the given palette+style
+@function makeLookupName($palette-name, $style) {
+  @return $palette-name + '-' + $style;
+}
+
+/// Produces the CSS vars, given color + darkmode + palette + style-names
+@mixin entryToVars($color-config, $is-dark, $palette-name, $style, $darkmode-style-name) {
+  $lookup-name: makeLookupName($palette-name, $style);
+  @if ($is-dark) {
+    $lookup-name: makeLookupName($palette-name, $darkmode-style-name);
+  }
+
+  $palette: map.get($color-config, $palette-name);
+  $color: mat.get-color-from-palette($palette, $style);
+  @include colorToVars($lookup-name, $color);
+}
+
+/// Converts a palette into a string used by CSS vars
+@function paletteToString($palette) {
+  @if ($palette == $app-primary) {
+    @return 'primary';
+  } @else if ($palette == $app-accent) {
+    @return 'accent';
+  } @else if ($palette == $app-warn) {
+    @return 'warn';
+  } @else if ($palette == $app-background) {
+    @return 'background';
+  } @else if ($palette == $app-foreground) {
+    @return 'foreground';
+  } @else {
+    @return 'unknown';
+  }
+}

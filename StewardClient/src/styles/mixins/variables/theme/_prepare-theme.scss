@@ -1,0 +1,135 @@
+// theme initialization and helper aliases
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use './_custom-fgbg.scss' as fgbg;
+
+/// Initializes a large number of CSS-vars for later use.
+/// Do not use Angular Material SCSS theme/palette variables directly. Instead use
+/// the helpers in _use-theme.scss, which retrieves these values depending on various
+/// settings. See usages of this function to determine conditions that cause different themes to load.
+/// See https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties for more information on CSS vars
+/// @param {theme} $theme A standard angular theme with the additiona property `colors.extra-bg`
+@mixin init-theme($theme) {
+  @include mat.all-component-themes($theme);
+  $color-config: mat.get-color-config($theme);
+  $primary-palette: map.get($color-config, 'primary');
+  $is-dark: map-get($theme, is-dark);
+  @include entryToVars($color-config, $is-dark, 'primary', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'primary', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'primary', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'primary', 'text', 'text');
+  @include entryToVars($color-config, $is-dark, 'accent', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'accent', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'accent', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'accent', 'text', 'text');
+  @include entryToVars($color-config, $is-dark, 'warn', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'warn', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'warn', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'warn', 'text', 'text');
+  @include colorToVars(makeLookupName('unknown', 'default'), lime);
+  @include colorToVars(makeLookupName('unknown', 'lighter'), lime);
+  @include colorToVars(makeLookupName('unknown', 'darker'), lime);
+  @include colorToVars(makeLookupName('unknown', 'text'), lime);
+  @include entryToVars($color-config, $is-dark, 'primary', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'primary', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'primary', 'darker-contrast', 'lighter-contrast');
+  // @include entryToVars($color-config, $is-dark, 'primary', 'text-contrast', 'text-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'darker-contrast', 'lighter-contrast');
+  // @include entryToVars($color-config, $is-dark, 'accent', 'text-contrast', 'text-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'darker-contrast', 'lighter-contrast');
+  // @include entryToVars($color-config, $is-dark, 'warn', 'text-contrast', 'text-contrast');
+  @include colorToVars(makeLookupName('unknown', 'default-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'lighter-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'darker-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'text-contrast'), lime);
+
+  @if ($is-dark) {
+    @include colorToVars(
+      makeLookupName('background', 'default'),
+      map-get(mat.$dark-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter'),
+      darken(map-get(mat.$dark-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker'),
+      lighten(map-get(mat.$dark-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text'),
+      map-get(mat.$dark-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'default-contrast'),
+      map-get(mat.$dark-theme-foreground-palette, 'base')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter-contrast'),
+      darken(map-get(mat.$dark-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker-contrast'),
+      lighten(map-get(mat.$dark-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text-contrast'),
+      map-get(mat.$dark-theme-foreground-palette, 'base')
+    );
+    @include colorToVars(
+      makeLookupName('foreground', 'disabled-text'),
+      map-get(mat.$dark-theme-foreground-palette, 'disabled-text')
+    );
+    @include colorToVars(
+      makeLookupName('highlight', 'default'),
+      map-get(fgbg.$forza-bg-dark, 'highlight')
+    );
+  } @else {
+    @include colorToVars(
+      makeLookupName('background', 'default'),
+      map-get(mat.$light-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter'),
+      lighten(map-get(mat.$light-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker'),
+      darken(map-get(mat.$light-theme-background-palette, 'background'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text'),
+      map-get(mat.$light-theme-background-palette, 'background')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'default-contrast'),
+      map-get(mat.$light-theme-foreground-palette, 'base')
+    );
+    @include colorToVars(
+      makeLookupName('background', 'lighter-contrast'),
+      lighten(map-get(mat.$light-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'darker-contrast'),
+      darken(map-get(mat.$light-theme-foreground-palette, 'base'), 20%)
+    );
+    @include colorToVars(
+      makeLookupName('background', 'text-contrast'),
+      map-get(mat.$light-theme-foreground-palette, 'base')
+    );
+    @include colorToVars(
+      makeLookupName('foreground', 'disabled-text'),
+      map-get(mat.$light-theme-foreground-palette, 'disabled-text')
+    );
+    @include colorToVars(
+      makeLookupName('highlight', 'default'),
+      map-get(fgbg.$forza-bg-light, 'highlight')
+    );
+  }
+  background-color: app-color-default($app-background);
+  color: app-color-default-contrast($app-background);
+}
