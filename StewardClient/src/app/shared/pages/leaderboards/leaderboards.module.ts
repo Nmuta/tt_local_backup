@@ -38,6 +38,7 @@ import { VerifyActionButtonModule } from '@components/verify-action-button/verif
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -79,6 +80,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatTooltipModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MatSnackBarModule,
     TextFieldModule,
     JsonDumpModule,
     VerifyActionButtonModule,

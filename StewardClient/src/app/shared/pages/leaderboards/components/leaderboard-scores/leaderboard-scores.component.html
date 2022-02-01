@@ -81,7 +81,33 @@
         </mat-checkbox>
       </div>
     </div>
+    <div class="paginator-actions">
+      <mat-paginator
+        (page)="paginatorPageChange($event)"
+        [pageSizeOptions]="paginatorSizes"
+        showFirstLastButtons
+      ></mat-paginator>
+      <form
+        *ngIf="leaderboardScores?.data?.length > 0"
+        [formGroup]="jumpFormGroup"
+        (submit)="jumpToScore()"
+      >
+        <mat-form-field>
+          <mat-label>Jump to score</mat-label>
+          <input matInput autocomplete="off" [formControl]="jumpFormControls.score" />
+        </mat-form-field>
 
+        <button
+          mat-icon-button
+          color="accent"
+          [disabled]="!jumpFormGroup.valid"
+          type="submit"
+          matTooltip="Jump to page where score theshold is found"
+        >
+          <mat-icon>find_in_page</mat-icon>
+        </button>
+      </form>
+    </div>
     <ng-container
       *ngIf="
         !getLeaderboardScoresMonitor.isActive && !deleteLeaderboardScoresMonitor.isActive;
@@ -167,7 +193,6 @@
         </table>
       </ng-container>
     </ng-container>
-    <mat-paginator [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>
 

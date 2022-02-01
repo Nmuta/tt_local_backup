@@ -18,14 +18,17 @@ import {
 import faker from 'faker';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 describe('LeaderboardScoresComponent', () => {
   let component: LeaderboardScoresComponent;
   let fixture: ComponentFixture<LeaderboardScoresComponent>;
 
   let mockKustoService: KustoService;
+  let mockRouter: Router;
   const mockService: LeaderboardScoresContract = {
     getLeaderboardScores$: () => {
       return of([]);
@@ -94,6 +97,7 @@ describe('LeaderboardScoresComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatPaginatorModule,
+        MatSnackBarModule,
       ],
       declarations: [LeaderboardScoresComponent],
       providers: [createMockKustoService(), { provide: FormBuilder, useValue: formBuilder }],
@@ -107,6 +111,9 @@ describe('LeaderboardScoresComponent', () => {
 
     mockKustoService = TestBed.inject(KustoService);
     mockKustoService.getKustoQueries$ = jasmine.createSpy('getKustoQueries$');
+
+    mockRouter = TestBed.inject(Router);
+    mockRouter.navigate = jasmine.createSpy('navigate');
   });
 
   it('should create', () => {
@@ -226,6 +233,29 @@ describe('LeaderboardScoresComponent', () => {
       component.deleteScores([scoreToDelete]);
 
       expect(mockService.deleteLeaderboardScores$).toHaveBeenCalledWith([scoreToDelete.id]);
+    });
+  });
+
+  describe('Method: paginatorPageChange', () => {
+    const pageEvent: PageEvent = {
+      pageIndex: faker.datatype.number(),
+      pageSize: faker.datatype.number(),
+      length: faker.datatype.number(),
+    };
+
+    beforeEach(() => {
+      component.activeLeaderboardQuery = {
+        scoreboardTypeId: fakeBigNumber(),
+        scoreTypeId: fakeBigNumber(),
+        gameScoreboardId: fakeBigNumber(),
+        trackId: fakeBigNumber(),
+      };
+    });
+
+    it('should update URL location query params', () => {
+      component.paginatorPageChange(pageEvent);
+
+      expect(mockRouter.navigate).toHaveBeenCalled();
     });
   });
 });

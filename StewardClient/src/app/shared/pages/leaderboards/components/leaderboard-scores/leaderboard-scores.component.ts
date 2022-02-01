@@ -1,8 +1,11 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { ignorePaginatorQueryParams } from '@helpers/paginator';
 import { GuidLikeString } from '@models/extended-types';
 import {
   paramsToLeadboardQuery,
@@ -11,6 +14,7 @@ import {
   LeaderboardQuery,
   LeaderboardScore,
   determineScoreTypeQualifier,
+  LEADERBOARD_PAGINATOR_SIZES,
 } from '@models/leaderboards';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
@@ -80,8 +84,19 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
   public activeXuid: BigNumber;
 
   public selectedScores: LeaderboardScore[] = [];
+  public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
 
-  constructor(private readonly router: Router, private readonly route: ActivatedRoute) {
+  /** Paginator jump form controls. */
+  public jumpFormControls = {
+    score: new FormControl(null, Validators.required),
+  };
+  public jumpFormGroup = new FormGroup(this.jumpFormControls);
+
+  constructor(
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar,
+  ) {
     super();
   }
 
@@ -147,7 +162,6 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
 
   /** Deletes scores from leaderboard. */
   public deleteScores(scores: LeaderboardScore[]): void {
-    this.activeLeaderboardQuery.retainPaginatorIndex = this.paginator?.pageIndex;
     this.deleteLeaderboardScoresMonitor = new ActionMonitor(
       this.deleteLeaderboardScoresMonitor.dispose().label,
     );
@@ -159,6 +173,49 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
       .subscribe(() => {
         this.getLeaderboardScores$.next(this.activeLeaderboardQuery);
       });
+  }
+
+  /** Hook into paginator page changes. */
+  public paginatorPageChange(event: PageEvent): void {
+    this.activeLeaderboardQuery.pi = event.pageIndex;
+    this.activeLeaderboardQuery.ps = event.pageSize;
+
+    this.router.navigate([], {
+      queryParams: this.activeLeaderboardQuery,
+      replaceUrl: true,
+    });
+  }
+
+  /** Jumps to score in table. */
+  public jumpToScore(): void {
+    const score = this.jumpFormControls.score.value;
+    const pageSize = this.leaderboardScores.paginator.pageSize;
+
+    // Determine page where searched score exists
+    const scoreIndex = this.leaderboardScores.data.findIndex(s =>
+      s.score.isGreaterThanOrEqualTo(new BigNumber(score)),
+    );
+    const foundPageIndex = Math.floor(scoreIndex / pageSize);
+    const highestPageIndex = Math.floor(this.leaderboardScores.data.length / pageSize) - 1;
+
+    // Jump to page
+    const showSuccessSnackbar = foundPageIndex >= 0;
+    const newPageIndex = foundPageIndex >= 0 ? foundPageIndex : highestPageIndex;
+    this.paginator.pageIndex = newPageIndex;
+    this.paginator.page.next({
+      pageIndex: newPageIndex,
+      pageSize: this.paginator.pageSize,
+      length: this.paginator.length,
+    });
+
+    // Show snackbar of automated adjustment
+    const snackbarMessage = showSuccessSnackbar
+      ? `Jumped to page ${newPageIndex + 1}`
+      : 'Threshold too high, jumped to end of list';
+    this.snackbar.open(snackbarMessage, 'Okay', {
+      duration: 3_000,
+      panelClass: showSuccessSnackbar ? 'snackbar-info' : 'snackbar-warn',
+    });
   }
 
   private setupGetLeaderboardScoresObservable(): void {
@@ -192,14 +249,19 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
         takeUntil(this.onDestroy$),
       )
       .subscribe(scores => {
-        this.leaderboardScores.data = scores;
         this.scoreTypeQualifier = determineScoreTypeQualifier(
           this.activeLeaderboardQuery.scoreTypeId,
         );
 
-        if (this.activeLeaderboardQuery?.retainPaginatorIndex > 0) {
-          this.paginator.pageIndex = this.activeLeaderboardQuery.retainPaginatorIndex;
+        if (this.activeLeaderboardQuery?.pi >= 0) {
+          this.paginator.pageIndex = this.activeLeaderboardQuery.pi;
         }
+
+        if (this.activeLeaderboardQuery?.ps >= 0) {
+          this.paginator.pageSize = this.activeLeaderboardQuery.ps;
+        }
+
+        this.leaderboardScores.data = scores;
       });
   }
 
@@ -227,6 +289,7 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
   private listenForQueryParams(): void {
     this.route.queryParams
       .pipe(
+        ignorePaginatorQueryParams(),
         map(params => {
           const query = paramsToLeadboardQuery(params);
           if (!isValidLeaderboardQuery(query)) {

@@ -60,6 +60,13 @@ td.mat-column-actions {
   }
 }
 
+.paginator-actions {
+  form {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
 .mat-column-actions {
   width: 200px;
 }

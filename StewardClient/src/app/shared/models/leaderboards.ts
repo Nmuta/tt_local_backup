@@ -1,11 +1,13 @@
 import { Params } from '@angular/router';
 import { tryParseBigNumber } from '@helpers/bignumbers';
+import { PaginatorQueryParams } from '@helpers/paginator';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { GuidLikeString } from './extended-types';
 
 export const DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS = new BigNumber(5000);
 export const DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS = new BigNumber(20);
+export const LEADERBOARD_PAGINATOR_SIZES = [25, 50, 100];
 
 /** Interface for a leaderboard. */
 export interface Leaderboard {
@@ -41,8 +43,10 @@ export interface UpsteamLeaderboardScore {
 
 /** Interface for a leaderboard score. */
 export interface LeaderboardScore extends UpsteamLeaderboardScore {
-  selected?: boolean; // Multi-select
-  highlighted?: boolean; // Highlighting specific players
+  /** Multi-select */
+  selected?: boolean;
+  /** Highlighting specific players */
+  highlighted?: boolean;
 }
 
 /** List of known score types. */
@@ -70,7 +74,10 @@ export interface UpstreamLeaderboardQuery {
 
 /** Interface of required params for a leaderboard query. */
 export interface LeaderboardQuery extends UpstreamLeaderboardQuery {
-  retainPaginatorIndex?: number;
+  /** Paginator index */
+  [PaginatorQueryParams.Index]?: number;
+  /** Paginator size */
+  [PaginatorQueryParams.Size]?: number;
 }
 
 /** Generates a leaderboard query based on a provided leaderboard. */
@@ -80,6 +87,7 @@ export function toLeaderboardQuery(leaderboard: Leaderboard): LeaderboardQuery {
     scoreTypeId: leaderboard.scoreTypeId,
     gameScoreboardId: leaderboard.gameScoreboardId,
     trackId: leaderboard.trackId,
+    ps: LEADERBOARD_PAGINATOR_SIZES[0],
   };
 }
 
@@ -90,6 +98,10 @@ export function paramsToLeadboardQuery(params: Params): Partial<LeaderboardQuery
   const gameScoreboardId = tryParseBigNumber(params['gameScoreboardId']);
   const trackId = tryParseBigNumber(params['trackId']);
 
+  const paginatorIndex = tryParseBigNumber(params['pi'])?.toNumber() ?? undefined;
+  const paginatorSize =
+    tryParseBigNumber(params['ps'])?.toNumber() ?? LEADERBOARD_PAGINATOR_SIZES[0];
+
   // Optional params
   const xuid = tryParseBigNumber(params['xuid']);
 
@@ -99,6 +111,8 @@ export function paramsToLeadboardQuery(params: Params): Partial<LeaderboardQuery
     gameScoreboardId: gameScoreboardId,
     trackId: trackId,
     xuid: xuid,
+    pi: paginatorIndex,
+    ps: paginatorSize,
   } as LeaderboardQuery;
 }
 
