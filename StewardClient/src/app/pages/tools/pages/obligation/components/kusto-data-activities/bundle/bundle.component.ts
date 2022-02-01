@@ -11,7 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { ActivePipelineService } from '@shared/pages/obligation/services/active-pipeline.service';
+import { ActivePipelineService } from '@tools-app/pages/obligation/services/active-pipeline.service';
 import { cloneDeep } from 'lodash';
 import {
   KustoDataActivityComponent,

@@ -4,22 +4,22 @@ import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/co
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SteelheadGiftBasketComponent } from './steelhead-gift-basket.component';
+import { ApolloGiftBasketComponent } from './apollo-gift-basket.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { SteelheadMasterInventory } from '@models/steelhead';
+import { ApolloMasterInventory } from '@models/apollo';
 import { of } from 'rxjs';
-import { GetSteelheadMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
-import { SteelheadService } from '@services/steelhead';
-import { SetSteelheadGiftBasket } from '@shared/pages/gifting/steelhead/state/steelhead-gifting.state.actions';
+import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { ApolloService } from '@services/apollo';
+import { SetApolloGiftBasket } from '@tools-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
 import faker from 'faker';
 
-describe('SteelheadGiftBasketComponent', () => {
-  let fixture: ComponentFixture<SteelheadGiftBasketComponent>;
-  let component: SteelheadGiftBasketComponent;
+describe('ApolloGiftBasketComponent', () => {
+  let fixture: ComponentFixture<ApolloGiftBasketComponent>;
+  let component: ApolloGiftBasketComponent;
 
   const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let mockSteelheadService: SteelheadService;
+  let mockApolloService: ApolloService;
 
   beforeEach(
     waitForAsync(() => {
@@ -30,16 +30,16 @@ describe('SteelheadGiftBasketComponent', () => {
           NgxsModule.forRoot(),
           ReactiveFormsModule,
         ],
-        declarations: [SteelheadGiftBasketComponent],
+        declarations: [ApolloGiftBasketComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
       const injector = getTestBed();
       mockStore = injector.inject(Store);
-      mockSteelheadService = injector.inject(SteelheadService);
+      mockApolloService = injector.inject(ApolloService);
 
-      fixture = TestBed.createComponent(SteelheadGiftBasketComponent);
+      fixture = TestBed.createComponent(ApolloGiftBasketComponent);
       component = fixture.debugElement.componentInstance;
 
       mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
@@ -52,7 +52,7 @@ describe('SteelheadGiftBasketComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    const testMasterInventory: SteelheadMasterInventory = {
+    const testMasterInventory: ApolloMasterInventory = {
       cars: [],
       vanityItems: [],
       creditRewards: [],
@@ -64,10 +64,10 @@ describe('SteelheadGiftBasketComponent', () => {
         .and.returnValue(testMasterInventory);
     });
 
-    it('should dispatch GetSteelheadMasterInventoryList action', () => {
+    it('should dispatch GetApolloMasterInventoryList action', () => {
       component.ngOnInit();
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetSteelheadMasterInventoryList());
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetApolloMasterInventoryList());
     });
 
     it('should set masterInventory when dispatch is finished', () => {
@@ -118,26 +118,26 @@ describe('SteelheadGiftBasketComponent', () => {
       ];
     });
 
-    it('should return a valid Steelhead Gift', () => {
+    it('should return a valid Apollo Gift', () => {
       const gift = component.generateGiftInventoryFromGiftBasket();
 
       expect(gift.giftReason).toEqual(giftReason);
-      const steelheadMasterInventory = gift.inventory as SteelheadMasterInventory;
-      expect(steelheadMasterInventory).not.toBeUndefined();
+      const apolloMasterInventory = gift.inventory as ApolloMasterInventory;
+      expect(apolloMasterInventory).not.toBeUndefined();
 
-      expect(steelheadMasterInventory.creditRewards.length).toEqual(1);
-      expect(steelheadMasterInventory.cars.length).toEqual(1);
-      expect(steelheadMasterInventory.vanityItems.length).toEqual(1);
+      expect(apolloMasterInventory.creditRewards.length).toEqual(1);
+      expect(apolloMasterInventory.cars.length).toEqual(1);
+      expect(apolloMasterInventory.vanityItems.length).toEqual(1);
 
-      expect(steelheadMasterInventory.creditRewards[0].id).toEqual(testItem1Id);
-      expect(steelheadMasterInventory.cars[0].id).toEqual(testItem2Id);
-      expect(steelheadMasterInventory.vanityItems[0].id).toEqual(testItem3Id);
+      expect(apolloMasterInventory.creditRewards[0].id).toEqual(testItem1Id);
+      expect(apolloMasterInventory.cars[0].id).toEqual(testItem2Id);
+      expect(apolloMasterInventory.vanityItems[0].id).toEqual(testItem3Id);
     });
   });
 
   describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockSteelheadService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
+      mockApolloService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
@@ -149,13 +149,13 @@ describe('SteelheadGiftBasketComponent', () => {
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockSteelheadService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
+      expect(mockApolloService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
     });
   });
 
   describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockSteelheadService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
+      mockApolloService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
     it('should call sendGiftToLspGroup$', () => {
@@ -164,7 +164,7 @@ describe('SteelheadGiftBasketComponent', () => {
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockSteelheadService.postGiftLspGroup$).toHaveBeenCalled();
+      expect(mockApolloService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 
@@ -185,7 +185,7 @@ describe('SteelheadGiftBasketComponent', () => {
       const input = [];
       component.setStateGiftBasket(input);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetSteelheadGiftBasket(input));
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetApolloGiftBasket(input));
     });
   });
 
@@ -195,7 +195,7 @@ describe('SteelheadGiftBasketComponent', () => {
         creditRewards: [{ id: new BigNumber(-1), description: 'Credits', quantity: 0 }],
         cars: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
         vanityItems: [{ id: new BigNumber(67890), description: 'Test vanity item', quantity: 0 }],
-      } as SteelheadMasterInventory;
+      } as ApolloMasterInventory;
     });
 
     describe('When credit reward exists', () => {

@@ -1,18 +1,18 @@
 import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ApolloGift, ApolloGroupGift, ApolloMasterInventory } from '@models/apollo';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
-import { SunriseGift, SunriseGroupGift, SunriseMasterInventory } from '@models/sunrise';
-import { SunriseGiftingState } from '@shared/pages/gifting/sunrise/state/sunrise-gifting.state';
-import { SetSunriseGiftBasket } from '@shared/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
+import { ApolloGiftingState } from '@tools-app/pages/gifting/apollo/state/apollo-gifting.state';
+import { SetApolloGiftBasket } from '@tools-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
+import { ApolloService } from '@services/apollo';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { SunriseService } from '@services/sunrise';
-import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -20,28 +20,28 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
 import { ZERO } from '@helpers/bignumbers';
 import { cloneDeep } from 'lodash';
 
-/** Sunrise gift basket. */
+/** Apollo gift basket. */
 @Component({
-  selector: 'sunrise-gift-basket',
+  selector: 'apollo-gift-basket',
   templateUrl: '../gift-basket.component.html',
   styleUrls: ['../gift-basket.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SunriseGiftBasketComponent),
+      useExisting: forwardRef(() => ApolloGiftBasketComponent),
       multi: true,
     },
   ],
 })
-export class SunriseGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultAlpha, SunriseMasterInventory>
+export class ApolloGiftBasketComponent
+  extends GiftBasketBaseComponent<IdentityResultAlpha, ApolloMasterInventory>
   implements OnInit
 {
-  @Select(SunriseGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
-  public title = GameTitleCodeName.FH4;
+  @Select(ApolloGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
+  public title = GameTitleCodeName.FM7;
 
   constructor(
-    private readonly sunriseService: SunriseService,
+    private readonly apolloService: ApolloService,
     backgroundJobService: BackgroundJobService,
     store: Store,
     formBuilder: FormBuilder,
@@ -52,15 +52,15 @@ export class SunriseGiftBasketComponent
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.isLoading = true;
-    this.store.dispatch(new GetSunriseMasterInventoryList()).subscribe(() => {
+    this.store.dispatch(new GetApolloMasterInventoryList()).subscribe(() => {
       this.isLoading = false;
-      const sunriseMasterInventory = this.store.selectSnapshot<SunriseMasterInventory>(
-        MasterInventoryListMemoryState.sunriseMasterInventory,
+      const apolloMasterInventory = this.store.selectSnapshot<ApolloMasterInventory>(
+        MasterInventoryListMemoryState.apolloMasterInventory,
       );
 
       // must be cloned because a child component modifies this value, and modification of state is disallowed
-      this.masterInventory = cloneDeep(sunriseMasterInventory);
-      this.itemSelectionList = this.generateItemSelectionList(this.masterInventory);
+      this.masterInventory = cloneDeep(apolloMasterInventory);
+      this.itemSelectionList = this.masterInventory;
     });
 
     this.giftBasket$
@@ -74,8 +74,8 @@ export class SunriseGiftBasketComponent
       .subscribe();
   }
 
-  /** Generates a sunrise gift from the gift basket. */
-  public generateGiftInventoryFromGiftBasket(): SunriseGift {
+  /** Generates an apollo gift from the gift basket. */
+  public generateGiftInventoryFromGiftBasket(): ApolloGift {
     const giftBasketItems = this.giftBasket.data;
     return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
@@ -89,15 +89,6 @@ export class SunriseGiftBasketComponent
         vanityItems: giftBasketItems
           .filter(item => item.itemType === 'vanityItems')
           .map(item => item as MasterInventoryItem),
-        carHorns: giftBasketItems
-          .filter(item => item.itemType === 'carHorns')
-          .map(item => item as MasterInventoryItem),
-        quickChatLines: giftBasketItems
-          .filter(item => item.itemType === 'quickChatLines')
-          .map(item => item as MasterInventoryItem),
-        emotes: giftBasketItems
-          .filter(item => item.itemType === 'emotes')
-          .map(item => item as MasterInventoryItem),
       },
     };
   }
@@ -108,7 +99,7 @@ export class SunriseGiftBasketComponent
       return;
     }
     const referenceInventory = this.referenceInventory;
-    function mapKey(key: keyof SunriseMasterInventory): GiftBasketModel[] {
+    function mapKey(key: keyof ApolloMasterInventory): GiftBasketModel[] {
       return referenceInventory[key].map(i => {
         return <GiftBasketModel>{
           description: i.description,
@@ -125,31 +116,28 @@ export class SunriseGiftBasketComponent
       ...mapKey('cars'),
       ...mapKey('creditRewards'),
       ...mapKey('vanityItems'),
-      ...mapKey('carHorns'),
-      ...mapKey('quickChatLines'),
-      ...mapKey('emotes'),
     ]);
   }
 
-  /** Sends a sunrise gift to players. */
-  public sendGiftToPlayers$(gift: SunriseGift): Observable<BackgroundJob<void>> {
-    const groupGift = gift as SunriseGroupGift;
+  /** Sends an apollo gift to players. */
+  public sendGiftToPlayers$(gift: ApolloGift): Observable<BackgroundJob<void>> {
+    const groupGift: ApolloGroupGift = gift as ApolloGroupGift;
     groupGift.xuids = this.playerIdentities
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.sunriseService.postGiftPlayersUsingBackgroundTask$(groupGift);
+    return this.apolloService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
-  /** Sends a sunrise gift to an LSP group. */
-  public sendGiftToLspGroup$(gift: SunriseGift): Observable<GiftResponse<BigNumber>> {
-    return this.sunriseService.postGiftLspGroup$(this.lspGroup, gift);
+  /** Sends an apollo gift to an LSP group. */
+  public sendGiftToLspGroup$(gift: ApolloGift): Observable<GiftResponse<BigNumber>> {
+    return this.apolloService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */
   public setStateGiftBasket(giftBasket: GiftBasketModel[]): void {
     giftBasket = this.setGiftBasketItemErrors(giftBasket);
-    this.store.dispatch(new SetSunriseGiftBasket(giftBasket));
+    this.store.dispatch(new SetApolloGiftBasket(giftBasket));
   }
 
   /** Verifies gift basket and sets item.restriction if one is found. */
@@ -172,7 +160,7 @@ export class SunriseGiftBasketComponent
     if (!this.ignoreMaxCreditLimit) {
       const creditsAboveLimit = giftBasket.findIndex(
         item =>
-          item.id.isLessThan(ZERO) &&
+          item.id < ZERO &&
           item.description.toLowerCase() === 'credits' &&
           item.quantity > 500_000_000,
       );
@@ -181,9 +169,10 @@ export class SunriseGiftBasketComponent
       }
     }
 
+    // Verify credit reward is under max
     const creditsAboveMax = giftBasket.findIndex(
       item =>
-        item.id.isLessThan(ZERO) &&
+        item.id < ZERO &&
         item.description.toLowerCase() === 'credits' &&
         item.quantity > 999_999_999,
     );
@@ -191,54 +180,6 @@ export class SunriseGiftBasketComponent
       giftBasket[creditsAboveMax].restriction = 'Credit max is 999,999,999.';
     }
 
-    const wheelSpinsAboveLimit = giftBasket.findIndex(
-      item =>
-        item.id.isLessThan(ZERO) &&
-        item.description.toLowerCase() === 'wheelspins' &&
-        item.quantity > 200,
-    );
-    if (wheelSpinsAboveLimit >= 0) {
-      giftBasket[wheelSpinsAboveLimit].restriction = 'Wheel Spin limit for a gift is 200.';
-    }
-
-    const superWheelSpinsAboveLimit = giftBasket.findIndex(
-      item =>
-        item.id.isLessThan(ZERO) &&
-        item.description.toLowerCase() === 'superwheelspins' &&
-        item.quantity > 200,
-    );
-    if (superWheelSpinsAboveLimit >= 0) {
-      giftBasket[superWheelSpinsAboveLimit].restriction =
-        'Super Wheel Spin limit for a gift is 200.';
-    }
-
-    const backstagePassesAboveLimit = giftBasket.findIndex(
-      item =>
-        item.id.isLessThan(ZERO) &&
-        item.description.toLowerCase() === 'backstagepasses' &&
-        item.quantity > 20,
-    );
-    if (backstagePassesAboveLimit >= 0) {
-      giftBasket[backstagePassesAboveLimit].restriction =
-        'Backstage Passes limit for a gift is 20.';
-    }
-
     return giftBasket;
-  }
-
-  private generateItemSelectionList(
-    masterInventoryList: SunriseMasterInventory,
-  ): SunriseMasterInventory {
-    // IMPORTANT: Filter out wristbands from item selection list (ids 30-40). Wristbands are only allowed to be gifted in a profile restore scenario. (10/21/21)
-    const filteredList = cloneDeep(masterInventoryList);
-    filteredList.vanityItems = filteredList.vanityItems.filter(
-      item =>
-        !(
-          item.id.isGreaterThanOrEqualTo(new BigNumber(30)) &&
-          item.id.isLessThanOrEqualTo(new BigNumber(40))
-        ),
-    );
-
-    return filteredList;
   }
 }

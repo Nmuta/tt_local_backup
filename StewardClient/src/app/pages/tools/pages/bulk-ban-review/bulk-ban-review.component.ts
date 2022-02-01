@@ -15,9 +15,9 @@ import { ApolloService } from '@services/apollo';
 import { BulkBanReviewInput } from './components/bulk-ban-review-input.component';
 import { ActivatedRoute } from '@angular/router';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
-import { SharedNavbarTools } from '../shared-tool-list';
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanSummary } from '@models/woodstock';
+import { NavbarTool } from '@environments/environment';
 
 export type ErrorBanSummary = {
   xuid: BigNumber;
@@ -289,10 +289,7 @@ export class BulkBanReviewComponent extends BaseComponent implements AfterViewIn
           const summaryPlusEnv = summary as BanSummaryPlusEnvironment;
           summaryPlusEnv.title = title;
           summaryPlusEnv.environment = environment;
-          summaryPlusEnv.userDetailsRouterLink = [
-            SharedNavbarTools.UserDetailsPage.path,
-            title.toLowerCase(),
-          ];
+          summaryPlusEnv.userDetailsRouterLink = [NavbarTool.UserDetails, title.toLowerCase()];
           return summaryPlusEnv;
         }),
       ),

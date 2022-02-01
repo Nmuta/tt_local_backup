@@ -4,22 +4,22 @@ import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/co
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SunriseGiftBasketComponent } from './sunrise-gift-basket.component';
-import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { WoodstockGiftBasketComponent } from './woodstock-gift-basket.component';
+import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { of } from 'rxjs';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { WoodstockMasterInventory } from '@models/woodstock/woodstock-master-inventory.model';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { SunriseService } from '@services/sunrise';
-import { SetSunriseGiftBasket } from '@shared/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
+import { WoodstockService } from '@services/woodstock';
+import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
 import faker from 'faker';
 
-describe('SunriseGiftBasketComponent', () => {
-  let fixture: ComponentFixture<SunriseGiftBasketComponent>;
-  let component: SunriseGiftBasketComponent;
+describe('WoodstockGiftBasketComponent', () => {
+  let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
+  let component: WoodstockGiftBasketComponent;
 
   const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let mockSunriseService: SunriseService;
+  let mockWoodstockService: WoodstockService;
 
   beforeEach(
     waitForAsync(() => {
@@ -30,16 +30,16 @@ describe('SunriseGiftBasketComponent', () => {
           NgxsModule.forRoot(),
           ReactiveFormsModule,
         ],
-        declarations: [SunriseGiftBasketComponent],
+        declarations: [WoodstockGiftBasketComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
       const injector = getTestBed();
       mockStore = injector.inject(Store);
-      mockSunriseService = injector.inject(SunriseService);
+      mockWoodstockService = injector.inject(WoodstockService);
 
-      fixture = TestBed.createComponent(SunriseGiftBasketComponent);
+      fixture = TestBed.createComponent(WoodstockGiftBasketComponent);
       component = fixture.debugElement.componentInstance;
 
       mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
@@ -52,7 +52,7 @@ describe('SunriseGiftBasketComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    const testMasterInventory: SunriseMasterInventory = {
+    const testMasterInventory: WoodstockMasterInventory = {
       cars: [],
       vanityItems: [],
       carHorns: [],
@@ -67,10 +67,10 @@ describe('SunriseGiftBasketComponent', () => {
         .and.returnValue(testMasterInventory);
     });
 
-    it('should dispatch GetSunriseMasterInventoryList action', () => {
+    it('should dispatch GetWoodstockMasterInventoryList action', () => {
       component.ngOnInit();
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetSunriseMasterInventoryList());
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetWoodstockMasterInventoryList());
     });
 
     it('should set masterInventory when dispatch is finished', () => {
@@ -152,7 +152,7 @@ describe('SunriseGiftBasketComponent', () => {
       const gift = component.generateGiftInventoryFromGiftBasket();
 
       expect(gift.giftReason).toEqual(giftReason);
-      const apolloMasterInventory = gift.inventory as SunriseMasterInventory;
+      const apolloMasterInventory = gift.inventory as WoodstockMasterInventory;
       expect(apolloMasterInventory).not.toBeUndefined();
 
       expect(apolloMasterInventory.creditRewards.length).toEqual(1);
@@ -173,7 +173,7 @@ describe('SunriseGiftBasketComponent', () => {
 
   describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockSunriseService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
+      mockWoodstockService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
@@ -192,13 +192,13 @@ describe('SunriseGiftBasketComponent', () => {
         },
       });
 
-      expect(mockSunriseService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
+      expect(mockWoodstockService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
     });
   });
 
   describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockSunriseService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
+      mockWoodstockService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
     it('should call sendGiftToLspGroup$', () => {
@@ -214,7 +214,7 @@ describe('SunriseGiftBasketComponent', () => {
         },
       });
 
-      expect(mockSunriseService.postGiftLspGroup$).toHaveBeenCalled();
+      expect(mockWoodstockService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 
@@ -235,7 +235,7 @@ describe('SunriseGiftBasketComponent', () => {
       const input = [];
       component.setStateGiftBasket(input);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetSunriseGiftBasket(input));
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetWoodstockGiftBasket(input));
     });
   });
 
@@ -252,7 +252,7 @@ describe('SunriseGiftBasketComponent', () => {
         vanityItems: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
         quickChatLines: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
         emotes: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
-      } as SunriseMasterInventory;
+      } as WoodstockMasterInventory;
     });
 
     describe('When credit reward exists', () => {

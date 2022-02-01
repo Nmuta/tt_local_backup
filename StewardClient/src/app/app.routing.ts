@@ -26,7 +26,7 @@ const routes: Routes = [
     path: 'external',
     canActivate: [AuthGuard],
     loadChildren: () =>
-      import('./shared/pages/external-redirect/external-redirect.module').then(
+      import('./pages/tools/pages/external-redirect/external-redirect.module').then(
         m => m.ExternalRedirectModule,
       ),
   },

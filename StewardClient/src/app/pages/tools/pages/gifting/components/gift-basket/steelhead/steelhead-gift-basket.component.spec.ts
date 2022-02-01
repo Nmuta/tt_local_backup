@@ -4,22 +4,22 @@ import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/co
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { WoodstockGiftBasketComponent } from './woodstock-gift-basket.component';
-import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
-import { of } from 'rxjs';
-import { WoodstockMasterInventory } from '@models/woodstock/woodstock-master-inventory.model';
+import { SteelheadGiftBasketComponent } from './steelhead-gift-basket.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { WoodstockService } from '@services/woodstock';
-import { SetWoodstockGiftBasket } from '@shared/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
+import { SteelheadMasterInventory } from '@models/steelhead';
+import { of } from 'rxjs';
+import { GetSteelheadMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { SteelheadService } from '@services/steelhead';
+import { SetSteelheadGiftBasket } from '@tools-app/pages/gifting/steelhead/state/steelhead-gifting.state.actions';
 import faker from 'faker';
 
-describe('WoodstockGiftBasketComponent', () => {
-  let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
-  let component: WoodstockGiftBasketComponent;
+describe('SteelheadGiftBasketComponent', () => {
+  let fixture: ComponentFixture<SteelheadGiftBasketComponent>;
+  let component: SteelheadGiftBasketComponent;
 
   const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let mockWoodstockService: WoodstockService;
+  let mockSteelheadService: SteelheadService;
 
   beforeEach(
     waitForAsync(() => {
@@ -30,16 +30,16 @@ describe('WoodstockGiftBasketComponent', () => {
           NgxsModule.forRoot(),
           ReactiveFormsModule,
         ],
-        declarations: [WoodstockGiftBasketComponent],
+        declarations: [SteelheadGiftBasketComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
       const injector = getTestBed();
       mockStore = injector.inject(Store);
-      mockWoodstockService = injector.inject(WoodstockService);
+      mockSteelheadService = injector.inject(SteelheadService);
 
-      fixture = TestBed.createComponent(WoodstockGiftBasketComponent);
+      fixture = TestBed.createComponent(SteelheadGiftBasketComponent);
       component = fixture.debugElement.componentInstance;
 
       mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
@@ -52,13 +52,10 @@ describe('WoodstockGiftBasketComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    const testMasterInventory: WoodstockMasterInventory = {
+    const testMasterInventory: SteelheadMasterInventory = {
       cars: [],
       vanityItems: [],
-      carHorns: [],
-      quickChatLines: [],
       creditRewards: [],
-      emotes: [],
     };
     beforeEach(() => {
       mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
@@ -67,10 +64,10 @@ describe('WoodstockGiftBasketComponent', () => {
         .and.returnValue(testMasterInventory);
     });
 
-    it('should dispatch GetWoodstockMasterInventoryList action', () => {
+    it('should dispatch GetSteelheadMasterInventoryList action', () => {
       component.ngOnInit();
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetWoodstockMasterInventoryList());
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetSteelheadMasterInventoryList());
     });
 
     it('should set masterInventory when dispatch is finished', () => {
@@ -84,12 +81,9 @@ describe('WoodstockGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
-    const giftItem1Id = new BigNumber(faker.datatype.number());
-    const giftItem2Id = new BigNumber(faker.datatype.number());
-    const giftItem3Id = new BigNumber(faker.datatype.number());
-    const giftItem4Id = new BigNumber(faker.datatype.number());
-    const giftItem5Id = new BigNumber(faker.datatype.number());
-    const giftItem6Id = new BigNumber(faker.datatype.number());
+    const testItem1Id = new BigNumber(faker.datatype.number());
+    const testItem2Id = new BigNumber(faker.datatype.number());
+    const testItem3Id = new BigNumber(faker.datatype.number());
 
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
@@ -98,82 +92,52 @@ describe('WoodstockGiftBasketComponent', () => {
       component.sendGiftForm.controls['giftReason'].setValue(giftReason);
       component.giftBasket.data = [
         {
-          id: giftItem1Id,
-          description: faker.random.words(10),
+          id: testItem1Id,
+          description: faker.random.words(3),
           quantity: faker.datatype.number(),
           itemType: 'creditRewards',
           edit: false,
           error: undefined,
         },
         {
-          id: giftItem2Id,
-          description: faker.random.words(10),
+          id: testItem2Id,
+          description: faker.random.words(3),
           quantity: faker.datatype.number(),
           itemType: 'cars',
           edit: false,
           error: undefined,
         },
         {
-          id: giftItem3Id,
-          description: faker.random.words(10),
+          id: testItem3Id,
+          description: faker.random.words(3),
           quantity: faker.datatype.number(),
           itemType: 'vanityItems',
-          edit: false,
-          error: undefined,
-        },
-        {
-          id: giftItem4Id,
-          description: faker.random.words(10),
-          quantity: faker.datatype.number(),
-          itemType: 'carHorns',
-          edit: false,
-          error: undefined,
-        },
-        {
-          id: giftItem5Id,
-          description: faker.random.words(10),
-          quantity: faker.datatype.number(),
-          itemType: 'quickChatLines',
-          edit: false,
-          error: undefined,
-        },
-        {
-          id: giftItem6Id,
-          description: faker.random.words(10),
-          quantity: faker.datatype.number(),
-          itemType: 'emotes',
           edit: false,
           error: undefined,
         },
       ];
     });
 
-    it('should set masterInventory', () => {
+    it('should return a valid Steelhead Gift', () => {
       const gift = component.generateGiftInventoryFromGiftBasket();
 
       expect(gift.giftReason).toEqual(giftReason);
-      const apolloMasterInventory = gift.inventory as WoodstockMasterInventory;
-      expect(apolloMasterInventory).not.toBeUndefined();
+      const steelheadMasterInventory = gift.inventory as SteelheadMasterInventory;
+      expect(steelheadMasterInventory).not.toBeUndefined();
 
-      expect(apolloMasterInventory.creditRewards.length).toEqual(1);
-      expect(apolloMasterInventory.cars.length).toEqual(1);
-      expect(apolloMasterInventory.vanityItems.length).toEqual(1);
-      expect(apolloMasterInventory.carHorns.length).toEqual(1);
-      expect(apolloMasterInventory.quickChatLines.length).toEqual(1);
-      expect(apolloMasterInventory.emotes.length).toEqual(1);
+      expect(steelheadMasterInventory.creditRewards.length).toEqual(1);
+      expect(steelheadMasterInventory.cars.length).toEqual(1);
+      expect(steelheadMasterInventory.vanityItems.length).toEqual(1);
 
-      expect(apolloMasterInventory.creditRewards[0].id).toEqual(giftItem1Id);
-      expect(apolloMasterInventory.cars[0].id).toEqual(giftItem2Id);
-      expect(apolloMasterInventory.vanityItems[0].id).toEqual(giftItem3Id);
-      expect(apolloMasterInventory.carHorns[0].id).toEqual(giftItem4Id);
-      expect(apolloMasterInventory.quickChatLines[0].id).toEqual(giftItem5Id);
-      expect(apolloMasterInventory.emotes[0].id).toEqual(giftItem6Id);
+      expect(steelheadMasterInventory.creditRewards[0].id).toEqual(testItem1Id);
+      expect(steelheadMasterInventory.cars[0].id).toEqual(testItem2Id);
+      expect(steelheadMasterInventory.vanityItems[0].id).toEqual(testItem3Id);
     });
   });
 
   describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockWoodstockService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
+      mockSteelheadService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
@@ -182,39 +146,25 @@ describe('WoodstockGiftBasketComponent', () => {
     it('should call postGiftPlayersUsingBackgroundTask', () => {
       component.sendGiftToPlayers$({
         giftReason: faker.random.words(10),
-        inventory: {
-          creditRewards: [],
-          cars: [],
-          vanityItems: [],
-          carHorns: [],
-          quickChatLines: [],
-          emotes: [],
-        },
+        inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockWoodstockService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
+      expect(mockSteelheadService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
     });
   });
 
   describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockWoodstockService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
+      mockSteelheadService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
     it('should call sendGiftToLspGroup$', () => {
       component.sendGiftToLspGroup$({
         giftReason: faker.random.words(10),
-        inventory: {
-          creditRewards: [],
-          cars: [],
-          vanityItems: [],
-          carHorns: [],
-          quickChatLines: [],
-          emotes: [],
-        },
+        inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockWoodstockService.postGiftLspGroup$).toHaveBeenCalled();
+      expect(mockSteelheadService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 
@@ -235,24 +185,17 @@ describe('WoodstockGiftBasketComponent', () => {
       const input = [];
       component.setStateGiftBasket(input);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetWoodstockGiftBasket(input));
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetSteelheadGiftBasket(input));
     });
   });
 
   describe('Method: setGiftBasketItemErrors', () => {
     beforeEach(() => {
       component.masterInventory = {
-        creditRewards: [
-          { id: new BigNumber(-1), description: 'Credits', quantity: 0 },
-          { id: new BigNumber(-1), description: 'WheelSpins', quantity: 0 },
-          { id: new BigNumber(-1), description: 'SuperWheelSpins', quantity: 0 },
-        ],
+        creditRewards: [{ id: new BigNumber(-1), description: 'Credits', quantity: 0 }],
         cars: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
-        carHorns: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
-        vanityItems: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
-        quickChatLines: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
-        emotes: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
-      } as WoodstockMasterInventory;
+        vanityItems: [{ id: new BigNumber(67890), description: 'Test vanity item', quantity: 0 }],
+      } as SteelheadMasterInventory;
     });
 
     describe('When credit reward exists', () => {
@@ -335,7 +278,7 @@ describe('WoodstockGiftBasketComponent', () => {
       });
     });
 
-    describe('When credit reward is under 500,000,000', () => {
+    describe('When credit reward is not over 500,000,000', () => {
       it('should set item error ', () => {
         const input = [
           {
@@ -372,86 +315,6 @@ describe('WoodstockGiftBasketComponent', () => {
         expect(response.length).toEqual(1);
         expect(response[0]).not.toBeUndefined();
         expect(response[0].restriction).toEqual('Credit max is 999,999,999.');
-      });
-    });
-
-    describe('When wheel spin reward is over 200', () => {
-      it('should set item error ', () => {
-        const input = [
-          {
-            itemType: 'creditRewards',
-            description: 'WheelSpins',
-            quantity: 201,
-            id: new BigNumber(-1),
-            edit: false,
-            error: undefined,
-          },
-        ];
-        const response = component.setGiftBasketItemErrors(input);
-
-        expect(response.length).toEqual(1);
-        expect(response[0]).not.toBeUndefined();
-        expect(response[0].restriction).toEqual('Wheel Spin limit for a gift is 200.');
-      });
-    });
-
-    describe('When wheel spin reward is under 200', () => {
-      it('should set item error ', () => {
-        const input = [
-          {
-            itemType: 'creditRewards',
-            description: 'WheelSpins',
-            quantity: 199,
-            id: new BigNumber(-1),
-            edit: false,
-            error: undefined,
-          },
-        ];
-        const response = component.setGiftBasketItemErrors(input);
-
-        expect(response.length).toEqual(1);
-        expect(response[0]).not.toBeUndefined();
-        expect(response[0].error).toBeUndefined();
-      });
-    });
-
-    describe('When super wheel spin reward is over 200', () => {
-      it('should set item error ', () => {
-        const input = [
-          {
-            itemType: 'creditRewards',
-            description: 'SuperWheelSpins',
-            quantity: 201,
-            id: new BigNumber(-1),
-            edit: false,
-            error: undefined,
-          },
-        ];
-        const response = component.setGiftBasketItemErrors(input);
-
-        expect(response.length).toEqual(1);
-        expect(response[0]).not.toBeUndefined();
-        expect(response[0].restriction).toEqual('Super Wheel Spin limit for a gift is 200.');
-      });
-    });
-
-    describe('When super wheel spin reward is over 200', () => {
-      it('should set item error ', () => {
-        const input = [
-          {
-            itemType: 'creditRewards',
-            description: 'SuperWheelSpins',
-            quantity: 199,
-            id: new BigNumber(-1),
-            edit: false,
-            error: undefined,
-          },
-        ];
-        const response = component.setGiftBasketItemErrors(input);
-
-        expect(response.length).toEqual(1);
-        expect(response[0]).not.toBeUndefined();
-        expect(response[0].error).toBeUndefined();
       });
     });
   });

@@ -1,18 +1,18 @@
 import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ApolloGift, ApolloGroupGift, ApolloMasterInventory } from '@models/apollo';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
-import { ApolloGiftingState } from '@shared/pages/gifting/apollo/state/apollo-gifting.state';
-import { SetApolloGiftBasket } from '@shared/pages/gifting/apollo/state/apollo-gifting.state.actions';
+import { WoodstockGift, WoodstockGroupGift, WoodstockMasterInventory } from '@models/woodstock';
+import { WoodstockGiftingState } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state';
+import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
-import { ApolloService } from '@services/apollo';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { WoodstockService } from '@services/woodstock';
+import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -20,28 +20,28 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
 import { ZERO } from '@helpers/bignumbers';
 import { cloneDeep } from 'lodash';
 
-/** Apollo gift basket. */
+/** Woodstock gift basket. */
 @Component({
-  selector: 'apollo-gift-basket',
+  selector: 'woodstock-gift-basket',
   templateUrl: '../gift-basket.component.html',
   styleUrls: ['../gift-basket.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ApolloGiftBasketComponent),
+      useExisting: forwardRef(() => WoodstockGiftBasketComponent),
       multi: true,
     },
   ],
 })
-export class ApolloGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultAlpha, ApolloMasterInventory>
+export class WoodstockGiftBasketComponent
+  extends GiftBasketBaseComponent<IdentityResultAlpha, WoodstockMasterInventory>
   implements OnInit
 {
-  @Select(ApolloGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
-  public title = GameTitleCodeName.FM7;
+  @Select(WoodstockGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
+  public title = GameTitleCodeName.FH5;
 
   constructor(
-    private readonly apolloService: ApolloService,
+    private readonly woodstockService: WoodstockService,
     backgroundJobService: BackgroundJobService,
     store: Store,
     formBuilder: FormBuilder,
@@ -52,15 +52,15 @@ export class ApolloGiftBasketComponent
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.isLoading = true;
-    this.store.dispatch(new GetApolloMasterInventoryList()).subscribe(() => {
+    this.store.dispatch(new GetWoodstockMasterInventoryList()).subscribe(() => {
       this.isLoading = false;
-      const apolloMasterInventory = this.store.selectSnapshot<ApolloMasterInventory>(
-        MasterInventoryListMemoryState.apolloMasterInventory,
+      const woodstockMasterInventory = this.store.selectSnapshot<WoodstockMasterInventory>(
+        MasterInventoryListMemoryState.woodstockMasterInventory,
       );
 
       // must be cloned because a child component modifies this value, and modification of state is disallowed
-      this.masterInventory = cloneDeep(apolloMasterInventory);
-      this.itemSelectionList = this.masterInventory;
+      this.masterInventory = cloneDeep(woodstockMasterInventory);
+      this.itemSelectionList = this.generateItemSelectionList(this.masterInventory);
     });
 
     this.giftBasket$
@@ -74,8 +74,8 @@ export class ApolloGiftBasketComponent
       .subscribe();
   }
 
-  /** Generates an apollo gift from the gift basket. */
-  public generateGiftInventoryFromGiftBasket(): ApolloGift {
+  /** Generates a woodstock gift from the gift basket. */
+  public generateGiftInventoryFromGiftBasket(): WoodstockGift {
     const giftBasketItems = this.giftBasket.data;
     return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
@@ -89,6 +89,15 @@ export class ApolloGiftBasketComponent
         vanityItems: giftBasketItems
           .filter(item => item.itemType === 'vanityItems')
           .map(item => item as MasterInventoryItem),
+        carHorns: giftBasketItems
+          .filter(item => item.itemType === 'carHorns')
+          .map(item => item as MasterInventoryItem),
+        quickChatLines: giftBasketItems
+          .filter(item => item.itemType === 'quickChatLines')
+          .map(item => item as MasterInventoryItem),
+        emotes: giftBasketItems
+          .filter(item => item.itemType === 'emotes')
+          .map(item => item as MasterInventoryItem),
       },
     };
   }
@@ -99,7 +108,7 @@ export class ApolloGiftBasketComponent
       return;
     }
     const referenceInventory = this.referenceInventory;
-    function mapKey(key: keyof ApolloMasterInventory): GiftBasketModel[] {
+    function mapKey(key: keyof WoodstockMasterInventory): GiftBasketModel[] {
       return referenceInventory[key].map(i => {
         return <GiftBasketModel>{
           description: i.description,
@@ -116,28 +125,31 @@ export class ApolloGiftBasketComponent
       ...mapKey('cars'),
       ...mapKey('creditRewards'),
       ...mapKey('vanityItems'),
+      ...mapKey('carHorns'),
+      ...mapKey('quickChatLines'),
+      ...mapKey('emotes'),
     ]);
   }
 
-  /** Sends an apollo gift to players. */
-  public sendGiftToPlayers$(gift: ApolloGift): Observable<BackgroundJob<void>> {
-    const groupGift: ApolloGroupGift = gift as ApolloGroupGift;
+  /** Sends a woodstock gift to players. */
+  public sendGiftToPlayers$(gift: WoodstockGift): Observable<BackgroundJob<void>> {
+    const groupGift = gift as WoodstockGroupGift;
     groupGift.xuids = this.playerIdentities
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.apolloService.postGiftPlayersUsingBackgroundTask$(groupGift);
+    return this.woodstockService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
-  /** Sends an apollo gift to an LSP group. */
-  public sendGiftToLspGroup$(gift: ApolloGift): Observable<GiftResponse<BigNumber>> {
-    return this.apolloService.postGiftLspGroup$(this.lspGroup, gift);
+  /** Sends a woodstock gift to an LSP group. */
+  public sendGiftToLspGroup$(gift: WoodstockGift): Observable<GiftResponse<BigNumber>> {
+    return this.woodstockService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */
   public setStateGiftBasket(giftBasket: GiftBasketModel[]): void {
     giftBasket = this.setGiftBasketItemErrors(giftBasket);
-    this.store.dispatch(new SetApolloGiftBasket(giftBasket));
+    this.store.dispatch(new SetWoodstockGiftBasket(giftBasket));
   }
 
   /** Verifies gift basket and sets item.restriction if one is found. */
@@ -160,7 +172,7 @@ export class ApolloGiftBasketComponent
     if (!this.ignoreMaxCreditLimit) {
       const creditsAboveLimit = giftBasket.findIndex(
         item =>
-          item.id < ZERO &&
+          item.id.isLessThan(ZERO) &&
           item.description.toLowerCase() === 'credits' &&
           item.quantity > 500_000_000,
       );
@@ -169,10 +181,9 @@ export class ApolloGiftBasketComponent
       }
     }
 
-    // Verify credit reward is under max
     const creditsAboveMax = giftBasket.findIndex(
       item =>
-        item.id < ZERO &&
+        item.id.isLessThan(ZERO) &&
         item.description.toLowerCase() === 'credits' &&
         item.quantity > 999_999_999,
     );
@@ -180,6 +191,54 @@ export class ApolloGiftBasketComponent
       giftBasket[creditsAboveMax].restriction = 'Credit max is 999,999,999.';
     }
 
+    const wheelSpinsAboveLimit = giftBasket.findIndex(
+      item =>
+        item.id.isLessThan(ZERO) &&
+        item.description.toLowerCase() === 'wheelspins' &&
+        item.quantity > 200,
+    );
+    if (wheelSpinsAboveLimit >= 0) {
+      giftBasket[wheelSpinsAboveLimit].restriction = 'Wheel Spin limit for a gift is 200.';
+    }
+
+    const superWheelSpinsAboveLimit = giftBasket.findIndex(
+      item =>
+        item.id.isLessThan(ZERO) &&
+        item.description.toLowerCase() === 'superwheelspins' &&
+        item.quantity > 200,
+    );
+    if (superWheelSpinsAboveLimit >= 0) {
+      giftBasket[superWheelSpinsAboveLimit].restriction =
+        'Super Wheel Spin limit for a gift is 200.';
+    }
+
+    const backstagePassesAboveLimit = giftBasket.findIndex(
+      item =>
+        item.id.isLessThan(ZERO) &&
+        item.description.toLowerCase() === 'backstagepasses' &&
+        item.quantity > 20,
+    );
+    if (backstagePassesAboveLimit >= 0) {
+      giftBasket[backstagePassesAboveLimit].restriction =
+        'Backstage Passes limit for a gift is 20.';
+    }
+
     return giftBasket;
+  }
+
+  private generateItemSelectionList(
+    masterInventoryList: WoodstockMasterInventory,
+  ): WoodstockMasterInventory {
+    // IMPORTANT: Filter out wristbands from item selection list (ids 1-11). Wristbands are only allowed to be gifted in a profile restore scenario. (10/21/21)
+    const filteredList = cloneDeep(masterInventoryList);
+    filteredList.vanityItems = filteredList.vanityItems.filter(
+      item =>
+        !(
+          item.id.isGreaterThanOrEqualTo(new BigNumber(1)) &&
+          item.id.isLessThanOrEqualTo(new BigNumber(11))
+        ),
+    );
+
+    return filteredList;
   }
 }

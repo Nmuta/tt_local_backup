@@ -6,13 +6,13 @@ import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
-import { WoodstockGift, WoodstockGroupGift, WoodstockMasterInventory } from '@models/woodstock';
-import { WoodstockGiftingState } from '@shared/pages/gifting/woodstock/state/woodstock-gifting.state';
-import { SetWoodstockGiftBasket } from '@shared/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
+import { SunriseGift, SunriseGroupGift, SunriseMasterInventory } from '@models/sunrise';
+import { SunriseGiftingState } from '@tools-app/pages/gifting/sunrise/state/sunrise-gifting.state';
+import { SetSunriseGiftBasket } from '@tools-app/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { WoodstockService } from '@services/woodstock';
-import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { SunriseService } from '@services/sunrise';
+import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -20,28 +20,28 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
 import { ZERO } from '@helpers/bignumbers';
 import { cloneDeep } from 'lodash';
 
-/** Woodstock gift basket. */
+/** Sunrise gift basket. */
 @Component({
-  selector: 'woodstock-gift-basket',
+  selector: 'sunrise-gift-basket',
   templateUrl: '../gift-basket.component.html',
   styleUrls: ['../gift-basket.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => WoodstockGiftBasketComponent),
+      useExisting: forwardRef(() => SunriseGiftBasketComponent),
       multi: true,
     },
   ],
 })
-export class WoodstockGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultAlpha, WoodstockMasterInventory>
+export class SunriseGiftBasketComponent
+  extends GiftBasketBaseComponent<IdentityResultAlpha, SunriseMasterInventory>
   implements OnInit
 {
-  @Select(WoodstockGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
-  public title = GameTitleCodeName.FH5;
+  @Select(SunriseGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
+  public title = GameTitleCodeName.FH4;
 
   constructor(
-    private readonly woodstockService: WoodstockService,
+    private readonly sunriseService: SunriseService,
     backgroundJobService: BackgroundJobService,
     store: Store,
     formBuilder: FormBuilder,
@@ -52,14 +52,14 @@ export class WoodstockGiftBasketComponent
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.isLoading = true;
-    this.store.dispatch(new GetWoodstockMasterInventoryList()).subscribe(() => {
+    this.store.dispatch(new GetSunriseMasterInventoryList()).subscribe(() => {
       this.isLoading = false;
-      const woodstockMasterInventory = this.store.selectSnapshot<WoodstockMasterInventory>(
-        MasterInventoryListMemoryState.woodstockMasterInventory,
+      const sunriseMasterInventory = this.store.selectSnapshot<SunriseMasterInventory>(
+        MasterInventoryListMemoryState.sunriseMasterInventory,
       );
 
       // must be cloned because a child component modifies this value, and modification of state is disallowed
-      this.masterInventory = cloneDeep(woodstockMasterInventory);
+      this.masterInventory = cloneDeep(sunriseMasterInventory);
       this.itemSelectionList = this.generateItemSelectionList(this.masterInventory);
     });
 
@@ -74,8 +74,8 @@ export class WoodstockGiftBasketComponent
       .subscribe();
   }
 
-  /** Generates a woodstock gift from the gift basket. */
-  public generateGiftInventoryFromGiftBasket(): WoodstockGift {
+  /** Generates a sunrise gift from the gift basket. */
+  public generateGiftInventoryFromGiftBasket(): SunriseGift {
     const giftBasketItems = this.giftBasket.data;
     return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
@@ -108,7 +108,7 @@ export class WoodstockGiftBasketComponent
       return;
     }
     const referenceInventory = this.referenceInventory;
-    function mapKey(key: keyof WoodstockMasterInventory): GiftBasketModel[] {
+    function mapKey(key: keyof SunriseMasterInventory): GiftBasketModel[] {
       return referenceInventory[key].map(i => {
         return <GiftBasketModel>{
           description: i.description,
@@ -131,25 +131,25 @@ export class WoodstockGiftBasketComponent
     ]);
   }
 
-  /** Sends a woodstock gift to players. */
-  public sendGiftToPlayers$(gift: WoodstockGift): Observable<BackgroundJob<void>> {
-    const groupGift = gift as WoodstockGroupGift;
+  /** Sends a sunrise gift to players. */
+  public sendGiftToPlayers$(gift: SunriseGift): Observable<BackgroundJob<void>> {
+    const groupGift = gift as SunriseGroupGift;
     groupGift.xuids = this.playerIdentities
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.woodstockService.postGiftPlayersUsingBackgroundTask$(groupGift);
+    return this.sunriseService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
-  /** Sends a woodstock gift to an LSP group. */
-  public sendGiftToLspGroup$(gift: WoodstockGift): Observable<GiftResponse<BigNumber>> {
-    return this.woodstockService.postGiftLspGroup$(this.lspGroup, gift);
+  /** Sends a sunrise gift to an LSP group. */
+  public sendGiftToLspGroup$(gift: SunriseGift): Observable<GiftResponse<BigNumber>> {
+    return this.sunriseService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */
   public setStateGiftBasket(giftBasket: GiftBasketModel[]): void {
     giftBasket = this.setGiftBasketItemErrors(giftBasket);
-    this.store.dispatch(new SetWoodstockGiftBasket(giftBasket));
+    this.store.dispatch(new SetSunriseGiftBasket(giftBasket));
   }
 
   /** Verifies gift basket and sets item.restriction if one is found. */
@@ -227,15 +227,15 @@ export class WoodstockGiftBasketComponent
   }
 
   private generateItemSelectionList(
-    masterInventoryList: WoodstockMasterInventory,
-  ): WoodstockMasterInventory {
-    // IMPORTANT: Filter out wristbands from item selection list (ids 1-11). Wristbands are only allowed to be gifted in a profile restore scenario. (10/21/21)
+    masterInventoryList: SunriseMasterInventory,
+  ): SunriseMasterInventory {
+    // IMPORTANT: Filter out wristbands from item selection list (ids 30-40). Wristbands are only allowed to be gifted in a profile restore scenario. (10/21/21)
     const filteredList = cloneDeep(masterInventoryList);
     filteredList.vanityItems = filteredList.vanityItems.filter(
       item =>
         !(
-          item.id.isGreaterThanOrEqualTo(new BigNumber(1)) &&
-          item.id.isLessThanOrEqualTo(new BigNumber(11))
+          item.id.isGreaterThanOrEqualTo(new BigNumber(30)) &&
+          item.id.isLessThanOrEqualTo(new BigNumber(40))
         ),
     );
 

@@ -8,7 +8,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { ActivatedRoute } from '@angular/router';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
-import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
+import { NavbarTool } from '@environments/environment';
 
 /** Base component for related gamertags. */
 @Component({
@@ -39,10 +39,7 @@ export abstract class GamertagsBaseComponent<T> extends BaseComponent implements
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    this.userDetailsRouterLink = [
-      `./${SharedNavbarTools.UserDetailsPage.path}`,
-      this.gameTitle.toLowerCase(),
-    ];
+    this.userDetailsRouterLink = [`./${NavbarTool.UserDetails}`, this.gameTitle.toLowerCase()];
 
     this.toolsRoute = getToolsActivatedRoute(this.route);
   }

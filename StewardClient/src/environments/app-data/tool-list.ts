@@ -210,7 +210,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'First stop for detailed player info',
     shortDescription: [`First stop for detailed player info`],
     loadChildren: () =>
-      import('../../app/shared/pages/user-details/user-details.module').then(
+      import('../../app/pages/tools/pages/user-details/user-details.module').then(
         m => m.UserDetailsModule,
       ),
   },
@@ -225,7 +225,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Ban users by XUID or Gamertag',
     shortDescription: [`Ban users by XUID or Gamertag`],
     loadChildren: () =>
-      import('../../app/shared/pages/user-banning/user-banning.module').then(
+      import('../../app/pages/tools/pages/user-banning/user-banning.module').then(
         m => m.UserBanningModule,
       ),
   },
@@ -244,7 +244,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
       `Review, approve, and remove players from a list based on their ban summaries in different environments`,
     ],
     loadChildren: () =>
-      import('../../app/shared/pages/bulk-ban-review/bulk-ban-review.module').then(
+      import('../../app/pages/tools/pages/bulk-ban-review/bulk-ban-review.module').then(
         m => m.BulkBanReviewModule,
       ),
   },
@@ -259,7 +259,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Send gifts, currency, etc. to individual players or groups of players',
     shortDescription: [`Send gifts, currency, etc. to individual players or groups of players`],
     loadChildren: () =>
-      import('../../app/shared/pages/gifting/gifting.module').then(m => m.GiftingsModule),
+      import('../../app/pages/tools/pages/gifting/gifting.module').then(m => m.GiftingsModule),
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerCog,
@@ -272,7 +272,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'View gifting history by player or LSP group',
     shortDescription: [`View gifting history by player or LSP group`],
     loadChildren: () =>
-      import('../../app/shared/pages/gift-history/gift-history.module').then(
+      import('../../app/pages/tools/pages/gift-history/gift-history.module').then(
         m => m.GiftHistoryModule,
       ),
   },
@@ -286,7 +286,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     imageAlt: undefined,
     tooltipDescription: 'View and filter UGC by Player or Share Code',
     shortDescription: [`View and filter User Generated Content by Player or Share Code`],
-    loadChildren: () => import('../../app/shared/pages/ugc/ugc.module').then(m => m.UGCModule),
+    loadChildren: () => import('../../app/pages/tools/pages/ugc/ugc.module').then(m => m.UGCModule),
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.AuctionDetails,
@@ -315,7 +315,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Manage the list of cars blocked on the Auction House',
     shortDescription: [`Manage the list of cars blocked on the Auction House`],
     loadChildren: () =>
-      import('../../app/shared/pages/auction-blocklist/auction-blocklist.module').then(
+      import('../../app/pages/tools/pages/auction-blocklist/auction-blocklist.module').then(
         m => m.StewardAuctionBlocklistModule,
       ),
   },
@@ -331,7 +331,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Send, edit, and delete in-game messages.',
     shortDescription: [`Send, edit, and delete in-game messages.`],
     loadChildren: () =>
-      import('../../app/shared/pages/notifications/notifications.module').then(
+      import('../../app/pages/tools/pages/notifications/notifications.module').then(
         m => m.NotificationsModule,
       ),
   },
@@ -346,7 +346,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Perform stored and custom Kusto queries',
     shortDescription: [`Perform stored and custom Kusto queries`],
     loadChildren: () =>
-      import('../../app/shared/pages/kusto/kusto.module').then(m => m.KustoModule),
+      import('../../app/pages/tools/pages/kusto/kusto.module').then(m => m.KustoModule),
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.AdminInfo,
@@ -359,7 +359,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'View your job history',
     shortDescription: [`View  your background job history`],
     loadChildren: () =>
-      import('../../app/shared/pages/steward-user-history/steward-user-history.module').then(
+      import('../../app/pages/tools/pages/steward-user-history/steward-user-history.module').then(
         m => m.StewardUserHistoryModule,
       ),
   },
@@ -375,7 +375,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Configure Data Activity processing',
     shortDescription: [`Configure Data Activity processing`],
     loadChildren: () =>
-      import('../../app/shared/pages/obligation/obligation.module').then(
+      import('../../app/pages/tools/pages/obligation/obligation.module').then(
         m => m.DataPipelineObligationModule,
       ),
     hideFromUnauthorized: true,
@@ -410,7 +410,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
       'Manage high-level Kusto and Release features within Steward',
     ],
     loadChildren: () =>
-      import('../../app/shared/pages/steward-management/steward-management.module').then(
+      import('../../app/pages/tools/pages/steward-management/steward-management.module').then(
         m => m.StewardManagementModule,
       ),
     hideFromUnauthorized: true,
