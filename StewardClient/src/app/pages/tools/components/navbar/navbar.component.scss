@@ -47,6 +47,21 @@
   pointer-events: none;
 }
 
+.warnings,
+.info {
+  display: flex;
+}
+
+.mat-icon-button {
+  line-height: 36px; // chosen to match angular material
+  border: 1px solid transparent;
+}
+
+.mat-stroked-button,
+.stroked-icon-button {
+  border: 1px solid app-color-default-contrast($app-primary, 0.5) !important;
+}
+
 :host ::ng-deep .home-icon .mat-badge-content {
   width: unset;
   padding-left: 0.2em;

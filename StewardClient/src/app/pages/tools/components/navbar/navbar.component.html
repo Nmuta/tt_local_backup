@@ -3,7 +3,7 @@
   <a
     [routerLink]="parentRoute + '/home'"
     mat-icon-button
-    routerLinkActive="mat-stroked-button"
+    routerLinkActive="stroked-icon-button"
     [ngSwitch]="environmentWarningOption"
     class="home-icon"
   >
@@ -131,23 +131,11 @@
     <mat-icon>edit</mat-icon>
   </button>
   <span *ngIf="missingZendesk$ | async" class="warnings">
-    <mat-icon
-      svgIcon="steward-warning"
-      aria-label="Zendesk API missing"
-      matTooltip="Zendesk API missing"
-    ></mat-icon>
-    <mat-icon
-      svgIcon="steward-refresh"
-      aria-label="Refresh page"
-      matTooltip="Refresh page"
-    ></mat-icon>
+    <mat-icon matTooltip="Zendesk API missing">warning</mat-icon>
+    <mat-icon matTooltip="Refresh page">refresh</mat-icon>
   </span>
   <span class="info">
-    <mat-icon
-      svgIcon="steward-info"
-      aria-label="Show route location"
-      [matTooltip]="location"
-    ></mat-icon>
+    <mat-icon [matTooltip]="location">info</mat-icon>
   </span>
   <span class="short-spacer"></span>
   <span>
@@ -155,16 +143,16 @@
       [routerLink]="[{ outlets: { sidebar: 'notifications' } }]"
       queryParamsHandling="preserve"
       mat-icon-button
-      routerLinkActive="navbar-button-active"
+      routerLinkActive="stroked-icon-button"
       matTooltip="Notifications"
       aria-label="Notifications"
     >
       <mat-icon
-        svgIcon="steward-notifications"
         [matBadge]="notificationCount"
         [matBadgeColor]="notificationColor"
         matBadgeSize="small"
-      ></mat-icon>
+        >notifications</mat-icon
+      >
     </a>
   </span>
   <sidebar-icons></sidebar-icons>

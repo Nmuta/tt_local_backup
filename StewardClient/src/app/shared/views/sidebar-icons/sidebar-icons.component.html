@@ -3,16 +3,16 @@
     [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
-    routerLinkActive="mat-stroked-button"
+    routerLinkActive="stroked-icon-button"
     matTooltip="Settings"
     aria-label="Settings"
     (click)="clickedSettings()"
   >
     <mat-icon
-      svgIcon="steward-settings"
       [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
       matBadgeSize="small"
-    ></mat-icon>
+      >settings</mat-icon
+    >
   </a>
 </span>
 <span>
@@ -20,11 +20,11 @@
     [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
-    routerLinkActive="navbar-button-active"
+    routerLinkActive="stroked-icon-button"
     matTooltip="Profile"
     aria-label="Profile"
   >
-    <mat-icon svgIcon="steward-profile" aria-label="User profile icon"></mat-icon>
+    <mat-icon aria-label="User profile icon">account_circle</mat-icon>
   </a>
 </span>
 <span>

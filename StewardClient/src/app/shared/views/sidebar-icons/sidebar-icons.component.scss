@@ -4,3 +4,13 @@
   padding: 0;
   min-width: $gap-medium + $gap-medium;
 }
+
+.mat-icon-button {
+  line-height: 36px; // chosen to match angular material
+  border: 1px solid transparent;
+}
+
+.mat-stroked-button,
+.stroked-icon-button {
+  border: 1px solid app-color-default-contrast($app-primary, 0.5) !important;
+}
