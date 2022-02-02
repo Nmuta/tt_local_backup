@@ -1,0 +1,33 @@
+<button mat-raised-button (click)="onEmitLog()">Log(Empty)</button>
+<button mat-raised-button (click)="onEmitLog(exampleObject)">Log(Object)</button>
+<button mat-raised-button (click)="onEmitLog(exampleArray)">Log(Array)</button>
+<button mat-raised-button (click)="onEmitLog(exampleString)">Log(String)</button>
+<button mat-raised-button (click)="onEmitLog(exampleObject, exampleArray, exampleString)">
+  Log(Many)
+</button>
+
+<button mat-raised-button color="accent" (click)="onEmitWarn()">Warn(Empty)</button>
+<button mat-raised-button color="accent" (click)="onEmitWarn(exampleObject)">Warn(Object)</button>
+<button mat-raised-button color="accent" (click)="onEmitWarn(exampleArray)">Warn(Array)</button>
+<button mat-raised-button color="accent" (click)="onEmitWarn(exampleString)">Warn(String)</button>
+<button
+  mat-raised-button
+  color="accent"
+  (click)="onEmitWarn(exampleObject, exampleArray, exampleString)"
+>
+  Warn(Many)
+</button>
+
+<button mat-raised-button color="warn" (click)="onEmitError()">Error(Empty)</button>
+<button mat-raised-button color="warn" (click)="onEmitError(exampleObject)">Error(Object)</button>
+<button mat-raised-button color="warn" (click)="onEmitError(exampleArray)">Error(Array)</button>
+<button mat-raised-button color="warn" (click)="onEmitError(exampleString)">Error(String)</button>
+<button
+  mat-raised-button
+  color="warn"
+  (click)="onEmitError(exampleObject, exampleArray, exampleString)"
+>
+  Error(Many)
+</button>
+
+<span class="spacer"></span>

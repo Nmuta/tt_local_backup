@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
+import { jsonBigIntSafeSerialize } from '@helpers/json-bigint';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
 import { LogLevel } from './log-level';
@@ -77,7 +78,7 @@ export class LoggerService {
   private trackError(severity: string, topics: LogTopic[], error: unknown, ...data: unknown[]) {
     try {
       const appInsightsError = error instanceof Error ? error : new Error(JSON.stringify(error));
-      const stringifiedData = data.map(d => d.toString());
+      const stringifiedData = data.map(d => jsonBigIntSafeSerialize(d));
       const message = `[${topics.join(' ')}]\n${stringifiedData.join('\n')}`;
       this.appInsights.trackException({
         exception: appInsightsError,
@@ -101,7 +102,7 @@ export class LoggerService {
 
   private trackTrace(severity: string, topics: LogTopic[], ...data: unknown[]) {
     try {
-      const stringifiedData = data.map(d => d.toString());
+      const stringifiedData = data.map(d => jsonBigIntSafeSerialize(d));
       const message = `[${topics.join(' ')}]\n${stringifiedData.join('\n')}`;
       this.appInsights.trackTrace({ message: message }, { severity: severity });
     } catch (e) {

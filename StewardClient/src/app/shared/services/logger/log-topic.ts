@@ -6,4 +6,5 @@ export enum LogTopic {
   FakeApi = 'FakeApi',
   RouteReuse = 'RouteReuse',
   ToolsAvailabilityInterceptor = 'ToolsAvailabilityInterceptor',
+  Test = 'Test',
 }

@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { ActionMonitorMultifireComponent } from './action-monitor-multifire/action-monitor-multifire.component';
+import { LoggingComponent } from './logging/logging.component';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -38,6 +39,7 @@ import { ActionMonitorMultifireComponent } from './action-monitor-multifire/acti
     TypographyComponent,
     ActionMonitorSinglefireComponent,
     ActionMonitorMultifireComponent,
+    LoggingComponent,
   ],
   imports: [
     DemoRouterModule,
