@@ -62,11 +62,25 @@ export class SetNavbarTools {
   constructor(public readonly navbarTools: Partial<Record<NavbarTool, number>>) {}
 }
 
+export interface ThemeOptions {
+  override: ThemeOverrideOptions;
+  environmentWarning: ThemeEnvironmentWarningOptions;
+}
+
 /** The options when overriding theme. */
 export type ThemeOverrideOptions = 'dark' | 'light' | 'match' | undefined;
+
+/** The options for alerting about the current environment. */
+export type ThemeEnvironmentWarningOptions = 'warn' | 'accent' | undefined;
 
 /** Sets the current theme override. */
 export class SetThemeOverride {
   public static readonly type = '[Settings] Set Theme Override';
   constructor(public readonly themeOverride: ThemeOverrideOptions) {}
+}
+
+/** Sets the current theme override. */
+export class SetThemeEnvironmentWarning {
+  public static readonly type = '[Settings] Set Environment Warning';
+  constructor(public readonly themeEnvironmentWarning: ThemeEnvironmentWarningOptions) {}
 }

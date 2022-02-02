@@ -22,10 +22,14 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { BaseComponent } from '@components/base-component/base.component';
 import { startWith, takeUntil } from 'rxjs/operators';
-import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
+import {
+  SetNavbarTools,
+  ThemeEnvironmentWarningOptions,
+} from '@shared/state/user-settings/user-settings.actions';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { chain } from 'lodash';
 import { HomeTileInfoForNav, setExternalLinkTarget } from '@helpers/external-links';
+import { ThemeService } from '@shared/modules/theme/theme.service';
 
 /** The shared top-level navbar. */
 @Component({
@@ -53,11 +57,20 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   /** True when app is running inside of Zendesk. */
   public isInZendesk: boolean = false;
 
+  /** The set Environment Warning Option. */
+  public get environmentWarningOption(): ThemeEnvironmentWarningOptions {
+    return this.theme.themeEnvironmentWarning;
+  }
+
+  /** The label to display in the environment warning */
+  public environmentWarningLabel: string;
+
   constructor(
     private readonly store: Store,
     private readonly windowService: WindowService,
     private readonly zendeskService: ZendeskService,
     private readonly notificationsService: NotificationsService,
+    private readonly theme: ThemeService,
   ) {
     super();
   }
@@ -81,6 +94,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
     const settings = this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState);
     this.settings$.pipe(startWith(settings), takeUntil(this.onDestroy$)).subscribe(settings => {
+      this.environmentWarningLabel = this.determineWarningLabel(settings);
       const navbarTools = settings.navbarTools || {};
       this.hasAccess = chain(environment.tools)
         .map(v => [v.tool, v.accessList.includes(profile?.role)])
@@ -138,5 +152,21 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   /** Changes the editing mode */
   public setEditMode(mode: boolean): void {
     this.inEditMode = mode;
+  }
+
+  private determineWarningLabel(settings: UserSettingsStateModel): string {
+    if (settings.enableFakeApi) {
+      return 'fake';
+    }
+
+    if (environment.production) {
+      if (settings.enableStagingApi) {
+        return 'stage';
+      } else {
+        return 'prod';
+      }
+    } else {
+      return 'dev';
+    }
   }
 }

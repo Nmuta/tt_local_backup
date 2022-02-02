@@ -1,7 +1,27 @@
 <!-- Useful example https://stackblitz.com/edit/angular-v6xwte?file=src%2Fapp%2Fapp.component.html -->
 <mat-toolbar color="primary">
-  <a [routerLink]="parentRoute + '/home'" mat-icon-button routerLinkActive="mat-stroked-button">
-    <mat-icon>home</mat-icon>
+  <a
+    [routerLink]="parentRoute + '/home'"
+    mat-icon-button
+    routerLinkActive="mat-stroked-button"
+    [ngSwitch]="environmentWarningOption"
+    class="home-icon"
+  >
+    <mat-icon
+      *ngSwitchCase="'warn'"
+      [matBadge]="environmentWarningLabel"
+      matBadgeColor="warn"
+      matBadgePosition="before"
+      >home</mat-icon
+    >
+    <mat-icon
+      *ngSwitchCase="'accent'"
+      [matBadge]="environmentWarningLabel"
+      matBadgeColor="accent"
+      matBadgePosition="before"
+      >home</mat-icon
+    >
+    <mat-icon *ngSwitchDefault>home</mat-icon>
   </a>
   <div *ngIf="!inEditMode" class="link-list-wrapper">
     <ng-container *ngFor="let item of listedTools">

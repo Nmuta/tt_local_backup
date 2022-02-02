@@ -46,3 +46,10 @@
 :host ::ng-deep .drop-list-wrapper span * {
   pointer-events: none;
 }
+
+:host ::ng-deep .home-icon .mat-badge-content {
+  width: unset;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  border-radius: 500px;
+}

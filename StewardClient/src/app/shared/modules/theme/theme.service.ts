@@ -2,7 +2,9 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
+  SetThemeEnvironmentWarning,
   SetThemeOverride,
+  ThemeEnvironmentWarningOptions,
   ThemeOverrideOptions,
 } from '@shared/state/user-settings/user-settings.actions';
 import {
@@ -30,7 +32,19 @@ export class ThemeService {
     this.store.dispatch(new SetThemeOverride(value));
   }
 
+  /** The theme override setting. */
+  public get themeEnvironmentWarning(): ThemeEnvironmentWarningOptions {
+    return this._themeEnvironmentWarning;
+  }
+
+  /** The theme override setting. */
+  public set themeEnvironmentWarning(value: ThemeEnvironmentWarningOptions) {
+    this._themeEnvironmentWarning = value;
+    this.store.dispatch(new SetThemeEnvironmentWarning(value));
+  }
+
   private _themeOverride: ThemeOverrideOptions = undefined;
+  private _themeEnvironmentWarning: ThemeEnvironmentWarningOptions = undefined;
 
   constructor(
     private readonly store: Store,
@@ -39,6 +53,7 @@ export class ThemeService {
     const settings = this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState);
     this.settings$.pipe(startWith(settings)).subscribe(settings => {
       this._themeOverride = settings?.themeOverride;
+      this._themeEnvironmentWarning = settings?.themeEnvironmentWarning;
       this.syncTheme(settings?.themeOverride);
     });
   }

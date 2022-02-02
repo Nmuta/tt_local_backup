@@ -18,6 +18,8 @@ import {
   ConfigureAppUpdatePopup,
   SetThemeOverride,
   ThemeOverrideOptions,
+  ThemeEnvironmentWarningOptions,
+  SetThemeEnvironmentWarning,
 } from './user-settings.actions';
 
 /** Defines the user state model. */
@@ -32,6 +34,7 @@ export class UserSettingsStateModel {
   public steelheadEndpointKey: string;
   public navbarTools: Partial<Record<NavbarTool, number>>;
   public themeOverride: ThemeOverrideOptions;
+  public themeEnvironmentWarning: ThemeEnvironmentWarningOptions;
 }
 
 /** Defines the current users' settings. */
@@ -48,6 +51,7 @@ export class UserSettingsStateModel {
     steelheadEndpointKey: undefined,
     showAppUpdatePopup: true,
     themeOverride: undefined,
+    themeEnvironmentWarning: !environment.production ? 'warn' : undefined,
   },
 })
 @Injectable({
@@ -107,6 +111,15 @@ export class UserSettingsState {
     action: SetThemeOverride,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ themeOverride: action.themeOverride }));
+  }
+
+  /** Sets the theme override. */
+  @Action(SetThemeEnvironmentWarning, { cancelUncompleted: true })
+  public setThemeEnvironmentWarning$(
+    ctx: StateContext<UserSettingsStateModel>,
+    action: SetThemeEnvironmentWarning,
+  ): Observable<UserSettingsStateModel> {
+    return of(ctx.patchState({ themeEnvironmentWarning: action.themeEnvironmentWarning }));
   }
 
   /** Sets the state of the current Apollo endpoint key. */

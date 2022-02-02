@@ -9,10 +9,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ToggleEnvironmentWarningComponent } from './toggle-environment-warning/toggle-environment-warning.component';
 
 /** Components and services related to theming. */
 @NgModule({
-  declarations: [ToggleDarkmodeComponent, ThemeTileContentComponent, ThemeNavContentComponent],
+  declarations: [
+    ToggleDarkmodeComponent,
+    ThemeTileContentComponent,
+    ThemeNavContentComponent,
+    ToggleEnvironmentWarningComponent,
+  ],
   imports: [
     CommonModule,
     MatButtonToggleModule,
@@ -22,6 +28,11 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule,
   ],
-  exports: [ToggleDarkmodeComponent, ThemeTileContentComponent, ThemeNavContentComponent],
+  exports: [
+    ToggleDarkmodeComponent,
+    ThemeTileContentComponent,
+    ThemeNavContentComponent,
+    ToggleEnvironmentWarningComponent,
+  ],
 })
 export class ThemeModule {}

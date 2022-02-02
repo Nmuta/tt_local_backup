@@ -1,0 +1,17 @@
+<label for="theme-environment-warning-toggle">Steward Environment Warning Badge</label>
+<mat-button-toggle-group
+  name="theme-environment-warning-toggle"
+  aria-label="Theme"
+  [disabled]="disabled"
+  [(ngModel)]="themeEnvironmentWarning"
+>
+  <mat-button-toggle value="warn" matTooltip="Show as warning"
+    ><mat-icon color="warn">warning</mat-icon></mat-button-toggle
+  >
+  <mat-button-toggle value="accent" matTooltip="Show"
+    ><mat-icon color="accent">visibility</mat-icon></mat-button-toggle
+  >
+  <mat-button-toggle [value]="undefined" matTooltip="Hide"
+    ><mat-icon>visibility_off</mat-icon></mat-button-toggle
+  >
+</mat-button-toggle-group>
