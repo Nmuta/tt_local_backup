@@ -111,16 +111,17 @@ export class UserState {
   public getUser$(ctx: StateContext<UserStateModel>): Observable<UserModel> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] getUser`);
     return this.userService.getUserProfile$().pipe(
-      tap(
-        data => {
-          ctx.patchState({
-            profile: UserState.analyzeProfile(clone(data)),
-          });
+      tap({
+        next: data => {
+          const profile = UserState.analyzeProfile(clone(data));
+          ctx.patchState({ profile });
+
+          this.logger.log([LogTopic.UserTracking], 'whoami', profile);
         },
-        () => {
+        error: () => {
           ctx.patchState({ profile: null });
         },
-      ),
+      }),
     );
   }
 
