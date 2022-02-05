@@ -16,6 +16,7 @@ export interface ObligationKustoDataActivity {
   executionDelay: Duration | string;
   isTimeAgnostic: boolean;
   dataActivityDependencyNames: string[];
+  selfDependency: boolean;
   parallelismLimit: BigNumber;
   creationBehavior: DataActivityCreationBehavior;
 }

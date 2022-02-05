@@ -67,6 +67,11 @@
 
       <section>
         <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
+        <mat-checkbox
+          [formControl]="formControls.selfDependency"
+          matTooltip="Append 'self'-type dependency to list."
+          >Self</mat-checkbox
+        >
       </section>
     </section>
 

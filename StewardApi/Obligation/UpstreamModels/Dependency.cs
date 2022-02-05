@@ -10,6 +10,19 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         /// <summary>
         ///     Initializes a new instance of the <see cref="Dependency"/> class.
         /// </summary>
+        public Dependency() { }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Dependency"/> class.
+        /// </summary>
+        public Dependency(string type)
+            : this(type, null)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Dependency"/> class.
+        /// </summary>
         public Dependency(string type, string name)
         {
             this.Type = type;

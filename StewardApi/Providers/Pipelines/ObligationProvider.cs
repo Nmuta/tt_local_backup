@@ -96,7 +96,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                         ExecutionInterval = resultDataActivity.ExecutionInterval,
                         ExecutionDelay = resultDataActivity.Delay,
                         IsTimeAgnostic = resultDataActivity.IsTimeAgnostic,
-                        DataActivityDependencyNames = resultDataActivity.Dependencies?.Select(d => d.DataActivityDependencyName).ToList(),
+                        DataActivityDependencyNames = resultDataActivity.Dependencies?.NotOfType("self").ToDependencyNames().ToList(),
+                        SelfDependency = resultDataActivity.Dependencies?.OfType("self").Any() ?? false,
                         ParallelismLimit = resultDataActivity.ParallelismLimitTags.Select(p => p.Limit).FirstOrDefault(),
                         CreationBehavior = resultDataActivity.CreationBehavior,
                     })
@@ -115,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                         MaxExecutionSpan = resultDataActivity.MaxExecutionSpan,
                         ExecutionInterval = resultDataActivity.ExecutionInterval,
                         ExecutionDelay = resultDataActivity.Delay,
-                        DataActivityDependencyNames = resultDataActivity.Dependencies?.Select(d => d.DataActivityDependencyName).ToList(),
+                        DataActivityDependencyNames = resultDataActivity.Dependencies?.NotOfType("self").ToDependencyNames().ToList(),
                         ParallelismLimit = resultDataActivity.ParallelismLimitTags.Select(p => p.Limit).FirstOrDefault(),
                         IncludeChildren = resultDataActivity.IncludeChildren,
                         TargetDataActivity = resultDataActivity.TargetDataActivity,
@@ -225,9 +226,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
             return functionDefinition;
         }
 
-        private static List<Dependency> BuildDependencies(IList<string> dependencyNames)
+        private static IEnumerable<Dependency> BuildCommonDependencies(IEnumerable<string> dependencyNames)
         {
-            return dependencyNames?.Select(d => new Dependency("striped_on_sealed", d)).ToList();
+            return dependencyNames?.Select(d => new Dependency("striped_on_sealed", d)) ?? Enumerable.Empty<Dependency>();
+        }
+
+        private static List<Dependency> BuildDependencies(ObligationKustoDataActivity dataActivity)
+        {
+            var result = new List<Dependency>();
+            result.AddRange(BuildCommonDependencies(dataActivity?.DataActivityDependencyNames));
+
+            if (dataActivity.SelfDependency)
+            {
+                result.Add(new Dependency("self"));
+            }
+
+            return result;
+        }
+
+        private static List<Dependency> BuildDependencies(ObligationKustoRestateOMaticDataActivity dataActivity)
+        {
+            return BuildCommonDependencies(dataActivity?.DataActivityDependencyNames).ToList();
         }
 
         private ObligationPipeline BuildPipeline(SimplifiedObligationPipeline obligationRequest)
@@ -264,7 +283,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                     KustoQuery = BuildFunctionDefinition(obligationDataActivity.KustoFunction),
                     InitializationQuery = BuildInitializationQuery(obligationDataActivity),
                     NumBucketsPreSplitHint = obligationDataActivity.KustoFunction.NumberOfBuckets,
-                    Dependencies = BuildDependencies(obligationDataActivity.DataActivityDependencyNames),
+                    Dependencies = BuildDependencies(obligationDataActivity),
                     CreationBehavior = obligationDataActivity.CreationBehavior,
                 }.AddParallelismLimit(obligationDataActivity.ParallelismLimit, this.configQualifier.Tenant, obligationRequest.PipelineName);
 
@@ -287,7 +306,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                     KustoDatabase = obligationRestateOMaticDataActivity.DestinationDatabase,
                     KustoQuery = BuildFunctionDefinition(obligationRestateOMaticDataActivity.KustoFunction),
                     NumBucketsPreSplitHint = obligationRestateOMaticDataActivity.KustoFunction.NumberOfBuckets,
-                    Dependencies = BuildDependencies(obligationRestateOMaticDataActivity.DataActivityDependencyNames),
+                    Dependencies = BuildDependencies(obligationRestateOMaticDataActivity),
                     IncludeChildren = obligationRestateOMaticDataActivity.IncludeChildren,
                     TargetDataActivity = obligationRestateOMaticDataActivity.TargetDataActivity,
                     CreationBehavior = obligationRestateOMaticDataActivity.CreationBehavior,

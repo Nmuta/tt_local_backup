@@ -79,6 +79,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Pipelines
         public IList<string> DataActivityDependencyNames { get; set; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether this pipeline should include a self-dependency.
+        /// </summary>
+        /// <remarks>
+        ///     Adds a `self`-type dependency to the Dependency list.
+        /// </remarks>
+        public bool SelfDependency { get; set; }
+
+        /// <summary>
         ///     Gets or sets the parallelism limit.
         /// </summary>
         public int ParallelismLimit { get; set; }

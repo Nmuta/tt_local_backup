@@ -1,11 +1,14 @@
+import { Location } from '@angular/common';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnInit,
   ViewChildren,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { toDuration } from '@helpers/luxon';
 import { replace } from '@helpers/replace';
@@ -37,7 +40,10 @@ import { ActivePipelineService } from './services/active-pipeline.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ActivePipelineService],
 })
-export class DataPipelineObligationComponent extends BaseComponent implements AfterViewChecked {
+export class DataPipelineObligationComponent
+  extends BaseComponent
+  implements OnInit, AfterViewChecked
+{
   @ViewChildren(VerifyWithButtonDirective) private checkboxes: VerifyWithButtonDirective[] = [];
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public putMonitor: ActionMonitor = new ActionMonitor('PUT');
@@ -71,8 +77,22 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
     private readonly obligationsService: ObligationsService,
     private readonly changeDetectorRef: ChangeDetectorRef,
     private readonly activePipeline: ActivePipelineService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly location: Location,
   ) {
     super();
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    this.route.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe((params: Params) => {
+      const targetQuery = params['q'];
+      if (!!targetQuery && targetQuery != this.options.name) {
+        this.options.name = targetQuery;
+        this.onGetClick();
+      }
+    });
   }
 
   /** Angular lifecycle hook. */
@@ -84,6 +104,11 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
   /** Called when the GET button is clicked. */
   public onGetClick(): void {
     this.getMonitor = this.updateMonitors(this.getMonitor);
+
+    const url = this.router
+      .createUrlTree([], { queryParams: { q: this.options.name }, queryParamsHandling: 'merge' })
+      .toString();
+    this.location.replaceState(url);
 
     // forces update of auto-complete options, etc
     this.activePipeline.onSync$.next();
@@ -220,6 +245,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           },
           isTimeAgnostic: activity.isTimeAgnostic,
           dataActivityDependencyNames: activity.dependencyNames,
+          selfDependency: activity.selfDependency,
           creationBehavior: activity.creationBehavior,
         };
       }),
@@ -285,6 +311,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           table: activity.kustoTableName,
           database: activity.destinationDatabase,
           dependencyNames: activity.dataActivityDependencyNames,
+          selfDependency: activity.selfDependency,
           dateRange: {
             start: activity.startDateUtc.toUTC(),
             end: activity.endDateUtc.toUTC(),

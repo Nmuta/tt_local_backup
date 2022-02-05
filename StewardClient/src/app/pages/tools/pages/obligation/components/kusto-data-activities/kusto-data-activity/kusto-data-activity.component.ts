@@ -36,6 +36,7 @@ export interface KustoDataActivityOptions {
   parallelismLimit: number;
   isTimeAgnostic: boolean;
   dependencyNames: string[];
+  selfDependency: boolean;
   creationBehavior: DataActivityCreationBehavior;
 
   /** True when this model was retrieved from the API. UI-only value. Disables some controls. */
@@ -80,6 +81,7 @@ export class KustoDataActivityComponent implements AfterViewInit, ControlValueAc
     executionDelayInMinutes: 2880,
     isTimeAgnostic: false,
     dependencyNames: [],
+    selfDependency: false,
     parallelismLimit: 2,
     creationBehavior: DataActivityCreationBehavior.Full,
     fromApi: false,
@@ -120,6 +122,7 @@ export class KustoDataActivityComponent implements AfterViewInit, ControlValueAc
     ]),
     isTimeAgnostic: new FormControl(KustoDataActivityComponent.defaults.isTimeAgnostic),
     dependencyNames: new FormControl(KustoDataActivityComponent.defaults.dependencyNames),
+    selfDependency: new FormControl(false),
     creationBehavior: new FormControl(KustoDataActivityComponent.defaults.creationBehavior),
     fromApi: new FormControl(KustoDataActivityComponent.defaults.fromApi),
   };
@@ -136,6 +139,7 @@ export class KustoDataActivityComponent implements AfterViewInit, ControlValueAc
     parallelismLimit: this.formControls.parallelismLimit,
     isTimeAgnostic: this.formControls.isTimeAgnostic,
     dependencyNames: this.formControls.dependencyNames,
+    selfDependency: this.formControls.selfDependency,
     creationBehavior: this.formControls.creationBehavior,
     fromApi: this.formControls.fromApi,
   });
