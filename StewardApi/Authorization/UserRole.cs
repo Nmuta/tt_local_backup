@@ -23,5 +23,6 @@
 
         public const string HorizonDesigner = "HorizonDesigner";
 
+        public const string MotorsportDesigner = "MotorsportDesigner";
     }
 }

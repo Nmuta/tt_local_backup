@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
@@ -1383,6 +1384,65 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             result.Should().BeOfType<OkResult>();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetCmsRacersCupSchedule_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var environment = Fixture.Create<string>();
+            var slotId = Fixture.Create<string>();
+            var snapshotId = Fixture.Create<string>();
+            var startTime = DateTime.UtcNow.AddMinutes(1);
+            var daysForward = Fixture.Create<int>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.GetCmsRacersCupSchedule(environment, slotId, snapshotId, startTime, daysForward).ConfigureAwait(false),
+                async () => await controller.GetCmsRacersCupScheduleForUser(xuid, startTime, daysForward).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action().Should().BeAssignableTo<Task<IActionResult>>();
+                action().Should().NotBeNull();
+                var result = await action().ConfigureAwait(false) as OkObjectResult;
+                var details = result.Value as RacersCupSchedule;
+                details.Should().NotBeNull();
+                details.Should().BeOfType<RacersCupSchedule>();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetCmsRacersCupSchedule_WithStartTimeInPast_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var environment = Fixture.Create<string>();
+            var slotId = Fixture.Create<string>();
+            var snapshotId = Fixture.Create<string>();
+            var startTime = DateTime.UtcNow.AddMinutes(-1);
+            var daysForward = Fixture.Create<int>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.GetCmsRacersCupSchedule(environment, slotId, snapshotId, startTime, daysForward).ConfigureAwait(false),
+                async () => await controller.GetCmsRacersCupScheduleForUser(xuid, startTime, daysForward).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<BadRequestStewardException>().WithMessage("Start time provided must not be in the past.");
+            }
+        }
+
         private static List<SteelheadBanParametersInput> GenerateBanParameters()
         {
             var newParams = new SteelheadBanParametersInput
@@ -1440,6 +1500,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<SteelheadBanParameters>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
+                this.SteelheadPlayerDetailsProvider.GetCmsRacersCupScheduleForUserAsync(Arg.Any<ulong>(), Arg.Any<DateTime>(), Arg.Any<double>(), Arg.Any<string>()).Returns(Fixture.Create<RacersCupSchedule>());
                 this.SteelheadNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
                 this.SteelheadNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.SteelheadNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
@@ -1448,6 +1509,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
                 this.SteelheadServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
+                this.SteelheadServiceManagementProvider.GetCmsRacersCupScheduleAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<double>(), Arg.Any<string>()).Returns(Fixture.Create<RacersCupSchedule>());
                 this.SteelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SteelheadGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SteelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SteelheadGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());

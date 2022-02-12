@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
-using Microsoft.Extensions.Configuration;
-using Turn10.Contracts.STS;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.Services.ForzaClient;
-using Turn10.Services.MessageEncryption;
 using GiftingService = Forza.LiveOps.FM8.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FM8.Generated.NotificationsManagementService;
 using UserInventoryService = Forza.LiveOps.FM8.Generated.UserInventoryService;
@@ -285,6 +277,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await auctionService.SearchAuctionHouse(filters).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<LiveOpsService.GetCMSRacersCupScheduleOutput> GetCmsRacersCupScheduleAsync(string environment, string slotId, string snapshotId, DateTime startDateUtc, double daysForward, string endpoint)
+        {
+            var userLookupService = await this.serviceFactory.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userLookupService.GetCMSRacersCupSchedule(environment, slotId, snapshotId, startDateUtc, daysForward).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCmsRacersCupScheduleForUserAsync(ulong xuid, DateTime startDateUtc, double daysForward, string endpoint)
+        {
+            var userLookupService = await this.serviceFactory.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userLookupService.GetCMSRacersCupScheduleForUser(xuid, startDateUtc, daysForward).ConfigureAwait(false);
         }
     }
 }

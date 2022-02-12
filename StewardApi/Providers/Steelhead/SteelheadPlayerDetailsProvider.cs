@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -434,6 +436,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             catch (Exception ex)
             {
                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleForUserAsync(ulong xuid, DateTime startTimeUtc, double daysForward, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var result = await this.steelheadService.GetCmsRacersCupScheduleForUserAsync(xuid, startTimeUtc, daysForward, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<RacersCupSchedule>(result.scheduleData);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No racer schedule data found for XUID: {xuid}.", ex);
             }
         }
 

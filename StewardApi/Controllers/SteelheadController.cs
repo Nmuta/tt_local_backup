@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -34,7 +35,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// </summary>
     [Route("api/v1/title/steelhead")]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.MotorsportDesigner,
+        UserRole.CommunityManager)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
@@ -1149,6 +1153,90 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
+        }
+
+        /// <summary>
+        ///     Gets a Racer Cup schedule.
+        /// </summary>
+        [HttpGet("RacerCupSchedule")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.MotorsportDesigner,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
+        public async Task<IActionResult> GetCmsRacersCupSchedule(
+            [FromQuery] string pegasusEnvironment,
+            [FromQuery] string pegasusSlotId,
+            [FromQuery] string pegasusSnapshotId,
+            [FromQuery] DateTimeOffset? startTime,
+            [FromQuery] int daysForward)
+        {
+            daysForward.ShouldBeGreaterThanValue(-1);
+
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var cutoffTime = DateTime.UtcNow.AddSeconds(1);
+            pegasusEnvironment ??= string.Empty;
+            pegasusSlotId ??= string.Empty;
+            pegasusSnapshotId ??= string.Empty;
+
+            if (!startTime.HasValue)
+            {
+                startTime = cutoffTime;
+            }
+
+            var startTimeUtc = startTime.Value.ToUniversalTime();
+            if (startTimeUtc < cutoffTime)
+            {
+                throw new BadRequestStewardException("Start time provided must not be in the past.");
+            }
+
+            var result = await this.steelheadServiceManagementProvider
+                .GetCmsRacersCupScheduleAsync(pegasusEnvironment, pegasusSlotId, pegasusSnapshotId, startTimeUtc.DateTime, daysForward, endpoint).ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Gets a user's Racer Cup schedule.
+        /// </summary>
+        [HttpGet("player/{xuid}/RacerCupSchedule")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.MotorsportDesigner,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
+        public async Task<IActionResult> GetCmsRacersCupScheduleForUser(
+            ulong xuid,
+            [FromQuery] DateTimeOffset? startTime,
+            [FromQuery] int daysForward)
+        {
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+
+            daysForward.ShouldBeGreaterThanValue(-1);
+            var cutoffTime = DateTime.UtcNow.AddSeconds(1);
+
+            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+            if (!playerExists)
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            if (!startTime.HasValue)
+            {
+                startTime = cutoffTime;
+            }
+
+            var startTimeUtc = startTime.Value.ToUniversalTime();
+            if (startTimeUtc < cutoffTime)
+            {
+                throw new BadRequestStewardException("Start time provided must not be in the past.");
+            }
+
+            var result = await this.steelheadPlayerDetailsProvider
+                .GetCmsRacersCupScheduleForUserAsync(xuid, startTimeUtc.DateTime, daysForward, endpoint).ConfigureAwait(true);
+
+            return this.Ok(result);
         }
 
         /// <summary>

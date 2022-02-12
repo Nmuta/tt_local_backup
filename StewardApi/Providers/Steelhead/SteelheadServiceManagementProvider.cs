@@ -5,6 +5,7 @@ using AutoMapper;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 
@@ -57,6 +58,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.SteelheadFullName}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleAsync(string environment, string slotId, string snapshotId, DateTime startTimeUtc, double daysForward, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var result = await this.steelheadService.GetCmsRacersCupScheduleAsync(environment, slotId, snapshotId, startTimeUtc, daysForward, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<RacersCupSchedule>(result.scheduleData);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No racer schedule data found for {TitleConstants.SteelheadFullName}", ex);
             }
         }
     }

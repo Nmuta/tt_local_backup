@@ -223,5 +223,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
             ForzaAuctionFilters filters,
             string endpoint);
+
+        /// <summary>
+        ///     Gets Racer's Cup schedule.
+        /// </summary>
+        Task<LiveOpsService.GetCMSRacersCupScheduleOutput> GetCmsRacersCupScheduleAsync(
+            string environment,
+            string slotId,
+            string snapshotId,
+            DateTime startDateUtc,
+            double daysForward,
+            string endpoint);
+
+        /// <summary>
+        ///     Gets Racer's Cup schedule for user.
+        /// </summary>
+        Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCmsRacersCupScheduleForUserAsync(
+            ulong xuid,
+            DateTime startDateUtc,
+            double daysForward,
+            string endpoint);
     }
 }
