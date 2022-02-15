@@ -6,8 +6,8 @@ import { searchByGtag, searchByXuid, selectOpus } from './page';
 import { emerson } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Opus', () => {
-  beforeEach(() => {
-    login();
+  beforeEach(async () => {
+    await login();
     disableFakeApi();
   });
 

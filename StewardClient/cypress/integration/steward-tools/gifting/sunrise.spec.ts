@@ -13,8 +13,8 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
 
 context('Steward / Tools / Gifting / Sunrise', () => {
-  beforeEach(() => {
-    login();
+  beforeEach(async () => {
+    await login();
     disableFakeApi();
   });
 

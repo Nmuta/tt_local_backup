@@ -27,30 +27,30 @@ export function searchByT10Id(t10Id: string): void {
 
 /** Switches to the Gravity title. */
 export function selectGravity(): void {
-  cy.contains('a', 'Gravity').click();
+  cy.contains('a', 'Street').click();
   waitForProgressSpinners();
 }
 
 /** Switches to the Apollo title. */
 export function selectApollo(): void {
-  cy.contains('a', 'Apollo').click();
+  cy.contains('a', 'FM7').click();
   waitForProgressSpinners();
 }
 /** Switches to the Opus title. */
 export function selectOpus(): void {
-  cy.contains('a', 'Opus').click();
+  cy.contains('a', 'FH3').click();
   waitForProgressSpinners();
 }
 
 /** Switches to the Sunrise title. */
 export function selectSunrise(): void {
-  cy.contains('a', 'Sunrise').click();
+  cy.contains('a', 'FH4').click();
   waitForProgressSpinners();
 }
 
 /** Switches to the Woodstock title. */
 export function selectWoodstock(): void {
-  cy.contains('a', 'Woodstock').click();
+  cy.contains('a', 'FH5').click();
   waitForProgressSpinners();
 }
 

@@ -3,8 +3,8 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
 context('Steward / Tools', () => {
-  beforeEach(() => {
-    login();
+  beforeEach(async () => {
+    await login();
     disableFakeApi();
   });
 

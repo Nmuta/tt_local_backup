@@ -7,8 +7,8 @@ import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from 
 import { selectApollo } from './page';
 
 context('Steward / Tools / Gifting / Apollo', () => {
-  beforeEach(() => {
-    login();
+  beforeEach(async () => {
+    await login();
     disableFakeApi();
   });
 

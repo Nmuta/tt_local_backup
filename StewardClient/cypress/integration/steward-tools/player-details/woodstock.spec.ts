@@ -7,8 +7,8 @@ import { searchByGtag, searchByXuid, selectWoodstock } from './page';
 import { luke } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Woodstock', () => {
-  beforeEach(() => {
-    login();
+  beforeEach(async () => {
+    await login();
     disableFakeApi();
   });
 

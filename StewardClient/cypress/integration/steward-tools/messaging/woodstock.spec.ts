@@ -6,8 +6,8 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { DateTime } from 'luxon';
 
 context('Steward / Tools / Messaging / Woodstock', () => {
-  beforeEach(() => {
-    login();
+  beforeEach(async () => {
+    await login();
     disableFakeApi();
   });
 

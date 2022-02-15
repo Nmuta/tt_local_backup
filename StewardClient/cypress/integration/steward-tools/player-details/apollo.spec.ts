@@ -7,8 +7,8 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid, selectApollo } from './page';
 
 context('Steward / Tools / Player Details / Apollo', () => {
-  beforeEach(() => {
-    login();
+  beforeEach(async () => {
+    await login();
     disableFakeApi();
   });
 

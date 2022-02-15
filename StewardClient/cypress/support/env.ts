@@ -1,7 +1,13 @@
 /** The typed environment variable configuration. */
 export interface TypedEnv {
-  /** The URI to visit before each test, passing through user authentication. */
-  syncPath: string;
+  /** The AAD tenant id. */
+  tenantId: string;
+
+  /** The AAD client app id. */
+  clientId: string;
+
+  /** The client secret to generate a valid access token. */
+  clientSecret: string;
 
   /**
    * Which optional titles to test.
@@ -17,13 +23,20 @@ export interface TypedEnv {
 }
 
 expect(
-  Cypress.env('SYNC_PATH'),
-  'SYNC_PATH or CYPRESS_SYNC_PATH env var must be defined. Follow instructions in .cypress.env.config',
+  Cypress.env('CLIENT_ID'),
+  'CLIENT_ID or CYPRESS_CLIENT_ID env var must be defined. Follow instructions in .cypress.env.config',
+).to.exist;
+
+expect(
+  Cypress.env('CLIENT_SECRET'),
+  'CLIENT_SECRET or CYPRESS_CLIENT_SECRET env var must be defined. Follow instructions in .cypress.env.config',
 ).to.exist;
 
 /** Typed environment configurations */
 const env: TypedEnv = {
-  syncPath: Cypress.env('SYNC_PATH'),
+  tenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47',
+  clientId: Cypress.env('CLIENT_ID'),
+  clientSecret: Cypress.env('CLIENT_SECRET'),
   testTitle: {
     woodstock: JSON.parse(Cypress.env('TEST_WOODSTOCK') || 'false'),
     steelhead: JSON.parse(Cypress.env('TEST_STEELHEAD') || 'false'),
