@@ -1,15 +1,22 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  EventEmitter,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
-import { ignorePaginatorQueryParams } from '@helpers/paginator';
 import { GuidLikeString } from '@models/extended-types';
 import {
-  paramsToLeadboardQuery,
-  isValidLeaderboardQuery,
   Leaderboard,
   LeaderboardQuery,
   LeaderboardScore,
@@ -19,8 +26,8 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { cloneDeep } from 'lodash';
-import { EMPTY, Observable, Subject } from 'rxjs';
-import { switchMap, takeUntil, tap, map, catchError, filter } from 'rxjs/operators';
+import { EMPTY, Observable, Subject, timer } from 'rxjs';
+import { switchMap, takeUntil, tap, catchError, filter } from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
   /** Gets leaderboard metadata. */
@@ -66,9 +73,15 @@ enum LeaderboardView {
   templateUrl: './leaderboard-scores.component.html',
   styleUrls: ['./leaderboard-scores.component.scss'],
 })
-export class LeaderboardScoresComponent extends BaseComponent implements OnInit, AfterViewInit {
+export class LeaderboardScoresComponent
+  extends BaseComponent
+  implements OnInit, OnChanges, AfterViewInit
+{
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() service: LeaderboardScoresContract;
+  @Input() query: LeaderboardQuery;
+  @Input() externalSelectedScore: LeaderboardScore;
+  @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
   public getLeaderboardScores$ = new Subject<LeaderboardQuery>();
   public leaderboardScores = new BetterMatTableDataSource<LeaderboardScore>([]);
@@ -78,7 +91,6 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
 
   public isMultiDeleteActive: boolean = false;
   public scoreTypeQualifier: string = '';
-  public activeLeaderboardQuery: LeaderboardQuery;
   public activeLeaderboard: Leaderboard;
   public activeLeaderboardView: LeaderboardView;
   public activeXuid: BigNumber;
@@ -108,7 +120,22 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
 
     this.setupGetLeaderboardMetadataObservable();
     this.setupGetLeaderboardScoresObservable();
-    this.listenForQueryParams();
+
+    if (!!this.query) {
+      this.getLeaderboardScores$.next(this.query);
+    }
+  }
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (!!changes.externalSelectedScore && !!this.externalSelectedScore) {
+      this.jumpFormControls.score.setValue(this.externalSelectedScore.score.toNumber());
+      this.jumpToScore();
+    }
+
+    if (!!changes.query && !!this.query) {
+      this.getLeaderboardScores$.next(this.query);
+    }
   }
 
   /** Lifecycle  hook. */
@@ -171,17 +198,18 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
       .deleteLeaderboardScores$(scoreIds)
       .pipe(this.deleteLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.getLeaderboardScores$.next(this.activeLeaderboardQuery);
+        this.getLeaderboardScores$.next(this.query);
+        this.scoresDeleted.emit(scores);
       });
   }
 
   /** Hook into paginator page changes. */
   public paginatorPageChange(event: PageEvent): void {
-    this.activeLeaderboardQuery.pi = event.pageIndex;
-    this.activeLeaderboardQuery.ps = event.pageSize;
+    this.query.pi = event.pageIndex;
+    this.query.ps = event.pageSize;
 
     this.router.navigate([], {
-      queryParams: this.activeLeaderboardQuery,
+      queryParams: this.query,
       replaceUrl: true,
     });
   }
@@ -199,7 +227,7 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
     const highestPageIndex = Math.floor(this.leaderboardScores.data.length / pageSize) - 1;
 
     // Jump to page
-    const showSuccessSnackbar = foundPageIndex >= 0;
+    const foundThreshold = foundPageIndex >= 0;
     const newPageIndex = foundPageIndex >= 0 ? foundPageIndex : highestPageIndex;
     this.paginator.pageIndex = newPageIndex;
     this.paginator.page.next({
@@ -208,13 +236,28 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
       length: this.paginator.length,
     });
 
+    // If threshold is found, highlight closest score
+    if (foundThreshold) {
+      this.leaderboardScores.data.map(s => (s.highlighted = false));
+      this.leaderboardScores.data[scoreIndex].highlighted = true;
+      const xuid = this.leaderboardScores.data[scoreIndex].xuid.toString();
+
+      // Let the page render and angular events to fire before scrolling
+      timer(0)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(() => {
+          const el = document.getElementById(xuid);
+          el?.scrollIntoView({ block: 'center' });
+        });
+    }
+
     // Show snackbar of automated adjustment
-    const snackbarMessage = showSuccessSnackbar
-      ? `Jumped to page ${newPageIndex + 1}`
+    const snackbarMessage = foundThreshold
+      ? `Jumped to page ${newPageIndex + 1}, threshold is highlighted`
       : 'Threshold too high, jumped to end of list';
     this.snackbar.open(snackbarMessage, 'Okay', {
       duration: 3_000,
-      panelClass: showSuccessSnackbar ? 'snackbar-info' : 'snackbar-warn',
+      panelClass: foundThreshold ? 'snackbar-info' : 'snackbar-warn',
     });
   }
 
@@ -231,7 +274,6 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
           );
         }),
         filter(q => !!q),
-        tap(q => (this.activeLeaderboardQuery = q)),
         switchMap(query => {
           let newObs: Observable<LeaderboardScore[]>;
           if (!!query.xuid) {
@@ -249,16 +291,14 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
         takeUntil(this.onDestroy$),
       )
       .subscribe(scores => {
-        this.scoreTypeQualifier = determineScoreTypeQualifier(
-          this.activeLeaderboardQuery.scoreTypeId,
-        );
+        this.scoreTypeQualifier = determineScoreTypeQualifier(this.query.scoreTypeId);
 
-        if (this.activeLeaderboardQuery?.pi >= 0) {
-          this.paginator.pageIndex = this.activeLeaderboardQuery.pi;
+        if (this.query?.pi >= 0) {
+          this.paginator.pageIndex = this.query.pi;
         }
 
-        if (this.activeLeaderboardQuery?.ps >= 0) {
-          this.paginator.pageSize = this.activeLeaderboardQuery.ps;
+        if (this.query?.ps >= 0) {
+          this.paginator.pageSize = this.query.ps;
         }
 
         this.leaderboardScores.data = scores;
@@ -283,33 +323,6 @@ export class LeaderboardScoresComponent extends BaseComponent implements OnInit,
       )
       .subscribe(leaderboard => {
         this.activeLeaderboard = leaderboard;
-      });
-  }
-
-  private listenForQueryParams(): void {
-    this.route.queryParams
-      .pipe(
-        ignorePaginatorQueryParams(),
-        map(params => {
-          const query = paramsToLeadboardQuery(params);
-          if (!isValidLeaderboardQuery(query)) {
-            if (!!this.activeLeaderboardQuery) {
-              // If there is an active query but no valid query params
-              // Force the active query into the URL's query params
-              this.router.navigate([], {
-                relativeTo: this.route,
-                queryParams: this.activeLeaderboardQuery,
-              });
-            }
-            return null;
-          }
-
-          return query;
-        }),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe(query => {
-        this.getLeaderboardScores$.next(query);
       });
   }
 

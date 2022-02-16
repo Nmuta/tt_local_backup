@@ -5,6 +5,11 @@ json-dump {
   margin-top: $gap-medium;
 }
 
+mat-card {
+  // Tool is set of vertical cards, use only single scroll
+  max-height: unset;
+}
+
 table.full-width {
   width: 100%;
 }

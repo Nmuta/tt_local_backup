@@ -49,7 +49,7 @@ describe('LeaderboardScoresComponent', () => {
       position: fakeBigNumber(),
       xuid: fakeBigNumber(),
       id: faker.datatype.uuid(),
-      submissionTime: toDateTime(faker.date.past()),
+      submissionTimeUtc: toDateTime(faker.date.past()),
       score: fakeBigNumber(),
       carClass: faker.random.word(),
       carPerformanceIndex: fakeBigNumber(),
@@ -66,7 +66,7 @@ describe('LeaderboardScoresComponent', () => {
       position: fakeBigNumber(),
       xuid: fakeBigNumber(),
       id: faker.datatype.uuid(),
-      submissionTime: toDateTime(faker.date.past()),
+      submissionTimeUtc: toDateTime(faker.date.past()),
       score: fakeBigNumber(),
       carClass: faker.random.word(),
       carPerformanceIndex: fakeBigNumber(),
@@ -218,7 +218,7 @@ describe('LeaderboardScoresComponent', () => {
     const scoreToDelete = testLeaderboardScores[0];
 
     beforeEach(() => {
-      component.activeLeaderboardQuery = {
+      component.query = {
         scoreboardTypeId: fakeBigNumber(),
         scoreTypeId: fakeBigNumber(),
         gameScoreboardId: fakeBigNumber(),
@@ -244,7 +244,7 @@ describe('LeaderboardScoresComponent', () => {
     };
 
     beforeEach(() => {
-      component.activeLeaderboardQuery = {
+      component.query = {
         scoreboardTypeId: fakeBigNumber(),
         scoreTypeId: fakeBigNumber(),
         gameScoreboardId: fakeBigNumber(),

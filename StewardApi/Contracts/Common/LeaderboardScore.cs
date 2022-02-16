@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public int Position { get; set; }
 
-        public DateTime SubmissionTime { get; set; }
+        public DateTime SubmissionTimeUtc { get; set; }
 
         public double Score { get; set; }
 

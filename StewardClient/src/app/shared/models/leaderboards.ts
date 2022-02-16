@@ -27,7 +27,7 @@ export interface UpsteamLeaderboardScore {
   position: BigNumber;
   xuid: BigNumber;
   id: GuidLikeString;
-  submissionTime: DateTime;
+  submissionTimeUtc: DateTime;
   score: BigNumber;
   carClass: string;
   carPerformanceIndex: BigNumber;

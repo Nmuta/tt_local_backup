@@ -1,5 +1,6 @@
 <mat-card>
   <mat-card-header>
+    <mat-icon mat-card-avatar>leaderboard</mat-icon>
     <mat-card-title>Leaderboard Scores</mat-card-title>
     <mat-card-subtitle>Select a leaderboard to show its scores</mat-card-subtitle>
   </mat-card-header>
@@ -9,30 +10,30 @@
         <table>
           <ng-container *ngIf="!!activeLeaderboard">
             <tr>
-              <th>Leaderboard:</th>
+              <th>Leaderboard</th>
               <td>{{ activeLeaderboard.name }}</td>
             </tr>
             <tr>
-              <th>Car Class:</th>
+              <th>Car Class</th>
               <td>{{ activeLeaderboard.carClass || 'Not specified' }}</td>
             </tr>
             <tr>
-              <th>Board Type:</th>
+              <th>Board Type</th>
               <td>{{ activeLeaderboard.scoreboardType }}</td>
             </tr>
             <tr>
-              <th>Score Type:</th>
+              <th>Score Type</th>
               <td>{{ activeLeaderboard.scoreType }}</td>
             </tr>
           </ng-container>
           <tr *ngIf="activeLeaderboardView">
-            <th>Current View:</th>
+            <th>Current View</th>
             <td>
               {{ activeLeaderboardView }}
             </td>
           </tr>
           <tr *ngIf="activeXuid">
-            <th>Player XUID:</th>
+            <th>Player XUID</th>
             <td>{{ activeXuid.toString() }}</td>
           </tr>
         </table>
@@ -47,7 +48,7 @@
       </div>
       <!-- Actions for multi-selection of scores. -->
       <div class="multi-select-options">
-        <span>* Click on a row to select</span>
+        <span>Click on a row to select</span>
         <button
           mat-stroked-button
           color="primary"
@@ -59,7 +60,8 @@
         <button
           mat-raised-button
           color="warn"
-          [disabled]="selectedScores?.length <= 0 || !verifyMultiDelete.checked"
+          [disabled]="selectedScores?.length <= 0"
+          [verifyWith]="verifyCheckboxMultiDelete"
           (click)="deleteScores(selectedScores)"
           clickStop
           stateManager
@@ -68,11 +70,15 @@
           monitorWarn
           monitorWarnSnackbar
         >
-          Delete all {{ selectedScores?.length }} selected
+          <span [ngPlural]="selectedScores?.length">
+            Delete {{ selectedScores?.length }}
+            <ng-template ngPluralCase="=1">score</ng-template>
+            <ng-template ngPluralCase="other">scores</ng-template>
+          </span>
         </button>
         <mat-checkbox
           clickStop
-          #verifyMultiDelete
+          #verifyCheckboxMultiDelete
           [(ngModel)]="isMultiDeleteActive"
           ngDefaultControl
           matTooltip="Check to enable deletion"
@@ -110,11 +116,13 @@
     </div>
     <ng-container
       *ngIf="
-        !getLeaderboardScoresMonitor.isActive && !deleteLeaderboardScoresMonitor.isActive;
-        else waitingTemplate
+        !getLeaderboardScoresMonitor.isActive && !getLeaderboardScoresMonitor.isErrored;
+        else getLeaderboardScoresMonitorTemplate
       "
     >
-      <ng-container *ngIf="!getLeaderboardScoresMonitor.isErrored; else errorTemplate">
+      <ng-container
+        *ngIf="!deleteLeaderboardScoresMonitor.isActive; else deleteLeaderboardScoresTemplate"
+      >
         <table mat-table [dataSource]="leaderboardScores" class="full-width">
           position
           <ng-container matColumnDef="position">
@@ -128,7 +136,11 @@
               <div>
                 <b>{{ entry.score.toNumber() | number: '1.2-2' }}</b> {{ scoreTypeQualifier }}
               </div>
-              <div>{{ entry.submissionTime | utcDate: 'short' }}</div>
+              <div>
+                <standard-absolute-time
+                  [timeUtc]="entry.submissionTimeUtc"
+                ></standard-absolute-time>
+              </div>
             </td>
           </ng-container>
 
@@ -164,7 +176,8 @@
                 <button
                   mat-raised-button
                   color="warn"
-                  [disabled]="selectedScores?.length > 0 || !verifyDelete.checked"
+                  [disabled]="selectedScores?.length > 0"
+                  [verifyWith]="verifyCheckbox"
                   (click)="deleteScores([entry])"
                   clickStop
                   stateManager
@@ -175,7 +188,7 @@
                 >
                   Delete
                 </button>
-                <mat-checkbox clickStop #verifyDelete matTooltip="Check to enable deletion">
+                <mat-checkbox clickStop #verifyCheckbox matTooltip="Check to enable deletion">
                   Verify
                 </mat-checkbox>
               </div>
@@ -188,6 +201,7 @@
             *matRowDef="let row; columns: leaderboardDisplayColumns"
             [class.highlighted]="row.highlighted"
             [class.selected]="row.selected"
+            [attr.id]="row.xuid"
             (click)="onRowClicked(row)"
           ></tr>
         </table>
@@ -196,15 +210,16 @@
   </mat-card-content>
 </mat-card>
 
-<ng-template #waitingTemplate>
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</ng-template>
-
-<ng-template #errorTemplate>
-  <json-dump [input]="getLeaderboardScoresMonitor.status.error">
-    <span *ngIf="!activeXuid">Failed to search leaderboard.</span>
-    <span *ngIf="!!activeXuid"
+<ng-template #getLeaderboardScoresMonitorTemplate>
+  <big-spinner [monitor]="getLeaderboardScoresMonitor">
+    <span jsonDumpMessage *ngIf="!activeXuid">Failed to search leaderboard.</span>
+    <span jsonDumpMessage *ngIf="!!activeXuid"
       >Player's score doesnt exist or has been deleted: {{ activeXuid }}</span
     >
-  </json-dump>
+  </big-spinner>
+</ng-template>
+
+<ng-template #deleteLeaderboardScoresTemplate>
+  <!-- We do not want to show json dump on delete error, using snackbar instead. -->
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </ng-template>

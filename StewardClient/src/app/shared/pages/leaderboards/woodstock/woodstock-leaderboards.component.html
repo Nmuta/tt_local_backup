@@ -6,6 +6,15 @@
   </mat-tab> -->
   <mat-tab label="Search Leaderboards">
     <woodstock-search-leaderboards></woodstock-search-leaderboards>
-    <woodstock-leaderboard-scores></woodstock-leaderboard-scores>
+    <woodstock-leaderboard-stats
+      [query]="activeQuery"
+      [scoresDeleted]="scoresDeleted"
+      (selectedScore)="onStatsScoreSelected($event)"
+    ></woodstock-leaderboard-stats>
+    <woodstock-leaderboard-scores
+      [query]="activeQuery"
+      [externalSelectedScore]="statsSelectedScore"
+      (scoresDeleted)="onScoresDeleted($event)"
+    ></woodstock-leaderboard-scores>
   </mat-tab>
 </mat-tab-group>

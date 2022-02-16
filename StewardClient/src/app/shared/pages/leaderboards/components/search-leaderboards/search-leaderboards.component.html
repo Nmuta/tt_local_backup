@@ -2,21 +2,12 @@
   <mat-card-header>
     <button
       mat-card-avatar
-      *ngIf="expanded"
       mat-icon-button
-      matTooltip="Collpase leaderboard search options"
-      (click)="expanded = false"
+      [matTooltip]="expanded ? 'Collpase leaderboard search' : 'Expand leaderboard search'"
+      (click)="expanded = !expanded"
     >
-      <mat-icon>expand_less</mat-icon>
-    </button>
-    <button
-      mat-card-avatar
-      *ngIf="!expanded"
-      mat-icon-button
-      matTooltip="Expand leaderboard search options"
-      (click)="expanded = true"
-    >
-      <mat-icon>expand_more</mat-icon>
+      <mat-icon *ngIf="!expanded">expand_more</mat-icon>
+      <mat-icon *ngIf="expanded">expand_less</mat-icon>
     </button>
     <mat-card-title> Search Leaderboards </mat-card-title>
     <mat-card-subtitle>Filter and search leaderboards</mat-card-subtitle>
@@ -144,7 +135,7 @@
   <table class="info-table">
     <tr>
       <th>Leaderboard:</th>
-      <td>{{ leaderboard?.name ?? 'Not selected' }}</td>
+      <td>{{ leaderboard?.name || 'Not selected' }}</td>
     </tr>
     <tr>
       <th>XUID:</th>

@@ -341,6 +341,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => src.ExpectedCarClass.ValueOrDefault(-1)));
 
             this.CreateMap<ForzaRankedLeaderboardRow, LeaderboardScore>()
+                .ForMember(dest => dest.SubmissionTimeUtc, opt => opt.MapFrom(src => src.SubmissionTime))
                 .ForMember(dest => dest.CarPerformanceIndex, opt => opt.MapFrom(src => src.CarPI))
                 .ForMember(dest => dest.StabilityManagement, opt => opt.MapFrom(src => src.STM))
                 .ForMember(dest => dest.AntiLockBrakingSystem, opt => opt.MapFrom(src => src.ABS))

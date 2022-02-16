@@ -25,7 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
 import { MatIconModule } from '@angular/material/icon';
 import { LuxonModule } from 'luxon-angular';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { LuxonDateModule, MatLuxonDateModule } from 'ngx-material-luxon';
 import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-community-messaging.component';
 
 /** Routed module for banning users. */
@@ -62,6 +62,7 @@ import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-comm
     TextFieldModule,
     JsonTableResultsModule,
     LuxonModule,
+    LuxonDateModule,
   ],
   exports: [
     SunriseCommunityMessagingComponent,

@@ -36,7 +36,7 @@ export class WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi extends FakeApiB
             position: new BigNumber(count++),
             xuid: fakeXuid(),
             id: faker.datatype.uuid(),
-            submissionTime: toDateTime(faker.date.past()),
+            submissionTimeUtc: toDateTime(faker.date.past()),
             score: fakeBigNumber({ min: 100000000, max: 999999999 }),
             carClass: faker.random.word(),
             carPerformanceIndex: fakeBigNumber(),

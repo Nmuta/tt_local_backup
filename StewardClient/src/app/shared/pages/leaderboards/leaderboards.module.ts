@@ -32,13 +32,19 @@ import { WoodstockSearchLeaderboardsComponent } from './components/search-leader
 import { WoodstockLeaderboardScoresComponent } from './components/leaderboard-scores/woodstock/woodstock-leaderboard-scores.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { LuxonDateModule } from 'ngx-material-luxon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LeaderboardStatsComponent } from './components/leaderboard-stats/leaderboard-stats.component';
+import { WoodstockLeaderboardStatsComponent } from './components/leaderboard-stats/woodstock/woodstock-leaderboard-stats.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { LuxonModule } from 'luxon-angular';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -52,6 +58,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
     LeaderboardScoresComponent,
     WoodstockLeaderboardScoresComponent,
+
+    LeaderboardStatsComponent,
+    WoodstockLeaderboardStatsComponent,
   ],
   imports: [
     LeaderboardsRoutingModule,
@@ -75,12 +84,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatPaginatorModule,
     MatTabsModule,
     MatChipsModule,
-    MatSelectModule,
     MatIconModule,
     MatTooltipModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatSnackBarModule,
+    MatButtonToggleModule,
     TextFieldModule,
     JsonDumpModule,
     VerifyActionButtonModule,
@@ -89,9 +98,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MonitorActionModule,
     EndpointSelectionModule,
     StateManagersModule,
+    NgxChartsModule,
+    StandardDateModule,
+    VerifyCheckboxModule,
     PipesModule,
-    LuxonDateModule,
+    LuxonModule,
   ],
-  exports: [ReportedScoresComponent, SearchLeaderboardsComponent],
+  exports: [],
 })
 export class LeaderboardsModule {}

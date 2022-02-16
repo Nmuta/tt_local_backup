@@ -9,5 +9,5 @@ import { WoodstockService } from '@services/woodstock';
   templateUrl: './woodstock-search-leaderboards.component.html',
 })
 export class WoodstockSearchLeaderboardsComponent {
-  constructor(public service: WoodstockService) {}
+  constructor(public readonly service: WoodstockService) {}
 }

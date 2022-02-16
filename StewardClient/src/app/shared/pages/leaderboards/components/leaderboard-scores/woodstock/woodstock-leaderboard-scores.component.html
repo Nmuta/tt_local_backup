@@ -1,1 +1,6 @@
-<leaderboard-scores [service]="service"> </leaderboard-scores>
+<leaderboard-scores
+  [service]="service"
+  [query]="query"
+  [externalSelectedScore]="externalSelectedScore"
+  (scoresDeleted)="scoresDeleted.emit($event)"
+></leaderboard-scores>
