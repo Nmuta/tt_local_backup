@@ -391,7 +391,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Review and delete leaderboard score.',
     shortDescription: ['Review and delete leaderboard score.'],
     loadChildren: () =>
-      import('../../app/shared/pages/leaderboards/leaderboards.module').then(
+      import('../../app/pages/tools/pages/leaderboards/leaderboards.module').then(
         m => m.LeaderboardsModule,
       ),
     hideFromUnauthorized: false,
