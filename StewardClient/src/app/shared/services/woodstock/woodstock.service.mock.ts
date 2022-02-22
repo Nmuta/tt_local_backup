@@ -219,6 +219,14 @@ export class MockWoodstockService {
       this.waitUntil$.pipe(switchMap(() => of(WoodstockGiftLiveryToLspGroupFakeApi.make()))),
     );
 
+  public hideUgc$ = jasmine
+    .createSpy('hideUgc$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
+  public unhideUgc$ = jasmine
+    .createSpy('unhideUgc$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

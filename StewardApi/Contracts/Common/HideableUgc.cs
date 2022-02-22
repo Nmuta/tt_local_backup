@@ -18,5 +18,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public string PreviewUrl { get; set; }
         public DateTime? SubmissionUtc { get; set; }
         public DateTime? HiddenUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the file type.
+        /// </summary>
+        /// <remarks>
+        ///     Represents Forza.UserGeneratedContent.FH4.Generated.FileType.
+        ///     Not an enum due to diverging enum values from LSP.
+        /// </remarks>
+        public string FileType { get; set; }
     }
 }

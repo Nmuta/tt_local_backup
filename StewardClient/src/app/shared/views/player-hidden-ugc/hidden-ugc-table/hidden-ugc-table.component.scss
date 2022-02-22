@@ -1,7 +1,26 @@
+@import '/src/styles/mixins';
+
 img.inline-preview {
   max-width: 20vw;
 }
 
 table {
   width: 100%;
+}
+
+td.mat-column-actions {
+  button {
+    margin-right: $gap-small;
+  }
+
+  div.unhide-score {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+
+    button {
+      margin-right: $gap-small;
+      display: inline-block;
+    }
+  }
 }

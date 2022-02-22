@@ -4,10 +4,12 @@ import { PlayerUGCItem } from '@models/player-ugc-item';
 import { MatDialog } from '@angular/material/dialog';
 import { SunriseFeatureUGCModalComponent } from '@views/feature-ugc-modal/sunrise/sunrise-feature-ugc-modal.component';
 import { filter, takeUntil } from 'rxjs/operators';
-import { UGCTableBaseComponent } from '../ugc-table.component';
+import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.component';
 import { SunriseService } from '@services/sunrise';
 import { UGCType } from '@models/ugc-filters';
-import { Observable } from 'rxjs';
+import { Observable, timer } from 'rxjs';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { pull } from 'lodash';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -47,5 +49,30 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
   /** Gets player UGC item. */
   public getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem> {
     return this.sunriseService.getPlayerUGCItem(id, type);
+  }
+
+  /** Hide UGC item. */
+  public hideUGCItem(item: PlayerUGCItemTableEntries): void {
+    item.monitor = new ActionMonitor(item.monitor.dispose().label);
+
+    this.sunriseService
+      .hideUgc$(item.guidId)
+      .pipe(item.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.deleteEntry(item);
+      });
+  }
+
+  private deleteEntry(item: PlayerUGCItemTableEntries): void {
+    // Wait for monitor snackbar to fire before removing entry and disposing monitor
+    timer(0)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        pull(this.ugcTableDataSource.data, item);
+        pull(this.allMonitors, item.monitor);
+        item.monitor.dispose();
+
+        this.ugcTableDataSource._updateChangeSubscription();
+      });
   }
 }

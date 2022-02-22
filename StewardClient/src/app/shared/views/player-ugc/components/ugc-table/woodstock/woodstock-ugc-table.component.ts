@@ -4,10 +4,12 @@ import { PlayerUGCItem } from '@models/player-ugc-item';
 import { MatDialog } from '@angular/material/dialog';
 import { WoodstockFeatureUGCModalComponent } from '@views/feature-ugc-modal/woodstock/woodstock-feature-ugc-modal.component';
 import { filter, takeUntil } from 'rxjs/operators';
-import { UGCTableBaseComponent } from '../ugc-table.component';
+import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.component';
 import { UGCType } from '@models/ugc-filters';
-import { Observable } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { WoodstockService } from '@services/woodstock';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { pull } from 'lodash';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -47,5 +49,31 @@ export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements
   /** Gets player UGC item. */
   public getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem> {
     return this.woodstockService.getPlayerUGCItem(id, type);
+  }
+
+  /** Hide UGC item. */
+  public hideUGCItem(item: PlayerUGCItemTableEntries): void {
+    item.monitor = new ActionMonitor(item.monitor.dispose().label);
+
+    this.woodstockService
+      .hideUgc$(item.guidId)
+      .pipe(item.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.deleteEntry(item);
+      });
+  }
+
+  private deleteEntry(item: PlayerUGCItemTableEntries): void {
+    // Wait for monitor snackbar to fire before removing entry and disposing monitor
+    timer(0)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        pull(this.ugcTableDataSource.data, item);
+
+        pull(this.allMonitors, item.monitor);
+        item.monitor.dispose();
+
+        this.ugcTableDataSource._updateChangeSubscription();
+      });
   }
 }

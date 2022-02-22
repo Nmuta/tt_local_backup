@@ -1,10 +1,7 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base.component';
+import { Component, Input } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { HideableUgc } from '@models/hideable-ugc.model';
 import { SunriseService } from '@services/sunrise';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { takeUntil } from 'rxjs/operators';
 
 /** Retrieves and renders a player's sunrise hidden UGC. */
 @Component({
@@ -12,31 +9,14 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './sunrise-player-hidden-ugc.component.html',
   styleUrls: ['./sunrise-player-hidden-ugc.component.scss'],
 })
-export class SunrisePlayerHiddenUgcComponent extends BaseComponent implements OnChanges {
+export class SunrisePlayerHiddenUgcComponent {
   @Input() public identity: IdentityResultAlpha;
+  public getMonitor: ActionMonitor;
 
-  public hiddenUgc: HideableUgc[] = [];
+  constructor(public readonly service: SunriseService) {}
 
-  public getMonitor = new ActionMonitor('GET Hidden UGC');
-
-  constructor(private readonly sunrise: SunriseService) {
-    super();
-  }
-
-  /** Angular lifecycle hook. */
-  public ngOnChanges(): void {
-    if (!this.identity.xuid) {
-      this.hiddenUgc = [];
-      return;
-    }
-
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
-
-    this.sunrise
-      .getPlayerHiddenUGCByXuid$(this.identity.xuid)
-      .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(hiddenUgc => {
-        this.hiddenUgc = hiddenUgc;
-      });
+  /** Retrieve child monitor for use with reload spinner in User Details tab. */
+  public prepareMonitor(childMonitor: ActionMonitor) {
+    this.getMonitor = childMonitor;
   }
 }

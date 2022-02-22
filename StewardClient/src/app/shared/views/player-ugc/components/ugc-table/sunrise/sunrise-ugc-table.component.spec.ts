@@ -8,10 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SunriseUGCTableComponent } from './sunrise-ugc-table.component';
 import { fakePlayerUGCItem } from '@models/player-ugc-item';
 import { EMPTY } from 'rxjs';
+import { SunriseService } from '@services/sunrise';
+import { PlayerUGCItemTableEntries } from '../ugc-table.component';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 describe('SunriseUGCTableComponent', () => {
   let component: SunriseUGCTableComponent;
   let fixture: ComponentFixture<SunriseUGCTableComponent>;
+  let mockSunriseService: SunriseService;
   let mockMatDialog;
   MatDialog;
 
@@ -32,6 +36,7 @@ describe('SunriseUGCTableComponent', () => {
     fixture = TestBed.createComponent(SunriseUGCTableComponent);
     component = fixture.componentInstance;
     mockMatDialog = TestBed.inject(MatDialog);
+    mockSunriseService = TestBed.inject(SunriseService);
 
     fixture.detectChanges();
 
@@ -44,6 +49,17 @@ describe('SunriseUGCTableComponent', () => {
       expect(component).toBeTruthy();
     }),
   );
+
+  describe('Method: hideUGCItem', () => {
+    const item: PlayerUGCItemTableEntries = fakePlayerUGCItem();
+    item.monitor = new ActionMonitor();
+
+    it('should call SunriseService.hideUgc$()', () => {
+      component.hideUGCItem(item);
+
+      expect(mockSunriseService.hideUgc$).toHaveBeenCalled();
+    });
+  });
 
   describe('Method: openFeatureUGCModal', () => {
     const item = fakePlayerUGCItem();

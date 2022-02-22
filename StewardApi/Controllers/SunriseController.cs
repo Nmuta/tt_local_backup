@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.UserGeneratedContent.FH4.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -713,13 +714,55 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/xuid({xuid})/hidden")]
         [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
-        public async Task<IActionResult> GetPlayerHiddenUgc(ulong xuid)
+        public async Task<IActionResult> GetPlayerHiddenUGC(ulong xuid)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
             var hiddenUgc = await this.storefrontProvider.GetHiddenUGCForUserAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(hiddenUgc);
+        }
+
+        /// <summary>
+        ///     Hides UGC.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.CommunityManager)]
+        [HttpPost("storefront/ugc/{ugcId}/hide")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> HideUGC(Guid ugcId)
+        {
+            var endpoint = GetSunriseEndpoint(this.Request.Headers);
+
+            await this.storefrontProvider.HideUGCAsync(ugcId, endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Unhides player UGC content.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
+        [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, Guid ugcId)
+        {
+            var endpoint = GetSunriseEndpoint(this.Request.Headers);
+
+            if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(FileType)} provided: {fileType}");
+            }
+
+            await this.storefrontProvider.UnhideUGCAsync(xuid, ugcId, fileTypeEnum, endpoint).ConfigureAwait(true);
+
+            return this.Ok();
         }
 
         /// <summary>

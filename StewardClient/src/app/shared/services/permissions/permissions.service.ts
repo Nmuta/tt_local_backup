@@ -8,6 +8,7 @@ import { UserState } from '@shared/state/user/user.state';
 export enum PermissionServiceTool {
   SetUserFlags,
   ConsoleBan,
+  UnhideUgc,
 }
 
 /** Client permission service. */
@@ -27,6 +28,11 @@ export class PermissionsService {
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
       UserRole.SupportAgentNew,
+    ],
+    [PermissionServiceTool.UnhideUgc]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
     ],
   };
 

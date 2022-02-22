@@ -1,59 +1,126 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="preview">
-    <th mat-header-cell *matHeaderCellDef>Preview</th>
-    <td mat-cell *matCellDef="let e"><img class="inline-preview" [src]="ugc(e).previewUrl" /></td>
-  </ng-container>
+<mat-card>
+  <mat-card-title>Hidden UGC</mat-card-title>
+  <mat-card-subtitle>
+    View and Unhide UGC
+    <button mat-icon-button matTooltip="Refresh hidden UGC table." (click)="refreshTable()">
+      <mat-icon>sync</mat-icon>
+    </button>
+  </mat-card-subtitle>
+  <ng-container *ngIf="!getMonitor.isActive; else loading">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="preview">
+        <th mat-header-cell *matHeaderCellDef>Preview</th>
+        <td mat-cell *matCellDef="let e">
+          <img
+            *ngIf="!!ugc(e).previewUrl; else noPreviewImage"
+            class="inline-preview"
+            [src]="ugc(e).previewUrl"
+          />
+        </td>
+      </ng-container>
 
-  <ng-container matColumnDef="info">
-    <th mat-header-cell *matHeaderCellDef>Info</th>
-    <td mat-cell *matCellDef="let e">
-      <table class="info-table">
-        <tr>
-          <th>Title</th>
-          <td>
-            <standard-copy>{{ ugc(e).title }}</standard-copy>
-          </td>
-        </tr>
-        <tr>
-          <th>Description</th>
-          <td>
-            <standard-copy>{{ ugc(e).description }}</standard-copy>
-          </td>
-        </tr>
-        <tr>
-          <th>UGC ID</th>
-          <td>
-            <standard-copy>{{ ugc(e).ugcId }}</standard-copy>
-          </td>
-        </tr>
-        <tr>
-          <th>Share Code</th>
-          <td>
-            <standard-copy>{{ ugc(e).sharecode }}</standard-copy>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </ng-container>
+      <ng-container matColumnDef="info">
+        <th mat-header-cell *matHeaderCellDef>Info</th>
+        <td mat-cell *matCellDef="let e">
+          <table class="info-table">
+            <tr>
+              <th>Title</th>
+              <td>
+                <standard-copy>{{ ugc(e)?.title || 'N/A' }}</standard-copy>
+              </td>
+            </tr>
+            <tr>
+              <th>Description</th>
+              <td>
+                <standard-copy>{{ ugc(e)?.description || 'N/A' }}</standard-copy>
+              </td>
+            </tr>
+            <tr>
+              <th>UGC ID</th>
+              <td>
+                <standard-copy>{{ ugc(e)?.ugcId || 'N/A' }}</standard-copy>
+              </td>
+            </tr>
+            <tr>
+              <th>Share Code</th>
+              <td>
+                <standard-copy>{{ ugc(e)?.sharecode || 'N/A' }}</standard-copy>
+              </td>
+            </tr>
+            <tr>
+              <th>File Type</th>
+              <td>
+                {{ ugc(e)?.fileType || 'N/A' }}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </ng-container>
 
-  <ng-container matColumnDef="times">
-    <th mat-header-cell *matHeaderCellDef>Time</th>
-    <td mat-cell *matCellDef="let e">
-      <table class="info-table">
-        <tr>
-          <th>Submitted</th>
-          <td>
-            <standard-absolute-time [timeUtc]="ugc(e).submissionUtc"></standard-absolute-time>
-          </td>
-        </tr>
-        <tr>
-          <th>Hidden</th>
-          <td><standard-absolute-time [timeUtc]="ugc(e).hiddenUtc"></standard-absolute-time></td>
-        </tr>
-      </table>
-    </td>
-  </ng-container>
+      <ng-container matColumnDef="times">
+        <th mat-header-cell *matHeaderCellDef>Time</th>
+        <td mat-cell *matCellDef="let e">
+          <table class="info-table">
+            <tr>
+              <th>Submitted</th>
+              <td>
+                <standard-absolute-time [timeUtc]="ugc(e)?.submissionUtc"></standard-absolute-time>
+              </td>
+            </tr>
+            <tr>
+              <th>Hidden</th>
+              <td>
+                <standard-absolute-time [timeUtc]="ugc(e)?.hiddenUtc"></standard-absolute-time>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let entry">
+          <ng-container *ngIf="!disableUnhide; else unhideDisabledTemplate">
+            <div class="unhide-score">
+              <button
+                mat-raised-button
+                color="warn"
+                matTooltip="Unhide this UGC"
+                [verifyWith]="verifyUnhide"
+                (click)="unhideUGCItem(entry)"
+                clickStop
+                stateManager
+                [monitor]="entry.monitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Unhide UGC
+              </button>
+              <mat-checkbox clickStop #verifyUnhide matTooltip="Check to enable unhide UGC">
+                Verify
+              </mat-checkbox>
+            </div>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </ng-container>
+</mat-card>
+
+<ng-template #loading>
+  <big-spinner [monitor]="getMonitor"></big-spinner>
+</ng-template>
+
+<ng-template #noPreviewImage>
+  <span>No preview for this UGC file type.</span>
+</ng-template>
+
+<ng-template #unhideDisabledTemplate>
+  <span>Insufficient Permissions to Unhide UGC</span>
+</ng-template>

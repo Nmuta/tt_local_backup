@@ -215,6 +215,40 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             act.Should().NotThrow();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void HideUgc_WithValidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var ugcId = Fixture.Create<Guid>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task> action = async () => await provider.HideUGCAsync(ugcId, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void UnhideUgc_WithValidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var ugcId = Fixture.Create<Guid>();
+            var fileType = Fixture.Create<Forza.UserGeneratedContent.FH4.Generated.FileType>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task> action = async () => await provider.UnhideUGCAsync(xuid, ugcId, fileType, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
         private sealed class Dependencies
         {
             public Dependencies()

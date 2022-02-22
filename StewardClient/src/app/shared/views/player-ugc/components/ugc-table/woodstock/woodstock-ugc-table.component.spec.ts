@@ -6,13 +6,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { fakePlayerUGCItem } from '@models/player-ugc-item';
 import { WoodstockUGCTableComponent } from './woodstock-ugc-table.component';
-import { createMockWoodstockService } from '@services/woodstock';
+import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { EMPTY } from 'rxjs';
+import { PlayerUGCItemTableEntries } from '../ugc-table.component';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 describe('WoodstockUGCTableComponent', () => {
   let component: WoodstockUGCTableComponent;
   let fixture: ComponentFixture<WoodstockUGCTableComponent>;
+  let mockWoodstockService: WoodstockService;
   let mockMatDialog;
+
   MatDialog;
 
   beforeEach(async () => {
@@ -32,6 +36,7 @@ describe('WoodstockUGCTableComponent', () => {
     fixture = TestBed.createComponent(WoodstockUGCTableComponent);
     component = fixture.componentInstance;
     mockMatDialog = TestBed.inject(MatDialog);
+    mockWoodstockService = TestBed.inject(WoodstockService);
 
     fixture.detectChanges();
 
@@ -44,6 +49,17 @@ describe('WoodstockUGCTableComponent', () => {
       expect(component).toBeTruthy();
     }),
   );
+
+  describe('Method: hideUGCItem', () => {
+    const item: PlayerUGCItemTableEntries = fakePlayerUGCItem();
+    item.monitor = new ActionMonitor();
+
+    it('should call WoodstockService.hideUgc$()', () => {
+      component.hideUGCItem(item);
+
+      expect(mockWoodstockService.hideUgc$).toHaveBeenCalled();
+    });
+  });
 
   describe('Method: openFeatureUGCModal', () => {
     const item = fakePlayerUGCItem();

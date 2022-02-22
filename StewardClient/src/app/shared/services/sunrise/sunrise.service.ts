@@ -53,7 +53,7 @@ import { PlayerAuctionAction } from '@models/player-auction-action';
 import { GuidLikeString } from '@models/extended-types';
 import { AuctionData } from '@models/auction-data';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
-import { HideableUgc } from '@models/hideable-ugc.model';
+import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
 
 /** Handles calls to Sunrise API routes. */
@@ -467,6 +467,26 @@ export class SunriseService {
   public getPlayerHiddenUGCByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
     return this.apiService.getRequest$<HideableUgc[]>(
       `${this.basePath}/storefront/xuid(${xuid})/hidden`,
+    );
+  }
+
+  /** Hide UGC item. */
+  public hideUgc$(ugcId: string): Observable<void> {
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/storefront/ugc/${ugcId}/hide`,
+      null,
+    );
+  }
+
+  /** Unhide UGC item. */
+  public unhideUgc$(
+    xuid: BigNumber,
+    fileType: HideableUgcFileType,
+    ugcId: GuidLikeString,
+  ): Observable<void> {
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
+      null,
     );
   }
 

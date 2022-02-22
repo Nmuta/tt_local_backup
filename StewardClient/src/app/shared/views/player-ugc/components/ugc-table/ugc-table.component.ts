@@ -16,6 +16,7 @@ import { fromEvent, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UGCType } from '@models/ugc-filters';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -25,6 +26,11 @@ export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'thumbnailImageTwoBase64',
   'actions',
 ];
+
+/** Extended type from HideableUgc. */
+export type PlayerUGCItemTableEntries = PlayerUGCItem & {
+  monitor?: ActionMonitor;
+};
 
 export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailImageOneBase64', 'actions'];
 
@@ -46,16 +52,18 @@ export abstract class UGCTableBaseComponent
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() content: PlayerUGCItem[];
 
-  public ugcTableDataSource = new MatTableDataSource<PlayerUGCItem>([]);
+  public ugcTableDataSource = new MatTableDataSource<PlayerUGCItemTableEntries>([]);
   public columnsToDisplay: string[] = UGC_TABLE_COLUMNS_TWO_IMAGES;
   public expandedElement: MatColumnDef;
   public useExpandoColumnDef: boolean = false;
   public expandoColumnDef = UGC_TABLE_COLUMNS_EXPANDO;
   public waitingForThumbnails = false;
+  public allMonitors: ActionMonitor[] = [];
 
   /** Opens the feature UGC modal. */
   public abstract openFeatureUGCModal(item: PlayerUGCItem): void;
   public abstract getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem>;
+  public abstract hideUGCItem(item: PlayerUGCItemTableEntries): void;
 
   /** Angular hook. */
   public ngOnInit(): void {
@@ -72,7 +80,14 @@ export abstract class UGCTableBaseComponent
   /** Angular hook. */
   public ngOnChanges(changes: SimpleChanges): void {
     if (!!changes.content) {
-      this.ugcTableDataSource.data = this.content;
+      const ugcItemsToProcess: PlayerUGCItemTableEntries[] = this.content;
+
+      ugcItemsToProcess.forEach(item => {
+        item.monitor = new ActionMonitor(`POST Hide UGC with ID: ${item.guidId}`);
+        this.allMonitors.push(item.monitor);
+      });
+
+      this.ugcTableDataSource.data = ugcItemsToProcess;
 
       if (this.paginator) {
         this.paginator.pageIndex = 0;

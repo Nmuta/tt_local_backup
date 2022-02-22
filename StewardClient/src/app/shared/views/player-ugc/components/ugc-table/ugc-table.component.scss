@@ -22,7 +22,7 @@ table {
 
   .example-element-row td {
     border-bottom-width: 0;
-    height: $auction-row-height;
+    height: $ugc-row-height-thumbnails;
   }
 
   .border-bottom td {
@@ -30,7 +30,20 @@ table {
   }
 
   .mat-column-actions {
-    padding-left: $gap-micro + $gap-small;
+    button {
+      margin-right: $gap-small;
+      margin-left: $gap-small;
+    }
+
+    .hide-score {
+      display: flex;
+      align-items: baseline;
+
+      button {
+        margin-right: $gap-small;
+        display: inline-block;
+      }
+    }
   }
 
   .example-element-detail {

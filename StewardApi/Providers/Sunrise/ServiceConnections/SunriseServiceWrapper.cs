@@ -505,6 +505,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task HideUGCAsync(Guid ugcId, string endpoint)
+        {
+            var storefrontService = await this.serviceFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
+
+            await storefrontService.HideUGC(ugcId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task UnhideUGCAsync(Guid ugcId, ulong xuid, FileType fileType, string endpoint)
+        {
+            var storefrontService = await this.serviceFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
+
+            await storefrontService.UnhideUGC(ugcId, xuid, fileType).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task SetUGCFeaturedStatusAsync(
             Guid contentId,
             bool isFeatured,

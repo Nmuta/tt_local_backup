@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using Forza.UserGeneratedContent.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH4.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -333,6 +334,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.SubmissionUtc, opt => opt.MapFrom(src => src.SubmissionTime.DefaultAsNull()))
                 .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.PreviewPayload.ToImageDataUrl()))
+                .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => Enum.GetName(typeof(FileType), src.Type)))
                 .ReverseMap();
         }
 

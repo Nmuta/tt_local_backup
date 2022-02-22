@@ -205,6 +205,14 @@ export class MockSunriseService {
     .createSpy('getPlayerAuctionLogByXuid$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
+  public hideUgc$ = jasmine
+    .createSpy('hideUgc$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
+  public unhideUgc$ = jasmine
+    .createSpy('unhideUgc$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
   constructor(private readonly generator: () => unknown) {}
 }
 

@@ -62,6 +62,7 @@ import {
   Leaderboard,
   LeaderboardScore,
 } from '@models/leaderboards';
+import { HideableUgcFileType } from '@models/hideable-ugc.model';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -469,6 +470,26 @@ export class WoodstockService {
   public getPlayerHiddenUGCByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
     return this.apiService.getRequest$<HideableUgc[]>(
       `${this.basePath}/storefront/xuid(${xuid})/hidden`,
+    );
+  }
+
+  /** Hide UGC item. */
+  public hideUgc$(ugcId: string): Observable<void> {
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/storefront/ugc/${ugcId}/hide`,
+      null,
+    );
+  }
+
+  /** Unhide UGC item. */
+  public unhideUgc$(
+    xuid: BigNumber,
+    fileType: HideableUgcFileType,
+    ugcId: GuidLikeString,
+  ): Observable<void> {
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
+      null,
     );
   }
 

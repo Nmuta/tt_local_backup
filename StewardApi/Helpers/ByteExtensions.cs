@@ -12,6 +12,11 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static string ToImageDataUrl(this byte[] source)
         {
+            if (source.Length <= 0)
+            {
+                return null;
+            }
+
             return "data:image/jpeg;base64," + Convert.ToBase64String(source);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH5_main.Generated;
@@ -12,10 +13,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
-using static Forza.WebServices.FH5_main.Generated.StorefrontService;
-using static Forza.WebServices.FH5_main.Generated.AuctionService;
-using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
 using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
+using static Forza.WebServices.FH5_main.Generated.StorefrontService;
+using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -168,8 +168,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var liveries = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Livery, endpoint).SuccessOrDefault(defaultValue, exceptions);
             var layerGroups = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.LayerGroup, endpoint).SuccessOrDefault(defaultValue, exceptions);
             var photos = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Photo, endpoint).SuccessOrDefault(defaultValue, exceptions);
+            var tunings = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Tuning, endpoint).SuccessOrDefault(defaultValue, exceptions);
 
-            await Task.WhenAll(liveries, layerGroups, photos).ConfigureAwait(false);
+            await Task.WhenAll(liveries, layerGroups, photos, tunings).ConfigureAwait(false);
 
             var results = new List<ForzaStorefrontFile>();
             if (liveries.IsCompletedSuccessfully)
@@ -187,9 +188,50 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 results.AddRange(photos.GetAwaiter().GetResult().ugcData);
             }
 
+            if (tunings.IsCompletedSuccessfully)
+            {
+                results.AddRange(tunings.GetAwaiter().GetResult().ugcData);
+            }
+
             var convertedResults = this.mapper.Map<List<HideableUgc>>(results);
 
             return convertedResults;
+        }
+
+        /// <inheritdoc />
+        public async Task HideUGCAsync(
+            Guid ugcId,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                await this.woodstockService.HideUGCAsync(ugcId, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to hide {ugcId}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task UnhideUGCAsync(
+            ulong xuid,
+            Guid ugcId,
+            FileType fileType,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                await this.woodstockService.UnhideUGCAsync(ugcId, xuid, fileType, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to unhide {fileType}:{ugcId} for {xuid}.", ex);
+            }
         }
     }
 }

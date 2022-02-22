@@ -10,4 +10,17 @@ export interface HideableUgc {
   previewUrl: string;
   submissionUtc: DateTime;
   hiddenUtc: DateTime;
+  fileType: HideableUgcFileType;
 }
+
+/** The set of LSP supported UGC types. */
+export type HideableUgcFileType =
+  | 'Tuning'
+  | 'LayerGroup'
+  | 'Livery'
+  | 'Replay'
+  | 'Photo'
+  | 'EventBlueprint'
+  | 'TuneBlob'
+  | 'CommunityChallenge'
+  | 'Count';

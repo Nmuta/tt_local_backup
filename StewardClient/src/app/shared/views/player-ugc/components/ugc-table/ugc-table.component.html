@@ -76,19 +76,36 @@
         Copy UGC ID
       </button>
 
-      <button
-        mat-raised-button
-        color="accent"
-        clickStop
-        [disabled]="!entry.isPublic"
-        (click)="openFeatureUGCModal(entry)"
-      >
+      <button mat-raised-button color="accent" clickStop (click)="openFeatureUGCModal(entry)">
         <span
           matTooltip="Cannot change featured status of private UGC content"
           [matTooltipDisabled]="entry.isPublic"
           >{{ entry.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}</span
         >
       </button>
+
+      <div class="hide-score">
+        <button
+          mat-raised-button
+          color="warn"
+          matTooltip="Hide this UGC"
+          [verifyWith]="verifyHide"
+          (click)="hideUGCItem(entry)"
+          clickStop
+          stateManager
+          [monitor]="entry.monitor"
+          [waitOnMonitors]="allMonitors"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
+        >
+          Hide UGC
+        </button>
+        <mat-checkbox clickStop #verifyHide matTooltip="Check to enable hide UGC.">
+          Verify
+        </mat-checkbox>
+      </div>
     </td>
   </ng-container>
 

@@ -1521,6 +1521,38 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             result.Should().BeOfType<OkResult>();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void HideUgc_WithValidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var ugcId = Fixture.Create<Guid>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.HideUGC(ugcId).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void UnhideUgc_WithValidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var ugcId = Fixture.Create<Guid>();
+            var fileType = "Livery";
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.UnhideUGC(xuid, fileType, ugcId).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
         private IList<WoodstockBanParametersInput> GenerateBanParameters()
         {
             return new List<WoodstockBanParametersInput>

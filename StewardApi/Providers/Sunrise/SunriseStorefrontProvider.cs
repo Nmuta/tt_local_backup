@@ -173,5 +173,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             return convertedResults;
         }
+
+        /// <inheritdoc />
+        public async Task HideUGCAsync(
+            Guid ugcId,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                await this.sunriseService.HideUGCAsync(ugcId, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to hide {ugcId}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task UnhideUGCAsync(
+            ulong xuid,
+            Guid ugcId,
+            FileType fileType,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                await this.sunriseService.UnhideUGCAsync(ugcId, xuid, fileType, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to unhide {fileType}:{ugcId} for {xuid}.", ex);
+            }
+        }
     }
 }

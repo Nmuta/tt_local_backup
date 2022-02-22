@@ -17,6 +17,11 @@ import { ImageModalModule } from '@views/image-modal/image-modal.module';
 import { SunriseUGCTableComponent } from './sunrise/sunrise-ugc-table.component';
 import { WoodstockUGCTableComponent } from './woodstock/woodstock-ugc-table.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -38,6 +43,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ClipboardModule,
     ImageModalModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MonitorActionModule,
+    StateManagersModule,
+    MatSnackBarModule,
+    VerifyCheckboxModule,
   ],
   exports: [SunriseUGCTableComponent, WoodstockUGCTableComponent],
 })
