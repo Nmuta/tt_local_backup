@@ -4,8 +4,9 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
 context('Steward / Support / Auction Blocklist / Sunrise', () => {
-  beforeEach(async () => {
-    await login();
+  beforeEach(() => {
+    login();
+
     disableFakeApi();
   });
 

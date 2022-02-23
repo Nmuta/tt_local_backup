@@ -1,8 +1,9 @@
 import { login } from '@support/steward/auth/login';
 
 context('Steward Index', () => {
-  beforeEach(async () => {
-    await login();
+  beforeEach(() => {
+    login();
+
     cy.visit('/');
   });
 

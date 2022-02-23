@@ -7,8 +7,9 @@ import { searchByGtag, searchByXuid, selectSunrise } from './page';
 import { jordan } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Sunrise', () => {
-  beforeEach(async () => {
-    await login();
+  beforeEach(() => {
+    login();
+
     disableFakeApi();
   });
 

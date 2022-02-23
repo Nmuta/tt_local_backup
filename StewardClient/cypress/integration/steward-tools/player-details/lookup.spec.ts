@@ -5,8 +5,9 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByT10Id, searchByXuid } from './page';
 
 context('Steward / Tools / Player Details', () => {
-  beforeEach(async () => {
-    await login();
+  beforeEach(() => {
+    login();
+
     disableFakeApi();
   });
 

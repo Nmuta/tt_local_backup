@@ -22,21 +22,25 @@ export interface TypedEnv {
   };
 }
 
+const appEnvironment = Cypress.env('AAD_APP_ENV');
+const appClientId = Cypress.env(`${appEnvironment}_CLIENT_ID`);
+const appClientSecret = Cypress.env(`${appEnvironment}_CLIENT_SECRET`);
+
 expect(
-  Cypress.env('CLIENT_ID'),
-  'CLIENT_ID or CYPRESS_CLIENT_ID env var must be defined. Follow instructions in .cypress.env.config',
+  appClientId,
+  `${appEnvironment}_CLIENT_ID or CYPRESS_${appEnvironment}_CLIENT_ID env var must be defined. Follow instructions in .cypress.env.config`,
 ).to.exist;
 
 expect(
-  Cypress.env('CLIENT_SECRET'),
-  'CLIENT_SECRET or CYPRESS_CLIENT_SECRET env var must be defined. Follow instructions in .cypress.env.config',
+  appClientSecret,
+  `${appEnvironment}_CLIENT_SECRET or CYPRESS_${appEnvironment}_CLIENT_SECRET env var must be defined. Follow instructions in .cypress.env.config`,
 ).to.exist;
 
 /** Typed environment configurations */
 const env: TypedEnv = {
   tenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47',
-  clientId: Cypress.env('CLIENT_ID'),
-  clientSecret: Cypress.env('CLIENT_SECRET'),
+  clientId: appClientId,
+  clientSecret: appClientSecret,
   testTitle: {
     woodstock: JSON.parse(Cypress.env('TEST_WOODSTOCK') || 'false'),
     steelhead: JSON.parse(Cypress.env('TEST_STEELHEAD') || 'false'),

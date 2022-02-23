@@ -5,11 +5,14 @@
   "env": {
     "STEWARD_API": "https://steward-api-dev.azurewebsites.net",
     "TEST_WOODSTOCK": false,
-    "TEST_STEELHEAD": false
+    "TEST_STEELHEAD": false,
+    "AAD_APP_ENV": "DEV"
   },
   "retries": {
     "runMode": 2,
     "openMode": 0
   },
-  "supportFile": "cypress/support/commands.ts"
+  "supportFile": "cypress/support/commands.ts",
+  "video": false,
+  "screenshotOnRunFailure": false
 }

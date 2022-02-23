@@ -4,10 +4,13 @@
   "env": {
     "STEWARD_API": "https://steward-api-dev.azurewebsites.net",
     "TEST_WOODSTOCK": true,
-    "TEST_STEELHEAD": true
+    "TEST_STEELHEAD": true,
+    "AAD_APP_ENV": "DEV"
   },
   "retries": {
     "runMode": 2,
     "openMode": 0
-  }
+  },
+  "video": false,
+  "screenshotOnRunFailure": false
 }

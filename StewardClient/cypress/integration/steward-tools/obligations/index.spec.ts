@@ -4,8 +4,9 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
 context('Steward / Tools / Obligation', () => {
-  beforeEach(async () => {
-    await login();
+  beforeEach(() => {
+    login();
+
     disableFakeApi();
     cy.visit(stewardUrls.tools.obligation);
   });

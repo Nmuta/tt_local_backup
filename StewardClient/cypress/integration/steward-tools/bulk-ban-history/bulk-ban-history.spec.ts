@@ -5,8 +5,9 @@ import { jordan, emerson } from '@support/steward/common/account-info';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
 context('Steward / Tools / Ban Review', () => {
-  beforeEach(async () => {
-    await login();
+  beforeEach(() => {
+    login();
+
     disableFakeApi();
 
     cy.visit(stewardUrls.tools.bulkBanHistory);

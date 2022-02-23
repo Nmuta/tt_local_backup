@@ -6,8 +6,9 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
 
 context('Steward / Tools / Gifting / Gravity', () => {
-  beforeEach(async () => {
-    await login();
+  beforeEach(() => {
+    login();
+
     disableFakeApi();
   });
 

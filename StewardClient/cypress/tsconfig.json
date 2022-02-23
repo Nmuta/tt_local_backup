@@ -9,13 +9,8 @@
       "@plugins/*": ["plugins/*"],
       "@support/*": ["support/*"],
       "@cypress/*": ["*"]
-    }
+    },
+    "types": ["cypress"]
   },
-  "include": [
-    "./**/*.ts",
-    "plugins/index.js",
-    "support/commands.ts",
-    "support/commands.ts",
-    "integration/steward-support/player-details/sunrise/by-gtag.spects"
-  ]
+  "include": ["./**/*.ts", "plugins/index.js", "support/commands.ts", "support/commands.ts"]
 }
