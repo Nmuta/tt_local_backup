@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -11,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Pegasus;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.Services.CMSRetrieval;
@@ -20,15 +22,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     /// <inheritdoc />
     public sealed class WoodstockLeaderboardProvider : IWoodstockLeaderboardProvider
     {
-        private static readonly IList<string> RequiredSettings = new List<string>
-        {
-            ConfigurationKeyConstants.PegasusCmsEnvironment
-        };
-
-        private readonly string cmsEnvironment;
         private readonly IWoodstockService woodstockService;
-        private readonly CMSRetrievalHelper cmsRetrievalHelper;
-        private readonly IKustoProvider kustoProvider;
+        private readonly IWoodstockPegasusService pegasusService;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -36,36 +31,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// </summary>
         public WoodstockLeaderboardProvider(
             IWoodstockService woodstockService,
-            PegasusCmsProvider pegasusCmsProvider,
-            IKustoProvider kustoProvider,
-            IMapper mapper,
-            IConfiguration configuration)
+            IWoodstockPegasusService pegasusService,
+            IMapper mapper)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
-            pegasusCmsProvider.ShouldNotBeNull(nameof(pegasusCmsProvider));
-            kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
+            pegasusService.ShouldNotBeNull(nameof(pegasusService));
             mapper.ShouldNotBeNull(nameof(mapper));
-            configuration.ShouldNotBeNull(nameof(configuration));
-            configuration.ShouldContainSettings(RequiredSettings);
 
             this.woodstockService = woodstockService;
-            this.cmsRetrievalHelper = pegasusCmsProvider.WoodstockCmsRetrievalHelper;
-            this.kustoProvider = kustoProvider;
+            this.pegasusService = pegasusService;
             this.mapper = mapper;
-            this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsEnvironment];
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
+
         public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync()
         {
-            var getPegasusLeaderboards = this.cmsRetrievalHelper.GetCMSObjectAsync<IList<PegasusLeaderboard>>(WoodstockContent.CMSFileNames.Leaderboards, this.cmsEnvironment);
-            var getCarClasses = this.kustoProvider.GetCarClassesAsync();
+            var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync();
+            var getCarClasses = this.pegasusService.GetCarClassesAsync();
 
             await Task.WhenAll(getPegasusLeaderboards, getCarClasses).ConfigureAwait(false);
 
-            var pegasusLeaderboards = await getPegasusLeaderboards.ConfigureAwait(false);
-            var leaderboards = this.mapper.Map<IList<Leaderboard>>(pegasusLeaderboards);
-            var carClasses = await getCarClasses.ConfigureAwait(false);
+            var leaderboards = getPegasusLeaderboards.GetAwaiter().GetResult();
+            var carClasses = getCarClasses.GetAwaiter().GetResult();
 
             foreach (var leaderboard in leaderboards)
             {

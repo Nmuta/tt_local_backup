@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS1591
 #pragma warning disable SA1600
 #pragma warning disable SA1604
-namespace Turn10.LiveOps.StewardApi.Contracts.Data
+namespace Turn10.LiveOps.StewardApi.Contracts.Pegasus
 {
     /// <summary>
     ///     Represents a Pegasus leaderboard.

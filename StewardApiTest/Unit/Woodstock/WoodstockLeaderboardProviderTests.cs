@@ -7,14 +7,10 @@ using AutoMapper;
 using FluentAssertions;
 using Forza.LiveOps.FH5_main.Generated;
 using Forza.Scoreboard.FH5_main.Generated;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
-using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
@@ -55,30 +51,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenPegasusCmsProviderNull_Throws()
+        public void Ctor_WhenPegasusServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { PegasusCmsProvider = null };
+            var dependencies = new Dependencies { PegasusService =  null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "pegasusCmsProvider"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenKustoProviderNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { KustoProvider = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "kustoProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "pegasusService"));
         }
 
         [TestMethod]
@@ -95,19 +77,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "mapper"));
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenConfigurationValuesNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies(false);
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingMessagePartial}{ConfigurationKeyConstants.PegasusCmsEnvironment}");
-        }
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -254,37 +223,24 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         private sealed class Dependencies
         {
-            public Dependencies(bool validConfiguration = true)
+            public Dependencies()
             {
-                if (validConfiguration)
-                {
-                    this.Configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
-                }
-                else
-                {
-                    this.Configuration[Arg.Any<string>()].ReturnsNull();
-                }
-
                 this.WoodstockService
                     .GetLeaderboardScoresAsync(Arg.Any<ForzaSearchLeaderboardsParameters>(), Arg.Any<int>(),
                         Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ForzaRankedLeaderboardRow>>());
-
+                this.PegasusService.GetCarClassesAsync().Returns(Fixture.Create<IEnumerable<CarClass>>());
+                this.PegasusService.GetLeaderboardsAsync().Returns(Fixture.Create<IEnumerable<Leaderboard>>());
                 this.Mapper.Map<IEnumerable<LeaderboardScore>>(Arg.Any<IList<ForzaRankedLeaderboardRow>>())
                     .Returns(Fixture.Create<IEnumerable<LeaderboardScore>>());
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
 
-            public PegasusCmsProvider PegasusCmsProvider { get; set; } = new PegasusCmsProvider();
-
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
+            public IWoodstockPegasusService PegasusService { get; set; } = Substitute.For<IWoodstockPegasusService>();
 
-            public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
-
-            public WoodstockLeaderboardProvider Build() => new WoodstockLeaderboardProvider(this.WoodstockService, this.PegasusCmsProvider,
-                    this.KustoProvider, this.Mapper, this.Configuration);
+            public WoodstockLeaderboardProvider Build() => new WoodstockLeaderboardProvider(this.WoodstockService, this.PegasusService, this.Mapper);
         }
     }
 }

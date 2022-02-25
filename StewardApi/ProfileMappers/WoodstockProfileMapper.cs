@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
+using Turn10.LiveOps.StewardApi.Contracts.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH5_main.Generated;
@@ -349,6 +350,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.AntiLockBrakingSystem, opt => opt.MapFrom(src => src.ABS))
                 .ForMember(dest => dest.TractionControlSystem, opt => opt.MapFrom(src => src.TCS))
                 .ForMember(dest => dest.AutomaticTransmission, opt => opt.MapFrom(src => src.Auto));
+
+            this.CreateMap<WoodstockContent.CarClass, CarClass>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarClassId));
         }
 
         private string PrepareDeviceType(string deviceType)

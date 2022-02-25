@@ -458,43 +458,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
         }
 
-        /// <inheritdoc />
-        public async Task<IEnumerable<CarClass>> GetCarClassesAsync()
-        {
-            var query = CarClass.MakeQuery();
-            try
-            {
-                async Task<IList<CarClass>> CarClasses()
-                {
-                    var carClasses = new List<CarClass>();
-
-                    using (var reader = await this.cslQueryProvider
-                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
-                        .ConfigureAwait(false))
-                    {
-                        while (reader.Read())
-                        {
-                            carClasses.Add(CarClass.FromQueryResult(reader));
-                        }
-
-                        reader.Close();
-                    }
-
-                    this.refreshableCacheStore.PutItem(query, TimeSpan.FromDays(7), carClasses);
-
-                    return carClasses;
-                }
-
-                return this.refreshableCacheStore.GetItem<IList<CarClass>>(query)
-                       ?? await CarClasses().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new QueryFailedStewardException($"Car class lookup failed", ex);
-            }
-
-        }
-
         private async Task<string> GetGameDbNameAsync(KustoGameDbSupportedTitle supportedTitle)
         {
             var titleMap = await this.GetTitleMapAsync().ConfigureAwait(false);

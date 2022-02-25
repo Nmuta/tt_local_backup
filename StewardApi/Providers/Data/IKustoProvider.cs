@@ -67,10 +67,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Gets a user's auction log.
         /// </summary>
         Task<IList<AuctionHistoryEntry>> GetAuctionLogAsync(KustoGameDbSupportedTitle title, ulong xuid, DateTime? skipToken = null);
-
-        /// <summary>
-        ///     Gets car classes.
-        /// </summary>
-        Task<IEnumerable<CarClass>> GetCarClassesAsync();
     }
 }
