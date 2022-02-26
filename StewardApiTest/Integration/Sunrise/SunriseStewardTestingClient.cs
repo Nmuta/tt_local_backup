@@ -303,5 +303,33 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             return await ServiceClient.SendRequestAsync<BackgroundJob>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
+
+        public async Task<IList<UgcItem>> GetUGCItemsAsync(ulong xuid, string ugcType)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}storefront/xuid({xuid})?ugcType={ugcType}");
+
+            return await ServiceClient.SendRequestAsync<IList<UgcItem>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+        }
+
+        public async Task<IList<HideableUgc>> GetPlayerHiddenUGCAsync(ulong xuid)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}storefront/xuid({xuid})/hidden");
+
+            return await ServiceClient.SendRequestAsync<IList<HideableUgc>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+        }
+
+        public async Task HideUGCAsync(Guid ugcId)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}storefront/ugc/{ugcId}/hide");
+
+            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version).ConfigureAwait(false);
+        }
+
+        public async Task UnhideUGCAsync(ulong xuid, string fileType, Guid ugcId)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide");
+
+            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version).ConfigureAwait(false);
+        }
     }
 }

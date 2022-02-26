@@ -24,6 +24,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         private static string gamertag;
         private static int profileId;
         private static int lspGroupId;
+        private static Guid liveryUgcId;
         private static KeyVaultProvider KeyVaultProvider;
         private static WoodstockStewardTestingClient stewardClient;
         private static WoodstockStewardTestingClient unauthorizedClient;
@@ -52,6 +53,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             profileId = 1048;
             consoleId = 18230640064596068933;
             lspGroupId = 12;
+            liveryUgcId = new Guid("e045bf5a-2496-46cf-94da-b0ecca1f1c79");
 
             stewardClient = new WoodstockStewardTestingClient(new Uri(endpoint), authKey);
             unauthorizedClient = new WoodstockStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
@@ -1746,6 +1748,68 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             await stewardClient.DeleteAuctionBlockListEntryAsync(1301).ConfigureAwait(false);
             var afterResult = await stewardClient.GetAuctionBlockListAsync().ConfigureAwait(false);
             Assert.IsFalse(afterResult.Any(entry => entry.CarId == 1301));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task HideAndUnhideUGC()
+        {
+            await stewardClient.HideUGCAsync(liveryUgcId);
+            var unhiddenResult2 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
+            var hiddenResult2 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
+            Assert.IsTrue(hiddenResult2.Where(item => item.UgcId == liveryUgcId).ToList().Count > 0);
+            Assert.IsTrue(unhiddenResult2.Where(item => item.GuidId == liveryUgcId).ToList().Count == 0);
+
+            await stewardClient.UnhideUGCAsync(xuid, "Livery", liveryUgcId);
+            var unhiddenResult1 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
+            var hiddenResult1 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
+            Assert.IsTrue(unhiddenResult1.Where(item => item.GuidId == liveryUgcId).ToList().Count > 0);
+            Assert.IsTrue(hiddenResult1.Where(item => item.UgcId == liveryUgcId).ToList().Count == 0);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetUGCItems_InvalidFileType()
+        {
+            try
+            {
+                await stewardClient.GetUGCItemsAsync(xuid, "Blueberry").ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task UnhideUGC_InvalidFileType()
+        {
+            try
+            {
+                await stewardClient.UnhideUGCAsync(xuid, "Blueberry", liveryUgcId).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task UnhideUGC_InvalidXuid()
+        {
+            try
+            {
+                await stewardClient.UnhideUGCAsync(TestConstants.InvalidXuid, "Livery", liveryUgcId).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
+            }
         }
 
         private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, WoodstockGroupGift groupGift, BackgroundJobStatus expectedStatus)
