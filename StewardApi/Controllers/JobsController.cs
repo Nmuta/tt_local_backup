@@ -10,6 +10,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
+using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 
@@ -21,6 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/jobs")]
     [ApiController]
     [Authorize]
+    [LogTagTitle(TitleLogTags.TitleAgnostic)]
     public sealed class JobsController : ControllerBase
     {
         private readonly IJobTracker jobTracker;

@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -32,6 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
         UserRole.CommunityManager)]
+    [LogTagTitle(TitleLogTags.Gravity)]
     public sealed class GravityController : ControllerBase
     {
         private readonly IMemoryCache memoryCache;

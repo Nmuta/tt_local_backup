@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 
@@ -27,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
         UserRole.CommunityManager)]
+    [LogTagTitle(TitleLogTags.Opus)]
     public sealed class OpusController : ControllerBase
     {
         private readonly IMemoryCache memoryCache;

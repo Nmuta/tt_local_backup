@@ -24,6 +24,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -49,6 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
+    [LogTagTitle(TitleLogTags.Woodstock)]
     public sealed class WoodstockController : ControllerBase
     {
         private const int DefaultMaxResults = 100;
@@ -159,6 +161,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("masterInventory")]
         [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
+        [LogTagDependency(DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetMasterInventoryList()
         {
             var masterInventory = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
@@ -170,6 +174,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("kusto/cars")]
         [SwaggerResponse(200, type: typeof(IList<KustoCar>))]
+        [LogTagDependency(DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetDetailedKustoCars()
         {
             var cars = await this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed).ConfigureAwait(true);
@@ -182,6 +188,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetPlayerIdentity(
             [FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
@@ -224,6 +232,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(WoodstockPlayerDetails))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetPlayerDetails(
             string gamertag)
         {
@@ -245,6 +255,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(WoodstockPlayerDetails))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetPlayerDetails(
             ulong xuid)
         {
@@ -264,6 +276,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<ConsoleDetails>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetConsoles(
             ulong xuid,
             [FromQuery] int maxResults = DefaultMaxResults)
@@ -287,6 +301,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -303,6 +319,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
         [SwaggerResponse(200, type: typeof(List<SharedConsoleUser>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetSharedConsoleUsers(
             ulong xuid,
             [FromQuery] int startIndex = 0,
@@ -326,6 +344,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(WoodstockUserFlags))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Group)]
         public async Task<IActionResult> GetUserFlags(
             ulong xuid)
         {
@@ -352,6 +372,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]
         [SwaggerResponse(200, type: typeof(WoodstockUserFlags))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Group)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] WoodstockUserFlagsInput userFlags)
@@ -388,6 +410,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/profileSummary")]
         [SwaggerResponse(200, type: typeof(ProfileSummary))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetProfileSummary(
             ulong xuid)
         {
@@ -403,6 +427,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/profileNotes")]
         [SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetProfileNotesAsync(
             ulong xuid)
         {
@@ -426,8 +452,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
-        [HttpPost("player/xuid({xuid})/profileNotes")]
+        [HttpPost("player/xuid({xuid})/profileNotes")] // TODO: This should be /profileNotes/add
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> AddProfileNoteAsync(
             ulong xuid,
             [FromBody] ProfileNote profileNote)
@@ -456,6 +484,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/creditUpdates")]
         [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCreditUpdates(
             ulong xuid,
             [FromQuery] int startIndex = 0,
@@ -479,6 +509,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/auctions")]
         [SwaggerResponse(200, type: typeof(IList<PlayerAuction>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> GetAuctions(
             ulong xuid,
             [FromQuery] short carId = short.MaxValue,
@@ -523,6 +555,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/auctionLog")]
         [SwaggerResponse(200, type: typeof(IList<AuctionHistoryEntry>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> GetAuctionLog(ulong xuid, [FromQuery] string skipToken = null)
         {
             DateTime? skipTokenUtc = null;
@@ -546,6 +580,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("auction/{auctionId}/details")]
         [SwaggerResponse(200, type: typeof(AuctionData))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> GetAuctionDetails(string auctionId)
         {
             if (!Guid.TryParse(auctionId, out var parsedAuctionId))
@@ -564,6 +600,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("auction/{auctionId}")]
         [SwaggerResponse(200, type: typeof(AuctionData))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> DeleteAuction(string auctionId)
         {
             if (!Guid.TryParse(auctionId, out var parsedAuctionId))
@@ -590,6 +628,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("auctions/blocklist")]
         [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> GetAuctionBlockList(
             [FromQuery] int maxResults = DefaultMaxResults)
         {
@@ -619,6 +659,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("auctions/blocklist")]
         [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
@@ -633,6 +675,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("auctions/blocklist/carId({carId})")]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
@@ -647,6 +691,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/xuid({xuid})")]
         [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUGCItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
@@ -682,6 +728,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/shareCode({shareCode})")]
         [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUGCItems(string shareCode, [FromQuery] string ugcType = "Unknown")
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
@@ -717,6 +765,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/livery({id})")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUGCLivery(Guid id)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -740,6 +790,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/photo({id})")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUGCPhoto(Guid id)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -763,6 +815,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/tune({id})")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUGCTune(Guid id)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -786,6 +840,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("storefront/itemId({itemId})/featuredStatus")]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> SetUGCFeaturedStatus(
             string itemId,
             [FromBody] UGCFeaturedStatus status)
@@ -820,6 +876,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/xuid({xuid})/hidden")]
         [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetPlayerHiddenUGC(ulong xuid)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -878,6 +936,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [NonAction] // TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818)
         [HttpGet("player/xuid({xuid})/backstagePassUpdates")]
         [SwaggerResponse(200, type: typeof(List<BackstagePassUpdate>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetBackstagePassUpdates(
             ulong xuid)
         {
@@ -905,6 +965,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [LogTagDependency(DependencyLogTags.Lsp| DependencyLogTags.BackgroundProcessing)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<WoodstockBanParametersInput> banInput)
         {
@@ -974,6 +1036,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.BackgroundProcessing)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<WoodstockBanParametersInput> banInput)
         {
@@ -1009,8 +1073,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban summaries.
         /// </summary>
-        [HttpPost("players/banSummaries")]
+        [HttpGet("players/banSummaries")]
         [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Banning)]
         public async Task<IActionResult> GetBanSummaries(
             [FromBody] IList<ulong> xuids)
         {
@@ -1028,6 +1094,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Banning)]
         public async Task<IActionResult> GetBanHistory(
             ulong xuid)
         {
@@ -1042,6 +1110,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Banning)]
         public async Task<IActionResult> GetBanHistory(
             string gamertag)
         {
@@ -1066,6 +1136,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Group)]
         public async Task<IActionResult> GetGroups()
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -1080,6 +1152,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(WoodstockPlayerInventory))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Group)]
         public async Task<IActionResult> GetPlayerInventory(
             ulong xuid)
         {
@@ -1115,7 +1189,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory | DependencyLogTags.Kusto)]
         [SwaggerResponse(200, type: typeof(WoodstockPlayerInventory))]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
         public async Task<IActionResult> GetPlayerInventoryByProfileId(
             int profileId)
         {
@@ -1148,6 +1224,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<WoodstockInventoryProfile>))]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
         public async Task<IActionResult> GetPlayerInventoryProfiles(
             ulong xuid)
         {
@@ -1171,6 +1249,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("player/xuid({xuid})/accountInventory")]
         [SwaggerResponse(200, type: typeof(WoodstockAccountInventory))]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
         public async Task<IActionResult> GetAccountInventory(
             ulong xuid)
         {
@@ -1194,6 +1274,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] WoodstockGroupGift groupGift)
         {
@@ -1282,6 +1364,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] WoodstockGroupGift groupGift)
         {
@@ -1346,6 +1430,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] WoodstockGift gift)
@@ -1391,6 +1477,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1457,6 +1545,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -1481,6 +1571,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<WoodstockGiftHistory>))]
+        [LogTagDependency(DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> GetGiftHistoriesAsync(
             ulong xuid)
         {
@@ -1499,6 +1591,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<WoodstockGiftHistory>))]
+        [LogTagDependency(DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> GetGiftHistoriesAsync(
             int groupId)
         {
@@ -1517,6 +1611,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("notification/{notificationId}/history")]
         [SwaggerResponse(200, type: typeof(IList<NotificationHistory>))]
+        [LogTagDependency(DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> GetNotificationHistoriesAsync(
             string notificationId)
         {
@@ -1534,6 +1630,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/notifications")]
         [SwaggerResponse(200, type: typeof(IList<Notification>))]
+        [LogTagDependency(DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> GetPlayerNotifications(
             ulong xuid,
             [FromQuery] int maxResults = DefaultMaxResults)
@@ -1554,6 +1652,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("group/groupId({groupId})/notifications")]
         [SwaggerResponse(200, type: typeof(IList<UserGroupNotification>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Lookup | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> GetGroupNotifications(
             int groupId,
             [FromQuery] int maxResults = DefaultMaxResults)
@@ -1578,6 +1678,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> SendPlayerNotifications(
             [FromBody] BulkCommunityMessage communityMessage)
         {
@@ -1628,6 +1730,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
             [FromBody] LspGroupCommunityMessage communityMessage)
@@ -1671,6 +1775,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> EditPlayerNotification(
             Guid notificationId,
             ulong xuid,
@@ -1714,6 +1820,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> EditGroupNotification(
             Guid notificationId,
             [FromBody] LspGroupCommunityMessage editParameters)
@@ -1756,6 +1864,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -1786,6 +1896,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -1810,6 +1922,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<Leaderboard>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Leaderboards)]
         public async Task<IActionResult> GetLeaderboards()
         {
             var leaderboards = await this.leaderboardProvider.GetLeaderboardsAsync().ConfigureAwait(true);
@@ -1827,6 +1941,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(Leaderboard))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Leaderboards)]
         public async Task<IActionResult> GetLeaderboardMetadata(
             [FromQuery] ScoreboardType scoreboardType,
             [FromQuery] ScoreType scoreType,
@@ -1859,6 +1975,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Leaderboards)]
         public async Task<IActionResult> GetLeaderboardScores(
             [FromQuery] ScoreboardType scoreboardType,
             [FromQuery] ScoreType scoreType,
@@ -1891,6 +2009,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Leaderboards)]
         public async Task<IActionResult> GetLeaderboardScoresAroundXuid(
             ulong xuid,
             [FromQuery] ScoreboardType scoreboardType,
@@ -1923,6 +2043,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager,
             UserRole.HorizonDesigner)]
         [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Leaderboards)]
         public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);

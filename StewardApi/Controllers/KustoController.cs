@@ -9,6 +9,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
@@ -24,6 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
         UserRole.SupportAgentNew)]
+    [LogTagTitle(TitleLogTags.TitleAgnostic)]
     public class KustoController : Controller
     {
         private readonly IKustoProvider kustoProvider;

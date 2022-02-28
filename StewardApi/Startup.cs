@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Reflection;
 using AutoMapper;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -136,7 +137,11 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSignalR().AddNewtonsoftJsonProtocol();
 
-            services.AddApplicationInsightsTelemetry();
+            services.AddApplicationInsightsTelemetry(
+                new ApplicationInsightsServiceOptions
+                {
+                    EnableAdaptiveSampling = false,
+                });
 
             services.AddSwaggerGen(options =>
             {

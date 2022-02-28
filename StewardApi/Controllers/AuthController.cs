@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
+using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
@@ -18,6 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [Route("api/v1")]
     [Authorize]
+    [LogTagTitle(TitleLogTags.TitleAgnostic)]
     public sealed class AuthController : ControllerBase
     {
         private readonly IStewardUserProvider stewardUserProvider;

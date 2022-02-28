@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -46,6 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
+    [LogTagTitle(TitleLogTags.Sunrise)]
     public sealed class SunriseController : ControllerBase
     {
         private const int DefaultStartIndex = 0;

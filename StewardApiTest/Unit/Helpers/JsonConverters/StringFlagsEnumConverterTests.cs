@@ -2,10 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 
 namespace Turn10.LiveOps.StewardTest.Unit.JsonConverters
