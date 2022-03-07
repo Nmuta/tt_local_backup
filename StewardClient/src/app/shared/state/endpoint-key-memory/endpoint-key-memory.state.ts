@@ -6,7 +6,7 @@ import { InitEndpointKeys } from './endpoint-key-memory.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { LspEndpoints } from '@models/lsp-endpoints';
 import { clone } from 'lodash';
-import { SettingsService } from '@services/settings';
+import { SettingsService } from '@services/settings/settings';
 
 /**
  * Defines the endpoint key memory model.

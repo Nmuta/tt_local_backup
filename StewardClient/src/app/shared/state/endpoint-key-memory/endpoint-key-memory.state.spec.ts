@@ -5,7 +5,7 @@ import faker from 'faker';
 import { EndpointKeyMemoryState } from './endpoint-key-memory.state';
 import { InitEndpointKeys } from './endpoint-key-memory.actions';
 import { of } from 'rxjs';
-import { createMockSettingsService, SettingsService } from '@services/settings';
+import { createMockSettingsService, SettingsService } from '@services/settings/settings';
 import { LspEndpoints } from '@models/lsp-endpoints';
 
 describe('EndpointKeyMemoryState', () => {

@@ -7,7 +7,7 @@ import { BackgroundJob } from '@models/background-job';
 import { ToolsAvailability } from '@models/blob-storage';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { BlobStorageService } from '@services/blob-storage';
-import { SettingsService } from '@services/settings';
+import { SettingsService } from '@services/settings/settings';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { sortBy } from 'lodash';
 import { DateTime } from 'luxon';

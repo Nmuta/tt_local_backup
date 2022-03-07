@@ -27,10 +27,17 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { StewardUserModule } from '@views/steward-user/steward-user.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { LuxonModule } from 'luxon-angular';
+import { CacheDeleteComponent } from './components/cache-delete/cache-delete.component';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
-  declarations: [StewardManagementComponent, KustoManagementComponent, ReleaseManagementComponent],
+  declarations: [
+    StewardManagementComponent,
+    KustoManagementComponent,
+    ReleaseManagementComponent,
+    CacheDeleteComponent,
+  ],
   imports: [
     StewardManagementRoutingModule,
     CommonModule,
@@ -58,7 +65,8 @@ import { LuxonModule } from 'luxon-angular';
     StewardUserModule,
     PipesModule,
     LuxonModule,
+    StateManagersModule,
   ],
-  exports: [KustoManagementComponent, ReleaseManagementComponent],
+  exports: [KustoManagementComponent, ReleaseManagementComponent, CacheDeleteComponent],
 })
 export class StewardManagementModule {}

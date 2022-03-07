@@ -33,9 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="UtilController"/> class.
         /// </summary>
-        public UtilController()
-        {
-        }
+        public UtilController() { }
 
         /// <summary>
         ///     Returns the provided response code. Similar to httpstat.us.
