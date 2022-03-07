@@ -82,7 +82,7 @@
         "siteConfig": {
           "phpVersion": "off",
           "scmType": null,
-          "use32BitWorkerProcess": true,
+          "use32BitWorkerProcess": false,
           "webSocketsEnabled": false,
           "alwaysOn": true,
           "httpLoggingEnabled": true,
@@ -150,7 +150,7 @@
               "phpVersion": "off",
               "scmType": "LocalGit",
               "netFrameworkVersion": "v4.0",
-              "use32BitWorkerProcess": true,
+              "use32BitWorkerProcess": false,
               "webSocketsEnabled": false,
               "alwaysOn": true,
               "httpsOnly": true,
