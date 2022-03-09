@@ -1,9 +1,7 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { stewardUrls } from '@support/steward/urls';
 
 /** Performs a search by gtag and waits for the search to complete. */
 export function searchByGtag(gtag: string): void {
-  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('button', 'GTAG').click();
   cy.contains('mat-form-field', 'Gamertag').click().type(`${gtag}\n`);
   waitForProgressSpinners();
@@ -11,7 +9,6 @@ export function searchByGtag(gtag: string): void {
 
 /** Performs a search by xuid and waits for the search to complete. */
 export function searchByXuid(xuid: string): void {
-  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('button', 'XUID').click();
   cy.contains('mat-form-field', 'Xuid').click().type(`${xuid}\n`);
   waitForProgressSpinners();
@@ -19,7 +16,6 @@ export function searchByXuid(xuid: string): void {
 
 /** Performs a search by t10id and waits for the search to complete. */
 export function searchByT10Id(t10Id: string): void {
-  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('button', 'T10').click();
   cy.contains('mat-form-field', 'T10 Id').click().type(`${t10Id}\n`);
   waitForProgressSpinners();
@@ -27,7 +23,6 @@ export function searchByT10Id(t10Id: string): void {
 
 /** Selects an LSP group from the dropdown. */
 export function selectLspGroup(groupName: string): void {
-  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('div', 'LSP Group Selection').click();
   waitForProgressSpinners();
   cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);
@@ -44,30 +39,30 @@ export function verifyChip(chipText: string): void {
 
 /** Switches to the Gravity title. */
 export function selectGravity(): void {
-  cy.contains('a', 'Gravity').click();
+  cy.contains('a', 'Street').click();
   waitForProgressSpinners();
 }
 
 /** Switches to the Apollo title. */
 export function selectApollo(): void {
-  cy.contains('a', 'Apollo').click();
+  cy.contains('a', 'FM7').click();
   waitForProgressSpinners();
 }
 /** Switches to the Opus title. */
 export function selectOpus(): void {
-  cy.contains('a', 'Opus').click();
+  cy.contains('a', 'FH3').click();
   waitForProgressSpinners();
 }
 
 /** Switches to the Sunrise title. */
 export function selectSunrise(): void {
-  cy.contains('a', 'Sunrise').click();
+  cy.contains('a', 'FH4').click();
   waitForProgressSpinners();
 }
 
 /** Switches to the Woodstock title. */
 export function selectWoodstock(): void {
-  cy.contains('a', 'Woodstock').click();
+  cy.contains('a', 'FH5').click();
   waitForProgressSpinners();
 }
 

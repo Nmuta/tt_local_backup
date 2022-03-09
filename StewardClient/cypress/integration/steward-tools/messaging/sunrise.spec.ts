@@ -4,6 +4,7 @@ import { searchByGtag, selectLspGroup, searchByXuid, selectSunrise, verifyChip }
 import { jordan } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
+import { stewardUrls } from '@support/steward/urls';
 
 context('Steward / Tools / Messaging / Sunrise', () => {
   beforeEach(() => {
@@ -14,8 +15,9 @@ context('Steward / Tools / Messaging / Sunrise', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
-      searchByGtag(jordan.gtag);
+      cy.visit(stewardUrls.tools.messaging.sunrise);
       selectSunrise();
+      searchByGtag(jordan.gtag);
     });
 
     verifyChip(jordan.gtag);
@@ -28,8 +30,9 @@ context('Steward / Tools / Messaging / Sunrise', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
-      searchByXuid(jordan.xuid);
+      cy.visit(stewardUrls.tools.messaging.sunrise);
       selectSunrise();
+      searchByXuid(jordan.xuid);
     });
 
     verifyChip(jordan.xuid);
@@ -42,8 +45,9 @@ context('Steward / Tools / Messaging / Sunrise', () => {
 
   context('GroupId Lookup', () => {
     beforeEach(() => {
-      selectLspGroup('Live Ops Developers');
+      cy.visit(stewardUrls.tools.messaging.sunrise);
       selectSunrise();
+      selectLspGroup('Live Ops Developers');
     });
 
     verifyNoInputsTest();

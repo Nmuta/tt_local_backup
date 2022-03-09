@@ -17,7 +17,7 @@ context('Steward / Tools / Player Details', () => {
     });
 
     it('should be on Sunrise', () => {
-      cy.contains('a', 'Sunrise').should('have.class', 'mat-stroked-button');
+      cy.contains('a', 'FH4').should('have.class', 'mat-stroked-button');
     });
 
     it('gamertag should be empty', () => {
@@ -25,11 +25,11 @@ context('Steward / Tools / Player Details', () => {
     });
 
     it('should have correct links to other titles', () => {
-      cy.contains('a', 'Sunrise').should('exist');
-      cy.contains('a', 'Apollo').should('exist');
-      cy.contains('a', 'Opus').should('exist');
-      cy.contains('a', 'Gravity').should('exist');
-      cy.contains('a', 'Woodstock').should(env.testTitle.woodstock ? 'exist' : 'not.exist');
+      cy.contains('a', 'FH4').should('exist');
+      cy.contains('a', 'FM7').should('exist');
+      cy.contains('a', 'FH3').should('exist');
+      cy.contains('a', 'Street').should('exist');
+      cy.contains('a', 'FH5').should(env.testTitle.woodstock ? 'exist' : 'not.exist');
       cy.contains('a', 'Steelhead').should(env.testTitle.steelhead ? 'exist' : 'not.exist');
     });
 

@@ -14,5 +14,7 @@
   },
   "supportFile": "cypress/support/commands.ts",
   "video": false,
-  "screenshotOnRunFailure": false
+  "screenshotOnRunFailure": false,
+  "viewportWidth": 1920,
+  "viewportHeight": 1080
 }

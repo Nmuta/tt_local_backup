@@ -22,10 +22,10 @@ context('Steward / Tools / Gifting / Gravity', () => {
 
     verifyChip(jordan.gtag);
     verifyNoInputsTest();
-    verifyNoGiftReasonTest();
+    verifyNoGiftReasonTest('SOFT CURRENCY');
     verifyTooManySoftCurrencyTest();
     verifyTooManyHardCurrencyTest();
-    verifyValidGiftTest();
+    verifyValidGiftTest('SOFT CURRENCY');
   });
 
   context('XUID Lookup', () => {
@@ -38,10 +38,10 @@ context('Steward / Tools / Gifting / Gravity', () => {
 
     verifyChip(jordan.xuid);
     verifyNoInputsTest();
-    verifyNoGiftReasonTest();
+    verifyNoGiftReasonTest('SOFT CURRENCY');
     verifyTooManySoftCurrencyTest();
     verifyTooManyHardCurrencyTest();
-    verifyValidGiftTest();
+    verifyValidGiftTest('SOFT CURRENCY');
   });
 });
 

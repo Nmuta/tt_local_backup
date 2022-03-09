@@ -4,6 +4,7 @@ import { searchByGtag, selectLspGroup, searchByXuid, selectWoodstock, verifyChip
 import { luke } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
+import { stewardUrls } from '@support/steward/urls';
 
 context('Steward / Tools / Messaging / Woodstock', () => {
   beforeEach(() => {
@@ -14,8 +15,9 @@ context('Steward / Tools / Messaging / Woodstock', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
-      searchByGtag(luke.gtag);
+      cy.visit(stewardUrls.tools.messaging.sunrise);
       selectWoodstock();
+      searchByGtag(luke.gtag);
     });
 
     verifyChip(luke.gtag);
@@ -28,8 +30,9 @@ context('Steward / Tools / Messaging / Woodstock', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
-      searchByXuid(luke.xuid);
+      cy.visit(stewardUrls.tools.messaging.sunrise);
       selectWoodstock();
+      searchByXuid(luke.xuid);
     });
 
     verifyChip(luke.xuid);
@@ -42,8 +45,9 @@ context('Steward / Tools / Messaging / Woodstock', () => {
 
   context('GroupId Lookup', () => {
     beforeEach(() => {
-      selectLspGroup('Live Ops Developers');
+      cy.visit(stewardUrls.tools.messaging.sunrise);
       selectWoodstock();
+      selectLspGroup('Live Ops Developers');
     });
 
     verifyNoInputsTest();

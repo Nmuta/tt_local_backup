@@ -1,16 +1,44 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BaseInterceptor } from '@components/base-component/base.interceptor';
 import { environment } from '@environments/environment';
-import { Store } from '@ngxs/store';
-import { AppState } from '@shared/state/app-state';
-import { Observable } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
+import {
+  UserSettingsState,
+  UserSettingsStateModel,
+} from '@shared/state/user-settings/user-settings.state';
+import { filter, map, Observable, ReplaySubject, switchMap } from 'rxjs';
 
 /** Intercepts requests to Steward and attaches endpoint header based on user's endpoint selection. */
 @Injectable()
-export class EndpointSelectionInterceptor implements HttpInterceptor {
+export class EndpointSelectionInterceptor extends BaseInterceptor implements HttpInterceptor {
+  @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
+
+  private readonly validSettings$ = new ReplaySubject<UserSettingsStateModel>(1);
   private readonly headerName: string = 'endpointKey';
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store) {
+    super();
+
+    this.settings$
+      .pipe(
+        map(v => {
+          const containsAllEndpointKeys =
+            v.apolloEndpointKey &&
+            v.sunriseEndpointKey &&
+            v.steelheadEndpointKey &&
+            v.woodstockEndpointKey;
+          if (containsAllEndpointKeys) {
+            return v;
+          } else {
+            return null;
+          }
+        }),
+      )
+      .subscribe(v => this.validSettings$.next(v));
+
+    this.onDestroy$.subscribe(() => this.validSettings$.complete());
+  }
 
   /** Interception hook. */
   public intercept(
@@ -26,11 +54,29 @@ export class EndpointSelectionInterceptor implements HttpInterceptor {
 
   /** Called when we attempt to handle the request. */
   public handle(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    /** Allow passthrough if the endpointKey header is already set. */
-    if (request.headers.has(this.headerName)) {
+    const titleRegex = /^\/?api\/v1\/title\/.*$/i;
+    const url = new URL(request.url);
+    const alreadyHasHeader = request.headers.has(this.headerName);
+    const isTitleUrl = titleRegex.test(url.pathname);
+
+    if (alreadyHasHeader || !isTitleUrl) {
       return next.handle(request);
     }
 
+    return this.validSettings$.pipe(
+      filter(v => !!v),
+      switchMap(latestValidUserSettings =>
+        this.handleRequest(latestValidUserSettings, request, next),
+      ),
+    );
+  }
+
+  /** Handles the given request. */
+  private handleRequest(
+    latestValidUserSettings: UserSettingsStateModel,
+    request: HttpRequest<unknown>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<unknown>> {
     const apolloRegex = /^\/?api\/v1\/title\/apollo.*$/i;
     const sunriseRegex = /^\/?api\/v1\/title\/sunrise.*$/i;
     const woodstockRegex = /^\/?api\/v1\/title\/woodstock.*$/i;
@@ -39,9 +85,7 @@ export class EndpointSelectionInterceptor implements HttpInterceptor {
     let requestWithHeader: HttpRequest<unknown> = request.clone();
 
     if (apolloRegex.test(url.pathname)) {
-      const endpointKey = this.store.selectSnapshot<string>(
-        (state: AppState) => state.userSettings.apolloEndpointKey,
-      );
+      const endpointKey = latestValidUserSettings.apolloEndpointKey;
 
       requestWithHeader = request.clone({
         headers: request.headers.set(this.headerName, 'Apollo|' + endpointKey),
@@ -49,9 +93,7 @@ export class EndpointSelectionInterceptor implements HttpInterceptor {
     }
 
     if (sunriseRegex.test(url.pathname)) {
-      const endpointKey = this.store.selectSnapshot<string>(
-        (state: AppState) => state.userSettings.sunriseEndpointKey,
-      );
+      const endpointKey = latestValidUserSettings.sunriseEndpointKey;
 
       requestWithHeader = request.clone({
         headers: request.headers.set(this.headerName, 'Sunrise|' + endpointKey),
@@ -59,9 +101,7 @@ export class EndpointSelectionInterceptor implements HttpInterceptor {
     }
 
     if (woodstockRegex.test(url.pathname)) {
-      const endpointKey = this.store.selectSnapshot<string>(
-        (state: AppState) => state.userSettings.woodstockEndpointKey,
-      );
+      const endpointKey = latestValidUserSettings.woodstockEndpointKey;
 
       requestWithHeader = request.clone({
         headers: request.headers.set(this.headerName, 'Woodstock|' + endpointKey),
@@ -69,9 +109,7 @@ export class EndpointSelectionInterceptor implements HttpInterceptor {
     }
 
     if (steelheadRegex.test(url.pathname)) {
-      const endpointKey = this.store.selectSnapshot<string>(
-        (state: AppState) => state.userSettings.steelheadEndpointKey,
-      );
+      const endpointKey = latestValidUserSettings.steelheadEndpointKey;
 
       requestWithHeader = request.clone({
         headers: request.headers.set(this.headerName, 'Steelhead|' + endpointKey),

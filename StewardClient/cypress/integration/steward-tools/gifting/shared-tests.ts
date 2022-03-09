@@ -7,11 +7,11 @@ export function verifyNoInputsTest(): void {
   });
 }
 
-export function verifyNoGiftReasonTest(): void {
+export function verifyNoGiftReasonTest(currencyName: string = 'Credits'): void {
   it('should not be able to send a gift without a gift reason', () => {
     // Setup valid gift
-    cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
-    cy.contains('mat-option', 'Credits').click();
+    cy.contains('mat-form-field', 'Search for an item').click().type(currencyName);
+    cy.contains('mat-option', currencyName).click();
     cy.contains('button', 'Add Item').click();
 
     // Expect
@@ -22,11 +22,11 @@ export function verifyNoGiftReasonTest(): void {
   });
 }
 
-export function verifyValidGiftTest(): void {
+export function verifyValidGiftTest(currencyName: string = 'Credits'): void {
   it('should be able to send a gift with proper inputs', () => {
     // Setup valid gift
-    cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
-    cy.contains('mat-option', 'Credits').click();
+    cy.contains('mat-form-field', 'Search for an item').click().type(currencyName);
+    cy.contains('mat-option', currencyName).click();
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();

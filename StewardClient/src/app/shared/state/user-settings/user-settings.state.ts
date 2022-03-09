@@ -41,7 +41,7 @@ export class UserSettingsStateModel {
 @State<UserSettingsStateModel>({
   name: 'userSettings',
   defaults: {
-    enableFakeApi: !environment.production,
+    enableFakeApi: false,
     enableStagingApi: false,
     appVersion: undefined,
     navbarTools: {},
