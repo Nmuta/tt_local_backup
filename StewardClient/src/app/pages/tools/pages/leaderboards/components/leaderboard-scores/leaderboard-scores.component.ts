@@ -20,8 +20,10 @@ import {
   Leaderboard,
   LeaderboardQuery,
   LeaderboardScore,
+  LeaderboardMetadataAndQuery,
   determineScoreTypeQualifier,
   LEADERBOARD_PAGINATOR_SIZES,
+  generateLeaderboardMetadataString,
 } from '@models/leaderboards';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
@@ -79,7 +81,7 @@ export class LeaderboardScoresComponent
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() service: LeaderboardScoresContract;
-  @Input() query: LeaderboardQuery;
+  @Input() leaderboard: LeaderboardMetadataAndQuery;
   @Input() externalSelectedScore: LeaderboardScore;
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
@@ -91,12 +93,15 @@ export class LeaderboardScoresComponent
 
   public isMultiDeleteActive: boolean = false;
   public scoreTypeQualifier: string = '';
-  public activeLeaderboard: Leaderboard;
+  public LeaderboardView = LeaderboardView;
   public activeLeaderboardView: LeaderboardView;
   public activeXuid: BigNumber;
 
   public selectedScores: LeaderboardScore[] = [];
   public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
+
+  private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
+  public matCardSubtitle = this.matCardSubtitleDefault;
 
   /** Paginator jump form controls. */
   public jumpFormControls = {
@@ -118,11 +123,10 @@ export class LeaderboardScoresComponent
       throw new Error('No service is defined for leaderboard scores.');
     }
 
-    this.setupGetLeaderboardMetadataObservable();
     this.setupGetLeaderboardScoresObservable();
 
-    if (!!this.query) {
-      this.getLeaderboardScores$.next(this.query);
+    if (!!this.leaderboard?.query) {
+      this.getLeaderboardScores$.next(this.leaderboard.query);
     }
   }
 
@@ -133,8 +137,12 @@ export class LeaderboardScoresComponent
       this.jumpToScore();
     }
 
-    if (!!changes.query && !!this.query) {
-      this.getLeaderboardScores$.next(this.query);
+    if (!!changes?.leaderboard && !!this.leaderboard?.query) {
+      this.getLeaderboardScores$.next(this.leaderboard.query);
+
+      this.matCardSubtitle = !!this.leaderboard?.metadata
+        ? generateLeaderboardMetadataString(this.leaderboard.metadata)
+        : 'Could not find leaderboard metadata';
     }
   }
 
@@ -198,18 +206,18 @@ export class LeaderboardScoresComponent
       .deleteLeaderboardScores$(scoreIds)
       .pipe(this.deleteLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.getLeaderboardScores$.next(this.query);
+        this.getLeaderboardScores$.next(this.leaderboard.query);
         this.scoresDeleted.emit(scores);
       });
   }
 
   /** Hook into paginator page changes. */
   public paginatorPageChange(event: PageEvent): void {
-    this.query.pi = event.pageIndex;
-    this.query.ps = event.pageSize;
+    this.leaderboard.query.pi = event.pageIndex;
+    this.leaderboard.query.ps = event.pageSize;
 
     this.router.navigate([], {
-      queryParams: this.query,
+      queryParams: this.leaderboard.query,
       replaceUrl: true,
     });
   }
@@ -291,38 +299,17 @@ export class LeaderboardScoresComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe(scores => {
-        this.scoreTypeQualifier = determineScoreTypeQualifier(this.query.scoreTypeId);
+        this.scoreTypeQualifier = determineScoreTypeQualifier(this.leaderboard.query.scoreTypeId);
 
-        if (this.query?.pi >= 0) {
-          this.paginator.pageIndex = this.query.pi;
+        if (this.leaderboard.query?.pi >= 0) {
+          this.paginator.pageIndex = this.leaderboard.query.pi;
         }
 
-        if (this.query?.ps >= 0) {
-          this.paginator.pageSize = this.query.ps;
+        if (this.leaderboard.query?.ps >= 0) {
+          this.paginator.pageSize = this.leaderboard.query.ps;
         }
 
         this.leaderboardScores.data = scores;
-      });
-  }
-
-  private setupGetLeaderboardMetadataObservable(): void {
-    this.getLeaderboardScores$
-      .pipe(
-        filter(q => !!q),
-        switchMap(query => {
-          return this.service
-            .getLeaderboardMetadata$(
-              query.scoreboardTypeId,
-              query.scoreTypeId,
-              query.trackId,
-              query.gameScoreboardId,
-            )
-            .pipe(catchError(() => EMPTY));
-        }),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe(leaderboard => {
-        this.activeLeaderboard = leaderboard;
       });
   }
 

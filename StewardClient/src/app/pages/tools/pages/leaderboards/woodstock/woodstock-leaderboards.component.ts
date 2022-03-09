@@ -4,11 +4,13 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { ignorePaginatorQueryParams } from '@helpers/paginator';
 import {
   isValidLeaderboardQuery,
-  LeaderboardQuery,
+  LeaderboardMetadataAndQuery,
   LeaderboardScore,
   paramsToLeadboardQuery,
 } from '@models/leaderboards';
-import { filter, map, takeUntil } from 'rxjs';
+import { WoodstockService } from '@services/woodstock';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { catchError, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
 
 /** The Woodstock leaderboards page. */
 @Component({
@@ -18,9 +20,16 @@ import { filter, map, takeUntil } from 'rxjs';
 export class WoodstockLeaderboardsComponent extends BaseComponent implements OnInit {
   public statsSelectedScore: LeaderboardScore;
   public scoresDeleted: LeaderboardScore[];
-  public activeQuery: LeaderboardQuery;
+  public activeLeaderboard: LeaderboardMetadataAndQuery;
+  public temporaryLeaderboard: LeaderboardMetadataAndQuery;
 
-  constructor(private readonly route: ActivatedRoute, private readonly router: Router) {
+  public getActionMonitor = new ActionMonitor('GET leaderboard metadata');
+
+  constructor(
+    private readonly woodstockService: WoodstockService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+  ) {
     super();
   }
 
@@ -43,15 +52,18 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
     this.route.queryParams
       .pipe(
         ignorePaginatorQueryParams(),
+        tap(() => {
+          this.getActionMonitor = new ActionMonitor(this.getActionMonitor.dispose().label);
+        }),
         map(params => {
           const query = paramsToLeadboardQuery(params);
           if (!isValidLeaderboardQuery(query)) {
-            if (!!this.activeQuery) {
+            if (!!this.activeLeaderboard?.query) {
               // If there is an active query but no valid query params
               // Force the active query into the URL's query params
               this.router.navigate([], {
                 relativeTo: this.route,
-                queryParams: this.activeQuery,
+                queryParams: this.activeLeaderboard.query,
               });
             }
             return null;
@@ -59,11 +71,34 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
 
           return query;
         }),
-        filter(query => !!query),
+        filter(query => !!query), // Ignore invalid queries
+        tap(query => {
+          this.temporaryLeaderboard = {
+            query: query,
+            metadata: null,
+          };
+        }),
+        switchMap(() => {
+          this.getActionMonitor = new ActionMonitor(this.getActionMonitor.dispose().label);
+
+          return this.woodstockService
+            .getLeaderboardMetadata$(
+              this.temporaryLeaderboard.query.scoreboardTypeId,
+              this.temporaryLeaderboard.query.scoreTypeId,
+              this.temporaryLeaderboard.query.trackId,
+              this.temporaryLeaderboard.query.gameScoreboardId,
+            )
+            .pipe(
+              this.getActionMonitor.monitorSingleFire(),
+              // Return null to let child components show errors
+              catchError(() => of(null)),
+            );
+        }),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(query => {
-        this.activeQuery = query;
+      .subscribe(leaderboard => {
+        this.temporaryLeaderboard.metadata = leaderboard;
+        this.activeLeaderboard = this.temporaryLeaderboard;
       });
   }
 }

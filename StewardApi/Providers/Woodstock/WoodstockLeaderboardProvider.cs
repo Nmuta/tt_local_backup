@@ -12,7 +12,8 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Pegasus;
+using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.Services.CMSRetrieval;
@@ -24,6 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     {
         private readonly IWoodstockService woodstockService;
         private readonly IWoodstockPegasusService pegasusService;
+        private readonly ILoggingService loggingService;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -32,14 +34,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         public WoodstockLeaderboardProvider(
             IWoodstockService woodstockService,
             IWoodstockPegasusService pegasusService,
+            ILoggingService loggingService,
             IMapper mapper)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.woodstockService = woodstockService;
             this.pegasusService = pegasusService;
+            this.loggingService = loggingService;
             this.mapper = mapper;
         }
 
@@ -48,21 +53,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
         public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync()
         {
-            var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync();
-            var getCarClasses = this.pegasusService.GetCarClassesAsync();
+            var exceptions = new List<Exception>();
+            var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync().SuccessOrDefault(Array.Empty<Leaderboard>(), exceptions);
+            var getCarClasses = this.pegasusService.GetCarClassesAsync().SuccessOrDefault(Array.Empty<CarClass>(), exceptions);
 
             await Task.WhenAll(getPegasusLeaderboards, getCarClasses).ConfigureAwait(false);
 
-            var leaderboards = getPegasusLeaderboards.GetAwaiter().GetResult();
-            var carClasses = getCarClasses.GetAwaiter().GetResult();
-
-            foreach (var leaderboard in leaderboards)
+            if (getPegasusLeaderboards.IsFaulted)
             {
-                var carClass = carClasses.FirstOrDefault(c => c.Id == leaderboard.CarClassId);
-                if (carClass != null)
+                throw new UnknownFailureStewardException(
+                    "Failed to get leaderboards from Pegasus",
+                    getPegasusLeaderboards.Exception);
+            }
+
+            var leaderboards = getPegasusLeaderboards.GetAwaiter().GetResult();
+
+            if (getCarClasses.IsCompletedSuccessfully)
+            {
+                var carClassesDict = getCarClasses.GetAwaiter().GetResult().ToDictionary(carClass => carClass.Id);
+                foreach (var leaderboard in leaderboards)
                 {
-                    leaderboard.CarClass = carClass.DisplayName;
+                    if (carClassesDict.TryGetValue(leaderboard.CarClassId, out CarClass carClass))
+                    {
+                        leaderboard.CarClass = carClass.DisplayName;
+                    }
                 }
+
+            }
+            else
+            {
+                // Leaderboards will work without car class association. Log custom exception for tracking purposes.
+                this.loggingService.LogException(new AppInsightsException("Failed to get car classes from Pegasus when building leaderboards", getCarClasses.Exception));
             }
 
             return leaderboards;
@@ -91,9 +112,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 Xuid = 1, // 1 = System ID
             };
 
-            var result = await this.woodstockService.GetLeaderboardScoresAsync(searchParams, startAt, maxResults, endpoint).ConfigureAwait(false);
+            try
+            {
+                var result = await this.woodstockService.GetLeaderboardScoresAsync(searchParams, startAt, maxResults, endpoint).ConfigureAwait(false);
 
-            return this.mapper.Map<IEnumerable<LeaderboardScore>>(result);
+                return this.mapper.Map<IEnumerable<LeaderboardScore>>(result);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get leaderboard scores with params: {this.BuildParametersErrorString(searchParams)}", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -119,14 +147,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 Xuid = xuid,
             };
 
-            var result = await this.woodstockService.GetLeaderboardScoresAsync(searchParams, 0, maxResults, endpoint).ConfigureAwait(false);
-
-            if (result.Count <= 0)
+            try
             {
-                throw new NotFoundStewardException($"Could not find player XUID in leaderboard: {xuid}");
-            }
 
-            return this.mapper.Map<IEnumerable<LeaderboardScore>>(result);
+                var result = await this.woodstockService.GetLeaderboardScoresAsync(searchParams, 0, maxResults, endpoint).ConfigureAwait(false);
+
+                if (result.Count <= 0)
+                {
+                    throw new NotFoundStewardException($"Could not find player XUID in leaderboard: {xuid}");
+                }
+
+                return this.mapper.Map<IEnumerable<LeaderboardScore>>(result);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get leaderboard scores with params: {this.BuildParametersErrorString(searchParams)}", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -139,7 +175,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new BadRequestStewardException($"Cannot provided empty array of score ids.");
             }
 
-            await this.woodstockService.DeleteLeaderboardScoresAsync(scoreIds, endpoint).ConfigureAwait(false);
+            try
+            {
+                await this.woodstockService.DeleteLeaderboardScoresAsync(scoreIds, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Failed to delete leaderboard scores.", ex);
+            }
+        }
+
+        /// <summary>
+        ///     Builds string of leaderboard search parameters used for exception logging purposes.
+        /// </summary>
+        private string BuildParametersErrorString(ForzaSearchLeaderboardsParameters parameters)
+        {
+            return $"(Xuid: {parameters.Xuid}) (ScoreboardType: {parameters.ScoreboardType}) (ScoreType: {parameters.ScoreType}) (ScoreView: {parameters.ScoreView}) (TrackId: {parameters.TrackId}) (PivotId: {parameters.PivotId})";
         }
     }
 }

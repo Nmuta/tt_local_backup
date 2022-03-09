@@ -52,6 +52,7 @@ describe('SearchLeaderboardsComponent', () => {
     scoreType: faker.random.word(),
     carClassId: fakeBigNumber(),
     carClass: faker.random.word(),
+    validationData: [],
   };
 
   const formBuilder: FormBuilder = new FormBuilder();

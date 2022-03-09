@@ -218,11 +218,14 @@ describe('LeaderboardScoresComponent', () => {
     const scoreToDelete = testLeaderboardScores[0];
 
     beforeEach(() => {
-      component.query = {
-        scoreboardTypeId: fakeBigNumber(),
-        scoreTypeId: fakeBigNumber(),
-        gameScoreboardId: fakeBigNumber(),
-        trackId: fakeBigNumber(),
+      component.leaderboard = {
+        metadata: null,
+        query: {
+          scoreboardTypeId: fakeBigNumber(),
+          scoreTypeId: fakeBigNumber(),
+          gameScoreboardId: fakeBigNumber(),
+          trackId: fakeBigNumber(),
+        },
       };
       mockService.deleteLeaderboardScores$ = jasmine
         .createSpy('deleteLeaderboardScores$')
@@ -244,11 +247,14 @@ describe('LeaderboardScoresComponent', () => {
     };
 
     beforeEach(() => {
-      component.query = {
-        scoreboardTypeId: fakeBigNumber(),
-        scoreTypeId: fakeBigNumber(),
-        gameScoreboardId: fakeBigNumber(),
-        trackId: fakeBigNumber(),
+      component.leaderboard = {
+        metadata: null,
+        query: {
+          scoreboardTypeId: fakeBigNumber(),
+          scoreTypeId: fakeBigNumber(),
+          gameScoreboardId: fakeBigNumber(),
+          trackId: fakeBigNumber(),
+        },
       };
     });
 

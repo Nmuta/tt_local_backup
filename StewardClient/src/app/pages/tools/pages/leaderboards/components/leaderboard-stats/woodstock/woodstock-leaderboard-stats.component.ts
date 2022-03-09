@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { LeaderboardQuery, LeaderboardScore } from '@models/leaderboards';
+import { LeaderboardMetadataAndQuery, LeaderboardScore } from '@models/leaderboards';
 import { WoodstockService } from '@services/woodstock';
 
 /**
@@ -10,7 +10,7 @@ import { WoodstockService } from '@services/woodstock';
   templateUrl: './woodstock-leaderboard-stats.component.html',
 })
 export class WoodstockLeaderboardStatsComponent {
-  @Input() query: LeaderboardQuery;
+  @Input() leaderboard: LeaderboardMetadataAndQuery;
   @Input() scoresDeleted: LeaderboardScore[];
   @Output() selectedScore = new EventEmitter<LeaderboardScore>();
 

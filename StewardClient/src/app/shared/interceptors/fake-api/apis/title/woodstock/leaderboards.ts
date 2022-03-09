@@ -39,6 +39,7 @@ export class WoodstockLeaderboardsFakeApi extends FakeApiBase {
             scoreType: faker.random.words(2),
             carClassId: fakeBigNumber(),
             carClass: faker.random.words(2),
+            validationData: [],
           };
         });
     }

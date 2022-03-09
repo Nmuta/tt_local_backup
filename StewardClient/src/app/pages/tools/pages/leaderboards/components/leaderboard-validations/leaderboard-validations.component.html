@@ -1,0 +1,37 @@
+<mat-card>
+  <mat-card-header>
+    <button
+      mat-card-avatar
+      mat-icon-button
+      [matTooltip]="
+        expanded ? 'Collpase leaderboard validation rules' : 'Expand leaderboard validation rules'
+      "
+      (click)="expanded = !expanded"
+    >
+      <mat-icon *ngIf="!expanded">expand_more</mat-icon>
+      <mat-icon *ngIf="expanded">expand_less</mat-icon>
+    </button>
+    <mat-card-title>Leaderboard Validation Rules</mat-card-title>
+    <mat-card-subtitle>{{ matCardSubtitle }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="expanded && !!leaderboard?.metadata">
+      <table class="info-table">
+        <ng-container *ngFor="let validation of leaderboard?.metadata?.validationData">
+          <tr *ngIf="!!validation?.minValue">
+            <th>Min Score</th>
+            <td>{{ validation.minValue }}</td>
+          </tr>
+          <tr *ngIf="!!validation?.maxValue">
+            <th>Max Score</th>
+            <td>{{ validation.maxValue }}</td>
+          </tr>
+          <tr *ngIf="!!validation?.requiredCar">
+            <th>Required Car</th>
+            <td>{{ validation.requiredCar }}</td>
+          </tr>
+        </ng-container>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

@@ -10,11 +10,11 @@ mat-card {
   max-height: unset;
 }
 
-table.full-width {
+.full-width {
   width: 100%;
 }
 
-div.above-leaderboard-scores {
+.above-leaderboard-scores {
   display: flex;
   flex-flow: row wrap;
   width: 100%;
@@ -39,7 +39,11 @@ div.above-leaderboard-scores {
   }
 }
 
-tr.mat-row {
+.jump-to-score-form {
+  margin-top: $gap-small;
+}
+
+.mat-row {
   cursor: pointer;
 
   &.highlighted {

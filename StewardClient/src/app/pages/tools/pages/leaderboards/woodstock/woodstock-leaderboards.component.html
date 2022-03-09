@@ -4,15 +4,26 @@
   <!-- <mat-tab label="Reported Scores">
     <reported-scores></reported-scores>
   </mat-tab> -->
-  <mat-tab label="Search Leaderboards">
+  <mat-tab>
+    <!-- Tab Label -->
+    <ng-template mat-tab-label>
+      Search Leaderboards
+      <error-spinner
+        [isActive]="getActionMonitor.isActive"
+        spinnerMessage="Retrieving Data"
+      ></error-spinner>
+    </ng-template>
+
+    <!-- Tab Content -->
     <woodstock-search-leaderboards></woodstock-search-leaderboards>
     <woodstock-leaderboard-stats
-      [query]="activeQuery"
+      [leaderboard]="activeLeaderboard"
       [scoresDeleted]="scoresDeleted"
       (selectedScore)="onStatsScoreSelected($event)"
     ></woodstock-leaderboard-stats>
+    <leaderboard-validations [leaderboard]="activeLeaderboard"></leaderboard-validations>
     <woodstock-leaderboard-scores
-      [query]="activeQuery"
+      [leaderboard]="activeLeaderboard"
       [externalSelectedScore]="statsSelectedScore"
       (scoresDeleted)="onScoresDeleted($event)"
     ></woodstock-leaderboard-scores>

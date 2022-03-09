@@ -143,9 +143,12 @@ describe('LeaderboardStatsComponent', () => {
       };
 
       const changesWithQuery: SimpleChanges = {
-        query: {
+        leaderboard: {
           previousValue: null,
-          currentValue: query,
+          currentValue: {
+            metadata: null,
+            query: query,
+          },
           firstChange: false,
           isFirstChange: () => {
             return false;
@@ -154,7 +157,10 @@ describe('LeaderboardStatsComponent', () => {
       };
 
       beforeEach(() => {
-        component.query = query;
+        component.leaderboard = {
+          metadata: null,
+          query: query,
+        };
       });
 
       it('should request getLeaderboardScores$', () => {

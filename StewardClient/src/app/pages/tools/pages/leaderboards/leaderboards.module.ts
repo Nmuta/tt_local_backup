@@ -45,6 +45,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { LuxonModule } from 'luxon-angular';
+import { LeaderboardValidationsComponent } from './components/leaderboard-validations/leaderboard-validations.component';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -61,6 +62,8 @@ import { LuxonModule } from 'luxon-angular';
 
     LeaderboardStatsComponent,
     WoodstockLeaderboardStatsComponent,
+
+    LeaderboardValidationsComponent,
   ],
   imports: [
     LeaderboardsRoutingModule,

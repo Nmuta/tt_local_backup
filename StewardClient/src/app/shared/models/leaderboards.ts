@@ -9,6 +9,11 @@ export const DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS = new BigNumber(5000);
 export const DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS = new BigNumber(20);
 export const LEADERBOARD_PAGINATOR_SIZES = [25, 50, 100];
 
+export interface LeaderboardMetadataAndQuery {
+  metadata: Leaderboard;
+  query: LeaderboardQuery;
+}
+
 /** Interface for a leaderboard. */
 export interface Leaderboard {
   name: string;
@@ -20,6 +25,7 @@ export interface Leaderboard {
   scoreType: string;
   carClassId: BigNumber;
   carClass: string;
+  validationData: LeaderboardValidationData[];
 }
 
 /** Interface for an upstream leaderboard score. */
@@ -78,6 +84,21 @@ export interface LeaderboardQuery extends UpstreamLeaderboardQuery {
   [PaginatorQueryParams.Index]?: number;
   /** Paginator size */
   [PaginatorQueryParams.Size]?: number;
+}
+
+/** Interface of required params for a leaderboard query. */
+export interface LeaderboardValidationData {
+  validationType: LeaderboardValidationType;
+  minValue?: BigNumber;
+  maxValue?: BigNumber;
+  requiredCar?: BigNumber;
+}
+
+export enum LeaderboardValidationType {
+  MinMax = 'MinMaxValidation',
+  Car = 'CarValidation',
+  Ghost = 'GhostValidation',
+  Rival = 'RivalValidation',
 }
 
 /** Generates a leaderboard query based on a provided leaderboard. */
@@ -145,4 +166,15 @@ export function determineScoreTypeQualifier(scoreTypeId: BigNumber): string {
   }
 
   return '';
+}
+
+/** Generates an leaderboard metadata overview including name, scoretype, scoreboardType, and carClass.  */
+export function generateLeaderboardMetadataString(leaderboard: Leaderboard): string {
+  let base = `${leaderboard.name} ${leaderboard.scoreType} (${leaderboard.scoreboardType})`;
+
+  if (!!leaderboard.carClass) {
+    base += ` (${leaderboard.carClass} Class)`;
+  }
+
+  return base;
 }

@@ -9,7 +9,12 @@ import {
 } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ZERO } from '@helpers/bignumbers';
-import { LeaderboardQuery, LeaderboardScore } from '@models/leaderboards';
+import {
+  generateLeaderboardMetadataString,
+  LeaderboardMetadataAndQuery,
+  LeaderboardQuery,
+  LeaderboardScore,
+} from '@models/leaderboards';
 import {
   LINE_CHART_SD_THRESHOLD_COLORS,
   NgxLineChartClickEvent,
@@ -41,7 +46,7 @@ export interface LeaderboardStatsContract {
 })
 export class LeaderboardStatsComponent extends BaseComponent implements OnInit, OnChanges {
   @Input() service: LeaderboardStatsContract;
-  @Input() query: LeaderboardQuery;
+  @Input() leaderboard: LeaderboardMetadataAndQuery;
   @Input() scoresDeleted: LeaderboardScore[];
   @Output() selectedScore = new EventEmitter<LeaderboardScore>();
 
@@ -67,6 +72,9 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
     domain: LINE_CHART_SD_THRESHOLD_COLORS,
   };
 
+  private readonly matCardSubtitleDefault = 'Select a leaderboard to show its stats';
+  public matCardSubtitle = this.matCardSubtitleDefault;
+
   /** Lifecycle hook. */
   public ngOnInit(): void {
     if (!this.service) {
@@ -76,11 +84,11 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
 
   /** Lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {
-    const foundQueryChange = !!changes.query && !!this.query;
+    const foundQueryChange = !!changes.leaderboard && !!this.leaderboard?.query;
     const foundScoresDeleted = !!changes.scoresDeleted && this.scoresDeleted?.length > 0;
 
     if (foundQueryChange || foundScoresDeleted) {
-      this.getLeaderboardScores$(this.query).subscribe(scores => {
+      this.getLeaderboardScores$(this.leaderboard.query).subscribe(scores => {
         this.averageMean =
           scores.map(s => s.score.toNumber()).reduce((a, b) => a + b) / scores.length;
         this.standardDeviation = this.generateStandardDeviation(
@@ -89,6 +97,12 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
         this.scores = scores;
         this.generateGraphData();
       });
+    }
+
+    if (foundQueryChange) {
+      this.matCardSubtitle = !!this.leaderboard?.metadata
+        ? generateLeaderboardMetadataString(this.leaderboard.metadata)
+        : 'Could not find leaderboard metadata';
     }
   }
 

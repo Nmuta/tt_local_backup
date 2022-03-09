@@ -13,7 +13,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
-using Turn10.LiveOps.StewardApi.Contracts.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH5_main.Generated;
@@ -336,10 +335,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => Enum.GetName(typeof(FileType), src.Type)))
                 .ReverseMap();
 
-            this.CreateMap<PegasusLeaderboard, Leaderboard>()
+            this.CreateMap<WoodstockLiveOpsContent.LeaderboardV2, Leaderboard>()
                 .ForMember(dest => dest.ScoreType, opt => opt.MapFrom(src => Enum.GetName(typeof(ScoreType), src.ScoreType)))
                 .ForMember(dest => dest.ScoreTypeId, opt => opt.MapFrom(src => src.ScoreType))
-                .ForMember(dest => dest.ScoreboardType, opt => opt.MapFrom(src => Enum.GetName(typeof(ScoreboardType), src.ScoreboardType)))
+                .ForMember(dest => dest.ScoreboardType, opt => opt.MapFrom(src => Enum.GetName(typeof(WoodstockLiveOpsContent.ScoreboardType), src.ScoreboardType)))
                 .ForMember(dest => dest.ScoreboardTypeId, opt => opt.MapFrom(src => src.ScoreboardType))
                 .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => src.ExpectedCarClass.ValueOrDefault(-1)));
 
@@ -351,7 +350,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TractionControlSystem, opt => opt.MapFrom(src => src.TCS))
                 .ForMember(dest => dest.AutomaticTransmission, opt => opt.MapFrom(src => src.Auto));
 
-            this.CreateMap<WoodstockContent.CarClass, CarClass>()
+            this.CreateMap<WoodstockLiveOpsContent.CarClass, CarClass>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarClassId));
         }
 

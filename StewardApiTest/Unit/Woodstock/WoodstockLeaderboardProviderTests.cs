@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
@@ -61,6 +62,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "pegasusService"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenLoggingServiceNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { LoggingService = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "loggingService"));
         }
 
         [TestMethod]
@@ -240,7 +255,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             public IWoodstockPegasusService PegasusService { get; set; } = Substitute.For<IWoodstockPegasusService>();
 
-            public WoodstockLeaderboardProvider Build() => new WoodstockLeaderboardProvider(this.WoodstockService, this.PegasusService, this.Mapper);
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+
+            public WoodstockLeaderboardProvider Build() => new WoodstockLeaderboardProvider(this.WoodstockService, this.PegasusService, this.LoggingService, this.Mapper);
         }
     }
 }

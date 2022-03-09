@@ -2,49 +2,60 @@
   <mat-card-header>
     <mat-icon mat-card-avatar>leaderboard</mat-icon>
     <mat-card-title>Leaderboard Scores</mat-card-title>
-    <mat-card-subtitle>Select a leaderboard to show its scores</mat-card-subtitle>
+    <mat-card-subtitle>
+      {{ matCardSubtitle }}
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <div class="above-leaderboard-scores">
       <div class="search-metadata">
-        <table>
-          <ng-container *ngIf="!!activeLeaderboard">
-            <tr>
-              <th>Leaderboard</th>
-              <td>{{ activeLeaderboard.name }}</td>
+        <ng-container *ngIf="!!leaderboard">
+          <table>
+            <tr *ngIf="activeLeaderboardView">
+              <th>Current View</th>
+              <td>
+                {{ activeLeaderboardView }}
+              </td>
             </tr>
-            <tr>
-              <th>Car Class</th>
-              <td>{{ activeLeaderboard.carClass || 'Not specified' }}</td>
+            <tr *ngIf="activeXuid">
+              <th>Player XUID</th>
+              <td>{{ activeXuid.toString() }}</td>
             </tr>
-            <tr>
-              <th>Board Type</th>
-              <td>{{ activeLeaderboard.scoreboardType }}</td>
-            </tr>
-            <tr>
-              <th>Score Type</th>
-              <td>{{ activeLeaderboard.scoreType }}</td>
-            </tr>
-          </ng-container>
-          <tr *ngIf="activeLeaderboardView">
-            <th>Current View</th>
-            <td>
-              {{ activeLeaderboardView }}
-            </td>
-          </tr>
-          <tr *ngIf="activeXuid">
-            <th>Player XUID</th>
-            <td>{{ activeXuid.toString() }}</td>
-          </tr>
-        </table>
-        <button
-          *ngIf="activeXuid"
-          mat-stroked-button
-          color="primary"
-          (click)="switchToTopOfListView()"
-        >
-          View full leaderboard
-        </button>
+          </table>
+          <button
+            *ngIf="activeXuid"
+            mat-stroked-button
+            color="primary"
+            (click)="switchToTopOfListView()"
+          >
+            View full leaderboard
+          </button>
+
+          <form
+            class="jump-to-score-form"
+            *ngIf="
+              leaderboardScores?.data?.length > 0 &&
+              activeLeaderboardView !== LeaderboardView.Player
+            "
+            [formGroup]="jumpFormGroup"
+            (submit)="jumpToScore()"
+          >
+            <mat-form-field>
+              <mat-label>Jump to score</mat-label>
+              <input matInput autocomplete="off" [formControl]="jumpFormControls.score" />
+            </mat-form-field>
+
+            <button
+              mat-icon-button
+              color="accent"
+              [disabled]="!jumpFormGroup.valid"
+              type="submit"
+              matTooltip="Jump to page where score theshold is found"
+            >
+              <mat-icon>find_in_page</mat-icon>
+            </button>
+          </form>
+        </ng-container>
       </div>
       <!-- Actions for multi-selection of scores. -->
       <div class="multi-select-options">
@@ -93,26 +104,6 @@
         [pageSizeOptions]="paginatorSizes"
         showFirstLastButtons
       ></mat-paginator>
-      <form
-        *ngIf="leaderboardScores?.data?.length > 0"
-        [formGroup]="jumpFormGroup"
-        (submit)="jumpToScore()"
-      >
-        <mat-form-field>
-          <mat-label>Jump to score</mat-label>
-          <input matInput autocomplete="off" [formControl]="jumpFormControls.score" />
-        </mat-form-field>
-
-        <button
-          mat-icon-button
-          color="accent"
-          [disabled]="!jumpFormGroup.valid"
-          type="submit"
-          matTooltip="Jump to page where score theshold is found"
-        >
-          <mat-icon>find_in_page</mat-icon>
-        </button>
-      </form>
     </div>
     <ng-container
       *ngIf="

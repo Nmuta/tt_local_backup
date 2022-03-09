@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Pegasus;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
 
@@ -52,11 +52,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<CarClass>> GetCarClassesAsync()
         {
-            var carClassKey = $"${PegasusBaseCacheKey}CarClasses";
+            var carClassKey = $"{PegasusBaseCacheKey}CarClasses";
 
             async Task<IEnumerable<CarClass>> GetCarClasses()
             {
-                var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<WoodstockContent.CarClass>>(WoodstockContent.CMSFileNames.CarClasses, this.cmsEnvironment).ConfigureAwait(false);
+                var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<WoodstockLiveOpsContent.CarClass>>(WoodstockLiveOpsContent.CMSFileNames.CarClasses, this.cmsEnvironment).ConfigureAwait(false);
                 var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
 
                 this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
@@ -70,11 +70,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync()
         {
-            var leaderboardsKey = $"${PegasusBaseCacheKey}Leaderboards";
+            var leaderboardsKey = $"{PegasusBaseCacheKey}Leaderboards";
 
             async Task<IEnumerable<Leaderboard>> GetLeaderboards()
             {
-                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<PegasusLeaderboard>>(WoodstockContent.CMSFileNames.Leaderboards, this.cmsEnvironment).ConfigureAwait(false); ;
+                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<WoodstockLiveOpsContent.LeaderboardV2>>(WoodstockLiveOpsContent.CMSFileNames.LeaderboardsV2, this.cmsEnvironment).ConfigureAwait(false); ;
                 var leaderboards = this.mapper.Map<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
                 this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
