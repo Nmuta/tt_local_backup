@@ -15,47 +15,47 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
     public interface ISunriseServiceFactory
     {
         /// <summary>
-        ///     Prepares a <see creaf="UserManagementService" />.
+        ///     Prepares a <see cref="UserManagementService" />.
         /// </summary>
         Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="UserInventoryService" />.
+        ///     Prepares a <see cref="UserInventoryService" />.
         /// </summary>
         Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="NotificationsManagementService" />.
+        ///     Prepares a <see cref="NotificationsManagementService" />.
         /// </summary>
         Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="GiftingService" />.
+        ///     Prepares a <see cref="GiftingService" />.
         /// </summary>
         Task<GiftingService> PrepareGiftingServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="LiveOpsService" />.
+        ///     Prepares a <see cref="LiveOpsService" />.
         /// </summary>
         Task<LiveOpsService> PrepareLiveOpsServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="AuctionManagementService" />.
+        ///     Prepares a <see cref="AuctionManagementService" />.
         /// </summary>
         Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="RareCarShopService" />.
+        ///     Prepares a <see cref="RareCarShopService" />.
         /// </summary>
         Task<RareCarShopService> PrepareRareCarShopServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="StorefrontManagementService" />.
+        ///     Prepares a <see cref="StorefrontManagementService" />.
         /// </summary>
         Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="StorefrontService" />.
+        ///     Prepares a <see cref="StorefrontService" />.
         /// </summary>
         Task<StorefrontService> PrepareStorefrontServiceAsync(string endpoint);
     }

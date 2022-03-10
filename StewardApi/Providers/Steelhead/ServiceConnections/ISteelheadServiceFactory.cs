@@ -14,32 +14,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     public interface ISteelheadServiceFactory
     {
         /// <summary>
-        ///     Prepares a <see creaf="UserManagementService" />.
+        ///     Prepares a <see cref="UserManagementService" />.
         /// </summary>
         Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="LiveOpsService" />.
+        ///     Prepares a <see cref="LiveOpsService" />.
         /// </summary>
         Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="UserInventoryService" />.
+        ///     Prepares a <see cref="UserInventoryService" />.
         /// </summary>
         Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="GiftingService" />.
+        ///     Prepares a <see cref="GiftingService" />.
         /// </summary>
         Task<GiftingService> PrepareGiftingServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="NotificationsManagementService" />.
+        ///     Prepares a <see cref="NotificationsManagementService" />.
         /// </summary>
         Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see creaf="AuctionManagementService" />.
+        ///     Prepares a <see cref="AuctionManagementService" />.
         /// </summary>
         Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint);
     }
