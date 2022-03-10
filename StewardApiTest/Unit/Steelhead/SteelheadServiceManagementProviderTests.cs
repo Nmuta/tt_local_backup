@@ -126,7 +126,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public Dependencies()
             {
                 this.SteelheadService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
-                this.SteelheadService.GetCmsRacersCupScheduleAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<double>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleOutput>());
+                this.SteelheadService.GetCmsRacersCupScheduleAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleOutput>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<RacersCupSchedule>(Arg.Any<ForzaRacersCupScheduleData>()).Returns(Fixture.Create<RacersCupSchedule>());
             }

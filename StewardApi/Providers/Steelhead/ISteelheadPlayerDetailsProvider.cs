@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         Task<RacersCupSchedule> GetCmsRacersCupScheduleForUserAsync(
             ulong xuid,
             DateTime startTimeUtc,
-            double daysForward,
+            int daysForward,
             string endpoint);
     }
 }

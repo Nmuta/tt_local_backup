@@ -36,7 +36,5 @@ namespace Turn10.LiveOps.StewardTest.Utilities
 
             return $"bearer {response.AccessToken}";
         }
-
-
     }
 }

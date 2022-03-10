@@ -39,6 +39,8 @@ import {
 } from '@models/community-message';
 import { UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
+import { DateTime } from 'luxon';
+import { RacersCupSchedule } from '@models/racers-cup.model';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -295,6 +297,28 @@ export class SteelheadService {
 
     return this.apiService.getRequest$<PlayerUGCItem[]>(
       `${this.basePath}/storefront/sharecode(${shareCode})`,
+      httpParams,
+    );
+  }
+
+  /** Gets Racer's Cup Schedule by xuid. */
+  public getRacersCupScheduleForUser$(
+    xuid: BigNumber,
+    startTime?: DateTime,
+    daysForward?: number,
+  ): Observable<RacersCupSchedule> {
+    let httpParams = new HttpParams();
+
+    if (startTime) {
+      httpParams = httpParams.append('startTime', startTime.toISO());
+    }
+
+    if (daysForward) {
+      httpParams = httpParams.append('daysForward', daysForward.toString());
+    }
+
+    return this.apiService.getRequest$<RacersCupSchedule>(
+      `${this.basePath}/player/${xuid}/RacerCupSchedule`,
       httpParams,
     );
   }

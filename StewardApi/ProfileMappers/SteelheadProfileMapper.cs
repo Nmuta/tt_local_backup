@@ -141,9 +141,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaBaseChampionshipEventData, RacersCupEvent>()
                 .ForMember(dest => dest.EventWindows, opt => opt.MapFrom(src => src.ChampionshipEventWindows))
                 .ReverseMap();
+            // StartTimeUtc and StartDateUtc are both components of the correct time.
+            // Take the Date value from the date, and add the TimeOfDay from the time for correct values.
             this.CreateMap<ForzaBaseChampionshipEventWindowData, RacersCupEventWindow>()
-                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
-                .ForMember(dest => dest.EndTimeUtc, opt => opt.MapFrom(src => src.EndTime))
+                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartDate.Date + src.StartTime.TimeOfDay))
+                .ForMember(dest => dest.EndTimeUtc, opt => opt.MapFrom(src => src.EndDate.Date + src.EndTime.TimeOfDay))
                 .ForMember(dest => dest.FeaturedRaceStartTimeUtc, opt => opt.MapFrom(src => src.FeaturedRaceStartTime))
                 .ReverseMap();
             this.CreateMap<ForzaGameOptions, RacersCupGameOptions>()

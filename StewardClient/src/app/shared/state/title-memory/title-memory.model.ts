@@ -1,9 +1,9 @@
-import { GameTitle, GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 
 type Horizons = GameTitleCodeName.FH4 | GameTitleCodeName.FH5;
 type Motorsports = GameTitleCodeName.FM7 | GameTitleCodeName.FM8;
 type Everything = Horizons | Motorsports | GameTitleCodeName.Street;
-type Newer = Horizons | GameTitle.FM8;
+type Newer = Horizons | GameTitleCodeName.FM8;
 type EverythingSansStreet = Exclude<Everything, GameTitleCodeName.Street>;
 type General = 'General';
 
@@ -19,4 +19,5 @@ export class TitleMemoryModel {
   public auctionBlocklist: Horizons;
   public auctionDetails: Horizons;
   public leaderboards: GameTitleCodeName.FH5;
+  public racersCup: GameTitleCodeName.FM8;
 }

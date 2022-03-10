@@ -232,7 +232,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             string slotId,
             string snapshotId,
             DateTime startDateUtc,
-            double daysForward,
+            int daysForward,
             string endpoint);
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCmsRacersCupScheduleForUserAsync(
             ulong xuid,
             DateTime startDateUtc,
-            double daysForward,
+            int daysForward,
             string endpoint);
     }
 }

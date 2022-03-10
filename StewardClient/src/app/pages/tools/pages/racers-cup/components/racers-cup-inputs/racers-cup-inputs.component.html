@@ -1,0 +1,25 @@
+<div>
+  <mat-card>
+    <player-selection-single
+      [disableLookupTypes]="['t10Id']"
+      [allowSelection]="false"
+      [rejectionFn]="identityRejectionFn"
+      (found)="playerIdentityFound($event)"
+    ></player-selection-single>
+
+    <form [formGroup]="calendarScheduleForm">
+      <mat-form-field>
+        <mat-label> Days Forward to Project </mat-label>
+        <input matInput type="number" [formControl]="formControls.daysForward" />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="submitClicked()"
+        [disabled]="!calendarScheduleForm.valid"
+      >
+        Search <mat-icon svgIcon="steward-arrow-right"></mat-icon>
+      </button>
+    </form>
+  </mat-card>
+</div>

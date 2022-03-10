@@ -113,6 +113,9 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
         case UserRole.HorizonDesigner:
           this.areAnyAppsAccessible = true;
           break;
+        case UserRole.MotorsportDesigner:
+          this.areAnyAppsAccessible = true;
+          break;
       }
     }
   }

@@ -280,19 +280,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<LiveOpsService.GetCMSRacersCupScheduleOutput> GetCmsRacersCupScheduleAsync(string environment, string slotId, string snapshotId, DateTime startDateUtc, double daysForward, string endpoint)
+        public async Task<LiveOpsService.GetCMSRacersCupScheduleOutput> GetCmsRacersCupScheduleAsync(string environment, string slotId, string snapshotId, DateTime startDateUtc, int daysForward, string endpoint)
         {
             var userLookupService = await this.serviceFactory.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
+            var filter = new ForzaEventSessionType[]
+            {
+                ForzaEventSessionType.FeaturedRace,
+                ForzaEventSessionType.PracticeAndQualification,
+                ForzaEventSessionType.FirstCup,
+                ForzaEventSessionType.FirstDrive,
+            };
 
-            return await userLookupService.GetCMSRacersCupSchedule(environment, slotId, snapshotId, startDateUtc, daysForward).ConfigureAwait(false);
+            return await userLookupService.GetCMSRacersCupSchedule(environment, slotId, snapshotId, startDateUtc, daysForward, filter).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCmsRacersCupScheduleForUserAsync(ulong xuid, DateTime startDateUtc, double daysForward, string endpoint)
+        public async Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCmsRacersCupScheduleForUserAsync(ulong xuid, DateTime startDateUtc, int daysForward, string endpoint)
         {
             var userLookupService = await this.serviceFactory.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
+            var filter = new ForzaEventSessionType[]
+            {
+                ForzaEventSessionType.FeaturedRace,
+                ForzaEventSessionType.PracticeAndQualification,
+                ForzaEventSessionType.FirstCup,
+                ForzaEventSessionType.FirstDrive,
+            };
 
-            return await userLookupService.GetCMSRacersCupScheduleForUser(xuid, startDateUtc, daysForward).ConfigureAwait(false);
+            return await userLookupService.GetCMSRacersCupScheduleForUser(xuid, startDateUtc, daysForward, filter).ConfigureAwait(false);
         }
     }
 }

@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-title>
+    <span>{{ event?.meta.courseName }} -&nbsp;</span>
+    <span>{{ event?.meta.circuitName }}</span>
+  </mat-card-title>
+  <mat-card-subtitle> {{ event?.meta.id }} </mat-card-subtitle>
+  <table class="info-table full-width">
+    <tr>
+      <th>Start</th>
+      <td>
+        <standard-absolute-time
+          [timeUtc]="event?.meta?.eventWindow?.startTimeUtc"
+        ></standard-absolute-time>
+      </td>
+    </tr>
+    <tr>
+      <th>End</th>
+      <td>
+        <standard-absolute-time
+          [timeUtc]="event?.meta?.eventWindow?.endTimeUtc"
+        ></standard-absolute-time>
+      </td>
+    </tr>
+    <tr>
+      <th>Duration</th>
+      <td>{{ event?.meta.raceDuration }} minutes</td>
+    </tr>
+  </table>
+</mat-card>

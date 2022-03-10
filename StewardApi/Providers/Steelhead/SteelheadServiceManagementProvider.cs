@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleAsync(string environment, string slotId, string snapshotId, DateTime startTimeUtc, double daysForward, string endpoint)
+        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleAsync(string environment, string slotId, string snapshotId, DateTime startTimeUtc, int daysForward, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 

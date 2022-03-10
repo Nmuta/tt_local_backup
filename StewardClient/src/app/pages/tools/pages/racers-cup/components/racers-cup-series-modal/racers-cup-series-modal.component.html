@@ -1,0 +1,87 @@
+<section>
+  <h2 mat-dialog-title>
+    <span>{{ seriesName }}</span>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="modal-wrapper">
+      <div class="series-events">
+        <div class="event-cards-wrapper">
+          <racers-cup-event-card
+            *ngFor="let event of eventGroup"
+            [event]="event"
+            (click)="onEventCardClick(event)"
+            [class.selected]="event === selectedEvent"
+          ></racers-cup-event-card>
+        </div>
+      </div>
+      <div class="event-details">
+        <mat-card>
+          <mat-card-title>{{ selectedEvent?.meta?.eventNameClean ?? null }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ selectedEvent?.meta?.id ?? 'Select an event to display details' }}
+          </mat-card-subtitle>
+
+          <div *ngIf="selectedEvent?.meta?.qualificationOptions">
+            <h3>Qualification Options</h3>
+            <table class="info-table full-width">
+              <tr>
+                <th>Lap Limit</th>
+                <td>
+                  {{
+                    selectedEvent?.meta.qualificationOptions.qualificationLimitType ===
+                    RacersCupQualificationLimitType.LimitedLaps
+                      ? selectedEvent?.meta.qualificationOptions.numberOfLimitedLaps
+                      : selectedEvent?.meta.qualificationOptions.qualificationLimitType
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <th>Is Oneshot</th>
+                <td>{{ selectedEvent?.meta.qualificationOptions.isOneShot }}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="game-options" *ngFor="let options of selectedEvent?.meta.gameOptions">
+            <h3>{{ options.eventSessionType | humanize }}</h3>
+            <table class="info-table full-width">
+              <tr>
+                <th>Car Restriction</th>
+                <td>{{ options.carRestrictions }}</td>
+              </tr>
+              <tr>
+                <th>Time of Day</th>
+                <td>{{ options.timeOfDay | date: 'h:mm a' }}</td>
+              </tr>
+              <tr>
+                <th>Time Scale</th>
+                <td>{{ options.timeOfDayTimeScale }} minutes</td>
+              </tr>
+              <tr>
+                <th>Start Weather</th>
+                <td>{{ options.startRaceWeatherCondition.weatherConditionType }}</td>
+              </tr>
+              <tr>
+                <th>Mid-Race Weather</th>
+                <td>
+                  {{ options.midRaceWeatherConditionProbability }}% chance of:
+                  {{ options.midRaceWeatherCondition.weatherConditionType }}
+                </td>
+              </tr>
+              <tr>
+                <th>End-Race Weather</th>
+                <td>
+                  {{ options.endRaceWeatherConditionProbability }}% chance of:
+                  {{ options.endRaceWeatherCondition.weatherConditionType }}
+                </td>
+              </tr>
+            </table>
+          </div>
+        </mat-card>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</section>

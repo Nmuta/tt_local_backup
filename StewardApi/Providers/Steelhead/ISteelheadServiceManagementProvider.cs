@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             string slotId,
             string snapshotId,
             DateTime startTimeUtc,
-            double daysForward,
+            int daysForward,
             string endpoint);
     }
 }

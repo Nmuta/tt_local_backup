@@ -1176,7 +1176,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             daysForward.ShouldBeGreaterThanValue(-1);
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            var cutoffTime = DateTime.UtcNow.AddSeconds(1);
+            var cutoffTime = DateTimeOffset.UtcNow.AddSeconds(1);
             pegasusEnvironment ??= string.Empty;
             pegasusSlotId ??= string.Empty;
             pegasusSnapshotId ??= string.Empty;
@@ -1215,7 +1215,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
 
             daysForward.ShouldBeGreaterThanValue(-1);
-            var cutoffTime = DateTime.UtcNow.AddSeconds(1);
+            var cutoffTime = DateTimeOffset.UtcNow.AddSeconds(1);
 
             var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);

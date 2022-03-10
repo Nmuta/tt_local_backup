@@ -62,6 +62,7 @@ export enum UserRole {
   DataPipelineRead = 'DataPipelineRead',
   CommunityManager = 'CommunityManager',
   HorizonDesigner = 'HorizonDesigner',
+  MotorsportDesigner = 'MotorsportDesigner',
 }
 
 export enum NotificationHubEvents {

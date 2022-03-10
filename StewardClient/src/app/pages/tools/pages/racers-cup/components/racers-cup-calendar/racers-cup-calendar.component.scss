@@ -1,0 +1,203 @@
+@import 'angular-calendar/css/angular-calendar.css';
+@import '/src/styles/mixins';
+
+mat-card {
+  max-height: unset;
+}
+
+.calendar-view-switch {
+  padding-bottom: 1em;
+}
+
+:host ::ng-deep {
+  .cal-month-view,
+  .cal-week-view,
+  .cal-day-view {
+    background-color: unset;
+  }
+
+  .cal-month-view .cal-cell-row:hover {
+    background-color: app-color-default($app-background);
+  }
+
+  .cal-month-view .cal-cell-row .cal-cell:hover,
+  .cal-month-view .cal-cell.cal-has-events.cal-open {
+    background-color: app-color-darker($app-background);
+  }
+
+  .cal-month-view .cal-day-cell.cal-in-month.cal-has-events {
+    cursor: auto;
+  }
+
+  .cal-month-view .cal-day-cell.cal-weekend .cal-day-number {
+    color: unset;
+  }
+
+  .cal-month-view .cal-day-cell.cal-today {
+    background-color: app-color-lighter($app-accent);
+  }
+
+  //Week and day view
+  .cal-week-view .cal-hour-odd {
+    background-color: unset;
+  }
+
+  .cal-week-view .cal-time-events .cal-day-columns:not(.cal-resize-active) .cal-hour-segment:hover {
+    background-color: unset;
+  }
+
+  .cal-week-view .cal-day-headers .cal-header:hover,
+  .cal-week-view .cal-day-headers .cal-drag-over {
+    background-color: app-color-darker($app-background);
+  }
+
+  .cal-week-view .cal-header.cal-today {
+    background-color: app-color-lighter($app-accent);
+  }
+}
+
+.cell-totals {
+  color: app-color-default($app-foreground);
+  margin: 0.5em;
+  text-align: center;
+}
+
+.cal-day-badge {
+  background-color: app-color-default($app-primary);
+}
+
+.day-view-event {
+  background-color: transparent;
+  border: none;
+  color: unset;
+
+  > * {
+    padding-left: 0.5em;
+    text-overflow: ellipsis;
+  }
+}
+
+.week-view-event {
+  border: none;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2em;
+}
+
+.shrink-wrap {
+  text-align: left;
+  display: inline-block;
+
+  > * {
+    padding-left: 0.5em;
+    cursor: pointer;
+  }
+}
+
+.badge {
+  border-left: 4px solid;
+  margin-bottom: 1px;
+
+  &.day-event-badge {
+    background-color: app-color-darker($app-background);
+  }
+
+  &.badge-0 {
+    border-color: #5a0a33;
+  }
+
+  &.badge-1 {
+    border-color: #ff66fd;
+  }
+
+  &.badge-2 {
+    border-color: #ff8735;
+  }
+
+  &.badge-3 {
+    border-color: #8e06cd;
+  }
+
+  &.badge-4 {
+    border-color: #ffb935;
+  }
+
+  &.badge-5 {
+    border-color: #ff4235;
+  }
+
+  &.badge-6 {
+    border-color: #ab0d61;
+  }
+
+  &.badge-7 {
+    border-color: #00c2f9;
+  }
+
+  &.badge-8 {
+    border-color: #ed0dfd;
+  }
+
+  &.badge-9 {
+    border-color: #004002;
+  }
+
+  &.badge-10 {
+    border-color: #de0d2e;
+  }
+
+  &.badge-11 {
+    border-color: #00b408;
+  }
+}
+
+:host ::ng-deep .event-type-0 .week-view-event {
+  background-color: #5a0a33;
+}
+
+:host ::ng-deep .event-type-1 .week-view-event {
+  background-color: #ff66fd;
+}
+
+:host ::ng-deep .event-type-2 .week-view-event {
+  background-color: #ff8735;
+}
+
+:host ::ng-deep .event-type-3 .week-view-event {
+  background-color: #8e06cd;
+}
+
+:host ::ng-deep .event-type-4 .week-view-event {
+  background-color: #ffb935;
+}
+
+:host ::ng-deep .event-type-5 .week-view-event {
+  background-color: #ff4235;
+}
+
+:host ::ng-deep .event-type-6 .week-view-event {
+  background-color: #ab0d61;
+}
+
+:host ::ng-deep .event-type-7 .week-view-event {
+  background-color: #00c2f9;
+}
+
+:host ::ng-deep .event-type-8 .week-view-event {
+  background-color: #ed0dfd;
+}
+
+:host ::ng-deep .event-type-9 .week-view-event {
+  background-color: #004002;
+}
+
+:host ::ng-deep .event-type-10 .week-view-event {
+  background-color: #de0d2e;
+}
+
+:host ::ng-deep .event-type-11 .week-view-event {
+  background-color: #00b408;
+}

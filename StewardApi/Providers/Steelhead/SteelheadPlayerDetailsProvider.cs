@@ -440,7 +440,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleForUserAsync(ulong xuid, DateTime startTimeUtc, double daysForward, string endpoint)
+        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleForUserAsync(ulong xuid, DateTime startTimeUtc, int daysForward, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 

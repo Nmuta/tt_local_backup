@@ -1591,6 +1591,11 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@jridgewell/resolve-uri/-/resolve-uri-1.0.0.tgz#3fdf5798f0b49e90155896f6291df186eac06c83"
   integrity sha1-P99XmPC0npAVWJb2KR3xhurAbIM=
 
+"@mattlewis92/dom-autoscroller@^2.4.2":
+  version "2.4.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@mattlewis92/dom-autoscroller/-/dom-autoscroller-2.4.2.tgz#ccb753fbcf6b3672b0273e0c3bda7924fe238013"
+  integrity sha1-zLdT+89rNnKwJz4MO9p5JP4jgBM=
+
 "@microsoft/applicationinsights-analytics-js@2.7.2":
   version "2.7.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@microsoft/applicationinsights-analytics-js/-/applicationinsights-analytics-js-2.7.2.tgz#549aba2b4d927dd30f9aa413fea0264f744b9fec"
@@ -1878,6 +1883,11 @@
   version "1.0.0-next.21"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha1-XeWiOFo1MJQn9gEZkrVEUU1VmqE=
+
+"@scarf/scarf@^1.1.1":
+  version "1.1.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@scarf/scarf/-/scarf-1.1.1.tgz#d8b9f20037b3a37dbf8dcdc4b3b72f9285bfce35"
+  integrity sha1-2LnyADezo32/jc3Es7cvkoW/zjU=
 
 "@schematics/angular@13.1.2":
   version "13.1.2"
@@ -2521,6 +2531,33 @@ ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+angular-calendar@^0.29.0:
+  version "0.29.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/angular-calendar/-/angular-calendar-0.29.0.tgz#b6f3df4752b495205dbba32794618fd4880fed71"
+  integrity sha1-tvPfR1K0lSBdu6MnlGGP1IgP7XE=
+  dependencies:
+    "@scarf/scarf" "^1.1.1"
+    angular-draggable-droppable "^6.0.0"
+    angular-resizable-element "^5.0.0"
+    calendar-utils "^0.9.0"
+    positioning "^2.0.1"
+    tslib "^2.0.0"
+
+angular-draggable-droppable@^6.0.0:
+  version "6.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/angular-draggable-droppable/-/angular-draggable-droppable-6.0.0.tgz#4f79a80d110ea22bb970e1d62a7d89e64b64c0ad"
+  integrity sha1-T3moDREOoiu5cOHWKn2J5ktkwK0=
+  dependencies:
+    "@mattlewis92/dom-autoscroller" "^2.4.2"
+    tslib "^2.3.1"
+
+angular-resizable-element@^5.0.0:
+  version "5.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/angular-resizable-element/-/angular-resizable-element-5.0.0.tgz#c292cfd537a8e8c3850b6dc1a66ffcc1462864d1"
+  integrity sha1-wpLP1Teo6MOFC23Bpm/8wUYoZNE=
+  dependencies:
+    tslib "^2.2.0"
+
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
   version "4.1.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/ansi-colors/-/ansi-colors-4.1.1.tgz#cbb9ae256bf750af1eab344f229aa27fe94ba348"
@@ -3035,6 +3072,11 @@ cachedir@^2.3.0:
   version "2.3.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/cachedir/-/cachedir-2.3.0.tgz#0c75892a052198f0b21c7c1804d8331edfcae0e8"
   integrity sha1-DHWJKgUhmPCyHHwYBNgzHt/K4Og=
+
+calendar-utils@^0.9.0:
+  version "0.9.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/calendar-utils/-/calendar-utils-0.9.0.tgz#d0b2e0bb5a2238d30afde4fe774c0afd89366c6b"
+  integrity sha1-0LLgu1oiONMK/eT+d0wK/Yk2bGs=
 
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
@@ -7608,6 +7650,11 @@ portfinder@^1.0.28:
     debug "^3.1.1"
     mkdirp "^0.5.5"
 
+positioning@^2.0.1:
+  version "2.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/positioning/-/positioning-2.0.1.tgz#4f1b3a65ed4b830e0922a3fcdf6de58a545bd398"
+  integrity sha1-Txs6Ze1Lgw4JIqP8323lilRb05g=
+
 postcss-attribute-case-insensitive@^4.0.1:
   version "4.0.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/postcss-attribute-case-insensitive/-/postcss-attribute-case-insensitive-4.0.2.tgz#d93e46b504589e94ac7277b0463226c68041a880"
@@ -9417,7 +9464,7 @@ tsconfig-paths@^3.12.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@2.3.1, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1:
+tslib@2.3.1, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3.0, tslib@^2.3.1:
   version "2.3.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha1-6KM1rdXOrlGqJh0ypJAVjvBC7wE=

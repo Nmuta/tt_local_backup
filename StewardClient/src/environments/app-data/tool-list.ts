@@ -32,6 +32,7 @@ export enum NavbarTool {
   StewardManagement = 'steward-management',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
+  RacersCup = 'racers-cup',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -69,6 +70,7 @@ export const CommonAccessLevels = {
     UserRole.SupportAgentAdmin,
     UserRole.CommunityManager,
   ],
+  RacersCup: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
 };
 
@@ -94,6 +96,7 @@ export enum AppIcon {
   AuctionDetails = 'price_check',
   StewardManagement = 'cloud_sync',
   Leaderboards = 'leaderboard',
+  RacersCup = 'calendar_today',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -414,6 +417,21 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.StewardManagementModule,
       ),
     hideFromUnauthorized: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.RacersCup,
+    tool: NavbarTool.RacersCup,
+    accessList: CommonAccessLevels.RacersCup,
+    title: 'Racers Cup',
+    subtitle: 'Visualize when racing events occur',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Everything you need to know for upcoming Racers Cup events.',
+    shortDescription: ['Tool for visualizing upcoming Racers cup events.'],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/racers-cup/racers-cup.module').then(
+        m => m.RacersCupModule,
+      ),
   },
   <HomeTileInfoExternal>{
     icon: AppIcon.DeveloperTool,
