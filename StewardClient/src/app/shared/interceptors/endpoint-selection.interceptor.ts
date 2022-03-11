@@ -7,7 +7,7 @@ import {
   UserSettingsState,
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
-import { filter, map, Observable, ReplaySubject, switchMap } from 'rxjs';
+import { filter, map, Observable, ReplaySubject, switchMap, take, throwError, timeout } from 'rxjs';
 
 /** Intercepts requests to Steward and attaches endpoint header based on user's endpoint selection. */
 @Injectable()
@@ -16,6 +16,7 @@ export class EndpointSelectionInterceptor extends BaseInterceptor implements Htt
 
   private readonly validSettings$ = new ReplaySubject<UserSettingsStateModel>(1);
   private readonly headerName: string = 'endpointKey';
+  private readonly validSettingsTimeoutMs = 120_000; // 2 minutes
 
   constructor(private readonly store: Store) {
     super();
@@ -65,6 +66,11 @@ export class EndpointSelectionInterceptor extends BaseInterceptor implements Htt
 
     return this.validSettings$.pipe(
       filter(v => !!v),
+      timeout({
+        first: this.validSettingsTimeoutMs,
+        with: () => throwError(() => new Error('Waiting for valid endpoint settings timed out.')),
+      }),
+      take(1),
       switchMap(latestValidUserSettings =>
         this.handleRequest(latestValidUserSettings, request, next),
       ),
