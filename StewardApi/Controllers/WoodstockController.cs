@@ -912,7 +912,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.SupportAgent,
+            UserRole.CommunityManager)]
         [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
         [SwaggerResponse(200)]
 

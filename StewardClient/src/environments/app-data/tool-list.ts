@@ -282,7 +282,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.UGC,
-    accessList: CommonAccessLevels.OldCommunityAppOnly,
+    accessList: CommonAccessLevels.CommunityManagersAndAdmins,
     title: 'UGC',
     subtitle: 'User Generated Content',
     imageUrl: undefined,
