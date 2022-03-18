@@ -15,7 +15,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
 using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
     [TestClass]
     public sealed class WoodstockStorefrontProviderTests

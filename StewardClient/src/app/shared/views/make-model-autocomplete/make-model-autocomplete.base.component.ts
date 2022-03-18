@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { KustoCar } from '@models/kusto-car';
+import { DetailedCar } from '@models/detailed-car';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 
 export type MakeModelFilterGroup = {
   category: string;
-  items: KustoCar[];
+  items: DetailedCar[];
 };
 
 /** A base component for ugcs filters. */
@@ -21,7 +21,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   implements OnInit, ControlValueAccessor
 {
   @Input() public makeOnlyOptions = true;
-  @Output() public changes = new EventEmitter<KustoCar>();
+  @Output() public changes = new EventEmitter<DetailedCar>();
 
   public formControls = {
     makeModelInput: new FormControl(null),
@@ -43,12 +43,12 @@ export abstract class MakeModelAutocompleteBaseComponent
     super();
   }
 
-  public abstract getKustoCars$(): Observable<KustoCar[]>;
+  public abstract getDetailedCars$(): Observable<DetailedCar[]>;
 
   /** Initialization hook. */
   public ngOnInit(): void {
     this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
-    this.getKustoCars$()
+    this.getDetailedCars$()
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(cars => {
         this.makeModelFilterGroups = this.buildMatAutocompleteState(cars);
@@ -68,7 +68,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Form control hook. */
-  public writeValue(data: KustoCar): void {
+  public writeValue(data: DetailedCar): void {
     if (!!data) {
       this.formControls.makeModelInput.patchValue(data, { emitEvent: false });
     } else {
@@ -77,7 +77,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: KustoCar) => void): void {
+  public registerOnChange(fn: (data: DetailedCar) => void): void {
     this.changeFn = fn;
     this.changeFn(this.makeValue(this.formGroup.value));
   }
@@ -103,12 +103,12 @@ export abstract class MakeModelAutocompleteBaseComponent
 
   /** Outputs new ugc search filters. */
   public emitMakeModelChangeEvent(): void {
-    const carFilter = (this.formControls.makeModelInput?.value as KustoCar) || null;
+    const carFilter = (this.formControls.makeModelInput?.value as DetailedCar) || null;
     this.changes.emit(carFilter);
   }
 
   /** Mat autocomplete display */
-  public autoCompleteDisplayFn(item: KustoCar): string {
+  public autoCompleteDisplayFn(item: DetailedCar): string {
     return !!item ? (!item?.makeOnly ? `${item.make} ${item.model} [${item.id}]` : item.make) : '';
   }
 
@@ -119,7 +119,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
-  private buildMatAutocompleteState(cars: KustoCar[]): MakeModelFilterGroup[] {
+  private buildMatAutocompleteState(cars: DetailedCar[]): MakeModelFilterGroup[] {
     const makeModelFilterGroups: MakeModelFilterGroup[] = [];
 
     // make
@@ -153,7 +153,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Autocomplete filter function. */
-  private filterGroup(value: string | KustoCar): MakeModelFilterGroup[] {
+  private filterGroup(value: string | DetailedCar): MakeModelFilterGroup[] {
     if (!value) {
       return this.makeModelFilterGroups;
     }
@@ -177,7 +177,7 @@ export abstract class MakeModelAutocompleteBaseComponent
     return prefilter.filter(group => group.items.length > 0);
   }
 
-  private filter(prefix: string, opt: KustoCar[], value: string): KustoCar[] {
+  private filter(prefix: string, opt: DetailedCar[], value: string): DetailedCar[] {
     const filterValue = value.toLowerCase();
     const prefixFilterValue = prefix.toLowerCase();
     if (prefixFilterValue.includes(filterValue)) {
@@ -205,7 +205,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Compares a filter string against an InventoryItem, returning true if the string was found. */
-  private checkFilterAgainstInventoryItem(item: KustoCar, filter: string): boolean {
+  private checkFilterAgainstInventoryItem(item: DetailedCar, filter: string): boolean {
     return (
       item?.make.toLowerCase().includes(filter) ||
       item?.model.toLowerCase().includes(filter) ||
@@ -213,12 +213,12 @@ export abstract class MakeModelAutocompleteBaseComponent
     );
   }
 
-  private changeFn = (_data: KustoCar) => {
+  private changeFn = (_data: DetailedCar) => {
     /* Empty */
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private makeValue(internalValue: any): KustoCar {
+  private makeValue(internalValue: any): DetailedCar {
     if (internalValue.makeModelInput) {
       return internalValue.makeModelInput;
     }

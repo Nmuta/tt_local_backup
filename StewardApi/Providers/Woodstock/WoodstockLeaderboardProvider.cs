@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH5_main.Generated;
 using Forza.Scoreboard.FH5_main.Generated;
-using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using Turn10.Services.CMSRetrieval;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {

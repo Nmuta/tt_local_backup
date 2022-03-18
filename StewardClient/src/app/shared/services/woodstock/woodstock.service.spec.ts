@@ -520,14 +520,14 @@ describe('WoodstockService', () => {
     });
   });
 
-  describe('Method: getDetailedKustoCars$', () => {
+  describe('Method: getDetailedCars$', () => {
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getDetailedKustoCars$().subscribe(() => {
-        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/kusto/cars`);
+      service.getDetailedCars$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/items/cars`);
         done();
       });
     });

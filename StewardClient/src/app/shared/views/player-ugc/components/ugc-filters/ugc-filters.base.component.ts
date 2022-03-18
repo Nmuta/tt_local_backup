@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
-import { KustoCar } from '@models/kusto-car';
+import { DetailedCar } from '@models/detailed-car';
 import { DefaultUGCFilters, UGCAccessLevel, UGCFilters, UGCOrderBy } from '@models/ugc-filters';
 import BigNumber from 'bignumber.js';
 import { keys } from 'lodash';
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 export type MakeModelFilterGroup = {
   category: string;
-  items: KustoCar[];
+  items: DetailedCar[];
 };
 
 /** A base component for ugcs filters. */
@@ -43,7 +43,7 @@ export abstract class UGCFiltersBaseComponent extends BaseComponent {
 
   /** Outputs new ugc search filters. */
   public searchFilters(): void {
-    const carFilter = this.formControls.makeModelInput.value as KustoCar;
+    const carFilter = this.formControls.makeModelInput.value as DetailedCar;
     let carId: BigNumber = undefined;
     let makeId: BigNumber = undefined;
 

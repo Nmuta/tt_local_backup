@@ -9,8 +9,8 @@ import { WoodstockUGCFiltersComponent } from './woodstock-ugc-filters.component'
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UGCAccessLevel, UGCFilters, UGCOrderBy, UGCType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { KustoCar } from '@models/kusto-car';
-import { WoodstockKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
+import { DetailedCar } from '@models/detailed-car';
+import { WoodstockDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import faker from 'faker';
 
 describe('WoodstockUGCFiltersComponent', () => {
@@ -19,7 +19,7 @@ describe('WoodstockUGCFiltersComponent', () => {
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let fakeKustoCars: KustoCar[];
+  let fakeDetailedCars: DetailedCar[];
 
   beforeEach(
     waitForAsync(() => {
@@ -45,7 +45,7 @@ describe('WoodstockUGCFiltersComponent', () => {
       mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
       mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
 
-      fakeKustoCars = WoodstockKustoCarsFakeApi.make();
+      fakeDetailedCars = WoodstockDetailedCarsFakeApi.make();
     }),
   );
 
@@ -54,7 +54,7 @@ describe('WoodstockUGCFiltersComponent', () => {
   });
 
   describe('Method: searchFilters', () => {
-    let carInput: KustoCar;
+    let carInput: DetailedCar;
     const testUgcFilters = {
       type: UGCType.Livery,
       carId: fakeBigNumber(),
@@ -66,7 +66,7 @@ describe('WoodstockUGCFiltersComponent', () => {
 
     beforeEach(() => {
       component.changes.emit = jasmine.createSpy('changes.emit');
-      carInput = fakeKustoCars[0];
+      carInput = fakeDetailedCars[0];
       component.formControls.makeModelInput.setValue('');
       component.formControls.keyword.setValue(testUgcFilters.keyword);
       component.formControls.accessLevel.setValue(testUgcFilters.accessLevel);

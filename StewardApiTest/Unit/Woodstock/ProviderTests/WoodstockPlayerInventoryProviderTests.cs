@@ -20,7 +20,7 @@ using AdminForzaProfile = Forza.LiveOps.FH5_main.Generated.AdminForzaProfile;
 using AdminForzaUserInventorySummary = Forza.UserInventory.FH5_main.Generated.AdminForzaUserInventorySummary;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
     [TestClass]
     public sealed class WoodstockPlayerInventoryProviderTests

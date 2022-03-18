@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
-/** Interface for a Kusto car. */
-export interface KustoCar {
+/** Interface for a detailed car. */
+export interface DetailedCar {
   id: BigNumber;
   makeId: BigNumber;
   make: string;

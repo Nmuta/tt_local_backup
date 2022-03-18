@@ -14,7 +14,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using static Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
     [TestClass]
     public sealed class WoodstockNotificationProviderTests

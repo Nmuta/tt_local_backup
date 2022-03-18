@@ -1,5 +1,5 @@
 import { Component, forwardRef } from '@angular/core';
-import { KustoCar } from '@models/kusto-car';
+import { DetailedCar } from '@models/detailed-car';
 import { WoodstockService } from '@services/woodstock';
 import { Observable } from 'rxjs';
 import { MakeModelAutocompleteBaseComponent } from '../make-model-autocomplete.base.component';
@@ -24,7 +24,7 @@ export class WoodstockMakeModelAutocompleteComponent extends MakeModelAutocomple
   }
 
   /** Gets master inventory list */
-  public getKustoCars$(): Observable<KustoCar[]> {
-    return this.woodstockService.getDetailedKustoCars$();
+  public getDetailedCars$(): Observable<DetailedCar[]> {
+    return this.woodstockService.getDetailedCars$();
   }
 }

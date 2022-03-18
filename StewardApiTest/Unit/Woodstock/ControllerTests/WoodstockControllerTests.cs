@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -27,7 +26,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
     [TestClass]
     public sealed class WoodstockControllerTests
@@ -214,6 +213,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "leaderboardProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenItemsProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { ItemsProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "itemsProvider"));
         }
 
         [TestMethod]
@@ -1622,7 +1635,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
-                this.KustoProvider.GetMasterInventoryListAsync(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
+                var fakeMasterInventory = new WoodstockMasterInventory()
+                {
+                    CreditRewards = new List<MasterInventoryItem>() { new MasterInventoryItem { Id = 1, Quantity = 1 } },
+                    Cars = new List<MasterInventoryItem>() { new MasterInventoryItem { Id = 1, Quantity = 1 } },
+                    CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem { Id = 1, Quantity = 1 } },
+                    VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem { Id = 1, Quantity = 1 } },
+                    Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem { Id = 1, Quantity = 1 } },
+                    QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem { Id = 1, Quantity = 1 } },
+                };
+
                 this.WoodstockPlayerDetailsProvider.GetPlayerIdentitiesAsync(Arg.Any<IList<IdentityQueryAlpha>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
                 this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
@@ -1656,6 +1678,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockGiftHistory>>());
+                this.ItemsProvider.GetCarsAsync().Returns(Fixture.Create<IEnumerable<DetailedCar>>());
+                this.ItemsProvider.GetMasterInventoryAsync().Returns(fakeMasterInventory);
             }
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
@@ -1678,6 +1702,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             public IWoodstockNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<IWoodstockNotificationHistoryProvider>();
 
             public IWoodstockStorefrontProvider StorefrontProvider { get; set; } = Substitute.For<IWoodstockStorefrontProvider>();
+
+            public IWoodstockItemsProvider ItemsProvider { get; set; } = Substitute.For<IWoodstockItemsProvider>();
 
             public IWoodstockLeaderboardProvider LeaderboardProvider { get; set; } = Substitute.For<IWoodstockLeaderboardProvider>();
 
@@ -1717,6 +1743,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.NotificationHistoryProvider,
                 this.StorefrontProvider,
                 this.LeaderboardProvider,
+                this.ItemsProvider,
                 this.Configuration,
                 this.Scheduler,
                 this.JobTracker,

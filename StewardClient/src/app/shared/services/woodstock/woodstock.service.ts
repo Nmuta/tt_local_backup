@@ -45,7 +45,7 @@ import { BackstagePassHistory } from '@models/backstage-pass-history';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCType } from '@models/ugc-filters';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
-import { KustoCar } from '@models/kusto-car';
+import { DetailedCar } from '@models/detailed-car';
 import { Gift, GroupGift } from '@models/gift';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
@@ -150,9 +150,7 @@ export class WoodstockService {
 
   /** Gets the woodstock master inventory. */
   public getMasterInventory$(): Observable<WoodstockMasterInventory> {
-    return this.apiService.getRequest$<WoodstockMasterInventory>(
-      `${this.basePath}/masterInventory`,
-    );
+    return this.apiService.getRequest$<WoodstockMasterInventory>(`${this.basePath}/items`);
   }
 
   /** Gets woodstock player details with a gamertag. This can be used to retrieve a XUID. */
@@ -507,8 +505,8 @@ export class WoodstockService {
   }
 
   /** Gets the woodstock detailed car list. */
-  public getDetailedKustoCars$(): Observable<KustoCar[]> {
-    return this.apiService.getRequest$<KustoCar[]>(`${this.basePath}/kusto/cars`);
+  public getDetailedCars$(): Observable<DetailedCar[]> {
+    return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/items/cars`);
   }
 
   /** Gets a player's UGC item.  */

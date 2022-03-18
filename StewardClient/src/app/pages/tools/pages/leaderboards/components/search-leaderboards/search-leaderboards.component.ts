@@ -194,7 +194,6 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         this.allLeaderboards = leaderboards;
         this.filteredLeaderboards = leaderboards;
         this.autocompleteLeadeboards = this.filteredLeaderboards;
-
         this.buildFiltersMultiSelect();
       });
   }

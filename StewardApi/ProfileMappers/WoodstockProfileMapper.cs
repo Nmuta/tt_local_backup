@@ -352,6 +352,31 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<WoodstockLiveOpsContent.CarClass, CarClass>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarClassId));
+
+            this.CreateMap<WoodstockLiveOpsContent.DataCar, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} {src.Year}"));
+            this.CreateMap<WoodstockLiveOpsContent.DataCar, DetailedCar>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
+                .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.MakeDisplayName));
+
+            this.CreateMap<WoodstockLiveOpsContent.CarHorn, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.DisplayName));
+
+            this.CreateMap<WoodstockLiveOpsContent.VanityItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.DisplayName));
+
+            this.CreateMap<WoodstockLiveOpsContent.EmoteData, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
+
+            this.CreateMap<WoodstockLiveOpsContent.QuickChat, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ChatMessage));
         }
 
         private string PrepareDeviceType(string deviceType)

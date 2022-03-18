@@ -127,7 +127,7 @@
     </PackageReference>
     <PackageReference Include="Turn10.Services.UGC.Contracts" Version="1.11.13" />
     <PackageReference Include="Turn10.Services.WebApi-Core" Version="1.2.1" />
-    <PackageReference Include="WoodstockLiveOpsContent" Version="2.4.1" />
+    <PackageReference Include="WoodstockLiveOpsContent" Version="2.4.2" />
   </ItemGroup>
 
   <Target Name="RealClean" AfterTargets="Clean">

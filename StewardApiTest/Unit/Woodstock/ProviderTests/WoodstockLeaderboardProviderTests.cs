@@ -15,7 +15,7 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
     [TestClass]
     public sealed class WoodstockLeaderboardProviderTests

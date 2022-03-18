@@ -74,6 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IWoodstockNotificationHistoryProvider notificationHistoryProvider;
         private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IWoodstockLeaderboardProvider leaderboardProvider;
+        private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
@@ -100,6 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IWoodstockNotificationHistoryProvider notificationHistoryProvider,
             IWoodstockStorefrontProvider storefrontProvider,
             IWoodstockLeaderboardProvider leaderboardProvider,
+            IWoodstockItemsProvider itemsProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
@@ -123,6 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
             leaderboardProvider.ShouldNotBeNull(nameof(leaderboardProvider));
+            itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -146,6 +149,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.notificationHistoryProvider = notificationHistoryProvider;
             this.storefrontProvider = storefrontProvider;
             this.leaderboardProvider = leaderboardProvider;
+            this.itemsProvider = itemsProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.mapper = mapper;
@@ -154,32 +158,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
             this.userFlagsRequestValidator = userFlagsRequestValidator;
-        }
-
-        /// <summary>
-        ///     Gets the master inventory data.
-        /// </summary>
-        [HttpGet("masterInventory")]
-        [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
-        [LogTagDependency(DependencyLogTags.Kusto)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetMasterInventoryList()
-        {
-            var masterInventory = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
-            return this.Ok(masterInventory);
-        }
-
-        /// <summary>
-        ///     Gets the master car list.
-        /// </summary>
-        [HttpGet("kusto/cars")]
-        [SwaggerResponse(200, type: typeof(IList<KustoCar>))]
-        [LogTagDependency(DependencyLogTags.Kusto)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetDetailedKustoCars()
-        {
-            var cars = await this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed).ConfigureAwait(true);
-            return this.Ok(cars);
         }
 
         /// <summary>
@@ -539,12 +517,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint)
                 .ConfigureAwait(true);
 
-            var kustoCarData = await this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed).ConfigureAwait(true);
+            var cars = await this.itemsProvider.GetCarsAsync().ConfigureAwait(true);
+            var carsDict = cars.ToDictionary(car => car.Id);
 
             foreach (var auction in results)
             {
-                var carData = kustoCarData.FirstOrDefault(car => car.Id == auction.ModelId);
-                auction.ItemName = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+                auction.ItemName = carsDict.TryGetValue(auction.ModelId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
             return this.Ok(results);
@@ -637,18 +615,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed);
+            var getCars = this.itemsProvider.GetCarsAsync();
             var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
 
-            await Task.WhenAll(getBlockList/*, getKustoCars*/).ConfigureAwait(true);
+            await Task.WhenAll(getBlockList, getCars).ConfigureAwait(true);
 
             var blockList = getBlockList.GetAwaiter().GetResult();
 
-            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
             foreach (var entry in blockList)
             {
-                var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
-                entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+                entry.Description = carsDict.TryGetValue(entry.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
             return this.Ok(blockList);
@@ -707,17 +684,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 typeEnum,
                 new UGCFilters(xuid, null),
                 endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed);
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
+            await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
             var ugcItems = getUgcItems.GetAwaiter().GetResult();
-            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
 
             foreach (var item in ugcItems)
             {
-                var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
-                item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
             return this.Ok(ugcItems);
@@ -744,17 +720,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 typeEnum,
                 new UGCFilters(ulong.MaxValue, shareCode),
                 endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed);
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
+            await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
             var ugCItems = getUgcItems.GetAwaiter().GetResult();
-            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
 
             foreach (var item in ugCItems)
             {
-                var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
-                item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
             return this.Ok(ugCItems);
@@ -772,15 +747,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUGCLiveryAsync(id, endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed);
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
+            await Task.WhenAll(getLivery, getCars).ConfigureAwait(true);
 
             var livery = getLivery.GetAwaiter().GetResult();
-            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
 
-            var carData = kustoCars.FirstOrDefault(car => car.Id == livery.CarId);
-            livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+            var carData = cars.FirstOrDefault(car => car.Id == livery.CarId);
+            livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(livery);
         }
@@ -797,15 +772,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUGCPhotoAsync(id, endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed);
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
+            await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
 
             var photo = getPhoto.GetAwaiter().GetResult();
-            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
 
-            var carData = kustoCars.FirstOrDefault(car => car.Id == photo.CarId);
-            photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+            var carData = cars.FirstOrDefault(car => car.Id == photo.CarId);
+            photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(photo);
         }
@@ -822,15 +797,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUGCTuneAsync(id, endpoint);
-            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH5CarsDetailed);
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
+            await Task.WhenAll(getTune, getCars).ConfigureAwait(true);
 
             var tune = getTune.GetAwaiter().GetResult();
-            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
 
-            var carData = kustoCars.FirstOrDefault(car => car.Id == tune.CarId);
-            tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+            var carData = cars.FirstOrDefault(car => car.Id == tune.CarId);
+            tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(tune);
         }
@@ -1167,7 +1142,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
+            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -1200,7 +1175,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(
                 profileId,
                 endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
+            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -2122,44 +2097,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets the master inventory list.
-        /// </summary>
-        private async Task<WoodstockMasterInventory> RetrieveMasterInventoryListAsync()
-        {
-            var getCars = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH5Cars);
-            var getCarHorns = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH5CarHorns);
-            var getVanityItems = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH5VanityItems);
-            var getEmotes = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH5Emotes);
-            var getQuickChatLines = this.kustoProvider.GetMasterInventoryListAsync(KustoQueries.GetFH5QuickChatLines);
-
-            await Task.WhenAll(getCars, getCarHorns, getVanityItems, getEmotes, getQuickChatLines).ConfigureAwait(true);
-
-            var masterInventory = new WoodstockMasterInventory
-            {
-                CreditRewards = new List<MasterInventoryItem>
-                {
-                    new MasterInventoryItem { Id = -1, Description = "Credits" },
-                    new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
-                    new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
-                    new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
-                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
-                },
-                Cars = await getCars.ConfigureAwait(true),
-                CarHorns = await getCarHorns.ConfigureAwait(true),
-                VanityItems = await getVanityItems.ConfigureAwait(true),
-                Emotes = await getEmotes.ConfigureAwait(true),
-                QuickChatLines = await getQuickChatLines.ConfigureAwait(true),
-            };
-
-            return masterInventory;
-        }
-
-        /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
         private async Task<string> VerifyGiftAgainstMasterInventoryAsync(WoodstockMasterInventory gift)
         {
-            var masterInventoryItem = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
+            var masterInventoryItem = await this.itemsProvider.GetMasterInventoryAsync().ConfigureAwait(true);
             var error = string.Empty;
 
             foreach (var car in gift.Cars)

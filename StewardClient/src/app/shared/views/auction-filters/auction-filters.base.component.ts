@@ -7,14 +7,14 @@ import {
   AuctionStatus,
   DefaultAuctionFilters,
 } from '@models/auction-filters';
-import { KustoCar } from '@models/kusto-car';
+import { DetailedCar } from '@models/detailed-car';
 import { cloneDeep, keys } from 'lodash';
 import { Observable } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
 export type MakeModelFilterGroup = {
   category: string;
-  items: KustoCar[];
+  items: DetailedCar[];
 };
 
 /** A base component for auctions filters. */
@@ -48,11 +48,11 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
     super();
   }
 
-  public abstract getKustoCars$(): Observable<KustoCar[]>;
+  public abstract getDetailedCars$(): Observable<DetailedCar[]>;
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.getKustoCars$()
+    this.getDetailedCars$()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(cars => {
         this.makeModelFilterGroups = this.buildMatAutocompleteState(cars);
@@ -70,7 +70,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
-  public buildMatAutocompleteState(cars: KustoCar[]): MakeModelFilterGroup[] {
+  public buildMatAutocompleteState(cars: DetailedCar[]): MakeModelFilterGroup[] {
     const makeModelFilterGroups: MakeModelFilterGroup[] = [];
 
     // make
@@ -103,7 +103,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
 
   /** Outputs new auction search filters. */
   public searchFilters(): void {
-    const carFilter = this.formControls.makeModelInput.value as KustoCar;
+    const carFilter = this.formControls.makeModelInput.value as DetailedCar;
     const cardId = !!carFilter ? (!!carFilter.id ? carFilter.id : undefined) : undefined;
     const makeId = !!carFilter ? (!carFilter.id ? carFilter.makeId : undefined) : undefined;
 
@@ -116,7 +116,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Mat autocomplete display */
-  public autoCompleteDisplayFn(item: KustoCar): string {
+  public autoCompleteDisplayFn(item: DetailedCar): string {
     return !!item ? (!!item?.id ? `${item.make} ${item.model}` : item.make) : '';
   }
 
@@ -127,7 +127,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Autocomplete filter function. */
-  private filterGroup(value: string | KustoCar): MakeModelFilterGroup[] {
+  private filterGroup(value: string | DetailedCar): MakeModelFilterGroup[] {
     if (value) {
       if (typeof value !== 'string') {
         return this.makeModelFilterGroups;
@@ -151,7 +151,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
     return this.makeModelFilterGroups;
   }
 
-  private filter(prefix: string, opt: KustoCar[], value: string): KustoCar[] {
+  private filter(prefix: string, opt: DetailedCar[], value: string): DetailedCar[] {
     const filterValue = value.toLowerCase();
     const prefixFilterValue = prefix.toLowerCase();
     if (prefixFilterValue.includes(filterValue)) {
@@ -178,7 +178,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Compares a filter string against an InventoryItem, returning true if the string was found. */
-  private checkFilterAgainstInventoryItem(item: KustoCar, filter: string): boolean {
+  private checkFilterAgainstInventoryItem(item: DetailedCar, filter: string): boolean {
     return item?.make.toLowerCase().includes(filter) || item?.model.toLowerCase().includes(filter);
   }
 }

@@ -7,8 +7,8 @@ import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseUGCFiltersComponent } from './sunrise-ugc-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { KustoCar } from '@models/kusto-car';
-import { SunriseKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
+import { DetailedCar } from '@models/detailed-car';
+import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 import { UGCAccessLevel, UGCFilters, UGCOrderBy, UGCType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from 'faker';
@@ -19,7 +19,7 @@ describe('SunriseUGCFiltersComponent', () => {
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let fakeKustoCars: KustoCar[];
+  let fakeDetailedCars: DetailedCar[];
 
   beforeEach(
     waitForAsync(() => {
@@ -45,7 +45,7 @@ describe('SunriseUGCFiltersComponent', () => {
       mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
       mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
 
-      fakeKustoCars = SunriseKustoCarsFakeApi.make();
+      fakeDetailedCars = SunriseDetailedCarsFakeApi.make();
     }),
   );
 
@@ -54,7 +54,7 @@ describe('SunriseUGCFiltersComponent', () => {
   });
 
   describe('Method: searchFilters', () => {
-    let carInput: KustoCar;
+    let carInput: DetailedCar;
     const testUgcFilters = {
       type: UGCType.Livery,
       carId: fakeBigNumber(),
@@ -66,7 +66,7 @@ describe('SunriseUGCFiltersComponent', () => {
 
     beforeEach(() => {
       component.changes.emit = jasmine.createSpy('changes.emit');
-      carInput = fakeKustoCars[0];
+      carInput = fakeDetailedCars[0];
       component.formControls.makeModelInput.setValue('');
       component.formControls.keyword.setValue(testUgcFilters.keyword);
       component.formControls.accessLevel.setValue(testUgcFilters.accessLevel);

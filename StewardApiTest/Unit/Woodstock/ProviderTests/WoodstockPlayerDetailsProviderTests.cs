@@ -24,7 +24,7 @@ using ForzaUserBanResult = Forza.LiveOps.FH5_main.Generated.ForzaUserBanResult;
 using ForzaUserBanSummary = Forza.LiveOps.FH5_main.Generated.ForzaUserBanSummary;
 using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
     [TestClass]
     public sealed class WoodstockPlayerDetailsProviderTests

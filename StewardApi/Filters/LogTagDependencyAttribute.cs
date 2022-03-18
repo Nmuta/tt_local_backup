@@ -47,5 +47,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Ugc = 16,
         Leaderboards = 32,
         BackgroundProcessing = 64,
+        Pegasus = 128,
     }
 }

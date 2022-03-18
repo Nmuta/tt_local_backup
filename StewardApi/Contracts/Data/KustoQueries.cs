@@ -25,11 +25,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public const string GetFH4CarsDetailed =
             "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName";
 
-        /// <summary>
-        ///     Basic query for getting the details FH5 Car data.
-        /// </summary>
-        public const string GetFH5CarsDetailed =
-            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName";
 
         /// <summary>
         ///     Basic query for getting the details FM8 Car data.
@@ -78,38 +73,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public const string GetFM8VanityItems = "FM8_VanityItems | project Id, Name";
 
         /// <summary>
-        ///     Basic query for getting the FH5 Car data.
-        /// </summary>
-        public const string GetFH5Cars =
-            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, Description = strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
-
-        /// <summary>
-        ///     Basic query for getting the FH5 CarHorn data.
-        /// </summary>
-        public const string GetFH5CarHorns = "FH5_CarHorns | project Id=['id'], column_ifexists('DisplayName', '')";
-
-        /// <summary>
-        ///     Basic query for getting the FH5 VanityItem data.
-        /// </summary>
-        public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=column_ifexists('DisplayName', column_ifexists('ItemID', ''))";
-
-        /// <summary>
-        ///     Basic query for getting the FH5 Emote data.
-        /// </summary>
-        public const string GetFH5Emotes = "FH5_EmoteData | project Id=['id'], column_ifexists('Name', '')";
-
-        /// <summary>
-        ///     Basic query for getting the FH5 QuickChatLine data.
-        /// </summary>
-        public const string GetFH5QuickChatLines = "FH5_QuickChatData | project Id=['id'], column_ifexists('ChatMessage', '')";
-
-        /// <summary>
         ///     Allowed queries to get detailed car lists from Kusto.
         /// </summary>
         public static readonly IList<string> AllowedDetailedKustoCarQueries = new List<string>()
         {
             GetFH4CarsDetailed,
-            GetFH5CarsDetailed,
             GetFM8CarsDetailed,
         };
     }

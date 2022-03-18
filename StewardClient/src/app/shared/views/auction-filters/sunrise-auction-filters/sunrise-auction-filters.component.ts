@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { KustoCar } from '@models/kusto-car';
+import { DetailedCar } from '@models/detailed-car';
 import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
 import { AuctionsFiltersBaseComponent } from '../auction-filters.base.component';
@@ -16,7 +16,7 @@ export class SunriseAuctionFiltersComponent extends AuctionsFiltersBaseComponent
   }
 
   /** Gets master inventory list */
-  public getKustoCars$(): Observable<KustoCar[]> {
-    return this.sunriseService.getDetailedKustoCars$();
+  public getDetailedCars$(): Observable<DetailedCar[]> {
+    return this.sunriseService.getDetailedCars$();
   }
 }

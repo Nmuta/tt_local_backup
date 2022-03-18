@@ -21,7 +21,7 @@ import { SunrisePlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/ti
 import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/backstagePassHistory';
 import { SunrisePlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/accountInventory';
 import { SunrisePlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
-import { SunriseKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
+import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 import { SunriseGiftLiveryToLspGroupFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/livery/groupId';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 import { SunriseGiftLiveryToPlayersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/livery/useBackgroundProcessing/players';
@@ -167,9 +167,11 @@ export class MockSunriseService {
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUGCFakeApi.makeMany()))),
     );
 
-  public getDetailedKustoCars$ = jasmine
-    .createSpy('getDetailedKustoCars')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(SunriseKustoCarsFakeApi.make()))));
+  public getDetailedCars$ = jasmine
+    .createSpy('getDetailedCars')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunriseDetailedCarsFakeApi.make()))),
+    );
 
   public postGiftLiveryToPlayersUsingBackgroundJob$ = jasmine
     .createSpy('postGiftLiveryToPlayersUsingBackgroundJob$')

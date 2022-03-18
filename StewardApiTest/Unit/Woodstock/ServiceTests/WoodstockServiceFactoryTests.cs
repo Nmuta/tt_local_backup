@@ -10,7 +10,7 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
 {
     [TestClass]
     public sealed class WoodstockServiceFactoryTests
