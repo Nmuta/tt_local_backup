@@ -35,7 +35,7 @@ export class SunriseConsolesComponent
   }
 
   /** Generates a function that will *ban* the user and update the data when complete. */
-  public makeBanAction(consoleId: string): () => Observable<void> {
+  public makeBanAction$(consoleId: string): () => Observable<void> {
     return () =>
       this.sunriseSerice.putBanStatusByConsoleId$(consoleId, true).pipe(
         tap(() => {
@@ -47,7 +47,7 @@ export class SunriseConsolesComponent
   }
 
   /** Generates a function that will *unban* the user and update data when complete. */
-  public makeUnbanAction(consoleId: string): () => Observable<void> {
+  public makeUnbanAction$(consoleId: string): () => Observable<void> {
     return () =>
       this.sunriseSerice.putBanStatusByConsoleId$(consoleId, false).pipe(
         tap(() => {

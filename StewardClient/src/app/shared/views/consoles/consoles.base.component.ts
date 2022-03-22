@@ -34,14 +34,10 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
   public abstract getConsoleDetailsByXuid$(xuid: BigNumber): Observable<T[]>;
 
   /** Creates the action for the ban verify checkbox. */
-  public makeBanAction(..._params: unknown[]): () => Observable<void> {
-    return () => EMPTY;
-  }
+  public abstract makeBanAction$(..._params: unknown[]): () => Observable<void>;
 
   /** Creates the action for the unban verify checkbox. */
-  public makeUnbanAction(..._params: unknown[]): () => Observable<void> {
-    return () => EMPTY;
-  }
+  public abstract makeUnbanAction$(..._params: unknown[]): () => Observable<void>;
 
   /** Lifecycle hook. */
   public ngOnChanges(): void {

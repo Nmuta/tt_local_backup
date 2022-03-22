@@ -31,7 +31,7 @@
                   *ngIf="entry.isBannable && !entry.isBanned"
                   [canSubmit]="true"
                   checkboxText="Verify ban"
-                  [action]="makeBanAction(entry.consoleId).bind(this)"
+                  [action]="makeBanAction$(entry.consoleId).bind(this)"
                 >
                   <mat-icon svgIcon="steward-gavel"></mat-icon> Ban
                 </verify-action-button>
@@ -39,7 +39,7 @@
                   *ngIf="entry.isBannable && entry.isBanned"
                   [canSubmit]="true"
                   checkboxText="Verify ban removal"
-                  [action]="makeUnbanAction(entry.consoleId).bind(this)"
+                  [action]="makeUnbanAction$(entry.consoleId).bind(this)"
                   >Unban</verify-action-button
                 >
                 <ng-container *ngIf="!entry.isBannable">Ban Locked.</ng-container>
