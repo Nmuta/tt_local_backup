@@ -11,6 +11,7 @@ using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
@@ -52,8 +53,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
-            ForzaPlayerLookupParameters[] parameters,
+        public async Task<ServicesLiveOps.UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
+            ServicesLiveOps.ForzaPlayerLookupParameters[] parameters,
             string endpoint)
         {
             var userService = await this.serviceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
@@ -84,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetConsolesOutput> GetConsolesAsync(
             ulong xuid,
             int maxResults,
             string endpoint)
@@ -103,7 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(
             ulong xuid,
             int startAt,
             int maxResults,
@@ -115,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(
             ulong xuid,
             int maxResults,
             string endpoint)
@@ -134,7 +135,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
             int startIndex,
             int maxResults,
             string endpoint)
@@ -145,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
             ulong xuid,
             int[] groupFilter,
             int maxResults,
@@ -174,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(
             ulong xuid,
             string endpoint)
         {
@@ -192,7 +193,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
             ulong[] xuids,
             string endpoint)
         {
@@ -202,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
+        public async Task<ServicesLiveOps.UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
             ulong xuid,
             int startIndex,
             int maxResults,
@@ -214,8 +215,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.BanUsersOutput> BanUsersAsync(
-            ForzaUserBanParameters[] banParameters,
+        public async Task<ServicesLiveOps.UserManagementService.BanUsersOutput> BanUsersAsync(
+            ServicesLiveOps.ForzaUserBanParameters[] banParameters,
             int xuidCount,
             string endpoint)
         {
@@ -580,7 +581,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             var result = await service.SearchLeaderboards(searchParams, startIndex, maxResults).ConfigureAwait(false);
 
             return result.Rows;
-
         }
 
         /// <inheritdoc/>

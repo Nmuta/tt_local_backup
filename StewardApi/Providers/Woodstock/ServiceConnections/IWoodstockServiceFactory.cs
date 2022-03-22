@@ -4,8 +4,8 @@ using Forza.WebServices.FH5_main.Generated;
 using AuctionManagementService = Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
-using UserManagementService = Forza.LiveOps.FH5_main.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {
@@ -15,9 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
     public interface IWoodstockServiceFactory
     {
         /// <summary>
-        ///     Prepares a <see cref="UserManagementService" />.
+        ///     Prepares a <see cref="ServicesLiveOps.UserManagementService" />.
         /// </summary>
-        Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint);
+        Task<ServicesLiveOps.UserManagementService> PrepareUserManagementServiceAsync(string endpoint);
 
         /// <summary>
         ///     Prepares a <see cref="UserInventoryService" />.

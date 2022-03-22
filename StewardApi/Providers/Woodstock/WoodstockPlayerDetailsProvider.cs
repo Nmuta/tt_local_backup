@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -61,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
+                var convertedQueries = this.mapper.Map<ServicesLiveOps.ForzaPlayerLookupParameters[]>(queries);
 
                 var result = await this.woodstockService.GetUserIdsAsync(convertedQueries, endpoint)
                     .ConfigureAwait(false);
@@ -445,7 +446,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 {
                         var paramBatch = banParameters.ToList()
                             .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
-                        var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
+                        var mappedBanParameters = this.mapper.Map<IList<ServicesLiveOps.ForzaUserBanParameters>>(paramBatch);
                         var result = await this.woodstockService
                             .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count, endpoint)
                             .ConfigureAwait(false);

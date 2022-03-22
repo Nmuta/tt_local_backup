@@ -11,13 +11,13 @@ using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH5_main.Generated;
 using Xls.WebServices.FH5_main.Generated;
 using LiveOpsContracts = Forza.LiveOps.FH5_main.Generated;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
@@ -56,30 +56,30 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<AdminForzaProfile, WoodstockInventoryProfile>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
                 .ReverseMap();
-            this.CreateMap<ForzaUserBanSummary, BanSummary>();
+            this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>();
             this.CreateMap<WoodstockBanParametersInput, WoodstockBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
-            this.CreateMap<WoodstockBanParameters, ForzaUserBanParameters>()
+            this.CreateMap<WoodstockBanParameters, ServicesLiveOps.ForzaUserBanParameters>()
                 .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid }))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
                 .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
-            this.CreateMap<ForzaUserBanDescription, BanDescription>()
+            this.CreateMap<ServicesLiveOps.ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
-            this.CreateMap<ForzaUserBanResult, BanResult>()
+            this.CreateMap<ServicesLiveOps.ForzaUserBanResult, BanResult>()
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
                     src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to ban player with XUID: {src.Xuid}")));
             this.CreateMap<WebServicesContracts.ForzaProfileSummary, ProfileSummary>()
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
             this.CreateMap<WebServicesContracts.ForzaCredityUpdateEntry, CreditUpdate>().ReverseMap();
-            this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
-            this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
-            this.CreateMap<ForzaUserGroup, LspGroup>();
+            this.CreateMap<ServicesLiveOps.ForzaConsole, ConsoleDetails>().ReverseMap();
+            this.CreateMap<ServicesLiveOps.ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
+            this.CreateMap<ServicesLiveOps.ForzaUserGroup, LspGroup>();
             this.CreateMap<WoodstockPlayerDetails, IdentityResultAlpha>().ReverseMap();
             this.CreateMap<WoodstockUserFlagsInput, WoodstockUserFlags>().ReverseMap();
             this.CreateMap<WoodstockGroupGift, WoodstockGift>().ReverseMap();
@@ -108,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
-            this.CreateMap<ForzaUserAdminComment, ProfileNote>()
+            this.CreateMap<ServicesLiveOps.ForzaUserAdminComment, ProfileNote>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(source => source.date))
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(source => source.author))
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(source => source.text));
@@ -134,17 +134,17 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
                 .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
                 .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default ? source.Auction.TimeFlagged : (DateTime?)null));
-            this.CreateMap<IdentityQueryAlpha, ForzaPlayerLookupParameters>()
+            this.CreateMap<IdentityQueryAlpha, ServicesLiveOps.ForzaPlayerLookupParameters>()
                 .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(
                     src => src.Xuid.HasValue ? ForzaUserIdType.Xuid : ForzaUserIdType.Gamertag))
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(
                     src => src.Xuid.HasValue ? src.Xuid.ToString() : src.Gamertag));
-            this.CreateMap<ForzaPlayerLookupParameters, IdentityQueryAlpha>()
+            this.CreateMap<ServicesLiveOps.ForzaPlayerLookupParameters, IdentityQueryAlpha>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(
-                    src => src.UserIDType == ForzaUserIdType.Xuid ? (ulong?)Convert.ToUInt64(src.UserID, CultureInfo.InvariantCulture) : null))
+                    src => src.UserIDType == ServicesLiveOps.ForzaUserIdType.Xuid ? (ulong?)Convert.ToUInt64(src.UserID, CultureInfo.InvariantCulture) : null))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(
-                    src => src.UserIDType == ForzaUserIdType.Gamertag ? src.UserID : null));
-            this.CreateMap<ForzaPlayerLookupResult, IdentityResultAlpha>()
+                    src => src.UserIDType == ServicesLiveOps.ForzaUserIdType.Gamertag ? src.UserID : null));
+            this.CreateMap<ServicesLiveOps.ForzaPlayerLookupResult, IdentityResultAlpha>()
                 .ForMember(dest => dest.Query, opt => opt.MapFrom(src => src.Request))
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
                     src => src.PlayerExists ? null :

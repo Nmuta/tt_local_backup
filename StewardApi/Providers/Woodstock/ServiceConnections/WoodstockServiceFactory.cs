@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
@@ -72,12 +73,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint)
+        public async Task<ServicesLiveOps.UserManagementService> PrepareUserManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new UserManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.UserManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>

@@ -9,6 +9,7 @@ using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
@@ -47,14 +48,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets user IDs.
         /// </summary>
-        Task<UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
-            ForzaPlayerLookupParameters[] parameters,
+        Task<ServicesLiveOps.UserManagementService.GetUserIdsOutput> GetUserIdsAsync(
+            ServicesLiveOps.ForzaPlayerLookupParameters[] parameters,
             string endpoint);
 
         /// <summary>
         ///     Gets consoles.
         /// </summary>
-        Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults, string endpoint);
+        Task<ServicesLiveOps.UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults, string endpoint);
 
         /// <summary>
         ///     Sets console ban status.
@@ -64,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets shared console users.
         /// </summary>
-        Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(
+        Task<ServicesLiveOps.UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(
             ulong xuid,
             int startAt,
             int maxResults,
@@ -73,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets the user's profile notes.
         /// </summary>
-        Task<UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(
+        Task<ServicesLiveOps.UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(
             ulong xuid,
             int maxResults,
             string endpoint);
@@ -86,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets LSP groups.
         /// </summary>
-        Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
+        Task<ServicesLiveOps.UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
             int startIndex,
             int maxResults,
             string endpoint);
@@ -94,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets user group memberships.
         /// </summary>
-        Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
+        Task<ServicesLiveOps.UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
             ulong xuid,
             int[] groupFilter,
             int maxResults,
@@ -113,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets is under review.
         /// </summary>
-        Task<UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid, string endpoint);
+        Task<ServicesLiveOps.UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Sets is under review.
@@ -123,14 +124,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets user ban summaries.
         /// </summary>
-        Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
+        Task<ServicesLiveOps.UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
             ulong[] xuids,
             string endpoint);
 
         /// <summary>
         ///     Gets user ban history.
         /// </summary>
-        Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
+        Task<ServicesLiveOps.UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
             ulong xuid,
             int startIndex,
             int maxResults,
@@ -139,8 +140,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Bans users.
         /// </summary>
-        Task<UserManagementService.BanUsersOutput> BanUsersAsync(
-            ForzaUserBanParameters[] banParameters,
+        Task<ServicesLiveOps.UserManagementService.BanUsersOutput> BanUsersAsync(
+            ServicesLiveOps.ForzaUserBanParameters[] banParameters,
             int xuidCount,
             string endpoint);
 

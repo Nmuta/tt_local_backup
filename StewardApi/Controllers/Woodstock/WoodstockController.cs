@@ -1049,7 +1049,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban summaries.
         /// </summary>
-        [HttpGet("players/banSummaries")]
+        [HttpPost("players/banSummaries")]
         [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Banning)]

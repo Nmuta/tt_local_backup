@@ -6,12 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
@@ -82,8 +82,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             public Dependencies()
             {
-                this.WoodstockService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
-                this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
+                this.WoodstockService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.UserManagementService.GetUserGroupsOutput>());
+                this.Mapper.Map<IList<LspGroup>>(Arg.Any<ServicesLiveOps.ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
