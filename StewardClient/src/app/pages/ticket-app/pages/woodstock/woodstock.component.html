@@ -8,8 +8,15 @@
     class="top-spacing"
   ></woodstock-user-flags>
   <mat-card class="top-spacing">
+    <mat-card-title>Ban History</mat-card-title>
+    <mat-card-subtitle>Woodstock</mat-card-subtitle>
     <woodstock-ban-history-compact [xuid]="playerIdentity?.xuid"></woodstock-ban-history-compact>
   </mat-card>
+  <woodstock-gift-history-results-compact
+    class="gift-history-container"
+    [selectedPlayer]="playerIdentity"
+    [usingPlayerIdentities]="true"
+  ></woodstock-gift-history-results-compact>
   <quick-actions class="top-spacing">
     <go-to-inventory-button
       [gameTitle]="gameTitle"

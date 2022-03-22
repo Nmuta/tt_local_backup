@@ -12,7 +12,7 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
   templateUrl: './woodstock.component.html',
   styleUrls: ['./woodstock.component.scss'],
 })
-export class WoodstockComponent extends TicketAppBaseComponent {
+export class WoodstockComponent extends TicketAppBaseComponent<IdentityResultAlpha> {
   constructor(
     private readonly woodstockService: WoodstockService,
     store: Store,

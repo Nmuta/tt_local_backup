@@ -23,6 +23,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { SteelheadComponent } from './pages/steelhead/steelhead.component';
 import { WoodstockComponent } from './pages/woodstock/woodstock.component';
 import { MatIconModule } from '@angular/material/icon';
+import { GiftHistoryResultsModule } from '@views/gift-history-results/gift-history-results.module';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -39,6 +40,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatSidenavModule,
     MatIconModule,
     JsonDumpModule,
+    GiftHistoryResultsModule,
   ],
   providers: [],
   declarations: [

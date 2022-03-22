@@ -8,8 +8,15 @@
     class="top-spacing"
   ></apollo-user-flags>
   <mat-card class="top-spacing">
+    <mat-card-title>Ban History</mat-card-title>
+    <mat-card-subtitle>Apollo</mat-card-subtitle>
     <apollo-ban-history-compact [xuid]="playerIdentity?.xuid"></apollo-ban-history-compact>
   </mat-card>
+  <apollo-gift-history-results-compact
+    class="gift-history-container"
+    [selectedPlayer]="playerIdentity"
+    [usingPlayerIdentities]="true"
+  ></apollo-gift-history-results-compact>
   <quick-actions class="top-spacing">
     <go-to-inventory-button
       [gameTitle]="gameTitle"

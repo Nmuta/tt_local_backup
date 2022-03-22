@@ -16,6 +16,11 @@
       <sunrise-ban-history-compact [xuid]="playerIdentity?.xuid"></sunrise-ban-history-compact>
     </mat-card-content>
   </mat-card>
+  <sunrise-gift-history-results-compact
+    class="gift-history-container"
+    [selectedPlayer]="playerIdentity"
+    [usingPlayerIdentities]="true"
+  ></sunrise-gift-history-results-compact>
   <quick-actions class="top-spacing">
     <go-to-inventory-button
       [gameTitle]="gameTitle"

@@ -14,11 +14,14 @@ export type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 @Component({
   template: '',
 })
-export abstract class TicketAppBaseComponent extends BaseComponent implements OnInit {
+export abstract class TicketAppBaseComponent<TPlayerIdentity extends IdentityResultUnion>
+  extends BaseComponent
+  implements OnInit
+{
   public lookupGamertag: string;
 
   public gameTitle: GameTitleCodeName;
-  public playerIdentity: IdentityResultUnion;
+  public playerIdentity: TPlayerIdentity;
 
   constructor(private readonly ticketService: TicketService, private readonly store: Store) {
     super();
@@ -53,7 +56,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
         }),
         take(1),
         tap(identity => {
-          this.playerIdentity = identity;
+          this.playerIdentity = identity as TPlayerIdentity;
         }),
         takeUntil(this.onDestroy$),
       )

@@ -16,17 +16,23 @@ mat-drawer {
   background: $sidebar-background;
 }
 
-// this is an implicit element, so we have to use ::ng-deep
-:host ::ng-deep mat-drawer-content {
-  display: flex;
-  flex-flow: column nowrap;
-  min-height: 100%;
+:host ::ng-deep {
+  mat-drawer-content {
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 100%;
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  .gift-history-container {
+    margin-top: $gap-medium;
+    display: block;
+  }
 }
 
 .content {

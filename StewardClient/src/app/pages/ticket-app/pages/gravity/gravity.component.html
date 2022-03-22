@@ -2,6 +2,11 @@
   <gravity-player-sidebar-details
     [gamertag]="playerIdentity?.gamertag"
   ></gravity-player-sidebar-details>
+  <gravity-gift-history-results-compact
+    class="gift-history-container"
+    [selectedPlayer]="playerIdentity"
+    [usingPlayerIdentities]="true"
+  ></gravity-gift-history-results-compact>
   <quick-actions class="top-spacing">
     <go-to-inventory-button
       [gameTitle]="gameTitle"

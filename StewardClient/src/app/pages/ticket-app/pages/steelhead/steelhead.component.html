@@ -2,6 +2,11 @@
   <steelhead-player-sidebar-details
     [gamertag]="playerIdentity?.gamertag"
   ></steelhead-player-sidebar-details>
+  <steelhead-gift-history-results-compact
+    class="gift-history-container"
+    [selectedPlayer]="playerIdentity"
+    [usingPlayerIdentities]="true"
+  ></steelhead-gift-history-results-compact>
   <quick-actions class="top-spacing">
     <go-to-inventory-button
       [gameTitle]="gameTitle"

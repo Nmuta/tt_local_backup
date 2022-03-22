@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { GravityGiftHistoryResultsComponent } from './gravity/gravity-gift-history-results.component';
 import { SunriseGiftHistoryResultsComponent } from './sunrise/sunrise-gift-history-results.component';
 import { ApolloGiftHistoryResultsComponent } from './apollo/apollo-gift-history-results.component';
+import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift-history-results.component';
+import { WoodstockGiftHistoryResultsComponent } from './woodstock/woodstock-gift-history-results.component';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MatTableModule } from '@angular/material/table';
@@ -14,20 +16,36 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { StewardUserModule } from '@views/steward-user/steward-user.module';
 import { PlayerInventoryModule } from '@views/player-inventory/player-inventory.module';
 import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
-import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift-history-results.component';
-import { WoodstockGiftHistoryResultsComponent } from './woodstock/woodstock-gift-history-results.component';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+import { GiftHistoryResultsComponent } from './gift-history-results.component';
+import { GiftHistoryResultsCompactComponent } from './gift-history-results-compact/gift-history-results-compact.component';
+import { ApolloGiftHistoryResultsCompactComponent } from './gift-history-results-compact/apollo/apollo-gift-history-results-compact.component';
+import { GravityGiftHistoryResultsCompactComponent } from './gift-history-results-compact/gravity/gravity-gift-history-results-compact.component';
+import { SteelheadGiftHistoryResultsCompactComponent } from './gift-history-results-compact/steelhead/steelhead-gift-history-results-compact.component';
+import { SunriseGiftHistoryResultsCompactComponent } from './gift-history-results-compact/sunrise/sunrise-gift-history-results-compact.component';
+import { WoodstockGiftHistoryResultsCompactComponent } from './gift-history-results-compact/woodstock/woodstock-gift-history-results-compact.component';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
   declarations: [
+    GiftHistoryResultsComponent,
     WoodstockGiftHistoryResultsComponent,
     SteelheadGiftHistoryResultsComponent,
     GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,
     ApolloGiftHistoryResultsComponent,
+
+    GiftHistoryResultsCompactComponent,
+    WoodstockGiftHistoryResultsCompactComponent,
+    SteelheadGiftHistoryResultsCompactComponent,
+    GravityGiftHistoryResultsCompactComponent,
+    SunriseGiftHistoryResultsCompactComponent,
+    ApolloGiftHistoryResultsCompactComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +63,9 @@ import { MatIconModule } from '@angular/material/icon';
     PlayerInventoryModule,
     InventoryItemListDisplayModule,
     MatIconModule,
+    MonitorActionModule,
+    MatButtonModule,
+    RouterModule,
   ],
   exports: [
     WoodstockGiftHistoryResultsComponent,
@@ -52,6 +73,12 @@ import { MatIconModule } from '@angular/material/icon';
     GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,
     ApolloGiftHistoryResultsComponent,
+
+    WoodstockGiftHistoryResultsCompactComponent,
+    SteelheadGiftHistoryResultsCompactComponent,
+    GravityGiftHistoryResultsCompactComponent,
+    SunriseGiftHistoryResultsCompactComponent,
+    ApolloGiftHistoryResultsCompactComponent,
   ],
 })
 export class GiftHistoryResultsModule {}

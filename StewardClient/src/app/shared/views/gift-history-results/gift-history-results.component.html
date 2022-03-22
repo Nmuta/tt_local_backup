@@ -1,64 +1,64 @@
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>Gift History</mat-card-title>
-    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
-  </mat-card-header>
+  <mat-card-title>Gift History</mat-card-title>
+  <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
   <mat-card-content>
-    <span class="notification">{{ giftHistoryDelay }}</span>
-    <ng-container *ngIf="!isLoading && !loadError; else failState">
-      <ng-container
-        *ngIf="!giftHistoryList || giftHistoryList?.length > 0; else noHistoryFoundTemplate"
-      >
-        <mat-accordion>
-          <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
-            <mat-expansion-panel-header [class.itemErrors]="history?.errors?.length > 0">
-              <mat-panel-title>
-                <mat-icon
-                  color="warn"
-                  *ngIf="history?.errors?.length > 0"
-                  [matTooltip]="history?.errors?.length + ' errors found.'"
-                  >warning</mat-icon
-                >
-                <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
-                <span [matTooltip]="history.giftSendDateUtc | dateTimeToJsDate | date: 'long'">
-                  {{ history.giftSendDateUtc | dateTimeToJsDate | date: 'short' }}
-                </span>
-              </mat-panel-title>
-              <mat-panel-description>
-                <span class="inventoryPreview">
-                  <ul>
-                    <li *ngFor="let description of history.descriptionToShow">
-                      <b>{{ description.title }}:</b> {{ description.quantity }}
-                    </li>
-                  </ul>
-                </span>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <div class="sent-by-info">
-              <b>Sent by: </b><steward-user [objectId]="history.requesterObjectId"> </steward-user>
-            </div>
-            <ng-container>
-              <div *ngFor="let itemsToShow of history.itemsToShow">
-                <inventory-item-list-display
-                  *ngIf="itemsToShow?.items?.length > 0"
-                  [whatToShow]="itemsToShow"
-                ></inventory-item-list-display>
+    <div class="notification">{{ giftHistoryDelay }}</div>
+    <ng-container *ngIf="getHistoryMonitor.isSuccess; else monitorTemplate">
+      <ng-container *ngIf="giftHistoryList?.length > 0; else noHistoryFoundTemplate">
+        <div #historyViewOverride>
+          <ng-content select="[historyViewOverride]"></ng-content>
+        </div>
+        <!-- Default history view -->
+        <ng-container *ngIf="!historyViewOverride.children.length">
+          <mat-accordion>
+            <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
+              <mat-expansion-panel-header [class.itemErrors]="history?.errors?.length > 0">
+                <mat-panel-title>
+                  <mat-icon
+                    color="warn"
+                    *ngIf="history?.errors?.length > 0"
+                    [matTooltip]="history?.errors?.length + ' errors found.'"
+                    >warning</mat-icon
+                  >
+                  <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
+                  <span [matTooltip]="history.giftSendDateUtc | dateTimeToJsDate | date: 'long'">
+                    {{ history.giftSendDateUtc | dateTimeToJsDate | date: 'short' }}
+                  </span>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <span class="inventoryPreview">
+                    <ul>
+                      <li *ngFor="let description of history.descriptionToShow">
+                        <b>{{ description.title }}:</b> {{ description.quantity }}
+                      </li>
+                    </ul>
+                  </span>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="sent-by-info">
+                <b>Sent by: </b
+                ><steward-user [objectId]="history.requesterObjectId"> </steward-user>
               </div>
-            </ng-container>
-          </mat-expansion-panel>
-        </mat-accordion>
+              <ng-container>
+                <div *ngFor="let itemsToShow of history.itemsToShow">
+                  <inventory-item-list-display
+                    *ngIf="itemsToShow?.items?.length > 0"
+                    [whatToShow]="itemsToShow"
+                  ></inventory-item-list-display>
+                </div>
+              </ng-container>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
       </ng-container>
     </ng-container>
   </mat-card-content>
 </mat-card>
 
 <ng-template #noHistoryFoundTemplate>
-  <h3>No gift history found.</h3>
+  <span class="no-history-found">No gift history found.</span>
 </ng-template>
 
-<ng-template #failState>
-  <div id="fail-state">
-    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
-  </div>
+<ng-template #monitorTemplate>
+  <big-spinner [monitor]="getHistoryMonitor"></big-spinner>
 </ng-template>

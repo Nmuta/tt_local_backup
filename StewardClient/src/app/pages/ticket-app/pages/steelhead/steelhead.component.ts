@@ -12,7 +12,7 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
   templateUrl: './steelhead.component.html',
   styleUrls: ['./steelhead.component.scss'],
 })
-export class SteelheadComponent extends TicketAppBaseComponent {
+export class SteelheadComponent extends TicketAppBaseComponent<IdentityResultAlpha> {
   constructor(
     private readonly steelheadService: SteelheadService,
     store: Store,

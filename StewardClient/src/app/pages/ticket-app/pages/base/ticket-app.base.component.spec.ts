@@ -26,8 +26,8 @@ import { faker } from '@interceptors/fake-api/utility';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 
 describe('TicketAppBaseComponent', () => {
-  let fixture: ComponentFixture<TicketAppBaseComponent>;
-  let component: TicketAppBaseComponent;
+  let fixture: ComponentFixture<TicketAppBaseComponent<IdentityResultAlpha>>;
+  let component: TicketAppBaseComponent<IdentityResultAlpha>;
 
   let mockTicketService: TicketService;
   let mockStore: Store;
@@ -51,7 +51,9 @@ describe('TicketAppBaseComponent', () => {
         ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(TicketAppBaseComponent as Type<TicketAppBaseComponent>);
+      fixture = TestBed.createComponent(
+        TicketAppBaseComponent as Type<TicketAppBaseComponent<IdentityResultAlpha>>,
+      );
       component = fixture.debugElement.componentInstance;
 
       mockTicketService = TestBed.inject(TicketService);

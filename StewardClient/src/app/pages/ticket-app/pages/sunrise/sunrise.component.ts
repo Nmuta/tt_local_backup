@@ -12,7 +12,7 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
   templateUrl: './sunrise.component.html',
   styleUrls: ['./sunrise.component.scss'],
 })
-export class SunriseComponent extends TicketAppBaseComponent {
+export class SunriseComponent extends TicketAppBaseComponent<IdentityResultAlpha> {
   constructor(
     private readonly sunriseService: SunriseService,
     store: Store,

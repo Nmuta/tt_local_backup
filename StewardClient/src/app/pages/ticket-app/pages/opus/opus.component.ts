@@ -12,7 +12,7 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
   templateUrl: './opus.component.html',
   styleUrls: ['./opus.component.scss'],
 })
-export class OpusComponent extends TicketAppBaseComponent {
+export class OpusComponent extends TicketAppBaseComponent<IdentityResultAlpha> {
   constructor(
     private readonly opusService: OpusService,
     store: Store,

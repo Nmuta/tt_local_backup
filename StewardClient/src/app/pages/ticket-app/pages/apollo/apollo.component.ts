@@ -12,7 +12,7 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
   templateUrl: './apollo.component.html',
   styleUrls: ['./apollo.component.scss'],
 })
-export class ApolloComponent extends TicketAppBaseComponent {
+export class ApolloComponent extends TicketAppBaseComponent<IdentityResultAlpha> {
   constructor(
     private readonly apolloService: ApolloService,
     store: Store,

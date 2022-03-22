@@ -1,0 +1,36 @@
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let history of giftHistoryList">
+    <mat-expansion-panel-header [class.itemErrors]="history?.errors?.length > 0">
+      <mat-panel-title>
+        <mat-icon
+          color="warn"
+          *ngIf="history?.errors?.length > 0"
+          [matTooltip]="history?.errors?.length + ' errors found.'"
+          >warning</mat-icon
+        >
+        <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
+        <span [matTooltip]="history.giftSendDateUtc | dateTimeToJsDate | date: 'long'">
+          {{ history.giftSendDateUtc | dateTimeToJsDate | date: 'short' }}
+        </span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sent-by-info">
+      <b>Sent by: </b><steward-user [objectId]="history.requesterObjectId"> </steward-user>
+    </div>
+    <table class="info-table full-width">
+      <tr *ngFor="let description of history.descriptionToShow">
+        <th>{{ description.title }}</th>
+        <td>{{ description.quantity }}</td>
+      </tr>
+    </table>
+  </mat-expansion-panel>
+</mat-accordion>
+<a
+  class="go-to-history-tool"
+  mat-raised-button
+  color="accent"
+  target="_blank"
+  [routerLink]="'/app/tools/gift-history/' + gameTitle"
+  clickStop
+  >View Full Gift History Details</a
+>

@@ -12,7 +12,7 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
   templateUrl: './gravity.component.html',
   styleUrls: ['./gravity.component.scss'],
 })
-export class GravityComponent extends TicketAppBaseComponent {
+export class GravityComponent extends TicketAppBaseComponent<IdentityResultBeta> {
   constructor(
     private readonly gravityService: GravityService,
     store: Store,

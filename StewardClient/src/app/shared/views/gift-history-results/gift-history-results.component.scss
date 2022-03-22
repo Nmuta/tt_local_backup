@@ -9,17 +9,14 @@
   }
 }
 
-h2 {
-  margin-bottom: 0.5em;
-}
-
-h3 {
-  margin-bottom: 0;
-  font-weight: bold;
-}
-
 .sent-by-info {
   margin-bottom: 1em;
+}
+
+.no-history-found {
+  font-weight: bold;
+  margin-top: $gap-medium;
+  display: block;
 }
 
 mat-panel-title {
