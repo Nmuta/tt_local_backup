@@ -68,7 +68,7 @@ export class LogTableLoaderComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
 
     this.service
       .getPlayerAuctionLogByXuid$(this.identity.xuid)
@@ -90,7 +90,7 @@ export class LogTableLoaderComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
 
     const tryLoadingMore$ = new Subject<void>();
     tryLoadingMore$

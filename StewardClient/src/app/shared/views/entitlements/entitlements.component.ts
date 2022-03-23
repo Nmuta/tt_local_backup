@@ -41,7 +41,7 @@ export class EntitlementsComponent extends BaseComponent implements OnChanges {
             return of([]);
           }
 
-          this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+          this.getMonitor = this.getMonitor.repeat();
           return kustoService
             .getKustoPlayerEntitlements$(this.identity?.xuid)
             .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$));

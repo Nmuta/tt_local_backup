@@ -88,7 +88,7 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
     this.getSchedule$
       .pipe(
         tap(() => {
-          this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+          this.getMonitor = this.getMonitor.repeat();
           this.schedule = undefined;
           this.events = [];
         }),

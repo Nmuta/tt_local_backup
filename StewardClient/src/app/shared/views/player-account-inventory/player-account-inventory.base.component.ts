@@ -34,7 +34,7 @@ export abstract class PlayerAccountInventoryBaseComponent<T extends AccountInven
       return;
     }
 
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
     const getPlayerAccountInventoryByXuid$ = this.getPlayerAccountInventoryByXuid$(
       this.identity.xuid,
     );

@@ -52,7 +52,7 @@ export abstract class PlayerUGCBaseComponent
           this.ugcContent, (this.filteredUgcContent = []);
         }),
         switchMap(() => {
-          this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+          this.getMonitor = this.getMonitor.repeat();
           const noIdentitySelected = this.usingIdentities ? !this.identity?.xuid : !this.shareCode;
           if (noIdentitySelected) {
             return of([]);

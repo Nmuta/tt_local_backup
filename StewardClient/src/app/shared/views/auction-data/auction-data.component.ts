@@ -30,7 +30,7 @@ export class AuctionDataComponent extends BaseComponent implements OnChanges {
 
   /** Angular lifecycle hook. */
   public ngOnChanges(): void {
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
     if (!this.service) {
       throw new Error(`No service provided to ${this.constructor.name}`);
     }

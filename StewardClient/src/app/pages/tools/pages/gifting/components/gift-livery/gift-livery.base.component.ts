@@ -80,7 +80,7 @@ export abstract class GiftLiveryBaseComponent<
 
   /** Called when livery id input has changes. */
   public onLiveryIdChange(input: string): void {
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
     this.formControls.livery.reset();
     this.formControls.livery.setErrors({});
     if (!input) return;
@@ -109,7 +109,7 @@ export abstract class GiftLiveryBaseComponent<
     }
 
     const sendGift$ = this.sendLiveryRequest$();
-    this.postMonitor = new ActionMonitor(this.postMonitor.dispose().label);
+    this.postMonitor = this.postMonitor.repeat();
 
     sendGift$
       .pipe(
@@ -175,7 +175,7 @@ export abstract class GiftLiveryBaseComponent<
   /** Resets the UI. */
   public resetTool(clearLivery: boolean = false): void {
     this.giftResponse = undefined;
-    this.postMonitor = new ActionMonitor(this.postMonitor.dispose().label);
+    this.postMonitor = this.postMonitor.repeat();
 
     if (clearLivery) {
       this.formControls.livery.setValue(null);

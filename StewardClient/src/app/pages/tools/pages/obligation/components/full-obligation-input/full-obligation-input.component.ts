@@ -173,7 +173,7 @@ export class FullObligationInputComponent
   }
 
   private prepareDropdownOptions(): void {
-    this.optionsMonitor = new ActionMonitor(this.optionsMonitor.dispose().label);
+    this.optionsMonitor = this.optionsMonitor.repeat();
 
     // initialize the auto-complete list asynchronously
     this.obligations

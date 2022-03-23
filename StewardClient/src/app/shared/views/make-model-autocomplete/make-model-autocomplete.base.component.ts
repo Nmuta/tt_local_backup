@@ -47,7 +47,7 @@ export abstract class MakeModelAutocompleteBaseComponent
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
     this.getDetailedCars$()
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(cars => {

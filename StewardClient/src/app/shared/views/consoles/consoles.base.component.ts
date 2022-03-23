@@ -50,7 +50,7 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
       this.disabled ||
       !this.permissionsService.currentUserHasWritePermission(PermissionServiceTool.ConsoleBan);
 
-    this.getConsoles = new ActionMonitor(this.getConsoles.dispose().label);
+    this.getConsoles = this.getConsoles.repeat();
     const getConsoleDetailsByXuid$ = this.getConsoleDetailsByXuid$(this.identity.xuid);
     getConsoleDetailsByXuid$
       .pipe(

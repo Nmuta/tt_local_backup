@@ -121,10 +121,7 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
   }
 
   private getLeaderboardScores$(query: LeaderboardQuery): Observable<LeaderboardScore[]> {
-    this.getLeaderboardScoresMonitor = new ActionMonitor(
-      this.getLeaderboardScoresMonitor.dispose().label,
-    );
-
+    this.getLeaderboardScoresMonitor = this.getLeaderboardScoresMonitor.repeat();
     return this.service
       .getLeaderboardScores$(
         query.scoreboardTypeId,

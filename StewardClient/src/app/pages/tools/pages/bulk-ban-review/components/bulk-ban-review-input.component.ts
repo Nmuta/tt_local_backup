@@ -45,7 +45,7 @@ export class BulkBanReviewInputComponent extends BaseComponent implements OnInit
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.getEndpoints = new ActionMonitor(this.getEndpoints.dispose().label);
+    this.getEndpoints = this.getEndpoints.repeat();
 
     this.endpointKeys$
       .pipe(

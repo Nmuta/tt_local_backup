@@ -74,7 +74,7 @@ export class GiftHistoryResultsComponent extends BaseComponent implements OnChan
       .pipe(
         tap(() => {
           this.updateGiftHistoryList(undefined);
-          this.getHistoryMonitor = new ActionMonitor(this.getHistoryMonitor.dispose().label);
+          this.getHistoryMonitor = this.getHistoryMonitor.repeat();
         }),
         filter(() => this.hasValidInputs()),
         switchMap(() => this.getGiftHistory()),

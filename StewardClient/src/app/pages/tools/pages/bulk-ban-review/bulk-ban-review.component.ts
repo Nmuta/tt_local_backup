@@ -108,7 +108,7 @@ export class BulkBanReviewComponent extends BaseComponent implements AfterViewIn
     ];
 
     this.totalEnvironmentsSearched = queries.length;
-    this.getBanSummaries = new ActionMonitor(this.getBanSummaries.dispose().label);
+    this.getBanSummaries = this.getBanSummaries.repeat();
     combineLatest(queries)
       .pipe(this.getBanSummaries.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe((banSummaries: BanSummaryPlusEnvironment[][]) => {

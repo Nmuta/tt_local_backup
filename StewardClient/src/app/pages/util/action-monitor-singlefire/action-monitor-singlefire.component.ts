@@ -138,7 +138,7 @@ export class ActionMonitorSinglefireComponent {
   private async refreshMonitor(target: number): Promise<ActionMonitor> {
     await timer(0).toPromise(); // must wait until between render steps to update this value.
     const tempMonitors = clone(this.monitors);
-    tempMonitors[target] = new ActionMonitor(this.monitors[target].dispose().label);
+    tempMonitors[target] = this.monitors[target].repeat();
     this.monitors = tempMonitors;
     return this.monitors[target];
   }

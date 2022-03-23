@@ -53,7 +53,7 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
       .pipe(
         ignorePaginatorQueryParams(),
         tap(() => {
-          this.getActionMonitor = new ActionMonitor(this.getActionMonitor.dispose().label);
+          this.getActionMonitor = this.getActionMonitor.repeat();
         }),
         map(params => {
           const query = paramsToLeadboardQuery(params);
@@ -79,7 +79,7 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
           };
         }),
         switchMap(() => {
-          this.getActionMonitor = new ActionMonitor(this.getActionMonitor.dispose().label);
+          this.getActionMonitor = this.getActionMonitor.repeat();
 
           return this.woodstockService
             .getLeaderboardMetadata$(

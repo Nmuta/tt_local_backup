@@ -38,7 +38,7 @@ export abstract class BackstagePassHistoryBaseComponent
       .pipe(
         takeUntil(this.onDestroy$),
         switchMap(() => {
-          this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+          this.getMonitor = this.getMonitor.repeat();
           return this.getBackstagePassHistoryByXuid$(this.identity.xuid).pipe(
             this.getMonitor.monitorSingleFire(),
             catchError(() => EMPTY),

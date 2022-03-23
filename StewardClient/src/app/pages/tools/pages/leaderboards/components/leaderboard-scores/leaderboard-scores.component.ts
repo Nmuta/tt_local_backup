@@ -197,9 +197,7 @@ export class LeaderboardScoresComponent
 
   /** Deletes scores from leaderboard. */
   public deleteScores(scores: LeaderboardScore[]): void {
-    this.deleteLeaderboardScoresMonitor = new ActionMonitor(
-      this.deleteLeaderboardScoresMonitor.dispose().label,
-    );
+    this.deleteLeaderboardScoresMonitor = this.deleteLeaderboardScoresMonitor.repeat();
 
     const scoreIds = scores.map(score => score.id);
     this.service
@@ -277,9 +275,7 @@ export class LeaderboardScoresComponent
           this.selectedScores = [];
           this.isMultiDeleteActive = false;
           this.activeXuid = null;
-          this.getLeaderboardScoresMonitor = new ActionMonitor(
-            this.getLeaderboardScoresMonitor.dispose().label,
-          );
+          this.getLeaderboardScoresMonitor = this.getLeaderboardScoresMonitor.repeat();
         }),
         filter(q => !!q),
         switchMap(query => {

@@ -59,9 +59,7 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
 
   /** Change event when all tools availability changes */
   public toggleAllToolsAvailability(event: MatSlideToggleChange): void {
-    this.setToolsAvailabilityMonitor = new ActionMonitor(
-      this.setToolsAvailabilityMonitor.dispose().label,
-    );
+    this.setToolsAvailabilityMonitor = this.setToolsAvailabilityMonitor.repeat();
 
     this.settingsService
       .setToolAvailability$({ allTools: event.checked })
@@ -87,9 +85,7 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
     this.getInProgressJobs$
       .pipe(
         switchMap(() => {
-          this.getInProgressJobsMonitor = new ActionMonitor(
-            this.getInProgressJobsMonitor.dispose().label,
-          );
+          this.getInProgressJobsMonitor = this.getInProgressJobsMonitor.repeat();
           return this.backgroundJobService
             .getInProgressBackgroundJob$()
             .pipe(this.getInProgressJobsMonitor.monitorSingleFire());
@@ -112,9 +108,7 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
     this.getToolsAvailability$
       .pipe(
         switchMap(() => {
-          this.getToolsAvailabilityMonitor = new ActionMonitor(
-            this.getToolsAvailabilityMonitor.dispose().label,
-          );
+          this.getToolsAvailabilityMonitor = this.getToolsAvailabilityMonitor.repeat();
           return this.blobStorageService
             .getToolAvailability$()
             .pipe(this.getToolsAvailabilityMonitor.monitorSingleFire());

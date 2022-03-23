@@ -8,7 +8,6 @@ import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.c
 import { SunriseService } from '@services/sunrise';
 import { UGCType } from '@models/ugc-filters';
 import { Observable, timer } from 'rxjs';
-import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { pull } from 'lodash';
 
 /** Displays sunrise UGC content in a table. */
@@ -53,7 +52,7 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
 
   /** Hide UGC item. */
   public hideUGCItem(item: PlayerUGCItemTableEntries): void {
-    item.monitor = new ActionMonitor(item.monitor.dispose().label);
+    item.monitor = item.monitor.repeat();
 
     this.sunriseService
       .hideUgc$(item.guidId)

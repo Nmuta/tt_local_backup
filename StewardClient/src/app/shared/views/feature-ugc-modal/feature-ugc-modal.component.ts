@@ -84,7 +84,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
       this.ugcItem.guidId,
       this.formControls.featuredDate.value,
     );
-    this.postMonitor = new ActionMonitor(this.postMonitor.dispose().label);
+    this.postMonitor = this.postMonitor.repeat();
     this.dialogRef.disableClose = true;
 
     setFeaturedStatus$
@@ -109,7 +109,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
     }
 
     const deleteFeaturedStatus$ = this.deleteFeaturedStatus$(this.ugcItem.guidId);
-    this.postMonitor = new ActionMonitor(this.postMonitor.dispose().label);
+    this.postMonitor = this.postMonitor.repeat();
     this.dialogRef.disableClose = true;
 
     deleteFeaturedStatus$

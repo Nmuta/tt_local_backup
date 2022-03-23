@@ -50,7 +50,7 @@ export abstract class GamertagsBaseComponent<T> extends BaseComponent implements
       return;
     }
 
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
     const getSharedConsoleUsersByXuid$ = this.getSharedConsoleUsersByXuid$(this.identity.xuid);
     getSharedConsoleUsersByXuid$
       .pipe(

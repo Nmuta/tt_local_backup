@@ -8,7 +8,6 @@ import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.c
 import { UGCType } from '@models/ugc-filters';
 import { Observable, timer } from 'rxjs';
 import { WoodstockService } from '@services/woodstock';
-import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { pull } from 'lodash';
 
 /** Displays sunrise UGC content in a table. */
@@ -53,7 +52,7 @@ export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements
 
   /** Hide UGC item. */
   public hideUGCItem(item: PlayerUGCItemTableEntries): void {
-    item.monitor = new ActionMonitor(item.monitor.dispose().label);
+    item.monitor = item.monitor.repeat();
 
     this.woodstockService
       .hideUgc$(item.guidId)

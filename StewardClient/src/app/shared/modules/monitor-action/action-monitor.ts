@@ -1,3 +1,5 @@
+import { GuidLikeString } from '@models/extended-types';
+import { v4 as uuid } from 'uuid';
 import { cloneDeep, last } from 'lodash';
 import { DateTime } from 'luxon';
 import { BehaviorSubject, MonoTypeOperatorFunction, NEVER, Observable } from 'rxjs';
@@ -33,6 +35,8 @@ export class ActionMonitor {
     state: 'inactive',
     value: undefined,
   };
+
+  public readonly id: GuidLikeString;
 
   private _status$ = new BehaviorSubject<ActionStatus<unknown>>(ActionMonitor.DEFAULT_STATUS);
   private _allStatuses: ActionStatus<unknown>[] = [];
@@ -73,7 +77,9 @@ export class ActionMonitor {
     return this.status.state === 'complete' || this.status.state === 'error';
   }
 
-  constructor(public readonly label: string = 'UNLABELED') {}
+  constructor(public readonly label: string = 'UNLABELED', id: GuidLikeString = uuid()) {
+    this.id = id;
+  }
 
   /** Produces the RXJS operator for monitoring a single-fire action. */
   public monitorSingleFire<T>(): MonoTypeOperatorFunction<T> {
@@ -166,6 +172,12 @@ export class ActionMonitor {
   public dispose(): ActionMonitor {
     this._status$.complete();
     return this;
+  }
+
+  /** Generates a new action monitor using the same label and id. */
+  public repeat(): ActionMonitor {
+    this.dispose();
+    return new ActionMonitor(this.label, this.id);
   }
 
   private onValueStart(): void {

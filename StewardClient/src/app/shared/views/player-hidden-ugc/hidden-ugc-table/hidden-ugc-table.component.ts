@@ -77,7 +77,7 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
 
   /** Refresh table data. */
   public refreshTable(): void {
-    this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
+    this.getMonitor = this.getMonitor.repeat();
 
     this.service
       .getPlayerHiddenUGCByXuid$(this.identity.xuid)
@@ -95,7 +95,7 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
 
   /** Unhide UGC item. */
   public unhideUGCItem(item: HideableUgcTableEntries): void {
-    item.monitor = new ActionMonitor(item.monitor.dispose().label);
+    item.monitor = item.monitor.repeat();
 
     this.service
       .unhideUgc$(this.identity.xuid, item.fileType, item.ugcId)

@@ -53,7 +53,7 @@ export class WoodstockAuctionComponent extends BaseComponent implements OnInit {
 
   /** Called when the auction cancel button is pressed. */
   public onCancel(): void {
-    this.postCancelMonitor = new ActionMonitor(this.postCancelMonitor.dispose().label);
+    this.postCancelMonitor = this.postCancelMonitor.repeat();
     this.woodstock
       .deleteAuctionByAuctionId$(this.auctionId)
       .pipe(this.postCancelMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
