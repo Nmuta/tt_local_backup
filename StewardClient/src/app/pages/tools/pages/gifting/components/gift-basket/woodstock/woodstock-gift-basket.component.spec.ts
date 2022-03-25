@@ -11,7 +11,7 @@ import { WoodstockMasterInventory } from '@models/woodstock/woodstock-master-inv
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { WoodstockService } from '@services/woodstock';
 import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 describe('WoodstockGiftBasketComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
@@ -21,31 +21,29 @@ describe('WoodstockGiftBasketComponent', () => {
   let mockStore: Store;
   let mockWoodstockService: WoodstockService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-        ],
-        declarations: [WoodstockGiftBasketComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      declarations: [WoodstockGiftBasketComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockStore = injector.inject(Store);
-      mockWoodstockService = injector.inject(WoodstockService);
+    const injector = getTestBed();
+    mockStore = injector.inject(Store);
+    mockWoodstockService = injector.inject(WoodstockService);
 
-      fixture = TestBed.createComponent(WoodstockGiftBasketComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(WoodstockGiftBasketComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
-      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
-    }),
-  );
+    mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
+    mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

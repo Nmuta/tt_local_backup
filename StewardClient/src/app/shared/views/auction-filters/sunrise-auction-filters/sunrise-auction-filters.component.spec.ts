@@ -8,7 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseAuctionFiltersComponent } from './sunrise-auction-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DetailedCar } from '@models/detailed-car';
-import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { MakeModelFilterGroup } from '@views/player-ugc/components/ugc-filters/ugc-filters.base.component';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { AuctionFilters, AuctionSort, AuctionStatus } from '@models/auction-filters';
@@ -21,32 +22,30 @@ describe('SunriseAuctionFiltersComponent', () => {
   let mockStore: Store;
   let mockSunriseService: SunriseService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-          MatAutocompleteModule,
-        ],
-        declarations: [SunriseAuctionFiltersComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockSunriseService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+      ],
+      declarations: [SunriseAuctionFiltersComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [createMockSunriseService()],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockStore = injector.inject(Store);
+    const injector = getTestBed();
+    mockStore = injector.inject(Store);
 
-      fixture = TestBed.createComponent(SunriseAuctionFiltersComponent);
-      component = fixture.debugElement.componentInstance;
-      mockSunriseService = TestBed.inject(SunriseService);
+    fixture = TestBed.createComponent(SunriseAuctionFiltersComponent);
+    component = fixture.debugElement.componentInstance;
+    mockSunriseService = TestBed.inject(SunriseService);
 
-      mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
-      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
-    }),
-  );
+    mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
+    mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

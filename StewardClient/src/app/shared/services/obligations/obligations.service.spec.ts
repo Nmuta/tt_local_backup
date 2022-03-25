@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { ApiService, createMockApiService } from '@services/api';
 import { ObligationsService } from './obligations.service';
 import { PipelineGetFakeApi } from '@interceptors/fake-api/apis/pipeline/get';

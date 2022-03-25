@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
 import { createMockZendeskService } from '@services/zendesk';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { GoToInventoryButtonComponent } from './go-to-inventory-button.component';
 

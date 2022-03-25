@@ -15,7 +15,7 @@ import {
   SearchLeaderboardsComponent,
   SearchLeaderboardsContract,
 } from './search-leaderboards.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 
 describe('SearchLeaderboardsComponent', () => {

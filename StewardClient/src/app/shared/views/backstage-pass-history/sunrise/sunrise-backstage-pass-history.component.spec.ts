@@ -32,12 +32,9 @@ describe('SunriseBackstagePassHistoryComponent', () => {
       .and.callThrough();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnInit', () => {
     beforeEach(() => {

@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { KustoQueryGroup, KustoQuerySelectionComponent } from './kusto-query-selection.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { KustoQuery } from '@models/kusto';
 import { GameTitleCodeName } from '@models/enums';
 import { createMockKustoService, KustoService } from '@services/kusto';
@@ -19,26 +19,24 @@ describe('KustoQuerySelectionComponent', () => {
   const formBuilder: FormBuilder = new FormBuilder();
   let mockKustoService: KustoService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-          MatAutocompleteModule,
-        ],
-        declarations: [KustoQuerySelectionComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [{ provide: FormBuilder, useValue: formBuilder }, createMockKustoService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+      ],
+      declarations: [KustoQuerySelectionComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: FormBuilder, useValue: formBuilder }, createMockKustoService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(KustoQuerySelectionComponent);
-      component = fixture.debugElement.componentInstance;
-      mockKustoService = TestBed.inject(KustoService);
-    }),
-  );
+    fixture = TestBed.createComponent(KustoQuerySelectionComponent);
+    component = fixture.debugElement.componentInstance;
+    mockKustoService = TestBed.inject(KustoService);
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

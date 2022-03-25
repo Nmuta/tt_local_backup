@@ -37,80 +37,66 @@ describe('OverviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('valid initialization', () => {
     let profileSummary$: Subject<WoodstockProfileSummary> = undefined;
     let profileSummaryValue: WoodstockProfileSummary = undefined;
     const testXuid = fakeXuid();
 
-    beforeEach(
-      waitForAsync(() => {
-        // notifications list prep
-        profileSummary$ = new Subject<WoodstockProfileSummary>();
-        profileSummaryValue = WoodstockPlayerXuidProfileSummaryFakeApi.make();
-        service.getProfileSummaryByXuid$ = jasmine
-          .createSpy('getProfileSummaryByXuid$')
-          .and.returnValue(profileSummary$);
+    beforeEach(waitForAsync(() => {
+      // notifications list prep
+      profileSummary$ = new Subject<WoodstockProfileSummary>();
+      profileSummaryValue = WoodstockPlayerXuidProfileSummaryFakeApi.make();
+      service.getProfileSummaryByXuid$ = jasmine
+        .createSpy('getProfileSummaryByXuid$')
+        .and.returnValue(profileSummary$);
 
-        // emulate initialization event
-        component.ngOnChanges();
-      }),
-    );
+      // emulate initialization event
+      component.ngOnChanges();
+    }));
 
     describe('ngOnChanges', () => {
-      it(
-        'should skip undefined xuids',
-        waitForAsync(() => {
-          expect(component.isLoading).toBe(true);
-          expect(component.loadError).toBeFalsy();
-        }),
-      );
+      it('should skip undefined xuids', waitForAsync(() => {
+        expect(component.isLoading).toBe(true);
+        expect(component.loadError).toBeFalsy();
+      }));
 
-      it(
-        'should update when xuid set',
-        waitForAsync(async () => {
-          component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-          component.ngOnChanges();
+      it('should update when xuid set', waitForAsync(async () => {
+        component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+        component.ngOnChanges();
 
-          // waiting on value
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+        // waiting on value
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(true);
 
-          // value received
-          profileSummary$.next(profileSummaryValue);
-          profileSummary$.complete();
-          await fixture.whenStable();
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeFalsy();
-        }),
-      );
+        // value received
+        profileSummary$.next(profileSummaryValue);
+        profileSummary$.complete();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(false);
+        expect(component.loadError).toBeFalsy();
+      }));
 
-      it(
-        'should update when request errored',
-        waitForAsync(async () => {
-          // emulate xuid update event
-          component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-          component.ngOnChanges();
+      it('should update when request errored', waitForAsync(async () => {
+        // emulate xuid update event
+        component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+        component.ngOnChanges();
 
-          // waiting on value
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+        // waiting on value
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(true);
 
-          // error received
-          profileSummary$.error(new HttpErrorResponse({ error: 'hello' }));
-          await fixture.whenStable();
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeTruthy();
-        }),
-      );
+        // error received
+        profileSummary$.error(new HttpErrorResponse({ error: 'hello' }));
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(false);
+        expect(component.loadError).toBeTruthy();
+      }));
     });
   });
 });

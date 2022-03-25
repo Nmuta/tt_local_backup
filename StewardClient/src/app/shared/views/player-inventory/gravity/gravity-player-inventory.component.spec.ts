@@ -40,28 +40,24 @@ describe('GravityPlayerInventoryComponent', () => {
   describe('Method: ngOnChanges', () => {
     const testT10Id = fakeT10Id();
 
-    beforeEach(
-      waitForAsync(() => {
-        service.getPlayerInventoryByT10Id$ = jasmine
-          .createSpy('getPlayerInventoryByT10Id$')
-          .and.returnValue(of(GravityPlayerT10IdInventoryFakeApi.make(testT10Id)));
-        component.identity = first(GravityPlayersIdentitiesFakeApi.make([{ t10Id: testT10Id }]));
-        component.ngOnChanges({
-          identity: new SimpleChange(undefined, component.identity, true),
-        });
-      }),
-    );
+    beforeEach(waitForAsync(() => {
+      service.getPlayerInventoryByT10Id$ = jasmine
+        .createSpy('getPlayerInventoryByT10Id$')
+        .and.returnValue(of(GravityPlayerT10IdInventoryFakeApi.make(testT10Id)));
+      component.identity = first(GravityPlayersIdentitiesFakeApi.make([{ t10Id: testT10Id }]));
+      component.ngOnChanges({
+        identity: new SimpleChange(undefined, component.identity, true),
+      });
+    }));
 
     it('should call getPlayerInventoryByT10Id$', () => {
       expect(service.getPlayerInventoryByT10Id$).toHaveBeenCalledWith(testT10Id);
     });
 
     describe('when valid inventory is received', () => {
-      beforeEach(
-        waitForAsync(() => {
-          waitUntil$.next();
-        }),
-      );
+      beforeEach(waitForAsync(() => {
+        waitUntil$.next();
+      }));
 
       it('should populate inventory', () => {
         expect(component.inventory).toBeTruthy();
@@ -69,14 +65,12 @@ describe('GravityPlayerInventoryComponent', () => {
       });
 
       describe('when null identity is set', () => {
-        beforeEach(
-          waitForAsync(() => {
-            component.identity = null;
-            component.ngOnChanges({
-              identity: new SimpleChange(undefined, null, false),
-            });
-          }),
-        );
+        beforeEach(waitForAsync(() => {
+          component.identity = null;
+          component.ngOnChanges({
+            identity: new SimpleChange(undefined, null, false),
+          });
+        }));
 
         it('should reset', () => {
           expect(component.inventory).toBeFalsy();

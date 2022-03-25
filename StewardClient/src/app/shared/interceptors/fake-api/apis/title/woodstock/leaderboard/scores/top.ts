@@ -4,7 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { LeaderboardScore } from '@models/leaderboards';
 import BigNumber from 'bignumber.js';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for getting leaderboard score starting at the top. */
 export class WoodstockLeaderboardScoresTopTopFakeApi extends FakeApiBase {

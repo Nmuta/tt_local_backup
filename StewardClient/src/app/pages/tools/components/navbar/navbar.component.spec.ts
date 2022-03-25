@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';

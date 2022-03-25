@@ -15,25 +15,23 @@ describe('ItemSelectionComponent', () => {
 
   const formBuilder: FormBuilder = new FormBuilder();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-          MatAutocompleteModule,
-        ],
-        declarations: [ItemSelectionComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [{ provide: FormBuilder, useValue: formBuilder }],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+      ],
+      declarations: [ItemSelectionComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: FormBuilder, useValue: formBuilder }],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(ItemSelectionComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(ItemSelectionComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

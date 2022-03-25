@@ -10,23 +10,17 @@ describe('JsonTableResultsComponent', () => {
   let fixture: ComponentFixture<JsonTableResultsComponent>;
   let component: JsonTableResultsComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-        ],
-        declarations: [JsonTableResultsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [JsonTableResultsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(JsonTableResultsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(JsonTableResultsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

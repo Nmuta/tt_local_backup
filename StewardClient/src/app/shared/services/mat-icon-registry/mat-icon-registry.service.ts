@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { icon } from '@fortawesome/fontawesome-svg-core';
+import { icon, IconDefinition as CoreIconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   faArrowCircleRight,
   faCheck,
@@ -79,7 +79,7 @@ export class MatIconRegistryService {
 
   /** Generates a svg html string of a font awesome icon.  */
   private getFaIconPath(faIcon: IconDefinition): SafeHtml {
-    const iconToAdd = icon(faIcon).html.join('');
+    const iconToAdd = icon(faIcon as CoreIconDefinition).html.join('');
     return this.sanitizer.bypassSecurityTrustHtml(iconToAdd);
   }
 }

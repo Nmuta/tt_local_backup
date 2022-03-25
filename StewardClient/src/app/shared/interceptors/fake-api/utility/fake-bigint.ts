@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { ZERO } from '@helpers/bignumbers';
-import * as faker from 'faker';
+import faker from '@faker-js/faker';
 interface FakeBigNumberParams {
   min: BigNumber | number;
   max?: BigNumber | number;

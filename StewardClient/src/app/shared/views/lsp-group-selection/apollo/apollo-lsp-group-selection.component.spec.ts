@@ -14,26 +14,20 @@ describe('ApolloLspGroupSelectionComponent', () => {
 
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-        ],
-        declarations: [ApolloLspGroupSelectionComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [ApolloLspGroupSelectionComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockStore = injector.inject(Store);
+    const injector = getTestBed();
+    mockStore = injector.inject(Store);
 
-      fixture = TestBed.createComponent(ApolloLspGroupSelectionComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(ApolloLspGroupSelectionComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -44,22 +44,20 @@ describe('NotificationManagementComponent', () => {
 
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [IndividualNotificationManagementComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [TestNotificationManagementService],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [IndividualNotificationManagementComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [TestNotificationManagementService],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(IndividualNotificationManagementComponent);
-      component = fixture.debugElement.componentInstance;
-      component.service = mockService;
+    fixture = TestBed.createComponent(IndividualNotificationManagementComponent);
+    component = fixture.debugElement.componentInstance;
+    component.service = mockService;
 
-      testGroupNotifications = SunriseGroupNotificationsFakeApi.make(3);
-    }),
-  );
+    testGroupNotifications = SunriseGroupNotificationsFakeApi.make(3);
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

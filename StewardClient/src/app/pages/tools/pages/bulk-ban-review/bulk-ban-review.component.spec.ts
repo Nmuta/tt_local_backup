@@ -12,7 +12,7 @@ import { ApolloService, createMockApolloService } from '@services/apollo';
 import { BrowserModule } from '@angular/platform-browser';
 import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { BulkBanReviewInput } from './components/bulk-ban-review-input.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { of } from 'rxjs';
 import BigNumber from 'bignumber.js';
 import { ActivatedRoute } from '@angular/router';
@@ -34,41 +34,39 @@ describe('BulkBanReviewComponent', () => {
   let mockSunriseService: SunriseService;
   let mockApolloService: ApolloService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          MatPaginatorModule,
-          BrowserModule,
-          BrowserAnimationsModule,
-        ],
-        declarations: [BulkBanReviewComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWoodstockService(),
-          createMockSunriseService(),
-          createMockApolloService(),
-          {
-            provide: ActivatedRoute,
-            useValue: activatedRouteMock,
-          },
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        MatPaginatorModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+      ],
+      declarations: [BulkBanReviewComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWoodstockService(),
+        createMockSunriseService(),
+        createMockApolloService(),
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(BulkBanReviewComponent);
-      component = fixture.debugElement.componentInstance;
-      component.banHistoryList = new MatTableDataSource<BanSummariesTableData>();
+    fixture = TestBed.createComponent(BulkBanReviewComponent);
+    component = fixture.debugElement.componentInstance;
+    component.banHistoryList = new MatTableDataSource<BanSummariesTableData>();
 
-      mockWoodstockService = TestBed.inject(WoodstockService);
-      mockSunriseService = TestBed.inject(SunriseService);
-      mockApolloService = TestBed.inject(ApolloService);
+    mockWoodstockService = TestBed.inject(WoodstockService);
+    mockSunriseService = TestBed.inject(SunriseService);
+    mockApolloService = TestBed.inject(ApolloService);
 
-      fixture.detectChanges();
-    }),
-  );
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -3,7 +3,7 @@ import { environment } from '@environments/environment';
 import { ZERO } from '@helpers/bignumbers';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseBanSummary, SunriseBanArea } from '@models/sunrise';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for banning players. */

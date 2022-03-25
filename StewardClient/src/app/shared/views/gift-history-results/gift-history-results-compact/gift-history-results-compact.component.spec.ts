@@ -6,24 +6,19 @@ describe('GiftHistoryResultsCompactComponent', () => {
   let component: GiftHistoryResultsCompactComponent;
   let fixture: ComponentFixture<GiftHistoryResultsCompactComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [],
-        declarations: [GiftHistoryResultsCompactComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [],
+      declarations: [GiftHistoryResultsCompactComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(GiftHistoryResultsCompactComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(GiftHistoryResultsCompactComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 });

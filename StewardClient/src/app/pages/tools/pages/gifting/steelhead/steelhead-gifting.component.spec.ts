@@ -9,7 +9,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { SteelheadGiftingComponent } from './steelhead-gifting.component';
 import { SteelheadGiftingState } from './state/steelhead-gifting.state';
 import { SetSteelheadGiftingMatTabIndex } from './state/steelhead-gifting.state.actions';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { of } from 'rxjs';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { UserRole } from '@models/enums';
@@ -21,26 +21,24 @@ describe('SteelheadGiftingComponent', () => {
 
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState, SteelheadGiftingState]),
-        ],
-        declarations: [SteelheadGiftingComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [...createMockMsalServices(), createMockLoggerService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState, SteelheadGiftingState]),
+      ],
+      declarations: [SteelheadGiftingComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [...createMockMsalServices(), createMockLoggerService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(SteelheadGiftingComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(SteelheadGiftingComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore = TestBed.inject(Store);
-      mockStore.dispatch = jasmine.createSpy('dispatch');
-    }),
-  );
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch');
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

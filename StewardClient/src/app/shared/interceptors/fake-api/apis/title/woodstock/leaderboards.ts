@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { Leaderboard } from '@models/leaderboards';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for getting leaderboards. */
 export class WoodstockLeaderboardsFakeApi extends FakeApiBase {

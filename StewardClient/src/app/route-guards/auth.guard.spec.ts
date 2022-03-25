@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { AuthGuard } from './auth.guard';
 import { UserRole } from '@models/enums';

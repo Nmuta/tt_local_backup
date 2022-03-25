@@ -11,7 +11,7 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { of } from 'rxjs';
 import { delay, startWith } from 'rxjs/operators';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { LoginComponent } from './login.component';
 import { createMockWindowService, WindowService } from '@services/window';
@@ -74,14 +74,11 @@ describe('LoginComponent', () => {
       component.profile$ = of(testProfile);
     });
 
-    it(
-      'should redirect',
-      waitForAsync(async () => {
-        await fixture.whenStable();
-        expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
-        expect(store.dispatch).toHaveBeenCalledWith(new Navigate([sampleRoute]));
-      }),
-    );
+    it('should redirect', waitForAsync(async () => {
+      await fixture.whenStable();
+      expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
+      expect(store.dispatch).toHaveBeenCalledWith(new Navigate([sampleRoute]));
+    }));
   });
 
   describe('null profile:', () => {
@@ -89,15 +86,12 @@ describe('LoginComponent', () => {
       component.profile$ = of(null);
     });
 
-    it(
-      'should error',
-      waitForAsync(async () => {
-        await fixture.whenStable();
-        expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
-        expect(store.dispatch).toHaveBeenCalledTimes(1);
-        expect(component.error).toBeTruthy();
-      }),
-    );
+    it('should error', waitForAsync(async () => {
+      await fixture.whenStable();
+      expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(component.error).toBeTruthy();
+    }));
   });
 
   describe('delayed null profile:', () => {
@@ -106,14 +100,11 @@ describe('LoginComponent', () => {
       component.profile$ = of(null).pipe(delay(delayToProfile), startWith(testProfile));
     });
 
-    it(
-      'should redirect',
-      waitForAsync(async () => {
-        expect(store.dispatch).toHaveBeenCalledTimes(0);
-        await fixture.whenStable();
-        expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
-        expect(store.dispatch).toHaveBeenCalledWith(new Navigate([sampleRoute]));
-      }),
-    );
+    it('should redirect', waitForAsync(async () => {
+      expect(store.dispatch).toHaveBeenCalledTimes(0);
+      await fixture.whenStable();
+      expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
+      expect(store.dispatch).toHaveBeenCalledWith(new Navigate([sampleRoute]));
+    }));
   });
 });

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
@@ -37,10 +38,7 @@ describe('SunriseGiftHistoryResultsCompactComponent', () => {
     } as LspGroup;
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 });

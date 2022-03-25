@@ -18,31 +18,29 @@ describe('WoodstockPlayerSidebarDetailsComponent', () => {
   let fixture: ComponentFixture<WoodstockPlayerSidebarDetailsComponent>;
   let component: WoodstockPlayerSidebarDetailsComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [WoodstockPlayerSidebarDetailsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockWoodstockService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [WoodstockPlayerSidebarDetailsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockWoodstockService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockWoodstockService = injector.inject(WoodstockService);
+    const injector = getTestBed();
+    mockWoodstockService = injector.inject(WoodstockService);
 
-      fixture = TestBed.createComponent(WoodstockPlayerSidebarDetailsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(WoodstockPlayerSidebarDetailsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

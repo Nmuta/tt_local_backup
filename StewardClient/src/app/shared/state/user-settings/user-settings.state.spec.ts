@@ -12,7 +12,7 @@ import {
   SetSunriseEndpointKey,
   SetWoodstockEndpointKey,
 } from './user-settings.actions';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { UserSettingsState } from './user-settings.state';
 

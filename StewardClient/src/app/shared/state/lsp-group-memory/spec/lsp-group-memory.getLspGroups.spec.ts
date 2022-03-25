@@ -16,33 +16,31 @@ describe('State: LspGroupMemoryState', () => {
   let store: Store;
   let mockSunriseService: SunriseService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot([LspGroupMemoryState])],
-        providers: [createMockSunriseService(), createMockApolloService()],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot([LspGroupMemoryState])],
+      providers: [createMockSunriseService(), createMockApolloService()],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
-      service = TestBed.inject(LspGroupMemoryState);
-      store = TestBed.inject(Store);
-      mockSunriseService = TestBed.inject(SunriseService);
+    service = TestBed.inject(LspGroupMemoryState);
+    store = TestBed.inject(Store);
+    mockSunriseService = TestBed.inject(SunriseService);
 
-      mockSunriseService.getLspGroups$ = jasmine.createSpy('getLspGroups$').and.returnValue(
-        of([
-          { id: 0, name: 'test-1' },
-          { id: 1, name: 'test-2' },
-        ]),
-      );
+    mockSunriseService.getLspGroups$ = jasmine.createSpy('getLspGroups$').and.returnValue(
+      of([
+        { id: 0, name: 'test-1' },
+        { id: 1, name: 'test-2' },
+      ]),
+    );
 
-      store.reset({
-        lspGroupMemory: {
-          Sunrise: [],
-          Apollo: [],
-        },
-      });
-    }),
-  );
+    store.reset({
+      lspGroupMemory: {
+        Sunrise: [],
+        Apollo: [],
+      },
+    });
+  }));
 
   it('should be created', () => {
     expect(service).toBeTruthy();

@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NgxsModule, Store } from '@ngxs/store';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { EndpointKeyMemoryState } from './endpoint-key-memory.state';
 import { InitEndpointKeys } from './endpoint-key-memory.actions';
 import { of } from 'rxjs';

@@ -8,20 +8,18 @@ describe('WoodstockAuctionBlocklistNewEntryService', () => {
   let service: WoodstockAuctionBlocklistNewEntryService;
   let mockSunriseAuctionBlocklistService: WoodstockAuctionBlocklistNewEntryService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [WoodstockAuctionBlocklistNewEntryService],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [WoodstockAuctionBlocklistNewEntryService],
+    }).compileComponents();
 
-      service = TestBed.inject(WoodstockAuctionBlocklistNewEntryService);
+    service = TestBed.inject(WoodstockAuctionBlocklistNewEntryService);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      mockSunriseAuctionBlocklistService = TestBed.inject(WoodstockAuctionBlocklistNewEntryService);
-    }),
-  );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    mockSunriseAuctionBlocklistService = TestBed.inject(WoodstockAuctionBlocklistNewEntryService);
+  }));
 
   it('should create', () => {
     expect(service).toBeTruthy();

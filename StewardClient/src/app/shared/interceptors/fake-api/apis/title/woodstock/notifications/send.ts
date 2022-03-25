@@ -3,7 +3,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { CommunityMessageResult } from '@models/community-message';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for sending a community message. */
 export class WoodstockSendCommunityMessageFakeApi extends FakeApiBase {

@@ -5,7 +5,7 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { createMockTicketService } from '@services/zendesk';
 import { of } from 'rxjs';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { ApolloComponent } from './apollo.component';
 

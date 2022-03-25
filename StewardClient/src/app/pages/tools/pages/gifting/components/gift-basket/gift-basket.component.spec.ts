@@ -15,7 +15,7 @@ import { GiftIdentityAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { MatSelectChange } from '@angular/material/select';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { toDateTime } from '@helpers/luxon';
@@ -31,33 +31,31 @@ describe('GiftBasketBaseComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-        ],
-        declarations: [GiftBasketBaseComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      declarations: [GiftBasketBaseComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(
-        GiftBasketBaseComponent as Type<
-          GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
-        >,
-      );
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(
+      GiftBasketBaseComponent as Type<
+        GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
+      >,
+    );
+    component = fixture.debugElement.componentInstance;
 
-      mockBackgroundJobService = TestBed.inject(BackgroundJobService);
-      mockStore = TestBed.inject(Store);
+    mockBackgroundJobService = TestBed.inject(BackgroundJobService);
+    mockStore = TestBed.inject(Store);
 
-      component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
-    }),
-  );
+    component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

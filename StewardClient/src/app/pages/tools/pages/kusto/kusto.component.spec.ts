@@ -8,7 +8,7 @@ import { KustoQuery } from '@models/kusto';
 import { NgxsModule } from '@ngxs/store';
 import { createMockKustoService, KustoService } from '@services/kusto';
 import { of, throwError } from 'rxjs';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { KustoComponent } from './kusto.component';
 import { JsonTableResult } from '@models/json-table-result';

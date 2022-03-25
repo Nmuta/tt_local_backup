@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { DetailedCar } from '@models/detailed-car';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockSunriseService } from '@services/sunrise';

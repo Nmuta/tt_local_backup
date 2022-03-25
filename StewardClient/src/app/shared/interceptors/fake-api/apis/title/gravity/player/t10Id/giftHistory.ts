@@ -4,7 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { GravityGiftHistory } from '@models/gravity';
 import { GiftIdentityAntecedent } from '@shared/constants';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for finding gift history. */
 export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {

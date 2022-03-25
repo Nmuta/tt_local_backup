@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-obligation-pipeline';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
 import { ObligationKustoDataActivity } from '@models/pipelines/obligation-kusto-data-activity';
 import { Duration } from 'luxon';

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { createMockGravityService } from '@services/gravity/gravity.service.mock';
 import { GravityGiftHistoryResultsCompactComponent } from './gravity-gift-history-results-compact.component';
@@ -32,10 +33,7 @@ describe('GravityGiftHistoryResultsCompactComponent', () => {
     } as IdentityResultBeta;
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 });

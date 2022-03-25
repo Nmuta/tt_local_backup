@@ -9,19 +9,17 @@ describe('SunriseAuctionBlocklistComponent', () => {
   let component: WoodstockIndividualNotificationManagementComponent;
   let fixture: ComponentFixture<WoodstockIndividualNotificationManagementComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [WoodstockIndividualNotificationManagementComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [WoodstockIndividualNotificationManagementContract],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [WoodstockIndividualNotificationManagementComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [WoodstockIndividualNotificationManagementContract],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(WoodstockIndividualNotificationManagementComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(WoodstockIndividualNotificationManagementComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -24,39 +24,37 @@ describe('SidebarIconsComponent', () => {
   let appVersionReturnValue: string;
   let showAppUpdatePopupReturnValue: boolean;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserSettingsState]),
-          MatMenuModule,
-          MatDialogModule,
-          BrowserAnimationsModule,
-        ],
-        declarations: [SidebarIconsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockZendeskService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserSettingsState]),
+        MatMenuModule,
+        MatDialogModule,
+        BrowserAnimationsModule,
+      ],
+      declarations: [SidebarIconsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockZendeskService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      TestBed.inject(MatDialog).open = jasmine.createSpy('open');
-      fixture = TestBed.createComponent(SidebarIconsComponent);
-      component = fixture.debugElement.componentInstance;
+    TestBed.inject(MatDialog).open = jasmine.createSpy('open');
+    fixture = TestBed.createComponent(SidebarIconsComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore = TestBed.inject(Store);
-      mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.callFake(param => {
-        if (param === UserSettingsState.appVersion) return appVersionReturnValue;
-        if (param === UserSettingsState.showAppUpdatePopup) return showAppUpdatePopupReturnValue;
-        return null;
-      });
-    }),
-  );
+    mockStore = TestBed.inject(Store);
+    mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.callFake(param => {
+      if (param === UserSettingsState.appVersion) return appVersionReturnValue;
+      if (param === UserSettingsState.showAppUpdatePopup) return showAppUpdatePopupReturnValue;
+      return null;
+    });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

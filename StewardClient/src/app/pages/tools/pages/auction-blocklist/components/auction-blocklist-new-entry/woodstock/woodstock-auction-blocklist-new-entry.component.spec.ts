@@ -9,19 +9,17 @@ describe('WoodstockAuctionBlocklistNewEntryComponent', () => {
   let component: WoodstockAuctionBlocklistNewEntryComponent;
   let fixture: ComponentFixture<WoodstockAuctionBlocklistNewEntryComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [WoodstockAuctionBlocklistNewEntryComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [WoodstockAuctionBlocklistNewEntryService],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [WoodstockAuctionBlocklistNewEntryComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [WoodstockAuctionBlocklistNewEntryService],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(WoodstockAuctionBlocklistNewEntryComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(WoodstockAuctionBlocklistNewEntryComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

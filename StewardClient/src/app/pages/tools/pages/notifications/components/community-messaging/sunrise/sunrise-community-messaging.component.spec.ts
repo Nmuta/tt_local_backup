@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { CommunityMessage, CommunityMessageResult } from '@models/community-message';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { GiftIdentityAntecedent } from '@shared/constants';

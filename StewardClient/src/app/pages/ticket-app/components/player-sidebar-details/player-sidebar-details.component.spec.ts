@@ -13,40 +13,38 @@ import { of, throwError } from 'rxjs';
 import { createMockOpusService } from '@services/opus';
 import { createMockApolloService } from '@services/apollo';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 describe('PlayerSidebarDetailsBaseComponent', () => {
   let fixture: ComponentFixture<PlayerSidebarDetailsBaseComponent<never>>;
   let component: PlayerSidebarDetailsBaseComponent<never>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [PlayerSidebarDetailsBaseComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockGravityService(),
-          createMockSunriseService(),
-          createMockApolloService(),
-          createMockOpusService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [PlayerSidebarDetailsBaseComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockGravityService(),
+        createMockSunriseService(),
+        createMockApolloService(),
+        createMockOpusService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      fixture = TestBed.createComponent(PlayerSidebarDetailsBaseComponent as any);
-      component = fixture.debugElement.componentInstance;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fixture = TestBed.createComponent(PlayerSidebarDetailsBaseComponent as any);
+    component = fixture.debugElement.componentInstance;
 
-      component.makeRequest$ = jasmine.createSpy('makeRequest$').and.returnValue(of({}));
-    }),
-  );
+    component.makeRequest$ = jasmine.createSpy('makeRequest$').and.returnValue(of({}));
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -75,13 +73,10 @@ describe('PlayerSidebarDetailsBaseComponent', () => {
 
         expect(component.makeRequest$).toHaveBeenCalled();
       });
-      it(
-        'Should set isLoading to false',
-        waitForAsync(() => {
-          component.ngOnChanges();
-          expect(component.isLoading).toBeFalsy();
-        }),
-      );
+      it('Should set isLoading to false', waitForAsync(() => {
+        component.ngOnChanges();
+        expect(component.isLoading).toBeFalsy();
+      }));
       describe('And api returns player details', () => {
         const expectedPlayerDetails = {
           xuid: '123456789',

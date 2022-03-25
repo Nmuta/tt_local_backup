@@ -11,7 +11,7 @@ import { DetailedCar } from '@models/detailed-car';
 import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 import { UGCAccessLevel, UGCFilters, UGCOrderBy, UGCType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 describe('SunriseUGCFiltersComponent', () => {
   let fixture: ComponentFixture<SunriseUGCFiltersComponent>;
@@ -21,33 +21,31 @@ describe('SunriseUGCFiltersComponent', () => {
   let mockStore: Store;
   let fakeDetailedCars: DetailedCar[];
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-          MatAutocompleteModule,
-        ],
-        declarations: [SunriseUGCFiltersComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+      ],
+      declarations: [SunriseUGCFiltersComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockStore = injector.inject(Store);
+    const injector = getTestBed();
+    mockStore = injector.inject(Store);
 
-      fixture = TestBed.createComponent(SunriseUGCFiltersComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(SunriseUGCFiltersComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
-      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+    mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
+    mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
 
-      fakeDetailedCars = SunriseDetailedCarsFakeApi.make();
-    }),
-  );
+    fakeDetailedCars = SunriseDetailedCarsFakeApi.make();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

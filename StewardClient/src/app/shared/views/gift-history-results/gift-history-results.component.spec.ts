@@ -9,7 +9,7 @@ import {
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { WoodstockGift, WoodstockGiftHistory, WoodstockMasterInventory } from '@models/woodstock';
 import { GameTitle } from '@models/enums';
@@ -46,28 +46,23 @@ describe('GiftHistoryResultsComponent', () => {
     },
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [],
-        declarations: [GiftHistoryResultsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [],
+      declarations: [GiftHistoryResultsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(GiftHistoryResultsComponent);
-      component = fixture.debugElement.componentInstance;
-      component.service = mockService;
-      component.gameTitle = GameTitle.FH5;
-    }),
-  );
+    fixture = TestBed.createComponent(GiftHistoryResultsComponent);
+    component = fixture.debugElement.componentInstance;
+    component.service = mockService;
+    component.gameTitle = GameTitle.FH5;
+  }));
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnInit', () => {
     describe('When service is null', () => {

@@ -2,7 +2,7 @@ import { Injectable, Provider } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ObligationsService } from '.';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Defines the mock for the Obligation Service. */
 @Injectable()

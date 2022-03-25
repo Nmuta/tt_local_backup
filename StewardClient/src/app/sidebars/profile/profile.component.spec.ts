@@ -20,7 +20,7 @@ import { of } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('ProfileComponent', () => {
@@ -30,31 +30,29 @@ describe('ProfileComponent', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let component: ProfileComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [ProfileComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [ProfileComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockRouter = injector.inject(Router);
-      mockStore = injector.inject(Store);
+    const injector = getTestBed();
+    mockRouter = injector.inject(Router);
+    mockStore = injector.inject(Store);
 
-      fixture = TestBed.createComponent(ProfileComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(ProfileComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

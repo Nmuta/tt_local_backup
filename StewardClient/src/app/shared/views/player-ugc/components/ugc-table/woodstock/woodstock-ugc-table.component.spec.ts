@@ -43,12 +43,9 @@ describe('WoodstockUGCTableComponent', () => {
     mockMatDialog.open = jasmine.createSpy('open').and.returnValue({ afterClosed: () => EMPTY });
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: hideUGCItem', () => {
     const item: PlayerUGCItemTableEntries = fakePlayerUGCItem();

@@ -4,7 +4,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockTicketService } from '@services/zendesk';
 import { of } from 'rxjs';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { GravityComponent } from './gravity.component';
 import { createMockGravityService, GravityService } from '@services/gravity';

@@ -1,7 +1,7 @@
 import { toDateTime } from '@helpers/luxon';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
 import BigNumber from 'bignumber.js';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { makeItemList } from './make-item-list';
 
 describe('Gift History Results Helper: Apollo', () => {

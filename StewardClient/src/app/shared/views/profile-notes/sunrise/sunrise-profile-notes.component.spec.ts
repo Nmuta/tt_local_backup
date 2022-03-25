@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunriseService } from '@services/sunrise';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 import { SunriseProfileNotesComponent } from './sunrise-profile-notes.component';
 import { ProfileNote } from '@models/profile-note.model';
@@ -30,12 +30,9 @@ describe('SunriseProfileNotesComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

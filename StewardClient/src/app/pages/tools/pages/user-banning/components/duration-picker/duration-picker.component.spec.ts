@@ -4,7 +4,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { DurationPickerComponent } from './duration-picker.component';
 import { UserRole } from '@models/enums';
@@ -20,27 +20,25 @@ describe('DurationPickerComponent', () => {
 
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatDatepickerModule,
-          MatNativeDateModule,
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [DurationPickerComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [...createMockMsalServices(), createMockLoggerService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatDatepickerModule,
+        MatNativeDateModule,
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [DurationPickerComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [...createMockMsalServices(), createMockLoggerService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(DurationPickerComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(DurationPickerComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore = TestBed.inject(Store);
-      mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot');
-    }),
-  );
+    mockStore = TestBed.inject(Store);
+    mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot');
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

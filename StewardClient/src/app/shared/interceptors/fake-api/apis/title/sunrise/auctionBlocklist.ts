@@ -1,7 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
-import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { DateTime } from 'luxon';
 
 /** Fake API for finding sunrise groups. */

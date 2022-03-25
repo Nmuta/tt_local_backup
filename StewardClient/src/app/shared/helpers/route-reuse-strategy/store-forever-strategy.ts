@@ -1,5 +1,5 @@
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { compact } from 'lodash';
 
 interface RouteData {

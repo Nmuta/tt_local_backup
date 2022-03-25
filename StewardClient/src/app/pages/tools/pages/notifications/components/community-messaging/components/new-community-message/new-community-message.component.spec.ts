@@ -18,29 +18,27 @@ describe('NewCommunityMessageComponent', () => {
 
   const formBuilder: FormBuilder = new FormBuilder();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [NewCommunityMessageComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockZendeskService(),
-          createMockLoggerService(),
-          { provide: FormBuilder, useValue: formBuilder },
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [NewCommunityMessageComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockZendeskService(),
+        createMockLoggerService(),
+        { provide: FormBuilder, useValue: formBuilder },
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(NewCommunityMessageComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(NewCommunityMessageComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

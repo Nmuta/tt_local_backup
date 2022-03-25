@@ -12,7 +12,7 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { of } from 'rxjs';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { AvailableAppsComponent } from './available-apps.component';
 

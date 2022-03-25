@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { GameTitleCodeName } from '@models/enums';
 import { NgxsModule } from '@ngxs/store';
 import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
@@ -40,31 +40,22 @@ describe('EndpointSelectionComponent', () => {
     } as UserSettingsStateModel);
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('when titleCodeName is valid', () => {
-    it(
-      'Should display proper endpoint value after initialization',
-      waitForAsync(() => {
-        component.titleCodeName = validGameTitle;
-        fixture.detectChanges();
-        expect(component.displayEndpointName).toEqual(endpoint);
-      }),
-    );
+    it('Should display proper endpoint value after initialization', waitForAsync(() => {
+      component.titleCodeName = validGameTitle;
+      fixture.detectChanges();
+      expect(component.displayEndpointName).toEqual(endpoint);
+    }));
   });
   describe('when titleCodeName is invalid', () => {
-    it(
-      'Should display proper endpoint value after initialization',
-      waitForAsync(() => {
-        component.titleCodeName = invalidGameTitle;
-        fixture.detectChanges();
-        expect(component.displayEndpointName).toEqual('');
-      }),
-    );
+    it('Should display proper endpoint value after initialization', waitForAsync(() => {
+      component.titleCodeName = invalidGameTitle;
+      fixture.detectChanges();
+      expect(component.displayEndpointName).toEqual('');
+    }));
   });
 });

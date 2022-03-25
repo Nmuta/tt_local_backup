@@ -5,7 +5,7 @@ import { ApolloPlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/ti
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService, createMockApolloService } from '@services/apollo';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { keys } from 'lodash';
 import { of } from 'rxjs';
 import { defer } from 'rxjs';

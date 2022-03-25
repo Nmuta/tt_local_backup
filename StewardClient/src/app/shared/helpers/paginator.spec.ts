@@ -29,35 +29,26 @@ describe('Helper: paginator', () => {
       testSubscribe.unsubscribe();
     });
 
-    it(
-      'should always let the first event through',
-      waitForAsync(() => {
-        testSubject.next(queryParams1);
+    it('should always let the first event through', waitForAsync(() => {
+      testSubject.next(queryParams1);
 
-        expect(testOutput).toEqual(queryParams1);
-      }),
-    );
+      expect(testOutput).toEqual(queryParams1);
+    }));
 
     describe('When provided event query params match previous params except for paginator-specific keys', () => {
-      it(
-        'should not let event through',
-        waitForAsync(() => {
-          testSubject.next(queryParams2);
+      it('should not let event through', waitForAsync(() => {
+        testSubject.next(queryParams2);
 
-          expect(testOutput).toEqual(queryParams1);
-        }),
-      );
+        expect(testOutput).toEqual(queryParams1);
+      }));
     });
 
     describe('When provided event query params do not match previous params', () => {
-      it(
-        'should let event through',
-        waitForAsync(() => {
-          testSubject.next(queryParams3);
+      it('should let event through', waitForAsync(() => {
+        testSubject.next(queryParams3);
 
-          expect(testOutput).toEqual(queryParams3);
-        }),
-      );
+        expect(testOutput).toEqual(queryParams3);
+      }));
     });
   });
 });

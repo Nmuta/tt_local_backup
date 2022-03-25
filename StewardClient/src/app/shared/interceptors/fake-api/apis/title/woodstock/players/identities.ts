@@ -7,7 +7,7 @@ import {
   isGamertagQuery,
   isXuidQuery,
 } from '@models/identity-query.model';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for identifying players. */
 export class WoodstockPlayersIdentitiesFakeApi extends FakeApiBase {

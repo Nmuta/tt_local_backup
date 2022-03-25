@@ -18,31 +18,29 @@ describe('ApolloPlayerSidebarDetailsComponent', () => {
   let fixture: ComponentFixture<ApolloPlayerSidebarDetailsComponent>;
   let component: ApolloPlayerSidebarDetailsComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [ApolloPlayerSidebarDetailsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockApolloService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [ApolloPlayerSidebarDetailsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockApolloService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockApolloService = injector.inject(ApolloService);
+    const injector = getTestBed();
+    mockApolloService = injector.inject(ApolloService);
 
-      fixture = TestBed.createComponent(ApolloPlayerSidebarDetailsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(ApolloPlayerSidebarDetailsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

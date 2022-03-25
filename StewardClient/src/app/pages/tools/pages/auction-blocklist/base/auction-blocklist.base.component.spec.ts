@@ -35,23 +35,21 @@ describe('AuctionBlocklistBaseComponent', () => {
 
   const mockService: TestAuctionBlocklistService = new TestAuctionBlocklistService();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [AuctionBlocklistBaseComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [TestAuctionBlocklistService],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [AuctionBlocklistBaseComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [TestAuctionBlocklistService],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(AuctionBlocklistBaseComponent);
-      component = fixture.debugElement.componentInstance;
-      component.service = mockService;
-      component.newEntries$ = new Subject<AuctionBlocklistEntry[]>();
+    fixture = TestBed.createComponent(AuctionBlocklistBaseComponent);
+    component = fixture.debugElement.componentInstance;
+    component.service = mockService;
+    component.newEntries$ = new Subject<AuctionBlocklistEntry[]>();
 
-      auctionBlocklistEntries = SunriseAuctionBlocklistFakeApi.make();
-    }),
-  );
+    auctionBlocklistEntries = SunriseAuctionBlocklistFakeApi.make();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

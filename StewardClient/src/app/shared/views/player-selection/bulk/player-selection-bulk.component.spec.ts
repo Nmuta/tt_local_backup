@@ -96,23 +96,18 @@ describe('PlayerSelectionBulkComponent', () => {
       );
   });
 
-  beforeEach(
-    waitForAsync(() => {
-      fixture = TestBed.createComponent(PlayerSelectionBulkComponent);
-      component = fixture.componentInstance;
-      component.lookupListChange.emit = jasmine.createSpy('emit').and.callThrough();
-      component.lookupTypeChange.emit = jasmine.createSpy('emit').and.callThrough();
-      component.found.emit = jasmine.createSpy('emit').and.callThrough();
-      fixture.detectChanges();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    fixture = TestBed.createComponent(PlayerSelectionBulkComponent);
+    component = fixture.componentInstance;
+    component.lookupListChange.emit = jasmine.createSpy('emit').and.callThrough();
+    component.lookupTypeChange.emit = jasmine.createSpy('emit').and.callThrough();
+    component.found.emit = jasmine.createSpy('emit').and.callThrough();
+    fixture.detectChanges();
+  }));
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   it('should start in gamertag mode', () => {
     expect(component.lookupType).toBe('gamertag');
@@ -123,73 +118,55 @@ describe('PlayerSelectionBulkComponent', () => {
       let pasteTransferEvent: DataTransfer;
       let pasteEvent: ClipboardEvent;
 
-      beforeEach(
-        waitForAsync(() => {
-          pasteTransferEvent = new DataTransfer();
-          pasteTransferEvent.setData('text', '');
-          pasteEvent = new ClipboardEvent('paste', { clipboardData: pasteTransferEvent });
-          component.paste(pasteEvent);
-        }),
-      );
+      beforeEach(waitForAsync(() => {
+        pasteTransferEvent = new DataTransfer();
+        pasteTransferEvent.setData('text', '');
+        pasteEvent = new ClipboardEvent('paste', { clipboardData: pasteTransferEvent });
+        component.paste(pasteEvent);
+      }));
 
-      it(
-        'should do nothing',
-        waitForAsync(() => {
-          expect(pasteEvent.defaultPrevented).toBeFalsy();
+      it('should do nothing', waitForAsync(() => {
+        expect(pasteEvent.defaultPrevented).toBeFalsy();
 
-          expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(0);
-          expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(0);
-          expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(0);
-          expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(0);
-          expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(0);
-          expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(0);
-        }),
-      );
+        expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(0);
+        expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(0);
+        expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(0);
+        expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(0);
+        expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(0);
+        expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(0);
+      }));
     });
 
     describe('when data added', () => {
       const fakeGamertag = 'FakeGamertag';
 
-      beforeEach(
-        waitForAsync(() => {
-          component.add({ input: null, value: fakeGamertag });
-        }),
-      );
+      beforeEach(waitForAsync(() => {
+        component.add({ input: null, value: fakeGamertag });
+      }));
 
-      it(
-        'should have value in lookupList',
-        waitForAsync(() => {
-          expect(component.lookupList).toContain(fakeGamertag);
-          expect(component.lookupListChange.emit).toHaveBeenCalled();
-        }),
-      );
+      it('should have value in lookupList', waitForAsync(() => {
+        expect(component.lookupList).toContain(fakeGamertag);
+        expect(component.lookupListChange.emit).toHaveBeenCalled();
+      }));
 
-      it(
-        'should call getPlayerIdentities$',
-        waitForAsync(() => {
-          expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
-          expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
-          // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledtimes(1);
-        }),
-      );
+      it('should call getPlayerIdentities$', waitForAsync(() => {
+        expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
+        expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
+        // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledtimes(1);
+      }));
 
       describe('when data removed', () => {
-        beforeEach(
-          waitForAsync(() => {
-            component.remove(first(component.foundIdentities));
-          }),
-        );
+        beforeEach(waitForAsync(() => {
+          component.remove(first(component.foundIdentities));
+        }));
 
-        it(
-          'should emit lookupListChange',
-          waitForAsync(() => {
-            expect(component.lookupListChange.emit).toHaveBeenCalled();
-            expect(component.lookupList.length).toBe(0);
-          }),
-        );
+        it('should emit lookupListChange', waitForAsync(() => {
+          expect(component.lookupListChange.emit).toHaveBeenCalled();
+          expect(component.lookupList.length).toBe(0);
+        }));
       });
     });
 
@@ -197,91 +174,69 @@ describe('PlayerSelectionBulkComponent', () => {
       let pasteEvent: ClipboardEvent;
       const fakeGamertag = 'FakeGamertag';
 
-      beforeEach(
-        waitForAsync(() => {
-          pasteEvent = new ClipboardEvent('paste', { clipboardData: new DataTransfer() });
-          pasteEvent.clipboardData.setData('text', fakeGamertag);
-          pasteEvent.preventDefault = jasmine.createSpy('preventDefault').and.callThrough();
-          component.paste(pasteEvent);
-        }),
-      );
+      beforeEach(waitForAsync(() => {
+        pasteEvent = new ClipboardEvent('paste', { clipboardData: new DataTransfer() });
+        pasteEvent.clipboardData.setData('text', fakeGamertag);
+        pasteEvent.preventDefault = jasmine.createSpy('preventDefault').and.callThrough();
+        component.paste(pasteEvent);
+      }));
 
-      it(
-        'should prevent default',
-        waitForAsync(() => {
-          expect(pasteEvent.preventDefault).toHaveBeenCalled();
-        }),
-      );
+      it('should prevent default', waitForAsync(() => {
+        expect(pasteEvent.preventDefault).toHaveBeenCalled();
+      }));
 
-      it(
-        'should call getPlayerIdentities$',
-        waitForAsync(() => {
-          expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
-          expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
-          // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-        }),
-      );
+      it('should call getPlayerIdentities$', waitForAsync(() => {
+        expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
+        expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
+        // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+      }));
 
-      it(
-        'should leave stub in foundIdentities',
-        waitForAsync(() => {
-          expect(component.foundIdentities.length).toBe(1);
-          const stub = first(component.foundIdentities);
-          expect(stub.query).toEqual({ gamertag: fakeGamertag });
-          expect(stub.extra).toBeFalsy();
-          expect(stub.sunrise).toBeFalsy();
-          expect(stub.apollo).toBeFalsy();
-          expect(stub.gravity).toBeFalsy();
-          expect(stub.opus).toBeFalsy();
-          expect(stub.steelhead).toBeFalsy();
-          expect(stub.woodstock).toBeFalsy();
-        }),
-      );
+      it('should leave stub in foundIdentities', waitForAsync(() => {
+        expect(component.foundIdentities.length).toBe(1);
+        const stub = first(component.foundIdentities);
+        expect(stub.query).toEqual({ gamertag: fakeGamertag });
+        expect(stub.extra).toBeFalsy();
+        expect(stub.sunrise).toBeFalsy();
+        expect(stub.apollo).toBeFalsy();
+        expect(stub.gravity).toBeFalsy();
+        expect(stub.opus).toBeFalsy();
+        expect(stub.steelhead).toBeFalsy();
+        expect(stub.woodstock).toBeFalsy();
+      }));
 
-      it(
-        'should have value in lookupList',
-        waitForAsync(() => {
-          expect(component.lookupList).toContain(fakeGamertag);
-          expect(component.lookupListChange.emit).toHaveBeenCalled();
-        }),
-      );
+      it('should have value in lookupList', waitForAsync(() => {
+        expect(component.lookupList).toContain(fakeGamertag);
+        expect(component.lookupListChange.emit).toHaveBeenCalled();
+      }));
 
       describe('when results come back', () => {
         let oldStub: AugmentedCompositeIdentity;
 
-        beforeEach(
-          waitForAsync(() => {
-            oldStub = first(component.foundIdentities);
-            deferUntil$.next();
-          }),
-        );
+        beforeEach(waitForAsync(() => {
+          oldStub = first(component.foundIdentities);
+          deferUntil$.next();
+        }));
 
-        it(
-          'should populate the existing stub in foundIdentities',
-          waitForAsync(() => {
-            expect(component.foundIdentities.length).toBe(1);
-            const newStub = first(component.foundIdentities);
-            expect(newStub).toBe(oldStub);
-            expect(newStub.query).toEqual({ gamertag: fakeGamertag });
-            expect(newStub.extra).toBeTruthy('extra');
-            expect(newStub.sunrise).toBeTruthy('sunrise');
-            expect(newStub.apollo).toBeTruthy('apollo');
-            expect(newStub.gravity).toBeTruthy('gravity');
-            expect(newStub.opus).toBeTruthy('opus');
-            // expect(newStub.steelhead).toBeTruthy('steelhead');
-            // expect(newStub.woodstock).toBeTruthy('woodstock');
-          }),
-        );
+        it('should populate the existing stub in foundIdentities', waitForAsync(() => {
+          expect(component.foundIdentities.length).toBe(1);
+          const newStub = first(component.foundIdentities);
+          expect(newStub).toBe(oldStub);
+          expect(newStub.query).toEqual({ gamertag: fakeGamertag });
+          expect(newStub.extra).toBeTruthy('extra');
+          expect(newStub.sunrise).toBeTruthy('sunrise');
+          expect(newStub.apollo).toBeTruthy('apollo');
+          expect(newStub.gravity).toBeTruthy('gravity');
+          expect(newStub.opus).toBeTruthy('opus');
+          // expect(newStub.steelhead).toBeTruthy('steelhead');
+          // expect(newStub.woodstock).toBeTruthy('woodstock');
+        }));
 
-        it(
-          'should emit found',
-          waitForAsync(() => {
-            expect(component.found.emit).toHaveBeenCalled();
-          }),
-        );
+        it('should emit found', waitForAsync(() => {
+          expect(component.found.emit).toHaveBeenCalled();
+        }));
       });
     });
   });

@@ -8,7 +8,7 @@ import {
   JsonTableAndBackgroundJob,
   StewardUserHistoryComponent,
 } from './steward-user-history.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
@@ -20,27 +20,25 @@ describe('StewardUserHistoryComponent', () => {
 
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          MatPaginatorModule,
-        ],
-        declarations: [StewardUserHistoryComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        MatPaginatorModule,
+      ],
+      declarations: [StewardUserHistoryComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(StewardUserHistoryComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(StewardUserHistoryComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore = TestBed.inject(Store);
-      mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot');
-    }),
-  );
+    mockStore = TestBed.inject(Store);
+    mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot');
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

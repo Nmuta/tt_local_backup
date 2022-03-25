@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import * as faker from 'faker';
+import faker from '@faker-js/faker';
 import { PlayerAuction } from '@models/player-auction';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import BigNumber from 'bignumber.js';

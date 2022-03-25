@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { InventoryItemListDisplayComponent } from './inventory-item-list-display.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';

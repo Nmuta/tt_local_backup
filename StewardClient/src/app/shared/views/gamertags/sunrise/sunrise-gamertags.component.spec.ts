@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunriseSharedConsoleUser } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 import { SunriseGamertagsComponent } from './sunrise-gamertags.component';
 import { ActivatedRoute } from '@angular/router';
@@ -44,12 +44,9 @@ describe('SunriseGamertagsComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

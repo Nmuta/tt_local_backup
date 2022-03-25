@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { of, throwError } from 'rxjs';
 import { ApolloUserFlagsComponent } from './apollo-user-flags.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { ApolloUserFlags } from '@models/apollo';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
@@ -35,12 +35,9 @@ describe('ApolloUserFlagsComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

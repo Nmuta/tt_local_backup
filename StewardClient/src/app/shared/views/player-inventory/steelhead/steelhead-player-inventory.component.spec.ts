@@ -43,14 +43,12 @@ describe('SteelheadPlayerInventoryComponent', () => {
   describe('Method: ngOnChanges', () => {
     const testXuid = fakeXuid();
 
-    beforeEach(
-      waitForAsync(() => {
-        component.identity = first(SteelheadPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-        component.ngOnChanges({
-          identity: new SimpleChange(undefined, component.identity, true),
-        });
-      }),
-    );
+    beforeEach(waitForAsync(() => {
+      component.identity = first(SteelheadPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+      component.ngOnChanges({
+        identity: new SimpleChange(undefined, component.identity, true),
+      });
+    }));
 
     it('should call getPlayerInventoryByXuid$', () => {
       expect(service.getPlayerInventoryByXuid$).toHaveBeenCalledWith(testXuid);
@@ -62,11 +60,9 @@ describe('SteelheadPlayerInventoryComponent', () => {
     });
 
     describe('when valid inventory is received', () => {
-      beforeEach(
-        waitForAsync(() => {
-          waitUntil$.next();
-        }),
-      );
+      beforeEach(waitForAsync(() => {
+        waitUntil$.next();
+      }));
 
       it('should populate inventory', () => {
         expect(component.inventory).toBeTruthy();
@@ -74,14 +70,12 @@ describe('SteelheadPlayerInventoryComponent', () => {
       });
 
       describe('when null identity is set', () => {
-        beforeEach(
-          waitForAsync(() => {
-            component.identity = null;
-            component.ngOnChanges({
-              identity: new SimpleChange(undefined, null, false),
-            });
-          }),
-        );
+        beforeEach(waitForAsync(() => {
+          component.identity = null;
+          component.ngOnChanges({
+            identity: new SimpleChange(undefined, null, false),
+          });
+        }));
 
         it('should reset', () => {
           expect(component.inventory).toBeFalsy();

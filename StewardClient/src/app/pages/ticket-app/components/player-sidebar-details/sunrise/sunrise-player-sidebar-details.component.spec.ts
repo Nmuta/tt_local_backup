@@ -18,31 +18,29 @@ describe('SunrisePlayerSidebarDetailsComponent', () => {
   let fixture: ComponentFixture<SunrisePlayerSidebarDetailsComponent>;
   let component: SunrisePlayerSidebarDetailsComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [SunrisePlayerSidebarDetailsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockSunriseService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [SunrisePlayerSidebarDetailsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockSunriseService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockSunriseService = injector.inject(SunriseService);
+    const injector = getTestBed();
+    mockSunriseService = injector.inject(SunriseService);
 
-      fixture = TestBed.createComponent(SunrisePlayerSidebarDetailsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(SunrisePlayerSidebarDetailsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

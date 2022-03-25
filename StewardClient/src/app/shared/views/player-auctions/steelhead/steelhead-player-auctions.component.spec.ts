@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import * as faker from 'faker';
+import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
@@ -28,28 +28,20 @@ describe('SteelheadPlayerAuctionsComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
-    beforeEach(
-      waitForAsync(() => {
-        // emulate initialization event
-        component.ngOnChanges();
-      }),
-    );
+    beforeEach(waitForAsync(() => {
+      // emulate initialization event
+      component.ngOnChanges();
+    }));
 
-    it(
-      'should skip undefined xuids',
-      waitForAsync(() => {
-        expect(component.isLoading).toBe(true);
-        expect(component.loadError).toBeFalsy();
-      }),
-    );
+    it('should skip undefined xuids', waitForAsync(() => {
+      expect(component.isLoading).toBe(true);
+      expect(component.loadError).toBeFalsy();
+    }));
 
     describe('And getPlayerAuctionsByXuid$ returns auctions', () => {
       const auctions = SunrisePlayerXuidAuctionsFakeApi.makeMany();

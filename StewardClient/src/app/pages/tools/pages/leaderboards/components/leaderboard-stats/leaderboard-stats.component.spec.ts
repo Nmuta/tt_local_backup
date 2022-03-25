@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { NgxsModule } from '@ngxs/store';
 import { of } from 'rxjs';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { LeaderboardStatsComponent, LeaderboardStatsContract } from './leaderboard-stats.component';
 import { toDateTime } from '@helpers/luxon';

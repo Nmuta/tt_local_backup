@@ -6,7 +6,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { of, throwError } from 'rxjs';
 import { BanResultsUnion, UserBanningBaseComponent } from './user-banning.base.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
 import { toDateTime } from '@helpers/luxon';
 

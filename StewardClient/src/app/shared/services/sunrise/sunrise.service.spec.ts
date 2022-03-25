@@ -17,7 +17,7 @@ import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
 import { DateTime } from 'luxon';
 import { UGCType } from '@models/ugc-filters';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { Gift, GroupGift } from '@models/gift';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 

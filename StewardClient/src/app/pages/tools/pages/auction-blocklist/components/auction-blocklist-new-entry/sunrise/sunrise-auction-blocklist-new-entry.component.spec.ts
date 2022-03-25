@@ -9,19 +9,17 @@ describe('SunriseAuctionBlocklistNewEntryComponent', () => {
   let component: SunriseAuctionBlocklistNewEntryComponent;
   let fixture: ComponentFixture<SunriseAuctionBlocklistNewEntryComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [SunriseAuctionBlocklistNewEntryComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [SunriseAuctionBlocklistNewEntryService],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [SunriseAuctionBlocklistNewEntryComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [SunriseAuctionBlocklistNewEntryService],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(SunriseAuctionBlocklistNewEntryComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(SunriseAuctionBlocklistNewEntryComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

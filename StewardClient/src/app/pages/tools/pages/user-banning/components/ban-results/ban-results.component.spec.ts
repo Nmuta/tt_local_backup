@@ -4,30 +4,24 @@ import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { BanResultsComponent } from './ban-results.component';
 
 describe('BanResultsComponent', () => {
   let fixture: ComponentFixture<BanResultsComponent>;
   let component: BanResultsComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-        ],
-        declarations: [BanResultsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [BanResultsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(BanResultsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(BanResultsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   const result1Id = new BigNumber(faker.datatype.number());
   const result2Id = new BigNumber(faker.datatype.number());

@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunriseUserFlags } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { SunriseUserFlagsComponent } from './sunrise-user-flags.component';
@@ -37,12 +37,9 @@ describe('SunriseUserFlagsComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

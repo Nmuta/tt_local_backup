@@ -18,31 +18,29 @@ describe('GravityPlayerSidebarDetailsComponent', () => {
   let fixture: ComponentFixture<GravityPlayerSidebarDetailsComponent>;
   let component: GravityPlayerSidebarDetailsComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [GravityPlayerSidebarDetailsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockGravityService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [GravityPlayerSidebarDetailsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockGravityService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockGravityService = injector.inject(GravityService);
+    const injector = getTestBed();
+    mockGravityService = injector.inject(GravityService);
 
-      fixture = TestBed.createComponent(GravityPlayerSidebarDetailsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(GravityPlayerSidebarDetailsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

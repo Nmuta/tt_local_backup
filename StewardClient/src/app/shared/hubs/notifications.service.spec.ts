@@ -16,10 +16,7 @@ describe('NotificationsService', () => {
     service = TestBed.inject(NotificationsService);
   });
 
-  it(
-    'should be created',
-    waitForAsync(async () => {
-      expect(service).toBeTruthy();
-    }),
-  );
+  it('should be created', waitForAsync(async () => {
+    expect(service).toBeTruthy();
+  }));
 });

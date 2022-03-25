@@ -13,7 +13,7 @@ import { SteelheadService } from './steelhead.service';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
 import { UGCType } from '@models/ugc-filters';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 describe('SteelheadService', () => {
   let injector: TestBed;

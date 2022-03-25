@@ -22,7 +22,7 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { of } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 
 describe('TicketAppBaseComponent', () => {
@@ -32,46 +32,44 @@ describe('TicketAppBaseComponent', () => {
   let mockTicketService: TicketService;
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [TicketAppBaseComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockZendeskService(),
-          createMockScrutineerDataParser(),
-          createMockClipboard(),
-          ...createMockMsalServices(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [TicketAppBaseComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockZendeskService(),
+        createMockScrutineerDataParser(),
+        createMockClipboard(),
+        ...createMockMsalServices(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(
-        TicketAppBaseComponent as Type<TicketAppBaseComponent<IdentityResultAlpha>>,
-      );
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(
+      TicketAppBaseComponent as Type<TicketAppBaseComponent<IdentityResultAlpha>>,
+    );
+    component = fixture.debugElement.componentInstance;
 
-      mockTicketService = TestBed.inject(TicketService);
-      mockStore = TestBed.inject(Store);
+    mockTicketService = TestBed.inject(TicketService);
+    mockStore = TestBed.inject(Store);
 
-      const lookupGamertag = faker.name.firstName();
-      const xuid = new BigNumber(faker.datatype.number());
-      const validIdentity: IdentityResultAlpha = {
-        query: undefined,
-        xuid: xuid,
-        gamertag: lookupGamertag,
-        error: undefined,
-      };
-      component.requestPlayerIdentity$ = jasmine
-        .createSpy('requestPlayerIdentity$')
-        .and.returnValue(of(validIdentity));
-    }),
-  );
+    const lookupGamertag = faker.name.firstName();
+    const xuid = new BigNumber(faker.datatype.number());
+    const validIdentity: IdentityResultAlpha = {
+      query: undefined,
+      xuid: xuid,
+      gamertag: lookupGamertag,
+      error: undefined,
+    };
+    component.requestPlayerIdentity$ = jasmine
+      .createSpy('requestPlayerIdentity$')
+      .and.returnValue(of(validIdentity));
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

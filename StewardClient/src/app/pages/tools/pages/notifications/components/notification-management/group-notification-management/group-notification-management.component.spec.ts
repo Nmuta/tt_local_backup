@@ -11,7 +11,8 @@ import {
   GroupNotificationManagementComponent,
 } from './group-notification-management.component';
 import { GroupNotificationManagementContract } from './group-notification-management.contract';
-import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { GroupNotification } from '@models/notifications.model';
 
 class TestNotificationManagementService implements GroupNotificationManagementContract {
@@ -39,22 +40,20 @@ describe('NotificationManagementComponent', () => {
 
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [GroupNotificationManagementComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [TestNotificationManagementService],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [GroupNotificationManagementComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [TestNotificationManagementService],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(GroupNotificationManagementComponent);
-      component = fixture.debugElement.componentInstance;
-      component.service = mockService;
+    fixture = TestBed.createComponent(GroupNotificationManagementComponent);
+    component = fixture.debugElement.componentInstance;
+    component.service = mockService;
 
-      testGroupNotifications = SunriseGroupNotificationsFakeApi.make(3);
-    }),
-  );
+    testGroupNotifications = SunriseGroupNotificationsFakeApi.make(3);
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

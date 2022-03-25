@@ -1,4 +1,4 @@
-import * as realFaker from 'faker';
+import realFaker from '@faker-js/faker';
 export * from './fake-xuid';
 export * from './fake-bigint';
 export * from './fake-gamertag';

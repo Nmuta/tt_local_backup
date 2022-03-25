@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { of, throwError } from 'rxjs';
 import { SteelheadGamertagsComponent } from './steelhead-gamertags.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { SteelheadSharedConsoleUser } from '@models/steelhead';
 import { ActivatedRoute } from '@angular/router';
 
@@ -43,12 +43,9 @@ describe('SteelheadGamertagsComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

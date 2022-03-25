@@ -29,37 +29,35 @@ describe('State: MasterInventoryListMemoryState', () => {
   let mockSteelheadService: SteelheadService;
   let mockWoodstockService: WoodstockService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot([MasterInventoryListMemoryState])],
-        providers: [
-          createMockGravityService(),
-          createMockSunriseService(),
-          createMockApolloService(),
-          createMockSteelheadService(),
-          createMockWoodstockService(),
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot([MasterInventoryListMemoryState])],
+      providers: [
+        createMockGravityService(),
+        createMockSunriseService(),
+        createMockApolloService(),
+        createMockSteelheadService(),
+        createMockWoodstockService(),
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
-      service = TestBed.inject(MasterInventoryListMemoryState);
-      store = TestBed.inject(Store);
+    service = TestBed.inject(MasterInventoryListMemoryState);
+    store = TestBed.inject(Store);
 
-      mockGravityService = TestBed.inject(GravityService);
-      mockSunriseService = TestBed.inject(SunriseService);
-      mockApolloService = TestBed.inject(ApolloService);
-      mockSteelheadService = TestBed.inject(SteelheadService);
-      mockWoodstockService = TestBed.inject(WoodstockService);
+    mockGravityService = TestBed.inject(GravityService);
+    mockSunriseService = TestBed.inject(SunriseService);
+    mockApolloService = TestBed.inject(ApolloService);
+    mockSteelheadService = TestBed.inject(SteelheadService);
+    mockWoodstockService = TestBed.inject(WoodstockService);
 
-      store.reset({
-        giftingMasterListMemory: {
-          [GameTitleCodeName.Street]: {},
-          [GameTitleCodeName.FH4]: undefined,
-        },
-      });
-    }),
-  );
+    store.reset({
+      giftingMasterListMemory: {
+        [GameTitleCodeName.Street]: {},
+        [GameTitleCodeName.FH4]: undefined,
+      },
+    });
+  }));
 
   it('should be created', () => {
     expect(service).toBeTruthy();

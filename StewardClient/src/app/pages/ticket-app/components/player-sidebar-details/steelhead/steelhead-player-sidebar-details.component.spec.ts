@@ -18,31 +18,29 @@ describe('SteelheadPlayerSidebarDetailsComponent', () => {
   let fixture: ComponentFixture<SteelheadPlayerSidebarDetailsComponent>;
   let component: SteelheadPlayerSidebarDetailsComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [SteelheadPlayerSidebarDetailsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockSteelheadService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [SteelheadPlayerSidebarDetailsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockSteelheadService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockSteelheadService = injector.inject(SteelheadService);
+    const injector = getTestBed();
+    mockSteelheadService = injector.inject(SteelheadService);
 
-      fixture = TestBed.createComponent(SteelheadPlayerSidebarDetailsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(SteelheadPlayerSidebarDetailsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

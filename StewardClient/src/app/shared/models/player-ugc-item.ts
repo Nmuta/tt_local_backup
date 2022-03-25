@@ -1,4 +1,5 @@
-import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { UGCType } from './ugc-filters';

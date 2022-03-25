@@ -17,102 +17,84 @@ describe('WoodstockPlayerNotificationsComponent', () => {
   let component: WoodstockPlayerNotificationsComponent;
   let fixture: ComponentFixture<WoodstockPlayerNotificationsComponent>;
 
-  beforeEach(
-    waitForAsync(async () => {
-      await TestBed.configureTestingModule({
-        declarations: [WoodstockPlayerNotificationsComponent],
-        providers: [createMockWoodstockService()],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  beforeEach(waitForAsync(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [WoodstockPlayerNotificationsComponent],
+      providers: [createMockWoodstockService()],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
-      injector = getTestBed();
-      service = injector.inject(WoodstockService);
-    }),
-  );
+    injector = getTestBed();
+    service = injector.inject(WoodstockService);
+  }));
 
-  beforeEach(
-    waitForAsync(() => {
-      fixture = TestBed.createComponent(WoodstockPlayerNotificationsComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    fixture = TestBed.createComponent(WoodstockPlayerNotificationsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('valid initialization', () => {
     let playerNotifications$: Subject<PlayerNotification[]> = undefined;
     let playerNotificationsValue: PlayerNotification[] = undefined;
     const testXuid = fakeXuid();
 
-    beforeEach(
-      waitForAsync(() => {
-        // notifications list prep
-        playerNotifications$ = new Subject<PlayerNotification[]>();
-        playerNotificationsValue =
-          WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
-        service.getPlayerNotifications$ = jasmine
-          .createSpy('getPlayerNotifications')
-          .and.returnValue(playerNotifications$);
+    beforeEach(waitForAsync(() => {
+      // notifications list prep
+      playerNotifications$ = new Subject<PlayerNotification[]>();
+      playerNotificationsValue =
+        WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
+      service.getPlayerNotifications$ = jasmine
+        .createSpy('getPlayerNotifications')
+        .and.returnValue(playerNotifications$);
 
-        // emulate initialization event
-        component.ngOnChanges();
-      }),
-    );
+      // emulate initialization event
+      component.ngOnChanges();
+    }));
 
     describe('ngOnChanges', () => {
-      it(
-        'should skip undefined xuids',
-        waitForAsync(() => {
-          expect(component.isLoading).toBe(true);
-          expect(component.loadError).toBeFalsy();
-        }),
-      );
+      it('should skip undefined xuids', waitForAsync(() => {
+        expect(component.isLoading).toBe(true);
+        expect(component.loadError).toBeFalsy();
+      }));
 
-      it(
-        'should update when xuid set',
-        waitForAsync(async () => {
-          component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-          component.ngOnChanges();
+      it('should update when xuid set', waitForAsync(async () => {
+        component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+        component.ngOnChanges();
 
-          // waiting on value
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+        // waiting on value
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(true);
 
-          // value received
-          playerNotifications$.next(playerNotificationsValue);
-          playerNotifications$.complete();
-          await fixture.whenStable();
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeFalsy();
-        }),
-      );
+        // value received
+        playerNotifications$.next(playerNotificationsValue);
+        playerNotifications$.complete();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(false);
+        expect(component.loadError).toBeFalsy();
+      }));
 
-      it(
-        'should update when request errored',
-        waitForAsync(async () => {
-          // emulate xuid update event
-          component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-          component.ngOnChanges();
+      it('should update when request errored', waitForAsync(async () => {
+        // emulate xuid update event
+        component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+        component.ngOnChanges();
 
-          // waiting on value
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+        // waiting on value
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(true);
 
-          // error received
-          playerNotifications$.error(new HttpErrorResponse({ error: 'hello' }));
-          await fixture.whenStable();
-          fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeTruthy();
-        }),
-      );
+        // error received
+        playerNotifications$.error(new HttpErrorResponse({ error: 'hello' }));
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.isLoading).toBe(false);
+        expect(component.loadError).toBeTruthy();
+      }));
     });
   });
 });

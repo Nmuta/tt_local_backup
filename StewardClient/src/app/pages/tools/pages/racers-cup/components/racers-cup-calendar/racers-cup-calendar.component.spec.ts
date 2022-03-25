@@ -1,6 +1,6 @@
 import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
-import * as faker from 'faker';
+import faker from '@faker-js/faker';
 import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { CalendarModule, CalendarView, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';

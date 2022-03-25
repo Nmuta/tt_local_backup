@@ -18,32 +18,30 @@ describe('HideChangelogModalCheckboxComponent', () => {
 
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserSettingsState]),
-        ],
-        declarations: [HideChangelogModalCheckboxComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockZendeskService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserSettingsState]),
+      ],
+      declarations: [HideChangelogModalCheckboxComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockZendeskService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(HideChangelogModalCheckboxComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(HideChangelogModalCheckboxComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore = TestBed.inject(Store);
-      mockStore.dispatch = jasmine.createSpy('dispatch');
-      Object.defineProperty(component, 'showAppUpdatePopup$', { writable: true });
-    }),
-  );
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch');
+    Object.defineProperty(component, 'showAppUpdatePopup$', { writable: true });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

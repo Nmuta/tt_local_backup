@@ -4,7 +4,7 @@ import { KustoQuery } from '@models/kusto';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
 import { KustoService } from './kusto.service';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { GameTitleCodeName } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 

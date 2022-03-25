@@ -8,7 +8,7 @@ import {
   isT10IdQuery,
   isXuidQuery,
 } from '@models/identity-query.model';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { fakeT10Id } from '@interceptors/fake-api/utility/fake-t10id';
 
 /** Fake API for identifying players. */

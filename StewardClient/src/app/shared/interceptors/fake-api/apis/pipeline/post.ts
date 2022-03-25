@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 
 /** Fake API for POSTing a single pipeline. */
 export class PipelinePostFakeApi extends FakeApiBase {

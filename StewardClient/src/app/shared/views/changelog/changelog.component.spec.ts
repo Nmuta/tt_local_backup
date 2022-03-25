@@ -18,30 +18,28 @@ describe('ChangelogComponent', () => {
 
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserSettingsState]),
-        ],
-        declarations: [ChangelogComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          ...createMockMsalServices(),
-          createMockZendeskService(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserSettingsState]),
+      ],
+      declarations: [ChangelogComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockWindowService(),
+        ...createMockMsalServices(),
+        createMockZendeskService(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(ChangelogComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(ChangelogComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore = TestBed.inject(Store);
-    }),
-  );
+    mockStore = TestBed.inject(Store);
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

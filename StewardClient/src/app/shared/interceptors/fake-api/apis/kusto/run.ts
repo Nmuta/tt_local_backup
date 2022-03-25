@@ -1,7 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { KustoQueryResponse } from '@models/kusto';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for running a kusto query. */
 export class KustoRunQueryFakeApi extends FakeApiBase {

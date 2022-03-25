@@ -4,7 +4,7 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { WoodstockGiftHistory } from '@models/woodstock';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for finding gift history. */
 export class WoodstockPlayerXuidGiftHistoryFakeApi extends FakeApiBase {

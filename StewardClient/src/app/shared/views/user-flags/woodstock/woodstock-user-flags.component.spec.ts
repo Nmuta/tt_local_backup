@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { WoodstockUserFlags } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock';
 import { createMockWoodstockService } from '@services/woodstock/woodstock.service.mock';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { WoodstockUserFlagsComponent } from './woodstock-user-flags.component';
@@ -37,12 +37,9 @@ describe('WoodstockUserFlagsComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

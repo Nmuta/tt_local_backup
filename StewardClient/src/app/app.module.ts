@@ -74,6 +74,7 @@ import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interce
 import { ToolsAvailabilityInterceptor } from '@interceptors/tools-availability.interceptor';
 import { ToolsAvailabilityModalModule } from '@views/tools-availability-modal/tools-availability-modal.module';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -262,6 +263,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(faCopy, faUser);
+    library.addIcons(faCopy as IconDefinition, faUser as IconDefinition);
   }
 }

@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunrisePlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/consoleDetails';
-import * as faker from 'faker';
+import faker from '@faker-js/faker';
 import { Subject } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
@@ -39,89 +39,75 @@ describe('SteelheadConsolesComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('valid initialization', () => {
     let consoleDetails$: Subject<SteelheadConsoleDetailsEntry[]> = undefined;
     let consoleDetailsValue: SteelheadConsoleDetailsEntry[] = undefined;
 
-    beforeEach(
-      waitForAsync(() => {
-        // console details prep
-        consoleDetails$ = new Subject<SteelheadConsoleDetailsEntry[]>();
-        consoleDetailsValue =
-          SunrisePlayerXuidConsolesFakeApi.makeMany() as SteelheadConsoleDetailsEntry[];
-        mockSteelheadService.getConsoleDetailsByXuid$ = jasmine
-          .createSpy('getConsoleDetailsByXuid$')
-          .and.returnValue(consoleDetails$);
+    beforeEach(waitForAsync(() => {
+      // console details prep
+      consoleDetails$ = new Subject<SteelheadConsoleDetailsEntry[]>();
+      consoleDetailsValue =
+        SunrisePlayerXuidConsolesFakeApi.makeMany() as SteelheadConsoleDetailsEntry[];
+      mockSteelheadService.getConsoleDetailsByXuid$ = jasmine
+        .createSpy('getConsoleDetailsByXuid$')
+        .and.returnValue(consoleDetails$);
 
-        // emulate initialization event
-        component.ngOnChanges();
-      }),
-    );
+      // emulate initialization event
+      component.ngOnChanges();
+    }));
 
     describe('ngOnChanges', () => {
-      it(
-        'should skip undefined xuids',
-        waitForAsync(() => {
-          expect(component.getConsoles?.isActive).toBe(false);
-          expect(component.getConsoles?.status?.error).toBeUndefined();
-        }),
-      );
+      it('should skip undefined xuids', waitForAsync(() => {
+        expect(component.getConsoles?.isActive).toBe(false);
+        expect(component.getConsoles?.status?.error).toBeUndefined();
+      }));
 
-      it(
-        'should update when xuid set',
-        waitForAsync(async () => {
-          // emulate xuid update event
-          component.identity = {
-            query: undefined,
-            gamertag: faker.name.firstName(),
-            xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
-          };
-          component.ngOnChanges();
+      it('should update when xuid set', waitForAsync(async () => {
+        // emulate xuid update event
+        component.identity = {
+          query: undefined,
+          gamertag: faker.name.firstName(),
+          xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
+        };
+        component.ngOnChanges();
 
-          // waiting on value
-          fixture.detectChanges();
-          expect(component.getConsoles?.isActive).toBe(true);
+        // waiting on value
+        fixture.detectChanges();
+        expect(component.getConsoles?.isActive).toBe(true);
 
-          // value received
-          consoleDetails$.next(consoleDetailsValue);
-          consoleDetails$.complete();
-          await fixture.whenStable();
-          fixture.detectChanges();
-          expect(component.getConsoles?.isActive).toBe(false);
-          expect(component.getConsoles?.status?.error).toBeNull();
-        }),
-      );
+        // value received
+        consoleDetails$.next(consoleDetailsValue);
+        consoleDetails$.complete();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.getConsoles?.isActive).toBe(false);
+        expect(component.getConsoles?.status?.error).toBeNull();
+      }));
 
-      it(
-        'should update when request errored',
-        waitForAsync(async () => {
-          // emulate xuid update event
-          component.identity = {
-            query: undefined,
-            gamertag: faker.name.firstName(),
-            xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
-          };
-          component.ngOnChanges();
+      it('should update when request errored', waitForAsync(async () => {
+        // emulate xuid update event
+        component.identity = {
+          query: undefined,
+          gamertag: faker.name.firstName(),
+          xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
+        };
+        component.ngOnChanges();
 
-          // waiting on value
-          fixture.detectChanges();
-          expect(component.getConsoles?.isActive).toBe(true);
+        // waiting on value
+        fixture.detectChanges();
+        expect(component.getConsoles?.isActive).toBe(true);
 
-          // error received
-          consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
-          await fixture.whenStable();
-          fixture.detectChanges();
-          expect(component.getConsoles?.isActive).toBe(false);
-          expect(component.getConsoles?.status?.error).not.toBeNull();
-        }),
-      );
+        // error received
+        consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.getConsoles?.isActive).toBe(false);
+        expect(component.getConsoles?.status?.error).not.toBeNull();
+      }));
     });
   });
 });

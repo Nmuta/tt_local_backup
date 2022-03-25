@@ -16,26 +16,24 @@ describe('GiftHistoryComponent', () => {
 
   let mockStore: Store;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [GiftHistoryComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [...createMockMsalServices(), createMockLoggerService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [GiftHistoryComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [...createMockMsalServices(), createMockLoggerService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(GiftHistoryComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(GiftHistoryComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockStore = TestBed.inject(Store);
-      mockStore.dispatch = jasmine.createSpy('dispatch');
-    }),
-  );
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch');
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

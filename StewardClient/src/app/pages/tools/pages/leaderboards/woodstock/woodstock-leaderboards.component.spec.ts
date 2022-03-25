@@ -9,22 +9,20 @@ describe('WoodstockLeaderboardsComponent', () => {
   let component: WoodstockLeaderboardsComponent;
   let fixture: ComponentFixture<WoodstockLeaderboardsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          BrowserAnimationsModule,
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-        ],
-        declarations: [WoodstockLeaderboardsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BrowserAnimationsModule,
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+      ],
+      declarations: [WoodstockLeaderboardsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(WoodstockLeaderboardsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(WoodstockLeaderboardsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

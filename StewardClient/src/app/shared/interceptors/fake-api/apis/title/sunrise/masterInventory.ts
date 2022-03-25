@@ -4,7 +4,7 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SunriseMasterInventory } from '@models/sunrise';
 import BigNumber from 'bignumber.js';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for getting master inventory. */
 export class SunriseMasterInventoryFakeApi extends FakeApiBase {

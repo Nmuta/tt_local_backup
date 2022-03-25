@@ -1,7 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { LspEndpoints } from '@models/lsp-endpoints';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for getting master inventory. */
 export class SettingsGetEndpointsFakeApi extends FakeApiBase {

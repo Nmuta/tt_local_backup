@@ -3,7 +3,7 @@ import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for finding backstage pass history events for a XUID. */
 export class WoodstockPlayerXuidBackstagePassHistoryFakeApi extends FakeApiBase {

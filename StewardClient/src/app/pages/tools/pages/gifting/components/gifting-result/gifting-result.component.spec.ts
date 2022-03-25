@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GiftingResultComponent } from './gifting-result.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { StewardErrorCode } from '@models/enums';
 
@@ -12,23 +12,17 @@ describe('GiftingResultComponent', () => {
   let fixture: ComponentFixture<GiftingResultComponent>;
   let component: GiftingResultComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-        ],
-        declarations: [GiftingResultComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [GiftingResultComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(GiftingResultComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(GiftingResultComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   const result1Id = faker.datatype.uuid().toString();
   const result2Id = faker.datatype.uuid().toString();

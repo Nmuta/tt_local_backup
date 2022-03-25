@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseGiftLiveryComponent } from './sunrise-gift-livery.component';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { UGCType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { catchError, take } from 'rxjs/operators';
@@ -31,27 +31,25 @@ describe('SunriseGiftLiveryComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
   const liveryId = faker.datatype.uuid();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-        ],
-        declarations: [SunriseGiftLiveryComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockSunriseService(), createMockBackgroundJobService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      declarations: [SunriseGiftLiveryComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [createMockSunriseService(), createMockBackgroundJobService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(SunriseGiftLiveryComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(SunriseGiftLiveryComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockSunriseService = TestBed.inject(SunriseService);
-      mockBackgroundJobService = TestBed.inject(BackgroundJobService);
-    }),
-  );
+    mockSunriseService = TestBed.inject(SunriseService);
+    mockBackgroundJobService = TestBed.inject(BackgroundJobService);
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

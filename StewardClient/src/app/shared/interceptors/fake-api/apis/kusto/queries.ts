@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GameTitleCodeName } from '@models/enums';
 import { KustoQueries } from '@models/kusto/kusto-queries';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 /** Fake API for getting kusto predefined queries. */
 export class KustoGetQueriesFakeApi extends FakeApiBase {

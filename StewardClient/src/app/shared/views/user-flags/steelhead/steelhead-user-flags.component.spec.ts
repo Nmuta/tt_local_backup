@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { of, throwError } from 'rxjs';
 import { SteelheadUserFlagsComponent } from './steelhead-user-flags.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { SteelheadUserFlags } from '@models/steelhead';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
@@ -35,12 +35,9 @@ describe('SteelheadUserFlagsComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

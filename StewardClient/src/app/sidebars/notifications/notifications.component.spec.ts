@@ -6,7 +6,7 @@ import { UserModel } from '@models/user.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { NotificationsComponent } from './notifications.component';
 import { UserRole } from '@models/enums';

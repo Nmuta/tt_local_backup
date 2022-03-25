@@ -11,26 +11,24 @@ describe('EntitlementsComponent', () => {
 
   let mockKustoService: KustoService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [EntitlementsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockKustoService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [EntitlementsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [createMockKustoService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(EntitlementsComponent);
-      component = fixture.debugElement.componentInstance;
-      mockKustoService = TestBed.inject(KustoService);
+    fixture = TestBed.createComponent(EntitlementsComponent);
+    component = fixture.debugElement.componentInstance;
+    mockKustoService = TestBed.inject(KustoService);
 
-      mockKustoService.getKustoPlayerEntitlements$ = jasmine
-        .createSpy('getKustoPlayerEntitlements$')
-        .and.callThrough();
+    mockKustoService.getKustoPlayerEntitlements$ = jasmine
+      .createSpy('getKustoPlayerEntitlements$')
+      .and.callThrough();
 
-      fixture.detectChanges();
-    }),
-  );
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

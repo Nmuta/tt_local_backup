@@ -1,7 +1,7 @@
 import { environment } from '@environments/environment';
 import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { PlayerNotification } from '@models/notifications.model';
 
 /** Fake API for woodstock player inventory profiles. */

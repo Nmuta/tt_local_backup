@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { of } from 'rxjs';
 import {
   RacersCupSeriesModalComponent,

@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { CacheService } from './cache.service';
 

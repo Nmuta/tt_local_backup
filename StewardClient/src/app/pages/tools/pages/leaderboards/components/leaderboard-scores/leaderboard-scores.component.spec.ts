@@ -15,7 +15,7 @@ import {
   LeaderboardScoresComponent,
   LeaderboardScoresContract,
 } from './leaderboard-scores.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';

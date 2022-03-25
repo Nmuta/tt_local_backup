@@ -24,12 +24,9 @@ describe('WoodstockBanHistoryComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   it('should load history', () => {
     component.ngOnChanges();

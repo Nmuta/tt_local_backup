@@ -26,22 +26,20 @@ describe('AuctionBlocklistNewEntryComponent', () => {
   const mockService: TestAuctionBlocklistNewEntryService =
     new TestAuctionBlocklistNewEntryService();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [AuctionBlocklistNewEntryComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [TestAuctionBlocklistNewEntryService],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [AuctionBlocklistNewEntryComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [TestAuctionBlocklistNewEntryService],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(AuctionBlocklistNewEntryComponent);
-      component = fixture.debugElement.componentInstance;
-      component.service = mockService;
+    fixture = TestBed.createComponent(AuctionBlocklistNewEntryComponent);
+    component = fixture.debugElement.componentInstance;
+    component.service = mockService;
 
-      fixture.detectChanges();
-    }),
-  );
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

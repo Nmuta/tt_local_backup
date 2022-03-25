@@ -9,7 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppState } from '@shared/state/app-state';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserModel } from '@models/user.model';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { createMockWindowService, WindowService } from '@services/window';
@@ -20,32 +20,28 @@ describe('State: User', () => {
   let mockUserService: UserService;
   let mockWindowService: WindowService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-        providers: [
-          createMockUserService(),
-          ...createMockMsalServices(),
-          createMockLoggerService(),
-          createMockWindowService(),
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
+      providers: [
+        createMockUserService(),
+        ...createMockMsalServices(),
+        createMockLoggerService(),
+        createMockWindowService(),
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
-      store = TestBed.inject(Store);
-      actions$ = TestBed.inject(Actions);
-      mockUserService = TestBed.inject(UserService);
-      mockWindowService = TestBed.inject(WindowService);
+    store = TestBed.inject(Store);
+    actions$ = TestBed.inject(Actions);
+    mockUserService = TestBed.inject(UserService);
+    mockWindowService = TestBed.inject(WindowService);
 
-      mockUserService.getUserProfile$ = jasmine
-        .createSpy('getUserProfile$')
-        .and.returnValue(of({}));
-      mockWindowService.location = jasmine
-        .createSpy('location')
-        .and.returnValue({ origin: 'http://microsoft.test' });
-    }),
-  );
+    mockUserService.getUserProfile$ = jasmine.createSpy('getUserProfile$').and.returnValue(of({}));
+    mockWindowService.location = jasmine
+      .createSpy('location')
+      .and.returnValue({ origin: 'http://microsoft.test' });
+  }));
 
   describe('[GetUser] Action', () => {
     let action;

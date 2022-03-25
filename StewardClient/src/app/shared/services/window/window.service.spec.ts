@@ -1,6 +1,6 @@
 ﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, inject } from '@angular/core/testing';
-import { faker } from '@interceptors/fake-api/utility';
+import faker from '@faker-js/faker';
 import { NgxsModule, Store } from '@ngxs/store';
 import { WindowOpen } from './window.actions';
 import { WindowService } from './window.service';

@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { UGCType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { catchError, take } from 'rxjs/operators';
@@ -31,27 +31,25 @@ describe('WoodstockGiftLiveryComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
   const liveryId = faker.datatype.uuid();
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-          ReactiveFormsModule,
-        ],
-        declarations: [WoodstockGiftLiveryComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockBackgroundJobService(), createMockWoodstockService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      declarations: [WoodstockGiftLiveryComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [createMockBackgroundJobService(), createMockWoodstockService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(WoodstockGiftLiveryComponent);
-      component = fixture.debugElement.componentInstance;
+    fixture = TestBed.createComponent(WoodstockGiftLiveryComponent);
+    component = fixture.debugElement.componentInstance;
 
-      mockWoodstockService = TestBed.inject(WoodstockService);
-      mockBackgroundJobService = TestBed.inject(BackgroundJobService);
-    }),
-  );
+    mockWoodstockService = TestBed.inject(WoodstockService);
+    mockBackgroundJobService = TestBed.inject(BackgroundJobService);
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

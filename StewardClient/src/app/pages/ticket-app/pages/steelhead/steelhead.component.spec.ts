@@ -5,7 +5,7 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { createMockTicketService } from '@services/zendesk';
 import { of } from 'rxjs';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { SteelheadComponent } from './steelhead.component';
 

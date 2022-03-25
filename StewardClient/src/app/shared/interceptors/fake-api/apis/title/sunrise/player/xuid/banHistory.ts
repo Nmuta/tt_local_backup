@@ -4,7 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GameTitleCodeName } from '@models/enums';
 import { SunriseBanArea } from '@models/sunrise';
 import { LiveOpsBanDescription, LiveOpsBanDescriptions } from '@models/sunrise';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for finding User Flags. */

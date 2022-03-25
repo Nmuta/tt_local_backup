@@ -16,48 +16,41 @@ describe('WoodstockPlayerAccountInventoryComponent', () => {
   let component: WoodstockPlayerAccountInventoryComponent;
   let fixture: ComponentFixture<WoodstockPlayerAccountInventoryComponent>;
 
-  beforeEach(
-    waitForAsync(async () => {
-      await TestBed.configureTestingModule({
-        declarations: [WoodstockPlayerAccountInventoryComponent],
-        providers: [createMockWoodstockService()],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  beforeEach(waitForAsync(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [WoodstockPlayerAccountInventoryComponent],
+      providers: [createMockWoodstockService()],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
-      injector = getTestBed();
-      service = injector.inject(WoodstockService);
+    injector = getTestBed();
+    service = injector.inject(WoodstockService);
 
-      fixture = TestBed.createComponent(WoodstockPlayerAccountInventoryComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+    fixture = TestBed.createComponent(WoodstockPlayerAccountInventoryComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
 
-      component.accountInventory = undefined;
-    }),
-  );
+    component.accountInventory = undefined;
+  }));
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('valid initialization', () => {
     let playerAccountInventory$: Subject<WoodstockPlayerAccountInventory> = undefined;
     let playerAccountInventoryValue: WoodstockPlayerAccountInventory = undefined;
     const testXuid = fakeXuid();
 
-    beforeEach(
-      waitForAsync(() => {
-        // account-inventory list prep
-        playerAccountInventory$ = new Subject<WoodstockPlayerAccountInventory>();
-        playerAccountInventoryValue =
-          WoodstockPlayerXuidAccountInventoryFakeApi.make() as WoodstockPlayerAccountInventory;
-        service.getPlayerAccountInventoryByXuid$ = jasmine
-          .createSpy('getPlayerAccountInventoryByXuid$')
-          .and.returnValue(playerAccountInventory$);
-      }),
-    );
+    beforeEach(waitForAsync(() => {
+      // account-inventory list prep
+      playerAccountInventory$ = new Subject<WoodstockPlayerAccountInventory>();
+      playerAccountInventoryValue =
+        WoodstockPlayerXuidAccountInventoryFakeApi.make() as WoodstockPlayerAccountInventory;
+      service.getPlayerAccountInventoryByXuid$ = jasmine
+        .createSpy('getPlayerAccountInventoryByXuid$')
+        .and.returnValue(playerAccountInventory$);
+    }));
 
     describe('ngOnChanges', () => {
       describe('When xuid is undefined', () => {
@@ -65,15 +58,12 @@ describe('WoodstockPlayerAccountInventoryComponent', () => {
           component.identity = undefined;
         });
 
-        it(
-          'should skip logic',
-          waitForAsync(() => {
-            component.ngOnChanges();
+        it('should skip logic', waitForAsync(() => {
+          component.ngOnChanges();
 
-            expect(component.getMonitor.isActive).toBe(false);
-            expect(component.getMonitor.status.error).toBeFalsy();
-          }),
-        );
+          expect(component.getMonitor.isActive).toBe(false);
+          expect(component.getMonitor.status.error).toBeFalsy();
+        }));
       });
 
       describe('When xuid is defined', () => {
@@ -82,28 +72,25 @@ describe('WoodstockPlayerAccountInventoryComponent', () => {
         });
 
         describe('and valid results are returned', () => {
-          it(
-            'should set account inventory',
-            waitForAsync(async () => {
-              // emulate xuid update event
-              component.ngOnChanges();
+          it('should set account inventory', waitForAsync(async () => {
+            // emulate xuid update event
+            component.ngOnChanges();
 
-              // waiting on value
-              fixture.detectChanges();
-              expect(component.getMonitor.isActive).toBe(true);
+            // waiting on value
+            fixture.detectChanges();
+            expect(component.getMonitor.isActive).toBe(true);
 
-              // value received
-              playerAccountInventory$.next(playerAccountInventoryValue);
-              playerAccountInventory$.complete();
+            // value received
+            playerAccountInventory$.next(playerAccountInventoryValue);
+            playerAccountInventory$.complete();
 
-              await fixture.whenStable();
-              fixture.detectChanges();
+            await fixture.whenStable();
+            fixture.detectChanges();
 
-              expect(component.getMonitor.isActive).toBe(false);
-              expect(component.getMonitor.status.error).toBeFalsy();
-              expect(component.accountInventory).toEqual(playerAccountInventoryValue);
-            }),
-          );
+            expect(component.getMonitor.isActive).toBe(false);
+            expect(component.getMonitor.status.error).toBeFalsy();
+            expect(component.accountInventory).toEqual(playerAccountInventoryValue);
+          }));
         });
 
         describe('and http error is returned', () => {
@@ -115,17 +102,14 @@ describe('WoodstockPlayerAccountInventoryComponent', () => {
               .and.returnValue(throwError(error));
           });
 
-          it(
-            'should update when request errored',
-            waitForAsync(async () => {
-              component.ngOnChanges();
+          it('should update when request errored', waitForAsync(async () => {
+            component.ngOnChanges();
 
-              expect(component.getMonitor.isActive).toBe(false);
-              expect(component.getMonitor.status.error).not.toBeUndefined();
-              expect(component.getMonitor.status.error).toEqual(error);
-              expect(component.accountInventory).toBeUndefined();
-            }),
-          );
+            expect(component.getMonitor.isActive).toBe(false);
+            expect(component.getMonitor.status.error).not.toBeUndefined();
+            expect(component.getMonitor.status.error).toEqual(error);
+            expect(component.accountInventory).toBeUndefined();
+          }));
         });
       });
     });

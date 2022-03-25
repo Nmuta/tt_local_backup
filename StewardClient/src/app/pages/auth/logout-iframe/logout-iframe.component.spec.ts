@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { of } from 'rxjs';
 import { delay, startWith } from 'rxjs/operators';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { LogoutIframeComponent } from './logout-iframe.component';
 

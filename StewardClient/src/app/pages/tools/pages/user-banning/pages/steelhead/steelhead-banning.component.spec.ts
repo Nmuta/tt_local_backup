@@ -5,7 +5,7 @@ import { SteelheadPlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { keys } from 'lodash';
 import { of } from 'rxjs';
 import { defer } from 'rxjs';

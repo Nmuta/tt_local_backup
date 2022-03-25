@@ -8,19 +8,17 @@ describe('SunriseNotificationsComponent', () => {
   let component: SunriseNotificationsComponent;
   let fixture: ComponentFixture<SunriseNotificationsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [SunriseNotificationsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [SunriseNotificationsComponent],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [SunriseNotificationsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [SunriseNotificationsComponent],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(SunriseNotificationsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(SunriseNotificationsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -10,28 +10,23 @@ describe('PlayerInventoryBaseComponent', () => {
     PlayerInventoryBaseComponent<SunriseMasterInventory, IdentityResultAlpha>
   >;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [],
-        declarations: [PlayerInventoryBaseComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [],
+      declarations: [PlayerInventoryBaseComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(
-        PlayerInventoryBaseComponent as Type<
-          PlayerInventoryBaseComponent<SunriseMasterInventory, IdentityResultAlpha>
-        >,
-      );
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(
+      PlayerInventoryBaseComponent as Type<
+        PlayerInventoryBaseComponent<SunriseMasterInventory, IdentityResultAlpha>
+      >,
+    );
+    component = fixture.debugElement.componentInstance;
+  }));
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 });

@@ -11,7 +11,7 @@ import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { LspGroup } from '@models/lsp-group';
 import { WoodstockGift, WoodstockGroupGift, WoodstockUserFlags } from '@models/woodstock';
 import { ApiService, createMockApiService } from '@services/api';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import { of } from 'rxjs';
 

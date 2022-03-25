@@ -13,25 +13,19 @@ describe('LspGroupSelectionBaseComponent', () => {
   let fixture: ComponentFixture<LspGroupSelectionBaseComponent>;
   let component: LspGroupSelectionBaseComponent;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot(),
-        ],
-        declarations: [LspGroupSelectionBaseComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [LspGroupSelectionBaseComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(
-        LspGroupSelectionBaseComponent as Type<LspGroupSelectionBaseComponent>,
-      );
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(
+      LspGroupSelectionBaseComponent as Type<LspGroupSelectionBaseComponent>,
+    );
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -11,19 +11,17 @@ describe('WoodstockSearchLeaderboardsComponent', () => {
   let component: WoodstockSearchLeaderboardsComponent;
   let fixture: ComponentFixture<WoodstockSearchLeaderboardsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-        declarations: [WoodstockSearchLeaderboardsComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWoodstockService()],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+      declarations: [WoodstockSearchLeaderboardsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [createMockWoodstockService()],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(WoodstockSearchLeaderboardsComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(WoodstockSearchLeaderboardsComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

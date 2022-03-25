@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { PastableSingleInputComponent } from './pastable-single-input.component';
 
 describe('PastableSingleInputComponent', () => {

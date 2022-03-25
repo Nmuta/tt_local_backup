@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { of, throwError } from 'rxjs';
 import { ApolloGamertagsComponent } from './apollo-gamertags.component';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import { ApolloSharedConsoleUser } from '@models/apollo';
 import { ActivatedRoute } from '@angular/router';
 
@@ -43,12 +43,9 @@ describe('ApolloGamertagsComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    }),
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {

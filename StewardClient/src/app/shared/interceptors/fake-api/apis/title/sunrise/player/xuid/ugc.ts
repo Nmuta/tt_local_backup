@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import * as faker from 'faker';
+import faker from '@faker-js/faker';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 
 /** Fake API for finding player UGC items. */

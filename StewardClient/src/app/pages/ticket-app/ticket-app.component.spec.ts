@@ -11,7 +11,7 @@ import {
 import { NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 // Helpers
 import { createMockClipboard } from '@shared/helpers/clipboard';
@@ -36,32 +36,30 @@ describe('TicketAppComponent', () => {
   let component: TicketAppComponent;
   let mockZendeskService: ZendeskService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([UserState]),
-        ],
-        declarations: [TicketAppComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockZendeskService(),
-          createMockScrutineerDataParser(),
-          createMockClipboard(),
-          ...createMockMsalServices(),
-          createMockLoggerService(),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [TicketAppComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        createMockZendeskService(),
+        createMockScrutineerDataParser(),
+        createMockClipboard(),
+        ...createMockMsalServices(),
+        createMockLoggerService(),
+      ],
+    }).compileComponents();
 
-      const injector = getTestBed();
-      mockZendeskService = injector.inject(ZendeskService);
+    const injector = getTestBed();
+    mockZendeskService = injector.inject(ZendeskService);
 
-      fixture = TestBed.createComponent(TicketAppComponent);
-      component = fixture.debugElement.componentInstance;
-    }),
-  );
+    fixture = TestBed.createComponent(TicketAppComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
