@@ -19,12 +19,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Gets leaderboard scores.
         /// </summary>
-        Task<IEnumerable<LeaderboardScore>> GetLeaderboardScoresAsync(ScoreboardType scoreboardType, ScoreType scoreType, int trackId, string pivotId, int startAt, int maxResults, string endpoint);
+        Task<IEnumerable<LeaderboardScore>> GetLeaderboardScoresAsync(ScoreboardType scoreboardType, ScoreType scoreType, int trackId, string pivotId, IEnumerable<DeviceType> deviceTypes, int startAt, int maxResults, string endpoint);
 
         /// <summary>
         ///     Gets leaderboard scores around a player Xuid.
         /// </summary>
-        Task<IEnumerable<LeaderboardScore>> GetLeaderboardScoresAsync(ulong xuid, ScoreboardType scoreboardType, ScoreType scoreType, int trackId, string pivotId, int maxResults, string endpoint);
+        Task<IEnumerable<LeaderboardScore>> GetLeaderboardScoresAsync(ulong xuid, ScoreboardType scoreboardType, ScoreType scoreType, int trackId, string pivotId, IEnumerable<DeviceType> deviceTypes, int maxResults, string endpoint);
 
         /// <summary>
         ///     Deletes the provided score ids;

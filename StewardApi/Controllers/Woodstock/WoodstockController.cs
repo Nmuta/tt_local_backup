@@ -1958,6 +1958,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] ScoreType scoreType,
             [FromQuery] int trackId,
             [FromQuery] string pivotId,
+            [FromQuery] DeviceType[] deviceTypes,
             [FromQuery] int startAt = 0,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
@@ -1968,6 +1969,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 scoreType,
                 trackId,
                 pivotId,
+                deviceTypes,
                 startAt,
                 maxResults,
                 endpoint).ConfigureAwait(true);
@@ -1993,6 +1995,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] ScoreType scoreType,
             [FromQuery] int trackId,
             [FromQuery] string pivotId,
+            [FromQuery] DeviceType[] deviceTypes,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -2003,6 +2006,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 scoreType,
                 trackId,
                 pivotId,
+                deviceTypes,
                 maxResults,
                 endpoint).ConfigureAwait(true);
 

@@ -22,6 +22,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('LeaderboardScoresComponent', () => {
   let component: LeaderboardScoresComponent;
@@ -61,6 +62,7 @@ describe('LeaderboardScoresComponent', () => {
       antiLockBrakingSystem: faker.datatype.boolean(),
       tractionControlSystem: faker.datatype.boolean(),
       automaticTransmission: faker.datatype.boolean(),
+      deviceType: faker.random.word(),
     },
     {
       position: fakeBigNumber(),
@@ -78,6 +80,7 @@ describe('LeaderboardScoresComponent', () => {
       antiLockBrakingSystem: faker.datatype.boolean(),
       tractionControlSystem: faker.datatype.boolean(),
       automaticTransmission: faker.datatype.boolean(),
+      deviceType: faker.random.word(),
     },
   ];
 
@@ -99,7 +102,7 @@ describe('LeaderboardScoresComponent', () => {
         MatPaginatorModule,
         MatSnackBarModule,
       ],
-      declarations: [LeaderboardScoresComponent],
+      declarations: [LeaderboardScoresComponent, HumanizePipe],
       providers: [createMockKustoService(), { provide: FormBuilder, useValue: formBuilder }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -225,6 +228,7 @@ describe('LeaderboardScoresComponent', () => {
           scoreTypeId: fakeBigNumber(),
           gameScoreboardId: fakeBigNumber(),
           trackId: fakeBigNumber(),
+          deviceTypes: '',
         },
       };
       mockService.deleteLeaderboardScores$ = jasmine
@@ -254,6 +258,7 @@ describe('LeaderboardScoresComponent', () => {
           scoreTypeId: fakeBigNumber(),
           gameScoreboardId: fakeBigNumber(),
           trackId: fakeBigNumber(),
+          deviceTypes: '',
         },
       };
     });

@@ -590,7 +590,15 @@ describe('WoodstockService', () => {
 
     it('should call API service getRequest$ with the expected params', done => {
       service
-        .getLeaderboardScores$(scoreboardTypeId, scoreTypeId, trackId, pivotId, startAt, maxResults)
+        .getLeaderboardScores$(
+          scoreboardTypeId,
+          scoreTypeId,
+          trackId,
+          pivotId,
+          [],
+          startAt,
+          maxResults,
+        )
         .subscribe(() => {
           expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
             `${service.basePath}/leaderboard/scores/top`,
@@ -628,6 +636,7 @@ describe('WoodstockService', () => {
           scoreTypeId,
           trackId,
           pivotId,
+          [],
           maxResults,
         )
         .subscribe(() => {

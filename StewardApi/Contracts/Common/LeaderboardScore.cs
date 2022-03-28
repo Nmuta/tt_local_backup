@@ -38,5 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public bool TractionControlSystem { get; set; }
 
         public bool AutomaticTransmission { get; set; }
+
+        public DeviceType DeviceType { get; set; }
     }
 }

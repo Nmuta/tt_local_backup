@@ -9,11 +9,13 @@ import {
 } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ZERO } from '@helpers/bignumbers';
+import { DeviceType } from '@models/enums';
 import {
   generateLeaderboardMetadataString,
   LeaderboardMetadataAndQuery,
   LeaderboardQuery,
   LeaderboardScore,
+  getDeviceTypesFromQuery,
 } from '@models/leaderboards';
 import {
   LINE_CHART_SD_THRESHOLD_COLORS,
@@ -33,6 +35,7 @@ export interface LeaderboardStatsContract {
     scoreTypeId: BigNumber,
     trackId: BigNumber,
     pivotId: BigNumber,
+    deviceTypes: DeviceType[],
     startAt: BigNumber,
     maxResults?: BigNumber,
   ): Observable<LeaderboardScore[]>;
@@ -89,13 +92,15 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
 
     if (foundQueryChange || foundScoresDeleted) {
       this.getLeaderboardScores$(this.leaderboard.query).subscribe(scores => {
-        this.averageMean =
-          scores.map(s => s.score.toNumber()).reduce((a, b) => a + b) / scores.length;
-        this.standardDeviation = this.generateStandardDeviation(
-          scores.map(s => s.score.toNumber()),
-        );
         this.scores = scores;
-        this.generateGraphData();
+        if (scores.length > 0) {
+          this.averageMean =
+            scores.map(s => s.score.toNumber()).reduce((a, b) => a + b) / scores.length;
+          this.standardDeviation = this.generateStandardDeviation(
+            scores.map(s => s.score.toNumber()),
+          );
+          this.generateGraphData();
+        }
       });
     }
 
@@ -128,6 +133,7 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
         query.scoreTypeId,
         query.trackId,
         query.gameScoreboardId,
+        getDeviceTypesFromQuery(query),
         ZERO,
         new BigNumber(this.maxNumberOfScores),
       )

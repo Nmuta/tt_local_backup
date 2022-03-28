@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             async Task<IEnumerable<CarClass>> GetCarClasses()
             {
-                var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<CarClass>>(CMSFileNames.CarClasses, this.cmsEnvironment).ConfigureAwait(false);
+                var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<WoodstockLiveOpsContent.CarClass>>(CMSFileNames.CarClasses, this.cmsEnvironment).ConfigureAwait(false);
                 var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
 
                 this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);

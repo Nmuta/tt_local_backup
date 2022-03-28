@@ -3,7 +3,7 @@
     <mat-icon mat-card-avatar>leaderboard</mat-icon>
     <mat-card-title>Leaderboard Scores</mat-card-title>
     <mat-card-subtitle>
-      {{ matCardSubtitle }}
+      {{ matCardSubtitle | humanize }}
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -146,6 +146,10 @@
                 <tr>
                   <th>Car</th>
                   <td class="car-description" [matTooltip]="entry.car">{{ entry.car }}</td>
+                </tr>
+                <tr>
+                  <th>Device:</th>
+                  <td>{{ entry.deviceType | humanize }}</td>
                 </tr>
               </table>
             </td>

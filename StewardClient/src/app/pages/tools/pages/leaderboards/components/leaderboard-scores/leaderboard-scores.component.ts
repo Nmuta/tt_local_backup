@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { DeviceType } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import {
   Leaderboard,
@@ -24,6 +25,7 @@ import {
   determineScoreTypeQualifier,
   LEADERBOARD_PAGINATOR_SIZES,
   generateLeaderboardMetadataString,
+  getDeviceTypesFromQuery,
 } from '@models/leaderboards';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
@@ -46,6 +48,7 @@ export interface LeaderboardScoresContract {
     scoreTypeId: BigNumber,
     trackId: BigNumber,
     pivotId: BigNumber,
+    deviceTypes: DeviceType[],
     startAt: BigNumber,
     maxResults?: BigNumber,
   ): Observable<LeaderboardScore[]>;
@@ -57,6 +60,7 @@ export interface LeaderboardScoresContract {
     scoreTypeId: BigNumber,
     trackId: BigNumber,
     pivotId: BigNumber,
+    deviceTypes: DeviceType[],
     maxResults?: BigNumber,
   ): Observable<LeaderboardScore[]>;
 
@@ -318,6 +322,7 @@ export class LeaderboardScoresComponent
         query.scoreTypeId,
         query.trackId,
         query.gameScoreboardId,
+        getDeviceTypesFromQuery(query),
       )
       .pipe(
         tap(scores => {
@@ -337,6 +342,7 @@ export class LeaderboardScoresComponent
       query.scoreTypeId,
       query.trackId,
       query.gameScoreboardId,
+      getDeviceTypesFromQuery(query),
       new BigNumber(0),
     );
   }

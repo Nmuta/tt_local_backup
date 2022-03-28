@@ -63,6 +63,8 @@ import {
   LeaderboardScore,
 } from '@models/leaderboards';
 import { HideableUgcFileType } from '@models/hideable-ugc.model';
+import { DeviceType } from '@models/enums';
+import { addQueryParamArray } from '@helpers/add-query-param-array';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -606,16 +608,19 @@ export class WoodstockService {
     scoreTypeId: BigNumber,
     trackId: BigNumber,
     pivotId: BigNumber,
+    deviceTypes: DeviceType[],
     startAt: BigNumber,
     maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS),
   ): Observable<LeaderboardScore[]> {
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('scoreboardType', scoreboardTypeId.toString())
       .set('scoreType', scoreTypeId.toString())
       .set('trackId', trackId.toString())
       .set('pivotId', pivotId.toString())
       .set('startAt', startAt.toString())
       .set('maxResults', maxResults.toString());
+
+    params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
 
     return this.apiService.getRequest$<LeaderboardScore[]>(
       `${this.basePath}/leaderboard/scores/top`,
@@ -630,14 +635,17 @@ export class WoodstockService {
     scoreTypeId: BigNumber,
     trackId: BigNumber,
     pivotId: BigNumber,
+    deviceTypes: DeviceType[],
     maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS),
   ): Observable<LeaderboardScore[]> {
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('scoreboardType', scoreboardTypeId.toString())
       .set('scoreType', scoreTypeId.toString())
       .set('trackId', trackId.toString())
       .set('pivotId', pivotId.toString())
       .set('maxResults', maxResults.toString());
+
+    params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
 
     return this.apiService.getRequest$<LeaderboardScore[]>(
       `${this.basePath}/leaderboard/scores/near-player/${xuid}`,

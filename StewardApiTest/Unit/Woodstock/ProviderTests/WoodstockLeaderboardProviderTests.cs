@@ -105,11 +105,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var pivotId = Fixture.Create<string>();
             var startAt = 0;
             var maxResults = Fixture.Create<int>();
+            var deviceTypes = Fixture.Create<IList<DeviceType>>();
 
 
             // Act.
             Func<Task<IEnumerable<LeaderboardScore>>> action = async () => 
-                await provider.GetLeaderboardScoresAsync(scoreboardType, scoreType, trackId, pivotId, startAt, maxResults, null).ConfigureAwait(false);
+                await provider.GetLeaderboardScoresAsync(scoreboardType, scoreType, trackId, pivotId, deviceTypes, startAt, maxResults, null).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "endpoint"));
@@ -128,10 +129,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var startAt = 0;
             var maxResults = Fixture.Create<int>();
             var endpoint = Fixture.Create<string>();
+            var deviceTypes = Fixture.Create<IList<DeviceType>>();
 
             // Act.
             Func<Task<IEnumerable<LeaderboardScore>>> action = async () =>
-                await provider.GetLeaderboardScoresAsync(scoreboardType, scoreType, trackId, null, startAt, maxResults, endpoint).ConfigureAwait(false);
+                await provider.GetLeaderboardScoresAsync(scoreboardType, scoreType, trackId, null, deviceTypes, startAt, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "pivotId"));
@@ -150,11 +152,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var trackId = Fixture.Create<int>();
             var pivotId = Fixture.Create<string>();
             var maxResults = Fixture.Create<int>();
+            var deviceTypes = Fixture.Create<IList<DeviceType>>();
 
 
             // Act.
             Func<Task<IEnumerable<LeaderboardScore>>> action = async () =>
-                await provider.GetLeaderboardScoresAsync(xuid, scoreboardType, scoreType, trackId, pivotId, maxResults, null).ConfigureAwait(false);
+                await provider.GetLeaderboardScoresAsync(xuid, scoreboardType, scoreType, trackId, pivotId, deviceTypes, maxResults, null).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "endpoint"));
@@ -172,10 +175,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var trackId = Fixture.Create<int>();
             var maxResults = Fixture.Create<int>();
             var endpoint = Fixture.Create<string>();
+            var deviceTypes = Fixture.Create<IList<DeviceType>>();
 
             // Act.
             Func<Task<IEnumerable<LeaderboardScore>>> action = async () =>
-                await provider.GetLeaderboardScoresAsync(xuid, scoreboardType, scoreType, trackId, null, maxResults, endpoint).ConfigureAwait(false);
+                await provider.GetLeaderboardScoresAsync(xuid, scoreboardType, scoreType, trackId, null, deviceTypes, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "pivotId"));
@@ -194,10 +198,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var pivotId = Fixture.Create<string>();
             var maxResults = Fixture.Create<int>();
             var endpoint = Fixture.Create<string>();
+            var deviceTypes = Fixture.Create<IList<DeviceType>>();
 
             // Act.
             async Task<IEnumerable<LeaderboardScore>> Action() =>
-                await provider.GetLeaderboardScoresAsync(xuid, scoreboardType, scoreType, trackId, pivotId, maxResults, endpoint).ConfigureAwait(false);
+                await provider.GetLeaderboardScoresAsync(xuid, scoreboardType, scoreType, trackId, pivotId, deviceTypes, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);

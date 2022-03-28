@@ -10,56 +10,58 @@
       <mat-icon *ngIf="expanded">expand_less</mat-icon>
     </button>
     <mat-card-title>Leaderboard Stats</mat-card-title>
-    <mat-card-subtitle>{{ matCardSubtitle }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ matCardSubtitle | humanize }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <ng-container
       *ngIf="getLeaderboardScoresMonitor.isSuccess; else getLeaderboardsMonitorTemplate"
     >
-      <ng-container *ngIf="expanded">
-        <div class="actions-container">
-          <div class="info">
-            <div class="text-with-icon">
-              <mat-icon>info</mat-icon> Thresholds calculated based on top 5000 scores.
+      <ng-container *ngIf="scores.length > 0; else noScoresTemplate">
+        <ng-container *ngIf="expanded">
+          <div class="actions-container">
+            <div class="info">
+              <div class="text-with-icon">
+                <mat-icon>info</mat-icon> Thresholds calculated based on top 5000 scores.
+              </div>
+              <span>
+                Caution: This graph only shows potential outliers and does not state good or bad
+                scores. Scores that are strong outliers could be valid and scores that are normal
+                could be invalid.
+              </span>
             </div>
-            <span>
-              Caution: This graph only shows potential outliers and does not state good or bad
-              scores. Scores that are strong outliers could be valid and scores that are normal
-              could be invalid.
-            </span>
+
+            <div class="change-graph-view">
+              <span>Change number of positions shown</span>
+              <div>
+                <mat-button-toggle-group
+                  aria-label="Change number of positions in chart."
+                  (change)="onViewChange()"
+                  [(ngModel)]="selectedViewOption"
+                >
+                  <mat-button-toggle *ngFor="let option of viewOptions" [value]="option">
+                    {{ option }}
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
           </div>
 
-          <div class="change-graph-view">
-            <span>Change number of positions shown</span>
-            <div>
-              <mat-button-toggle-group
-                aria-label="Change number of positions in chart."
-                (change)="onViewChange()"
-                [(ngModel)]="selectedViewOption"
-              >
-                <mat-button-toggle *ngFor="let option of viewOptions" [value]="option">
-                  {{ option }}
-                </mat-button-toggle>
-              </mat-button-toggle-group>
-            </div>
+          <div class="graph-container">
+            <ngx-charts-line-chart
+              [scheme]="colorScheme"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxis]="true"
+              [yAxis]="true"
+              [xAxisLabel]="xAxisLabel"
+              [yAxisLabel]="yAxisLabel"
+              [timeline]="true"
+              [results]="graphData"
+              (select)="onGraphClick($event)"
+            >
+            </ngx-charts-line-chart>
           </div>
-        </div>
-
-        <div class="graph-container">
-          <ngx-charts-line-chart
-            [scheme]="colorScheme"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            [xAxis]="true"
-            [yAxis]="true"
-            [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel"
-            [timeline]="true"
-            [results]="graphData"
-            (select)="onGraphClick($event)"
-          >
-          </ngx-charts-line-chart>
-        </div>
+        </ng-container>
       </ng-container>
     </ng-container>
   </mat-card-content>
@@ -67,4 +69,8 @@
 
 <ng-template #getLeaderboardsMonitorTemplate>
   <big-spinner [monitor]="getLeaderboardScoresMonitor"></big-spinner>
+</ng-template>
+
+<ng-template #noScoresTemplate>
+  <span>No scores found.</span>
 </ng-template>

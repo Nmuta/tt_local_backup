@@ -3,6 +3,7 @@ import { tryParseBigNumber } from '@helpers/bignumbers';
 import { PaginatorQueryParams } from '@helpers/paginator';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
+import { DeviceType } from './enums';
 import { GuidLikeString } from './extended-types';
 
 export const DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS = new BigNumber(5000);
@@ -15,7 +16,7 @@ export interface LeaderboardMetadataAndQuery {
 }
 
 /** Interface for a leaderboard. */
-export interface Leaderboard {
+export interface UpsteamLeaderboard {
   name: string;
   gameScoreboardId: BigNumber;
   trackId: BigNumber;
@@ -26,6 +27,11 @@ export interface Leaderboard {
   carClassId: BigNumber;
   carClass: string;
   validationData: LeaderboardValidationData[];
+}
+
+export interface Leaderboard extends UpsteamLeaderboard {
+  /** Client-side only to track device type filters. */
+  deviceTypes?: DeviceType[];
 }
 
 /** Interface for an upstream leaderboard score. */
@@ -45,6 +51,7 @@ export interface UpsteamLeaderboardScore {
   antiLockBrakingSystem: boolean;
   tractionControlSystem: boolean;
   automaticTransmission: boolean;
+  deviceType: string;
 }
 
 /** Interface for a leaderboard score. */
@@ -75,6 +82,7 @@ export interface UpstreamLeaderboardQuery {
   scoreTypeId: BigNumber;
   gameScoreboardId: BigNumber;
   trackId: BigNumber;
+  deviceTypes: string;
   xuid?: BigNumber;
 }
 
@@ -108,6 +116,7 @@ export function toLeaderboardQuery(leaderboard: Leaderboard): LeaderboardQuery {
     scoreTypeId: leaderboard.scoreTypeId,
     gameScoreboardId: leaderboard.gameScoreboardId,
     trackId: leaderboard.trackId,
+    deviceTypes: leaderboard.deviceTypes.join(','),
     ps: LEADERBOARD_PAGINATOR_SIZES[0],
   };
 }
@@ -118,6 +127,7 @@ export function paramsToLeadboardQuery(params: Params): Partial<LeaderboardQuery
   const scoreTypeId = tryParseBigNumber(params['scoreTypeId']);
   const gameScoreboardId = tryParseBigNumber(params['gameScoreboardId']);
   const trackId = tryParseBigNumber(params['trackId']);
+  const deviceTypes: string = params['deviceTypes'];
 
   const paginatorIndex = tryParseBigNumber(params['pi'])?.toNumber() ?? undefined;
   const paginatorSize =
@@ -131,6 +141,7 @@ export function paramsToLeadboardQuery(params: Params): Partial<LeaderboardQuery
     scoreTypeId: scoreTypeId,
     gameScoreboardId: gameScoreboardId,
     trackId: trackId,
+    deviceTypes: deviceTypes,
     xuid: xuid,
     pi: paginatorIndex,
     ps: paginatorSize,
@@ -170,11 +181,20 @@ export function determineScoreTypeQualifier(scoreTypeId: BigNumber): string {
 
 /** Generates an leaderboard metadata overview including name, scoretype, scoreboardType, and carClass.  */
 export function generateLeaderboardMetadataString(leaderboard: Leaderboard): string {
-  let base = `${leaderboard.name} ${leaderboard.scoreType} (${leaderboard.scoreboardType})`;
+  const deviceTypes =
+    leaderboard.deviceTypes.length > 0 ? leaderboard.deviceTypes.join(', ') : 'All Device Types';
+  return `${leaderboard.name} ${leaderboard.scoreType} - ${deviceTypes} - ${leaderboard.scoreboardType}`;
+}
 
-  if (!!leaderboard.carClass) {
-    base += ` (${leaderboard.carClass} Class)`;
+/** Gets deviceTypes from leaderboard query.  */
+export function getDeviceTypesFromQuery(query: LeaderboardQuery): DeviceType[] {
+  const deviceTypes = query?.deviceTypes?.trim() ?? null;
+  if (!deviceTypes || deviceTypes?.length <= 0) {
+    return [];
   }
 
-  return base;
+  return deviceTypes
+    .split(',')
+    .map(deviceType => DeviceType[deviceType])
+    .filter(deviceType => !!deviceType);
 }

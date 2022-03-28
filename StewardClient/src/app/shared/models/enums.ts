@@ -80,11 +80,13 @@ export enum InitEndpointKeysError {
 /** Enum for device types. */
 export enum DeviceType {
   All = 'All',
-  XboxSeriesXS = 'XboxSeriesXS',
-  XboxOne = 'XboxOne',
-  WindowsStore = 'WindowsStore',
+  MoLive = 'MoLive',
   Steam = 'Steam',
+  WindowsStore = 'WindowsStore',
+  WindowsOneCore = 'WindowsOneCore',
+  XboxOne = 'XboxOne',
   XboxCloud = 'XboxCloud',
+  XboxSeriesXS = 'XboxSeriesXS',
 }
 
 /** Enum for Steward error codes. */

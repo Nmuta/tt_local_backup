@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
+import { HCI } from '@environments/environment';
+import { DeviceType } from '@models/enums';
 import {
   paramsToLeadboardQuery,
   isValidLeaderboardQuery,
@@ -57,6 +59,10 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   );
   /** The currently selected filters. */
   public selectedFilters: LeaderboardFilter[] = [];
+  /** Possible device type filters */
+  public readonly DeviceTypes = keys(DeviceType).filter(
+    deviceType => deviceType !== DeviceType.All,
+  );
 
   public allLeaderboards: Leaderboard[] = [];
   /** Leaderboards available with the selected filters. */
@@ -74,6 +80,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     filters: new FormControl([]),
     leaderboard: new FormControl(''),
     xuid: new FormControl('', [BigNumberValidators.isBigNumber()]),
+    deviceTypes: new FormControl([]),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -86,6 +93,12 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   /** Getter for selected leaderboard */
   public get xuid(): BigNumber {
     return this.formControls.xuid.value as BigNumber;
+  }
+
+  /** Getter for selected device types */
+  public get deviceTypesString(): string {
+    const deviceTypes = this.formControls.deviceTypes.value as string[];
+    return deviceTypes?.length > 0 ? deviceTypes.join(', ') : null;
   }
 
   constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
@@ -105,8 +118,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   /** Mat autocomplete display string.  */
   public displayLeaderboards(leaderboard: Leaderboard): string {
     if (!leaderboard) return '';
-    const carClass = !!leaderboard.carClass ? `(${leaderboard.carClass} Class)` : '';
-    return `${leaderboard.scoreType} - ${leaderboard.name} ${carClass}`;
+    return `${leaderboard.name} ${leaderboard.scoreType}`;
   }
 
   /** Logic when multi-select emits changes. */
@@ -158,12 +170,16 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
 
   /** Sets route params for new leaderboard query. */
   public setLeaderboardQueryParams(): void {
-    const leaderboard = this.formControls.leaderboard.value;
+    const leaderboard = this.formControls.leaderboard.value as Leaderboard;
+    const deviceTypes = this.formControls.deviceTypes.value as DeviceType[];
+    leaderboard.deviceTypes = deviceTypes;
     const leaderboardQuery = toLeaderboardQuery(leaderboard);
     const queryParams = {};
 
-    for (const key in leaderboardQuery) {
-      queryParams[key] = leaderboardQuery[key];
+    for (const key of keys(leaderboardQuery)) {
+      if (!!leaderboardQuery[key]) {
+        queryParams[key] = leaderboardQuery[key];
+      }
     }
 
     const xuid = new BigNumber(this.formControls.xuid.value);
@@ -186,7 +202,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
           // Try best to prefill leaderboard and xuid form controls.
           const params = this.activatedRoute.snapshot.queryParams;
           this.prefillLeaderboardWithParams(params, leaderboards);
-          this.prefillXuidWithParams(params);
+          this.prefillOptionalFiltersWithParams(params);
         }),
         takeUntil(this.onDestroy$),
       )
@@ -204,7 +220,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         tap(() => {
           this.selectedLeaderboard = null;
         }),
-        debounceTime(500),
+        debounceTime(HCI.TypingToAutoSearchDebounceMillis),
         startWith(''),
         map((input: Leaderboard | string) => {
           // When input is of type Leaderboard, it means one was selected
@@ -261,12 +277,23 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     }
   }
 
-  private prefillXuidWithParams(params: Params): void {
+  private prefillOptionalFiltersWithParams(params: Params): void {
     const query = paramsToLeadboardQuery(params);
     const xuidParamExists = params['xuid'];
 
     if (xuidParamExists && !query.xuid.isNaN()) {
       this.formControls.xuid.setValue(query.xuid.toString());
+    }
+
+    if (query.deviceTypes?.trim().length > 0) {
+      const foundDeviceTypes: DeviceType[] = query.deviceTypes
+        .split(',')
+        .map(deviceType => {
+          return DeviceType[deviceType];
+        })
+        .filter(deviceType => !!deviceType);
+
+      this.formControls.deviceTypes.setValue(foundDeviceTypes);
     }
   }
 

@@ -17,6 +17,7 @@ import {
 } from './search-leaderboards.component';
 import faker from '@faker-js/faker';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SearchLeaderboardsComponent', () => {
   let component: SearchLeaderboardsComponent;
@@ -71,7 +72,7 @@ describe('SearchLeaderboardsComponent', () => {
         MatFormFieldModule,
         MatInputModule,
       ],
-      declarations: [SearchLeaderboardsComponent],
+      declarations: [SearchLeaderboardsComponent, HumanizePipe],
       providers: [createMockBlobStorageService(), { provide: FormBuilder, useValue: formBuilder }],
     }).compileComponents();
 
@@ -133,9 +134,7 @@ describe('SearchLeaderboardsComponent', () => {
       it('should return empty string', () => {
         const result = component.displayLeaderboards(testLeaderboard);
 
-        expect(result).toEqual(
-          `${testLeaderboard.scoreType} - ${testLeaderboard.name} (${testLeaderboard.carClass} Class)`,
-        );
+        expect(result).toEqual(`${testLeaderboard.name} ${testLeaderboard.scoreType}`);
       });
     });
   });

@@ -65,7 +65,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             if (getCarClasses.IsCompletedSuccessfully)
             {
-                var carClassesDict = getCarClasses.GetAwaiter().GetResult().ToDictionary(carClass => carClass.Id);
+                var carClasses = getCarClasses.GetAwaiter().GetResult();
+                var carClassesDict = carClasses.ToDictionary(carClass => carClass.Id);
                 foreach (var leaderboard in leaderboards)
                 {
                     if (carClassesDict.TryGetValue(leaderboard.CarClassId, out CarClass carClass))
@@ -90,6 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             ScoreType scoreType,
             int trackId,
             string pivotId,
+            IEnumerable<DeviceType> deviceTypes,
             int startAt,
             int maxResults,
             string endpoint)
@@ -103,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 ScoreType = scoreType,
                 TrackId = trackId,
                 PivotId = pivotId,
+                DeviceTypes = this.mapper.SafeMap<ForzaLiveDeviceType[]>(deviceTypes),
                 ScoreView = ScoreView.All,
                 Xuid = 1, // 1 = System ID
             };
@@ -111,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 var result = await this.woodstockService.GetLeaderboardScoresAsync(searchParams, startAt, maxResults, endpoint).ConfigureAwait(false);
 
-                return this.mapper.Map<IEnumerable<LeaderboardScore>>(result);
+                return this.mapper.SafeMap<IEnumerable<LeaderboardScore>>(result);
             }
             catch (Exception ex)
             {
@@ -126,6 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             ScoreType scoreType,
             int trackId,
             string pivotId,
+            IEnumerable<DeviceType> deviceTypes,
             int maxResults,
             string endpoint)
         {
@@ -138,6 +142,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 ScoreType = scoreType,
                 TrackId = trackId,
                 PivotId = pivotId,
+                DeviceTypes = this.mapper.SafeMap<ForzaLiveDeviceType[]>(deviceTypes),
                 ScoreView = ScoreView.NearbyMe,
                 Xuid = xuid,
             };
@@ -152,7 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     throw new NotFoundStewardException($"Could not find player XUID in leaderboard: {xuid}");
                 }
 
-                return this.mapper.Map<IEnumerable<LeaderboardScore>>(result);
+                return this.mapper.SafeMap<IEnumerable<LeaderboardScore>>(result);
             }
             catch (Exception ex)
             {

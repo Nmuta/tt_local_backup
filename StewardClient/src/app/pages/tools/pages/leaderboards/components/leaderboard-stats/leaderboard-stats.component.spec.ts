@@ -17,6 +17,7 @@ import { toDateTime } from '@helpers/luxon';
 import { LeaderboardQuery, LeaderboardScore } from '@models/leaderboards';
 import { NgxLineChartClickEvent } from '@models/ngx-charts';
 import { SimpleChanges } from '@angular/core';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('LeaderboardStatsComponent', () => {
   let component: LeaderboardStatsComponent;
@@ -47,6 +48,7 @@ describe('LeaderboardStatsComponent', () => {
       antiLockBrakingSystem: faker.datatype.boolean(),
       tractionControlSystem: faker.datatype.boolean(),
       automaticTransmission: faker.datatype.boolean(),
+      deviceType: faker.random.word(),
     },
     {
       position: fakeBigNumber(),
@@ -64,6 +66,7 @@ describe('LeaderboardStatsComponent', () => {
       antiLockBrakingSystem: faker.datatype.boolean(),
       tractionControlSystem: faker.datatype.boolean(),
       automaticTransmission: faker.datatype.boolean(),
+      deviceType: faker.random.word(),
     },
   ];
 
@@ -81,7 +84,7 @@ describe('LeaderboardStatsComponent', () => {
         MatFormFieldModule,
         MatInputModule,
       ],
-      declarations: [LeaderboardStatsComponent],
+      declarations: [LeaderboardStatsComponent, HumanizePipe],
       providers: [{ provide: FormBuilder, useValue: formBuilder }],
     }).compileComponents();
 
@@ -140,6 +143,7 @@ describe('LeaderboardStatsComponent', () => {
         scoreTypeId: fakeBigNumber(),
         gameScoreboardId: fakeBigNumber(),
         trackId: fakeBigNumber(),
+        deviceTypes: '',
       };
 
       const changesWithQuery: SimpleChanges = {

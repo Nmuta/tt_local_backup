@@ -48,6 +48,7 @@ export class WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi extends FakeApiB
             antiLockBrakingSystem: faker.datatype.boolean(),
             tractionControlSystem: faker.datatype.boolean(),
             automaticTransmission: faker.datatype.boolean(),
+            deviceType: faker.random.word(),
           };
         });
     }
