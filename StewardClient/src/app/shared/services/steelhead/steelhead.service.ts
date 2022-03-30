@@ -41,6 +41,7 @@ import { UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { DateTime } from 'luxon';
 import { RacersCupSchedule } from '@models/racers-cup.model';
+import { PegasusPathInfo } from '@models/pegasus-path-info';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -319,6 +320,40 @@ export class SteelheadService {
 
     return this.apiService.getRequest$<RacersCupSchedule>(
       `${this.basePath}/player/${xuid}/RacerCupSchedule`,
+      httpParams,
+    );
+  }
+
+  /** Gets Racer's Cup Schedule by Pegasus values. */
+  public getRacersCupScheduleByPegasusPath$(
+    info: PegasusPathInfo,
+    startTime?: DateTime,
+    daysForward?: number,
+  ): Observable<RacersCupSchedule> {
+    let httpParams = new HttpParams();
+
+    if (info?.environment) {
+      httpParams = httpParams.append('pegasusEnvironment', info.environment);
+    }
+
+    if (info?.slot) {
+      httpParams = httpParams.append('pegasusSlot', info.slot);
+    }
+
+    if (info?.snapshot) {
+      httpParams = httpParams.append('pegasusSnapshot', info.snapshot);
+    }
+
+    if (startTime) {
+      httpParams = httpParams.append('startTime', startTime.toISO());
+    }
+
+    if (daysForward) {
+      httpParams = httpParams.append('daysForward', daysForward.toString());
+    }
+
+    return this.apiService.getRequest$<RacersCupSchedule>(
+      `${this.basePath}/RacerCupSchedule`,
       httpParams,
     );
   }

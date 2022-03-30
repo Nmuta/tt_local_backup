@@ -1,25 +1,59 @@
 <div>
-  <mat-card>
-    <player-selection-single
-      [disableLookupTypes]="['t10Id']"
-      [allowSelection]="false"
-      [rejectionFn]="identityRejectionFn"
-      (found)="playerIdentityFound($event)"
-    ></player-selection-single>
+  <mat-tab-group mat-stretch-tabs [(selectedIndex)]="matTabSelectedIndex">
+    <mat-tab label="Player Selection">
+      <mat-card>
+        <player-selection-single
+          [disableLookupTypes]="['t10Id']"
+          [allowSelection]="false"
+          [rejectionFn]="identityRejectionFn"
+          (found)="playerIdentityFound($event)"
+        ></player-selection-single>
 
-    <form [formGroup]="calendarScheduleForm">
-      <mat-form-field>
-        <mat-label> Days Forward to Project </mat-label>
-        <input matInput type="number" [formControl]="formControls.daysForward" />
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="submitClicked()"
-        [disabled]="!calendarScheduleForm.valid"
-      >
-        Search <mat-icon svgIcon="steward-arrow-right"></mat-icon>
-      </button>
-    </form>
-  </mat-card>
+        <form [formGroup]="identityCalendarScheduleForm">
+          <mat-form-field>
+            <mat-label> Days Forward to Project </mat-label>
+            <input matInput type="number" [formControl]="identityFormControls.daysForward" />
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="submitClicked()"
+            [disabled]="!identityCalendarScheduleForm.valid"
+          >
+            Search <mat-icon svgIcon="steward-arrow-right"></mat-icon>
+          </button>
+        </form>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="Pegasus Selection">
+      <mat-card>
+        <form [formGroup]="pegasusCalendarScheduleForm">
+          <mat-form-field>
+            <mat-label> Pegasus Environment </mat-label>
+            <input matInput type="text" [formControl]="pegasusFormControls.pegasusEnvironment" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label> Pegasus Slot </mat-label>
+            <input matInput type="text" [formControl]="pegasusFormControls.pegasusSlot" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label> Pegasus Snapshot </mat-label>
+            <input matInput type="text" [formControl]="pegasusFormControls.pegasusSnapshot" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label> Days Forward to Project </mat-label>
+            <input matInput type="number" [formControl]="pegasusFormControls.daysForward" />
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="submitClicked()"
+            [disabled]="!pegasusCalendarScheduleForm.valid"
+          >
+            Search <mat-icon svgIcon="steward-arrow-right"></mat-icon>
+          </button>
+        </form>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
 </div>

@@ -17,12 +17,13 @@ export interface RacersCupSeries {
   events: RacersCupEvent[];
   openTimeUtc: DateTime;
   closeTimeUtc: DateTime;
-  eventPlaylisyTransitionTimeUtc: DateTime;
+  eventPlaylistTransitionTimeUtc: DateTime;
 }
 
 /** Interface for a Racer's Cup Event. */
 export interface RacersCupEvent {
   name: string;
+  playlistName: string;
   openPracticeInMinutes: BigNumber;
   eventWindows: RacersCupEventWindow[];
   gameOptions: RacersCupGameOptions[];

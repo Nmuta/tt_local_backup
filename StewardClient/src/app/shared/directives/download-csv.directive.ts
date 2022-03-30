@@ -33,7 +33,7 @@ export class DownloadCsvDirective {
             })
             .join(',');
         })
-        .join('\n');
+        .join('\r\n');
 
     const encodedUri = encodeURI(csvContent);
     const fileName = `${this.filname}_${new Date().toISOString()}.csv`;

@@ -20,7 +20,7 @@
         <mat-card>
           <mat-card-title>{{ selectedEvent?.meta?.eventNameClean ?? null }}</mat-card-title>
           <mat-card-subtitle>
-            {{ selectedEvent?.meta?.id ?? 'Select an event to display details' }}
+            {{ selectedEvent?.meta?.playlistName ?? 'Select an event to display details' }}
           </mat-card-subtitle>
 
           <div *ngIf="selectedEvent?.meta?.qualificationOptions">

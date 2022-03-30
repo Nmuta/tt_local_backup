@@ -2,9 +2,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { PegasusPathInfo } from '@models/pegasus-path-info';
 
 export type RacersCupCalendarInputs = {
-  identity: IdentityResultAlpha;
+  identity?: IdentityResultAlpha;
+  pegasusInfo?: PegasusPathInfo;
   daysForward: number;
 };
 
@@ -16,13 +18,21 @@ export type RacersCupCalendarInputs = {
 })
 export class RacersCupInputsComponent {
   @Output() public playerAndDaysForward = new EventEmitter<RacersCupCalendarInputs>();
-  public identity: IdentityResultAlpha;
-  public formControls = {
+  public matTabSelectedIndex = 0;
+
+  public identityFormControls = {
     daysForward: new FormControl(30, [Validators.required, Validators.min(1)]),
     identity: new FormControl(null, [Validators.required]),
   };
+  public identityCalendarScheduleForm: FormGroup = new FormGroup(this.identityFormControls);
 
-  public calendarScheduleForm: FormGroup = new FormGroup(this.formControls);
+  public pegasusFormControls = {
+    daysForward: new FormControl(30, [Validators.required, Validators.min(1)]),
+    pegasusEnvironment: new FormControl(null, [Validators.required]),
+    pegasusSlot: new FormControl(null),
+    pegasusSnapshot: new FormControl(null),
+  };
+  public pegasusCalendarScheduleForm: FormGroup = new FormGroup(this.pegasusFormControls);
 
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
@@ -39,16 +49,30 @@ export class RacersCupInputsComponent {
       return;
     }
 
-    this.identity = newIdentity?.steelhead;
-    this.formControls.identity.setValue(newIdentity?.steelhead);
+    this.identityFormControls.identity.setValue(newIdentity?.steelhead);
   }
 
   /** Output values for racers cup schedule lookup */
   public submitClicked(): void {
-    if (this.identity) {
+    // Using identity lookup
+    if (this.matTabSelectedIndex == 0) {
+      if (this.identityFormControls.identity) {
+        this.playerAndDaysForward.emit({
+          identity: this.identityFormControls.identity.value,
+          daysForward: this.identityFormControls.daysForward.value,
+        });
+      }
+    }
+    // Using Pegasus lookup
+    else if (this.matTabSelectedIndex == 1) {
+      const info: PegasusPathInfo = {
+        environment: this.pegasusFormControls.pegasusEnvironment.value,
+        slot: this.pegasusFormControls.pegasusSlot.value,
+        snapshot: this.pegasusFormControls.pegasusSnapshot.value,
+      };
       this.playerAndDaysForward.emit({
-        identity: this.identity,
-        daysForward: this.formControls.daysForward.value,
+        pegasusInfo: info,
+        daysForward: this.pegasusFormControls.daysForward.value,
       });
     }
   }

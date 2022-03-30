@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DataPrivacyNoticeModule } from '@views/data-privacy-notice/data-privacy-notice.module';
 import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
@@ -38,6 +39,8 @@ import { PlayerSelectionModule } from '@views/player-selection/player-selection.
 import { MatInputModule } from '@angular/material/input';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RacersCupKeyComponent } from './components/racers-cup-key/racers-cup-key.component';
 
 /** A module for Racer's Cup schedule. */
 @NgModule({
@@ -47,6 +50,7 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     RacersCupSeriesModalComponent,
     RacersCupEventCardComponent,
     RacersCupInputsComponent,
+    RacersCupKeyComponent,
   ],
   imports: [
     CommonModule,
@@ -86,6 +90,10 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     MatInputModule,
     MonitorActionModule,
     StandardDateModule,
+    MatTabsModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatTreeModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
 })

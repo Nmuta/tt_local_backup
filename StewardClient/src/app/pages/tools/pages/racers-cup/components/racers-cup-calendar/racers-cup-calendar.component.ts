@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CalendarEvent } from 'calendar-utils';
-import { catchError, EMPTY, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import {
   CalendarView,
   CalendarMonthViewDay,
@@ -24,6 +24,11 @@ import {
 } from '../racers-cup-series-modal/racers-cup-series-modal.component';
 import { RacersCupCalendarInputs } from '../racers-cup-inputs/racers-cup-inputs.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import {
+  buildOutlookDateString,
+  buildOutlookTimeString,
+  getOutlookCalendarHeaders,
+} from '@helpers/outlook-calendar-exporter';
 
 export type EventGroup<T> = [string, CalendarEvent<T>[]];
 
@@ -33,9 +38,9 @@ export type StewardCalendarMonthViewDay<T> = CalendarMonthViewDay<T> & {
 
 export interface RacersCupMeta {
   seriesName: string;
+  playlistName: string;
   eventNameRaw: string;
   eventNameClean: string;
-  id: string;
   courseName: string;
   circuitName: string;
   eventWindow: RacersCupEventWindow;
@@ -47,7 +52,6 @@ export interface RacersCupMeta {
 }
 
 export interface EventNameInfo {
-  id: string;
   courseName: string;
   circuitName: string;
 }
@@ -59,17 +63,19 @@ export interface EventNameInfo {
   animations: [collapseAnimation],
 })
 export class RacersCupCalendarComponent extends BaseComponent implements OnInit {
-  private readonly groupIndexLabel = 'eventGroups';
   private readonly getSchedule$ = new Subject<void>();
-  private xuid: BigNumber;
-  private daysForward: number;
+  private retrieveSchedule$: Observable<RacersCupSchedule>;
   private schedule: RacersCupSchedule;
-  private uniqueSeries: string[];
 
+  public playlistDictionary = new Map<string, string[]>();
+
+  public calendarCsvData: string[][];
+  public uniqueSeries: string[];
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
   public viewDate: Date = new Date();
   public events: CalendarEvent[] = [];
+  public filteredEvents: CalendarEvent[] = [];
   public getMonitor = new ActionMonitor('GET Racers Cup Schedule');
 
   constructor(
@@ -88,43 +94,67 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
     this.getSchedule$
       .pipe(
         tap(() => {
-          this.getMonitor = this.getMonitor.repeat();
           this.schedule = undefined;
+          this.uniqueSeries = null;
           this.events = [];
         }),
+        this.getMonitor.monitorStart(),
         switchMap(() =>
-          this.steelheadService
-            .getRacersCupScheduleForUser$(this.xuid, null, this.daysForward)
-            .pipe(
-              this.getMonitor.monitorSingleFire(),
-              catchError(() => {
-                this.schedule = undefined;
-                return EMPTY;
-              }),
-            ),
+          this.retrieveSchedule$.pipe(
+            this.getMonitor.monitorCatch(),
+            catchError(() => {
+              this.schedule = undefined;
+              return EMPTY;
+            }),
+          ),
         ),
+        this.getMonitor.monitorEnd(),
         takeUntil(this.onDestroy$),
       )
       .subscribe(returnSchedule => {
         this.schedule = returnSchedule;
         this.events = this.makeEvents(this.schedule);
+        this.filterEvents(this.playlistDictionary);
       });
   }
 
   /** Refresh calendar on user interaction. */
   public refreshTable(inputs: RacersCupCalendarInputs): void {
-    if (!inputs.identity?.xuid) {
-      this.events = [];
-      this.uniqueSeries = null;
-      this.schedule = null;
+    if (inputs.identity) {
+      if (!inputs.identity?.xuid) {
+        this.events = [];
+        this.uniqueSeries = null;
+        this.playlistDictionary = null;
+        this.schedule = null;
 
-      return;
+        return;
+      }
+
+      this.retrieveSchedule$ = this.steelheadService.getRacersCupScheduleForUser$(
+        inputs?.identity?.xuid,
+        null,
+        inputs?.daysForward,
+      );
+
+      this.getSchedule$.next();
     }
 
-    this.xuid = inputs?.identity?.xuid;
-    this.daysForward = inputs?.daysForward;
+    if (inputs.pegasusInfo) {
+      if (!inputs.pegasusInfo.environment) {
+        this.events = [];
+        this.uniqueSeries = null;
+        this.playlistDictionary = null;
+        this.schedule = null;
+      }
 
-    this.getSchedule$.next();
+      this.retrieveSchedule$ = this.steelheadService.getRacersCupScheduleByPegasusPath$(
+        inputs.pegasusInfo,
+        null,
+        inputs?.daysForward,
+      );
+
+      this.getSchedule$.next();
+    }
   }
 
   /** Sets calendar view. */
@@ -163,15 +193,81 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
     });
   }
 
+  /** Filter events. */
+  public filterEvents(seriesPlaylistMap: Map<string, string[]>): void {
+    const supportedSeries = [...seriesPlaylistMap.keys()];
+
+    const sortedEvents = this.events.filter(event => {
+      const seriesIndex = indexOf(supportedSeries, event.meta.seriesName);
+      const isSeriesSupported = seriesIndex !== -1;
+      const isPlaylistSupported =
+        isSeriesSupported &&
+        indexOf(seriesPlaylistMap.get(event.meta.seriesName), event.meta.playlistName) !== -1;
+
+      return isPlaylistSupported;
+    });
+
+    this.filteredEvents = sortedEvents;
+
+    const buildCsvResult = this.buildCsvData();
+    this.calendarCsvData = buildCsvResult;
+  }
+
+  /** Builds the gifting results into CSV data that can be downloaded. */
+  public buildCsvData(): string[][] {
+    const newCalendarCsvData = [getOutlookCalendarHeaders()];
+
+    for (const event of this.filteredEvents) {
+      const eventStartDate = buildOutlookDateString(event.start);
+      const eventStartTime = buildOutlookTimeString(event.start);
+      const eventEndDate = buildOutlookDateString(event.end);
+      const eventEndTime = buildOutlookTimeString(event.end);
+
+      newCalendarCsvData[newCalendarCsvData.length] = [
+        `\"${event.meta.eventNameClean}\"`, //Subject
+        `\"${eventStartDate}\"`, //Start Date
+        `\"${eventStartTime}\"`, //Start Time
+        `\"${eventEndDate}\"`, // End Date
+        `\"${eventEndTime}\"`, // End Time
+        '"False"', // All Day Event?
+        '"False"', // Reminder on?
+        `\"${eventStartDate}\"`, // Reminder Date
+        `\"${eventStartTime}\"`, // Reminder Time
+        '"Racers Cup Schedule"', // Organizer
+        null, // Required Attendees
+        null, // Optional Attendees
+        null, // Meeting Resources
+        null, // Billing Information
+        `\"Series: ${event.meta.seriesName}, Playlist: ${event.meta.playlistName}\"`, // Categories
+        `\"\"`, // Description
+        `\"${event.meta.courseName} - ${event.meta.circuitName}\"`,
+        null, // Mileage
+        '"Normal"', // Priority
+        '"False"', // Private
+        '"Normal"', // Sensitivity
+        '"3"', // Show time as
+      ];
+    }
+
+    return newCalendarCsvData;
+  }
+
   /** Converts Racer's Cup Schedule information into Calendar Events. */
   private makeEvents(schedule: RacersCupSchedule): CalendarEvent[] {
     const events: CalendarEvent<RacersCupMeta>[] = [];
+    const seriesPlaylistMapping = new Map<string, string[]>();
     for (const championship of schedule.championships) {
       // Build an ordered set of series for use sorting later.
       this.uniqueSeries = uniq(championship.series.map(series => series.name));
 
       for (const series of championship.series) {
         for (const event of series.events) {
+          if (seriesPlaylistMapping.has(series.name)) {
+            seriesPlaylistMapping.get(series.name).push(event.playlistName);
+          } else {
+            seriesPlaylistMapping.set(series.name, [event.playlistName]);
+          }
+
           for (const eventWindow of event.eventWindows) {
             const eventInfo = this.seperateEventInfo(event.name);
             const newEvent: CalendarEvent<RacersCupMeta> = {
@@ -183,11 +279,11 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
               cssClass: `event-type-${this.getGroupIndex(series.name)}`,
               meta: {
                 seriesName: series.name,
+                playlistName: event.playlistName,
                 eventNameRaw: event.name,
                 eventNameClean: `${eventInfo.courseName}-${eventInfo.circuitName}`,
                 courseName: eventInfo.courseName,
                 circuitName: eventInfo.circuitName,
-                id: eventInfo.id,
                 eventWindow: eventWindow,
                 gameOptions: event.gameOptions,
                 qualificationOptions: event.qualificationOptions,
@@ -211,6 +307,12 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
       }
     }
 
+    // Clean out duplicates
+    for (const keyValuePair of seriesPlaylistMapping) {
+      seriesPlaylistMapping.set(keyValuePair[0], uniq(keyValuePair[1]));
+    }
+    this.playlistDictionary = seriesPlaylistMapping;
+
     return this.sortEvents(events);
   }
 
@@ -230,12 +332,13 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
 
   /** Extracts course name, circuit name, and id from CMS file name. */
   private seperateEventInfo(rawName: string): EventNameInfo {
-    //Trims ID off of content '1009-YasMarina-NorthCircuit' -> YasMarina-NorthCircuit
-    const courseAndCircuit = rawName.replace(/(?:^\d*\s\-\s)/g, '');
+    const splitEventName = rawName.split(' - ');
+    if (splitEventName[0] === 'AutoGen') {
+      splitEventName.shift();
+    }
     return {
-      id: rawName.match(new RegExp(/(?:^\d*)/g))[0],
-      courseName: courseAndCircuit.split('-')[0],
-      circuitName: courseAndCircuit.split('-')[1],
+      courseName: splitEventName[0],
+      circuitName: splitEventName[1],
     };
   }
 }

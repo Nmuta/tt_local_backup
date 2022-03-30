@@ -397,7 +397,6 @@ namespace Turn10.LiveOps.StewardApi
             foreach (var address in addresses)
             {
                 if (address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) { continue; }
-
                 return address.ToString();
             }
 
