@@ -144,14 +144,14 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
         delay(0),
         filter(params => {
           const lookupName = params.get('lookupName');
-          const hasLookupList = !!first(this.lookupList)?.toString();
+          const hasLookupList = !!first(this.lookupList);
           if (!lookupName && hasLookupList) {
             this.lookupChange(true);
             return false;
           }
 
           if (this.lookupList?.length > 0) {
-            return lookupName?.trim() !== first(this.lookupList).toString();
+            return lookupName?.trim() !== first(this.lookupList);
           }
 
           return true;
