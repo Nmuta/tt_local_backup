@@ -18,6 +18,7 @@ import {
 import faker from '@faker-js/faker';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SearchLeaderboardsComponent', () => {
   let component: SearchLeaderboardsComponent;
@@ -71,6 +72,7 @@ describe('SearchLeaderboardsComponent', () => {
         MatSelectModule,
         MatFormFieldModule,
         MatInputModule,
+        PipesModule,
       ],
       declarations: [SearchLeaderboardsComponent, HumanizePipe],
       providers: [createMockBlobStorageService(), { provide: FormBuilder, useValue: formBuilder }],

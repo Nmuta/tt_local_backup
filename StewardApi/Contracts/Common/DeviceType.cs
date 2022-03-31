@@ -20,9 +20,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         MoLive = 0,
 
         /// <summary>
-        ///     Windows store device type.
+        ///     PC device type.
         /// </summary>
-        WindowsStore = 1,
+        /// <remarks>Probably an old type that we don't use anymore.</remarks>
+        PC = 1,
 
         /// <summary>
         ///     Web device type.
@@ -30,9 +31,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Web = 2,
 
         /// <summary>
-        ///     Windows One core device type.
+        ///     Windows Store device type.
         /// </summary>
-        WindowsOneCore = 3,
+        WindowsStore = 3,
 
         /// <summary>
         ///     Windows One Core Mobile device type.

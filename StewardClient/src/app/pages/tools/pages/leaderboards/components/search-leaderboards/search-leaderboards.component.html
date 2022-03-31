@@ -114,7 +114,7 @@
             <mat-label>Device Types</mat-label>
             <mat-select [formControl]="formControls.deviceTypes" multiple>
               <mat-option *ngFor="let type of DeviceTypes" [value]="type">{{
-                type | humanize
+                type | deppoh
               }}</mat-option>
             </mat-select>
             <mat-hint>(Optional) Filters scores by device types</mat-hint>

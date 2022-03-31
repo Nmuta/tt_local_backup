@@ -83,7 +83,6 @@ export enum DeviceType {
   MoLive = 'MoLive',
   Steam = 'Steam',
   WindowsStore = 'WindowsStore',
-  WindowsOneCore = 'WindowsOneCore',
   XboxOne = 'XboxOne',
   XboxCloud = 'XboxCloud',
   XboxSeriesXS = 'XboxSeriesXS',
