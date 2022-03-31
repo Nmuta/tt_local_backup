@@ -1,20 +1,18 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxsModule, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { of } from 'rxjs';
-import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 
 import { SettingsComponent } from './settings.component';
 import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 import { UserModel } from '@models/user.model';
 import { UserRole } from '@models/enums';
-import { createMockWindowService, WindowService } from '@services/window';
+import { WindowService } from '@services/window';
 import { SetFakeApi, SetStagingApi } from '@shared/state/user-settings/user-settings.actions';
 import {
   EndpointKeyMemoryModel,
   EndpointKeyMemoryState,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -24,15 +22,12 @@ describe('SettingsComponent', () => {
   let mockWindowService: WindowService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        NgxsModule.forRoot([UserSettingsState, EndpointKeyMemoryState]),
-        HttpClientTestingModule,
-      ],
-      declarations: [SettingsComponent],
-      providers: [createMockWindowService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadata({
+        declarations: [SettingsComponent],
+        ngxsModules: [EndpointKeyMemoryState],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SettingsComponent);
     component = fixture.componentInstance;

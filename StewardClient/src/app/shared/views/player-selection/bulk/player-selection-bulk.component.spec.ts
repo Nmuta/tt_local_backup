@@ -1,4 +1,3 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
@@ -7,16 +6,14 @@ import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/
 import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
-import { NgxsModule } from '@ngxs/store';
-import { ApolloService, createMockApolloService } from '@services/apollo';
-import { createMockGravityService, GravityService } from '@services/gravity';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { ApolloService } from '@services/apollo';
+import { GravityService } from '@services/gravity';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
-import { createMockOpusService, OpusService } from '@services/opus';
-import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
-import { createMockSunriseService, SunriseService } from '@services/sunrise';
-import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
-import { PipesModule } from '@shared/pipes/pipes.module';
-import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import { OpusService } from '@services/opus';
+import { SteelheadService } from '@services/steelhead';
+import { SunriseService } from '@services/sunrise';
+import { WoodstockService } from '@services/woodstock';
 import { first } from 'lodash';
 import { of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -37,20 +34,13 @@ describe('PlayerSelectionBulkComponent', () => {
   const deferUntil$ = new Subject<void>();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [PlayerSelectionBulkComponent],
-      imports: [MatButtonToggleModule, PipesModule, NgxsModule.forRoot([UserSettingsState])],
-      providers: [
-        MultiEnvironmentService,
-        createMockSunriseService(),
-        createMockGravityService(),
-        createMockApolloService(),
-        createMockOpusService(),
-        createMockSteelheadService(),
-        createMockWoodstockService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadata({
+        declarations: [PlayerSelectionBulkComponent],
+        imports: [MatButtonToggleModule],
+        providers: [MultiEnvironmentService],
+      }),
+    ).compileComponents();
 
     sunrise = TestBed.inject(SunriseService);
     opus = TestBed.inject(OpusService);

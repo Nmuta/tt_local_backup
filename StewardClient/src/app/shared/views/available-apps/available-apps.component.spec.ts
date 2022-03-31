@@ -1,20 +1,15 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
-import { NgxsModule, Store } from '@ngxs/store';
-import { createMockWindowService, WindowService } from '@services/window';
+import { Store } from '@ngxs/store';
+import { WindowService } from '@services/window';
 import { SetStagingApi } from '@shared/state/user-settings/user-settings.actions';
-import {
-  UserSettingsState,
-  UserSettingsStateModel,
-} from '@shared/state/user-settings/user-settings.state';
+import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 import { of } from 'rxjs';
 import faker from '@faker-js/faker';
 
 import { AvailableAppsComponent } from './available-apps.component';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('AvailableAppsComponent', () => {
   let component: AvailableAppsComponent;
@@ -24,16 +19,9 @@ describe('AvailableAppsComponent', () => {
   let mockWindowService: WindowService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserSettingsState]),
-      ],
-      declarations: [AvailableAppsComponent],
-      providers: [createMockWindowService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadata({ declarations: [AvailableAppsComponent] }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(AvailableAppsComponent);
     component = fixture.componentInstance;

@@ -25,6 +25,7 @@ import { UserService } from '@shared/services/user';
 import { merge, clone, cloneDeep, first as _first, assign } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, first, map, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { RefreshEndpointKeys } from '../user-settings/user-settings.actions';
 import { UserSettingsState } from '../user-settings/user-settings.state';
 
 import {
@@ -201,7 +202,7 @@ export class UserState {
             `[user.state] [requestAccessToken] [acquireTokenSilent] has access token`,
           );
           ctx.patchState({ accessToken: clone(data.accessToken) });
-          return ctx.dispatch(new GetUser());
+          return ctx.dispatch([new GetUser(), new RefreshEndpointKeys()]);
         }
       }),
       catchError(e => {

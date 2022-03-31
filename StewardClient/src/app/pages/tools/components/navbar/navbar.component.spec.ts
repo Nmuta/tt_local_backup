@@ -1,26 +1,15 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import faker from '@faker-js/faker';
-import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
-import { NgxsModule } from '@ngxs/store';
-import { createMockLoggerService } from '@services/logger/logger.service.mock';
-import { createMockWindowService } from '@services/window';
-import { createMockZendeskService, ZendeskService } from '@services/zendesk';
+import { ZendeskService } from '@services/zendesk';
 import { NotificationsService } from '@shared/hubs/notifications.service';
-import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
-import {
-  UserSettingsState,
-  UserSettingsStateModel,
-} from '@shared/state/user-settings/user-settings.state';
-import { UserState } from '@shared/state/user/user.state';
+import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 import { of, Subject } from 'rxjs';
 import { BackgroundJob } from '@models/background-job';
 
 import { NavbarComponent } from './navbar.component';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
@@ -30,22 +19,9 @@ describe('ToolsNavbarComponent', () => {
   let mockZendeskService: ZendeskService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, UserSettingsState]),
-      ],
-      declarations: [NavbarComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockZendeskService(),
-        createMockLoggerService(),
-        createMockNotificationsService(),
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadata({ declarations: [NavbarComponent] }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;

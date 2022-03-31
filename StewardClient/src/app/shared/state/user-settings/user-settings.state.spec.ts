@@ -1,6 +1,5 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { NgxsModule, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { AppState } from '../app-state';
 import {
   ConfigureAppUpdatePopup,
@@ -15,16 +14,14 @@ import {
 import faker from '@faker-js/faker';
 
 import { UserSettingsState } from './user-settings.state';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('UserSettingsService', () => {
   let store: Store;
   let service: UserSettingsState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([UserSettingsState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(createStandardTestModuleMetadata({}));
     service = TestBed.inject(UserSettingsState);
     store = TestBed.inject(Store);
   });

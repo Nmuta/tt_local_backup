@@ -1,13 +1,6 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NgxsModule, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
-import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
-import { createMockWindowService } from '@services/window';
-import { createMockZendeskService } from '@services/zendesk';
-import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { SidebarIconsComponent } from './sidebar-icons.component';
 import { environment } from '@environments/environment';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
@@ -15,6 +8,7 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('SidebarIconsComponent', () => {
   let fixture: ComponentFixture<SidebarIconsComponent>;
@@ -25,24 +19,12 @@ describe('SidebarIconsComponent', () => {
   let showAppUpdatePopupReturnValue: boolean;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserSettingsState]),
-        MatMenuModule,
-        MatDialogModule,
-        BrowserAnimationsModule,
-      ],
-      declarations: [SidebarIconsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockZendeskService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadata({
+        declarations: [SidebarIconsComponent],
+        imports: [MatMenuModule, MatDialogModule, BrowserAnimationsModule],
+      }),
+    ).compileComponents();
 
     TestBed.inject(MatDialog).open = jasmine.createSpy('open');
     fixture = TestBed.createComponent(SidebarIconsComponent);

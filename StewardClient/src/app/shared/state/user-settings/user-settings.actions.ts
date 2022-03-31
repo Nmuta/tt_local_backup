@@ -56,6 +56,11 @@ export class SetSteelheadEndpointKey {
   constructor(public readonly steelheadEndpointKey: string) {}
 }
 
+/** Forces re-retrieval and sync of endpoint keys. */
+export class RefreshEndpointKeys {
+  public static readonly type = '[Settings] Refresh Endpoint Keys';
+}
+
 /** Sets the current list of tools to show in the navbar. */
 export class SetNavbarTools {
   public static readonly type = '[Settings] Set Navbar Tools';

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment, NavbarTool } from '@environments/environment';
 import { InitEndpointKeysError } from '@models/enums';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { cloneDeep } from 'lodash';
-import { Observable, of, throwError } from 'rxjs';
+import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
+import { InitEndpointKeys } from '../endpoint-key-memory/endpoint-key-memory.actions';
 import { EndpointKeyMemoryState } from '../endpoint-key-memory/endpoint-key-memory.state';
 import {
   SetAppVersion,
@@ -20,6 +22,7 @@ import {
   ThemeOverrideOptions,
   ThemeEnvironmentWarningOptions,
   SetThemeEnvironmentWarning,
+  RefreshEndpointKeys,
 } from './user-settings.actions';
 
 /** Defines the user state model. */
@@ -58,7 +61,7 @@ export class UserSettingsStateModel {
   providedIn: 'root',
 })
 export class UserSettingsState {
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store, private readonly snackbar: MatSnackBar) {}
   /** Sets the state of the current API. */
   @Action(SetFakeApi, { cancelUncompleted: true })
   public setFakeApi$(
@@ -156,6 +159,42 @@ export class UserSettingsState {
     action: SetSteelheadEndpointKey,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ steelheadEndpointKey: action.steelheadEndpointKey }));
+  }
+
+  /** Forces re-retrieval and sync of endpoint keys. */
+  @Action(RefreshEndpointKeys, { cancelUncompleted: true })
+  public refreshEndpointKeys$(
+    _ctx: StateContext<RefreshEndpointKeys>,
+    _action: RefreshEndpointKeys,
+  ): Observable<UserSettingsStateModel> {
+    this.snackbar.open('Re-verifying endpoint selection', 'Dismiss', {
+      panelClass: 'snackbar-info',
+      duration: 3_000,
+    });
+
+    return this.store.dispatch(new InitEndpointKeys()).pipe(
+      switchMap(() => this.store.dispatch(new VerifyEndpointKeyDefaults())),
+      catchError((error: InitEndpointKeysError) => {
+        switch (error) {
+          case InitEndpointKeysError.LookupFailed:
+            this.snackbar.open('Endpoint key lookup failed.', 'Dismiss', {
+              panelClass: 'snackbar-warn',
+            });
+            break;
+
+          case InitEndpointKeysError.SelectionRemoved:
+            this.snackbar.open('Restored endpoints to default', 'Dismiss', {
+              panelClass: 'snackbar-info',
+            });
+            break;
+          default:
+        }
+
+        // NGXS store now has correct values, but local storage did not update due to thrown error
+        // Retrigger verify so local storage is updated accordingly
+        return this.store.dispatch(new VerifyEndpointKeyDefaults());
+      }),
+    );
   }
 
   /** Sets the state of the current endpoint key selections. */
