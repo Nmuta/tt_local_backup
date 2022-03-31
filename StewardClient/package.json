@@ -79,7 +79,6 @@
     "@ngxs/storage-plugin": "^3.7.3",
     "@ngxs/store": "^3.7.3",
     "@swimlane/ngx-charts": "^20.0.1",
-    "@types/faker": "^6.0.0",
     "@types/json-bigint": "^1.0.1",
     "@types/signalr": "^2.2.37",
     "angular-calendar": "^0.29.0",
