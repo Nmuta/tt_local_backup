@@ -7,8 +7,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatChipList, MatChipListChange } from '@angular/material/chips';
+import { renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import {
   AugmentedCompositeIdentity,
   PlayerSelectionBaseComponent,
@@ -35,7 +36,7 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
 
   constructor(multi: MultiEnvironmentService) {
     super(multi);
-    this.foundIdentities$.pipe(takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
+    this.foundIdentities$.pipe(delay(0), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       this.found.emit(foundIdentities);
       const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
       if (!selectedItemInFoundIdentities) {
@@ -48,15 +49,19 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
 
   /** Called when a new set of results is selected. */
   public onSelect(change: MatChipListChange): void {
-    this.selectedValue = change.value as AugmentedCompositeIdentity;
-    this.selected.next(this.selectedValue);
+    renderGuard(() => {
+      this.selectedValue = change.value as AugmentedCompositeIdentity;
+      this.selected.next(this.selectedValue);
+    });
   }
 
   /** Called when the "Clear" button is pressed */
   public onClear(): void {
-    this.knownIdentities.clear();
-    this.foundIdentities = [];
-    this.selectedValue = null;
-    this.foundIdentities$.next(this.foundIdentities);
+    renderGuard(() => {
+      this.knownIdentities.clear();
+      this.foundIdentities = [];
+      this.selectedValue = null;
+      this.foundIdentities$.next(this.foundIdentities);
+    });
   }
 }

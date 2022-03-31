@@ -13,6 +13,8 @@ import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
 import { DurationToMillisPipe } from './duration-to-millis.pipe';
 import { ImpureBigJsonPipe } from './impure-big-json.pipe';
 import { AsyncBigJsonPipe } from './async-big-json.pipe';
+import { RenderGuardAsyncPipe } from './render-guard-async.pipe';
+import { RenderGuardSyncPipe } from './render-guard-sync.pipe';
 
 /** Module for various shared pipes. */
 @NgModule({
@@ -29,6 +31,8 @@ import { AsyncBigJsonPipe } from './async-big-json.pipe';
     DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
     DurationToMillisPipe,
+    RenderGuardAsyncPipe,
+    RenderGuardSyncPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -44,6 +48,8 @@ import { AsyncBigJsonPipe } from './async-big-json.pipe';
     DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
     DurationToMillisPipe,
+    RenderGuardAsyncPipe,
+    RenderGuardSyncPipe,
   ],
 })
 export class PipesModule {}

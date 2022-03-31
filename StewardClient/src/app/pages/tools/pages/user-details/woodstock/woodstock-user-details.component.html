@@ -62,7 +62,7 @@
           <ng-template mat-tab-label>
             Auction Log
             <error-spinner
-              [isActive]="auctionActionLog.getMonitor.isActive"
+              [isActive]="auctionActionLog.getMonitor.isActive | renderGuard"
               spinnerMessage="Retrieving Data"
             ></error-spinner>
           </ng-template>
@@ -75,7 +75,7 @@
       <mat-tab>
         <ng-template mat-tab-label>
           Hidden UGC
-          <inline-spinner [monitor]="hiddenUgc.getMonitor"></inline-spinner>
+          <inline-spinner [monitor]="hiddenUgc.getMonitor | renderGuard"></inline-spinner>
         </ng-template>
         <div class="tab-container">
           <woodstock-player-hidden-ugc

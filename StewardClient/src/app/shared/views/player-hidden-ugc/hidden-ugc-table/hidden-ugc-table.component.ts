@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { renderGuard } from '@helpers/rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -8,7 +9,7 @@ import { PermissionServiceTool, PermissionsService } from '@services/permissions
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { pull } from 'lodash';
-import { Observable, takeUntil, timer } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 
 export interface HiddenUgcServiceContract {
   unhideUgc$(
@@ -106,15 +107,12 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
   }
 
   private deleteEntry(item: HideableUgcTableEntries): void {
-    // Wait for monitor snackbar to fire before removing entry and disposing monitor
-    timer(0)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        pull(this.dataSource.data, item);
-        pull(this.allMonitors, item.monitor);
-        item.monitor.dispose();
+    renderGuard(() => {
+      pull(this.dataSource.data, item);
+      pull(this.allMonitors, item.monitor);
+      item.monitor.dispose();
 
-        this.dataSource._updateChangeSubscription();
-      });
+      this.dataSource._updateChangeSubscription();
+    });
   }
 }

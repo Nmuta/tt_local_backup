@@ -7,8 +7,9 @@ import { AugmentedCompositeIdentity } from '@views/player-selection/player-selec
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';
-import { filter, takeUntil } from 'rxjs/operators';
+import { delay, filter, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
+import { renderGuard } from '@helpers/rxjs';
 
 /** User Details page. */
 @Component({
@@ -43,9 +44,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
+
     if (this.identity?.extra?.hasWoodstock) {
       return null;
     }
+
     return `Player ${first(this.lookupList)} does not have a Woodstock account`;
   }
 
@@ -54,9 +57,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
+
     if (this.identity?.extra?.hasSteelhead) {
       return null;
     }
+
     return `Player ${first(this.lookupList)} does not have a Steelhead account`;
   }
 
@@ -65,9 +70,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
+
     if (this.identity?.extra?.hasSunrise) {
       return null;
     }
+
     return `Player ${first(this.lookupList)} does not have a Sunrise account`;
   }
 
@@ -76,9 +83,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
+
     if (this.identity?.extra?.hasOpus) {
       return null;
     }
+
     return `Player ${first(this.lookupList)} does not have an Opus account`;
   }
 
@@ -87,9 +96,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
+
     if (this.identity?.extra?.hasGravity) {
       return null;
     }
+
     return `Player ${first(this.lookupList)} does not have a Gravity account`;
   }
 
@@ -98,9 +109,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
+
     if (this.identity?.extra?.hasApollo) {
       return null;
     }
+
     return `Player ${first(this.lookupList)} does not have a Apollo account`;
   }
 
@@ -113,6 +126,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
     router.events
       .pipe(
+        delay(0),
         filter(event => event instanceof NavigationEnd),
         takeUntil(this.onDestroy$),
       )
@@ -127,16 +141,17 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     this.isProduction = environment.production;
     this.route.queryParamMap
       .pipe(
+        delay(0),
         filter(params => {
           const lookupName = params.get('lookupName');
-          const hasLookupList = !!this.lookupList[0]?.toString();
+          const hasLookupList = !!first(this.lookupList)?.toString();
           if (!lookupName && hasLookupList) {
             this.lookupChange(true);
             return false;
           }
 
           if (this.lookupList?.length > 0) {
-            return lookupName?.trim() !== this.lookupList[0].toString();
+            return lookupName?.trim() !== first(this.lookupList).toString();
           }
 
           return true;
@@ -159,7 +174,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
         }
       });
 
-    this.route.queryParamMap.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
+    this.route.queryParamMap.pipe(delay(0), takeUntil(this.onDestroy$)).subscribe(params => {
       this.gamertag = params.get('gamertag');
     });
   }
@@ -179,7 +194,9 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   /** Handles the identity-found */
   public found(compositeIdentity: AugmentedCompositeIdentity): void {
-    this.identity = compositeIdentity;
-    this.lookupChange(false);
+    renderGuard(() => {
+      this.identity = compositeIdentity;
+      this.lookupChange(false);
+    });
   }
 }

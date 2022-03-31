@@ -74,7 +74,7 @@ export class ZafClientService {
         return this.initFoundClient(maybeClient);
       }
 
-      this.logger.warn(
+      this.logger.log(
         [LogTopic.Auth],
         'ZAFClient.init() failed, so attempting to restore from session storage =',
         this.clientSessionKey,
@@ -82,14 +82,16 @@ export class ZafClientService {
 
       const priorZafLocRaw: string | null = sessionStorage.getItem(this.clientSessionKey);
       if (!priorZafLocRaw) {
-        throw new Error(
+        this.logger.log(
+          [LogTopic.ZAF],
           `ZAFClient.init() returned ${maybeClient}, and there was no prior session to restore.`,
         );
       }
 
       const priorZafLoc: ZafLoc | null = JSON.parse(priorZafLocRaw);
       if (!priorZafLoc) {
-        throw new Error(
+        this.logger.log(
+          [LogTopic.ZAF],
           `ZAFClient.init() returned ${maybeClient}, and reconstitution of the prior session failed with '${priorZafLocRaw}'.`,
         );
       }
@@ -99,7 +101,8 @@ export class ZafClientService {
         return this.initReconstitutedClient(maybeReconstitutedClient, priorZafLoc);
       }
 
-      throw new Error(
+      this.logger.log(
+        [LogTopic.ZAF],
         `ZAFClient.init() returned ${maybeClient}, and the reconstituted ZAFClient.init() returned ${maybeReconstitutedClient}, when restored with ${priorZafLocRaw}.`,
       );
     } catch (e) {
@@ -123,7 +126,7 @@ export class ZafClientService {
   }
 
   private initReconstitutedClient(zafClient: ZafClient, zafLoc: ZafLoc): void {
-    this.logger.warn(
+    this.logger.log(
       [LogTopic.ZAF],
       'ZAFClient.init() reconstituted with with key =',
       this.clientSessionKey,

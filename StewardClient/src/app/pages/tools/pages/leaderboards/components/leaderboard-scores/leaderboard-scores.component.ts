@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { renderGuard } from '@helpers/rxjs';
 import { DeviceType } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import {
@@ -30,7 +31,7 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { cloneDeep } from 'lodash';
-import { EMPTY, Observable, Subject, timer } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap, catchError, filter } from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
@@ -252,13 +253,10 @@ export class LeaderboardScoresComponent
       this.leaderboardScores.data[scoreIndex].highlighted = true;
       const xuid = this.leaderboardScores.data[scoreIndex].xuid.toString();
 
-      // Let the page render and angular events to fire before scrolling
-      timer(0)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(() => {
-          const el = document.getElementById(xuid);
-          el?.scrollIntoView({ block: 'center' });
-        });
+      renderGuard(() => {
+        const el = document.getElementById(xuid);
+        el?.scrollIntoView({ block: 'center' });
+      });
     }
 
     // Show snackbar of automated adjustment

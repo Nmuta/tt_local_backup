@@ -7,8 +7,9 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.component';
 import { SunriseService } from '@services/sunrise';
 import { UGCType } from '@models/ugc-filters';
-import { Observable, timer } from 'rxjs';
+import { Observable } from 'rxjs';
 import { pull } from 'lodash';
+import { renderGuard } from '@helpers/rxjs';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -63,15 +64,12 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
   }
 
   private deleteEntry(item: PlayerUGCItemTableEntries): void {
-    // Wait for monitor snackbar to fire before removing entry and disposing monitor
-    timer(0)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        pull(this.ugcTableDataSource.data, item);
-        pull(this.allMonitors, item.monitor);
-        item.monitor.dispose();
+    renderGuard(() => {
+      pull(this.ugcTableDataSource.data, item);
+      pull(this.allMonitors, item.monitor);
+      item.monitor.dispose();
 
-        this.ugcTableDataSource._updateChangeSubscription();
-      });
+      this.ugcTableDataSource._updateChangeSubscription();
+    });
   }
 }
