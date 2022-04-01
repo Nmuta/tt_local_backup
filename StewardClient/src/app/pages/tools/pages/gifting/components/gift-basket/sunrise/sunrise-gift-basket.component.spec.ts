@@ -1,9 +1,6 @@
 import BigNumber from 'bignumber.js';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { NgxsModule, Store } from '@ngxs/store';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Store } from '@ngxs/store';
 import { SunriseGiftBasketComponent } from './sunrise-gift-basket.component';
 import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { of } from 'rxjs';
@@ -12,6 +9,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SunriseService } from '@services/sunrise';
 import { SetSunriseGiftBasket } from '@tools-app/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
 import faker from '@faker-js/faker';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('SunriseGiftBasketComponent', () => {
   let fixture: ComponentFixture<SunriseGiftBasketComponent>;
@@ -22,18 +20,12 @@ describe('SunriseGiftBasketComponent', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-      ],
-      declarations: [SunriseGiftBasketComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
-
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadata({
+        declarations: [SunriseGiftBasketComponent],
+        imports: [ReactiveFormsModule],
+      }),
+    );
     const injector = getTestBed();
     mockStore = injector.inject(Store);
     mockSunriseService = injector.inject(SunriseService);

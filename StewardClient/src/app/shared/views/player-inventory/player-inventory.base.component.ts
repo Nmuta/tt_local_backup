@@ -19,6 +19,7 @@ import { combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
+import { cloneDeep } from 'lodash';
 
 export type AcceptablePlayerInventoryTypeUnion =
   | GravityPlayerInventory
@@ -148,6 +149,27 @@ export abstract class PlayerInventoryBaseComponent<
       title: title,
       description: `${items.length} Total`,
       items: items,
-    } as PlayerInventoryItemList;
+    };
+  }
+
+  /** Utility method for adding warnings to a inventory list. Creates new list. */
+  protected addWarnings(
+    list: PlayerInventoryItemList,
+    ids: Set<string>,
+    icon: string,
+    color: 'warn' | 'accent' | 'primary',
+    text: string,
+  ): PlayerInventoryItemList {
+    const newList = cloneDeep(list);
+    let modifiedAny = false;
+    for (const item of newList.items) {
+      if (ids.has(item.id.toString())) {
+        modifiedAny = true;
+        item.warnings = item.warnings ?? [];
+        item.warnings.push({ icon, color, text });
+      }
+    }
+
+    return modifiedAny ? newList : list;
   }
 }

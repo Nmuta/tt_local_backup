@@ -19,6 +19,10 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 import { ZERO } from '@helpers/bignumbers';
 import { cloneDeep } from 'lodash';
+import { WOODSTOCK_UNIQUE_CAR_IDS_LOOKUP } from '@environments/app-data/item-lists/woodstock-special-cars';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HCI } from '@environments/environment';
+import { pluralize, PLURALIZE_CONFIG } from '@helpers/pluralize';
 
 /** Woodstock gift basket. */
 @Component({
@@ -42,6 +46,7 @@ export class WoodstockGiftBasketComponent
 
   constructor(
     private readonly woodstockService: WoodstockService,
+    private readonly snackBar: MatSnackBar,
     backgroundJobService: BackgroundJobService,
     store: Store,
     formBuilder: FormBuilder,
@@ -107,6 +112,7 @@ export class WoodstockGiftBasketComponent
     if (!this.referenceInventory) {
       return;
     }
+
     const referenceInventory = this.referenceInventory;
     function mapKey(key: keyof WoodstockMasterInventory): GiftBasketModel[] {
       return referenceInventory[key].map(i => {
@@ -121,14 +127,35 @@ export class WoodstockGiftBasketComponent
       });
     }
 
-    this.setStateGiftBasket([
+    const allReferenceItems = [
       ...mapKey('cars'),
       ...mapKey('creditRewards'),
       ...mapKey('vanityItems'),
       ...mapKey('carHorns'),
       ...mapKey('quickChatLines'),
       ...mapKey('emotes'),
-    ]);
+    ];
+
+    const filteredReferenceItems = allReferenceItems.filter(
+      item => !(item.itemType == 'cars' && WOODSTOCK_UNIQUE_CAR_IDS_LOOKUP.has(item.id.toString())),
+    );
+
+    this.setStateGiftBasket(filteredReferenceItems);
+
+    const missingItemCount = allReferenceItems.length - filteredReferenceItems.length;
+    if (missingItemCount > 0) {
+      this.snackBar.open(
+        `${pluralize(
+          missingItemCount,
+          PLURALIZE_CONFIG.ItemsHave,
+        )} been removed due to filtering rules. See Help Popover`,
+        HCI.Toast.Text.Acknowledge,
+        {
+          duration: HCI.Toast.Duration.Standard,
+          panelClass: HCI.Toast.Class.Info,
+        },
+      );
+    }
   }
 
   /** Sends a woodstock gift to players. */

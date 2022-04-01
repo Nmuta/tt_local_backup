@@ -6,4 +6,19 @@ export const HCI = {
    */
   TypingToAutoSearchDebounceMillis: 200,
   AutoRetryMillis: 3_000,
+  Toast: {
+    Duration: {
+      Short: 2_000,
+      Standard: 3_000,
+      Long: 10_000,
+    },
+    Text: {
+      Dismiss: 'Dismiss',
+      Acknowledge: 'Okay',
+    },
+    Class: {
+      Warn: 'snackbar-warn',
+      Info: 'snackbar-info',
+    },
+  },
 };

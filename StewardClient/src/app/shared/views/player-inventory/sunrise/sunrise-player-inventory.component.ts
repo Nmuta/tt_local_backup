@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
+import { SUNRISE_UNIQUE_CAR_IDS_LOOKUP } from '@environments/app-data/item-lists/sunrise-special-cars';
 
 /** Displays a Sunrise player's inventory. */
 @Component({
@@ -41,9 +42,17 @@ export class SunrisePlayerInventoryComponent extends PlayerInventoryBaseComponen
 
   /** Implement to specify the expando tables to show. */
   protected makewhatToShowList(): PlayerInventoryItemList[] {
+    const cars = this.makeItemList('Cars', this.inventory.cars);
+    const carsWithWarnings = this.addWarnings(
+      cars,
+      SUNRISE_UNIQUE_CAR_IDS_LOOKUP,
+      'feedback',
+      'warn',
+      'Car cannot be deleted by player',
+    );
     return [
       this.makeItemList('Credit Rewards', this.inventory.creditRewards),
-      this.makeItemList('Cars', this.inventory.cars),
+      carsWithWarnings,
       this.makeItemList('Vanity Items', this.inventory.vanityItems),
       this.makeItemList('Car Horns', this.inventory.carHorns),
       this.makeItemList('Quick Chat Lines', this.inventory.quickChatLines),

@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MSError } from '@models/error.model';
-import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import {
+  PlayerInventoryItemList,
+  PlayerInventoryItemListEntry,
+} from '@models/master-inventory-item-list';
 import { isPlayerInventoryItem } from '@models/player-inventory-item';
 
 /** Helper component for display lists of master inventory items. */
@@ -21,5 +24,10 @@ export class InventoryItemListDisplayComponent implements OnInit {
     }
 
     this.errors = this.whatToShow.items.map(v => v.error).filter(error => !!error);
+  }
+
+  /** Type safety for the template. */
+  public entry(input: unknown): PlayerInventoryItemListEntry {
+    return input as PlayerInventoryItemListEntry;
   }
 }

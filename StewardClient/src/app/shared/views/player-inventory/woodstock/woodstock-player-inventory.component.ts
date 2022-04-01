@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
+import { WOODSTOCK_UNIQUE_CAR_IDS_LOOKUP } from '@environments/app-data/item-lists/woodstock-special-cars';
 
 /** Displays a Woodstock player's inventory. */
 @Component({
@@ -41,9 +42,18 @@ export class WoodstockPlayerInventoryComponent extends PlayerInventoryBaseCompon
 
   /** Implement to specify the expando tables to show. */
   protected makewhatToShowList(): PlayerInventoryItemList[] {
+    const cars = this.makeItemList('Cars', this.inventory.cars);
+    const carsWithWarnings = this.addWarnings(
+      cars,
+      WOODSTOCK_UNIQUE_CAR_IDS_LOOKUP,
+      'feedback',
+      'warn',
+      'Car cannot be deleted by player',
+    );
+
     return [
       this.makeItemList('Credit Rewards', this.inventory.creditRewards),
-      this.makeItemList('Cars', this.inventory.cars),
+      carsWithWarnings,
       this.makeItemList('Vanity Items', this.inventory.vanityItems),
       this.makeItemList('Car Horns', this.inventory.carHorns),
       this.makeItemList('Quick Chat Lines', this.inventory.quickChatLines),
