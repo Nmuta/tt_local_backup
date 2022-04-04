@@ -32,6 +32,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
     public sealed class SunriseControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
+        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private static readonly ulong InvalidXuid = 1234;
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -654,7 +656,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var userFlags = Fixture.Create<SunriseUserFlagsInput>();
 
             // Act.
@@ -889,7 +891,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var note = Fixture.Create<ProfileNote>();
 
             // Act.
@@ -1060,6 +1062,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
+            groupGift.Xuids = new List<ulong>() { ValidXuid };
             groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
@@ -1098,6 +1101,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
+            groupGift.Xuids = new List<ulong>() { ValidXuid };
             groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
@@ -1255,6 +1259,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var communityMessage = Fixture.Create<BulkCommunityMessage>();
             communityMessage.Duration = TimeSpan.FromDays(1);
+            communityMessage.Xuids = new List<ulong>() { ValidXuid };
+
 
             // Act.
             async Task<IActionResult> Action() => await controller.SendPlayerNotifications(communityMessage).ConfigureAwait(false);
@@ -1399,7 +1405,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var communityMessageEdit = Fixture.Create<CommunityMessage>();
             communityMessageEdit.Duration = TimeSpan.FromDays(3);
 
@@ -1441,7 +1447,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -1464,7 +1470,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var duration = TimeSpan.FromDays(3);
             var deviceType = DeviceType.All;
 
@@ -1493,7 +1499,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var tooLong = new string('*', 520);
             var duration = TimeSpan.FromDays(3);
             var deviceType = DeviceType.All;
@@ -1519,7 +1525,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
 
             // Act.
             async Task<IActionResult> Action() => await controller.DeletePlayerNotification(notificationId, xuid).ConfigureAwait(false);
@@ -1865,7 +1871,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var ugcId = Fixture.Create<Guid>();
             var fileType = "Livery";
 
@@ -1881,7 +1887,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             return new List<SunriseBanParametersInput>
             {
                 new SunriseBanParametersInput {
-                    Xuid = 111,
+                    Xuid = ValidXuid,
                     Gamertag = "gamerT1",
                     FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
@@ -1893,7 +1899,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                     SendReasonNotification = false
                 },
                 new SunriseBanParametersInput {
-                    Xuid = 222,
+                    Xuid = ValidXuid,
                     Gamertag = "gamerT2",
                     FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
@@ -1905,7 +1911,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                     SendReasonNotification = false
                 },
                 new SunriseBanParametersInput {
-                    Xuid = 333,
+                    Xuid = ValidXuid,
                     Gamertag = "gamerT3",
                     FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",

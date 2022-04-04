@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
@@ -76,6 +77,11 @@ namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
                 modelState.AddModelError(
                     "BanParameters.Xuid/BanParameters.Gamertag",
                     $"Properties must have either XUID or Gamertag defined. {nameof(model.Xuid)} was {model.Xuid}. {nameof(model.Gamertag)} was {model.Gamertag}.");
+            }
+
+            if (model.Xuid.HasValue && !model.Xuid.Value.IsValidXuid())
+            {
+                modelState.AddModelError("BanParameters.Xuid", $"Provided XUID does not meet requirements: {model.Xuid}");
             }
         }
     }

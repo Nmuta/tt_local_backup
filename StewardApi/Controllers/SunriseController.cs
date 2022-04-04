@@ -334,6 +334,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] SunriseUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
+            xuid.EnsureValidXuid();
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
@@ -410,6 +411,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] ProfileNote profileNote)
         {
             profileNote.ShouldNotBeNull(nameof(profileNote));
+            xuid.EnsureValidXuid();
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             var playerExists = await this.sunrisePlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
@@ -755,6 +757,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, Guid ugcId)
         {
+            fileType.ShouldNotBeNull(nameof(fileType));
+            xuid.EnsureValidXuid();
+
             var endpoint = GetSunriseEndpoint(this.Request.Headers);
 
             if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
@@ -1175,7 +1180,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var stringBuilder = new StringBuilder();
@@ -1262,7 +1266,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
@@ -1552,6 +1555,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] BulkCommunityMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
+            communityMessage.Xuids.EnsureValidXuids();
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
             communityMessage.Duration.ShouldBeOverMinimumDuration(
@@ -1646,6 +1650,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong xuid,
             [FromBody] CommunityMessage editParameters)
         {
+            xuid.EnsureValidXuid();
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
@@ -1725,6 +1730,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
+            xuid.EnsureValidXuid();
+
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;

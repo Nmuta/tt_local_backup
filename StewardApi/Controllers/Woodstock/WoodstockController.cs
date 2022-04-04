@@ -357,6 +357,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] WoodstockUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
+            xuid.EnsureValidXuid();
 
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
@@ -439,6 +440,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] ProfileNote profileNote)
         {
             profileNote.ShouldNotBeNull(nameof(profileNote));
+            xuid.EnsureValidXuid();
 
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
@@ -496,7 +498,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] string status = "Any",
             [FromQuery] string sort = "ClosingDateDescending")
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
             carId.ShouldNotBeNull(nameof(carId));
             makeId.ShouldNotBeNull(nameof(makeId));
             status.ShouldNotBeNull(nameof(status));
@@ -894,6 +895,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
         public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, Guid ugcId)
         {
+            fileType.ShouldNotBeNull(nameof(fileType));
+            xuid.EnsureValidXuid();
+
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
@@ -1261,7 +1265,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -1351,7 +1354,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
@@ -1462,6 +1464,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Xuids.EnsureValidXuids();
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
@@ -1660,6 +1663,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] BulkCommunityMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
+            communityMessage.Xuids.EnsureValidXuids();
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
             communityMessage.Duration.ShouldBeOverMinimumDuration(
@@ -1761,6 +1765,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            xuid.EnsureValidXuid();
 
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1844,6 +1849,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
+            xuid.EnsureValidXuid();
+
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -1998,6 +2005,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] DeviceType[] deviceTypes,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
+            xuid.EnsureValidXuid();
+
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
 
             var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(

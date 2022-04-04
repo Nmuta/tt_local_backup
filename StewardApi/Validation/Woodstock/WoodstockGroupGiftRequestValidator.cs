@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
 {
@@ -56,6 +58,16 @@ namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
                 modelState.AddModelError(
                     "GroupGift.Xuids",
                     $"Properties must have at least one xuid or gamertag. {nameof(model.Xuids)} was {xuidStatus}.");
+            }
+            else
+            {
+                if (!model.Xuids.AreValidXuids(out var invalidXuids))
+                {
+                    var invalidXuidsAsString = string.Join(", ", invalidXuids);
+                    modelState.AddModelError(
+                        "GroupGift.Xuids",
+                        $"Provided XUIDs do not meet requirements: {invalidXuidsAsString}");
+                }
             }
         }
     }

@@ -130,7 +130,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var response = await this.sunriseService.GetLiveOpsUserDataByXuidAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
-                return response.userData.region > 0;
+                return response.userData != null;
             }
             catch
             {

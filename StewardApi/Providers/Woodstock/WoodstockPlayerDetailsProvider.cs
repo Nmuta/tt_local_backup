@@ -127,7 +127,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var response = await this.woodstockService.GetUserDataByXuidAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
-                return response.userData.region > 0;
+                return response.userData != null;
             }
             catch
             {

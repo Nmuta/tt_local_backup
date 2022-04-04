@@ -32,6 +32,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
     public sealed class WoodstockControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
+        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private static readonly ulong InvalidXuid = 1234;
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -682,7 +684,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var userFlags = Fixture.Create<WoodstockUserFlagsInput>();
 
             // Act.
@@ -1034,6 +1036,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<WoodstockGroupGift>();
+            groupGift.Xuids = new List<ulong>() { ValidXuid };
             groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
@@ -1084,6 +1087,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<WoodstockGroupGift>();
+            groupGift.Xuids = new List<ulong>() { ValidXuid };
             groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
@@ -1241,6 +1245,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var controller = new Dependencies().Build();
             var communityMessage = Fixture.Create<BulkCommunityMessage>();
             communityMessage.Duration = TimeSpan.FromDays(1);
+            communityMessage.Xuids = new List<ulong>() { ValidXuid };
 
             // Act.
             async Task<IActionResult> Action() => await controller.SendPlayerNotifications(communityMessage).ConfigureAwait(false);
@@ -1384,7 +1389,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var communityMessageEdit = Fixture.Create<CommunityMessage>();
             communityMessageEdit.Duration = TimeSpan.FromDays(3);
 
@@ -1504,7 +1509,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
 
             // Act.
             async Task<IActionResult> Action() => await controller.DeletePlayerNotification(notificationId, xuid).ConfigureAwait(false);
@@ -1555,7 +1560,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = ValidXuid;
             var ugcId = Fixture.Create<Guid>();
             var fileType = "Livery";
 
@@ -1571,7 +1576,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             return new List<WoodstockBanParametersInput>
             {
                 new WoodstockBanParametersInput {
-                    Xuid = 111,
+                    Xuid = ValidXuid,
                     Gamertag = "gamerT1",
                     FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
@@ -1583,7 +1588,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                     SendReasonNotification = false
                 },
                 new WoodstockBanParametersInput {
-                    Xuid = 222,
+                    Xuid = ValidXuid,
                     Gamertag = "gamerT2",
                     FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
@@ -1595,7 +1600,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                     SendReasonNotification = false
                 },
                 new WoodstockBanParametersInput {
-                    Xuid = 333,
+                    Xuid = ValidXuid,
                     Gamertag = "gamerT3",
                     FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
