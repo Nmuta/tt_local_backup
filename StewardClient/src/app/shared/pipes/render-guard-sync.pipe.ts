@@ -6,7 +6,6 @@ import { RenderGuardAsyncPipe } from './render-guard-async.pipe';
 /** Waits until after the next render step to output the value. Produces an observable. */
 @Pipe({
   name: 'renderGuard',
-  pure: false,
 })
 export class RenderGuardSyncPipe extends BasePipe implements PipeTransform {
   private readonly asyncPipe: AsyncPipe;
