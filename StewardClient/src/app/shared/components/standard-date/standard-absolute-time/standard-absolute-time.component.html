@@ -1,4 +1,4 @@
-<span [matTooltip]="timeUtc | dateTimeToRelativePure">
+<span *ngIf="timeUtc" [matTooltip]="timeUtc | dateTimeToRelativePure">
   <standard-copy>
     {{
       formats[format]?.dateFormat

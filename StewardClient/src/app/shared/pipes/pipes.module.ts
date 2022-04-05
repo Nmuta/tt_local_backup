@@ -15,6 +15,7 @@ import { ImpureBigJsonPipe } from './impure-big-json.pipe';
 import { AsyncBigJsonPipe } from './async-big-json.pipe';
 import { RenderGuardAsyncPipe } from './render-guard-async.pipe';
 import { RenderGuardSyncPipe } from './render-guard-sync.pipe';
+import { ToDateTimePipe } from './to-date-time.pipe';
 
 /** Module for various shared pipes. */
 @NgModule({
@@ -33,6 +34,7 @@ import { RenderGuardSyncPipe } from './render-guard-sync.pipe';
     DurationToMillisPipe,
     RenderGuardAsyncPipe,
     RenderGuardSyncPipe,
+    ToDateTimePipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -50,6 +52,7 @@ import { RenderGuardSyncPipe } from './render-guard-sync.pipe';
     DurationToMillisPipe,
     RenderGuardAsyncPipe,
     RenderGuardSyncPipe,
+    ToDateTimePipe,
   ],
 })
 export class PipesModule {}

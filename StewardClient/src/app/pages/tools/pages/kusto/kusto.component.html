@@ -1,11 +1,11 @@
 <section>
   <mat-card>
-    <h2>
+    <mat-card-title>
       Query Selection
       <button mat-stroked-button matTooltip="Clears the query input box" (click)="clearInput()">
         Clear Input
       </button>
-    </h2>
+    </mat-card-title>
     <form [formGroup]="kustoQueryForm" (ngSubmit)="runQuery()">
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>Query</mat-label>
@@ -37,7 +37,26 @@
     </form>
   </mat-card>
   <mat-card>
-    <h2>Query Results</h2>
+    <mat-card-title>
+      Query Results
+      <help-popover-icon cardTitle="Kusto Query results">
+        <p>Some fields may be automatically made into links or prettified.</p>
+        <ul>
+          <li>Fields named *Xuid or *Gamertag will be made into links to the appropriate user</li>
+          <li>Fields named *Timestamp will be formatted as a standard date</li>
+          <li>
+            Fields named *Auction Id will be made into links, if there is also a Title field
+            present.
+          </li>
+        </ul>
+        <p>
+          If a query is missing a title, adjust it by adding
+          <code>| extend Title="woodstock"</code> to the last line. Valid Titles are
+          <code>woodstock</code>, <code>sunrise</code>, <code>apollo</code>, <code>gravity</code>,
+          and <code>steelhead</code>.
+        </p>
+      </help-popover-icon>
+    </mat-card-title>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
       <json-table-results
         *ngIf="queryResponse"

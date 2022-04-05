@@ -9,7 +9,7 @@ import { DateTime } from 'luxon';
 })
 export class UtcDatePipe implements PipeTransform {
   /** Pipe hook. */
-  public transform(value: DateTime | Date, format?: string): unknown {
+  public transform(value: DateTime | Date | string, format?: string): unknown {
     return new DatePipe('en-US').transform(toDateTime(value).toJSDate(), format, '+0');
   }
 }

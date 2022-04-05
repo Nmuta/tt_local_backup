@@ -14,6 +14,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
@@ -34,6 +35,7 @@ import { JsonTableResultsModule } from '@components/json-table-results/json-tabl
     MatProgressSpinnerModule,
     KustoQuerySelectionModule,
     JsonTableResultsModule,
+    HelpModule,
   ],
   exports: [KustoComponent],
 })

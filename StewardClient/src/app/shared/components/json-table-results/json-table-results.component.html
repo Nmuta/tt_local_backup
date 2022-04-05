@@ -16,7 +16,11 @@
             </button>
             {{ column | humanize }}
           </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{ element[column] }} </mat-cell>
+          <mat-cell *matCellDef="let element">
+            <ng-container
+              *ngTemplateOutlet="cell; context: { element: this.element, column: this.column }"
+            ></ng-container>
+          </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="resultKeys; sticky: true"></mat-header-row>
@@ -31,4 +35,50 @@
 
 <ng-template #noResultsState>
   <p>No results were found.</p>
+</ng-template>
+
+<ng-template #cell let-row="element" let-column="column">
+  <ng-container [ngSwitch]="determineTemplate(row, column)">
+    <ng-container *ngSwitchCase="'xuid-direct'">
+      <a
+        [routerLink]="['/app/tools/user-details/', getTitle(row)]"
+        [queryParams]="{ lookupType: 'xuid', lookupName: row[column] }"
+      >
+        {{ row[column] }}</a
+      >
+    </ng-container>
+    <ng-container *ngSwitchCase="'gamertag-direct'">
+      <a
+        [routerLink]="['/app/tools/user-details/', getTitle(row)]"
+        [queryParams]="{ lookupType: 'gamertag', lookupName: row[column] }"
+      >
+        {{ row[column] }}</a
+      >
+    </ng-container>
+    <ng-container *ngSwitchCase="'xuid'">
+      <a
+        [routerLink]="['/app/tools/user-details/woodstock']"
+        [queryParams]="{ lookupType: 'xuid', lookupName: row[column] }"
+      >
+        {{ row[column] }}</a
+      >
+    </ng-container>
+    <ng-container *ngSwitchCase="'gamertag'">
+      <a
+        [routerLink]="['/app/tools/user-details/woodstock']"
+        [queryParams]="{ lookupType: 'gamertag', lookupName: row[column] }"
+      >
+        {{ row[column] }}</a
+      >
+    </ng-container>
+    <ng-container *ngSwitchCase="'auctionId'">
+      <a [routerLink]="['/app/tools/auction-details', getTitle(row), row[column]]">{{
+        row[column]
+      }}</a>
+    </ng-container>
+    <ng-container *ngSwitchCase="'datetime'">
+      <standard-absolute-time [timeUtc]="row[column] | toDateTime"></standard-absolute-time>
+    </ng-container>
+    <ng-container *ngSwitchDefault>{{ row[column] }}</ng-container>
+  </ng-container>
 </ng-template>

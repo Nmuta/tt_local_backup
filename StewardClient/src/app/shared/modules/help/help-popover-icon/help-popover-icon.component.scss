@@ -6,7 +6,8 @@ mat-card-content {
 
 ::ng-deep mat-card > help-popover-icon,
 ::ng-deep mat-card-title-group > help-popover-icon,
-::ng-deep mat-card-header > help-popover-icon {
+::ng-deep mat-card-header > help-popover-icon,
+::ng-deep mat-card-title help-popover-icon {
   position: absolute;
   top: 0;
   right: 0;
