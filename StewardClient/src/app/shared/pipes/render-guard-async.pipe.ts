@@ -7,6 +7,7 @@ import { delay, Observable, ReplaySubject } from 'rxjs';
 export class RenderGuardAsyncPipe extends BasePipe implements PipeTransform {
   private readonly replay = new ReplaySubject(1);
   private readonly output = this.replay.pipe(delay(0));
+  private lastValue: unknown = undefined;
 
   constructor() {
     super();
@@ -15,7 +16,11 @@ export class RenderGuardAsyncPipe extends BasePipe implements PipeTransform {
 
   /** Delays the value. */
   public transform<T>(value: T): Observable<T> {
-    this.replay.next(value);
+    if (value != this.lastValue) {
+      this.lastValue = value;
+      this.replay.next(value);
+    }
+
     return this.output as Observable<T>;
   }
 }
