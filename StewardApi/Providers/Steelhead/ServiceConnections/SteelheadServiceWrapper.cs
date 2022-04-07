@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
+using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using GiftingService = Forza.LiveOps.FM8.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FM8.Generated.NotificationsManagementService;
 using UserInventoryService = Forza.LiveOps.FM8.Generated.UserInventoryService;
@@ -15,15 +18,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     /// <inheritdoc />
     public sealed class SteelheadServiceWrapper : ISteelheadService
     {
+        private static readonly IList<string> RequiredSettings = new List<string>
+        {
+            ConfigurationKeyConstants.StewardEnvironment
+        };
+
+        private readonly bool allowGiftingToAllUsers;
         private readonly ISteelheadServiceFactory serviceFactory;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SteelheadServiceWrapper"/> class.
         /// </summary>
-        public SteelheadServiceWrapper(ISteelheadServiceFactory steelheadServiceFactory)
+        public SteelheadServiceWrapper(IConfiguration configuration, ISteelheadServiceFactory steelheadServiceFactory)
         {
+            configuration.ShouldNotBeNull(nameof(configuration));
+            configuration.ShouldContainSettings(RequiredSettings);
             steelheadServiceFactory.ShouldNotBeNull(nameof(steelheadServiceFactory));
 
+            this.allowGiftingToAllUsers = configuration[ConfigurationKeyConstants.StewardEnvironment] == "prod";
             this.serviceFactory = steelheadServiceFactory;
         }
 
@@ -190,6 +202,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
@@ -241,6 +259,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             ForzaLiveDeviceType deviceType,
             string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var notificationsManagementService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await notificationsManagementService.SendGroupMessageNotification(groupId, message, expireTimeUtc, deviceType != ForzaLiveDeviceType.Invalid, deviceType).ConfigureAwait(false);

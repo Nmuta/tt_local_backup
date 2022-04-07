@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.ApolloClientVersion},{ConfigurationKeyConstants.ApolloAdminXuid},{ConfigurationKeyConstants.ApolloCertificateKeyVaultName},{ConfigurationKeyConstants.ApolloCertificateSecretName}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.StewardEnvironment},{ConfigurationKeyConstants.ApolloClientVersion},{ConfigurationKeyConstants.ApolloAdminXuid},{ConfigurationKeyConstants.ApolloCertificateKeyVaultName},{ConfigurationKeyConstants.ApolloCertificateSecretName}");
         }
 
         private sealed class Dependencies

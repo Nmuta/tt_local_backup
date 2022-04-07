@@ -229,5 +229,10 @@
         ///     The Pegasus CMS environment.
         /// </summary>
         public const string PegasusCmsEnvironment = "PegasusCms:Environment";
+
+        /// <summary>
+        ///     The Steward environment.
+        /// </summary>
+        public const string StewardEnvironment = "StewardEnvironment";
     }
 }

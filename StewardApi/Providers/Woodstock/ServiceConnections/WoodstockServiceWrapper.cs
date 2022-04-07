@@ -6,7 +6,10 @@ using Forza.LiveOps.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
@@ -19,16 +22,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
     /// <inheritdoc />
     public sealed class WoodstockServiceWrapper : IWoodstockService
     {
+        private static readonly IList<string> RequiredSettings = new List<string>
+        {
+            ConfigurationKeyConstants.StewardEnvironment
+        };
+
+        private readonly bool allowGiftingToAllUsers;
         private readonly IWoodstockServiceFactory serviceFactory;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockServiceWrapper"/> class.
         /// </summary>
         public WoodstockServiceWrapper(
+            IConfiguration configuration,
             IWoodstockServiceFactory woodstockServiceFactory)
         {
+            configuration.ShouldNotBeNull(nameof(configuration));
+            configuration.ShouldContainSettings(RequiredSettings);
             woodstockServiceFactory.ShouldNotBeNull(nameof(woodstockServiceFactory));
 
+            this.allowGiftingToAllUsers = configuration[ConfigurationKeyConstants.StewardEnvironment] == "prod";
             this.serviceFactory = woodstockServiceFactory;
         }
 
@@ -309,6 +322,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int itemValue,
             string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
@@ -325,6 +344,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc/>
         public async Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId).ConfigureAwait(false);
@@ -400,12 +425,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 ForzaLiveDeviceType deviceType,
                 string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var notificationsService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
-            return await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc,
-                    deviceType != ForzaLiveDeviceType.Invalid, deviceType)
-                .ConfigureAwait(false);
+            return await notificationsService.SendGroupMessageNotification(
+                groupId,
+                message,
+                expireTimeUtc,
+                deviceType != ForzaLiveDeviceType.Invalid,
+                deviceType).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

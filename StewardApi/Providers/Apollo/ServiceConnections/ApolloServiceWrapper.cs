@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using GroupingService = Xls.WebServices.FM7.Generated.UserService;
@@ -21,12 +22,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
+            ConfigurationKeyConstants.StewardEnvironment,
             ConfigurationKeyConstants.ApolloClientVersion,
             ConfigurationKeyConstants.ApolloAdminXuid,
             ConfigurationKeyConstants.ApolloCertificateKeyVaultName,
             ConfigurationKeyConstants.ApolloCertificateSecretName
         };
 
+        private readonly bool allowGiftingToAllUsers;
         private readonly X509Certificate2 lspCertificate;
         private readonly string clientVersion;
         private readonly ulong adminXuid;
@@ -41,6 +44,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             configuration.ShouldNotBeNull(nameof(configuration));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             configuration.ShouldContainSettings(RequiredSettings);
+
+            this.allowGiftingToAllUsers = configuration[ConfigurationKeyConstants.StewardEnvironment] == "prod";
 
             this.clientVersion = configuration[ConfigurationKeyConstants.ApolloClientVersion];
             this.adminXuid = Convert.ToUInt64(
@@ -262,6 +267,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             int itemValue,
             string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var giftingService = this.GetGiftingService(endpoint);
 
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);

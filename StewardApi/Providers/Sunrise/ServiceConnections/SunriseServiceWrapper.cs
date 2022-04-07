@@ -6,7 +6,10 @@ using Forza.LiveOps.FH4.Generated;
 using Forza.UserGeneratedContent.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
+using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
@@ -17,15 +20,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
     /// <inheritdoc />
     public sealed class SunriseServiceWrapper : ISunriseService
     {
+        private static readonly IList<string> RequiredSettings = new List<string>
+        {
+            ConfigurationKeyConstants.StewardEnvironment
+        };
+
+        private readonly bool allowGiftingToAllUsers;
         private readonly ISunriseServiceFactory serviceFactory;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseServiceWrapper"/> class.
         /// </summary>
-        public SunriseServiceWrapper(ISunriseServiceFactory sunriseServiceFactory)
+        public SunriseServiceWrapper(IConfiguration configuration, ISunriseServiceFactory sunriseServiceFactory)
         {
+            configuration.ShouldNotBeNull(nameof(configuration));
+            configuration.ShouldContainSettings(RequiredSettings);
             sunriseServiceFactory.ShouldNotBeNull(nameof(sunriseServiceFactory));
 
+            this.allowGiftingToAllUsers = configuration[ConfigurationKeyConstants.StewardEnvironment] == "prod";
             this.serviceFactory = sunriseServiceFactory;
         }
 
@@ -288,6 +300,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             ForzaLiveDeviceType deviceType,
             string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var notificationsManagementService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await notificationsManagementService.SendGroupMessageNotification(groupId, message, expireTimeUtc, deviceType != ForzaLiveDeviceType.Invalid, deviceType)
@@ -338,6 +356,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             int itemValue,
             string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
@@ -364,6 +388,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <inheritdoc/>
         public async Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint)
         {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
             var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId).ConfigureAwait(false);

@@ -34,6 +34,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenConfigurationNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { Configuration = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "configuration"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenWoodstockServiceFactoryNull_Throws()
         {
             // Arrange.
@@ -48,9 +62,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         private sealed class Dependencies
         {
+            public Dependencies()
+            {
+                this.Configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
+            }
+
+            public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
             public ISteelheadServiceFactory SteelheadServiceFactory { get; set; } = Substitute.For<ISteelheadServiceFactory>();
 
-            public SteelheadServiceWrapper Build() => new SteelheadServiceWrapper(this.SteelheadServiceFactory);
+            public SteelheadServiceWrapper Build() => new SteelheadServiceWrapper(this.Configuration, this.SteelheadServiceFactory);
         }
     }
 }
