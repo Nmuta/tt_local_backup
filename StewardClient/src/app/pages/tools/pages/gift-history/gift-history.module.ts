@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -23,6 +23,10 @@ import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-pr
 import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';
 import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-history.component';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -44,6 +48,8 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
     MatIconModule,
     MatInputModule,
     MatCardModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
     FontAwesomeModule,
     FormsModule,
     PlayerSelectionModule,
@@ -52,6 +58,10 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
     PlayerInventoryModule,
     PlayerInventoryProfilesModule,
     EndpointSelectionModule,
+    DatetimeRangePickerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HelpModule,
   ],
 })
 export class GiftHistoryModule {}

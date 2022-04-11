@@ -30,6 +30,8 @@ import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { overrideApolloEndpointKey } from '@helpers/override-endpoint-key';
+import { DateTime } from 'luxon';
+import { HttpParams } from '@angular/common/http';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -136,16 +138,46 @@ export class ApolloService {
   }
 
   /** Gets Gift history by a XUID. */
-  public getGiftHistoryByXuid$(xuid: BigNumber): Observable<ApolloGiftHistory[]> {
+  public getGiftHistoryByXuid$(
+    xuid: BigNumber,
+    startDate?: DateTime,
+    endDate?: DateTime,
+  ): Observable<ApolloGiftHistory[]> {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate.toISO());
+    }
+
+    if (endDate) {
+      params = params.set('endDate', endDate.toISO());
+    }
+
     return this.apiService.getRequest$<ApolloGiftHistory[]>(
       `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+      params,
     );
   }
 
   /** Gets Gift history by a LSP Group. */
-  public getGiftHistoryByLspGroup$(lspGroupId: BigNumber): Observable<ApolloGiftHistory[]> {
+  public getGiftHistoryByLspGroup$(
+    lspGroupId: BigNumber,
+    startDate?: DateTime,
+    endDate?: DateTime,
+  ): Observable<ApolloGiftHistory[]> {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate.toISO());
+    }
+
+    if (endDate) {
+      params = params.set('endDate', endDate.toISO());
+    }
+
     return this.apiService.getRequest$<ApolloGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+      params,
     );
   }
 

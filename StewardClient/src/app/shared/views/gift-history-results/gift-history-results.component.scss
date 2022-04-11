@@ -17,6 +17,10 @@
   font-weight: bold;
   margin-top: $gap-medium;
   display: block;
+
+  standard-absolute-time {
+    display: inline-block;
+  }
 }
 
 mat-panel-title {

@@ -309,8 +309,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftHistory>> GetGiftHistoryAsync(string playerId, string title, string endpoint)
-        {
+        public async Task<IList<GiftHistory>> GetGiftHistoryAsync(
+            string playerId,
+            string title,
+            string endpoint,
+            DateTimeOffset? startDate,
+            DateTimeOffset? endDate)
+        { 
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -321,11 +326,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 if (endpoint == WoodstockEndpoint.GetEndpoint(nameof(WoodstockEndpoint.Retail)))
                 {
                     const string oldEndpoint = "https://gameservices.fh5.forzamotorsport.net/Services/o.xtsw";
-                    query = GiftHistory.MakeQuery(playerId, title, endpoint, oldEndpoint);
+                    query = GiftHistory.MakeQuery(playerId, title, endpoint, oldEndpoint, startDate, endDate);
                 }
                 else
                 {
-                    query = GiftHistory.MakeQuery(playerId, title, endpoint, null);
+                    query = GiftHistory.MakeQuery(playerId, title, endpoint, null, startDate, endDate);
                 }
 
                 async Task<IList<GiftHistory>> GiftHistories()

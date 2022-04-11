@@ -860,14 +860,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SteelheadGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(
-            ulong xuid)
+            ulong xuid,
+            [FromQuery] DateTimeOffset? startDate,
+            [FromQuery] DateTimeOffset? endDate)
         {
+            if (startDate.HasValue && endDate.HasValue && DateTimeOffset.Compare(startDate.Value, endDate.Value) >= 0)
+            {
+                throw new BadRequestStewardException("Start date must come before end date: " +
+                    $"({nameof(startDate)}: {startDate}) ({nameof(endDate)}: {endDate})");
+            }
+
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 xuid.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.SteelheadCodeName,
                 GiftIdentityAntecedent.Xuid,
-                endpoint).ConfigureAwait(true);
+                endpoint,
+                startDate,
+                endDate).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -878,14 +888,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SteelheadGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(
-            int groupId)
+            int groupId,
+            [FromQuery] DateTimeOffset? startDate,
+            [FromQuery] DateTimeOffset? endDate)
         {
+            if (startDate.HasValue && endDate.HasValue && DateTimeOffset.Compare(startDate.Value, endDate.Value) >= 0)
+            {
+                throw new BadRequestStewardException("Start date must come before end date: " +
+                    $"({nameof(startDate)}: {startDate}) ({nameof(endDate)}: {endDate})");
+            }
+
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 groupId.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.SteelheadCodeName,
                 GiftIdentityAntecedent.LspGroupId,
-                endpoint).ConfigureAwait(true);
+                endpoint,
+                startDate,
+                endDate).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }

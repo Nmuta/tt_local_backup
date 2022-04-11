@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, Input, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -9,71 +9,68 @@ import {
   ValidationErrors,
   Validator,
 } from '@angular/forms';
+import { MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle';
+import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { DateTimeRange, stringifyDateTimeRange } from '@models/datetime-range';
 import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
-import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from 'ngx-material-luxon';
 import { Subject } from 'rxjs';
 import { delay, map, retry, startWith, tap } from 'rxjs/operators';
+import { DateTimeRange, stringifyDateTimeRange } from '@models/datetime-range';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from 'ngx-material-luxon';
 
-/** Outputted form value of the datetime range picker. */
-export type DatetimeRangePickerFormValue = DateTimeRange;
+/** Outputted form value of the date range picker. */
+export type DateRangePickerFormValue = DateTimeRange;
 
-interface DatetimeRangePickerFormValueInternal {
-  dateRange: DatetimeRangePickerFormValue;
-  timeRange: DatetimeRangePickerFormValue;
+/** Represents a datetime range option. */
+export interface DatetimeRangeOption extends DateTimeRange {
+  name: string;
+}
+
+interface DateRangePickerFormValueInternal {
+  dateRange: DateRangePickerFormValue;
 }
 
 /** Utility component for selecting a date+time range. */
 @Component({
-  selector: 'datetime-range-picker',
-  templateUrl: './datetime-range-picker.component.html',
-  styleUrls: ['./datetime-range-picker.component.scss'],
+  selector: 'date-range-picker',
+  templateUrl: './date-range-picker.component.html',
+  styleUrls: ['./date-range-picker.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DatetimeRangePickerComponent),
+      useExisting: forwardRef(() => DateRangePickerComponent),
       multi: true,
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => DatetimeRangePickerComponent),
+      useExisting: forwardRef(() => DateRangePickerComponent),
       multi: true,
     },
     {
       provide: MAT_LUXON_DATE_ADAPTER_OPTIONS,
-      useValue: <MatLuxonDateAdapterOptions>{ useUtc: true },
+      useValue: <MatLuxonDateAdapterOptions>{},
     },
   ],
 })
-export class DatetimeRangePickerComponent
+export class DateRangePickerComponent
+  extends BaseComponent
   implements ControlValueAccessor, Validator, AfterViewInit
 {
-  private static readonly UTC_NOW = DateTime.utc();
-  public defaults: DatetimeRangePickerFormValueInternal = {
+  @ViewChild('defaultToggle') defaultToggle: MatButtonToggle;
+  @Input() toggleOptions: DatetimeRangeOption[] = [];
+
+  private defaultRange = {
     dateRange: {
-      start: DatetimeRangePickerComponent.UTC_NOW,
-      end: DatetimeRangePickerComponent.UTC_NOW.plus({ days: 7 }).toUTC(),
-    },
-    timeRange: {
-      start: DatetimeRangePickerComponent.UTC_NOW.startOf('day').toUTC(),
-      end: DatetimeRangePickerComponent.UTC_NOW.startOf('day').toUTC(),
+      start: DateTime.local().minus({ days: 7 }),
+      end: DateTime.local(),
     },
   };
 
   public formControls = {
     dateRange: {
-      start: new FormControl(
-        this.defaults.dateRange.start /** Date controls are always required */,
-      ),
-      end: new FormControl(this.defaults.dateRange.end /** Date controls are always required */),
-    },
-    timeRange: {
-      start: new FormControl(
-        this.defaults.timeRange.start /** Date controls are always required */,
-      ),
-      end: new FormControl(this.defaults.timeRange.end /** Date controls are always required */),
+      start: new FormControl(this.defaultRange.dateRange.start),
+      end: new FormControl(this.defaultRange.dateRange.end),
     },
   };
 
@@ -82,20 +79,20 @@ export class DatetimeRangePickerComponent
       start: this.formControls.dateRange.start,
       end: this.formControls.dateRange.end,
     }),
-    timeRange: new FormGroup({
-      start: this.formControls.timeRange.start,
-      end: this.formControls.timeRange.end,
-    }),
   });
 
+  public disabled: boolean;
   public currentDates = this.mergeDates(this.formGroup.value);
-  private readonly onChanges$ = new Subject<DatetimeRangePickerFormValueInternal>();
+  public timezone = DateTime.local().toFormat('ZZZZ');
+  private readonly onChanges$ = new Subject<DateRangePickerFormValueInternal>();
 
   constructor() {
+    super();
     let lastValueStringified: { start: string; end: string } = null;
+
     this.onChanges$
       .pipe(
-        map((data: DatetimeRangePickerFormValueInternal) => {
+        map((data: DateRangePickerFormValueInternal) => {
           // when there are changes, convert the date and forward it onward
           // must occur before revalidation
           return this.mergeDates(data);
@@ -116,8 +113,6 @@ export class DatetimeRangePickerComponent
         if (hasChanges) {
           this.formControls.dateRange.start.updateValueAndValidity();
           this.formControls.dateRange.end.updateValueAndValidity();
-          this.formControls.timeRange.start.updateValueAndValidity();
-          this.formControls.timeRange.end.updateValueAndValidity();
         }
 
         // prep for next iteration
@@ -139,14 +134,10 @@ export class DatetimeRangePickerComponent
   }
 
   /** Form control hook. */
-  public writeValue(data: DatetimeRangePickerFormValue): void {
+  public writeValue(data: DateRangePickerFormValue): void {
     if (data) {
-      const dataInternal: DatetimeRangePickerFormValueInternal = {
+      const dataInternal: DateRangePickerFormValueInternal = {
         dateRange: {
-          start: data.start,
-          end: data.end,
-        },
-        timeRange: {
           start: data.start,
           end: data.end,
         },
@@ -157,7 +148,7 @@ export class DatetimeRangePickerComponent
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: DatetimeRangePickerFormValue) => void): void {
+  public registerOnChange(fn: (data: DateRangePickerFormValue) => void): void {
     this.onChangeFn = fn;
     this.onChanges$.next(this.formGroup.value);
   }
@@ -169,6 +160,7 @@ export class DatetimeRangePickerComponent
 
   /** Form control hook. */
   public setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
     if (isDisabled) {
       this.formGroup.disable();
     } else {
@@ -185,34 +177,33 @@ export class DatetimeRangePickerComponent
     return null;
   }
 
-  private mergeDates(data: DatetimeRangePickerFormValueInternal): DatetimeRangePickerFormValue {
-    return {
-      start: this.mergeDayAndTime(data.dateRange.start, data.timeRange.start),
-      end: this.mergeDayAndTime(data.dateRange.end, data.timeRange.end),
-    };
-  }
-
-  private mergeDayAndTime(day: DateTime, time: DateTime): DateTime {
-    try {
-      if (!day) {
-        return null;
-      }
-      if (!time) {
-        return null;
-      }
-      day = day?.toUTC();
-      time = time?.toUTC();
-      const startOfTargetDay = day.startOf('day');
-      const startOfTimeDay = time.startOf('day');
-      const timeDiff = time.diff(startOfTimeDay);
-      const targetDateTime = startOfTargetDay.plus(timeDiff);
-      return targetDateTime;
-    } catch (ex) {
-      return null;
+  /** Action when date range picker's state changes. */
+  public datePickerClosed(): void {
+    if (!!this.defaultToggle) {
+      this.defaultToggle.checked = true;
     }
   }
 
-  private onChangeFn = (_data: DatetimeRangePickerFormValue) => {
+  /** Action when the date range toggle options are clicked */
+  public toggleOptionChange(event: MatButtonToggleChange): void {
+    if (!event.value) {
+      return;
+    }
+
+    const option = event.value as DatetimeRangeOption;
+
+    this.formControls.dateRange.start.setValue(option.start);
+    this.formControls.dateRange.end.setValue(option.end);
+  }
+
+  private mergeDates(data: DateRangePickerFormValueInternal): DateRangePickerFormValue {
+    return {
+      start: data.dateRange.start.startOf('day'),
+      end: data.dateRange.end.endOf('day'),
+    };
+  }
+
+  private onChangeFn = (_data: DateRangePickerFormValue) => {
     /* empty */
   };
 }

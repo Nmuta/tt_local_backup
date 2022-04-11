@@ -1553,14 +1553,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> GetGiftHistoriesAsync(
-            ulong xuid)
+            ulong xuid,
+            [FromQuery] DateTimeOffset? startDate,
+            [FromQuery] DateTimeOffset? endDate)
         {
+            if (startDate.HasValue && endDate.HasValue && DateTimeOffset.Compare(startDate.Value, endDate.Value) >= 0)
+            {
+                throw new BadRequestStewardException("Start date must come before end date: " +
+                    $"({nameof(startDate)}: {startDate}) ({nameof(endDate)}: {endDate})");
+            }
+
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 xuid.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.WoodstockCodeName,
                 GiftIdentityAntecedent.Xuid,
-                endpoint).ConfigureAwait(true);
+                endpoint,
+                startDate,
+                endDate).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -1573,14 +1583,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Gifting)]
         public async Task<IActionResult> GetGiftHistoriesAsync(
-            int groupId)
+            int groupId,
+            [FromQuery] DateTimeOffset? startDate,
+            [FromQuery] DateTimeOffset? endDate)
         {
+            if (startDate.HasValue && endDate.HasValue && DateTimeOffset.Compare(startDate.Value, endDate.Value) >= 0)
+            {
+                throw new BadRequestStewardException("Start date must come before end date: " +
+                    $"({nameof(startDate)}: {startDate}) ({nameof(endDate)}: {endDate})");
+            }
+
             var endpoint = GetWoodstockEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 groupId.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.WoodstockCodeName,
                 GiftIdentityAntecedent.LspGroupId,
-                endpoint).ConfigureAwait(true);
+                endpoint,
+                startDate,
+                endDate).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }

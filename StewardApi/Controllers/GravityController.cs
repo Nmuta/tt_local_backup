@@ -380,11 +380,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/t10Id({t10Id})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<GravityGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(string t10Id)
+        public async Task<IActionResult> GetGiftHistoriesAsync(
+            string t10Id,
+            [FromQuery] DateTimeOffset? startDate,
+            [FromQuery] DateTimeOffset? endDate)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftIdentityAntecedent.T10Id).ConfigureAwait(true);
+            if (startDate.HasValue && endDate.HasValue && DateTimeOffset.Compare(startDate.Value, endDate.Value) >= 0)
+            {
+                throw new BadRequestStewardException("Start date must come before end date: " +
+                    $"({nameof(startDate)}: {startDate}) ({nameof(endDate)}: {endDate})");
+            }
+
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
+                t10Id,
+                TitleConstants.GravityCodeName,
+                GiftIdentityAntecedent.T10Id,
+                startDate,
+                endDate).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }

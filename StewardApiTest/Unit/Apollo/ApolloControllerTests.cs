@@ -943,9 +943,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(xuid, startDate, endDate).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -963,9 +965,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(groupId).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(groupId, startDate, endDate).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1039,7 +1043,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<ApolloGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.ApolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<ApolloGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.ApolloServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<LspGroup>>());
-                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
+                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }
 

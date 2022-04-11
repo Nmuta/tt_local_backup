@@ -246,16 +246,46 @@ export class SunriseService {
   }
 
   /** Gets Gift history by a XUID. */
-  public getGiftHistoryByXuid$(xuid: BigNumber): Observable<SunriseGiftHistory[]> {
+  public getGiftHistoryByXuid$(
+    xuid: BigNumber,
+    startDate?: DateTime,
+    endDate?: DateTime,
+  ): Observable<SunriseGiftHistory[]> {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate.toISO());
+    }
+
+    if (endDate) {
+      params = params.set('endDate', endDate.toISO());
+    }
+
     return this.apiService.getRequest$<SunriseGiftHistory[]>(
       `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+      params,
     );
   }
 
   /** Gets Gift history by a LSP group ID. */
-  public getGiftHistoryByLspGroup$(lspGroupId: BigNumber): Observable<SunriseGiftHistory[]> {
+  public getGiftHistoryByLspGroup$(
+    lspGroupId: BigNumber,
+    startDate?: DateTime,
+    endDate?: DateTime,
+  ): Observable<SunriseGiftHistory[]> {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate.toISO());
+    }
+
+    if (endDate) {
+      params = params.set('endDate', endDate.toISO());
+    }
+
     return this.apiService.getRequest$<SunriseGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+      params,
     );
   }
 

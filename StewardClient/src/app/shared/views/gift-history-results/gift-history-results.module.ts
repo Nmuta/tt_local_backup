@@ -29,6 +29,7 @@ import { GravityGiftHistoryResultsCompactComponent } from './gift-history-result
 import { SteelheadGiftHistoryResultsCompactComponent } from './gift-history-results-compact/steelhead/steelhead-gift-history-results-compact.component';
 import { SunriseGiftHistoryResultsCompactComponent } from './gift-history-results-compact/sunrise/sunrise-gift-history-results-compact.component';
 import { WoodstockGiftHistoryResultsCompactComponent } from './gift-history-results-compact/woodstock/woodstock-gift-history-results-compact.component';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
@@ -66,6 +67,7 @@ import { WoodstockGiftHistoryResultsCompactComponent } from './gift-history-resu
     MonitorActionModule,
     MatButtonModule,
     RouterModule,
+    StandardDateModule,
   ],
   exports: [
     WoodstockGiftHistoryResultsComponent,

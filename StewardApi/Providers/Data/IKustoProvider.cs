@@ -51,7 +51,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Gets gift history.
         /// </summary>
-        Task<IList<GiftHistory>> GetGiftHistoryAsync(string playerId, string title, string endpoint);
+        Task<IList<GiftHistory>> GetGiftHistoryAsync(
+            string playerId,
+            string title,
+            string endpoint,
+            DateTimeOffset? startDate,
+            DateTimeOffset? endDate);
 
         /// <summary>
         ///     Gets ban history.

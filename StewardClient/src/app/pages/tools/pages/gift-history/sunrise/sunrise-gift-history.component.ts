@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { Select, Store } from '@ngxs/store';
@@ -15,6 +15,13 @@ import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { SunriseMasterInventory } from '@models/sunrise';
 import BigNumber from 'bignumber.js';
+import { FormControl } from '@angular/forms';
+import { DateTimeRange } from '@models/datetime-range';
+import { DateTime } from 'luxon';
+import { DATE_TIME_TOGGLE_OPTIONS } from '../gift-history-defaults';
+import { HCI } from '@environments/environment';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { DateRangePickerFormValue } from '@components/datetime-range-picker/date-range-picker/date-range-picker.component';
 
 /** The gift history page for the Navbar app. */
 @Component({
@@ -36,6 +43,18 @@ export class SunriseGiftHistoryComponent
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;
 
+  public dateRangeToggleOptions = DATE_TIME_TOGGLE_OPTIONS;
+  public formControls = {
+    dateRange: new FormControl({
+      value: {
+        start: DateTime.local().minus({ days: 7 }),
+        end: DateTime.local(),
+      } as DateRangePickerFormValue,
+      disabled: true,
+    }),
+  };
+  public selectedDateTime: DateTimeRange;
+
   constructor(private readonly store: Store) {
     super();
   }
@@ -51,6 +70,17 @@ export class SunriseGiftHistoryComponent
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
         this.selectedPlayer = first(this.selectedPlayerIdentities);
+      });
+
+    this.formControls.dateRange.valueChanges
+      .pipe(
+        debounceTime(HCI.TypingToAutoSearchDebounceMillis),
+        filter(() => !!this.selectedDateTime), // Undefined when toggle is off
+        filter(value => !!value.start && !!value.end),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(value => {
+        this.selectedDateTime = value;
       });
   }
 
@@ -73,6 +103,17 @@ export class SunriseGiftHistoryComponent
   /** Called when a player inventory is selected and found. */
   public onInventoryFound(inventory: SunriseMasterInventory): void {
     this.selectedPlayerInventory = inventory;
+  }
+
+  /** Logic when datetime filter toggle is clicked. */
+  public toggleDatetimeFilter(toggleEvent: MatSlideToggleChange): void {
+    this.selectedDateTime = toggleEvent.checked ? this.formControls.dateRange.value : undefined;
+
+    if (toggleEvent.checked) {
+      this.formControls.dateRange.enable();
+    } else {
+      this.formControls.dateRange.disable();
+    }
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

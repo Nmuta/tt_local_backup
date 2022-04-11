@@ -14,6 +14,18 @@
           </mat-card>
         </mat-tab>
       </mat-tab-group>
+      <mat-card class="date-range">
+        <help-popover-icon cardTitle="Gift History Date Filter">
+          <span>When disabled, all gift history will be displayed for the player or group.</span>
+        </help-popover-icon>
+        <mat-slide-toggle (change)="toggleDatetimeFilter($event)">
+          Filter by date range
+        </mat-slide-toggle>
+        <date-range-picker
+          [toggleOptions]="dateRangeToggleOptions"
+          [formControl]="formControls.dateRange"
+        ></date-range-picker>
+      </mat-card>
     </div>
 
     <div class="steward-layout-pane steward-layout-fill reference-inventory">
@@ -46,6 +58,8 @@
     <gravity-gift-history-results
       [selectedPlayer]="selectedPlayer"
       [usingPlayerIdentities]="matTabSelectedIndex === 0"
+      [startDate]="selectedDateTime?.start"
+      [endDate]="selectedDateTime?.end"
     >
     </gravity-gift-history-results>
   </div>

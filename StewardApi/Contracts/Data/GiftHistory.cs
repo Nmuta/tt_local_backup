@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
@@ -62,16 +63,27 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Makes a query for gift history that this model can read.
         /// </summary>
         #nullable enable
-        public static string MakeQuery(string playerId, string title, string endpoint1, string? endpoint2)
+        public static string MakeQuery(string playerId, string title, string endpoint1, string? endpoint2, DateTimeOffset? startDate, DateTimeOffset? endDate)
         {
+            var dateFilter = string.Empty;
+            if (startDate.HasValue)
+            {
+                dateFilter += $" and GiftSendDateUtc >= datetime({startDate.Value.ToString("o", CultureInfo.InvariantCulture)})";
+            }
+
+            if (endDate.HasValue)
+            {
+                dateFilter += $" and GiftSendDateUtc <= datetime({endDate.Value.ToString("o", CultureInfo.InvariantCulture)})";
+            }
+
             // TODO: Revert this in 30 days (on 2022-02-26) https://dev.azure.com/t10motorsport/Motorsport/_backlogs/backlog/LiveOps%20Tools/Product%20Backlog%20Items/?showParents=true
             if (!string.IsNullOrWhiteSpace(endpoint1) && !string.IsNullOrWhiteSpace(endpoint2))
             {
-                return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and (Endpoint == '{endpoint1}' or Endpoint == '{endpoint2}') | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
+                return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and (Endpoint == '{endpoint1}' or Endpoint == '{endpoint2}') {dateFilter} | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
             }
             else
             {
-                return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and Endpoint == '{endpoint1}' | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
+                return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and Endpoint == '{endpoint1}' {dateFilter} | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
             }
         }
         #nullable restore

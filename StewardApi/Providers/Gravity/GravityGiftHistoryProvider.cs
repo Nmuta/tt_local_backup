@@ -64,7 +64,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent)
+        public async Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(
+            string id,
+            string title,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            DateTimeOffset? startDate,
+            DateTimeOffset? endDate)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -73,7 +78,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             {
                 var playerId = $"{giftHistoryAntecedent}:{id}";
 
-                return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+                return await this.GetGiftHistoriesAsync(playerId, title, startDate, endDate).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -87,12 +92,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             }
         }
 
-        private async Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string playerId, string title)
+        private async Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(
+            string playerId,
+            string title,
+            DateTimeOffset? startDate,
+            DateTimeOffset? endDate)
         {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title, GravitySupportedEndpoint.Retail).ConfigureAwait(false);
+            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title, GravitySupportedEndpoint.Retail, startDate, endDate).ConfigureAwait(false);
             var results = new List<GravityGiftHistory>();
 
             foreach (var history in giftHistoryResult)

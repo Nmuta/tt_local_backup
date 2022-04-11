@@ -82,7 +82,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             string id,
             string title,
             GiftIdentityAntecedent giftHistoryAntecedent,
-            string endpoint)
+            string endpoint,
+            DateTimeOffset? startDate,
+            DateTimeOffset? endDate)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -92,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var playerId = $"{giftHistoryAntecedent}:{id}";
 
-                return await this.GetGiftHistoriesAsync(playerId, title, endpoint).ConfigureAwait(false);
+                return await this.GetGiftHistoriesAsync(playerId, title, endpoint, startDate, endDate).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -108,13 +110,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(
             string playerId,
             string title,
-            string endpoint)
+            string endpoint,
+            DateTimeOffset? startDate,
+            DateTimeOffset? endDate)
         {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title, endpoint)
+            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title, endpoint, startDate, endDate)
                 .ConfigureAwait(false);
             var results = new List<SunriseGiftHistory>();
 

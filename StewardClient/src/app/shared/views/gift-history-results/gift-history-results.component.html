@@ -56,7 +56,12 @@
 </mat-card>
 
 <ng-template #noHistoryFoundTemplate>
-  <span class="no-history-found">No gift history found.</span>
+  <span *ngIf="!usingDateFilters" class="no-history-found">No gift history found.</span>
+  <span *ngIf="usingDateFilters" class="no-history-found">
+    No gift history found between
+    <standard-absolute-time [timeUtc]="startDate"></standard-absolute-time> and
+    <standard-absolute-time [timeUtc]="endDate"></standard-absolute-time>
+  </span>
 </ng-template>
 
 <ng-template #monitorTemplate>

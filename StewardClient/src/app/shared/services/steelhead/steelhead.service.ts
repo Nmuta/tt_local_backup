@@ -143,16 +143,46 @@ export class SteelheadService {
   }
 
   /** Gets Gift history by a XUID. */
-  public getGiftHistoryByXuid$(xuid: BigNumber): Observable<SteelheadGiftHistory[]> {
+  public getGiftHistoryByXuid$(
+    xuid: BigNumber,
+    startDate?: DateTime,
+    endDate?: DateTime,
+  ): Observable<SteelheadGiftHistory[]> {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate.toISO());
+    }
+
+    if (endDate) {
+      params = params.set('endDate', endDate.toISO());
+    }
+
     return this.apiService.getRequest$<SteelheadGiftHistory[]>(
       `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+      params,
     );
   }
 
   /** Gets Gift history by a LSP Group. */
-  public getGiftHistoryByLspGroup$(lspGroupId: BigNumber): Observable<SteelheadGiftHistory[]> {
+  public getGiftHistoryByLspGroup$(
+    lspGroupId: BigNumber,
+    startDate?: DateTime,
+    endDate?: DateTime,
+  ): Observable<SteelheadGiftHistory[]> {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate.toISO());
+    }
+
+    if (endDate) {
+      params = params.set('endDate', endDate.toISO());
+    }
+
     return this.apiService.getRequest$<SteelheadGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+      params,
     );
   }
 

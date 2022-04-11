@@ -20,6 +20,8 @@ import {
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { HttpParams } from '@angular/common/http';
+import { DateTime } from 'luxon';
 
 /** Defines the gravity service. */
 @Injectable({
@@ -99,9 +101,24 @@ export class GravityService {
   }
 
   /** Gets Gift history by a Turn 10 ID. */
-  public getGiftHistoryByT10Id$(t10Id: string): Observable<GravityGiftHistory[]> {
+  public getGiftHistoryByT10Id$(
+    t10Id: string,
+    startDate?: DateTime,
+    endDate?: DateTime,
+  ): Observable<GravityGiftHistory[]> {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate.toISO());
+    }
+
+    if (endDate) {
+      params = params.set('endDate', endDate.toISO());
+    }
+
     return this.apiService.getRequest$<GravityGiftHistory[]>(
       `${this.basePath}/player/t10Id(${t10Id})/giftHistory`,
+      params,
     );
   }
 

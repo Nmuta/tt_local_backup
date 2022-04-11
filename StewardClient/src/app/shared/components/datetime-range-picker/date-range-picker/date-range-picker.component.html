@@ -1,0 +1,32 @@
+<div class="wrapper" [formGroup]="formGroup">
+  <section class="vertical">
+    <mat-form-field appearance="fill">
+      <mat-label>Date Range ({{ timezone }})</mat-label>
+      <mat-date-range-input formGroupName="dateRange" [rangePicker]="picker" [disabled]="disabled">
+        <input matStartDate formControlName="start" placeholder="Start date" />
+        <input matEndDate formControlName="end" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker (closed)="datePickerClosed()" #picker></mat-date-range-picker>
+      <mat-error *ngIf="formControls.dateRange.start.hasError('matStartDateInvalid')"
+        >Invalid start date</mat-error
+      >
+      <mat-error *ngIf="formControls.dateRange.end.hasError('matEndDateInvalid')"
+        >Invalid end date</mat-error
+      >
+      <mat-hint>Start date time uses start of day. End date time uses end of day.</mat-hint>
+    </mat-form-field>
+    <ng-container *ngIf="toggleOptions.length > 0">
+      <mat-button-toggle-group
+        aria-label="Quick date time selections"
+        [disabled]="disabled"
+        (change)="toggleOptionChange($event)"
+      >
+        <mat-button-toggle *ngFor="let option of toggleOptions" [value]="option">{{
+          option.name
+        }}</mat-button-toggle>
+        <mat-button-toggle checked #defaultToggle [value]="null">Custom</mat-button-toggle>
+      </mat-button-toggle-group>
+    </ng-container>
+  </section>
+</div>

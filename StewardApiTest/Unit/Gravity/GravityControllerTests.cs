@@ -473,9 +473,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Arrange.
             var controller = new Dependencies().Build();
             var t10Id = Fixture.Create<string>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(t10Id, startDate, endDate).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -492,13 +494,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.GetGiftHistoriesAsync(null).ConfigureAwait(false),
-                async () => await controller.GetGiftHistoriesAsync(TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.GetGiftHistoriesAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await controller.GetGiftHistoriesAsync(null, startDate, endDate).ConfigureAwait(false),
+                async () => await controller.GetGiftHistoriesAsync(TestConstants.Empty, startDate, endDate).ConfigureAwait(false),
+                async () => await controller.GetGiftHistoriesAsync(TestConstants.WhiteSpace, startDate, endDate).ConfigureAwait(false)
             };
 
             // Assert.
@@ -545,7 +549,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(Arg.Any<string>(), Arg.Any<Guid>(), Arg.Any<GravityGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<string>>()); ;
-                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
+                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
             }
 
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();

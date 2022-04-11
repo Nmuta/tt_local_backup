@@ -11,6 +11,7 @@ import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
+import { HttpParams } from '@angular/common/http';
 
 describe('ApolloService', () => {
   let injector: TestBed;
@@ -155,6 +156,7 @@ describe('ApolloService', () => {
 
   describe('Method: getGiftHistoryByXuid', () => {
     const expectedXuid = new BigNumber(123456789);
+    const params = new HttpParams();
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -164,6 +166,7 @@ describe('ApolloService', () => {
       service.getGiftHistoryByXuid$(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
+          params,
         );
         done();
       });
@@ -172,6 +175,7 @@ describe('ApolloService', () => {
 
   describe('Method: getGiftHistoryByLspGroup', () => {
     const expectedLspGroupId = new BigNumber(1234);
+    const params = new HttpParams();
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -181,6 +185,7 @@ describe('ApolloService', () => {
       service.getGiftHistoryByXuid$(expectedLspGroupId).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
+          params,
         );
         done();
       });

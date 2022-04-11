@@ -24,6 +24,7 @@ import {
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { makeItemList } from './helpers/make-item-list';
 import { NEGATIVE_ONE } from '@helpers/bignumbers';
+import { DateTime } from 'luxon';
 
 export type GiftHistoryResultsServiceContract = {
   getGiftHistoryByPlayer$: () => Observable<GiftHistoryResultUnion[]>;
@@ -43,6 +44,8 @@ export class GiftHistoryResultsComponent extends BaseComponent implements OnChan
   @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean; // TODO: This could be better named: usePlayerIdentities
   @Input() public gameTitle: GameTitle;
+  @Input() public startDate: DateTime;
+  @Input() public endDate: DateTime;
   @Output() public foundGiftHistoryList = new EventEmitter<GiftHistoryResultAndView[]>();
 
   public SENTINEL_VALUE = NEGATIVE_ONE;
@@ -55,6 +58,11 @@ export class GiftHistoryResultsComponent extends BaseComponent implements OnChan
   public giftHistoryDelay = 'Gift history data can take 5-10 minutes to appear after gifting.';
 
   private readonly getGiftHistory$ = new Subject<void>();
+
+  /** Returns whether date filters are being used. */
+  public get usingDateFilters(): boolean {
+    return !!this.startDate && !!this.endDate;
+  }
 
   constructor(private readonly humanizePipe: HumanizePipe) {
     super();

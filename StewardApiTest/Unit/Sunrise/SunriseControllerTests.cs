@@ -1178,9 +1178,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(xuid, startDate, endDate).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1198,9 +1200,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(groupId).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(groupId, startDate, endDate).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1987,7 +1991,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.StorefrontProvider.SetUGCFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
-                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
+                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
             }
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 

@@ -207,10 +207,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<SteelheadGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
+            async Task<IList<SteelheadGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint, startDate, endDate).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -225,14 +227,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
             var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetGiftHistoriesAsync(null, title, antecedent, endpoint).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, endpoint).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, endpoint).ConfigureAwait(false)
+                async () => await provider.GetGiftHistoriesAsync(null, title, antecedent, endpoint, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, endpoint, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, endpoint, startDate, endDate).ConfigureAwait(false)
             };
 
             // Assert.
@@ -250,14 +254,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
             var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetGiftHistoriesAsync(id, null, antecedent, endpoint).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.Empty, antecedent, endpoint).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.WhiteSpace, antecedent, endpoint).ConfigureAwait(false)
+                async () => await provider.GetGiftHistoriesAsync(id, null, antecedent, endpoint, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.Empty, antecedent, endpoint, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.WhiteSpace, antecedent, endpoint, startDate, endDate).ConfigureAwait(false)
             };
 
             // Assert.

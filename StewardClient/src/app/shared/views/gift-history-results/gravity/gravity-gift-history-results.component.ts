@@ -4,6 +4,7 @@ import { LspGroup } from '@models/lsp-group';
 import { GravityService } from '@services/gravity';
 import { GiftHistoryResultsServiceContract } from '../gift-history-results.component';
 import { GameTitle } from '@models/enums';
+import { DateTime } from 'luxon';
 
 /** Retreives and displays Gravity Gift history by XUID. */
 @Component({
@@ -14,13 +15,16 @@ export class GravityGiftHistoryResultsComponent {
   @Input() public selectedPlayer: IdentityResultBeta;
   @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
+  @Input() public startDate: DateTime;
+  @Input() public endDate: DateTime;
 
   public service: GiftHistoryResultsServiceContract;
   public gameTitle = GameTitle.Street;
 
   constructor(gravity: GravityService) {
     this.service = {
-      getGiftHistoryByPlayer$: () => gravity.getGiftHistoryByT10Id$(this.selectedPlayer.t10Id),
+      getGiftHistoryByPlayer$: () =>
+        gravity.getGiftHistoryByT10Id$(this.selectedPlayer.t10Id, this.startDate, this.endDate),
     };
   }
 }

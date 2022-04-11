@@ -203,9 +203,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
-            async Task<IList<GravityGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent).ConfigureAwait(false);
+            async Task<IList<GravityGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent, startDate, endDate).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -220,13 +222,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetGiftHistoriesAsync(null, title, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent).ConfigureAwait(false)
+                async () => await provider.GetGiftHistoriesAsync(null, title, antecedent, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, startDate, endDate).ConfigureAwait(false)
             };
 
             // Assert.
@@ -244,13 +248,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var startDate = Fixture.Create<DateTimeOffset>();
+            var endDate = startDate.AddDays(10);
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetGiftHistoriesAsync(id, null, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.Empty, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.WhiteSpace, antecedent).ConfigureAwait(false)
+                async () => await provider.GetGiftHistoriesAsync(id, null, antecedent, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.Empty, antecedent, startDate, endDate).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.WhiteSpace, antecedent, startDate, endDate).ConfigureAwait(false)
             };
 
             // Assert.

@@ -20,16 +20,14 @@ import {
   KustoFunctionComponent,
   KustoFunctionOptions,
 } from '../kusto-function/kusto-function.component';
+import { DatetimeRangePickerFormValue } from '@components/datetime-range-picker/datetime-range-picker.component';
 
 export interface KustoDataActivityOptions {
   name: string;
   table: string;
   database: string;
   query: KustoFunctionOptions;
-  dateRange: {
-    start: DateTime;
-    end: DateTime;
-  };
+  dateRange: DatetimeRangePickerFormValue;
   maximumExecutionTimeInMinutes: number;
   executionIntervalInMinutes: number;
   executionDelayInMinutes: number;

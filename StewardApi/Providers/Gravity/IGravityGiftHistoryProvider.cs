@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
@@ -23,6 +24,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Gets gift histories.
         /// </summary>
-        Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent);
+        Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(
+            string id,
+            string title,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            DateTimeOffset? startDate,
+            DateTimeOffset? endDate);
     }
 }

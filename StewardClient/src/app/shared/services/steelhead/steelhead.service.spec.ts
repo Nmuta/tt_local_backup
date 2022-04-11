@@ -160,6 +160,7 @@ describe('SteelheadService', () => {
 
   describe('Method: getGiftHistoryByXuid$', () => {
     const expectedXuid = new BigNumber(123456789);
+    const params = new HttpParams();
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -169,6 +170,7 @@ describe('SteelheadService', () => {
       service.getGiftHistoryByXuid$(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
+          params,
         );
         done();
       });
@@ -177,6 +179,7 @@ describe('SteelheadService', () => {
 
   describe('Method: getGiftHistoryByLspGroup', () => {
     const expectedLspGroupId = new BigNumber(1234);
+    const params = new HttpParams();
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -186,6 +189,7 @@ describe('SteelheadService', () => {
       service.getGiftHistoryByXuid$(expectedLspGroupId).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
+          params,
         );
         done();
       });

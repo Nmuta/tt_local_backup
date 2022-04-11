@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GravityGift } from '@models/gravity';
+import { HttpParams } from '@angular/common/http';
 
 describe('service: GravityService', () => {
   let injector: TestBed;
@@ -149,6 +150,7 @@ describe('service: GravityService', () => {
 
   describe('Method: getGiftHistoryByT10Id', () => {
     let expectedGiftT10Id;
+    const params = new HttpParams();
 
     beforeEach(() => {
       expectedGiftT10Id = '1234t10Id6789';
@@ -159,6 +161,7 @@ describe('service: GravityService', () => {
       service.getGiftHistoryByT10Id$(expectedGiftT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/t10Id(${expectedGiftT10Id})/giftHistory`,
+          params,
         );
         done();
       });
