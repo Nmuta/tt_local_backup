@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import faker from '@faker-js/faker';
-import { fakePlayerUGCItem, PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCFeaturedStatus } from '@models/ugc-featured-status';
-import { UGCType } from '@models/ugc-filters';
+import { fakePlayerUgcItem, PlayerUgcItem } from '@models/player-ugc-item';
+import { UgcFeaturedStatus } from '@models/ugc-featured-status';
+import { UgcType } from '@models/ugc-filters';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime, Duration } from 'luxon';
@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 import { WoodstockFeatureUGCModalComponent } from './woodstock-feature-ugc-modal.component';
 
 describe('WoodstockFeatureUGCModalComponent', () => {
-  const model: PlayerUGCItem = fakePlayerUGCItem();
+  const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<WoodstockFeatureUGCModalComponent>;
   let component: WoodstockFeatureUGCModalComponent;
@@ -47,10 +47,10 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     mockMatDialogRef.close = jasmine.createSpy('close');
     mockMatDialogRef.beforeClosed = jasmine.createSpy('beforeClosed').and.returnValue(of());
 
-    mockWoodstockService.getPlayerUGCItem = jasmine
+    mockWoodstockService.getPlayerUgcItem = jasmine
       .createSpy('setUGCItemFeatureStatus')
       .and.returnValue(of(null));
-    mockWoodstockService.setUGCItemFeatureStatus = jasmine
+    mockWoodstockService.setUgcItemFeatureStatus = jasmine
       .createSpy('setUGCItemFeatureStatus')
       .and.returnValue(of());
   });
@@ -60,7 +60,7 @@ describe('WoodstockFeatureUGCModalComponent', () => {
   });
 
   describe('Method: featureUGC', () => {
-    const item = fakePlayerUGCItem();
+    const item = fakePlayerUgcItem();
 
     beforeEach(() => {
       component.setFeaturedStatus$ = jasmine
@@ -101,11 +101,11 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     it('should call WoodstockService.setUGCItemFeatureStatus() with correct params', () => {
       component.setFeaturedStatus$(itemId, expireDate);
 
-      expect(mockWoodstockService.setUGCItemFeatureStatus).toHaveBeenCalledWith({
+      expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
         expiry: expireDuration,
-      } as UGCFeaturedStatus);
+      } as UgcFeaturedStatus);
     });
   });
 
@@ -117,21 +117,21 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     it('should call WoodstockService.setUGCItemFeatureStatus() with correct params', () => {
       component.deleteFeaturedStatus$(itemId);
 
-      expect(mockWoodstockService.setUGCItemFeatureStatus).toHaveBeenCalledWith({
+      expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: false,
-      } as UGCFeaturedStatus);
+      } as UgcFeaturedStatus);
     });
   });
 
   describe('Method: getUGCItem$', () => {
     const itemId = faker.datatype.uuid().toString();
-    const type = UGCType.Livery;
+    const type = UgcType.Livery;
 
     it('should call WoodstockService.getPlayerUGCItem() with correct params', () => {
       component.getUGCItem$(itemId, type);
 
-      expect(mockWoodstockService.getPlayerUGCItem).toHaveBeenCalledWith(itemId, type);
+      expect(mockWoodstockService.getPlayerUgcItem).toHaveBeenCalledWith(itemId, type);
     });
   });
 });

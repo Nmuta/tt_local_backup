@@ -12,12 +12,12 @@
 
 <mat-dialog-content>
   <ul>
-    <li><b>Id: </b> {{ ugcItem.guidId }}</li>
+    <li><b>Id: </b> {{ ugcItem.id }}</li>
     <li><b>Type: </b> {{ ugcItem.type }}</li>
     <li><b>Description: </b> {{ ugcItem.carDescription }}</li>
-    <li><b>Owner: </b> {{ ugcItem.owner }}</li>
+    <li><b>Owner: </b> {{ ugcItem.ownerXuid }}</li>
   </ul>
-  <img #modelImage [src]="ugcItem.thumbnailImageOneBase64" />
+  <img #modelImage [src]="ugcItem.thumbnailOneImageBase64" />
 
   <ng-container *ngIf="!postMonitor?.isActive && !postMonitor?.status?.error; else failstate">
     <form [formGroup]="formGroup">

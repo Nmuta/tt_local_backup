@@ -17,13 +17,13 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { LuxonModule } from 'luxon-angular';
 import { UGCFiltersModule } from './components/ugc-filters/ugc-filters.module';
 import { MatDividerModule } from '@angular/material/divider';
-import { WoodstockPlayerUGCComponent } from './woodstock/woodstock-player-ugc.component';
+import { WoodstockPlayerUgcComponent } from './woodstock/woodstock-player-ugc.component';
 import { FeatureUGCModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 import { UGCTableModule } from './components/ugc-table/ugc-table.module';
 
 /** Display for player ugc. */
 @NgModule({
-  declarations: [SunrisePlayerUGCComponent, WoodstockPlayerUGCComponent],
+  declarations: [SunrisePlayerUGCComponent, WoodstockPlayerUgcComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -46,6 +46,6 @@ import { UGCTableModule } from './components/ugc-table/ugc-table.module';
     MatDividerModule,
     UGCTableModule,
   ],
-  exports: [SunrisePlayerUGCComponent, WoodstockPlayerUGCComponent],
+  exports: [SunrisePlayerUGCComponent, WoodstockPlayerUgcComponent],
 })
 export class PlayerUGCModule {}

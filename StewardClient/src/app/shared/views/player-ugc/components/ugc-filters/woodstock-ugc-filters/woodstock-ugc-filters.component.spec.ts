@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WoodstockUGCFiltersComponent } from './woodstock-ugc-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { UGCAccessLevel, UGCFilters, UGCOrderBy, UGCType } from '@models/ugc-filters';
+import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { DetailedCar } from '@models/detailed-car';
 import { WoodstockDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
@@ -54,13 +54,13 @@ describe('WoodstockUGCFiltersComponent', () => {
   describe('Method: searchFilters', () => {
     let carInput: DetailedCar;
     const testUgcFilters = {
-      type: UGCType.Livery,
+      type: UgcType.Livery,
       carId: fakeBigNumber(),
       makeId: fakeBigNumber(),
       keyword: faker.random.word(),
-      accessLevel: UGCAccessLevel.Any,
-      orderBy: UGCOrderBy.CreatedDateDesc,
-    } as UGCFilters;
+      accessLevel: UgcAccessLevel.Any,
+      orderBy: UgcOrderBy.CreatedDateDesc,
+    } as UgcFilters;
 
     beforeEach(() => {
       component.changes.emit = jasmine.createSpy('changes.emit');
@@ -81,7 +81,7 @@ describe('WoodstockUGCFiltersComponent', () => {
           keyword: testUgcFilters.keyword,
           accessLevel: testUgcFilters.accessLevel,
           orderBy: testUgcFilters.orderBy,
-        } as UGCFilters);
+        } as UgcFilters);
       });
     });
 
@@ -99,7 +99,7 @@ describe('WoodstockUGCFiltersComponent', () => {
           keyword: testUgcFilters.keyword,
           accessLevel: testUgcFilters.accessLevel,
           orderBy: testUgcFilters.orderBy,
-        } as UGCFilters);
+        } as UgcFilters);
       });
     });
 
@@ -118,7 +118,7 @@ describe('WoodstockUGCFiltersComponent', () => {
           keyword: testUgcFilters.keyword,
           accessLevel: testUgcFilters.accessLevel,
           orderBy: testUgcFilters.orderBy,
-        } as UGCFilters);
+        } as UgcFilters);
       });
     });
   });

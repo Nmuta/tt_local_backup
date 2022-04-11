@@ -273,7 +273,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             // TODO: Log gift to gift history
             var xuids = groupGift.Xuids.ToArray();
-            var result = await this.woodstockService.SendCarLiveryAsync(xuids, livery.GuidId, endpoint).ConfigureAwait(false);
+            var result = await this.woodstockService.SendCarLiveryAsync(xuids, livery.Id, endpoint).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -303,7 +303,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         Endpoint = endpoint,
                         CreatedDateUtc = DateTime.UtcNow,
                         ExpireDateUtc = createdDate.AddYears(10),
-                        Metadata = $"{livery.GuidId}|{livery.CarId}|{livery.Title}",
+                        Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
                     };
 
                     await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -335,7 +335,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             try
             {
                 // TODO: Log gift to gift history
-                var response = await this.woodstockService.SendCarLiveryAsync(groupId, livery.GuidId, endpoint).ConfigureAwait(false);
+                var response = await this.woodstockService.SendCarLiveryAsync(groupId, livery.Id, endpoint).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)
@@ -347,7 +347,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 if (!notificationId.HasValue)
                 {
-                    throw new UnknownFailureStewardException($"Failed to get notification id from gifted livery. LSP Group: {groupId}. Livery Id: {livery.GuidId}");
+                    throw new UnknownFailureStewardException($"Failed to get notification id from gifted livery. LSP Group: {groupId}. Livery Id: {livery.Id}");
                 }
 
                 var createdDate = DateTime.UtcNow;
@@ -366,7 +366,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
                     ExpireDateUtc = createdDate.AddYears(10),
-                    Metadata = $"{livery.GuidId}|{livery.CarId}|{livery.Title}"
+                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(

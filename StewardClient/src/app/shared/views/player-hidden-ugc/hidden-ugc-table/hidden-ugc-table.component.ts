@@ -17,7 +17,7 @@ export interface HiddenUgcServiceContract {
     fileType: HideableUgcFileType,
     ugcId: GuidLikeString,
   ): Observable<void>;
-  getPlayerHiddenUGCByXuid$(xuid: BigNumber): Observable<HideableUgc[]>;
+  getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]>;
 }
 
 /** Extended type from HideableUgc. */
@@ -81,7 +81,7 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
     this.getMonitor = this.getMonitor.repeat();
 
     this.service
-      .getPlayerHiddenUGCByXuid$(this.identity.xuid)
+      .getPlayerHiddenUgcByXuid$(this.identity.xuid)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(hiddenUgc => {
         const ugcItemsToProcess: HideableUgcTableEntries[] = hiddenUgc;

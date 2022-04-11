@@ -259,7 +259,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var result = await this.sunriseService.SendCarLiveryAsync(groupGift.Xuids.ToArray(), livery.GuidId, endpoint).ConfigureAwait(false);
+            var result = await this.sunriseService.SendCarLiveryAsync(groupGift.Xuids.ToArray(), livery.Id, endpoint).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -289,7 +289,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         Endpoint = endpoint,
                         CreatedDateUtc = DateTime.UtcNow,
                         ExpireDateUtc = createdDate.AddYears(10),
-                        Metadata = $"{livery.GuidId}|{livery.CarId}|{livery.Title}",
+                        Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
                     };
 
                     await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -319,7 +319,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             try
             {
                 // TODO: Log gift to gift history
-                var response = await this.sunriseService.SendCarLiveryAsync(groupId, livery.GuidId, endpoint).ConfigureAwait(false);
+                var response = await this.sunriseService.SendCarLiveryAsync(groupId, livery.Id, endpoint).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)
@@ -331,7 +331,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 if (!notificationId.HasValue)
                 {
-                    throw new UnknownFailureStewardException($"Failed to get notification id from gifted livery. LSP Group: {groupId}. Livery Id: {livery.GuidId}");
+                    throw new UnknownFailureStewardException($"Failed to get notification id from gifted livery. LSP Group: {groupId}. Livery Id: {livery.Id}");
                 }
 
                 var createdDate = DateTime.UtcNow;
@@ -350,7 +350,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
                     ExpireDateUtc = createdDate.AddYears(10),
-                    Metadata = $"{livery.GuidId}|{livery.CarId}|{livery.Title}"
+                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(

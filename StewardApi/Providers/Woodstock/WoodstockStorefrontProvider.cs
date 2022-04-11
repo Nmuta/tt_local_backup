@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint)
+        public async Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint, bool includeThumbnails = false)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));
             filters.ShouldNotBeNull(nameof(filters));
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
             var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
-            var results = await this.woodstockService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint).ConfigureAwait(false);
+            var results = await this.woodstockService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
             return this.mapper.Map<IList<UgcItem>>(results.result);
         }

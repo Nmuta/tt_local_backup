@@ -16,7 +16,7 @@ import { SunriseService } from './sunrise.service';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
 import { DateTime } from 'luxon';
-import { UGCType } from '@models/ugc-filters';
+import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { Gift, GroupGift } from '@models/gift';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
@@ -492,7 +492,7 @@ describe('SunriseService', () => {
 
   describe('Method: getPlayerUGCByXuid$', () => {
     const xuid = fakeXuid();
-    const contentType = UGCType.Livery;
+    const contentType = UgcType.Livery;
     let httpParams = new HttpParams();
 
     beforeEach(() => {
@@ -501,7 +501,7 @@ describe('SunriseService', () => {
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerUGCByXuid$(xuid, contentType).subscribe(() => {
+      service.getPlayerUgcByXuid$(xuid, contentType).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/storefront/xuid(${xuid})`,
           httpParams,
@@ -513,7 +513,7 @@ describe('SunriseService', () => {
 
   describe('Method: getPlayerUGCByShareCode$', () => {
     const shareCode = faker.random.word();
-    const contentType = UGCType.Livery;
+    const contentType = UgcType.Livery;
     let httpParams = new HttpParams();
 
     beforeEach(() => {
@@ -522,7 +522,7 @@ describe('SunriseService', () => {
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerUGCByShareCode$(shareCode, contentType).subscribe(() => {
+      service.getPlayerUgcByShareCode$(shareCode, contentType).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/storefront/sharecode(${shareCode})`,
           httpParams,

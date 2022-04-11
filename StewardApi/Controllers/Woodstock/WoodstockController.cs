@@ -720,7 +720,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
                 new UGCFilters(ulong.MaxValue, shareCode),
-                endpoint);
+                endpoint,
+                includeThumbnails: true);
             var getCars = this.itemsProvider.GetCarsAsync();
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);

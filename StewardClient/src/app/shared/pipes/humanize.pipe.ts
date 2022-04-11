@@ -6,7 +6,7 @@ import { isString } from 'lodash';
  * Based on https://stackoverflow.com/questions/48888648/split-camel-case-string-with-space-using-angularjs-filter
  */
 export function humanize(value: string): string {
-  if (!isString(value)) {
+  if (!value || !isString(value)) {
     return value;
   }
 

@@ -4,13 +4,13 @@ import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { PlayerUGCItem } from '@models/player-ugc-item';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import {
   DefaultUGCFilters,
-  UGCAccessLevel,
-  UGCFilters,
-  UGCOrderBy,
-  UGCType,
+  UgcAccessLevel,
+  UgcFilters,
+  UgcOrderBy,
+  UgcType as UgcType,
 } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep, orderBy } from 'lodash';
@@ -25,18 +25,18 @@ export type UGCLookup = {
 @Component({
   template: '',
 })
-export abstract class PlayerUGCBaseComponent
+export abstract class PlayerUgcBaseComponent
   extends BaseComponent
   implements OnChanges, AfterViewInit
 {
   @Input() public usingIdentities?: boolean;
   @Input() public identity?: IdentityResultUnion;
   @Input() public shareCode?: string;
-  @Input() public contentType?: UGCType;
+  @Input() public contentType?: UgcType;
 
   public useCondensedTableView: boolean;
-  public ugcContent: PlayerUGCItem[] = [];
-  public filteredUgcContent: PlayerUGCItem[] = [];
+  public ugcContent: PlayerUgcItem[] = [];
+  public filteredUgcContent: PlayerUgcItem[] = [];
   public searchUGC$ = new Subject<void>();
   public getMonitor = new ActionMonitor('GET UGC Content');
   public ugcFilters = DefaultUGCFilters;
@@ -58,7 +58,7 @@ export abstract class PlayerUGCBaseComponent
             return of([]);
           }
 
-          return this.getPlayerUGC$(this.contentType).pipe(
+          return this.getPlayerUgc$(this.contentType).pipe(
             this.getMonitor.monitorSingleFire(),
             catchError(() => EMPTY),
           );
@@ -72,7 +72,7 @@ export abstract class PlayerUGCBaseComponent
   }
 
   /** Searches player UGC content. */
-  public abstract getPlayerUGC$(contentType: UGCType): Observable<PlayerUGCItem[]>;
+  public abstract getPlayerUgc$(contentType: UgcType): Observable<PlayerUgcItem[]>;
 
   /** Angular on changes hook. */
   public ngOnChanges(): void {
@@ -85,12 +85,12 @@ export abstract class PlayerUGCBaseComponent
   }
 
   /** Logic when UGC filters have changed. */
-  public changeUGCFilters($event: UGCFilters): void {
+  public changeUGCFilters($event: UgcFilters): void {
     this.ugcFilters = $event;
     this.filteredUgcContent = this.filterUgcContent();
   }
 
-  private filterUgcContent(): PlayerUGCItem[] {
+  private filterUgcContent(): PlayerUgcItem[] {
     let filteredContent = cloneDeep(this.ugcContent);
 
     if (!!this.ugcFilters?.carId) {
@@ -109,22 +109,22 @@ export abstract class PlayerUGCBaseComponent
       );
     }
 
-    if (this.ugcFilters.accessLevel === UGCAccessLevel.Public) {
+    if (this.ugcFilters.accessLevel === UgcAccessLevel.Public) {
       filteredContent = filteredContent.filter(x => x.isPublic);
     }
 
-    if (this.ugcFilters.accessLevel === UGCAccessLevel.Private) {
+    if (this.ugcFilters.accessLevel === UgcAccessLevel.Private) {
       filteredContent = filteredContent.filter(x => !x.isPublic);
     }
 
     switch (this.ugcFilters.orderBy) {
-      case UGCOrderBy.CreatedDateAsc:
+      case UgcOrderBy.CreatedDateAsc:
         return orderBy(filteredContent, content => content.createdDateUtc, 'asc');
-      case UGCOrderBy.CreatedDateDesc:
+      case UgcOrderBy.CreatedDateDesc:
         return orderBy(filteredContent, content => content.createdDateUtc, 'desc');
-      case UGCOrderBy.PopularityScoreAsc:
+      case UgcOrderBy.PopularityScoreAsc:
         return orderBy(filteredContent, content => content.popularityBucket, 'asc');
-      case UGCOrderBy.PopularityScoreDesc:
+      case UgcOrderBy.PopularityScoreDesc:
         return orderBy(filteredContent, content => content.popularityBucket, 'desc');
       default:
         return filteredContent;

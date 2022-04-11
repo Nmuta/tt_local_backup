@@ -19,6 +19,9 @@ export class StandardCopyComponent extends BaseComponent implements AfterViewIni
   @ViewChild('content', { read: ElementRef, static: true }) content: ElementRef;
   @ViewChild('tooltip', { static: true }) tooltip: MatTooltip;
 
+  /** When true, suppresses errors. */
+  @Input() public noError = false;
+
   /** Input. Override copied text. */
   @Input() get text(): string {
     return this.inputText;
@@ -48,13 +51,13 @@ export class StandardCopyComponent extends BaseComponent implements AfterViewIni
 
   /** Angular lifecycle hook. */
   public ngAfterViewInit(): void {
-    if (!this.nativeText) {
+    if (!this.nativeText && !this.noError) {
       throw new Error(
         'No child element. This component is designed to wrap a child element/text and copy on hover.',
       );
     }
 
-    if (!this.tooltip) {
+    if (!this.tooltip && !this.noError) {
       throw new Error('Tooltip component not found. Something is wrong.');
     }
 
@@ -97,6 +100,8 @@ export class StandardCopyComponent extends BaseComponent implements AfterViewIni
       return;
     }
 
-    throw new Error('No text found to copy');
+    if (!this.noError) {
+      throw new Error('No text found to copy');
+    }
   }
 }

@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UGCComponent } from './ugc.component';
+import { UgcComponent } from './ugc.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UGCRoutingModule } from './ugc.routing';
-import { SunriseUGCComponent } from './pages/sunrise/sunrise-ugc.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,7 +22,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { WoodstockUGCComponent } from './pages/woodstock/woodstock-ugc.component';
 import { PlayerUGCModule } from '@views/player-ugc/player-ugc.module';
 import { MatIconModule } from '@angular/material/icon';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
@@ -31,7 +29,7 @@ import { PastableSingleInputModule } from '@views/pastable-single-input/pastable
 
 /** Routed module for ugc users. */
 @NgModule({
-  declarations: [UGCComponent, SunriseUGCComponent, WoodstockUGCComponent],
+  declarations: [UgcComponent],
   imports: [
     CommonModule,
     MatToolbarModule,

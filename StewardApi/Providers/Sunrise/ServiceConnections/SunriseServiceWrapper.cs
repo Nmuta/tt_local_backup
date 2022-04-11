@@ -485,11 +485,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ForzaUGCSearchRequest filters,
             ForzaUGCContentType contentType,
-            string endpoint)
+            string endpoint,
+            bool includeThumbnails = false)
         {
             var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.SearchUGC(filters, contentType, false, 1_000).ConfigureAwait(false);
+            return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, 1_000).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

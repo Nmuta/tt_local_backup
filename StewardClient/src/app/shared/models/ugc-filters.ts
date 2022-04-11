@@ -1,37 +1,37 @@
 import BigNumber from 'bignumber.js';
 
-export interface UGCFilters {
+export interface UgcFilters {
   carId: BigNumber;
   makeId: BigNumber;
   keyword: string;
-  accessLevel: UGCAccessLevel;
-  orderBy: UGCOrderBy;
+  accessLevel: UgcAccessLevel;
+  orderBy: UgcOrderBy;
 }
 
-export enum UGCAccessLevel {
+export enum UgcAccessLevel {
   Any = 'Any',
   Public = 'Public',
   Private = 'Private',
 }
 
-export enum UGCType {
+export enum UgcType {
   Unknown = 'Unknown',
   Livery = 'Livery',
   Photo = 'Photo',
   Tune = 'Tune',
 }
 
-export enum UGCOrderBy {
+export enum UgcOrderBy {
   CreatedDateDesc = 'CreatedDateDesc',
   CreatedDateAsc = 'CreatedDateAsc',
   PopularityScoreDesc = 'PopularityScoreDesc',
   PopularityScoreAsc = 'PopularityScoreAsc',
 }
 
-export const DefaultUGCFilters: UGCFilters = {
+export const DefaultUGCFilters: UgcFilters = {
   makeId: undefined,
   carId: undefined,
   keyword: null,
-  accessLevel: UGCAccessLevel.Any,
-  orderBy: UGCOrderBy.CreatedDateDesc,
+  accessLevel: UgcAccessLevel.Any,
+  orderBy: UgcOrderBy.CreatedDateDesc,
 };

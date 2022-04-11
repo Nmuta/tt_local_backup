@@ -18,12 +18,14 @@ import { ModelDumpDatetimeTableComponent } from './model-dump-simple/model-dump-
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 import { ModelDumpHumanizeArrayTableComponent } from './model-dump-simple/model-dump-humanize-array-table/model-dump-humanize-array-table.component';
+import { ModelDumpImagesComponent } from './model-dump-images/model-dump-images.component';
 
 /** A collection of utilities for rapidly outputting a raw model onto a page. */
 @NgModule({
   declarations: [
     ModelDumpComponent,
     ModelDumpFlagsComponent,
+    ModelDumpImagesComponent,
     ModelDumpXuidsComponent,
     ModelDumpSimpleTableComponent,
     ModelDumpNumberTableComponent,
@@ -47,6 +49,7 @@ import { ModelDumpHumanizeArrayTableComponent } from './model-dump-simple/model-
   exports: [
     ModelDumpComponent,
     ModelDumpFlagsComponent,
+    ModelDumpImagesComponent,
     ModelDumpXuidsComponent,
     ModelDumpSimpleTableComponent,
     ModelDumpNumberTableComponent,

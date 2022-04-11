@@ -2,18 +2,17 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
-import { UGCType } from './ugc-filters';
+import { UgcType } from './ugc-filters';
 
 /** Interface for a player UGC item. */
-export interface PlayerUGCItem {
+export interface PlayerUgcItem {
   id: string;
-  guidId: string;
-  type: UGCType;
+  type: UgcType;
   gameTitle: BigNumber;
-  owner: BigNumber;
+  ownerXuid: BigNumber;
   popularityBucket: BigNumber;
-  thumbnailImageOneBase64: string;
-  thumbnailImageTwoBase64: string;
+  thumbnailOneImageBase64: string;
+  thumbnailTwoImageBase64: string;
   keywordIdOne: BigNumber;
   keywordIdTwo: BigNumber;
   carDescription: string;
@@ -36,17 +35,16 @@ export interface PlayerUGCItem {
 }
 
 /** Creates a fake player UGC item */
-export function fakePlayerUGCItem(): PlayerUGCItem {
+export function fakePlayerUgcItem(): PlayerUgcItem {
   const id = faker.datatype.uuid();
   return {
-    id: faker.datatype.uuid(),
-    guidId: id.toString(),
-    type: UGCType.Livery,
+    id: id.toString(),
+    type: UgcType.Livery,
     gameTitle: new BigNumber(0),
-    owner: fakeBigNumber(),
+    ownerXuid: fakeBigNumber(),
     popularityBucket: new BigNumber(0),
-    thumbnailImageOneBase64: faker.image.imageUrl(),
-    thumbnailImageTwoBase64: faker.image.imageUrl(),
+    thumbnailOneImageBase64: faker.image.imageUrl(),
+    thumbnailTwoImageBase64: faker.image.imageUrl(),
     keywordIdOne: new BigNumber(0),
     keywordIdTwo: new BigNumber(0),
     carDescription: faker.random.words(10),

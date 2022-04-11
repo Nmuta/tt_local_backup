@@ -1758,12 +1758,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             var unhiddenResult2 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
             var hiddenResult2 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
             Assert.IsTrue(hiddenResult2.Where(item => item.UgcId == liveryUgcId).ToList().Count > 0);
-            Assert.IsTrue(unhiddenResult2.Where(item => item.GuidId == liveryUgcId).ToList().Count == 0);
+            Assert.IsTrue(unhiddenResult2.Where(item => item.Id == liveryUgcId).ToList().Count == 0);
 
             await stewardClient.UnhideUGCAsync(xuid, "Livery", liveryUgcId);
             var unhiddenResult1 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
             var hiddenResult1 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
-            Assert.IsTrue(unhiddenResult1.Where(item => item.GuidId == liveryUgcId).ToList().Count > 0);
+            Assert.IsTrue(unhiddenResult1.Where(item => item.Id == liveryUgcId).ToList().Count > 0);
             Assert.IsTrue(hiddenResult1.Where(item => item.UgcId == liveryUgcId).ToList().Count == 0);
         }
 

@@ -1,5 +1,7 @@
 import { GameTitleCodeName } from '@models/enums';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 type Horizons = GameTitleCodeName.FH4 | GameTitleCodeName.FH5;
 type Motorsports = GameTitleCodeName.FM7 | GameTitleCodeName.FM8;
 type Everything = Horizons | Motorsports | GameTitleCodeName.Street;
@@ -14,7 +16,8 @@ export class TitleMemoryModel {
   public banning: EverythingSansStreet;
   public giftHistory: Everything;
   public userDetails: Everything | General;
-  public ugc: Newer;
+  public ugc: Horizons;
+  public ugcDetails: Horizons;
   public notifications: Horizons;
   public auctionBlocklist: Horizons;
   public auctionDetails: Horizons;

@@ -43,10 +43,10 @@ import { DetailedCar } from '@models/detailed-car';
 import { PlayerAuction } from '@models/player-auction';
 import { ProfileNote } from '@models/profile-note.model';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
-import { UGCType } from '@models/ugc-filters';
-import { PlayerUGCItem } from '@models/player-ugc-item';
+import { UgcType } from '@models/ugc-filters';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import { Gift, GroupGift } from '@models/gift';
-import { UGCFeaturedStatus } from '@models/ugc-featured-status';
+import { UgcFeaturedStatus } from '@models/ugc-featured-status';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { overrideSunriseEndpointKey } from '@helpers/override-endpoint-key';
 import { PlayerAuctionAction } from '@models/player-auction-action';
@@ -484,17 +484,17 @@ export class SunriseService {
   }
 
   /** Gets player UGC items by XUID. */
-  public getPlayerUGCByXuid$(xuid: BigNumber, contentType: UGCType): Observable<PlayerUGCItem[]> {
+  public getPlayerUgcByXuid$(xuid: BigNumber, contentType: UgcType): Observable<PlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.apiService.getRequest$<PlayerUGCItem[]>(
+    return this.apiService.getRequest$<PlayerUgcItem[]>(
       `${this.basePath}/storefront/xuid(${xuid})`,
       httpParams,
     );
   }
 
   /** Gets a player's hidden UGC item. */
-  public getPlayerHiddenUGCByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
+  public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
     return this.apiService.getRequest$<HideableUgc[]>(
       `${this.basePath}/storefront/xuid(${xuid})/hidden`,
     );
@@ -521,31 +521,31 @@ export class SunriseService {
   }
 
   /** Gets player UGC items by share code. */
-  public getPlayerUGCByShareCode$(
+  public getPlayerUgcByShareCode$(
     shareCode: string,
-    contentType: UGCType,
-  ): Observable<PlayerUGCItem[]> {
+    contentType: UgcType,
+  ): Observable<PlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.apiService.getRequest$<PlayerUGCItem[]>(
+    return this.apiService.getRequest$<PlayerUgcItem[]>(
       `${this.basePath}/storefront/sharecode(${shareCode})`,
       httpParams,
     );
   }
 
   /** Gets a player's UGC item.  */
-  public getPlayerUGCItem(id: string, ugcType: UGCType): Observable<PlayerUGCItem> {
-    if (ugcType === UGCType.Unknown) {
+  public getPlayerUgcItem(id: string, ugcType: UgcType): Observable<PlayerUgcItem> {
+    if (ugcType === UgcType.Unknown) {
       throw new Error(`Invalid UGC item type for lookup: ${ugcType}}`);
     }
 
-    return this.apiService.getRequest$<PlayerUGCItem>(
+    return this.apiService.getRequest$<PlayerUgcItem>(
       `${this.basePath}/storefront/${ugcType.toLowerCase()}(${id})`,
     );
   }
 
   /** Sets a UGC item's feature status.  */
-  public setUGCItemFeatureStatus(status: UGCFeaturedStatus): Observable<void> {
+  public setUgcItemFeatureStatus(status: UgcFeaturedStatus): Observable<void> {
     if (status.isFeatured && !status.expiry) {
       throw new Error('Cannot feature UGC item with an expiry duration.');
     }

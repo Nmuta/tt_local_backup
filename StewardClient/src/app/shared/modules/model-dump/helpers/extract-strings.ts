@@ -9,7 +9,10 @@ export function extractStrings(source: unknown): ExtractedObjectStrings {
   }
   const output: ExtractedObjectStrings = { all: [] };
   output.all = collectType<string>(source, v => isString(v));
-  output.ids = output.all.filter(v => v.key.endsWith('Id'));
-  output.other = output.all.filter(v => !v.key.endsWith('Id'));
+  output.ids = output.all.filter(v => v.key.toLowerCase().endsWith('id'));
+  output.base64 = output.all.filter(v => v.key.toLowerCase().includes('base64'));
+  output.other = output.all.filter(
+    v => !v.key.toLowerCase().endsWith('id') && !v.key.toLowerCase().includes('base64'),
+  );
   return output;
 }

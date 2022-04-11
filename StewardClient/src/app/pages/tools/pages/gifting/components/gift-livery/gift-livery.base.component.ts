@@ -10,7 +10,7 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { LspGroup } from '@models/lsp-group';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PlayerUGCItem } from '@models/player-ugc-item';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GiftReason } from '../gift-basket/gift-basket.base.component';
 import { HCI } from '@environments/environment';
@@ -50,7 +50,7 @@ export abstract class GiftLiveryBaseComponent<
   public giftResponse: GiftResponse<BigNumber>[];
 
   /** Gets the livery from form controls. */
-  public get livery(): PlayerUGCItem {
+  public get livery(): PlayerUgcItem {
     return this.formControls.livery.value;
   }
 
@@ -66,7 +66,7 @@ export abstract class GiftLiveryBaseComponent<
     super();
   }
 
-  public abstract getLivery$(liveryId: string): Observable<PlayerUGCItem>;
+  public abstract getLivery$(liveryId: string): Observable<PlayerUgcItem>;
   public abstract giftLiveryToPlayers$(
     liveryId: string,
     xuids: BigNumber[],
@@ -187,13 +187,13 @@ export abstract class GiftLiveryBaseComponent<
   private sendLiveryRequest$(): Observable<BackgroundJob<unknown> | GiftResponse<BigNumber>> {
     if (this.usingPlayerIdentities) {
       return this.giftLiveryToPlayers$(
-        this.livery.guidId,
+        this.livery.id,
         this.playerIdentities.map(identity => identity.xuid),
         this.formControls.giftReason.value,
       );
     } else {
       return this.giftLiveryToLspGroup$(
-        this.livery.guidId,
+        this.livery.id,
         this.lspGroup,
         this.formControls.giftReason.value,
       );

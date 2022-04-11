@@ -2,8 +2,8 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
+import { DefaultUGCFilters, UgcAccessLevel, UgcFilters, UgcOrderBy } from '@models/ugc-filters';
 import { DetailedCar } from '@models/detailed-car';
-import { DefaultUGCFilters, UGCAccessLevel, UGCFilters, UGCOrderBy } from '@models/ugc-filters';
 import BigNumber from 'bignumber.js';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
@@ -18,10 +18,10 @@ export type MakeModelFilterGroup = {
   template: '',
 })
 export abstract class UGCFiltersBaseComponent extends BaseComponent {
-  @Output() public changes = new EventEmitter<UGCFilters>();
+  @Output() public changes = new EventEmitter<UgcFilters>();
 
-  public accessLevelOptions = keys(UGCAccessLevel) as UGCAccessLevel[];
-  public orderByOptions = keys(UGCOrderBy) as UGCOrderBy[];
+  public accessLevelOptions = keys(UgcAccessLevel) as UgcAccessLevel[];
+  public orderByOptions = keys(UgcOrderBy) as UgcOrderBy[];
 
   public formControls = {
     makeModelInput: new FormControl(null),
@@ -58,7 +58,7 @@ export abstract class UGCFiltersBaseComponent extends BaseComponent {
       keyword: this.formControls.keyword.value,
       accessLevel: this.formControls.accessLevel.value,
       orderBy: this.formControls.orderBy.value,
-    } as UGCFilters);
+    } as UgcFilters);
   }
 
   /** Clears the keyword input and outputs the updated search filters */

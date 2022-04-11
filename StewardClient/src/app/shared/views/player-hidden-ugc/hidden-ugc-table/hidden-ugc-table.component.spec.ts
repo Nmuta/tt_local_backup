@@ -15,7 +15,7 @@ class TestHiddenUgcService implements HiddenUgcServiceContract {
   ): Observable<void> {
     return;
   }
-  getPlayerHiddenUGCByXuid$(_xuid: BigNumber): Observable<HideableUgc[]> {
+  getPlayerHiddenUgcByXuid$(_xuid: BigNumber): Observable<HideableUgc[]> {
     return;
   }
 }

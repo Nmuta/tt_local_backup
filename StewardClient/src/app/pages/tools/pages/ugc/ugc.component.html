@@ -1,15 +1,11 @@
-<mat-toolbar>
-  <a
-    *ngFor="let link of navbarRouterLinks"
-    [routerLink]="link.route"
-    mat-button
-    routerLinkActive="mat-stroked-button"
-    >{{ link.name }}
-    <endpoint-selection [titleCodeName]="link.codename"> </endpoint-selection>
-  </a>
-  <span class="spacer"></span>
-</mat-toolbar>
-
-<div class="content">
-  <router-outlet></router-outlet>
-</div>
+<p><b>This tool has been split.</b></p>
+<ul>
+  <li>
+    For player-specific lookup, including private and public items, use the
+    <a [routerLink]="['/app/tools/user-details/']">Player Details Tool UGC tab</a>
+  </li>
+  <li>
+    For single-item lookup, by sharecode or ID, private or public, use the
+    <a [routerLink]="['/app/tools/ugc-details/']">UGC Details Tool</a>
+  </li>
+</ul>

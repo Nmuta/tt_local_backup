@@ -524,11 +524,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ForzaUGCSearchRequest filters,
             ForzaUGCContentType contentType,
+            string endpoint,
+            bool includeThumbnails = false)
+        {
+            var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, 1_000).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.SearchUGCV2Output> SearchUgcContentV2Async(
+            ForzaUGCSearchV2Request searchRequest,
+            ForzaUGCContentType contentType,
             string endpoint)
         {
             var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.SearchUGC(filters, contentType, false, 1_000).ConfigureAwait(false);
+            return await storefrontService.SearchUGCV2(searchRequest, contentType, false, 1_000).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

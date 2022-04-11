@@ -1,21 +1,21 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UGCComponent } from './ugc.component';
+import { UgcComponent } from './ugc.component';
 
 describe('UGCComponent', () => {
-  let component: UGCComponent;
-  let fixture: ComponentFixture<UGCComponent>;
+  let component: UgcComponent;
+  let fixture: ComponentFixture<UgcComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UGCComponent],
+      declarations: [UgcComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UGCComponent);
+    fixture = TestBed.createComponent(UgcComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

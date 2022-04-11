@@ -6,8 +6,8 @@ import { Gift, GroupGift } from '@models/gift';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
-import { PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCType } from '@models/ugc-filters';
+import { PlayerUgcItem } from '@models/player-ugc-item';
+import { UgcType } from '@models/ugc-filters';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { WoodstockService } from '@services/woodstock';
 import BigNumber from 'bignumber.js';
@@ -38,8 +38,8 @@ export class WoodstockGiftLiveryComponent extends GiftLiveryBaseComponent<Identi
   }
 
   /** Gets a player's livery. */
-  public getLivery$(liveryId: string): Observable<PlayerUGCItem> {
-    return this.woodstockService.getPlayerUGCItem(liveryId, UGCType.Livery);
+  public getLivery$(liveryId: string): Observable<PlayerUgcItem> {
+    return this.woodstockService.getPlayerUgcItem(liveryId, UgcType.Livery);
   }
 
   /** Gifts a livery to group of players. */

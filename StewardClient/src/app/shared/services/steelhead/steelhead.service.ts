@@ -37,8 +37,8 @@ import {
   CommunityMessage,
   CommunityMessageResult,
 } from '@models/community-message';
-import { UGCType } from '@models/ugc-filters';
-import { PlayerUGCItem } from '@models/player-ugc-item';
+import { UgcType } from '@models/ugc-filters';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import { DateTime } from 'luxon';
 import { RacersCupSchedule } from '@models/racers-cup.model';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
@@ -309,24 +309,24 @@ export class SteelheadService {
     );
   }
 
-  /** Gets player UGC items by XUID. */
-  public getPlayerUGCByXuid$(xuid: BigNumber, contentType: UGCType): Observable<PlayerUGCItem[]> {
+  /** Gets player Ugc items by XUID. */
+  public getPlayerUgcByXuid$(xuid: BigNumber, contentType: UgcType): Observable<PlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.apiService.getRequest$<PlayerUGCItem[]>(
+    return this.apiService.getRequest$<PlayerUgcItem[]>(
       `${this.basePath}/storefront/xuid(${xuid})`,
       httpParams,
     );
   }
 
-  /** Gets player UGC items by share code. */
-  public getPlayerUGCByShareCode$(
+  /** Gets player Ugc items by share code. */
+  public getPlayerUgcByShareCode$(
     shareCode: string,
-    contentType: UGCType,
-  ): Observable<PlayerUGCItem[]> {
+    contentType: UgcType,
+  ): Observable<PlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.apiService.getRequest$<PlayerUGCItem[]>(
+    return this.apiService.getRequest$<PlayerUgcItem[]>(
       `${this.basePath}/storefront/sharecode(${shareCode})`,
       httpParams,
     );

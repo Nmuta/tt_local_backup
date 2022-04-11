@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import faker from '@faker-js/faker';
-import { fakePlayerUGCItem, PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCFeaturedStatus } from '@models/ugc-featured-status';
-import { UGCType } from '@models/ugc-filters';
+import { fakePlayerUgcItem, PlayerUgcItem } from '@models/player-ugc-item';
+import { UgcFeaturedStatus } from '@models/ugc-featured-status';
+import { UgcType } from '@models/ugc-filters';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime, Duration } from 'luxon';
@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 import { SunriseFeatureUGCModalComponent } from './sunrise-feature-ugc-modal.component';
 
 describe('SunriseFeatureUGCModalComponent', () => {
-  const model: PlayerUGCItem = fakePlayerUGCItem();
+  const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<SunriseFeatureUGCModalComponent>;
   let component: SunriseFeatureUGCModalComponent;
@@ -47,10 +47,10 @@ describe('SunriseFeatureUGCModalComponent', () => {
     mockMatDialogRef.close = jasmine.createSpy('close');
     mockMatDialogRef.beforeClosed = jasmine.createSpy('beforeClosed').and.returnValue(of());
 
-    mockSunriseService.getPlayerUGCItem = jasmine
+    mockSunriseService.getPlayerUgcItem = jasmine
       .createSpy('setUGCItemFeatureStatus')
       .and.returnValue(of(null));
-    mockSunriseService.setUGCItemFeatureStatus = jasmine
+    mockSunriseService.setUgcItemFeatureStatus = jasmine
       .createSpy('setUGCItemFeatureStatus')
       .and.returnValue(of());
   });
@@ -60,7 +60,7 @@ describe('SunriseFeatureUGCModalComponent', () => {
   });
 
   describe('Method: featureUGC', () => {
-    const item = fakePlayerUGCItem();
+    const item = fakePlayerUgcItem();
 
     beforeEach(() => {
       component.setFeaturedStatus$ = jasmine
@@ -101,11 +101,11 @@ describe('SunriseFeatureUGCModalComponent', () => {
     it('should call SunriseService.setUGCItemFeatureStatus() with correct params', () => {
       component.setFeaturedStatus$(itemId, expireDate);
 
-      expect(mockSunriseService.setUGCItemFeatureStatus).toHaveBeenCalledWith({
+      expect(mockSunriseService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
         expiry: expireDuration,
-      } as UGCFeaturedStatus);
+      } as UgcFeaturedStatus);
     });
   });
 
@@ -117,21 +117,21 @@ describe('SunriseFeatureUGCModalComponent', () => {
     it('should call SunriseService.setUGCItemFeatureStatus() with correct params', () => {
       component.deleteFeaturedStatus$(itemId);
 
-      expect(mockSunriseService.setUGCItemFeatureStatus).toHaveBeenCalledWith({
+      expect(mockSunriseService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: false,
-      } as UGCFeaturedStatus);
+      } as UgcFeaturedStatus);
     });
   });
 
   describe('Method: getUGCItem$', () => {
     const itemId = faker.datatype.uuid().toString();
-    const type = UGCType.Livery;
+    const type = UgcType.Livery;
 
     it('should call SunriseService.getPlayerUGCItem() with correct params', () => {
       component.getUGCItem$(itemId, type);
 
-      expect(mockSunriseService.getPlayerUGCItem).toHaveBeenCalledWith(itemId, type);
+      expect(mockSunriseService.getPlayerUgcItem).toHaveBeenCalledWith(itemId, type);
     });
   });
 });

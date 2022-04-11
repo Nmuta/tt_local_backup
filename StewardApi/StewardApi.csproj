@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <!-- <Nullable>enable</Nullable> -->
     <AssemblyName>Turn10.LiveOps.StewardApi</AssemblyName>
@@ -74,6 +74,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.22" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
@@ -98,7 +100,7 @@
 	<PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.SecretProvider" Version="3.0.0" />
-	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.2" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.0" />
 	<PackageReference Include="Turn10.Data.Azure" Version="3.0.0" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.KustoLogger" Version="4.0.0" />

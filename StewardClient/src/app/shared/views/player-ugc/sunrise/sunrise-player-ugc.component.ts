@@ -2,9 +2,9 @@ import { Component, OnChanges } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
-import { PlayerUGCBaseComponent } from '../player-ugc.base.component';
-import { PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCType } from '@models/ugc-filters';
+import { PlayerUgcBaseComponent } from '../player-ugc.base.component';
+import { PlayerUgcItem } from '@models/player-ugc-item';
+import { UgcType } from '@models/ugc-filters';
 
 /** Retreives and displays Sunrise ugc by XUID. */
 @Component({
@@ -12,7 +12,7 @@ import { UGCType } from '@models/ugc-filters';
   templateUrl: './sunrise-player-ugc.component.html',
   styleUrls: ['../player-ugc.component.scss'],
 })
-export class SunrisePlayerUGCComponent extends PlayerUGCBaseComponent implements OnChanges {
+export class SunrisePlayerUGCComponent extends PlayerUgcBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(private readonly sunriseSerice: SunriseService) {
@@ -20,9 +20,9 @@ export class SunrisePlayerUGCComponent extends PlayerUGCBaseComponent implements
   }
 
   /** Searches player UGC content. */
-  public getPlayerUGC$(contentType: UGCType): Observable<PlayerUGCItem[]> {
+  public getPlayerUgc$(contentType: UgcType): Observable<PlayerUgcItem[]> {
     return this.usingIdentities
-      ? this.sunriseSerice.getPlayerUGCByXuid$(this.identity?.xuid, contentType)
-      : this.sunriseSerice.getPlayerUGCByShareCode$(this.shareCode, contentType);
+      ? this.sunriseSerice.getPlayerUgcByXuid$(this.identity?.xuid, contentType)
+      : this.sunriseSerice.getPlayerUgcByShareCode$(this.shareCode, contentType);
   }
 }

@@ -4,6 +4,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { UgcType } from '@models/ugc-filters';
 
 /** Component for displaying routed Sunrise user details. */
 @Component({
@@ -12,6 +13,8 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 })
 export class SunriseUserDetailsComponent {
   public profileId: BigNumber;
+
+  public readonly UgcType = UgcType;
 
   /** The lookup type. */
   public get lookupType(): string {

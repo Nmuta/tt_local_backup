@@ -1,0 +1,71 @@
+<ng-container *ngIf="!getMonitor.isActive; else spinner">
+  <model-dump #source [model]="ugcItem" *ngIf="ugcItem; else noItem">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>UGC Overview</mat-card-title>
+        <mat-card-subtitle>IDs and other text</mat-card-subtitle>
+      </mat-card-header>
+      <model-dump-xuids></model-dump-xuids>
+      <model-dump-simple-table
+        [values]="source.processedModel.extractedStrings.ids"
+      ></model-dump-simple-table>
+      <model-dump-humanize-table
+        [values]="source.processedModel.extractedStrings.other"
+      ></model-dump-humanize-table>
+      <model-dump-humanize-array-table
+        [values]="source.processedModel.extractedStringArrays.all"
+      ></model-dump-humanize-array-table>
+      <model-dump-simple-table
+        [values]="source.processedModel.extractedNumbers.ids"
+      ></model-dump-simple-table>
+      <mat-card-actions align="end">
+        <ng-content select="button"></ng-content>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>UGC Timeline</mat-card-title>
+        <mat-card-subtitle>Key dates</mat-card-subtitle>
+      </mat-card-header>
+      <div>
+        <model-dump-datetime-table
+          [values]="source.processedModel.extractedDates.all"
+        ></model-dump-datetime-table>
+        <model-dump-duration-table
+          [values]="source.processedModel.extractedDurations.all"
+        ></model-dump-duration-table>
+        <model-dump-number-table
+          [values]="source.processedModel.extractedNumbers.counts"
+        ></model-dump-number-table>
+      </div>
+      <model-dump-price-table
+        [values]="source.processedModel.extractedNumbers.prices"
+      ></model-dump-price-table>
+      <model-dump-price-table
+        [values]="source.processedModel.extractedNumbers.amounts"
+      ></model-dump-price-table>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>UGC Info</mat-card-title>
+        <mat-card-subtitle>Flags, counters, etc</mat-card-subtitle>
+      </mat-card-header>
+      <model-dump-number-table
+        [values]="source.processedModel.extractedNumbers.other"
+      ></model-dump-number-table>
+      <model-dump-flags></model-dump-flags>
+    </mat-card>
+
+    <div class="images">
+      <model-dump-images></model-dump-images>
+    </div>
+  </model-dump>
+</ng-container>
+<ng-template #spinner>
+  <big-spinner [monitor]="getMonitor"></big-spinner>
+</ng-template>
+<ng-template #noItem>
+  <p>No Item Found.</p>
+</ng-template>

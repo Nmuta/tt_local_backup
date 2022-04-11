@@ -42,6 +42,7 @@ export interface ExtractedObjectNumbers extends ExtractedObjectBase<BigNumber> {
 export interface ExtractedObjectStrings extends ExtractedObjectBase<string> {
   all: ObjectEntry<string>[];
   ids?: ObjectEntry<string>[];
+  base64?: ObjectEntry<string>[];
   other?: ObjectEntry<string>[];
 }
 
@@ -60,6 +61,14 @@ export interface ExtractedStringArrays extends ExtractedObjectBase<string[]> {
   all: ObjectEntry<string[]>[];
 }
 
+export interface ExtractedUrls extends ExtractedObjectBase<string> {
+  all: ObjectEntry<string>[];
+  allImages?: ObjectEntry<string>[];
+  allUrls?: ObjectEntry<string>[];
+  imageUrls?: ObjectEntry<string>[];
+  base64Images?: ObjectEntry<string>[];
+}
+
 /** Container for all values extracted from a given model. */
 export interface ExtractedModel {
   extractedFlags: ExtractedObjectFlags;
@@ -68,4 +77,5 @@ export interface ExtractedModel {
   extractedDates: ExtractedObjectDates;
   extractedDurations: ExtractedObjectDurations;
   extractedStringArrays: ExtractedStringArrays;
+  extractedUrls: ExtractedUrls;
 }

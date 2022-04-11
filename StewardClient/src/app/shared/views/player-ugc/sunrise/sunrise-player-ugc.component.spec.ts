@@ -47,7 +47,7 @@ describe('SunrisePlayerUGCComponent', () => {
     describe('And getPlayerUGC$ returns ugc', () => {
       const ugc = SunrisePlayerXuidUGCFakeApi.makeMany();
       beforeEach(() => {
-        component.getPlayerUGC$ = jasmine.createSpy('getPlayerUGC$').and.returnValue(of(ugc));
+        component.getPlayerUgc$ = jasmine.createSpy('getPlayerUGC$').and.returnValue(of(ugc));
 
         component.identity = {
           query: undefined,
@@ -59,7 +59,7 @@ describe('SunrisePlayerUGCComponent', () => {
       it('should set ugc', () => {
         component.ngOnChanges();
 
-        expect(component.getPlayerUGC$).toHaveBeenCalled();
+        expect(component.getPlayerUgc$).toHaveBeenCalled();
         expect(component.ugcContent).toBe(ugc);
         expect(component.getMonitor?.isActive).toBe(false);
         expect(component.getMonitor?.status?.error).toBeNull();
@@ -69,7 +69,7 @@ describe('SunrisePlayerUGCComponent', () => {
     describe('And getPlayerUGC$ returns with error', () => {
       const error = { message: faker.random.words(10) };
       beforeEach(() => {
-        component.getPlayerUGC$ = jasmine
+        component.getPlayerUgc$ = jasmine
           .createSpy('getPlayerUGC$')
           .and.returnValue(throwError(error));
 
@@ -83,7 +83,7 @@ describe('SunrisePlayerUGCComponent', () => {
       it('should set error', () => {
         component.ngOnChanges();
 
-        expect(component.getPlayerUGC$).toHaveBeenCalled();
+        expect(component.getPlayerUgc$).toHaveBeenCalled();
         expect(component.ugcContent).toEqual([]);
         expect(component.getMonitor?.isActive).toBe(false);
         expect(component.getMonitor?.status?.error).toEqual(error);

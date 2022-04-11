@@ -1,12 +1,12 @@
 import { Component, OnChanges } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
-import { PlayerUGCItem } from '@models/player-ugc-item';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import { MatDialog } from '@angular/material/dialog';
 import { SunriseFeatureUGCModalComponent } from '@views/feature-ugc-modal/sunrise/sunrise-feature-ugc-modal.component';
 import { filter, takeUntil } from 'rxjs/operators';
 import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.component';
 import { SunriseService } from '@services/sunrise';
-import { UGCType } from '@models/ugc-filters';
+import { UgcType } from '@models/ugc-filters';
 import { Observable } from 'rxjs';
 import { pull } from 'lodash';
 import { renderGuard } from '@helpers/rxjs';
@@ -25,7 +25,7 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
   }
 
   /** Opens the feature UGC modal. */
-  public openFeatureUGCModal(item: PlayerUGCItem): void {
+  public openFeatureUGCModal(item: PlayerUgcItem): void {
     this.dialog
       .open(SunriseFeatureUGCModalComponent, {
         data: item,
@@ -35,9 +35,9 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
         filter(data => !!data),
         takeUntil(this.onDestroy$),
       )
-      .subscribe((response: PlayerUGCItem) => {
+      .subscribe((response: PlayerUgcItem) => {
         const updatedData = this.ugcTableDataSource.data;
-        const itemToUpdateIndex = updatedData.findIndex(item => item.guidId === response.guidId);
+        const itemToUpdateIndex = updatedData.findIndex(item => item.id === response.id);
 
         if (itemToUpdateIndex >= 0) {
           updatedData[itemToUpdateIndex] = response;
@@ -47,8 +47,8 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
   }
 
   /** Gets player UGC item. */
-  public getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem> {
-    return this.sunriseService.getPlayerUGCItem(id, type);
+  public getUGCItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
+    return this.sunriseService.getPlayerUgcItem(id, type);
   }
 
   /** Hide UGC item. */
@@ -56,7 +56,7 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
     item.monitor = item.monitor.repeat();
 
     this.sunriseService
-      .hideUgc$(item.guidId)
+      .hideUgc$(item.id)
       .pipe(item.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.deleteEntry(item);

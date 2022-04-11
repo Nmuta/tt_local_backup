@@ -9,6 +9,12 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { filter, map, Observable, ReplaySubject, switchMap, take, throwError, timeout } from 'rxjs';
 
+type CustomHandler = (
+  latestValidUserSettings: UserSettingsStateModel,
+  request: HttpRequest<unknown>,
+  next: HttpHandler,
+) => Observable<HttpEvent<unknown>>;
+
 /** Intercepts requests to Steward and attaches endpoint header based on user's endpoint selection. */
 @Injectable()
 export class EndpointSelectionInterceptor extends BaseInterceptor implements HttpInterceptor {
@@ -55,15 +61,31 @@ export class EndpointSelectionInterceptor extends BaseInterceptor implements Htt
 
   /** Called when we attempt to handle the request. */
   public handle(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const titleRegex = /^\/?api\/v1\/title\/.*$/i;
+    const v1Regex = /^\/?api\/v1\/title\/.*$/i;
+    const v2Regex = /^\/?api\/v2\/.*$/i;
     const url = new URL(request.url);
-    const alreadyHasHeader = request.headers.has(this.headerName);
-    const isTitleUrl = titleRegex.test(url.pathname);
+    const isV1TitleUrl = v1Regex.test(url.pathname);
+    const isV2Url = v2Regex.test(url.pathname);
 
-    if (alreadyHasHeader || !isTitleUrl) {
+    if (isV1TitleUrl) {
+      const alreadyHasHeader = request.headers.has(this.headerName);
+      if (alreadyHasHeader) {
+        return next.handle(request);
+      }
+
+      return this.handleRequest(request, next, this.handleV1Request$.bind(this));
+    } else if (isV2Url) {
+      return this.handleRequest(request, next, this.handleV2Request$.bind(this));
+    } else {
       return next.handle(request);
     }
+  }
 
+  private handleRequest(
+    request: HttpRequest<unknown>,
+    next: HttpHandler,
+    customHandler$: CustomHandler,
+  ): Observable<HttpEvent<unknown>> {
     return this.validSettings$.pipe(
       filter(v => !!v),
       timeout({
@@ -71,14 +93,12 @@ export class EndpointSelectionInterceptor extends BaseInterceptor implements Htt
         with: () => throwError(() => new Error('Waiting for valid endpoint settings timed out.')),
       }),
       take(1),
-      switchMap(latestValidUserSettings =>
-        this.handleRequest(latestValidUserSettings, request, next),
-      ),
+      switchMap(latestValidUserSettings => customHandler$(latestValidUserSettings, request, next)),
     );
   }
 
   /** Handles the given request. */
-  private handleRequest(
+  private handleV1Request$(
     latestValidUserSettings: UserSettingsStateModel,
     request: HttpRequest<unknown>,
     next: HttpHandler,
@@ -123,5 +143,32 @@ export class EndpointSelectionInterceptor extends BaseInterceptor implements Htt
     }
 
     return next.handle(requestWithHeader);
+  }
+
+  /** Handles the given request. */
+  private handleV2Request$(
+    latestValidUserSettings: UserSettingsStateModel,
+    request: HttpRequest<unknown>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<unknown>> {
+    let headers = request.headers;
+    if (!headers.has('Endpoint-Apollo')) {
+      headers = headers.set('Endpoint-Apollo', latestValidUserSettings.apolloEndpointKey);
+    }
+
+    if (!headers.has('Endpoint-Sunrise')) {
+      headers = headers.set('Endpoint-Sunrise', latestValidUserSettings.sunriseEndpointKey);
+    }
+
+    if (!headers.has('Endpoint-Woodstock')) {
+      headers = headers.set('Endpoint-Woodstock', latestValidUserSettings.woodstockEndpointKey);
+    }
+
+    if (!headers.has('Endpoint-Steelhead')) {
+      headers = headers.set('Endpoint-Steelhead', latestValidUserSettings.steelheadEndpointKey);
+    }
+
+    const updatedRequest = request.clone({ headers });
+    return next.handle(updatedRequest);
   }
 }

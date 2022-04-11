@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
-import { PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCType } from '@models/ugc-filters';
+import { PlayerUgcItem } from '@models/player-ugc-item';
+import { UgcType } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DateValidators } from '@shared/validators/date-validators';
 import { cloneDeep } from 'lodash';
@@ -31,31 +31,31 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
   };
   public formGroup = new FormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Set Featured Status');
-  public ugcItem: PlayerUGCItem;
+  public ugcItem: PlayerUgcItem;
 
   public abstract gameTitle: GameTitleCodeName;
 
   constructor(
     protected dialogRef: MatDialogRef<FeatureUGCModalComponentUnion>,
-    @Inject(MAT_DIALOG_DATA) protected data: PlayerUGCItem,
+    @Inject(MAT_DIALOG_DATA) protected data: PlayerUgcItem,
   ) {
     super();
 
     this.ugcItem = cloneDeep(data);
 
     const isUnsupportedType =
-      data.type !== UGCType.Livery && data.type !== UGCType.Photo && data.type !== UGCType.Tune;
+      data.type !== UgcType.Livery && data.type !== UgcType.Photo && data.type !== UgcType.Tune;
     if (isUnsupportedType) {
       dialogRef.close();
       throw new Error(
-        `Bad UGC Type: ${data.type}. Featuring UGC content is limited to types: ${UGCType.Livery}, ${UGCType.Photo}, ${UGCType.Tune}.`,
+        `Bad UGC Type: ${data.type}. Featuring UGC content is limited to types: ${UgcType.Livery}, ${UgcType.Photo}, ${UgcType.Tune}.`,
       );
     }
 
     if (!data.isPublic) {
       dialogRef.close();
       throw new Error(
-        `Cannot feature private UGC. Featuring UGC content is limited to public content only, content with id ${data.guidId} is private.`,
+        `Cannot feature private UGC. Featuring UGC content is limited to public content only, content with id ${data.id} is private.`,
       );
     }
 
@@ -72,7 +72,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
   public abstract setFeaturedStatus$(itemId: string, expireDate: DateTime): Observable<void>;
   public abstract deleteFeaturedStatus$(itemId: string): Observable<void>;
 
-  public abstract getUGCItem$(itemId: string, type: UGCType): Observable<PlayerUGCItem>;
+  public abstract getUGCItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
 
   /** Sets featured status. */
   public featureUGC(): void {
@@ -81,7 +81,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
     }
 
     const setFeaturedStatus$ = this.setFeaturedStatus$(
-      this.ugcItem.guidId,
+      this.ugcItem.id,
       this.formControls.featuredDate.value,
     );
     this.postMonitor = this.postMonitor.repeat();
@@ -92,11 +92,11 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
         switchMap(() => {
-          return this.getUGCItem$(this.ugcItem.guidId, this.ugcItem.type);
+          return this.getUGCItem$(this.ugcItem.id, this.ugcItem.type);
         }),
         takeUntil(this.onDestroy$),
       )
-      .subscribe((ugcItem: PlayerUGCItem) => {
+      .subscribe((ugcItem: PlayerUgcItem) => {
         this.dialogRef.disableClose = false;
         this.ugcItem = ugcItem;
       });
@@ -108,7 +108,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
       return;
     }
 
-    const deleteFeaturedStatus$ = this.deleteFeaturedStatus$(this.ugcItem.guidId);
+    const deleteFeaturedStatus$ = this.deleteFeaturedStatus$(this.ugcItem.id);
     this.postMonitor = this.postMonitor.repeat();
     this.dialogRef.disableClose = true;
 
@@ -117,11 +117,11 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
         switchMap(() => {
-          return this.getUGCItem$(this.ugcItem.guidId, this.ugcItem.type);
+          return this.getUGCItem$(this.ugcItem.id, this.ugcItem.type);
         }),
         takeUntil(this.onDestroy$),
       )
-      .subscribe((ugcItem: PlayerUGCItem) => {
+      .subscribe((ugcItem: PlayerUgcItem) => {
         this.dialogRef.disableClose = false;
         this.ugcItem = ugcItem;
       });

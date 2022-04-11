@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseGiftLiveryComponent } from './sunrise-gift-livery.component';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import faker from '@faker-js/faker';
-import { UGCType } from '@models/ugc-filters';
+import { UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { catchError, take } from 'rxjs/operators';
 import { EMPTY, of, throwError } from 'rxjs';
@@ -20,7 +20,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { GiftResponse } from '@models/gift-response';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
-import { PlayerUGCItem } from '@models/player-ugc-item';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 describe('SunriseGiftLiveryComponent', () => {
@@ -57,7 +57,7 @@ describe('SunriseGiftLiveryComponent', () => {
 
   describe('Method: getLivery$', () => {
     beforeEach(() => {
-      mockSunriseService.getPlayerUGCItem = jasmine
+      mockSunriseService.getPlayerUgcItem = jasmine
         .createSpy('getPlayerUGCItem')
         .and.returnValue(of());
     });
@@ -65,7 +65,7 @@ describe('SunriseGiftLiveryComponent', () => {
     it('should call unriseService.getPlayerUGCItem with correct parmas', () => {
       component.getLivery$(liveryId);
 
-      expect(mockSunriseService.getPlayerUGCItem).toHaveBeenCalledWith(liveryId, UGCType.Livery);
+      expect(mockSunriseService.getPlayerUgcItem).toHaveBeenCalledWith(liveryId, UgcType.Livery);
     });
   });
 
@@ -177,7 +177,7 @@ describe('SunriseGiftLiveryComponent', () => {
 
   describe('Method: onLiveryIdChange', () => {
     const input = faker.random.word();
-    const livery = { guidId: faker.datatype.uuid() } as PlayerUGCItem;
+    const livery = { id: faker.datatype.uuid() } as PlayerUgcItem;
 
     beforeEach(() => {
       component.formControls.livery.setValue = jasmine
@@ -281,8 +281,8 @@ describe('SunriseGiftLiveryComponent', () => {
           component.usingPlayerIdentities = true;
           component.playerIdentities = [{ query: undefined, xuid: fakeBigNumber() }];
           component.formControls.livery.setValue({
-            guidId: faker.datatype.uuid(),
-          } as PlayerUGCItem);
+            id: faker.datatype.uuid(),
+          } as PlayerUgcItem);
         });
 
         it('should call giftLiveryToPlayers$', () => {
@@ -298,8 +298,8 @@ describe('SunriseGiftLiveryComponent', () => {
           component.usingPlayerIdentities = false;
           component.lspGroup = { id: fakeBigNumber(), name: faker.random.words(3) } as LspGroup;
           component.formControls.livery.setValue({
-            guidId: faker.datatype.uuid(),
-          } as PlayerUGCItem);
+            id: faker.datatype.uuid(),
+          } as PlayerUgcItem);
         });
 
         it('should call giftLiveryToLspGroup$', () => {
@@ -417,7 +417,7 @@ describe('SunriseGiftLiveryComponent', () => {
       component.lspGroup = { id: new BigNumber(1), name: 'test-lsp-group' };
 
       const liveryId = faker.datatype.uuid();
-      component.formControls.livery.setValue({ guidId: liveryId } as PlayerUGCItem);
+      component.formControls.livery.setValue({ id: liveryId } as PlayerUgcItem);
       component.formControls.giftReason.setValue(faker.random.words(5));
     });
 
@@ -496,7 +496,7 @@ describe('SunriseGiftLiveryComponent', () => {
 
   describe('Method: resetTool', () => {
     const liveryId = faker.datatype.uuid();
-    const livery = { guidId: liveryId } as PlayerUGCItem;
+    const livery = { id: liveryId } as PlayerUgcItem;
     const giftReason = faker.random.words(5);
 
     beforeEach(() => {

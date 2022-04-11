@@ -6,7 +6,7 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SunriseUGCTableComponent } from './sunrise-ugc-table.component';
-import { fakePlayerUGCItem } from '@models/player-ugc-item';
+import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { EMPTY } from 'rxjs';
 import { SunriseService } from '@services/sunrise';
 import { PlayerUGCItemTableEntries } from '../ugc-table.component';
@@ -48,7 +48,7 @@ describe('SunriseUGCTableComponent', () => {
   }));
 
   describe('Method: hideUGCItem', () => {
-    const item: PlayerUGCItemTableEntries = fakePlayerUGCItem();
+    const item: PlayerUGCItemTableEntries = fakePlayerUgcItem();
     item.monitor = new ActionMonitor();
 
     it('should call SunriseService.hideUgc$()', () => {
@@ -59,7 +59,7 @@ describe('SunriseUGCTableComponent', () => {
   });
 
   describe('Method: openFeatureUGCModal', () => {
-    const item = fakePlayerUGCItem();
+    const item = fakePlayerUgcItem();
 
     it('should call MatDialog.open()', () => {
       component.openFeatureUGCModal(item);

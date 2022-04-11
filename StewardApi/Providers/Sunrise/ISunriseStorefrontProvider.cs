@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Search UGC items.
         /// </summary>
-        Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint);
+        Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint, bool includeThumbnails = false);
 
         /// <summary>
         ///    Get player livery.

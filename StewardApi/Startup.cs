@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +29,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Middleware;
@@ -86,7 +90,24 @@ namespace Turn10.LiveOps.StewardApi
         {
             // If you are setting "redacted due to PII" when debugging certificates/dates/identities, enable this.
             // IdentityModelEventSource.ShowPII = true;
+            services.AddControllers();
             services.AddMvc(options => options.Filters.Add(new ServiceExceptionFilter()));
+            services.AddApiVersioning(o =>
+            {
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1, 0);
+                o.ReportApiVersions = true;
+                o.UseApiBehavior = false;
+            });
+
+            services.AddVersionedApiExplorer(setup =>
+            {
+                setup.GroupNameFormat = "'v'VVV";
+                setup.SubstituteApiVersionInUrl = true;
+            });
+
+            services.AddSwaggerGen();
+            services.ConfigureOptions<ConfigureSwaggerOptions>();
 
             services.AddMemoryCache();
 
@@ -142,42 +163,6 @@ namespace Turn10.LiveOps.StewardApi
                 {
                     EnableAdaptiveSampling = false,
                 });
-
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "Turn 10 Steward API",
-                    Version = this.GetType().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
-                    Description = "Turn 10 Steward",
-                    Contact = new OpenApiContact
-                    {
-                        Email = "t10liveopstools@microsoft.com",
-                        Name = "Turn 10 LiveOps Tools"
-                    },
-                });
-
-                options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
-                {
-                    Type = SecuritySchemeType.OAuth2,
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Scheme = "bearer",
-                    Flows = new OpenApiOAuthFlows
-                    {
-                        Implicit = new OpenApiOAuthFlow
-                        {
-                            TokenUrl = new Uri($"{this.configuration[ConfigurationKeyConstants.AzureInstance]}/{this.configuration[ConfigurationKeyConstants.AzureTenantId]}/oauth2/v2.0/token"),
-                            AuthorizationUrl = new Uri($"{this.configuration[ConfigurationKeyConstants.AzureInstance]}/{this.configuration[ConfigurationKeyConstants.AzureTenantId]}/oauth2/v2.0/authorize"),
-                            Scopes = { { $"api://{this.configuration[ConfigurationKeyConstants.AzureClientId]}/api_access", "API Access" } },
-                        }
-                    }
-                });
-
-                options.OperationFilter<AddRequiredHeaderParameter>();
-                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
-                options.OperationFilter<SessionIdHeaderParameterOperationFilter>();
-            });
 
             services.AddCors(options =>
             {
@@ -359,7 +344,7 @@ namespace Turn10.LiveOps.StewardApi
         /// <summary>
         ///     Configures the app.
         /// </summary>
-        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment)
+        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment, IApiVersionDescriptionProvider provider)
         {
             if (webHostEnvironment.IsDevelopment())
             {
@@ -372,7 +357,13 @@ namespace Turn10.LiveOps.StewardApi
             applicationBuilder.UseSwaggerUI(c =>
             {
                 c.OAuthScopes(new[] { $"api://{this.configuration[ConfigurationKeyConstants.AzureClientId]}/api_access" });
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    c.SwaggerEndpoint(
+                        $"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                }
+
                 c.OAuthClientId(this.configuration[ConfigurationKeyConstants.AzureClientId]);
                 c.OAuthScopeSeparator(" ");
             });

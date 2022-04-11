@@ -10,29 +10,29 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatColumnDef, MatTable, MatTableDataSource } from '@angular/material/table';
-import { PlayerUGCItem } from '@models/player-ugc-item';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import { state, style, trigger } from '@angular/animations';
 import { fromEvent, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
-import { UGCType } from '@models/ugc-filters';
+import { UgcType } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
   'metadata',
   'stats',
-  'thumbnailImageOneBase64',
-  'thumbnailImageTwoBase64',
+  'thumbnailOneImageBase64',
+  'thumbnailTwoImageBase64',
   'actions',
 ];
 
 /** Extended type from HideableUgc. */
-export type PlayerUGCItemTableEntries = PlayerUGCItem & {
+export type PlayerUGCItemTableEntries = PlayerUgcItem & {
   monitor?: ActionMonitor;
 };
 
-export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailImageOneBase64', 'actions'];
+export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailOneImageBase64', 'actions'];
 
 /** A component for a UGC content table. */
 @Component({
@@ -50,7 +50,7 @@ export abstract class UGCTableBaseComponent
 {
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() content: PlayerUGCItem[];
+  @Input() content: PlayerUgcItem[];
 
   public ugcTableDataSource = new MatTableDataSource<PlayerUGCItemTableEntries>([]);
   public columnsToDisplay: string[] = UGC_TABLE_COLUMNS_TWO_IMAGES;
@@ -61,8 +61,8 @@ export abstract class UGCTableBaseComponent
   public allMonitors: ActionMonitor[] = [];
 
   /** Opens the feature UGC modal. */
-  public abstract openFeatureUGCModal(item: PlayerUGCItem): void;
-  public abstract getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem>;
+  public abstract openFeatureUGCModal(item: PlayerUgcItem): void;
+  public abstract getUGCItem(id: string, type: UgcType): Observable<PlayerUgcItem>;
   public abstract hideUGCItem(item: PlayerUGCItemTableEntries): void;
 
   /** Angular hook. */
@@ -83,7 +83,7 @@ export abstract class UGCTableBaseComponent
       const ugcItemsToProcess: PlayerUGCItemTableEntries[] = this.content;
 
       ugcItemsToProcess.forEach(item => {
-        item.monitor = new ActionMonitor(`POST Hide UGC with ID: ${item.guidId}`);
+        item.monitor = new ActionMonitor(`POST Hide UGC with ID: ${item.id}`);
         this.allMonitors.push(item.monitor);
       });
 
@@ -115,9 +115,9 @@ export abstract class UGCTableBaseComponent
     for (let i = activeIndex; i < activeIndex + activeLength; i++) {
       const ugcItem = dataSource[i];
       if (this.shouldLookupThumbnails(ugcItem)) {
-        const fullUGCItem = await this.getUGCItem(ugcItem.guidId, ugcItem.type).toPromise();
-        dataSource[i].thumbnailImageOneBase64 = fullUGCItem.thumbnailImageOneBase64;
-        dataSource[i].thumbnailImageTwoBase64 = fullUGCItem.thumbnailImageTwoBase64;
+        const fullUGCItem = await this.getUGCItem(ugcItem.id, ugcItem.type).toPromise();
+        dataSource[i].thumbnailOneImageBase64 = fullUGCItem.thumbnailOneImageBase64;
+        dataSource[i].thumbnailTwoImageBase64 = fullUGCItem.thumbnailTwoImageBase64;
       }
     }
 
@@ -125,8 +125,8 @@ export abstract class UGCTableBaseComponent
     this.waitingForThumbnails = false;
   }
 
-  private shouldLookupThumbnails(item: PlayerUGCItem): boolean {
-    return !!item && item.type !== UGCType.Tune && !item.thumbnailImageOneBase64;
+  private shouldLookupThumbnails(item: PlayerUgcItem): boolean {
+    return !!item && item.type !== UgcType.Tune && !item.thumbnailOneImageBase64;
   }
 
   private shouldUseCondensedTableView(): boolean {

@@ -324,7 +324,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ForzaUGCSearchRequest filters,
             ForzaUGCContentType contentType,
-            string endpoint);
+            string endpoint,
+            bool includeThumbnails = false);
 
         /// <summary>
         ///     Get a player livery.

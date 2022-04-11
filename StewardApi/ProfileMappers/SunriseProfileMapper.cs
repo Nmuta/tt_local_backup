@@ -156,20 +156,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaUGCData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(
-                    dest => dest.ThumbnailImageOneBase64,
+                    dest => dest.ThumbnailOneImageBase64,
                     opt => opt.MapFrom(source =>
                         source.Payloads.Length > 0
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[0].Payload)
                             : null))
                 .ForMember(
-                    dest => dest.ThumbnailImageTwoBase64,
+                    dest => dest.ThumbnailTwoImageBase64,
                     opt => opt.MapFrom(source =>
                         source.Payloads.Length > 1
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[1].Payload)
                             : null))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Livery))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.Id))
-                .ForMember(dest => dest.GuidId, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
@@ -184,7 +183,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     dest => dest.FeaturedEndDateUtc,
                     opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
-                .ForMember(dest => dest.Owner, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
                 .ForMember(
@@ -200,11 +199,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LiveOpsContracts.ForzaLiveryData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
-                .ForMember(dest => dest.ThumbnailImageOneBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
-                .ForMember(dest => dest.ThumbnailImageTwoBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Livery))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.Id))
-                .ForMember(dest => dest.GuidId, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
@@ -215,7 +213,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
                 .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
-                .ForMember(dest => dest.Owner, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
                 .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
@@ -229,10 +227,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LiveOpsContracts.ForzaPhotoData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
-                .ForMember(dest => dest.ThumbnailImageOneBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Photo))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.Id))
-                .ForMember(dest => dest.GuidId, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
@@ -243,7 +240,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
                 .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
-                .ForMember(dest => dest.Owner, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
                 .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
@@ -258,8 +255,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaTuneData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Photo))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.Id))
-                .ForMember(dest => dest.GuidId, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
@@ -270,7 +266,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
                 .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
-                .ForMember(dest => dest.Owner, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
                 .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))

@@ -4,7 +4,7 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { fakePlayerUGCItem } from '@models/player-ugc-item';
+import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { WoodstockUGCTableComponent } from './woodstock-ugc-table.component';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { EMPTY } from 'rxjs';
@@ -48,7 +48,7 @@ describe('WoodstockUGCTableComponent', () => {
   }));
 
   describe('Method: hideUGCItem', () => {
-    const item: PlayerUGCItemTableEntries = fakePlayerUGCItem();
+    const item: PlayerUGCItemTableEntries = fakePlayerUgcItem();
     item.monitor = new ActionMonitor();
 
     it('should call WoodstockService.hideUgc$()', () => {
@@ -59,7 +59,7 @@ describe('WoodstockUGCTableComponent', () => {
   });
 
   describe('Method: openFeatureUGCModal', () => {
-    const item = fakePlayerUGCItem();
+    const item = fakePlayerUgcItem();
 
     it('should call MatDialog.open()', () => {
       component.openFeatureUGCModal(item);

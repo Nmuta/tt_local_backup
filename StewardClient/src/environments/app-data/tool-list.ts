@@ -11,6 +11,7 @@ import { chain, values } from 'lodash';
 export enum NavbarTool {
   DataObligation = 'obligation',
   UGC = 'ugc',
+  UgcDetails = 'ugc-details',
   Gifting = 'gifting',
   UserDetails = 'user-details',
   UserBanning = 'user-banning',
@@ -290,6 +291,21 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'View and filter UGC by Player or Share Code',
     shortDescription: [`View and filter User Generated Content by Player or Share Code`],
     loadChildren: () => import('../../app/pages/tools/pages/ugc/ugc.module').then(m => m.UGCModule),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.PlayerInfo,
+    tool: NavbarTool.UgcDetails,
+    accessList: CommonAccessLevels.OldCommunityAppOnly,
+    title: 'UGC Details',
+    subtitle: 'User Generated Content',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View extended information about a single UGC item',
+    shortDescription: [`View extended information about a single UGC item`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/ugc-details/ugc-details.module').then(
+        m => m.UgcDetailsModule,
+      ),
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.AuctionDetails,

@@ -23,7 +23,7 @@
         <li><b>Access Level:</b> {{ entry.isPublic ? 'Public' : 'Private' }}</li>
         <li><b>Car:</b> {{ entry.carDescription }}</li>
         <li><b>Share Code:</b> {{ entry.shareCode || 'N/A' }}</li>
-        <li><b>Id:</b> {{ entry.guidId }}</li>
+        <li><b>Id:</b> {{ entry.id }}</li>
       </ul>
     </td>
   </ng-container>
@@ -41,38 +41,38 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="thumbnailImageOneBase64">
+  <ng-container matColumnDef="thumbnailOneImageBase64">
     <th mat-header-cell *matHeaderCellDef>Thumbnail One</th>
     <td mat-cell *matCellDef="let entry">
       <img
-        *ngIf="!!entry?.thumbnailImageOneBase64"
+        *ngIf="!!entry?.thumbnailOneImageBase64"
         matTooltip="Click to enlarge image"
-        [src]="entry.thumbnailImageOneBase64"
-        [enlargeImage]="entry.thumbnailImageOneBase64"
+        [src]="entry.thumbnailOneImageBase64"
+        [enlargeImage]="entry.thumbnailOneImageBase64"
         title="Thumbnail One"
       />
-      <span *ngIf="!entry.thumbnailImageOneBase64">N/A</span>
+      <span *ngIf="!entry.thumbnailOneImageBase64">N/A</span>
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="thumbnailImageTwoBase64">
+  <ng-container matColumnDef="thumbnailTwoImageBase64">
     <th mat-header-cell *matHeaderCellDef>Thumbnail Two</th>
     <td mat-cell *matCellDef="let entry">
       <img
-        *ngIf="!!entry?.thumbnailImageTwoBase64"
+        *ngIf="!!entry?.thumbnailTwoImageBase64"
         matTooltip="Click to enlarge image"
-        [src]="entry.thumbnailImageTwoBase64"
-        [enlargeImage]="entry.thumbnailImageTwoBase64"
+        [src]="entry.thumbnailTwoImageBase64"
+        [enlargeImage]="entry.thumbnailTwoImageBase64"
         title="Thumbnail Two"
       />
-      <span *ngIf="!entry.thumbnailImageTwoBase64">N/A</span>
+      <span *ngIf="!entry.thumbnailTwoImageBase64">N/A</span>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let entry">
-      <button mat-stroked-button color="primary" clickStop [cdkCopyToClipboard]="entry.guidId">
+      <button mat-stroked-button color="primary" clickStop [cdkCopyToClipboard]="entry.id">
         Copy UGC ID
       </button>
 
@@ -134,7 +134,7 @@
       >
         <ul>
           <div>
-            <li><b>Id:</b> {{ entry.guidId }}</li>
+            <li><b>Id:</b> {{ entry.id }}</li>
             <li><b>Share Code:</b> {{ entry.shareCode || 'N/A' }}</li>
             <li><b>Popularity:</b> {{ entry.popularityBucket }}/5</li>
             <li><b>Likes:</b> {{ entry.timesLiked }}</li>
@@ -142,13 +142,13 @@
             <li><b>Downloads:</b> {{ entry.timesDownloaded }}</li>
             <li><b>Uses:</b> {{ entry.timesUsed }}</li>
           </div>
-          <div *ngIf="entry.thumbnailImageTwoBase64">
+          <div *ngIf="entry.thumbnailTwoImageBase64">
             <li>
               <b>Thumbnail Two:</b><br />
               <img
                 matTooltip="Click to enlarge image"
-                [src]="entry.thumbnailImageTwoBase64"
-                [enlargeImage]="entry.thumbnailImageTwoBase64"
+                [src]="entry.thumbnailTwoImageBase64"
+                [enlargeImage]="entry.thumbnailTwoImageBase64"
                 title="Thumbnail Two"
               />
             </li>

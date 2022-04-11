@@ -20,7 +20,7 @@ import { DateTime } from 'luxon';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
 import { Gift, GroupGift } from '@models/gift';
-import { UGCType } from '@models/ugc-filters';
+import { UgcType } from '@models/ugc-filters';
 
 describe('WoodstockService', () => {
   let injector: TestBed;
@@ -484,7 +484,7 @@ describe('WoodstockService', () => {
 
   describe('Method: getPlayerUGCByXuid$', () => {
     const xuid = fakeXuid();
-    const contentType = UGCType.Livery;
+    const contentType = UgcType.Livery;
     let httpParams = new HttpParams();
 
     beforeEach(() => {
@@ -493,7 +493,7 @@ describe('WoodstockService', () => {
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerUGCByXuid$(xuid, contentType).subscribe(() => {
+      service.getPlayerUgcByXuid$(xuid, contentType).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/storefront/xuid(${xuid})`,
           httpParams,
@@ -505,7 +505,7 @@ describe('WoodstockService', () => {
 
   describe('Method: getPlayerUGCByShareCode$', () => {
     const shareCode = faker.random.word();
-    const contentType = UGCType.Livery;
+    const contentType = UgcType.Livery;
     let httpParams = new HttpParams();
 
     beforeEach(() => {
@@ -514,7 +514,7 @@ describe('WoodstockService', () => {
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerUGCByShareCode$(shareCode, contentType).subscribe(() => {
+      service.getPlayerUgcByShareCode$(shareCode, contentType).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/storefront/sharecode(${shareCode})`,
           httpParams,

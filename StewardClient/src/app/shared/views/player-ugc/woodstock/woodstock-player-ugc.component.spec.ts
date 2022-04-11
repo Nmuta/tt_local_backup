@@ -5,7 +5,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { WoodstockPlayerUGCComponent } from './woodstock-player-ugc.component';
+import { WoodstockPlayerUgcComponent } from './woodstock-player-ugc.component';
 import { WoodstockPlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -13,18 +13,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockWoodstockService } from '@services/woodstock';
 
 describe('WoodstockPlayerUGCComponent', () => {
-  let component: WoodstockPlayerUGCComponent;
-  let fixture: ComponentFixture<WoodstockPlayerUGCComponent>;
+  let component: WoodstockPlayerUgcComponent;
+  let fixture: ComponentFixture<WoodstockPlayerUgcComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [WoodstockPlayerUGCComponent, BigJsonPipe],
+      declarations: [WoodstockPlayerUgcComponent, BigJsonPipe],
       providers: [createMockWoodstockService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WoodstockPlayerUGCComponent);
+    fixture = TestBed.createComponent(WoodstockPlayerUgcComponent);
     component = fixture.componentInstance;
     component.usingIdentities = true;
   });
@@ -47,7 +47,7 @@ describe('WoodstockPlayerUGCComponent', () => {
     describe('And getPlayerUGC$ returns ugc', () => {
       const ugc = WoodstockPlayerXuidUGCFakeApi.makeMany();
       beforeEach(() => {
-        component.getPlayerUGC$ = jasmine.createSpy('getPlayerUGC$').and.returnValue(of(ugc));
+        component.getPlayerUgc$ = jasmine.createSpy('getPlayerUGC$').and.returnValue(of(ugc));
 
         component.identity = {
           query: undefined,
@@ -59,7 +59,7 @@ describe('WoodstockPlayerUGCComponent', () => {
       it('should set ugc', () => {
         component.ngOnChanges();
 
-        expect(component.getPlayerUGC$).toHaveBeenCalled();
+        expect(component.getPlayerUgc$).toHaveBeenCalled();
         expect(component.ugcContent).toBe(ugc);
         expect(component.getMonitor?.isActive).toBe(false);
         expect(component.getMonitor?.status?.error).toBeNull();
@@ -69,7 +69,7 @@ describe('WoodstockPlayerUGCComponent', () => {
     describe('And getPlayerUGC$ returns with error', () => {
       const error = { message: faker.random.words(10) };
       beforeEach(() => {
-        component.getPlayerUGC$ = jasmine
+        component.getPlayerUgc$ = jasmine
           .createSpy('getPlayerUGC$')
           .and.returnValue(throwError(error));
 
@@ -83,7 +83,7 @@ describe('WoodstockPlayerUGCComponent', () => {
       it('should set error', () => {
         component.ngOnChanges();
 
-        expect(component.getPlayerUGC$).toHaveBeenCalled();
+        expect(component.getPlayerUgc$).toHaveBeenCalled();
         expect(component.ugcContent).toEqual([]);
         expect(component.getMonitor?.isActive).toBe(false);
         expect(component.getMonitor?.status?.error).toEqual(error);

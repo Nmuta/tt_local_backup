@@ -2,7 +2,7 @@
   <tr *ngFor="let e of values">
     <th>{{ e.name }}</th>
     <td>
-      <standard-copy [text]="e.value">{{ e.value | humanize }}</standard-copy>
+      <standard-copy [noError]="true" [text]="e.value">{{ e.value | humanize }}</standard-copy>
     </td>
   </tr>
 </table>

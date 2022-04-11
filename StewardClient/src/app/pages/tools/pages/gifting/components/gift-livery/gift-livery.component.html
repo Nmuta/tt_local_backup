@@ -16,7 +16,7 @@
           <mat-card-content>
             <pastable-single-input
               label="Livery ID"
-              [presetValue]="formControls?.livery?.value?.guidId"
+              [presetValue]="formControls?.livery?.value?.id"
               (changes)="onLiveryIdChange($event)"
             ></pastable-single-input>
             <mat-progress-spinner
@@ -30,13 +30,13 @@
                 <li><b>Description:</b> {{ livery.description }}</li>
                 <li><b>Created:</b> {{ livery.createdDateUtc | utcDate: 'short' }}</li>
                 <li><b>Share Code:</b> {{ livery.shareCode || 'N/A' }}</li>
-                <li><b>Id:</b> {{ livery.guidId }}</li>
+                <li><b>Id:</b> {{ livery.id }}</li>
                 <li>
                   <img
                     type="button"
                     matTooltip="Click to enlarge image"
-                    [src]="livery.thumbnailImageOneBase64"
-                    [enlargeImage]="livery.thumbnailImageOneBase64"
+                    [src]="livery.thumbnailOneImageBase64"
+                    [enlargeImage]="livery.thumbnailOneImageBase64"
                     title="Thumbnail One"
                   />
                 </li>
@@ -44,8 +44,8 @@
                   <img
                     type="button"
                     matTooltip="Click to enlarge image"
-                    [src]="livery.thumbnailImageTwoBase64"
-                    [enlargeImage]="livery.thumbnailImageTwoBase64"
+                    [src]="livery.thumbnailTwoImageBase64"
+                    [enlargeImage]="livery.thumbnailTwoImageBase64"
                     title="Thumbnail Two"
                   />
                 </li>

@@ -1,10 +1,10 @@
 import { Component, OnChanges } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { Observable } from 'rxjs';
-import { PlayerUGCBaseComponent } from '../player-ugc.base.component';
+import { PlayerUgcBaseComponent } from '../player-ugc.base.component';
 import { WoodstockService } from '@services/woodstock';
-import { PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCType } from '@models/ugc-filters';
+import { PlayerUgcItem } from '@models/player-ugc-item';
+import { UgcType } from '@models/ugc-filters';
 
 /** Retreives and displays Woodstock ugc by XUID. */
 @Component({
@@ -12,7 +12,7 @@ import { UGCType } from '@models/ugc-filters';
   templateUrl: './woodstock-player-ugc.component.html',
   styleUrls: ['../player-ugc.component.scss'],
 })
-export class WoodstockPlayerUGCComponent extends PlayerUGCBaseComponent implements OnChanges {
+export class WoodstockPlayerUgcComponent extends PlayerUgcBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstockService: WoodstockService) {
@@ -20,9 +20,9 @@ export class WoodstockPlayerUGCComponent extends PlayerUGCBaseComponent implemen
   }
 
   /** Searches player UGC content. */
-  public getPlayerUGC$(contentType: UGCType): Observable<PlayerUGCItem[]> {
+  public getPlayerUgc$(contentType: UgcType): Observable<PlayerUgcItem[]> {
     return this.usingIdentities
-      ? this.woodstockService.getPlayerUGCByXuid$(this.identity?.xuid, contentType)
-      : this.woodstockService.getPlayerUGCByShareCode$(this.shareCode, contentType);
+      ? this.woodstockService.getPlayerUgcByXuid$(this.identity?.xuid, contentType)
+      : this.woodstockService.getPlayerUgcByShareCode$(this.shareCode, contentType);
   }
 }
