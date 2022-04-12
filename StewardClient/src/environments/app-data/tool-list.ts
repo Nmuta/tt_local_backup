@@ -290,7 +290,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     imageAlt: undefined,
     tooltipDescription: 'View and filter UGC by Player or Share Code',
     shortDescription: [`View and filter User Generated Content by Player or Share Code`],
-    loadChildren: () => import('../../app/pages/tools/pages/ugc/ugc.module').then(m => m.UGCModule),
+    loadChildren: () => import('../../app/pages/tools/pages/ugc/ugc.module').then(m => m.UgcModule),
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,

@@ -15,27 +15,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Search UGC items.
         /// </summary>
-        Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint, bool includeThumbnails = false);
+        Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, UgcFilters filters, string endpoint, bool includeThumbnails = false);
 
         /// <summary>
         ///    Get player livery.
         /// </summary>
-        Task<UgcItem> GetUGCLiveryAsync(Guid liveryId, string endpoint);
+        Task<UgcItem> GetUgcLiveryAsync(Guid liveryId, string endpoint);
 
         /// <summary>
         ///    Get player photo.
         /// </summary>
-        Task<UgcItem> GetUGCPhotoAsync(Guid photoId, string endpoint);
+        Task<UgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint);
 
         /// <summary>
         ///    Get player tune.
         /// </summary>
-        Task<UgcItem> GetUGCTuneAsync(Guid tuneId, string endpoint);
+        Task<UgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint);
 
         /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
-        Task SetUGCFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);
+        Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);
 
         /// <summary>
         ///     Gets comprehensive data about an auction.
@@ -47,19 +47,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Gets hidden UGC of a player.
         /// </summary>
-        Task<IList<HideableUgc>> GetHiddenUGCForUserAsync(ulong xuid, string endpoint);
+        Task<IList<HideableUgc>> GetHiddenUgcForUserAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Hides UGC.
         /// </summary>
-        Task HideUGCAsync(
+        Task HideUgcAsync(
             Guid ugcId,
             string endpoint);
 
         /// <summary>
         ///     Unhides a player's UGC.
         /// </summary>
-        Task UnhideUGCAsync(
+        Task UnhideUgcAsync(
             ulong xuid,
             Guid ugcId,
             FileType fileType,

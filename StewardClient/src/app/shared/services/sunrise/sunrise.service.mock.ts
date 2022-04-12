@@ -20,7 +20,7 @@ import { SunriseService } from './sunrise.service';
 import { SunrisePlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileNotes';
 import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/backstagePassHistory';
 import { SunrisePlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/accountInventory';
-import { SunrisePlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
+import { SunrisePlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
 import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 import { SunriseGiftLiveryToLspGroupFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/livery/groupId';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
@@ -155,16 +155,16 @@ export class MockSunriseService {
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidAccountInventoryFakeApi.make()))),
     );
 
-  public getPlayerUGCByXuid$ = jasmine
-    .createSpy('getPlayerUGCByXuid$')
+  public getPlayerUgcByXuid$ = jasmine
+    .createSpy('getPlayerUgcByXuid$')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUGCFakeApi.makeMany()))),
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUgcFakeApi.makeMany()))),
     );
 
-  public getPlayerUGCByShareCode$ = jasmine
-    .createSpy('getPlayerUGCByShareCode$')
+  public getPlayerUgcByShareCode$ = jasmine
+    .createSpy('getPlayerUgcByShareCode$')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUGCFakeApi.makeMany()))),
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUgcFakeApi.makeMany()))),
     );
 
   public getDetailedCars$ = jasmine

@@ -7,19 +7,19 @@ import { UgcType } from '@models/ugc-filters';
 import { WoodstockService } from '@services/woodstock';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
-import { FeatureUGCModalBaseComponent } from '../feature-ugc-modal.component';
+import { FeatureUgcModalBaseComponent } from '../feature-ugc-modal.component';
 
 /** Woodstock modal to set featured status of a UGC item. */
 @Component({
   templateUrl: '../feature-ugc-modal.component.html',
   styleUrls: ['../feature-ugc-modal.component.scss'],
 })
-export class WoodstockFeatureUGCModalComponent extends FeatureUGCModalBaseComponent {
+export class WoodstockFeatureUgcModalComponent extends FeatureUgcModalBaseComponent {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(
     private woodstockService: WoodstockService,
-    protected dialogRef: MatDialogRef<WoodstockFeatureUGCModalComponent>,
+    protected dialogRef: MatDialogRef<WoodstockFeatureUgcModalComponent>,
     @Inject(MAT_DIALOG_DATA) protected data: PlayerUgcItem,
   ) {
     super(dialogRef, data);
@@ -44,7 +44,7 @@ export class WoodstockFeatureUGCModalComponent extends FeatureUGCModalBaseCompon
   }
 
   /** Gets UGC item. */
-  public getUGCItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
+  public getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
     return this.woodstockService.getPlayerUgcItem(itemId, type);
   }
 }

@@ -4,7 +4,7 @@ import faker from '@faker-js/faker';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 
 /** Fake API for finding player UGC items. */
-export class WoodstockPlayerXuidUGCFakeApi extends FakeApiBase {
+export class WoodstockPlayerXuidUgcFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -19,7 +19,7 @@ export class WoodstockPlayerXuidUGCFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): PlayerUgcItem[] {
-    return WoodstockPlayerXuidUGCFakeApi.makeMany();
+    return WoodstockPlayerXuidUgcFakeApi.makeMany();
   }
 
   /** Create many example models. */

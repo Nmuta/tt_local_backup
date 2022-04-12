@@ -21,7 +21,7 @@ import { WoodstockPlayerXuidProfileRollbacksApi } from '@interceptors/fake-api/a
 import { WoodstockPlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/auctions';
 import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/backstagePassHistory';
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/accountInventory';
-import { WoodstockPlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
+import { WoodstockPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
 import { WoodstockDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import { WoodstockGiftLiveryToPlayersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/useBackgroundProcessing/players';
 import { WoodstockGiftLiveryToLspGroupFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/groupId';
@@ -161,16 +161,16 @@ export class MockWoodstockService {
       this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidAccountInventoryFakeApi.make()))),
     );
 
-  public getPlayerUGCByXuid$ = jasmine
-    .createSpy('getPlayerUGCByXuid$')
+  public getPlayerUgcByXuid$ = jasmine
+    .createSpy('getPlayerUgcByXuid$')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUGCFakeApi.makeMany()))),
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUgcFakeApi.makeMany()))),
     );
 
-  public getPlayerUGCByShareCode$ = jasmine
-    .createSpy('getPlayerUGCByShareCode$')
+  public getPlayerUgcByShareCode$ = jasmine
+    .createSpy('getPlayerUgcByShareCode$')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUGCFakeApi.makeMany()))),
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUgcFakeApi.makeMany()))),
     );
 
   public getDetailedCars$ = jasmine

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UgcComponent } from './ugc.component';
 
-describe('UGCComponent', () => {
+describe('UgcComponent', () => {
   let component: UgcComponent;
   let fixture: ComponentFixture<UgcComponent>;
 

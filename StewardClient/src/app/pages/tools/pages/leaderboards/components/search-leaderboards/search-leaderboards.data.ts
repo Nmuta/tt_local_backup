@@ -1,7 +1,7 @@
 export const LEADERBOARD_SCORE_TYPES: string[] = [
   'Laptime',
   'DriftPoints',
-  'UGCPoints',
+  'UgcPoints',
   'XP',
   'SpeedTrap',
   'AverageSpeedZone',
@@ -73,7 +73,7 @@ export const LEADERBOARD_SCOREBOARD_TYPES: string[] = [
   'League', //NA
   'CareerEvent', //NA
   'BucketListChallenge', //NA
-  'UGCBucketListChallenge', //NA
+  'UgcBucketListChallenge', //NA
   'HorizonTrueSkill', //NA
   'HorizonTeamTrueSkill', //NA
 ];

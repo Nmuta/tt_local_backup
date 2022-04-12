@@ -5,7 +5,7 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SunriseUGCFiltersComponent } from './sunrise-ugc-filters.component';
+import { SunriseUgcFiltersComponent } from './sunrise-ugc-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
 import { DetailedCar } from '@models/detailed-car';
@@ -13,9 +13,9 @@ import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/su
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 
-describe('SunriseUGCFiltersComponent', () => {
-  let fixture: ComponentFixture<SunriseUGCFiltersComponent>;
-  let component: SunriseUGCFiltersComponent;
+describe('SunriseUgcFiltersComponent', () => {
+  let fixture: ComponentFixture<SunriseUgcFiltersComponent>;
+  let component: SunriseUgcFiltersComponent;
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
@@ -30,7 +30,7 @@ describe('SunriseUGCFiltersComponent', () => {
         ReactiveFormsModule,
         MatAutocompleteModule,
       ],
-      declarations: [SunriseUGCFiltersComponent],
+      declarations: [SunriseUgcFiltersComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [],
     }).compileComponents();
@@ -38,7 +38,7 @@ describe('SunriseUGCFiltersComponent', () => {
     const injector = getTestBed();
     mockStore = injector.inject(Store);
 
-    fixture = TestBed.createComponent(SunriseUGCFiltersComponent);
+    fixture = TestBed.createComponent(SunriseUgcFiltersComponent);
     component = fixture.debugElement.componentInstance;
 
     mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
@@ -72,7 +72,7 @@ describe('SunriseUGCFiltersComponent', () => {
     });
 
     describe('When makeModelInput is null', () => {
-      it('should correctly emit UGCFilters', () => {
+      it('should correctly emit UgcFilters', () => {
         component.searchFilters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({
@@ -90,7 +90,7 @@ describe('SunriseUGCFiltersComponent', () => {
         component.formControls.makeModelInput.setValue(carInput);
       });
 
-      it('should correctly emit UGCFilters', () => {
+      it('should correctly emit UgcFilters', () => {
         component.searchFilters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({
@@ -109,7 +109,7 @@ describe('SunriseUGCFiltersComponent', () => {
         component.formControls.makeModelInput.setValue(carInput);
       });
 
-      it('should correctly emit UGCFilters', () => {
+      it('should correctly emit UgcFilters', () => {
         component.searchFilters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({

@@ -12,7 +12,7 @@ import { UgcType } from '@models/ugc-filters';
   templateUrl: './sunrise-player-ugc.component.html',
   styleUrls: ['../player-ugc.component.scss'],
 })
-export class SunrisePlayerUGCComponent extends PlayerUgcBaseComponent implements OnChanges {
+export class SunrisePlayerUgcComponent extends PlayerUgcBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(private readonly sunriseSerice: SunriseService) {

@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
-import { DefaultUGCFilters, UgcAccessLevel, UgcFilters, UgcOrderBy } from '@models/ugc-filters';
+import { DefaultUgcFilters, UgcAccessLevel, UgcFilters, UgcOrderBy } from '@models/ugc-filters';
 import { DetailedCar } from '@models/detailed-car';
 import BigNumber from 'bignumber.js';
 import { keys } from 'lodash';
@@ -17,7 +17,7 @@ export type MakeModelFilterGroup = {
 @Component({
   template: '',
 })
-export abstract class UGCFiltersBaseComponent extends BaseComponent {
+export abstract class UgcFiltersBaseComponent extends BaseComponent {
   @Output() public changes = new EventEmitter<UgcFilters>();
 
   public accessLevelOptions = keys(UgcAccessLevel) as UgcAccessLevel[];
@@ -26,8 +26,8 @@ export abstract class UGCFiltersBaseComponent extends BaseComponent {
   public formControls = {
     makeModelInput: new FormControl(null),
     keyword: new FormControl(''),
-    accessLevel: new FormControl(DefaultUGCFilters.accessLevel, Validators.required),
-    orderBy: new FormControl(DefaultUGCFilters.orderBy, Validators.required),
+    accessLevel: new FormControl(DefaultUgcFilters.accessLevel, Validators.required),
+    orderBy: new FormControl(DefaultUgcFilters.orderBy, Validators.required),
   };
 
   /** UGC filters form group. */

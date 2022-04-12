@@ -5,16 +5,16 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SunriseUGCTableComponent } from './sunrise-ugc-table.component';
+import { SunriseUgcTableComponent } from './sunrise-ugc-table.component';
 import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { EMPTY } from 'rxjs';
 import { SunriseService } from '@services/sunrise';
-import { PlayerUGCItemTableEntries } from '../ugc-table.component';
+import { PlayerUgcItemTableEntries } from '../ugc-table.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
-describe('SunriseUGCTableComponent', () => {
-  let component: SunriseUGCTableComponent;
-  let fixture: ComponentFixture<SunriseUGCTableComponent>;
+describe('SunriseUgcTableComponent', () => {
+  let component: SunriseUgcTableComponent;
+  let fixture: ComponentFixture<SunriseUgcTableComponent>;
   let mockSunriseService: SunriseService;
   let mockMatDialog;
   MatDialog;
@@ -22,7 +22,7 @@ describe('SunriseUGCTableComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SunriseUGCTableComponent, BigJsonPipe],
+      declarations: [SunriseUgcTableComponent, BigJsonPipe],
       providers: [
         createMockSunriseService(),
         {
@@ -33,7 +33,7 @@ describe('SunriseUGCTableComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SunriseUGCTableComponent);
+    fixture = TestBed.createComponent(SunriseUgcTableComponent);
     component = fixture.componentInstance;
     mockMatDialog = TestBed.inject(MatDialog);
     mockSunriseService = TestBed.inject(SunriseService);
@@ -47,22 +47,22 @@ describe('SunriseUGCTableComponent', () => {
     expect(component).toBeTruthy();
   }));
 
-  describe('Method: hideUGCItem', () => {
-    const item: PlayerUGCItemTableEntries = fakePlayerUgcItem();
+  describe('Method: hideUgcItem', () => {
+    const item: PlayerUgcItemTableEntries = fakePlayerUgcItem();
     item.monitor = new ActionMonitor();
 
     it('should call SunriseService.hideUgc$()', () => {
-      component.hideUGCItem(item);
+      component.hideUgcItem(item);
 
       expect(mockSunriseService.hideUgc$).toHaveBeenCalled();
     });
   });
 
-  describe('Method: openFeatureUGCModal', () => {
+  describe('Method: openFeatureUgcModal', () => {
     const item = fakePlayerUgcItem();
 
     it('should call MatDialog.open()', () => {
-      component.openFeatureUGCModal(item);
+      component.openFeatureUgcModal(item);
 
       expect(mockMatDialog.open).toHaveBeenCalled();
     });

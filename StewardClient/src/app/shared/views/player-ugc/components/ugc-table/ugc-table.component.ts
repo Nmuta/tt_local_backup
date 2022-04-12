@@ -28,7 +28,7 @@ export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
 ];
 
 /** Extended type from HideableUgc. */
-export type PlayerUGCItemTableEntries = PlayerUgcItem & {
+export type PlayerUgcItemTableEntries = PlayerUgcItem & {
   monitor?: ActionMonitor;
 };
 
@@ -44,7 +44,7 @@ export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailOneImageBa
     ]),
   ],
 })
-export abstract class UGCTableBaseComponent
+export abstract class UgcTableBaseComponent
   extends BaseComponent
   implements OnInit, OnChanges, AfterViewInit
 {
@@ -52,7 +52,7 @@ export abstract class UGCTableBaseComponent
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() content: PlayerUgcItem[];
 
-  public ugcTableDataSource = new MatTableDataSource<PlayerUGCItemTableEntries>([]);
+  public ugcTableDataSource = new MatTableDataSource<PlayerUgcItemTableEntries>([]);
   public columnsToDisplay: string[] = UGC_TABLE_COLUMNS_TWO_IMAGES;
   public expandedElement: MatColumnDef;
   public useExpandoColumnDef: boolean = false;
@@ -61,9 +61,9 @@ export abstract class UGCTableBaseComponent
   public allMonitors: ActionMonitor[] = [];
 
   /** Opens the feature UGC modal. */
-  public abstract openFeatureUGCModal(item: PlayerUgcItem): void;
-  public abstract getUGCItem(id: string, type: UgcType): Observable<PlayerUgcItem>;
-  public abstract hideUGCItem(item: PlayerUGCItemTableEntries): void;
+  public abstract openFeatureUgcModal(item: PlayerUgcItem): void;
+  public abstract getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem>;
+  public abstract hideUgcItem(item: PlayerUgcItemTableEntries): void;
 
   /** Angular hook. */
   public ngOnInit(): void {
@@ -80,7 +80,7 @@ export abstract class UGCTableBaseComponent
   /** Angular hook. */
   public ngOnChanges(changes: SimpleChanges): void {
     if (!!changes.content) {
-      const ugcItemsToProcess: PlayerUGCItemTableEntries[] = this.content;
+      const ugcItemsToProcess: PlayerUgcItemTableEntries[] = this.content;
 
       ugcItemsToProcess.forEach(item => {
         item.monitor = new ActionMonitor(`POST Hide UGC with ID: ${item.id}`);
@@ -95,7 +95,7 @@ export abstract class UGCTableBaseComponent
 
       // Check paginator for page length and get thumbnails for first 'X' amount of content
       if (this.ugcTableDataSource.data.length > 0) {
-        this.getUGCThumbnailsForActiveDataset();
+        this.getUgcThumbnailsForActiveDataset();
       }
     }
   }
@@ -106,7 +106,7 @@ export abstract class UGCTableBaseComponent
   }
 
   /** Looks up thumbnails for items in the active paginated page. Ignores items with thumbnails already present. */
-  public async getUGCThumbnailsForActiveDataset(): Promise<void> {
+  public async getUgcThumbnailsForActiveDataset(): Promise<void> {
     const activeLength = this.paginator.pageSize;
     const activeIndex = this.paginator.pageIndex * activeLength;
     const dataSource = this.ugcTableDataSource.data;
@@ -115,9 +115,9 @@ export abstract class UGCTableBaseComponent
     for (let i = activeIndex; i < activeIndex + activeLength; i++) {
       const ugcItem = dataSource[i];
       if (this.shouldLookupThumbnails(ugcItem)) {
-        const fullUGCItem = await this.getUGCItem(ugcItem.id, ugcItem.type).toPromise();
-        dataSource[i].thumbnailOneImageBase64 = fullUGCItem.thumbnailOneImageBase64;
-        dataSource[i].thumbnailTwoImageBase64 = fullUGCItem.thumbnailTwoImageBase64;
+        const fullUgcItem = await this.getUgcItem(ugcItem.id, ugcItem.type).toPromise();
+        dataSource[i].thumbnailOneImageBase64 = fullUgcItem.thumbnailOneImageBase64;
+        dataSource[i].thumbnailTwoImageBase64 = fullUgcItem.thumbnailTwoImageBase64;
       }
     }
 

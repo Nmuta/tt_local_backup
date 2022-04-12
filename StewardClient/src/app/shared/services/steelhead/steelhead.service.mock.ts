@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { SteelheadService } from './steelhead.service';
 import { SteelheadPlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/auctions';
-import { SteelheadPlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/ugc';
+import { SteelheadPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/ugc';
 
 /** Defines the mock for the API Service. */
 @Injectable()
@@ -101,16 +101,16 @@ export class MockSteelheadService {
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidAuctionsFakeApi.makeMany()))),
     );
 
-  public getPlayerUGCByXuid$ = jasmine
-    .createSpy('getPlayerUGCByXuid$')
+  public getPlayerUgcByXuid$ = jasmine
+    .createSpy('getPlayerUgcByXuid$')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidUGCFakeApi.makeMany()))),
+      this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidUgcFakeApi.makeMany()))),
     );
 
-  public getPlayerUGCByShareCode$ = jasmine
-    .createSpy('getPlayerUGCByShareCode$')
+  public getPlayerUgcByShareCode$ = jasmine
+    .createSpy('getPlayerUgcByShareCode$')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidUGCFakeApi.makeMany()))),
+      this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidUgcFakeApi.makeMany()))),
     );
 }
 /** Creates an injectable mock for Steelhead Service. */

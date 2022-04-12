@@ -2,9 +2,9 @@ import { Component, OnChanges } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { MatDialog } from '@angular/material/dialog';
-import { WoodstockFeatureUGCModalComponent } from '@views/feature-ugc-modal/woodstock/woodstock-feature-ugc-modal.component';
+import { WoodstockFeatureUgcModalComponent } from '@views/feature-ugc-modal/woodstock/woodstock-feature-ugc-modal.component';
 import { filter, takeUntil } from 'rxjs/operators';
-import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.component';
+import { PlayerUgcItemTableEntries, UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
 import { Observable } from 'rxjs';
 import { WoodstockService } from '@services/woodstock';
@@ -17,7 +17,7 @@ import { renderGuard } from '@helpers/rxjs';
   templateUrl: '../ugc-table.component.html',
   styleUrls: ['../ugc-table.component.scss'],
 })
-export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements OnChanges {
+export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH5;
 
   constructor(protected dialog: MatDialog, private readonly woodstockService: WoodstockService) {
@@ -25,9 +25,9 @@ export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements
   }
 
   /** Opens the feature UGC modal. */
-  public openFeatureUGCModal(item: PlayerUgcItem): void {
+  public openFeatureUgcModal(item: PlayerUgcItem): void {
     this.dialog
-      .open(WoodstockFeatureUGCModalComponent, {
+      .open(WoodstockFeatureUgcModalComponent, {
         data: item,
       })
       .afterClosed()
@@ -47,12 +47,12 @@ export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements
   }
 
   /** Gets player UGC item. */
-  public getUGCItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
+  public getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
     return this.woodstockService.getPlayerUgcItem(id, type);
   }
 
   /** Hide UGC item. */
-  public hideUGCItem(item: PlayerUGCItemTableEntries): void {
+  public hideUgcItem(item: PlayerUgcItemTableEntries): void {
     item.monitor = item.monitor.repeat();
 
     this.woodstockService
@@ -63,7 +63,7 @@ export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements
       });
   }
 
-  private deleteEntry(item: PlayerUGCItemTableEntries): void {
+  private deleteEntry(item: PlayerUgcItemTableEntries): void {
     renderGuard(() => {
       pull(this.ugcTableDataSource.data, item);
 

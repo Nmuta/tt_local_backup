@@ -8,22 +8,22 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
-import { SunrisePlayerUGCComponent } from './sunrise/sunrise-player-ugc.component';
+import { SunrisePlayerUgcComponent } from './sunrise/sunrise-player-ugc.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { LuxonModule } from 'luxon-angular';
-import { UGCFiltersModule } from './components/ugc-filters/ugc-filters.module';
+import { UgcFiltersModule } from './components/ugc-filters/ugc-filters.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { WoodstockPlayerUgcComponent } from './woodstock/woodstock-player-ugc.component';
-import { FeatureUGCModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
-import { UGCTableModule } from './components/ugc-table/ugc-table.module';
+import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
+import { UgcTableModule } from './components/ugc-table/ugc-table.module';
 
 /** Display for player ugc. */
 @NgModule({
-  declarations: [SunrisePlayerUGCComponent, WoodstockPlayerUgcComponent],
+  declarations: [SunrisePlayerUgcComponent, WoodstockPlayerUgcComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -41,11 +41,11 @@ import { UGCTableModule } from './components/ugc-table/ugc-table.module';
     DirectivesModule,
     PipesModule,
     LuxonModule,
-    UGCFiltersModule,
-    FeatureUGCModalModule,
+    UgcFiltersModule,
+    FeatureUgcModalModule,
     MatDividerModule,
-    UGCTableModule,
+    UgcTableModule,
   ],
-  exports: [SunrisePlayerUGCComponent, WoodstockPlayerUgcComponent],
+  exports: [SunrisePlayerUgcComponent, WoodstockPlayerUgcComponent],
 })
-export class PlayerUGCModule {}
+export class PlayerUgcModule {}

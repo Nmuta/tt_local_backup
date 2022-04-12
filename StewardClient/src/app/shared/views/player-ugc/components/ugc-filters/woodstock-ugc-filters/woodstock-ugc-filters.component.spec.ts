@@ -5,7 +5,7 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import { WoodstockUGCFiltersComponent } from './woodstock-ugc-filters.component';
+import { WoodstockUgcFiltersComponent } from './woodstock-ugc-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
@@ -13,9 +13,9 @@ import { DetailedCar } from '@models/detailed-car';
 import { WoodstockDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import faker from '@faker-js/faker';
 
-describe('WoodstockUGCFiltersComponent', () => {
-  let fixture: ComponentFixture<WoodstockUGCFiltersComponent>;
-  let component: WoodstockUGCFiltersComponent;
+describe('WoodstockUgcFiltersComponent', () => {
+  let fixture: ComponentFixture<WoodstockUgcFiltersComponent>;
+  let component: WoodstockUgcFiltersComponent;
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
@@ -30,7 +30,7 @@ describe('WoodstockUGCFiltersComponent', () => {
         ReactiveFormsModule,
         MatAutocompleteModule,
       ],
-      declarations: [WoodstockUGCFiltersComponent],
+      declarations: [WoodstockUgcFiltersComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [],
     }).compileComponents();
@@ -38,7 +38,7 @@ describe('WoodstockUGCFiltersComponent', () => {
     const injector = getTestBed();
     mockStore = injector.inject(Store);
 
-    fixture = TestBed.createComponent(WoodstockUGCFiltersComponent);
+    fixture = TestBed.createComponent(WoodstockUgcFiltersComponent);
     component = fixture.debugElement.componentInstance;
 
     mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
@@ -72,7 +72,7 @@ describe('WoodstockUGCFiltersComponent', () => {
     });
 
     describe('When makeModelInput is null', () => {
-      it('should correctly emit UGCFilters', () => {
+      it('should correctly emit UgcFilters', () => {
         component.searchFilters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({
@@ -90,7 +90,7 @@ describe('WoodstockUGCFiltersComponent', () => {
         component.formControls.makeModelInput.setValue(carInput);
       });
 
-      it('should correctly emit UGCFilters', () => {
+      it('should correctly emit UgcFilters', () => {
         component.searchFilters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({
@@ -109,7 +109,7 @@ describe('WoodstockUGCFiltersComponent', () => {
         component.formControls.makeModelInput.setValue(carInput);
       });
 
-      it('should correctly emit UGCFilters', () => {
+      it('should correctly emit UgcFilters', () => {
         component.searchFilters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({

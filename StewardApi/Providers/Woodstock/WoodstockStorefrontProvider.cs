@@ -38,13 +38,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<UgcItem>> SearchUgcContentAsync(UGCType ugcType, UGCFilters filters, string endpoint, bool includeThumbnails = false)
+        public async Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, UgcFilters filters, string endpoint, bool includeThumbnails = false)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));
             filters.ShouldNotBeNull(nameof(filters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            if (ugcType == UGCType.Unknown)
+            if (ugcType == UgcType.Unknown)
             {
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUGCLiveryAsync(Guid liveryId, string endpoint)
+        public async Task<UgcItem> GetUgcLiveryAsync(Guid liveryId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUGCPhotoAsync(Guid photoId, string endpoint)
+        public async Task<UgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUGCTuneAsync(Guid tuneId, string endpoint)
+        public async Task<UgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -105,14 +105,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task SetUGCFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
+        public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var featureEndDate = isFeatured && featuredExpiry.HasValue ? DateTime.UtcNow.Add(featuredExpiry.Value) : DateTime.MinValue;
-                await this.woodstockService.SetUGCFeaturedStatusAsync(contentId, isFeatured, featureEndDate, endpoint).ConfigureAwait(false);
+                await this.woodstockService.SetUgcFeaturedStatusAsync(contentId, isFeatured, featureEndDate, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -159,7 +159,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
         /// <inheritdoc />
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
-        public async Task<IList<HideableUgc>> GetHiddenUGCForUserAsync(ulong xuid, string endpoint)
+        public async Task<IList<HideableUgc>> GetHiddenUgcForUserAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -199,7 +199,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task HideUGCAsync(
+        public async Task HideUgcAsync(
             Guid ugcId,
             string endpoint)
         {
@@ -207,7 +207,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                await this.woodstockService.HideUGCAsync(ugcId, endpoint).ConfigureAwait(false);
+                await this.woodstockService.HideUgcAsync(ugcId, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -216,7 +216,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task UnhideUGCAsync(
+        public async Task UnhideUgcAsync(
             ulong xuid,
             Guid ugcId,
             FileType fileType,
@@ -226,7 +226,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                await this.woodstockService.UnhideUGCAsync(ugcId, xuid, fileType, endpoint).ConfigureAwait(false);
+                await this.woodstockService.UnhideUgcAsync(ugcId, xuid, fileType, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

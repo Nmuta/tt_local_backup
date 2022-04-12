@@ -586,7 +586,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task HideUGCAsync(Guid ugcId, string endpoint)
+        public async Task HideUgcAsync(Guid ugcId, string endpoint)
         {
             var storefrontService = await this.serviceFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -594,7 +594,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task UnhideUGCAsync(Guid ugcId, ulong xuid, FileType fileType, string endpoint)
+        public async Task UnhideUgcAsync(Guid ugcId, ulong xuid, FileType fileType, string endpoint)
         {
             var storefrontService = await this.serviceFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -602,7 +602,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task SetUGCFeaturedStatusAsync(
+        public async Task SetUgcFeaturedStatusAsync(
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,

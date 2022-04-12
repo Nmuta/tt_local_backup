@@ -42,7 +42,7 @@ import { PlayerAuctionActionLogModule } from '@views/player-auction-action-log/p
 import { GeneralUserDetailsComponent } from './general/general-user-details.component';
 import { PlayerHiddenUgcModule } from '@views/player-hidden-ugc/player-hidden-ugc.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { PlayerUGCModule } from '@views/player-ugc/player-ugc.module';
+import { PlayerUgcModule } from '@views/player-ugc/player-ugc.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -93,7 +93,7 @@ import { PlayerUGCModule } from '@views/player-ugc/player-ugc.module';
     PlayerAuctionActionLogModule,
     PlayerHiddenUgcModule,
     MonitorActionModule,
-    PlayerUGCModule,
+    PlayerUgcModule,
   ],
 })
 export class UserDetailsModule {}

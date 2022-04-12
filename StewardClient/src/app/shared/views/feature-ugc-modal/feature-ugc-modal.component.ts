@@ -11,18 +11,18 @@ import { cloneDeep } from 'lodash';
 import { DateTime } from 'luxon';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
-import { SunriseFeatureUGCModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
-import { WoodstockFeatureUGCModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
+import { SunriseFeatureUgcModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
+import { WoodstockFeatureUgcModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
 
-export type FeatureUGCModalComponentUnion =
-  | SunriseFeatureUGCModalComponent
-  | WoodstockFeatureUGCModalComponent;
+export type FeatureUgcModalComponentUnion =
+  | SunriseFeatureUgcModalComponent
+  | WoodstockFeatureUgcModalComponent;
 
 /** Base modal component to set featured status of a UGC item. */
 @Component({
   template: '',
 })
-export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
+export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
   public formControls = {
     featuredDate: new FormControl('', [
       Validators.required,
@@ -36,7 +36,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
   public abstract gameTitle: GameTitleCodeName;
 
   constructor(
-    protected dialogRef: MatDialogRef<FeatureUGCModalComponentUnion>,
+    protected dialogRef: MatDialogRef<FeatureUgcModalComponentUnion>,
     @Inject(MAT_DIALOG_DATA) protected data: PlayerUgcItem,
   ) {
     super();
@@ -72,10 +72,10 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
   public abstract setFeaturedStatus$(itemId: string, expireDate: DateTime): Observable<void>;
   public abstract deleteFeaturedStatus$(itemId: string): Observable<void>;
 
-  public abstract getUGCItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
+  public abstract getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
 
   /** Sets featured status. */
-  public featureUGC(): void {
+  public featureUgc(): void {
     if (!this.formGroup.valid) {
       return;
     }
@@ -92,7 +92,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
         switchMap(() => {
-          return this.getUGCItem$(this.ugcItem.id, this.ugcItem.type);
+          return this.getUgcItem$(this.ugcItem.id, this.ugcItem.type);
         }),
         takeUntil(this.onDestroy$),
       )
@@ -103,7 +103,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
   }
 
   /** Deletes featured status. */
-  public deleteFeatureUGCStatus(): void {
+  public deleteFeatureUgcStatus(): void {
     if (!this.ugcItem.featuredByT10) {
       return;
     }
@@ -117,7 +117,7 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
         switchMap(() => {
-          return this.getUGCItem$(this.ugcItem.id, this.ugcItem.type);
+          return this.getUgcItem$(this.ugcItem.id, this.ugcItem.type);
         }),
         takeUntil(this.onDestroy$),
       )

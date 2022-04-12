@@ -6,7 +6,7 @@ import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import {
-  DefaultUGCFilters,
+  DefaultUgcFilters,
   UgcAccessLevel,
   UgcFilters,
   UgcOrderBy,
@@ -15,7 +15,7 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep, orderBy } from 'lodash';
 
-export type UGCLookup = {
+export type UgcLookup = {
   usingIdentities?: boolean;
   identity?: IdentityResultUnion;
   shareCode?: string;
@@ -37,16 +37,16 @@ export abstract class PlayerUgcBaseComponent
   public useCondensedTableView: boolean;
   public ugcContent: PlayerUgcItem[] = [];
   public filteredUgcContent: PlayerUgcItem[] = [];
-  public searchUGC$ = new Subject<void>();
+  public searchUgc$ = new Subject<void>();
   public getMonitor = new ActionMonitor('GET UGC Content');
-  public ugcFilters = DefaultUGCFilters;
+  public ugcFilters = DefaultUgcFilters;
 
   public abstract gameTitle: GameTitleCodeName;
 
   constructor() {
     super();
 
-    this.searchUGC$
+    this.searchUgc$
       .pipe(
         tap(() => {
           this.ugcContent, (this.filteredUgcContent = []);
@@ -76,16 +76,16 @@ export abstract class PlayerUgcBaseComponent
 
   /** Angular on changes hook. */
   public ngOnChanges(): void {
-    this.searchUGC$.next();
+    this.searchUgc$.next();
   }
 
   /** After view angular hook. */
   public ngAfterViewInit(): void {
-    this.searchUGC$.next();
+    this.searchUgc$.next();
   }
 
   /** Logic when UGC filters have changed. */
-  public changeUGCFilters($event: UgcFilters): void {
+  public changeUgcFilters($event: UgcFilters): void {
     this.ugcFilters = $event;
     this.filteredUgcContent = this.filterUgcContent();
   }

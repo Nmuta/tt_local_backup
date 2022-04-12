@@ -2,9 +2,9 @@ import { Component, OnChanges } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { MatDialog } from '@angular/material/dialog';
-import { SunriseFeatureUGCModalComponent } from '@views/feature-ugc-modal/sunrise/sunrise-feature-ugc-modal.component';
+import { SunriseFeatureUgcModalComponent } from '@views/feature-ugc-modal/sunrise/sunrise-feature-ugc-modal.component';
 import { filter, takeUntil } from 'rxjs/operators';
-import { PlayerUGCItemTableEntries, UGCTableBaseComponent } from '../ugc-table.component';
+import { PlayerUgcItemTableEntries, UgcTableBaseComponent } from '../ugc-table.component';
 import { SunriseService } from '@services/sunrise';
 import { UgcType } from '@models/ugc-filters';
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ import { renderGuard } from '@helpers/rxjs';
   templateUrl: '../ugc-table.component.html',
   styleUrls: ['../ugc-table.component.scss'],
 })
-export class SunriseUGCTableComponent extends UGCTableBaseComponent implements OnChanges {
+export class SunriseUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(protected dialog: MatDialog, private readonly sunriseService: SunriseService) {
@@ -25,9 +25,9 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
   }
 
   /** Opens the feature UGC modal. */
-  public openFeatureUGCModal(item: PlayerUgcItem): void {
+  public openFeatureUgcModal(item: PlayerUgcItem): void {
     this.dialog
-      .open(SunriseFeatureUGCModalComponent, {
+      .open(SunriseFeatureUgcModalComponent, {
         data: item,
       })
       .afterClosed()
@@ -47,12 +47,12 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
   }
 
   /** Gets player UGC item. */
-  public getUGCItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
+  public getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
     return this.sunriseService.getPlayerUgcItem(id, type);
   }
 
   /** Hide UGC item. */
-  public hideUGCItem(item: PlayerUGCItemTableEntries): void {
+  public hideUgcItem(item: PlayerUgcItemTableEntries): void {
     item.monitor = item.monitor.repeat();
 
     this.sunriseService
@@ -63,7 +63,7 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
       });
   }
 
-  private deleteEntry(item: PlayerUGCItemTableEntries): void {
+  private deleteEntry(item: PlayerUgcItemTableEntries): void {
     renderGuard(() => {
       pull(this.ugcTableDataSource.data, item);
       pull(this.allMonitors, item.monitor);

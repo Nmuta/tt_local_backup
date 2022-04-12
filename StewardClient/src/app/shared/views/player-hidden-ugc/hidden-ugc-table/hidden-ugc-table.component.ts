@@ -95,7 +95,7 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
   }
 
   /** Unhide UGC item. */
-  public unhideUGCItem(item: HideableUgcTableEntries): void {
+  public unhideUgcItem(item: HideableUgcTableEntries): void {
     item.monitor = item.monitor.repeat();
 
     this.service

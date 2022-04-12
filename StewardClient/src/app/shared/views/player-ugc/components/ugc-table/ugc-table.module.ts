@@ -14,8 +14,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { LuxonModule } from 'luxon-angular';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ImageModalModule } from '@views/image-modal/image-modal.module';
-import { SunriseUGCTableComponent } from './sunrise/sunrise-ugc-table.component';
-import { WoodstockUGCTableComponent } from './woodstock/woodstock-ugc-table.component';
+import { SunriseUgcTableComponent } from './sunrise/sunrise-ugc-table.component';
+import { WoodstockUgcTableComponent } from './woodstock/woodstock-ugc-table.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
@@ -25,7 +25,7 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 
 /** Module for a UGC table. */
 @NgModule({
-  declarations: [SunriseUGCTableComponent, WoodstockUGCTableComponent],
+  declarations: [SunriseUgcTableComponent, WoodstockUgcTableComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -49,6 +49,6 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
     MatSnackBarModule,
     VerifyCheckboxModule,
   ],
-  exports: [SunriseUGCTableComponent, WoodstockUGCTableComponent],
+  exports: [SunriseUgcTableComponent, WoodstockUgcTableComponent],
 })
-export class UGCTableModule {}
+export class UgcTableModule {}

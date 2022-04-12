@@ -490,7 +490,7 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getPlayerUGCByXuid$', () => {
+  describe('Method: getPlayerUgcByXuid$', () => {
     const xuid = fakeXuid();
     const contentType = UgcType.Livery;
     let httpParams = new HttpParams();
@@ -511,7 +511,7 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getPlayerUGCByShareCode$', () => {
+  describe('Method: getPlayerUgcByShareCode$', () => {
     const shareCode = faker.random.word();
     const contentType = UgcType.Livery;
     let httpParams = new HttpParams();

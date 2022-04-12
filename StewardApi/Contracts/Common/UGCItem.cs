@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     public sealed class UgcItem
     {
         public Guid Id { get; set; }
-        public UGCType Type { get; set; }
+        public UgcType Type { get; set; }
         public int GameTitle { get; set; }
         public ulong OwnerXuid { get; set; }
         public byte PopularityBucket { get; set; }

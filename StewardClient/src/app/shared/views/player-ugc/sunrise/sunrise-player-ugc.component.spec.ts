@@ -6,25 +6,25 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { SunrisePlayerUGCComponent } from './sunrise-player-ugc.component';
-import { SunrisePlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
+import { SunrisePlayerUgcComponent } from './sunrise-player-ugc.component';
+import { SunrisePlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('SunrisePlayerUGCComponent', () => {
-  let component: SunrisePlayerUGCComponent;
-  let fixture: ComponentFixture<SunrisePlayerUGCComponent>;
+describe('SunrisePlayerUgcComponent', () => {
+  let component: SunrisePlayerUgcComponent;
+  let fixture: ComponentFixture<SunrisePlayerUgcComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SunrisePlayerUGCComponent, BigJsonPipe],
+      declarations: [SunrisePlayerUgcComponent, BigJsonPipe],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SunrisePlayerUGCComponent);
+    fixture = TestBed.createComponent(SunrisePlayerUgcComponent);
     component = fixture.componentInstance;
     component.usingIdentities = true;
   });
@@ -44,10 +44,10 @@ describe('SunrisePlayerUGCComponent', () => {
       expect(component.getMonitor?.status?.error).toBeFalsy();
     }));
 
-    describe('And getPlayerUGC$ returns ugc', () => {
-      const ugc = SunrisePlayerXuidUGCFakeApi.makeMany();
+    describe('And getPlayerUgc$ returns ugc', () => {
+      const ugc = SunrisePlayerXuidUgcFakeApi.makeMany();
       beforeEach(() => {
-        component.getPlayerUgc$ = jasmine.createSpy('getPlayerUGC$').and.returnValue(of(ugc));
+        component.getPlayerUgc$ = jasmine.createSpy('getPlayerUgc$').and.returnValue(of(ugc));
 
         component.identity = {
           query: undefined,
@@ -66,11 +66,11 @@ describe('SunrisePlayerUGCComponent', () => {
       });
     });
 
-    describe('And getPlayerUGC$ returns with error', () => {
+    describe('And getPlayerUgc$ returns with error', () => {
       const error = { message: faker.random.words(10) };
       beforeEach(() => {
         component.getPlayerUgc$ = jasmine
-          .createSpy('getPlayerUGC$')
+          .createSpy('getPlayerUgc$')
           .and.returnValue(throwError(error));
 
         component.identity = {

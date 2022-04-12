@@ -28,7 +28,7 @@ export enum UgcOrderBy {
   PopularityScoreAsc = 'PopularityScoreAsc',
 }
 
-export const DefaultUGCFilters: UgcFilters = {
+export const DefaultUgcFilters: UgcFilters = {
   makeId: undefined,
   carId: undefined,
   keyword: null,

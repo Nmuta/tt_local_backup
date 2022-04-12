@@ -3,19 +3,19 @@
     /// <summary>
     ///     Represents player ugc search filters.
     /// </summary>
-    public sealed class UGCFilters
+    public sealed class UgcFilters
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UGCFilters"/> class.
+        ///     Initializes a new instance of the <see cref="UgcFilters"/> class.
         /// </summary>
-        public UGCFilters()
+        public UgcFilters()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UGCFilters"/> class.
+        ///     Initializes a new instance of the <see cref="UgcFilters"/> class.
         /// </summary>
-        public UGCFilters(ulong xuid, string shareCode)
+        public UgcFilters(ulong xuid, string shareCode)
         {
             this.Xuid = xuid;
             this.ShareCode = shareCode;

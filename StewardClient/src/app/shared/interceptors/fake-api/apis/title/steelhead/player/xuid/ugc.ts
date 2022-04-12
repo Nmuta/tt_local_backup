@@ -4,7 +4,7 @@ import faker from '@faker-js/faker';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 
 /** Fake API for finding player UGC items. */
-export class SteelheadPlayerXuidUGCFakeApi extends FakeApiBase {
+export class SteelheadPlayerXuidUgcFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -19,7 +19,7 @@ export class SteelheadPlayerXuidUGCFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): PlayerUgcItem[] {
-    return SteelheadPlayerXuidUGCFakeApi.makeMany();
+    return SteelheadPlayerXuidUgcFakeApi.makeMany();
   }
 
   /** Create many example models. */

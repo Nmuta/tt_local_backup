@@ -363,17 +363,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Hide UGC.
         /// </summary>
-        Task HideUGCAsync(Guid ugcId, string endpoint);
+        Task HideUgcAsync(Guid ugcId, string endpoint);
 
         /// <summary>
         ///     Unhide UGC.
         /// </summary>
-        Task UnhideUGCAsync(Guid ugcId, ulong xuid, FileType fileType, string endpoint);
+        Task UnhideUgcAsync(Guid ugcId, ulong xuid, FileType fileType, string endpoint);
 
         /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
-        Task SetUGCFeaturedStatusAsync(
+        Task SetUgcFeaturedStatusAsync(
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,

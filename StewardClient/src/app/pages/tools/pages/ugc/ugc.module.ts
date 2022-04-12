@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UgcComponent } from './ugc.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { UGCRoutingModule } from './ugc.routing';
+import { UgcRoutingModule } from './ugc.routing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -22,7 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PlayerUGCModule } from '@views/player-ugc/player-ugc.module';
+import { PlayerUgcModule } from '@views/player-ugc/player-ugc.module';
 import { MatIconModule } from '@angular/material/icon';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { PastableSingleInputModule } from '@views/pastable-single-input/pastable-single-input.module';
@@ -41,7 +41,7 @@ import { PastableSingleInputModule } from '@views/pastable-single-input/pastable
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    UGCRoutingModule,
+    UgcRoutingModule,
     PlayerSelectionModule,
     VerifyActionButtonModule,
     MatCheckboxModule,
@@ -54,10 +54,10 @@ import { PastableSingleInputModule } from '@views/pastable-single-input/pastable
     JsonDumpModule,
     DirectivesModule,
     MatTabsModule,
-    PlayerUGCModule,
+    PlayerUgcModule,
     MatIconModule,
     PastableSingleInputModule,
     EndpointSelectionModule,
   ],
 })
-export class UGCModule {}
+export class UgcModule {}

@@ -76,7 +76,7 @@
         Copy UGC ID
       </button>
 
-      <button mat-raised-button color="accent" clickStop (click)="openFeatureUGCModal(entry)">
+      <button mat-raised-button color="accent" clickStop (click)="openFeatureUgcModal(entry)">
         <span
           matTooltip="Cannot change featured status of private UGC content"
           [matTooltipDisabled]="entry.isPublic"
@@ -90,7 +90,7 @@
           color="warn"
           matTooltip="Hide this UGC"
           [verifyWith]="verifyHide"
-          (click)="hideUGCItem(entry)"
+          (click)="hideUgcItem(entry)"
           clickStop
           stateManager
           [monitor]="entry.monitor"
@@ -184,7 +184,7 @@
 </table>
 <mat-paginator
   [pageSizeOptions]="[5, 10, 20]"
-  (page)="getUGCThumbnailsForActiveDataset()"
+  (page)="getUgcThumbnailsForActiveDataset()"
   showFirstLastButtons
 ></mat-paginator>
 <mat-progress-spinner *ngIf="waitingForThumbnails" mode="indeterminate"></mat-progress-spinner>

@@ -171,8 +171,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
 
-            this.CreateMap<UGCFilters, ForzaUGCSearchRequest>().ReverseMap();
-            this.CreateMap<UGCType, ForzaUGCContentType>().ReverseMap();
+            this.CreateMap<UgcFilters, ForzaUGCSearchRequest>().ReverseMap();
+            this.CreateMap<UgcType, ForzaUGCContentType>().ReverseMap();
             this.CreateMap<ForzaUGCData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         source.Payloads.Length > 1
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[1].Payload)
                             : null))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Livery))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Livery))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
@@ -221,7 +221,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
                 .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Livery))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Livery))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
@@ -248,7 +248,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaPhotoData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Photo))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
@@ -274,7 +274,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<ForzaTuneData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UGCType.Photo))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))

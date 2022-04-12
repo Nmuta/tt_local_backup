@@ -58,11 +58,11 @@ describe('SunriseGiftLiveryComponent', () => {
   describe('Method: getLivery$', () => {
     beforeEach(() => {
       mockSunriseService.getPlayerUgcItem = jasmine
-        .createSpy('getPlayerUGCItem')
+        .createSpy('getPlayerUgcItem')
         .and.returnValue(of());
     });
 
-    it('should call unriseService.getPlayerUGCItem with correct parmas', () => {
+    it('should call unriseService.getPlayerUgcItem with correct parmas', () => {
       component.getLivery$(liveryId);
 
       expect(mockSunriseService.getPlayerUgcItem).toHaveBeenCalledWith(liveryId, UgcType.Livery);

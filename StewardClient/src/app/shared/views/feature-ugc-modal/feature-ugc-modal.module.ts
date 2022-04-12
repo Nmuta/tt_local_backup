@@ -11,8 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { SunriseFeatureUGCModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
-import { WoodstockFeatureUGCModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
+import { SunriseFeatureUgcModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
+import { WoodstockFeatureUgcModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LuxonModule } from 'luxon-angular';
 import { DirectivesModule } from '@shared/directives/directives.module';
@@ -21,7 +21,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
-  declarations: [SunriseFeatureUGCModalComponent, WoodstockFeatureUGCModalComponent],
+  declarations: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -43,6 +43,6 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     StateManagersModule,
     MonitorActionModule,
   ],
-  exports: [SunriseFeatureUGCModalComponent, WoodstockFeatureUGCModalComponent],
+  exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
 })
-export class FeatureUGCModalModule {}
+export class FeatureUgcModalModule {}

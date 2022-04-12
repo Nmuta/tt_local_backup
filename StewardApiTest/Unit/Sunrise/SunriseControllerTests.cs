@@ -1666,7 +1666,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetUGCItems(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUgcItems(xuid).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1688,7 +1688,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.GetUGCItems(xuid, ugcType: "").ConfigureAwait(false),
+                async () => await controller.GetUgcItems(xuid, ugcType: "").ConfigureAwait(false),
             };
 
             // Assert.
@@ -1710,7 +1710,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.GetUGCItems(xuid, ugcType: ugcType).ConfigureAwait(false),
+                async () => await controller.GetUgcItems(xuid, ugcType: ugcType).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1729,7 +1729,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var contentId = Fixture.Create<Guid>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetUGCLivery(contentId).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUgcLivery(contentId).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1749,7 +1749,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var contentId = Fixture.Create<Guid>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetUGCPhoto(contentId).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUgcPhoto(contentId).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1769,7 +1769,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var contentId = Fixture.Create<Guid>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetUGCTune(contentId).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUgcTune(contentId).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1790,7 +1790,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var expiry = Fixture.Create<TimeSpan>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.SetUGCFeaturedStatus(contentId.ToString(), new UGCFeaturedStatus()
+            async Task<IActionResult> Action() => await controller.SetUgcFeaturedStatus(contentId.ToString(), new UgcFeaturedStatus()
             {
                 IsFeatured = false,
                 Expiry = expiry,
@@ -1814,7 +1814,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.SetUGCFeaturedStatus(contentId.ToString(), new UGCFeaturedStatus()
+                async () => await controller.SetUgcFeaturedStatus(contentId.ToString(), new UgcFeaturedStatus()
                 {
                     IsFeatured = true,
                     Expiry = null,
@@ -1840,7 +1840,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.SetUGCFeaturedStatus(contentId.ToString(), new UGCFeaturedStatus()
+                async () => await controller.SetUgcFeaturedStatus(contentId.ToString(), new UgcFeaturedStatus()
                 {
                     IsFeatured = true,
                     Expiry = expiry,
@@ -1984,11 +1984,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ProfileNote>>());
                 this.SunrisePlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(Arg.Any<ulong>(), Arg.Any<AuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<PlayerAuction>>());
-                this.StorefrontProvider.SearchUgcContentAsync(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UgcItem>>());
-                this.StorefrontProvider.GetUGCLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
-                this.StorefrontProvider.GetUGCPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
-                this.StorefrontProvider.GetUGCTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
-                this.StorefrontProvider.SetUGCFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
+                this.StorefrontProvider.SearchUgcContentAsync(Arg.Any<UgcType>(), Arg.Any<UgcFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.StorefrontProvider.GetUgcLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.GetUgcPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.GetUgcTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
+                this.StorefrontProvider.SetUgcFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());

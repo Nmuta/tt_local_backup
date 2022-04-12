@@ -545,19 +545,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/xuid({xuid})")]
         [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
-        public async Task<IActionResult> GetUGCItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
+        public async Task<IActionResult> GetUgcItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!Enum.TryParse(ugcType, out UGCType typeEnum))
+            if (!Enum.TryParse(ugcType, out UgcType typeEnum))
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
             var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
-                new UGCFilters(xuid, null),
+                new UgcFilters(xuid, null),
                 endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
@@ -580,19 +580,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/shareCode({shareCode})")]
         [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
-        public async Task<IActionResult> GetUGCItems(string shareCode, [FromQuery] string ugcType = "Unknown")
+        public async Task<IActionResult> GetUgcItems(string shareCode, [FromQuery] string ugcType = "Unknown")
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!Enum.TryParse(ugcType, out UGCType typeEnum))
+            if (!Enum.TryParse(ugcType, out UgcType typeEnum))
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
             var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
-                new UGCFilters(ulong.MaxValue, shareCode),
+                new UgcFilters(ulong.MaxValue, shareCode),
                 endpoint,
                 includeThumbnails: true);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
@@ -616,11 +616,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/livery({id})")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
-        public async Task<IActionResult> GetUGCLivery(Guid id)
+        public async Task<IActionResult> GetUgcLivery(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var getLivery = this.storefrontProvider.GetUGCLiveryAsync(id, endpoint);
+            var getLivery = this.storefrontProvider.GetUgcLiveryAsync(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
@@ -639,11 +639,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/photo({id})")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
-        public async Task<IActionResult> GetUGCPhoto(Guid id)
+        public async Task<IActionResult> GetUgcPhoto(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var getPhoto = this.storefrontProvider.GetUGCPhotoAsync(id, endpoint);
+            var getPhoto = this.storefrontProvider.GetUgcPhotoAsync(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
@@ -662,11 +662,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/tune({id})")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
-        public async Task<IActionResult> GetUGCTune(Guid id)
+        public async Task<IActionResult> GetUgcTune(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var getTune = this.storefrontProvider.GetUGCTuneAsync(id, endpoint);
+            var getTune = this.storefrontProvider.GetUgcTuneAsync(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
@@ -685,9 +685,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("storefront/itemId({itemId})/featuredStatus")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> SetUGCFeaturedStatus(
+        public async Task<IActionResult> SetUgcFeaturedStatus(
             string itemId,
-            [FromBody] UGCFeaturedStatus status)
+            [FromBody] UgcFeaturedStatus status)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Guid.TryParse(itemId, out var itemIdGuid))
@@ -705,7 +705,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 status.Expiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
             }
 
-            await this.storefrontProvider.SetUGCFeaturedStatusAsync(
+            await this.storefrontProvider.SetUgcFeaturedStatusAsync(
                 itemIdGuid,
                 status.IsFeatured,
                 status.Expiry,
@@ -723,7 +723,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var hiddenUgc = await this.storefrontProvider.GetHiddenUGCForUserAsync(xuid, endpoint).ConfigureAwait(true);
+            var hiddenUgc = await this.storefrontProvider.GetHiddenUgcForUserAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(hiddenUgc);
         }
@@ -742,7 +742,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var endpoint = GetSunriseEndpoint(this.Request.Headers);
 
-            await this.storefrontProvider.HideUGCAsync(ugcId, endpoint).ConfigureAwait(true);
+            await this.storefrontProvider.HideUgcAsync(ugcId, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -768,7 +768,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(FileType)} provided: {fileType}");
             }
 
-            await this.storefrontProvider.UnhideUGCAsync(xuid, ugcId, fileTypeEnum, endpoint).ConfigureAwait(true);
+            await this.storefrontProvider.UnhideUgcAsync(xuid, ugcId, fileTypeEnum, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -1391,7 +1391,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var livery = await this.storefrontProvider.GetUGCLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
+            var livery = await this.storefrontProvider.GetUgcLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
             if (livery == null)
             {
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
@@ -1440,7 +1440,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
-            var livery = await this.storefrontProvider.GetUGCLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
+            var livery = await this.storefrontProvider.GetUgcLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
             if (livery == null)
             {
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");

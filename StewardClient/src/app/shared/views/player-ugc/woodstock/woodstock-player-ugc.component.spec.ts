@@ -6,13 +6,13 @@ import { of, throwError } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { WoodstockPlayerUgcComponent } from './woodstock-player-ugc.component';
-import { WoodstockPlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
+import { WoodstockPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockWoodstockService } from '@services/woodstock';
 
-describe('WoodstockPlayerUGCComponent', () => {
+describe('WoodstockPlayerUgcComponent', () => {
   let component: WoodstockPlayerUgcComponent;
   let fixture: ComponentFixture<WoodstockPlayerUgcComponent>;
 
@@ -44,10 +44,10 @@ describe('WoodstockPlayerUGCComponent', () => {
       expect(component.getMonitor?.status?.error).toBeFalsy();
     }));
 
-    describe('And getPlayerUGC$ returns ugc', () => {
-      const ugc = WoodstockPlayerXuidUGCFakeApi.makeMany();
+    describe('And getPlayerUgc$ returns ugc', () => {
+      const ugc = WoodstockPlayerXuidUgcFakeApi.makeMany();
       beforeEach(() => {
-        component.getPlayerUgc$ = jasmine.createSpy('getPlayerUGC$').and.returnValue(of(ugc));
+        component.getPlayerUgc$ = jasmine.createSpy('getPlayerUgc$').and.returnValue(of(ugc));
 
         component.identity = {
           query: undefined,
@@ -66,11 +66,11 @@ describe('WoodstockPlayerUGCComponent', () => {
       });
     });
 
-    describe('And getPlayerUGC$ returns with error', () => {
+    describe('And getPlayerUgc$ returns with error', () => {
       const error = { message: faker.random.words(10) };
       beforeEach(() => {
         component.getPlayerUgc$ = jasmine
-          .createSpy('getPlayerUGC$')
+          .createSpy('getPlayerUgc$')
           .and.returnValue(throwError(error));
 
         component.identity = {

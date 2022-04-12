@@ -10,7 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     ///     Matches values with Services enum ForzaShareFilter.
     /// </remarks>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum UGCAccessLevel
+    public enum UgcAccessLevel
     {
         /// <summary>
         ///     Search public UGC items.

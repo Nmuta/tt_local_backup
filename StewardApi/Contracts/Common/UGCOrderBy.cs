@@ -10,7 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     ///     Matches values with Services enum ForzaOrderBy.
     /// </remarks>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum UGCOrderBy
+    public enum UgcOrderBy
     {
         /// <summary>
         ///     Sorts by popularity score descending.

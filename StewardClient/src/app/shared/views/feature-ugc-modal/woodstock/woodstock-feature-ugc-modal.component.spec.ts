@@ -9,20 +9,20 @@ import { createMockWoodstockService, WoodstockService } from '@services/woodstoc
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
-import { WoodstockFeatureUGCModalComponent } from './woodstock-feature-ugc-modal.component';
+import { WoodstockFeatureUgcModalComponent } from './woodstock-feature-ugc-modal.component';
 
-describe('WoodstockFeatureUGCModalComponent', () => {
+describe('WoodstockFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
-  let fixture: ComponentFixture<WoodstockFeatureUGCModalComponent>;
-  let component: WoodstockFeatureUGCModalComponent;
+  let fixture: ComponentFixture<WoodstockFeatureUgcModalComponent>;
+  let component: WoodstockFeatureUgcModalComponent;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mockMatDialogRef: any;
   let mockWoodstockService: WoodstockService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WoodstockFeatureUGCModalComponent],
+      declarations: [WoodstockFeatureUgcModalComponent],
       imports: [MatButtonModule, MatDialogModule, PipesModule],
       providers: [
         createMockWoodstockService(),
@@ -37,7 +37,7 @@ describe('WoodstockFeatureUGCModalComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WoodstockFeatureUGCModalComponent);
+    fixture = TestBed.createComponent(WoodstockFeatureUgcModalComponent);
     component = fixture.componentInstance;
     mockWoodstockService = TestBed.inject(WoodstockService);
 
@@ -48,10 +48,10 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     mockMatDialogRef.beforeClosed = jasmine.createSpy('beforeClosed').and.returnValue(of());
 
     mockWoodstockService.getPlayerUgcItem = jasmine
-      .createSpy('setUGCItemFeatureStatus')
+      .createSpy('setUgcItemFeatureStatus')
       .and.returnValue(of(null));
     mockWoodstockService.setUgcItemFeatureStatus = jasmine
-      .createSpy('setUGCItemFeatureStatus')
+      .createSpy('setUgcItemFeatureStatus')
       .and.returnValue(of());
   });
 
@@ -59,7 +59,7 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: featureUGC', () => {
+  describe('Method: featureUgc', () => {
     const item = fakePlayerUgcItem();
 
     beforeEach(() => {
@@ -74,7 +74,7 @@ describe('WoodstockFeatureUGCModalComponent', () => {
       });
 
       it('should call component.setFeaturedStatus$()', () => {
-        component.featureUGC();
+        component.featureUgc();
 
         expect(component.setFeaturedStatus$).toHaveBeenCalled();
       });
@@ -86,7 +86,7 @@ describe('WoodstockFeatureUGCModalComponent', () => {
       });
 
       it('should not call component.setFeaturedStatus$()', () => {
-        component.featureUGC();
+        component.featureUgc();
 
         expect(component.setFeaturedStatus$).not.toHaveBeenCalled();
       });
@@ -98,7 +98,7 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     const expireDate = DateTime.local().plus(Duration.fromMillis(10_000));
     const expireDuration = expireDate.diff(DateTime.local().startOf('day'));
 
-    it('should call WoodstockService.setUGCItemFeatureStatus() with correct params', () => {
+    it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
       component.setFeaturedStatus$(itemId, expireDate);
 
       expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
@@ -114,7 +114,7 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     const expireDate = DateTime.local();
     expireDate.plus(1);
 
-    it('should call WoodstockService.setUGCItemFeatureStatus() with correct params', () => {
+    it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
       component.deleteFeaturedStatus$(itemId);
 
       expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
@@ -124,12 +124,12 @@ describe('WoodstockFeatureUGCModalComponent', () => {
     });
   });
 
-  describe('Method: getUGCItem$', () => {
+  describe('Method: getUgcItem$', () => {
     const itemId = faker.datatype.uuid().toString();
     const type = UgcType.Livery;
 
-    it('should call WoodstockService.getPlayerUGCItem() with correct params', () => {
-      component.getUGCItem$(itemId, type);
+    it('should call WoodstockService.getPlayerUgcItem() with correct params', () => {
+      component.getUgcItem$(itemId, type);
 
       expect(mockWoodstockService.getPlayerUgcItem).toHaveBeenCalledWith(itemId, type);
     });

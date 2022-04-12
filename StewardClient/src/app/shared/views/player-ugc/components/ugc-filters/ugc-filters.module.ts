@@ -14,14 +14,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { SunriseUGCFiltersComponent } from './sunrise-ugc-filters/sunrise-ugc-filters.component';
+import { SunriseUgcFiltersComponent } from './sunrise-ugc-filters/sunrise-ugc-filters.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { WoodstockUGCFiltersComponent } from './woodstock-ugc-filters/woodstock-ugc-filters.component';
+import { WoodstockUgcFiltersComponent } from './woodstock-ugc-filters/woodstock-ugc-filters.component';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 
 /** Display for player ugcs. */
 @NgModule({
-  declarations: [SunriseUGCFiltersComponent, WoodstockUGCFiltersComponent],
+  declarations: [SunriseUgcFiltersComponent, WoodstockUgcFiltersComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -42,6 +42,6 @@ import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make
     DirectivesModule,
     MakeModelAutocompleteModule,
   ],
-  exports: [SunriseUGCFiltersComponent, WoodstockUGCFiltersComponent],
+  exports: [SunriseUgcFiltersComponent, WoodstockUgcFiltersComponent],
 })
-export class UGCFiltersModule {}
+export class UgcFiltersModule {}

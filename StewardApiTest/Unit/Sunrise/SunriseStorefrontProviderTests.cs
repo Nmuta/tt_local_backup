@@ -69,15 +69,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var filters = Fixture.Create<UGCFilters>();
+            var filters = Fixture.Create<UgcFilters>();
             var endpointKey = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SearchUgcContentAsync(UGCType.Livery, filters, endpointKey).ConfigureAwait(false),
-                async () => await provider.SearchUgcContentAsync(UGCType.Photo, filters, endpointKey).ConfigureAwait(false),
-                async () => await provider.SearchUgcContentAsync(UGCType.Tune, filters, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UgcType.Livery, filters, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UgcType.Photo, filters, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UgcType.Tune, filters, endpointKey).ConfigureAwait(false),
             };
 
             // Assert.
@@ -93,13 +93,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var filters = Fixture.Create<UGCFilters>();
+            var filters = Fixture.Create<UgcFilters>();
             var endpointKey = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SearchUgcContentAsync(UGCType.Unknown, filters, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UgcType.Unknown, filters, endpointKey).ConfigureAwait(false),
             };
 
             // Assert.
@@ -120,9 +120,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SearchUgcContentAsync(UGCType.Livery, null, endpointKey).ConfigureAwait(false),
-                async () => await provider.SearchUgcContentAsync(UGCType.Photo, null, endpointKey).ConfigureAwait(false),
-                async () => await provider.SearchUgcContentAsync(UGCType.Tune, null, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UgcType.Livery, null, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UgcType.Photo, null, endpointKey).ConfigureAwait(false),
+                async () => await provider.SearchUgcContentAsync(UgcType.Tune, null, endpointKey).ConfigureAwait(false),
             };
 
             // Assert.
@@ -142,7 +142,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<UgcItem> Action() => await provider.GetUGCLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
+            async Task<UgcItem> Action() => await provider.GetUgcLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -159,7 +159,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<UgcItem> Action() => await provider.GetUGCPhotoAsync(photoId, endpointKey).ConfigureAwait(false);
+            async Task<UgcItem> Action() => await provider.GetUgcPhotoAsync(photoId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -175,7 +175,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var tuneId = Fixture.Create<Guid>();
             var endpointKey = Fixture.Create<string>();
 
-            async Task<UgcItem> Action() => await provider.GetUGCTuneAsync(tuneId, endpointKey).ConfigureAwait(false);
+            async Task<UgcItem> Action() => await provider.GetUgcTuneAsync(tuneId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -193,7 +193,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            Func<Task> act = async () => await provider.SetUGCFeaturedStatusAsync(contentId, featured, null, endpointKey).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.SetUgcFeaturedStatusAsync(contentId, featured, null, endpointKey).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -209,7 +209,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> act = async () => await provider.GetHiddenUGCForUserAsync(xuid, endpoint).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.GetHiddenUgcForUserAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.HideUGCAsync(ugcId, endpoint).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.HideUgcAsync(ugcId, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -243,7 +243,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UnhideUGCAsync(xuid, ugcId, fileType, endpoint).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UnhideUgcAsync(xuid, ugcId, fileType, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();

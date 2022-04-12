@@ -7,19 +7,19 @@ import { UgcType } from '@models/ugc-filters';
 import { SunriseService } from '@services/sunrise';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
-import { FeatureUGCModalBaseComponent } from '../feature-ugc-modal.component';
+import { FeatureUgcModalBaseComponent } from '../feature-ugc-modal.component';
 
 /** Sunrise modal to set featured status of a UGC item. */
 @Component({
   templateUrl: '../feature-ugc-modal.component.html',
   styleUrls: ['../feature-ugc-modal.component.scss'],
 })
-export class SunriseFeatureUGCModalComponent extends FeatureUGCModalBaseComponent {
+export class SunriseFeatureUgcModalComponent extends FeatureUgcModalBaseComponent {
   public gameTitle = GameTitleCodeName.FH4;
 
   constructor(
     private sunriseService: SunriseService,
-    protected dialogRef: MatDialogRef<SunriseFeatureUGCModalComponent>,
+    protected dialogRef: MatDialogRef<SunriseFeatureUgcModalComponent>,
     @Inject(MAT_DIALOG_DATA) protected data: PlayerUgcItem,
   ) {
     super(dialogRef, data);
@@ -44,7 +44,7 @@ export class SunriseFeatureUGCModalComponent extends FeatureUGCModalBaseComponen
   }
 
   /** Gets UGC item. */
-  public getUGCItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
+  public getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
     return this.sunriseService.getPlayerUgcItem(itemId, type);
   }
 }
