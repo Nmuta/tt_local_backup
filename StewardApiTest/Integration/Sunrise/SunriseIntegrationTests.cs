@@ -411,7 +411,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -634,7 +634,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_InvalidGamertag()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Xuid = default(ulong);
+            banParameters[0].Xuid = null;
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
 
             try
@@ -1788,7 +1788,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 

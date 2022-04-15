@@ -409,7 +409,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -594,7 +594,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         public async Task BanPlayers_InvalidGamertag()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Xuid = default(ulong);
+            banParameters[0].Xuid = null;
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
 
             try
@@ -1708,7 +1708,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -1808,7 +1808,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 

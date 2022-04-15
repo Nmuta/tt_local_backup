@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 {
     [TestClass]
+    [Ignore]
     public sealed class GravityIntegrationTests
     {
         private static string endpoint;
