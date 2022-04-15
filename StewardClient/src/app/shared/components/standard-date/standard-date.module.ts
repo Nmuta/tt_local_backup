@@ -6,11 +6,23 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
 import { LuxonModule } from 'luxon-angular';
 import { StandardAbsoluteTimeComponent } from './standard-absolute-time/standard-absolute-time.component';
+import { StandardAbsoluteTimeRangeComponent } from './standard-absolute-time-range/standard-absolute-time-range.component';
+import { StandardRelativeTimeRangeComponent } from './standard-relative-time-range/standard-relative-time-range.component';
 
 /** Standard date controls. */
 @NgModule({
-  declarations: [StandardRelativeTimeComponent, StandardAbsoluteTimeComponent],
+  declarations: [
+    StandardRelativeTimeComponent,
+    StandardRelativeTimeRangeComponent,
+    StandardAbsoluteTimeComponent,
+    StandardAbsoluteTimeRangeComponent,
+  ],
   imports: [CommonModule, MatTooltipModule, StandardCopyModule, LuxonModule, PipesModule],
-  exports: [StandardRelativeTimeComponent, StandardAbsoluteTimeComponent],
+  exports: [
+    StandardRelativeTimeComponent,
+    StandardRelativeTimeRangeComponent,
+    StandardAbsoluteTimeComponent,
+    StandardAbsoluteTimeRangeComponent,
+  ],
 })
 export class StandardDateModule {}

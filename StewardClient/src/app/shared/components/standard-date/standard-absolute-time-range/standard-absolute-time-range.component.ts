@@ -4,13 +4,15 @@ import { StandardAbsoluteDateTimeFormats } from '../standard-absolute-datetime.m
 
 /** Prints out a standard absolute date, with copy controls and tooltips. */
 @Component({
-  selector: 'standard-absolute-time',
-  templateUrl: './standard-absolute-time.component.html',
-  styleUrls: ['./standard-absolute-time.component.scss'],
+  selector: 'standard-absolute-time-range',
+  templateUrl: './standard-absolute-time-range.component.html',
+  styleUrls: ['./standard-absolute-time-range.component.scss'],
 })
-export class StandardAbsoluteTimeComponent {
-  /** The target time. */
-  @Input() timeUtc: DateTime;
+export class StandardAbsoluteTimeRangeComponent {
+  /** The target start time. */
+  @Input() startTimeUtc: DateTime;
+  /** The target end time. */
+  @Input() endTimeUtc: DateTime;
   @Input() format: keyof StandardAbsoluteDateTimeFormats = 'shortMedium';
 
   /** Format mapping for the angular pipes. */

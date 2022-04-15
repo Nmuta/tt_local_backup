@@ -59,8 +59,10 @@
   <span *ngIf="!usingDateFilters" class="no-history-found">No gift history found.</span>
   <span *ngIf="usingDateFilters" class="no-history-found">
     No gift history found between
-    <standard-absolute-time [timeUtc]="startDate"></standard-absolute-time> and
-    <standard-absolute-time [timeUtc]="endDate"></standard-absolute-time>
+    <standard-absolute-time-range
+      [startTimeUtc]="startDate"
+      [endTimeUtc]="endDate"
+    ></standard-absolute-time-range>
   </span>
 </ng-template>
 
