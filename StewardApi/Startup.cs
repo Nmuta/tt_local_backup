@@ -339,8 +339,6 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IStewardUserProvider, StewardUserProvider>();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
-            pegasusProvider.Helpers.Remove(TitleConstants.SteelheadCodeName); //DO NOT CHECK IN
-            pegasusProvider.Helpers.Remove(TitleConstants.WoodstockCodeName); //DO NOT CHECK IN
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
         }
 
