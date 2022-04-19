@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
 using WoodstockLiveOpsContent;
@@ -20,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         private const string PegasusBaseCacheKey = "WoodstockPegasus_";
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.PegasusCmsEnvironment
+            ConfigurationKeyConstants.PegasusCmsDefaultWoodstock
         };
 
         private readonly string cmsEnvironment;
@@ -35,20 +36,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             PegasusCmsProvider pegasusCmsProvider,
             IRefreshableCacheStore refreshableCacheStore,
             IMapper mapper,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILoggingService loggingService)
         {
             pegasusCmsProvider.ShouldNotBeNull(nameof(pegasusCmsProvider));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             mapper.ShouldNotBeNull(nameof(mapper));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
 
             configuration.ShouldNotBeNull(nameof(configuration));
             configuration.ShouldContainSettings(RequiredSettings);
 
-            this.cmsRetrievalHelper = pegasusCmsProvider.WoodstockCmsRetrievalHelper;
+            if (!pegasusCmsProvider.Helpers.TryGetValue(TitleConstants.WoodstockCodeName, out var cmsRetrievalHelper))
+            {
+                var message = $"No Pegasus provider for {TitleConstants.WoodstockCodeName}.";
+                loggingService.LogException(new PegasusAppInsightsException(message));
+                throw new PegasusStewardException(message);
+            }
+
+            this.cmsRetrievalHelper = cmsRetrievalHelper;
             this.refreshableCacheStore = refreshableCacheStore;
             this.mapper = mapper;
 
-            this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsEnvironment];
+            this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultWoodstock];
         }
 
         /// <inheritdoc />

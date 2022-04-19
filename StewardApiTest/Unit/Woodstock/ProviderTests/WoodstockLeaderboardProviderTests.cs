@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         public void Ctor_WhenPegasusServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { PegasusService =  null };
+            var dependencies = new Dependencies { PegasusService = null };
 
             // Act.
             Action act = () => dependencies.Build();
@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
             // Act.
             Func<Task> action = async () =>
-                await provider.DeleteLeaderboardScoresAsync(new Guid[]{}, endpoint).ConfigureAwait(false);
+                await provider.DeleteLeaderboardScoresAsync(new Guid[] { }, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<BadRequestStewardException>().WithMessage($"Cannot provided empty array of score ids.");

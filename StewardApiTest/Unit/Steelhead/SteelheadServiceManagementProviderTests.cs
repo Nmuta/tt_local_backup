@@ -135,9 +135,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
+            public ISteelheadPegasusService SteelheadPegasusService { get; set; } =
+                Substitute.For<ISteelheadPegasusService>();
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public SteelheadServiceManagementProvider Build() => new SteelheadServiceManagementProvider(this.SteelheadService, this.LoggingService, this.Mapper);
+            public SteelheadServiceManagementProvider Build() => new SteelheadServiceManagementProvider(this.SteelheadService, this.LoggingService, this.SteelheadPegasusService, this.Mapper);
         }
     }
 }

@@ -42,5 +42,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Prepares a <see cref="AuctionManagementService" />.
         /// </summary>
         Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="LocalizationManagementService" />.
+        /// </summary>
+        Task<LocalizationManagementService> PrepareLocalizationManagementServiceAsync(string endpoint);
     }
 }

@@ -247,6 +247,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<WoodstockUserFlagsInput>, WoodstockUserFlagsRequestValidator>();
 
             services.AddSingleton<ISteelheadService, SteelheadServiceWrapper>();
+            services.AddSingleton<ISteelheadPegasusService, SteelheadPegasusService>();
             services.AddSingleton<ISteelheadServiceFactory, SteelheadServiceFactory>();
             services.AddSingleton<ISteelheadPlayerDetailsProvider, SteelheadPlayerDetailsProvider>();
             services.AddSingleton<ISteelheadPlayerInventoryProvider, SteelheadPlayerInventoryProvider>();
@@ -337,7 +338,9 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IKustoQueryProvider, KustoQueryProvider>();
             services.AddSingleton<IStewardUserProvider, StewardUserProvider>();
 
-            var pegasusProvider = this.SetupPegasusCmsProvider(keyVaultProvider);
+            var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
+            pegasusProvider.Helpers.Remove(TitleConstants.SteelheadCodeName); //DO NOT CHECK IN
+            pegasusProvider.Helpers.Remove(TitleConstants.WoodstockCodeName); //DO NOT CHECK IN
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
         }
 
@@ -392,32 +395,6 @@ namespace Turn10.LiveOps.StewardApi
             }
 
             return null;
-        }
-
-        private PegasusCmsProvider SetupPegasusCmsProvider(KeyVaultProvider keyVaultProvider)
-        {
-            var environment = this.configuration[ConfigurationKeyConstants.PegasusCmsEnvironment];
-            Dictionary<string, IAzureBlobProvider> cmsBlobProviders = new Dictionary<string, IAzureBlobProvider>();
-
-            var pegasusSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], $"pegasus-sas-{environment}").GetAwaiter().GetResult();
-            IAzureBlobProvider cmsAzureBlobProvider = new AzureBlobProvider(pegasusSecret, new MetricsManager(null));
-
-            cmsBlobProviders.Add(environment, cmsAzureBlobProvider);
-
-            var defaultCMSInstance = new CMSInstance
-            {
-                Environment = environment,
-            };
-
-            // cmsPrefix - "woodstock/sunrise/etc.."
-            CMSRetrievalHelper woodstockCmsRetrievalHelper = new CMSRetrievalHelper("woodstock", cmsBlobProviders, defaultCMSInstance: defaultCMSInstance);
-            CMSRetrievalHelper sunriseCmsRetrievalHelper = new CMSRetrievalHelper("sunrise", cmsBlobProviders, defaultCMSInstance: defaultCMSInstance);
-
-            return new PegasusCmsProvider()
-            {
-                WoodstockCmsRetrievalHelper = woodstockCmsRetrievalHelper,
-                SunriseCmsRetrievalHelper = sunriseCmsRetrievalHelper,
-            };
         }
     }
 }

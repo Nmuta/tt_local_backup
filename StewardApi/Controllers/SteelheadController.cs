@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -1259,6 +1260,49 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .GetCmsRacersCupScheduleForUserAsync(xuid, startTimeUtc.DateTime, daysForward, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Add string for localization.
+        /// </summary>
+        [HttpPost("localization")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [SwaggerResponse(200, type: typeof(Guid))]
+        public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)
+        {
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            if (!Enum.IsDefined(typeof(LocalizationCategory), data.Category))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocalizationCategory)} provided: {data.Category}");
+            }
+
+            var result = await this.steelheadServiceManagementProvider.AddStringToLocalizeAsync(
+                data,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Retrieves a collection of supported locales.
+        /// </summary>
+        [HttpGet("localization/supportedLocales")]
+        [SwaggerResponse(200, type: typeof(IEnumerable<SupportedLocale>))]
+        public async Task<IActionResult> GetSupportedLocales()
+        {
+            var supportedLocales = await this.steelheadServiceManagementProvider.GetSupportedLocalesAsync().ConfigureAwait(true);
+            return this.Ok(supportedLocales);
+        }
+
+        /// <summary>
+        ///     Gets the localized string data.
+        /// </summary>
+        [HttpGet("localization")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, List<string>>))]
+        public async Task<IActionResult> GetLocalizedStrings()
+        {
+            var locStrings = await this.steelheadServiceManagementProvider.GetLocalizedStringsAsync().ConfigureAwait(true);
+            return this.Ok(locStrings);
         }
 
         /// <summary>

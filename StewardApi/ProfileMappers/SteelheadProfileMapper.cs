@@ -9,6 +9,7 @@ using Forza.WebServices.FM8.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -151,6 +152,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.NumberOfLimitedLaps, opt => opt.MapFrom(src => src.NumLimitedLaps))
                 .ReverseMap();
             this.CreateMap<ForzaWeatherCondition, RacersCupWeatherCondition>()
+                .ReverseMap();
+            this.CreateMap<LocalizedStringData, ForzaLocalizedStringData>().ReverseMap();
+            this.CreateMap<SupportedLocale, SteelheadContent.SupportedLocale>().ReverseMap();
+            this.CreateMap<LocalizationStringResult, SteelheadContent.LocalizedString>()
+                .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
                 .ReverseMap();
         }
     }

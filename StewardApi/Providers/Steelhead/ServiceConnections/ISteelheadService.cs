@@ -243,5 +243,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             DateTime startDateUtc,
             int daysForward,
             string endpoint);
+
+        /// <summary>
+        ///     Submits string for localization.
+        /// </summary>
+        Task<LocalizationManagementService.AddStringToLocalizeOutput> AddStringToLocalizeAsync(
+            ForzaLocalizedStringData data,
+            string endpoint);
     }
 }

@@ -226,9 +226,29 @@
         public const string WoodstockTitleId = "WoodstockEnvironment:TitleId";
 
         /// <summary>
-        ///     The Pegasus CMS environment.
+        ///     The Pegasus CMS environments.
         /// </summary>
-        public const string PegasusCmsEnvironment = "PegasusCms:Environment";
+        public const string PegasusCmsEnvironments = "PegasusCms:Environments";
+
+        /// <summary>
+        ///     The Pegasus CMS supported titles.
+        /// </summary>
+        public const string PegasusCmsTitles = "PegasusCms:Titles";
+
+        /// <summary>
+        ///     The Pegasus CMS Steelhead environment.
+        /// </summary>
+        public const string PegasusCmsDefaultSteelhead = "PegasusCms:SteelheadDefault";
+
+        /// <summary>
+        ///     The Pegasus CMS Woodstock environment.
+        /// </summary>
+        public const string PegasusCmsDefaultWoodstock = "PegasusCms:WoodstockDefault";
+
+        /// <summary>
+        ///     The Pegasus CMS Sunrise environment.
+        /// </summary>
+        public const string PegasusCmsDefaultSunrise = "PegasusCms:SunriseDefault";
 
         /// <summary>
         ///     The Steward environment.

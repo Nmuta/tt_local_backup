@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
@@ -12,18 +11,15 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.CMSRetrieval;
 using Turn10.Services.Storage.Blob;
-using String = System.String;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
+namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
 {
     [TestClass]
-    public sealed class WoodstockPegasusServiceTests
+    public sealed class SteelheadPegasusServiceTests
     {
-        private static readonly Fixture Fixture = new Fixture();
-
         [TestMethod]
         [TestCategory("Unit")]
         public void Ctor_DoesNotThrow()
@@ -105,7 +101,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingMessagePartial}{ConfigurationKeyConstants.PegasusCmsDefaultWoodstock}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingMessagePartial}{ConfigurationKeyConstants.PegasusCmsDefaultSteelhead}");
         }
 
         [TestMethod]
@@ -126,15 +122,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
         {
             public Dependencies(bool validConfiguration = true)
             {
-                this.PegasusCmsProvider.Helpers.Add(TitleConstants.WoodstockCodeName, new CMSRetrievalHelper("", new Dictionary<String, IAzureBlobProvider>()));
+                this.PegasusCmsProvider.Helpers.Add(TitleConstants.SteelheadCodeName, new CMSRetrievalHelper("", new Dictionary<String, IAzureBlobProvider>()));
 
                 if (validConfiguration)
                 {
-                    this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultWoodstock].Returns("1234567890");
+                    this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].Returns("1234567890");
                 }
                 else
                 {
-                    this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultWoodstock].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].ReturnsNull();
                 }
             }
 
@@ -144,7 +140,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
-            public WoodstockPegasusService Build() => new WoodstockPegasusService(this.PegasusCmsProvider, this.RefreshableCacheStore, this.Mapper, this.Configuration, this.LoggingService);
+            public SteelheadPegasusService Build() => new SteelheadPegasusService(this.PegasusCmsProvider, this.RefreshableCacheStore, this.Mapper, this.Configuration, this.LoggingService);
         }
     }
 }

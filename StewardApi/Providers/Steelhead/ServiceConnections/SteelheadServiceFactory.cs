@@ -113,6 +113,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return new AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
+        /// <inheritdoc/>
+        public async Task<LocalizationManagementService> PrepareLocalizationManagementServiceAsync(string endpoint)
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(SteelheadCacheKey.MakeAuthTokenKey())
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new LocalizationManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+        }
+
         private async Task<string> GetAuthTokenAsync()
         {
             var tokenForgeryParameters = new TokenForgeryRequest

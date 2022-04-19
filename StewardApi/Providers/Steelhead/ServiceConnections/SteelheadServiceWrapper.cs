@@ -315,7 +315,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 ForzaEventSessionType.FirstDrive,
             };
 
-            return await userLookupService.GetCMSRacersCupSchedule(environment, slotId, snapshotId, startDateUtc, daysForward, filter).ConfigureAwait(false);
+            return await userLookupService.GetCMSRacersCupSchedule(environment, slotId, snapshotId, startDateUtc, (int)daysForward, filter).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -330,7 +330,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 ForzaEventSessionType.FirstDrive,
             };
 
-            return await userLookupService.GetCMSRacersCupScheduleForUser(xuid, startDateUtc, daysForward, filter).ConfigureAwait(false);
+            return await userLookupService.GetCMSRacersCupScheduleForUser(xuid, startDateUtc, (int)daysForward, filter).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<LocalizationManagementService.AddStringToLocalizeOutput> AddStringToLocalizeAsync(ForzaLocalizedStringData data, string endpoint)
+        {
+            var localizationManagementService = await this.serviceFactory.PrepareLocalizationManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await localizationManagementService.AddStringToLocalize(data).ConfigureAwait(false);
         }
     }
 }
