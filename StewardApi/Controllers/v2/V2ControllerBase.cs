@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 key = DefaultEndpointKey;
             }
 
-            return Turn10.LiveOps.StewardApi.Contracts.Woodstock.WoodstockEndpoint.GetEndpoint(key);
+            return Contracts.Woodstock.WoodstockEndpoint.GetEndpoint(key);
         }
 
         private string GetSunriseEndpoint()

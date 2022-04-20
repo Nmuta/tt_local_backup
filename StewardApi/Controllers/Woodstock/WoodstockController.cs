@@ -171,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerIdentity(
             [FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
                 return WoodstockCacheKey.MakeIdentityLookupKey(endpoint, identityQuery.Gamertag, identityQuery.Xuid);
@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
                 .ConfigureAwait(true);
             if (playerDetails == null)
@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerDetails(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (playerDetails == null)
@@ -262,7 +262,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults, endpoint)
                 .ConfigureAwait(true);
 
@@ -285,7 +285,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ulong consoleId,
             bool isBanned)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             await this.woodstockPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned, endpoint)
                 .ConfigureAwait(true);
 
@@ -307,7 +307,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetSharedConsoleUsersAsync(
                 xuid,
                 startIndex,
@@ -327,7 +327,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetUserFlags(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -359,7 +359,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             userFlags.ShouldNotBeNull(nameof(userFlags));
             xuid.EnsureValidXuid();
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
             if (!this.ModelState.IsValid)
             {
@@ -394,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetProfileSummary(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetProfileSummaryAsync(xuid, endpoint)
                 .ConfigureAwait(true);
 
@@ -411,7 +411,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetProfileNotesAsync(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -442,7 +442,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             profileNote.ShouldNotBeNull(nameof(profileNote));
             xuid.EnsureValidXuid();
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -474,7 +474,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetCreditUpdatesAsync(
                 xuid,
                 startIndex,
@@ -503,7 +503,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             status.ShouldNotBeNull(nameof(status));
             sort.ShouldNotBeNull(nameof(sort));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             if (!Enum.TryParse(status, out AuctionStatus statusEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionStatus)} provided: {status}");
@@ -568,7 +568,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var auctionLog = await this.storefrontProvider.GetAuctionDataAsync(parsedAuctionId, endpoint).ConfigureAwait(true);
 
             return this.Ok(auctionLog);
@@ -588,7 +588,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.storefrontProvider.DeleteAuctionAsync(parsedAuctionId, endpoint).ConfigureAwait(true);
             var realResult = result.result.First();
             if (!realResult.Success)
@@ -614,7 +614,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0);
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getCars = this.itemsProvider.GetCarsAsync();
             var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
@@ -642,7 +642,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             await this.woodstockServiceManagementProvider.AddAuctionBlockListEntriesAsync(entries, endpoint).ConfigureAwait(true);
 
             return this.Ok(entries);
@@ -658,7 +658,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             await this.woodstockServiceManagementProvider.DeleteAuctionBlockListEntriesAsync(new List<int> { carId }, endpoint).ConfigureAwait(true);
 
             return this.Ok();
@@ -675,7 +675,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             if (!Enum.TryParse(ugcType, out UgcType typeEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
@@ -711,7 +711,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             if (!Enum.TryParse(ugcType, out UgcType typeEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
@@ -746,7 +746,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcLivery(Guid id)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUgcLiveryAsync(id, endpoint);
             var getCars = this.itemsProvider.GetCarsAsync();
@@ -771,7 +771,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcPhoto(Guid id)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUgcPhotoAsync(id, endpoint);
             var getCars = this.itemsProvider.GetCarsAsync();
@@ -796,7 +796,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcTune(Guid id)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUgcTuneAsync(id, endpoint);
             var getCars = this.itemsProvider.GetCarsAsync();
@@ -823,7 +823,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             string itemId,
             [FromBody] UgcFeaturedStatus status)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             if (!Guid.TryParse(itemId, out var itemIdGuid))
             {
                 throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {itemId}");
@@ -857,7 +857,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetPlayerHiddenUGC(ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var hiddenUgc = await this.storefrontProvider.GetHiddenUgcForUserAsync(xuid, endpoint).ConfigureAwait(true);
 
@@ -876,7 +876,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> HideUGC(Guid ugcId)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             await this.storefrontProvider.HideUgcAsync(ugcId, endpoint).ConfigureAwait(true);
 
@@ -899,7 +899,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             fileType.ShouldNotBeNull(nameof(fileType));
             xuid.EnsureValidXuid();
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
             {
@@ -922,7 +922,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetBackstagePassUpdates(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -957,7 +957,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -1028,7 +1028,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -1063,7 +1063,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.woodstockPlayerDetailsProvider.GetUserBanSummariesAsync(xuids, endpoint)
                 .ConfigureAwait(true);
 
@@ -1080,7 +1080,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetBanHistory(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.GetBanHistoryAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
@@ -1098,7 +1098,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
                 .ConfigureAwait(true);
 
@@ -1121,7 +1121,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Group)]
         public async Task<IActionResult> GetGroups()
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var result = await this.woodstockServiceManagementProvider.GetLspGroupsAsync(
                 endpoint).ConfigureAwait(true);
 
@@ -1138,7 +1138,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventory(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1176,7 +1176,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventoryByProfileId(
             int profileId)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(
                 profileId,
                 endpoint);
@@ -1210,7 +1210,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventoryProfiles(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var inventoryProfileSummary = await this.woodstockPlayerInventoryProvider.GetInventoryProfilesAsync(
                 xuid,
                 endpoint).ConfigureAwait(true);
@@ -1235,7 +1235,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetAccountInventory(
             ulong xuid)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
                 .ConfigureAwait(true);
             if (!playerExists)
@@ -1268,7 +1268,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
@@ -1357,7 +1357,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
@@ -1421,7 +1421,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             gift.ShouldNotBeNull(nameof(gift));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
             if (!this.ModelState.IsValid)
@@ -1469,7 +1469,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             foreach (var xuid in groupGift.Xuids)
@@ -1534,7 +1534,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             groupId.ShouldNotBeNull(nameof(groupId));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var livery = await this.storefrontProvider.GetUgcLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
             if (livery == null)
@@ -1564,7 +1564,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"({nameof(startDate)}: {startDate}) ({nameof(endDate)}: {endDate})");
             }
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 xuid.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.WoodstockCodeName,
@@ -1594,7 +1594,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"({nameof(startDate)}: {startDate}) ({nameof(endDate)}: {endDate})");
             }
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
                 groupId.ToString(CultureInfo.InvariantCulture),
                 TitleConstants.WoodstockCodeName,
@@ -1616,7 +1616,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetNotificationHistoriesAsync(
             string notificationId)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var notificationHistory = await this.notificationHistoryProvider.GetNotificationHistoriesAsync(
                 notificationId,
                 TitleConstants.WoodstockCodeName,
@@ -1638,7 +1638,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var notifications = await this.woodstockNotificationProvider.GetPlayerNotificationsAsync(
                 xuid,
                 maxResults,
@@ -1660,7 +1660,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var notifications = await this.woodstockNotificationProvider.GetGroupNotificationsAsync(
                 groupId,
                 maxResults,
@@ -1691,7 +1691,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 TimeSpan.FromDays(1),
                 nameof(communityMessage.Duration));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
             var stringBuilder = new StringBuilder();
@@ -1744,7 +1744,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 TimeSpan.FromDays(1),
                 nameof(communityMessage.Duration));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
@@ -1788,7 +1788,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
             xuid.EnsureValidXuid();
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
@@ -1832,7 +1832,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
@@ -1872,7 +1872,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             xuid.EnsureValidXuid();
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
             var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
@@ -1904,7 +1904,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
@@ -1990,7 +1990,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] int startAt = 0,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(
                 scoreboardType,
@@ -2028,7 +2028,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             xuid.EnsureValidXuid();
 
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(
                 xuid,
@@ -2057,34 +2057,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Leaderboards)]
         public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)
         {
-            var endpoint = GetWoodstockEndpoint(this.Request.Headers);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             await this.leaderboardProvider.DeleteLeaderboardScoresAsync(scoreIds, endpoint).ConfigureAwait(true);
 
             return this.Ok();
-        }
-
-        private static string GetWoodstockEndpoint(IHeaderDictionary headers)
-        {
-            if (!headers.TryGetValue("endpointKey", out var headerValue))
-            {
-                headerValue = DefaultEndpointKey;
-            }
-
-            var endpointKeyValue = headerValue.ToString();
-            endpointKeyValue.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpointKeyValue));
-
-            var splitValue = endpointKeyValue.Split('|');
-            var title = splitValue.ElementAtOrDefault(0);
-            var key = splitValue.ElementAtOrDefault(1);
-
-            if (title != TitleConstants.WoodstockCodeName)
-            {
-                throw new BadHeaderStewardException(
-                    $"Endpoint key designated for title: {title}, but expected {TitleConstants.WoodstockCodeName}.");
-            }
-
-            return WoodstockEndpoint.GetEndpoint(key);
         }
 
         /// <summary>

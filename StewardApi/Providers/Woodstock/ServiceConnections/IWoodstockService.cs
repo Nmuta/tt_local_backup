@@ -279,6 +279,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Deletes all of a user's notifications.
+        /// </summary>
+        Task DeleteAllUserNotificationAsync(
+            ulong xuid,
+            string endpoint);
+
+        /// <summary>
         ///     Gets player auctions.
         /// </summary>
         Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(ForzaAuctionFilters filters, string endpoint);
