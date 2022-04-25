@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task DeleteAllNotifications_InvalidXuid_Throws()
+        public void DeleteAllNotifications_InvalidXuid_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();

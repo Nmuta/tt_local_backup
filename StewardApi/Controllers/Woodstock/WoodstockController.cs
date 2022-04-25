@@ -578,7 +578,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Cancels a specific auction.
         /// </summary>
         [HttpDelete("auction/{auctionId}")]
-        [SwaggerResponse(200, type: typeof(AuctionData))]
+        [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> DeleteAuction(string auctionId)

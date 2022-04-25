@@ -1,23 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Filters;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-
-using FH5 = Forza.LiveOps.FH5_main.Generated;
-using FH4 = Forza.LiveOps.FH4.Generated;
-using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Microsoft.AspNetCore.Http;
+using Swashbuckle.AspNetCore.Annotations;
+using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using FH4 = Forza.LiveOps.FH4.Generated;
+using FH5 = Forza.LiveOps.FH5_main.Generated;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
 {
@@ -55,24 +52,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
         {
             var fh5Lookups = new[]
             {
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, FH5.ForzaUGCContentType.Livery),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, FH5.ForzaUGCContentType.Tune),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, FH5.ForzaUGCContentType.Photo),
+                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOps.ForzaUGCContentType.Livery),
+                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOps.ForzaUGCContentType.Tune),
+                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOps.ForzaUGCContentType.Photo),
                 this.LookupFH5IdOrNullAsync(
                     shareCodeOrId,
-                    FH5.ForzaUGCContentType.Livery,
+                    ServicesLiveOps.ForzaUGCContentType.Livery,
                     (id) => this.fh5Service.GetPlayerLiveryAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.Metadata.ContentType == FH5.ForzaUGCContentType.Livery),
+                    item => item.result.Metadata.ContentType == ServicesLiveOps.ForzaUGCContentType.Livery),
                 this.LookupFH5IdOrNullAsync(
                     shareCodeOrId,
-                    FH5.ForzaUGCContentType.Tune,
+                    ServicesLiveOps.ForzaUGCContentType.Tune,
                     (id) => this.fh5Service.GetPlayerTuneAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.Metadata.ContentType == FH5.ForzaUGCContentType.Tune),
+                    item => item.result.Metadata.ContentType == ServicesLiveOps.ForzaUGCContentType.Tune),
                 this.LookupFH5IdOrNullAsync(
                     shareCodeOrId,
-                    FH5.ForzaUGCContentType.Photo,
+                    ServicesLiveOps.ForzaUGCContentType.Photo,
                     (id) => this.fh5Service.GetPlayerPhotoAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.Metadata.ContentType == FH5.ForzaUGCContentType.Photo),
+                    item => item.result.Metadata.ContentType == ServicesLiveOps.ForzaUGCContentType.Photo),
             };
 
             var fh4Lookups = new[]
@@ -110,7 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
             });
         }
 
-        private async Task<FH5.ForzaUGCContentType?> LookupFH5IdOrNullAsync<T>(string shareCodeOrId, FH5.ForzaUGCContentType type, Func<Guid, Task<T>> actionAsync, Func<T, bool> validator)
+        private async Task<ServicesLiveOps.ForzaUGCContentType?> LookupFH5IdOrNullAsync<T>(string shareCodeOrId, ServicesLiveOps.ForzaUGCContentType type, Func<Guid, Task<T>> actionAsync, Func<T, bool> validator)
         {
             if (Guid.TryParse(shareCodeOrId, out var id))
             {
@@ -164,10 +161,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
             }
         }
 
-        private async Task<FH5.ForzaUGCContentType?> LookupFH5ShareCodeOrNullAsync(string shareCodeOrId, FH5.ForzaUGCContentType type)
+        private async Task<ServicesLiveOps.ForzaUGCContentType?> LookupFH5ShareCodeOrNullAsync(string shareCodeOrId, ServicesLiveOps.ForzaUGCContentType type)
         {
             var ugcList = await this.fh5Service.SearchUgcContentAsync(
-                new FH5.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue },
+                new ServicesLiveOps.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue },
                 type,
                 this.WoodstockEndpoint.Value,
                 includeThumbnails: true).ConfigureAwait(false);
@@ -195,7 +192,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
             public string ShareCodeOrId { get; set; }
 
             [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-            public IList<FH5.ForzaUGCContentType> Fh5 { get; set; }
+            public IList<ServicesLiveOps.ForzaUGCContentType> Fh5 { get; set; }
 
             [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
             public IList<FH4.ForzaUGCContentType> Fh4 { get; set; }

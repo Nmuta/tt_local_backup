@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Forza.LiveOps.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
-using AuctionManagementService = Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
-using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
@@ -25,14 +23,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="NotificationsManagementService" />.
+        ///     Prepares a <see cref="ServicesLiveOps.NotificationsManagementService" />.
         /// </summary>
-        Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint);
+        Task<ServicesLiveOps.NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="GiftingService" />.
+        ///     Prepares a <see cref="ServicesLiveOps.GiftingManagementService" />.
         /// </summary>
-        Task<GiftingService> PrepareGiftingServiceAsync(string endpoint);
+        Task<ServicesLiveOps.GiftingManagementService> PrepareGiftingManagementServiceAsync(string endpoint);
 
         /// <summary>
         ///     Prepares a <see cref="LiveOpsService" />.
@@ -40,14 +38,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<LiveOpsService> PrepareLiveOpsServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="AuctionManagementService" />.
+        ///     Prepares a <see cref="ServicesLiveOps.AuctionManagementService" />.
         /// </summary>
-        Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint);
-
-        /// <summary>
-        ///     Prepares a <see cref="AuctionService" />.
-        /// </summary>
-        Task<AuctionService> PrepareAuctionServiceAsync(string endpoint);
+        Task<ServicesLiveOps.AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint);
 
         /// <summary>
         ///     Prepares a <see cref="RareCarShopService" />.
@@ -57,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Prepares a <see cref="StorefrontManagementService" />.
         /// </summary>
-        Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint);
+        Task<ServicesLiveOps.StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint);
 
         /// <summary>
         ///     Prepares a <see cref="StorefrontService" />.
@@ -65,13 +58,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<StorefrontService> PrepareStorefrontServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="LiveOpsService" />.
-        /// </summary>
-        Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint);
-
-        /// <summary>
         ///     Prepares a <see cref="ScoreboardManagementService" />.
         /// </summary>
-        Task<ScoreboardManagementService> PrepareScoreboardManagementService(string endpoint);
+        Task<ServicesLiveOps.ScoreboardManagementService> PrepareScoreboardManagementServiceAsync(string endpoint);
     }
 }

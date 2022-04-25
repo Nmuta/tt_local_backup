@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
-using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
-using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
-using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
@@ -170,7 +166,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets supported gift types.
         /// </summary>
-        Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(
+        Task<ServicesLiveOps.GiftingManagementService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(
             int maxResults,
             string endpoint);
 
@@ -187,12 +183,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///    Sends car livery to a player xuid.
         /// </summary>
-        Task<GiftingService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint);
+        Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint);
 
         /// <summary>
         ///    Sends car livery to a user group.
         /// </summary>
-        Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint);
+        Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint);
 
         /// <summary>
         ///     Gets token balance.
@@ -212,7 +208,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Retrieves notifications for a user.
         /// </summary>
-        public Task<NotificationsManagementService.LiveOpsRetrieveForUserExOutput> LiveOpsRetrieveForUserAsync(
+        public Task<ServicesLiveOps.NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(
             ulong xuid,
             int maxResults,
             string endpoint);
@@ -220,7 +216,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Retrieves user group messages.
         /// </summary>
-        public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
+        public Task<ServicesLiveOps.NotificationsManagementService.GetAllUserGroupMessagesOutput>
             GetUserGroupNotificationsAsync(
                 int groupId,
                 int maxResults,
@@ -229,7 +225,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Retrieves player messages.
         /// </summary>
-        public Task<NotificationsManagementService.GetNotificationOutput> GetPlayerNotificationAsync(
+        public Task<ServicesLiveOps.NotificationsManagementService.GetNotificationOutput> GetPlayerNotificationAsync(
             ulong xuid,
             Guid notificationId,
             string endpoint);
@@ -237,14 +233,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Retrieves user group message.
         /// </summary>
-        public Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
+        public Task<ServicesLiveOps.NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
             Guid notificationId,
             string endpoint);
 
         /// <summary>
         ///     Sends message to multiple xuids.
         /// </summary>
-        Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
+        Task<ServicesLiveOps.NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
             SendMessageNotificationToMultipleUsersAsync(
             IList<ulong> xuids,
             string message,
@@ -254,11 +250,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Sends group message.
         /// </summary>
-        public Task<NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
+        public Task<ServicesLiveOps.NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
             int groupId,
             string message,
             DateTime expireTimeUtc,
-            ForzaLiveDeviceType deviceType,
+            ServicesLiveOps.ForzaLiveDeviceType deviceType,
             string endpoint);
 
         /// <summary>
@@ -267,7 +263,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public Task EditNotificationAsync(
             Guid notificationId,
             ulong xuid,
-            ForzaCommunityMessageNotificationEditParameters messageParams,
+            ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters messageParams,
             string endpoint);
 
         /// <summary>
@@ -275,7 +271,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// </summary>
         public Task EditGroupNotificationAsync(
             Guid notificationId,
-            ForzaCommunityMessageNotificationEditParameters messageParams,
+            ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters messageParams,
             string endpoint);
 
         /// <summary>
@@ -288,31 +284,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets player auctions.
         /// </summary>
-        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(ForzaAuctionFilters filters, string endpoint);
+        Task<ServicesLiveOps.AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
+            ServicesLiveOps.ForzaAuctionFilters filters,
+            string endpoint);
 
         /// <summary>
         ///     Gets comprehensive data about an auction.
         /// </summary>
-        Task<Forza.LiveOps.FH5_main.Generated.ForzaAuction> GetAuctionDataAsync(
+        Task<ServicesLiveOps.ForzaAuction> GetAuctionDataAsync(
             Guid auctionId,
             string endpoint);
 
         /// <summary>
         ///     Deletes an auction.
         /// </summary>
-        Task<DeleteAuctionsOutput> DeleteAuctionAsync(
+        Task<ServicesLiveOps.AuctionManagementService.DeleteAuctionsOutput> DeleteAuctionAsync(
             Guid auctionId,
             string endpoint);
 
         /// <summary>
         ///     Gets auction house block list.
         /// </summary>
-        Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint);
+        Task<ServicesLiveOps.AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint);
 
         /// <summary>
         ///     Adds or updates an entry in the auction house block list.
         /// </summary>
-        Task AddAuctionBlocklistEntriesAsync(ForzaAuctionBlocklistEntry[] blockEntries, string endpoint);
+        Task AddAuctionBlocklistEntriesAsync(ServicesLiveOps.ForzaAuctionBlocklistEntry[] blockEntries, string endpoint);
 
         /// <summary>
         ///     Removes an entry from the auction house block list.
@@ -322,39 +320,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Search public and private UGC content for a single player.
         /// </summary>
-        Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
-            ForzaUGCSearchRequest filters,
-            ForzaUGCContentType contentType,
+        Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
+            ServicesLiveOps.ForzaUGCSearchRequest filters,
+            ServicesLiveOps.ForzaUGCContentType contentType,
             string endpoint,
             bool includeThumbnails = false);
-
-
-        /// <summary>
-        ///     Search public UGC content.
-        /// </summary>
-        Task<StorefrontManagementService.SearchUGCV2Output> SearchUgcContentV2Async(
-            ForzaUGCSearchV2Request searchRequest,
-            ForzaUGCContentType contentType,
-            string endpoint);
 
         /// <summary>
         ///     Get a player livery.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
+        Task<ServicesLiveOps.StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
             Guid liveryId,
             string endpoint);
 
         /// <summary>
         ///     Get a player photo.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
+        Task<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
             Guid photoId,
             string endpoint);
 
         /// <summary>
         ///     Get a player tune.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
+        Task<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
             string endpoint);
 
@@ -389,8 +378,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets leaderboard scores.
         /// </summary>
-        Task<IList<ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
-            ForzaSearchLeaderboardsParameters searchParams,
+        Task<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
+            ServicesLiveOps.ForzaSearchLeaderboardsParameters searchParams,
             int startIndex,
             int maxResults,
             string endpoint);

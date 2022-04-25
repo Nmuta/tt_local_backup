@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Contracts.STS;
@@ -12,10 +11,8 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
-using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
-using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
@@ -82,15 +79,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint)
-        {
-            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
-                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
-
-            return new LiveOpsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
-        }
-
-        /// <inheritdoc/>
         public async Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
@@ -100,12 +88,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GiftingService> PrepareGiftingServiceAsync(string endpoint)
+        public async Task<ServicesLiveOps.GiftingManagementService> PrepareGiftingManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new GiftingService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.GiftingManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>
@@ -127,40 +115,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(
+        public async Task<ServicesLiveOps.NotificationsManagementService> PrepareNotificationsManagementServiceAsync(
             string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new NotificationsManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.NotificationsManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint)
+        public async Task<ServicesLiveOps.AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionService> PrepareAuctionServiceAsync(string endpoint)
+        public async Task<ServicesLiveOps.StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new AuctionService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
-        }
-
-        /// <inheritdoc/>
-        public async Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
-        {
-            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
-                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
-
-            return new StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>
@@ -173,12 +152,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<ScoreboardManagementService> PrepareScoreboardManagementService(string endpoint)
+        public async Task<ServicesLiveOps.ScoreboardManagementService> PrepareScoreboardManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new ScoreboardManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.ScoreboardManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

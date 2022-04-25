@@ -13,9 +13,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
-using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using static Forza.WebServices.FH5_main.Generated.StorefrontService;
 using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -49,8 +49,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
-            var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
+            var mappedFilters = this.mapper.Map<ServicesLiveOps.ForzaUGCSearchRequest>(filters);
+            var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
             var results = await this.woodstockService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
             return this.mapper.Map<IList<UgcItem>>(results.result);
@@ -141,7 +141,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<DeleteAuctionsOutput> DeleteAuctionAsync(
+        public async Task<ServicesLiveOps.AuctionManagementService.DeleteAuctionsOutput> DeleteAuctionAsync(
             Guid auctionId,
             string endpoint)
         {

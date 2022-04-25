@@ -554,7 +554,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
+                var forzaAuctionFilters = this.mapper.Map<ServicesLiveOps.ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
                 var forzaAuctions = await this.woodstockService.GetPlayerAuctionsAsync(forzaAuctionFilters, endpoint)
                     .ConfigureAwait(false);

@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -99,14 +100,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
             pivotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pivotId));
 
-            var searchParams = new ForzaSearchLeaderboardsParameters()
+            var searchParams = new ServicesLiveOps.ForzaSearchLeaderboardsParameters()
             {
-                ScoreboardType = scoreboardType,
-                ScoreType = scoreType,
+                ScoreboardType = (byte)scoreboardType,
+                ScoreType = (byte)scoreType,
                 TrackId = trackId,
                 PivotId = pivotId,
-                DeviceTypes = this.mapper.SafeMap<ForzaLiveDeviceType[]>(deviceTypes),
-                ScoreView = ScoreView.All,
+                DeviceTypes = this.mapper.SafeMap<ServicesLiveOps.ForzaLiveDeviceType[]>(deviceTypes),
+                ScoreView = (int)ScoreView.All,
                 Xuid = 1, // 1 = System ID
             };
 
@@ -136,14 +137,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
             pivotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pivotId));
 
-            var searchParams = new ForzaSearchLeaderboardsParameters()
+            var searchParams = new ServicesLiveOps.ForzaSearchLeaderboardsParameters()
             {
-                ScoreboardType = scoreboardType,
-                ScoreType = scoreType,
+                ScoreboardType = (byte)scoreboardType,
+                ScoreType = (byte)scoreType,
                 TrackId = trackId,
                 PivotId = pivotId,
-                DeviceTypes = this.mapper.SafeMap<ForzaLiveDeviceType[]>(deviceTypes),
-                ScoreView = ScoreView.NearbyMe,
+                DeviceTypes = this.mapper.SafeMap<ServicesLiveOps.ForzaLiveDeviceType[]>(deviceTypes),
+                ScoreView = (int)ScoreView.NearbyMe,
                 Xuid = xuid,
             };
 
@@ -188,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Builds string of leaderboard search parameters used for exception logging purposes.
         /// </summary>
-        private string BuildParametersErrorString(ForzaSearchLeaderboardsParameters parameters)
+        private string BuildParametersErrorString(ServicesLiveOps.ForzaSearchLeaderboardsParameters parameters)
         {
             return $"(Xuid: {parameters.Xuid}) (ScoreboardType: {parameters.ScoreboardType}) (ScoreType: {parameters.ScoreType}) (ScoreView: {parameters.ScoreView}) (TrackId: {parameters.TrackId}) (PivotId: {parameters.PivotId})";
         }

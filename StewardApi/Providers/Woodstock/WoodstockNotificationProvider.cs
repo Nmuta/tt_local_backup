@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -196,7 +197,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 PlayerOrLspGroup = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
             };
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
+            var forzaDeviceType = this.mapper.Map<ServicesLiveOps.ForzaLiveDeviceType>(deviceType);
 
             try
             {
@@ -263,13 +264,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var editParams = new ForzaCommunityMessageNotificationEditParameters
+            var editParams = new ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
                 Message = message,
                 ExpirationDate = expireTimeUtc,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid
             };
 
             try
@@ -329,13 +330,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
-            var editParams = new ForzaCommunityMessageNotificationEditParameters
+            var forzaDeviceType = this.mapper.Map<ServicesLiveOps.ForzaLiveDeviceType>(deviceType);
+            var editParams = new ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
                 Message = message,
                 ExpirationDate = expireTimeUtc,
-                HasDeviceType = forzaDeviceType != ForzaLiveDeviceType.Invalid,
+                HasDeviceType = forzaDeviceType != ServicesLiveOps.ForzaLiveDeviceType.Invalid,
                 DeviceType = forzaDeviceType
             };
 
@@ -407,14 +408,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            LiveOpsNotification notification;
-            var editParams = new ForzaCommunityMessageNotificationEditParameters
+            ServicesLiveOps.ForzaLiveOpsNotification notification;
+            var editParams = new ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = true,
                 Message = string.Empty,
                 ExpirationDate = DateTime.UtcNow,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid
             };
 
             try
@@ -470,14 +471,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             DeviceType deviceType;
-            ForzaUserGroupMessage groupMessage;
-            var editParams = new ForzaCommunityMessageNotificationEditParameters
+            ServicesLiveOps.ForzaUserGroupMessage groupMessage;
+            var editParams = new ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = true,
                 Message = string.Empty,
                 ExpirationDate = DateTime.UtcNow,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid
             };
 
             try

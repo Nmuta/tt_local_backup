@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
@@ -10,9 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
-using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
-using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
@@ -50,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var userLookupService = await this.serviceFactory.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
+            var userLookupService = await this.serviceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userLookupService.GetLiveOpsUserDataByXuid(xuid).ConfigureAwait(false);
         }
@@ -60,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string gamertag,
             string endpoint)
         {
-            var userLookupService = await this.serviceFactory.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
+            var userLookupService = await this.serviceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userLookupService.GetLiveOpsUserDataByGamerTag(gamertag).ConfigureAwait(false);
         }
@@ -295,10 +291,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<GiftingService.AdminGetSupportedGiftTypesOutput>
+        public async Task<ServicesLiveOps.GiftingManagementService.AdminGetSupportedGiftTypesOutput>
             AdminGetSupportedGiftTypesAsync(int maxResults, string endpoint)
         {
-            var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminGetSupportedGiftTypes(maxResults).ConfigureAwait(false);
         }
@@ -310,9 +306,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int itemValue,
             string endpoint)
         {
-            var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGift(xuid, itemType, itemValue).ConfigureAwait(false);
+            await giftingService.AdminSendItemGift(xuid, (int)itemType, itemValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -328,21 +324,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                     "Sending to All User group is blocked outside of the production environment.");
             }
 
-            var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
+            await giftingService.AdminSendItemGroupGift(groupId, (int)itemType, itemValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<GiftingService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint)
+        public async Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint)
         {
-            var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint)
+        public async Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint)
         {
             if (groupId == 0 && !this.allowGiftingToAllUsers)
             {
@@ -350,23 +346,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                     "Sending to All User group is blocked outside of the production environment.");
             }
 
-            var giftingService = await this.serviceFactory.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserExOutput>
+        public async Task<ServicesLiveOps.NotificationsManagementService.LiveOpsRetrieveForUserOutput>
             LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults, string endpoint)
         {
             var notificationsService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
-            return await notificationsService.LiveOpsRetrieveForUserEx(xuid, maxResults).ConfigureAwait(false);
+            return await notificationsService.LiveOpsRetrieveForUser(xuid, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.GetAllUserGroupMessagesOutput> GetUserGroupNotificationsAsync(
+        public async Task<ServicesLiveOps.NotificationsManagementService.GetAllUserGroupMessagesOutput> GetUserGroupNotificationsAsync(
             int groupId,
             int maxResults,
             string endpoint)
@@ -378,7 +374,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.GetNotificationOutput> GetPlayerNotificationAsync(
+        public async Task<ServicesLiveOps.NotificationsManagementService.GetNotificationOutput> GetPlayerNotificationAsync(
             ulong xuid,
             Guid notificationId,
             string endpoint)
@@ -389,7 +385,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
+        public async Task<ServicesLiveOps.NotificationsManagementService.GetUserGroupMessageOutput> GetUserGroupNotificationAsync(
             Guid notificationId,
             string endpoint)
         {
@@ -399,7 +395,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
+        public async Task<ServicesLiveOps.NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
             SendMessageNotificationToMultipleUsersAsync(
                 IList<ulong> xuids,
                 string message,
@@ -413,16 +409,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 xuids.ToArray(),
                 xuids.Count,
                 message,
-                expireTimeUtc).ConfigureAwait(false);
+                expireTimeUtc,
+                string.Empty).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.SendGroupMessageNotificationOutput>
+        public async Task<ServicesLiveOps.NotificationsManagementService.SendGroupMessageNotificationOutput>
             SendGroupMessageNotificationAsync(
                 int groupId,
                 string message,
                 DateTime expireTimeUtc,
-                ForzaLiveDeviceType deviceType,
+                ServicesLiveOps.ForzaLiveDeviceType deviceType,
                 string endpoint)
         {
             if (groupId == 0 && !this.allowGiftingToAllUsers)
@@ -438,7 +435,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 groupId,
                 message,
                 expireTimeUtc,
-                deviceType != ForzaLiveDeviceType.Invalid,
+                deviceType != ServicesLiveOps.ForzaLiveDeviceType.Invalid,
                 deviceType).ConfigureAwait(false);
         }
 
@@ -446,7 +443,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public async Task EditNotificationAsync(
             Guid notificationId,
             ulong xuid,
-            ForzaCommunityMessageNotificationEditParameters messageParams,
+            ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters messageParams,
             string endpoint)
         {
             var notificationsManagementService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
@@ -458,7 +455,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc/>
         public async Task EditGroupNotificationAsync(
             Guid notificationId,
-            ForzaCommunityMessageNotificationEditParameters messageParams,
+            ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters messageParams,
             string endpoint)
         {
             var notificationsManagementService = await this.serviceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
@@ -479,8 +476,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
-            ForzaAuctionFilters filters,
+        public async Task<ServicesLiveOps.AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
+            ServicesLiveOps.ForzaAuctionFilters filters,
             string endpoint)
         {
             var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
@@ -489,7 +486,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<Forza.LiveOps.FH5_main.Generated.ForzaAuction> GetAuctionDataAsync(
+        public async Task<ServicesLiveOps.ForzaAuction> GetAuctionDataAsync(
             Guid auctionId,
             string endpoint)
         {
@@ -499,7 +496,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<DeleteAuctionsOutput> DeleteAuctionAsync(
+        public async Task<ServicesLiveOps.AuctionManagementService.DeleteAuctionsOutput> DeleteAuctionAsync(
             Guid auctionId,
             string endpoint)
         {
@@ -508,7 +505,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint)
+        public async Task<ServicesLiveOps.AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint)
         {
             var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -516,7 +513,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task AddAuctionBlocklistEntriesAsync(ForzaAuctionBlocklistEntry[] blockEntries, string endpoint)
+        public async Task AddAuctionBlocklistEntriesAsync(ServicesLiveOps.ForzaAuctionBlocklistEntry[] blockEntries, string endpoint)
         {
             var auctionService = await this.serviceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -532,9 +529,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
-            ForzaUGCSearchRequest filters,
-            ForzaUGCContentType contentType,
+        public async Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
+            ServicesLiveOps.ForzaUGCSearchRequest filters,
+            ServicesLiveOps.ForzaUGCContentType contentType,
             string endpoint,
             bool includeThumbnails = false)
         {
@@ -544,18 +541,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.SearchUGCV2Output> SearchUgcContentV2Async(
-            ForzaUGCSearchV2Request searchRequest,
-            ForzaUGCContentType contentType,
-            string endpoint)
-        {
-            var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await storefrontService.SearchUGCV2(searchRequest, contentType, false, 1_000).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
+        public async Task<ServicesLiveOps.StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
             Guid liveryId,
             string endpoint)
         {
@@ -565,7 +551,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
+        public async Task<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
             Guid photoId,
             string endpoint)
         {
@@ -575,7 +561,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
+        public async Task<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
             string endpoint)
         {
@@ -627,23 +613,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<IList<ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
-            ForzaSearchLeaderboardsParameters searchParams,
+        public async Task<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
+            ServicesLiveOps.ForzaSearchLeaderboardsParameters searchParams,
             int startIndex,
             int maxResults,
             string endpoint)
         {
-            var service = await this.serviceFactory.PrepareScoreboardManagementService(endpoint).ConfigureAwait(false);
+            var service = await this.serviceFactory.PrepareScoreboardManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             var result = await service.SearchLeaderboards(searchParams, startIndex, maxResults).ConfigureAwait(false);
 
-            return result.Rows;
+            return result.results.Rows;
         }
 
         /// <inheritdoc/>
         public async Task DeleteLeaderboardScoresAsync(Guid[] scoreIDs, string endpoint)
         {
-            var service = await this.serviceFactory.PrepareScoreboardManagementService(endpoint).ConfigureAwait(false);
+            var service = await this.serviceFactory.PrepareScoreboardManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await service.DeleteScores(scoreIDs).ConfigureAwait(false);
         }

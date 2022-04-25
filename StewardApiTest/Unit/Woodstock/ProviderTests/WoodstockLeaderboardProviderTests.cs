@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
@@ -246,11 +247,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             public Dependencies()
             {
                 this.WoodstockService
-                    .GetLeaderboardScoresAsync(Arg.Any<ForzaSearchLeaderboardsParameters>(), Arg.Any<int>(),
-                        Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ForzaRankedLeaderboardRow>>());
+                    .GetLeaderboardScoresAsync(Arg.Any<ServicesLiveOps.ForzaSearchLeaderboardsParameters>(), Arg.Any<int>(),
+                        Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>());
                 this.PegasusService.GetCarClassesAsync().Returns(Fixture.Create<IEnumerable<CarClass>>());
                 this.PegasusService.GetLeaderboardsAsync().Returns(Fixture.Create<IEnumerable<Leaderboard>>());
-                this.Mapper.Map<IEnumerable<LeaderboardScore>>(Arg.Any<IList<ForzaRankedLeaderboardRow>>())
+                this.Mapper.Map<IEnumerable<LeaderboardScore>>(Arg.Any<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>())
                     .Returns(Fixture.Create<IEnumerable<LeaderboardScore>>());
             }
 
