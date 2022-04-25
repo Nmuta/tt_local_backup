@@ -18,7 +18,7 @@ export class ExternalRedirectComponent implements OnInit {
     'luke.geiken@microsoft.com',
     'madden.osei@microsoft.com',
     'v-jyates@microsoft.com',
-    'david.sharer@turn10.msgamestudios.com',
+    'sharerdavid@microsoft.com',
     'caleb.moore@microsoft.com',
   ];
 
