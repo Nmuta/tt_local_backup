@@ -171,8 +171,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<DeviceType, ServicesLiveOps.ForzaLiveDeviceType>().ReverseMap();
 
-            this.CreateMap<UgcFilters, ServicesLiveOps.ForzaUGCSearchRequest>().ReverseMap();
-            this.CreateMap<UgcType, ServicesLiveOps.ForzaUGCContentType>().ReverseMap();
+            this.CreateMap<UgcFilters, ForzaUGCSearchRequest>().ReverseMap();
+            this.CreateMap<UgcType, ForzaUGCContentType>().ReverseMap();
             this.CreateMap<ForzaUGCData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(
@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaLiveryData, UgcItem>()
+            this.CreateMap<ForzaLiveryData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
                 .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
@@ -245,7 +245,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaPhotoData, UgcItem>()
+            this.CreateMap<ForzaPhotoData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
@@ -272,7 +272,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaTuneData, UgcItem>()
+            this.CreateMap<ForzaTuneData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))

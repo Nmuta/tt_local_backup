@@ -49,8 +49,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedFilters = this.mapper.Map<ServicesLiveOps.ForzaUGCSearchRequest>(filters);
-            var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+            var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
+            var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
             var results = await this.woodstockService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
             return this.mapper.Map<IList<UgcItem>>(results.result);

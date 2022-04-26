@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Forza.UserGeneratedContent.FH5_main.Generated;
+using Forza.LiveOps.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
@@ -320,30 +321,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Search public and private UGC content for a single player.
         /// </summary>
-        Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
-            ServicesLiveOps.ForzaUGCSearchRequest filters,
-            ServicesLiveOps.ForzaUGCContentType contentType,
+        Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
+            ForzaUGCSearchRequest filters,
+            ForzaUGCContentType contentType,
             string endpoint,
             bool includeThumbnails = false);
 
         /// <summary>
         ///     Get a player livery.
         /// </summary>
-        Task<ServicesLiveOps.StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
+        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
             Guid liveryId,
             string endpoint);
 
         /// <summary>
         ///     Get a player photo.
         /// </summary>
-        Task<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
+        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
             Guid photoId,
             string endpoint);
 
         /// <summary>
         ///     Get a player tune.
         /// </summary>
-        Task<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
+        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
             string endpoint);
 

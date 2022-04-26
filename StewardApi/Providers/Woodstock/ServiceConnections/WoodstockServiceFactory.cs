@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Forza.LiveOps.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Contracts.STS;
@@ -134,12 +135,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<ServicesLiveOps.StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
+        public async Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new ServicesLiveOps.StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>
