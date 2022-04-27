@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { MultiEnvironmentService } from './multi-environment.service';
-import { createMockGravityService } from '@services/gravity';
 import { createMockApolloService } from '@services/apollo';
 import { createMockOpusService } from '@services/opus';
 import { createMockSteelheadService } from '@services/steelhead';
@@ -17,7 +16,6 @@ describe('MultiEnvironmentService', () => {
       imports: [NgxsModule.forRoot([])],
       providers: [
         createMockSunriseService(),
-        createMockGravityService(),
         createMockApolloService(),
         createMockOpusService(),
         createMockSteelheadService(),

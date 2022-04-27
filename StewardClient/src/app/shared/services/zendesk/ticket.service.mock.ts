@@ -6,7 +6,7 @@ import { TicketService } from './ticket.service';
 /** Defines the mock for the Ticket Service. */
 @Injectable()
 export class MockTicketService {
-  public activeTitle = GameTitleCodeName.Street;
+  public activeTitle = GameTitleCodeName.FH5;
   public activeGamertag = 'gamertag';
   public getTicketRequestorGamertag$ = jasmine
     .createSpy('getTicketRequestorGamertag$')

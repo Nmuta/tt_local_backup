@@ -142,7 +142,7 @@ describe('PlayerSelectionBulkComponent', () => {
       it('should call getPlayerIdentities$', waitForAsync(() => {
         expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-        expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        // expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledtimes(1);
@@ -178,7 +178,7 @@ describe('PlayerSelectionBulkComponent', () => {
       it('should call getPlayerIdentities$', waitForAsync(() => {
         expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-        expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+        // expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(1);
@@ -191,7 +191,7 @@ describe('PlayerSelectionBulkComponent', () => {
         expect(stub.extra).toBeFalsy();
         expect(stub.sunrise).toBeFalsy();
         expect(stub.apollo).toBeFalsy();
-        expect(stub.gravity).toBeFalsy();
+        // expect(stub.gravity).toBeFalsy();
         expect(stub.opus).toBeFalsy();
         expect(stub.steelhead).toBeFalsy();
         expect(stub.woodstock).toBeFalsy();
@@ -218,7 +218,7 @@ describe('PlayerSelectionBulkComponent', () => {
           expect(newStub.extra).toBeTruthy('extra');
           expect(newStub.sunrise).toBeTruthy('sunrise');
           expect(newStub.apollo).toBeTruthy('apollo');
-          expect(newStub.gravity).toBeTruthy('gravity');
+          // expect(newStub.gravity).toBeTruthy('gravity');
           expect(newStub.opus).toBeTruthy('opus');
           // expect(newStub.steelhead).toBeTruthy('steelhead');
           // expect(newStub.woodstock).toBeTruthy('woodstock');

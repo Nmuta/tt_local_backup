@@ -7,7 +7,6 @@ import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 
 import { GiftingComponent } from './gifting.component';
-import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
 import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
@@ -36,12 +35,6 @@ const routes: Routes = [
           FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
         ],
         component: SteelheadGiftingComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'gravity',
-        canActivate: [TitleMemorySetGuard],
-        component: GravityGiftingComponent,
         pathMatch: 'full',
       },
       {

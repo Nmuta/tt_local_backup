@@ -6,10 +6,9 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { GravityGiftBasketComponent } from './gravity-gift-basket.component';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GravityService } from '@services/gravity';
-import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { SetGravityGiftBasket } from '@tools-app/pages/gifting/gravity/state/gravity-gifting.state.actions';
 import faker from '@faker-js/faker';
 
@@ -84,102 +83,6 @@ describe('GravityGiftBasketComponent', () => {
         component.newIdentitySelectedSubject$.next('');
 
         expect(mockGravityService.getPlayerDetailsByT10Id$).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('When newIdentitySelectedSubject$ emits a valid t10Id', () => {
-      const t10Id = 'fake-t10-id';
-
-      describe('And getPlayerDetailsByT10Id throws error', () => {
-        const error = { message: 'fake-error' };
-
-        beforeEach(() => {
-          mockGravityService.getPlayerDetailsByT10Id$ = jasmine
-            .createSpy('getPlayerDetailsByT10Id')
-            .and.returnValue(throwError(error));
-        });
-
-        it('should set loadError', () => {
-          component.ngOnInit();
-          component.newIdentitySelectedSubject$.next(t10Id);
-
-          expect(component.isLoading).toBeFalsy();
-          expect(component.loadError).toEqual(error);
-        });
-      });
-
-      describe('And getPlayerDetailsByT10Id returns valid game settings', () => {
-        const gameSettingsId = 'game-settings-id';
-
-        beforeEach(() => {
-          mockGravityService.getPlayerDetailsByT10Id$ = jasmine
-            .createSpy('getPlayerDetailsByT10Id')
-            .and.returnValue(of({ lastGameSettingsUsed: gameSettingsId }));
-        });
-
-        it('should set component.selectedGameSettingsId', () => {
-          component.ngOnInit();
-          component.newIdentitySelectedSubject$.next(t10Id);
-
-          expect(component.selectedGameSettingsId).toEqual(gameSettingsId);
-        });
-
-        it('should call store.distach', () => {
-          component.ngOnInit();
-          component.newIdentitySelectedSubject$.next(t10Id);
-
-          expect(mockStore.dispatch).toHaveBeenCalledWith(
-            new GetGravityMasterInventoryList(gameSettingsId),
-          );
-        });
-
-        describe('And GetGravityMasterInventoryList throws error', () => {
-          const error = { message: 'fake-error' };
-
-          beforeEach(() => {
-            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(throwError(error));
-          });
-
-          it('should set loadError', () => {
-            component.ngOnInit();
-            component.newIdentitySelectedSubject$.next(t10Id);
-
-            expect(component.isLoading).toBeFalsy();
-            expect(component.loadError).toEqual(error);
-          });
-        });
-
-        describe('And GetGravityMasterInventoryList returns valid master inventory', () => {
-          beforeEach(() => {
-            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
-            mockStore.selectSnapshot = jasmine
-              .createSpy('selectSnapshot')
-              .and.returnValue({ [gameSettingsId]: testMasterInventory });
-            component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
-          });
-
-          it('should call mockStore.selectSnapshot', () => {
-            component.ngOnInit();
-            component.newIdentitySelectedSubject$.next(t10Id);
-
-            expect(mockStore.selectSnapshot).toHaveBeenCalled();
-          });
-
-          it('should set component variables', () => {
-            component.ngOnInit();
-            component.newIdentitySelectedSubject$.next(t10Id);
-
-            expect(component.isLoading).toBeFalsy();
-            expect(component.masterInventory).toEqual(testMasterInventory);
-          });
-
-          it('should call component.setStateGiftBasket', () => {
-            component.ngOnInit();
-            component.newIdentitySelectedSubject$.next(t10Id);
-
-            expect(component.setStateGiftBasket).toHaveBeenCalled();
-          });
-        });
       });
     });
 

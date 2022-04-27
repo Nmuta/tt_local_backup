@@ -5,7 +5,6 @@ import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 
 import { GiftHistoryComponent } from './gift-history.component';
 import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.component';
-import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.component';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';
 import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-history.component';
@@ -36,12 +35,6 @@ const routes: Routes = [
           FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
         ],
         component: SteelheadGiftHistoryComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'gravity',
-        canActivate: [TitleMemorySetGuard],
-        component: GravityGiftHistoryComponent,
         pathMatch: 'full',
       },
       {

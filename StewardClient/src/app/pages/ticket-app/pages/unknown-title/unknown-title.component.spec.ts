@@ -36,14 +36,6 @@ describe('UnknownTitleComponent', () => {
     expect(ticketService.getForzaTitle$).toHaveBeenCalledTimes(1);
   });
 
-  it('should route to street', () => {
-    ticketService.activeTitle = GameTitleCodeName.Street;
-    fixture.detectChanges();
-    expect(store.dispatch).toHaveBeenCalledWith(
-      new Navigate(['/ticket-app/title/gravity'], null, { replaceUrl: true }),
-    );
-  });
-
   it('should route to fm7', () => {
     ticketService.activeTitle = GameTitleCodeName.FM7;
     fixture.detectChanges();

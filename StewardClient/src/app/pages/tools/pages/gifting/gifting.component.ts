@@ -19,11 +19,6 @@ export class GiftingComponent implements OnInit {
         route: ['.', GameTitleCodeName.FH5.toLowerCase()],
       },
       {
-        name: GameTitleAbbreviation.Street,
-        codename: GameTitleCodeName.Street,
-        route: ['.', GameTitleCodeName.Street.toLowerCase()],
-      },
-      {
         name: GameTitleAbbreviation.FH4,
         codename: GameTitleCodeName.FH4,
         route: ['.', GameTitleCodeName.FH4.toLowerCase()],

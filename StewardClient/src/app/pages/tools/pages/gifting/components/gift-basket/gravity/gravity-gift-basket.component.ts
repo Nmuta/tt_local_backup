@@ -4,7 +4,7 @@ import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
-import { GravityGift, GravityMasterInventoryLists, GravityMasterInventory } from '@models/gravity';
+import { GravityGift, GravityMasterInventory } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GravityGiftingState } from '@tools-app/pages/gifting/gravity/state/gravity-gifting.state';
@@ -12,8 +12,6 @@ import { SetGravityGiftBasket } from '@tools-app/pages/gifting/gravity/state/gra
 import { Select, Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { GravityService } from '@services/gravity';
-import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
-import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { EMPTY, Observable, Subject, throwError } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
@@ -75,26 +73,31 @@ export class GravityGiftBasketComponent
         }),
         switchMap(details => {
           this.selectedGameSettingsId = details.lastGameSettingsUsed;
-          return this.store
-            .dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId))
-            .pipe(
-              catchError(error => {
-                this.isLoading = false;
-                this.loadError = error;
-                return EMPTY;
-              }),
-            );
+          // return this.store
+          //   .dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId))
+          //   .pipe(
+          //     catchError(error => {
+          //       this.isLoading = false;
+          //       this.loadError = error;
+          //       return EMPTY;
+          //     }),
+          //   );
+          return throwError('Gravity gift basket is no longer suppoert and will be deleted soon.');
         }),
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
         this.isLoading = false;
-        const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
-          MasterInventoryListMemoryState.gravityMasterInventory,
-        );
 
-        // must be cloned because a child component modifies this value, and modification of state is disallowed
-        this.masterInventory = cloneDeep(gravityMasterInventory[this.selectedGameSettingsId]);
+        // TODO: Faking gravity master inventory, will be removed once gravity components are deleted
+        this.masterInventory = {
+          creditRewards: [],
+          cars: [],
+          repairKits: [],
+          masteryKits: [],
+          upgradeKits: [],
+          energyRefills: [],
+        };
         this.itemSelectionList = this.masterInventory;
 
         // With a potentially new game gettings, we need to verify the gift basket contents against the

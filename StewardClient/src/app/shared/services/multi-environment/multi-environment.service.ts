@@ -6,7 +6,6 @@ import {
   IdentityResultAlpha,
   IdentityResultBeta,
   isValidAlphaQuery,
-  isValidBetaQuery,
   IdentityQueryBetaIntersection,
   IdentityResultAlphaBatch,
   IdentityResultBetaBatch,
@@ -15,7 +14,6 @@ import { LspDefaultEndpoints } from '@models/lsp-endpoints';
 import { RecursivePartial } from '@models/unprocessed';
 import { Store } from '@ngxs/store';
 import { ApolloService } from '@services/apollo';
-import { GravityService } from '@services/gravity';
 import { OpusService } from '@services/opus';
 import { SteelheadService } from '@services/steelhead';
 import { SunriseService } from '@services/sunrise';
@@ -107,7 +105,6 @@ export class MultiEnvironmentService {
     private readonly woodstock: WoodstockService,
     private readonly steelhead: SteelheadService,
     private readonly sunrise: SunriseService,
-    private readonly gravity: GravityService,
     private readonly apollo: ApolloService,
     private readonly opus: OpusService,
     private readonly store: Store,
@@ -119,7 +116,7 @@ export class MultiEnvironmentService {
     newQueries: AnyIdentityQuery[],
   ): Observable<SingleUserResult[]> {
     const queryIsAlphaCompatible = every(newQueries, q => isValidAlphaQuery(q));
-    const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
+    // const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
 
     const userSettings = this.store.selectSnapshot<UserSettingsStateModel>(
       (state: AppState) => state.userSettings,
@@ -235,14 +232,15 @@ export class MultiEnvironmentService {
       );
     }
 
-    if (queryIsBetaCompatible) {
-      makeQueryAndPopulate(
-        GameTitle.Street,
-        this.gravity.getPlayerIdentities$.bind(this.gravity),
-        undefined,
-        undefined,
-      );
-    }
+    // Leaving as example for any future beta compatible queries
+    // if (queryIsBetaCompatible) {
+    //   makeQueryAndPopulate(
+    //     GameTitle.Street,
+    //     this.gravity.getPlayerIdentities$.bind(this.gravity),
+    //     undefined,
+    //     undefined,
+    //   );
+    // }
 
     // get the value and replace it in the source if it's still there
     return combineLatest(queries).pipe(

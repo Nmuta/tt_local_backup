@@ -4,7 +4,6 @@ import { FourOhFourComponent } from '@shared/views/four-oh-four/four-oh-four.com
 import { AuthGuard } from 'app/route-guards/auth.guard';
 import { sidebarRoutes } from 'app/sidebars/sidebars.module';
 import { ApolloComponent } from './pages/apollo/apollo.component';
-import { GravityComponent } from './pages/gravity/gravity.component';
 import { OpusComponent } from './pages/opus/opus.component';
 import { WoodstockComponent } from './pages/woodstock/woodstock.component';
 import { SteelheadComponent } from './pages/steelhead/steelhead.component';
@@ -31,10 +30,6 @@ const routes: Routes = [
       {
         path: 'steelhead',
         component: SteelheadComponent,
-      },
-      {
-        path: 'gravity',
-        component: GravityComponent,
       },
       {
         path: 'opus',

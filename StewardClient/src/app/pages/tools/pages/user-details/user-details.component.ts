@@ -37,7 +37,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   public sunriseRouterLink = ['.', 'sunrise'];
   public opusRouterLink = ['.', 'opus'];
   public apolloRouterLink = ['.', 'apollo'];
-  public gravityRouterLink = ['.', 'gravity'];
 
   /** Generates a nav tooltip */
   public get woodstockTooltip(): string {
@@ -89,19 +88,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     }
 
     return `Player ${first(this.lookupList)} does not have an Opus account`;
-  }
-
-  /** Generates a nav tooltip */
-  public get gravityTooltip(): string {
-    if (!this.identity) {
-      return null;
-    }
-
-    if (this.identity?.extra?.hasGravity) {
-      return null;
-    }
-
-    return `Player ${first(this.lookupList)} does not have a Gravity account`;
   }
 
   /** Generates a nav tooltip */

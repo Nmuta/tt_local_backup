@@ -2,20 +2,17 @@ import { Injectable } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
 import { SunriseService } from '@services/sunrise';
-import { Observable, of, throwError } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
-import { GravityService } from '@services/gravity';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import {
   GetApolloMasterInventoryList,
-  GetGravityMasterInventoryList,
   GetSteelheadMasterInventoryList,
   GetSunriseMasterInventoryList,
   GetWoodstockMasterInventoryList,
 } from './master-inventory-list-memory.actions';
 import { ApolloMasterInventory } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
-import { clone, cloneDeep } from 'lodash';
-import { GravityMasterInventory, GravityMasterInventoryLists } from '@models/gravity';
+import { clone } from 'lodash';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import { SteelheadService } from '@services/steelhead';
@@ -26,7 +23,6 @@ import { WoodstockService } from '@services/woodstock';
  * Defines the master inventory list memory model.
  */
 export class MasterInventoryListMemoryModel {
-  public [GameTitleCodeName.Street]: GravityMasterInventoryLists;
   public [GameTitleCodeName.FH4]: SunriseMasterInventory;
   public [GameTitleCodeName.FM7]: ApolloMasterInventory;
   public [GameTitleCodeName.FM8]: SteelheadMasterInventory;
@@ -39,7 +35,6 @@ export class MasterInventoryListMemoryModel {
 @State<MasterInventoryListMemoryModel>({
   name: 'giftingMasterListMemory',
   defaults: {
-    [GameTitleCodeName.Street]: {},
     [GameTitleCodeName.FH4]: undefined,
     [GameTitleCodeName.FM7]: undefined,
     [GameTitleCodeName.FM8]: undefined,
@@ -50,7 +45,6 @@ export class MasterInventoryListMemoryModel {
 /** Defines the lsp group memoty state. */
 export class MasterInventoryListMemoryState {
   constructor(
-    private readonly gravityService: GravityService,
     private readonly sunriseService: SunriseService,
     private readonly apolloService: ApolloService,
     private readonly steelheadService: SteelheadService,
@@ -95,40 +89,6 @@ export class MasterInventoryListMemoryState {
     return request$.pipe(
       tap(data => {
         ctx.patchState({ [GameTitleCodeName.FM8]: clone(data) });
-      }),
-    );
-  }
-
-  /** Gets gravity's master inventory list. */
-  @Action(GetGravityMasterInventoryList, { cancelUncompleted: true })
-  public getGravityMasterInventoryList$(
-    ctx: StateContext<MasterInventoryListMemoryModel>,
-    action: GetGravityMasterInventoryList,
-  ): Observable<GravityMasterInventory> {
-    const state = ctx.getState();
-    const gameSettingsId = action.gameSettingsId;
-
-    // Error handling
-    if (!gameSettingsId) {
-      return throwError('Game settings ID is required to get a gravity master inventory list.');
-    }
-
-    // Memory check
-    if (!!state[GameTitleCodeName.Street][gameSettingsId]) {
-      return of(state[GameTitleCodeName.Street][gameSettingsId]);
-    }
-
-    // If not found in memory, make request
-    const request$ = this.gravityService.getMasterInventory$(gameSettingsId);
-    return request$.pipe(
-      take(1),
-      tap(data => {
-        let gravityVal = cloneDeep(state[GameTitleCodeName.Street]);
-        if (Object.keys(gravityVal).length >= 3) {
-          gravityVal = {};
-        }
-        gravityVal[gameSettingsId] = data;
-        ctx.patchState({ [GameTitleCodeName.Street]: clone(gravityVal) });
       }),
     );
   }
@@ -189,14 +149,6 @@ export class MasterInventoryListMemoryState {
     state: MasterInventoryListMemoryModel,
   ): SteelheadMasterInventory {
     return state[GameTitleCodeName.FM8];
-  }
-
-  /** Gravity master inventory list. */
-  @Selector()
-  public static gravityMasterInventory(
-    state: MasterInventoryListMemoryModel,
-  ): GravityMasterInventoryLists {
-    return state[GameTitleCodeName.Street];
   }
 
   /** Sunrise master inventory list. */

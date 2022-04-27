@@ -13,11 +13,6 @@ export class GetSteelheadMasterInventoryList {
     /** Empty */
   }
 }
-/** Gets gravity's master inventory list. */
-export class GetGravityMasterInventoryList {
-  public static readonly type = '[GiftingMasterListMemory] Get Gravity Master Inventory List';
-  constructor(public readonly gameSettingsId: string) {}
-}
 
 /** Gets sunrise's master inventory list. */
 export class GetSunriseMasterInventoryList {

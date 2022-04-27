@@ -30,9 +30,9 @@ export interface AugmentedCompositeIdentity {
   woodstock: IdentityResultAlpha;
   steelhead: IdentityResultAlpha;
   sunrise: IdentityResultAlpha;
-  gravity: IdentityResultBeta;
   apollo: IdentityResultAlpha;
   opus: IdentityResultAlpha;
+  gravity: IdentityResultBeta; // TODO: Remove once all gravity components are deleted
 
   result: SingleUserResult;
 
@@ -48,7 +48,7 @@ export interface AugmentedCompositeIdentity {
     hasSunrise: boolean;
     hasApollo: boolean;
     hasOpus: boolean;
-    hasGravity: boolean;
+    hasGravity: boolean; // TODO: Remove once all gravity components are deleted
     label: string;
     labelTooltip: string;
   };
@@ -290,7 +290,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           compositeIdentity.sunrise = result.standard.sunrise;
           compositeIdentity.apollo = result.standard.apollo;
           compositeIdentity.opus = result.standard.opus;
-          compositeIdentity.gravity = result.standard.gravity;
           compositeIdentity.steelhead = result.standard.steelhead;
           compositeIdentity.woodstock = result.standard.woodstock;
 
@@ -300,7 +299,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             compositeIdentity.sunrise?.error &&
             compositeIdentity.apollo?.error &&
             compositeIdentity.opus?.error &&
-            compositeIdentity.gravity?.error &&
             compositeIdentity.steelhead?.error &&
             compositeIdentity.woodstock?.error;
 
@@ -314,7 +312,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             hasSunrise: compositeIdentity.sunrise ? !compositeIdentity.sunrise?.error : false,
             hasApollo: compositeIdentity.apollo ? !compositeIdentity.apollo?.error : false,
             hasOpus: compositeIdentity.opus ? !compositeIdentity.opus?.error : false,
-            hasGravity: compositeIdentity.gravity ? !compositeIdentity.gravity?.error : false,
+            hasGravity: false, // TODO: Remove when all gravity componets are deleted
             label: '',
             labelTooltip: '',
             isAcceptable: undefined,
@@ -336,7 +334,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             hasRetailTitle('woodstock') ? 'W' : undefined,
             hasRetailTitle('steelhead') ? 'Sh' : undefined,
             hasRetailTitle('apollo') ? 'A' : undefined,
-            hasRetailTitle('gravity') ? 'G' : undefined,
             hasRetailTitle('opus') ? 'O' : undefined,
             hasRetailTitle('sunrise') ? 'S' : undefined,
           ]
@@ -349,7 +346,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
               hasRetailTitle('woodstock') ? 'Woodstock' : undefined,
               hasRetailTitle('steelhead') ? 'Steelhead' : undefined,
               hasRetailTitle('apollo') ? 'Apollo' : undefined,
-              hasRetailTitle('gravity') ? 'Gravity' : undefined,
               hasRetailTitle('opus') ? 'Opus' : undefined,
               hasRetailTitle('sunrise') ? 'Sunrise' : undefined,
             ]

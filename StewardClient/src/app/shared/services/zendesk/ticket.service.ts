@@ -57,8 +57,6 @@ export class TicketService {
     switch (titleNameUppercase) {
       case 'FORZA_HORIZON_5':
         return GameTitleCodeName.FH5;
-      case 'FORZA_STREET':
-        return GameTitleCodeName.Street;
       case 'FORZA_HORIZON_4':
         return GameTitleCodeName.FH4;
       case 'FORZA_MOTORSPORT_7':

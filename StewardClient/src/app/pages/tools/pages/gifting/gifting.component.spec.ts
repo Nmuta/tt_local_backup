@@ -48,7 +48,7 @@ describe('GiftingComponent', () => {
       it('should set production navbarRouterLinks', () => {
         fixture.detectChanges();
 
-        expect(component.navbarRouterLinks?.length).toEqual(4);
+        expect(component.navbarRouterLinks?.length).toEqual(3);
       });
     });
 
@@ -60,7 +60,7 @@ describe('GiftingComponent', () => {
       it('should set production navbarRouterLinks', () => {
         fixture.detectChanges();
 
-        expect(component.navbarRouterLinks?.length).toEqual(5);
+        expect(component.navbarRouterLinks?.length).toEqual(4);
       });
     });
   });

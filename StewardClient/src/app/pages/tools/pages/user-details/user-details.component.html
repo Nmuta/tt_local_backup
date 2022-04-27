@@ -30,15 +30,6 @@
     <endpoint-selection [titleCodeName]="gameTitleCodeName.FH5"> </endpoint-selection>
   </a>
   <a
-    [class.mat-button-disabled]="!identity?.extra?.hasGravity"
-    [matTooltip]="gravityTooltip"
-    [routerLink]="gravityRouterLink"
-    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
-    mat-button
-    routerLinkActive="mat-stroked-button"
-    >Street</a
-  >
-  <a
     [class.mat-button-disabled]="!identity?.extra?.hasSunrise"
     [matTooltip]="sunriseTooltip"
     [routerLink]="sunriseRouterLink"

@@ -38,10 +38,6 @@ export class UnknownTitleComponent extends BaseComponent implements OnInit {
         return this.store.dispatch(
           new Navigate(['/ticket-app/title/steelhead'], null, { replaceUrl: true }),
         );
-      case GameTitleCodeName.Street:
-        return this.store.dispatch(
-          new Navigate(['/ticket-app/title/gravity'], null, { replaceUrl: true }),
-        );
       case GameTitleCodeName.FH4:
         return this.store.dispatch(
           new Navigate(['/ticket-app/title/sunrise'], null, { replaceUrl: true }),
