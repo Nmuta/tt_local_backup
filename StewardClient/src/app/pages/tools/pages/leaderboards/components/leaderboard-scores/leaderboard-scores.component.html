@@ -31,30 +31,41 @@
             View full leaderboard
           </button>
 
-          <form
-            class="jump-to-score-form"
-            *ngIf="
-              leaderboardScores?.data?.length > 0 &&
-              activeLeaderboardView !== LeaderboardView.Player
-            "
-            [formGroup]="jumpFormGroup"
-            (submit)="jumpToScore()"
+          <ng-container
+            *ngIf="allScores.length > 0 && activeLeaderboardView !== LeaderboardView.Player"
           >
-            <mat-form-field>
-              <mat-label>Jump to score</mat-label>
-              <input matInput autocomplete="off" [formControl]="jumpFormControls.score" />
-            </mat-form-field>
+            <div class="date-range">
+              <help-popover-icon cardTitle="Leaderboard Date Filter">
+                <span
+                  >When enabled, the top 5000 scores will be filtered to those that are within the
+                  set date range.</span
+                >
+              </help-popover-icon>
+              <mat-slide-toggle (change)="toggleDatetimeFilter($event)">
+                Filter by date range
+              </mat-slide-toggle>
+              <date-range-picker
+                [toggleOptions]="dateRangeToggleOptions"
+                [formControl]="filterFormControls.dateRange"
+              ></date-range-picker>
+            </div>
+            <form class="jump-to-score-form" [formGroup]="jumpFormGroup" (submit)="jumpToScore()">
+              <mat-form-field>
+                <mat-label>Jump to score</mat-label>
+                <input matInput autocomplete="off" [formControl]="jumpFormControls.score" />
+              </mat-form-field>
 
-            <button
-              mat-icon-button
-              color="accent"
-              [disabled]="!jumpFormGroup.valid"
-              type="submit"
-              matTooltip="Jump to page where score theshold is found"
-            >
-              <mat-icon>find_in_page</mat-icon>
-            </button>
-          </form>
+              <button
+                mat-icon-button
+                color="accent"
+                [disabled]="!jumpFormGroup.valid"
+                type="submit"
+                matTooltip="Jump to page where score theshold is found"
+              >
+                <mat-icon>find_in_page</mat-icon>
+              </button>
+            </form>
+          </ng-container>
         </ng-container>
       </div>
       <!-- Actions for multi-selection of scores. -->
@@ -141,7 +152,9 @@
               <table class="info-table full-width">
                 <tr>
                   <th>XUID</th>
-                  <td>{{ entry.xuid }}</td>
+                  <td>
+                    <standard-copy>{{ entry.xuid }}</standard-copy>
+                  </td>
                 </tr>
                 <tr>
                   <th>Car</th>

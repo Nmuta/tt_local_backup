@@ -18,10 +18,10 @@ import BigNumber from 'bignumber.js';
 import { FormControl } from '@angular/forms';
 import { DateTimeRange } from '@models/datetime-range';
 import { DateTime } from 'luxon';
-import { DATE_TIME_TOGGLE_OPTIONS } from '../gift-history-defaults';
 import { HCI } from '@environments/environment';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DateRangePickerFormValue } from '@components/datetime-range-picker/date-range-picker/date-range-picker.component';
+import { DATE_TIME_TOGGLE_OPTIONS } from '@components/datetime-range-picker/datetime-range-toggle-defaults';
 
 /** The gift history page for the Navbar app. */
 @Component({

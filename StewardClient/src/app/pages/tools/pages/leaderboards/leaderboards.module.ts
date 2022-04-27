@@ -46,6 +46,9 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { LuxonModule } from 'luxon-angular';
 import { LeaderboardValidationsComponent } from './components/leaderboard-validations/leaderboard-validations.component';
+import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
+import { HelpModule } from '@shared/modules/help/help.module';
+import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -103,9 +106,12 @@ import { LeaderboardValidationsComponent } from './components/leaderboard-valida
     StateManagersModule,
     NgxChartsModule,
     StandardDateModule,
+    StandardCopyModule,
     VerifyCheckboxModule,
     PipesModule,
     LuxonModule,
+    DatetimeRangePickerModule,
+    HelpModule,
   ],
   exports: [],
 })

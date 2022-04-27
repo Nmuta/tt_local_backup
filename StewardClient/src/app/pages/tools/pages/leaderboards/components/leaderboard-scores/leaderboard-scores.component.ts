@@ -11,9 +11,13 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
+import { DateRangePickerFormValue } from '@components/datetime-range-picker/date-range-picker/date-range-picker.component';
+import { DATE_TIME_TOGGLE_OPTIONS } from '@components/datetime-range-picker/datetime-range-toggle-defaults';
+import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
 import { DeviceType } from '@models/enums';
@@ -31,8 +35,9 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { cloneDeep } from 'lodash';
+import { DateTime } from 'luxon';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { switchMap, takeUntil, tap, catchError, filter } from 'rxjs/operators';
+import { switchMap, takeUntil, tap, catchError, filter, debounceTime } from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
   /** Gets leaderboard metadata. */
@@ -85,6 +90,7 @@ export class LeaderboardScoresComponent
   implements OnInit, OnChanges, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSlideToggle) dateSlideToggle: MatSlideToggle;
   @Input() service: LeaderboardScoresContract;
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   @Input() externalSelectedScore: LeaderboardScore;
@@ -103,6 +109,8 @@ export class LeaderboardScoresComponent
   public activeXuid: BigNumber;
 
   public selectedScores: LeaderboardScore[] = [];
+  public allScores: LeaderboardScore[] = [];
+  public filteredScores: LeaderboardScore[] = [];
   public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
@@ -113,6 +121,17 @@ export class LeaderboardScoresComponent
     score: new FormControl(null, Validators.required),
   };
   public jumpFormGroup = new FormGroup(this.jumpFormControls);
+
+  public dateRangeToggleOptions = DATE_TIME_TOGGLE_OPTIONS;
+  public filterFormControls = {
+    dateRange: new FormControl({
+      value: {
+        start: DateTime.local().minus({ days: 7 }),
+        end: DateTime.local(),
+      } as DateRangePickerFormValue,
+      disabled: true,
+    }),
+  };
 
   constructor(
     private readonly router: Router,
@@ -133,6 +152,21 @@ export class LeaderboardScoresComponent
     if (!!this.leaderboard?.query) {
       this.getLeaderboardScores$.next(this.leaderboard.query);
     }
+
+    this.filterFormControls.dateRange.valueChanges
+      .pipe(
+        debounceTime(HCI.TypingToAutoSearchDebounceMillis),
+        tap(() => {
+          this.unsetHighlightForAllLeaderboardScores();
+        }),
+        filter(() => this.filterFormControls.dateRange.enabled),
+        filter(data => !!data.start && !!data.end),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.filteredScores = this.filterScores(this.allScores);
+        this.leaderboardScores.data = this.filteredScores;
+      });
   }
 
   /** Lifecycle hook. */
@@ -249,7 +283,7 @@ export class LeaderboardScoresComponent
 
     // If threshold is found, highlight closest score
     if (foundThreshold) {
-      this.leaderboardScores.data.map(s => (s.highlighted = false));
+      this.unsetHighlightForAllLeaderboardScores();
       this.leaderboardScores.data[scoreIndex].highlighted = true;
       const xuid = this.leaderboardScores.data[scoreIndex].xuid.toString();
 
@@ -269,6 +303,21 @@ export class LeaderboardScoresComponent
     });
   }
 
+  /** Logic when datetime filter toggle is clicked. */
+  public toggleDatetimeFilter(toggleEvent: { checked: boolean }): void {
+    if (toggleEvent.checked) {
+      this.filterFormControls.dateRange.enable();
+    } else {
+      this.filterFormControls.dateRange.disable();
+      this.leaderboardScores.data = this.allScores;
+    }
+
+    // Make sure slide toggle matches the change event.
+    if (!!this.dateSlideToggle && this.dateSlideToggle.checked != toggleEvent.checked) {
+      this.dateSlideToggle.toggle();
+    }
+  }
+
   private setupGetLeaderboardScoresObservable(): void {
     this.getLeaderboardScores$
       .pipe(
@@ -280,6 +329,10 @@ export class LeaderboardScoresComponent
           this.getLeaderboardScoresMonitor = this.getLeaderboardScoresMonitor.repeat();
         }),
         filter(q => !!q),
+        tap(() => {
+          // Reset date range toggle filter
+          this.toggleDatetimeFilter({ checked: false });
+        }),
         switchMap(query => {
           let newObs: Observable<LeaderboardScore[]>;
           if (!!query.xuid) {
@@ -297,6 +350,8 @@ export class LeaderboardScoresComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe(scores => {
+        this.allScores = scores;
+        this.filteredScores = this.filterScores(this.allScores);
         this.scoreTypeQualifier = determineScoreTypeQualifier(this.leaderboard.query.scoreTypeId);
 
         if (this.leaderboard.query?.pi >= 0) {
@@ -307,7 +362,7 @@ export class LeaderboardScoresComponent
           this.paginator.pageSize = this.leaderboard.query.ps;
         }
 
-        this.leaderboardScores.data = scores;
+        this.leaderboardScores.data = this.allScores;
       });
   }
 
@@ -343,5 +398,20 @@ export class LeaderboardScoresComponent
       getDeviceTypesFromQuery(query),
       new BigNumber(0),
     );
+  }
+
+  private filterScores(_scores: LeaderboardScore[]): LeaderboardScore[] {
+    const dateRange = this.filterFormControls.dateRange.value as DateRangePickerFormValue;
+    const startDate = dateRange.start.toLocal();
+    const endDate = dateRange.end.toLocal();
+
+    return _scores.filter(score => {
+      const scoreDate = score.submissionTimeUtc.toLocal();
+      return scoreDate >= startDate && scoreDate <= endDate;
+    });
+  }
+
+  private unsetHighlightForAllLeaderboardScores() {
+    this.leaderboardScores.data.forEach(s => (s.highlighted = false));
   }
 }
