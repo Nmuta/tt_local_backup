@@ -13,7 +13,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
 {
     [TestClass]
-    public sealed class WoodstockServiceFactoryTests
+    public sealed class StewardProjectionWoodstockServiceFactoryTests
     {
         private static readonly Fixture Fixture = new Fixture();
 
@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
 
             public IStsClient StsClient { get; set; } = Substitute.For<IStsClient>();
 
-            public WoodstockServiceFactory Build() => new WoodstockServiceFactory(
+            public StewardProjectionWoodstockServiceFactory Build() => new StewardProjectionWoodstockServiceFactory(
                 this.Configuration,
                 this.KeyVaultProvider,
                 this.RefreshableCacheStore,

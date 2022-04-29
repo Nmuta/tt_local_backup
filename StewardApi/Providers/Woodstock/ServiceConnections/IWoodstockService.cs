@@ -311,11 +311,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Adds or updates an entry in the auction house block list.
         /// </summary>
+        /// <remarks>API is targeting the "live-steward" Pegasus slot.</remarks>
         Task AddAuctionBlocklistEntriesAsync(ServicesLiveOps.ForzaAuctionBlocklistEntry[] blockEntries, string endpoint);
 
         /// <summary>
         ///     Removes an entry from the auction house block list.
         /// </summary>
+        /// <remarks>API is targeting the "live-steward" Pegasus slot.</remarks>
         Task DeleteAuctionBlocklistEntriesAsync(int[] carIds, string endpoint);
 
         /// <summary>

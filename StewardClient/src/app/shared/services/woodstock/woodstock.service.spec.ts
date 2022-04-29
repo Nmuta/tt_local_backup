@@ -21,6 +21,7 @@ import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
 import { Gift, GroupGift } from '@models/gift';
 import { UgcType } from '@models/ugc-filters';
+import { PegasusProjectionSlot } from '@models/enums';
 
 describe('WoodstockService', () => {
   let injector: TestBed;
@@ -525,13 +526,19 @@ describe('WoodstockService', () => {
   });
 
   describe('Method: getDetailedCars$', () => {
+    let httpParams = new HttpParams();
+
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      httpParams = new HttpParams().set('slotId', PegasusProjectionSlot.Live);
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getDetailedCars$().subscribe(() => {
-        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/items/cars`);
+      service.getDetailedCars$(PegasusProjectionSlot.Live).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/items/cars`,
+          httpParams,
+        );
         done();
       });
     });

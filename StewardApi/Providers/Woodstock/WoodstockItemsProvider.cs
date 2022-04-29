@@ -18,7 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     /// <inheritdoc />
     public sealed class WoodstockItemsProvider : IWoodstockItemsProvider
     {
-
         private readonly IWoodstockPegasusService pegasusService;
         private readonly ILoggingService loggingService;
         private readonly IMapper mapper;
@@ -99,11 +98,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<DetailedCar>> GetCarsAsync()
+        public async Task<IEnumerable<DetailedCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.Live)
         {
             try
             {
-                var cars = await this.pegasusService.GetCarsAsync().ConfigureAwait(false);
+                var cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
                 return this.mapper.Map<IEnumerable<DetailedCar>>(cars);
             }
             catch (Exception ex)

@@ -25,6 +25,6 @@ export class WoodstockMakeModelAutocompleteComponent extends MakeModelAutocomple
 
   /** Gets master inventory list */
   public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.woodstockService.getDetailedCars$();
+    return this.woodstockService.getDetailedCars$(this.pegasusSlotId);
   }
 }

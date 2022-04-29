@@ -63,7 +63,7 @@ import {
   LeaderboardScore,
 } from '@models/leaderboards';
 import { HideableUgcFileType } from '@models/hideable-ugc.model';
-import { DeviceType } from '@models/enums';
+import { DeviceType, PegasusProjectionSlot } from '@models/enums';
 import { addQueryParamArray } from '@helpers/add-query-param-array';
 
 /** Handles calls to Woodstock API routes. */
@@ -537,8 +537,13 @@ export class WoodstockService {
   }
 
   /** Gets the woodstock detailed car list. */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/items/cars`);
+  public getDetailedCars$(pegasusSlotId?: PegasusProjectionSlot): Observable<DetailedCar[]> {
+    let params = new HttpParams();
+    if (!!pegasusSlotId) {
+      params = params.set('slotId', pegasusSlotId);
+    }
+
+    return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/items/cars`, params);
   }
 
   /** Gets a player's UGC item.  */

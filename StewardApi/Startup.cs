@@ -228,7 +228,8 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<IWoodstockService, WoodstockServiceWrapper>();
             services.AddSingleton<IWoodstockPegasusService, WoodstockPegasusService>();
-            services.AddSingleton<IWoodstockServiceFactory, WoodstockServiceFactory>();
+            services.AddSingleton<ILiveProjectionWoodstockServiceFactory, LiveProjectionWoodstockServiceFactory>();
+            services.AddSingleton<IStewardProjectionWoodstockServiceFactory, StewardProjectionWoodstockServiceFactory>();
             services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
             services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
             services.AddSingleton<IWoodstockServiceManagementProvider, WoodstockServiceManagementProvider>();

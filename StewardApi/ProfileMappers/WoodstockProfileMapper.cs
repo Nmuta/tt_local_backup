@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         source.Payloads.Length > 1
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[1].Payload)
                             : null))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Livery))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))

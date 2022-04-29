@@ -616,7 +616,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync(WoodstockPegasusSlot.LiveSteward);
             var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
 
             await Task.WhenAll(getBlockList, getCars).ConfigureAwait(true);

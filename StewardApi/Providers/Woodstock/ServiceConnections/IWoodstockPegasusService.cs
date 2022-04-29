@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using WoodstockLiveOpsContent;
-using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using CarHorn = WoodstockLiveOpsContent.CarHorn;
 using QuickChat = WoodstockLiveOpsContent.QuickChat;
@@ -30,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets cars.
         /// </summary>
-        Task<IEnumerable<DataCar>> GetCarsAsync();
+        Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.Live);
 
         /// <summary>
         ///     Gets car makes.

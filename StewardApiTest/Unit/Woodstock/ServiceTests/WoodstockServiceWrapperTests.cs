@@ -43,16 +43,30 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenWoodstockServiceFactoryNull_Throws()
+        public void Ctor_WhenLiveProjectionWoodstockServiceFactoryNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { WoodstockServiceFactory = null };
+            var dependencies = new Dependencies { LiveProjectionWoodstockServiceFactory = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockServiceFactory"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "liveProjectionServiceFactory"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenStewardProjectionWoodstockServiceFactoryNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { StewardProjectionWoodstockServiceFactory = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "stewardProjectionServiceFactory"));
         }
 
         private sealed class Dependencies
@@ -63,9 +77,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
             }
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
-            public IWoodstockServiceFactory WoodstockServiceFactory { get; set; } = Substitute.For<IWoodstockServiceFactory>();
+            public ILiveProjectionWoodstockServiceFactory LiveProjectionWoodstockServiceFactory { get; set; } = Substitute.For<ILiveProjectionWoodstockServiceFactory>();
+            public IStewardProjectionWoodstockServiceFactory StewardProjectionWoodstockServiceFactory { get; set; } = Substitute.For<IStewardProjectionWoodstockServiceFactory>();
 
-            public WoodstockServiceWrapper Build() => new WoodstockServiceWrapper(this.Configuration, this.WoodstockServiceFactory);
+            public WoodstockServiceWrapper Build() => new WoodstockServiceWrapper(this.Configuration, this.LiveProjectionWoodstockServiceFactory, this.StewardProjectionWoodstockServiceFactory);
         }
     }
 }

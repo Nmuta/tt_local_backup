@@ -108,3 +108,10 @@ export enum StewardErrorCode {
 
   ServicesFailure = 'ServicesFailure',
 }
+
+/** Enum for Pegasus Projection Slots. */
+export enum PegasusProjectionSlot {
+  Live = 'live',
+
+  LiveSteward = 'live-steward',
+}

@@ -11,17 +11,21 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.Services.ForzaClient;
-using Turn10.Services.MessageEncryption;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
+// Allow non-private fields as an abstract class.
+#pragma warning disable SA1307
+#pragma warning disable SA1401
+#pragma warning disable SA1600
+
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {
     /// <inheritdoc />
-    public sealed class WoodstockServiceFactory : IWoodstockServiceFactory
+    public abstract class WoodstockServiceFactory : IWoodstockServiceFactory
     {
-        private static readonly IList<string> RequiredSettings = new List<string>
+        internal static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.WoodstockClientVersion,
             ConfigurationKeyConstants.WoodstockAdminXuid,
@@ -29,18 +33,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ConfigurationKeyConstants.WoodstockTitleId
         };
 
-        private readonly string clientVersion;
-        private readonly ulong adminXuid;
-        private readonly string sandbox;
-        private readonly uint titleId;
-        private readonly IRefreshableCacheStore refreshableCacheStore;
-        private readonly IStsClient stsClient;
-        private readonly Client forzaClient;
+        internal string clientVersion;
+        internal ulong adminXuid;
+        internal string sandbox;
+        internal uint titleId;
+        internal IRefreshableCacheStore refreshableCacheStore;
+        internal IStsClient stsClient;
+        internal Client forzaClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockServiceFactory"/> class.
         /// </summary>
-        public WoodstockServiceFactory(
+        internal WoodstockServiceFactory(
             IConfiguration configuration,
             IKeyVaultProvider keyVaultProvider,
             IRefreshableCacheStore refreshableCacheStore,
@@ -63,11 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             this.titleId = Convert.ToUInt32(
                 configuration[ConfigurationKeyConstants.WoodstockTitleId],
                 CultureInfo.InvariantCulture);
-
-            this.forzaClient = new Client(
-                new CleartextMessageCryptoProvider(),
-                new CleartextMessageCryptoProvider(),
-                clientVersion: this.clientVersion);
         }
 
         /// <inheritdoc/>

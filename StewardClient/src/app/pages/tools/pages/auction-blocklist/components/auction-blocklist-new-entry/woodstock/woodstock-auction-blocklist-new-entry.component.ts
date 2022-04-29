@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
+import { PegasusProjectionSlot } from '@models/enums';
 import { WoodstockAuctionBlocklistNewEntryService } from './woodstock-auction-blocklist-new-entry.service';
 
 /**
@@ -13,5 +14,6 @@ import { WoodstockAuctionBlocklistNewEntryService } from './woodstock-auction-bl
 })
 export class WoodstockAuctionBlocklistNewEntryComponent {
   @Output() newEntries = new EventEmitter<AuctionBlocklistEntry[]>();
+  public readonly pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.LiveSteward;
   constructor(public service: WoodstockAuctionBlocklistNewEntryService) {}
 }

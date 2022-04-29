@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { DetailedCar } from '@models/detailed-car';
+import { PegasusProjectionSlot } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   implements OnInit, ControlValueAccessor
 {
   @Input() public makeOnlyOptions = true;
+  @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
   @Output() public changes = new EventEmitter<DetailedCar>();
 
   public formControls = {
