@@ -120,9 +120,17 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.AuctionStatus, opt => opt.MapFrom(source => source.Status))
                 .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? ForzaSearchOrderBy.ClosingDateAsc : ForzaSearchOrderBy.ClosingDateDesc));
 
-            this.CreateMap<ForzaAuctionWithFileData, PlayerAuction>()
-                .ForMember(dest => dest.TextureMapImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
-                .ForMember(dest => dest.LiveryImageBase64, opt => opt.MapFrom(source => source.LargeThumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.LargeThumbnail) : null))
+            this.CreateMap<ServicesLiveOps.ForzaAuctionWithFileData, PlayerAuction>()
+                .ForMember(dest => dest.TextureMapImageBase64,
+                    opt => opt.MapFrom(source =>
+                        source.AdminTexture.Length > 0
+                            ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture)
+                            : null))
+                .ForMember(dest => dest.LiveryImageBase64,
+                    opt => opt.MapFrom(source =>
+                        source.LargeThumbnail.Length > 0
+                            ? "data:image/jpeg;base64," + Convert.ToBase64String(source.LargeThumbnail)
+                            : null))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Auction.Id))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(source => source.Auction.Status))
                 .ForMember(dest => dest.CurrentPrice, opt => opt.MapFrom(source => source.Auction.CurrentPrice))
