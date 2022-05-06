@@ -1,4 +1,5 @@
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
+import { NavbarTool } from '@environments/environment';
 import faker from '@faker-js/faker';
 import { compact } from 'lodash';
 
@@ -6,6 +7,8 @@ interface RouteData {
   handle: DetachedRouteHandle;
   route: ActivatedRouteSnapshot;
 }
+
+const UnsupportedTools: NavbarTool[] = [NavbarTool.UgcDetails];
 
 /**
  * A route re-use strategy that stores the routed path for the session.
@@ -50,7 +53,12 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
     const key = this.makeKey(route);
-    const shouldAttach = !!route.routeConfig && !!route.component && this.safeHandles.has(key);
+    const unsupportedToolInKey = this.doesKeyContainUnsupportedTool(key);
+    const shouldAttach =
+      !!route.routeConfig &&
+      !!route.component &&
+      this.safeHandles.has(key) &&
+      !unsupportedToolInKey;
 
     // console.warn(
     //   `[RouteReuse|${this.instanceId}] shouldAttach(${shouldAttach}) | ${this.makeId(route)}`,
@@ -63,7 +71,8 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
     const key = this.makeKey(route);
-    const shouldRetrieve = !!route.routeConfig && !!route.component;
+    const unsupportedToolInKey = this.doesKeyContainUnsupportedTool(key);
+    const shouldRetrieve = !!route.routeConfig && !!route.component && !unsupportedToolInKey;
     const data = this.safeHandles.get(key);
 
     // console.warn(
@@ -166,5 +175,9 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
         .map(v => v.routeConfig.path)
         .join('/')
     );
+  }
+
+  private doesKeyContainUnsupportedTool(key: string): boolean {
+    return !!UnsupportedTools.find(tool => key.includes(tool));
   }
 }

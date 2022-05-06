@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
-import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import { RouteMemoryRedirectGuard } from 'app/route-guards/route-memory/route-memory-redirect.guard';
+import { RouteMemorySetGuard } from 'app/route-guards/route-memory/route-memory-set.guard';
 import { UgcDetailsComponent } from './ugc-details.component';
 import { WaitingForInputComponent } from './pages/waiting-for-input/waiting-for-input.component';
 import { WoodstockUgcDetailsComponent } from './pages/woodstock/woodstock-ugc-details.component';
@@ -19,12 +19,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        canActivate: [TitleMemoryRedirectGuard],
+        canActivate: [RouteMemoryRedirectGuard],
         pathMatch: 'full',
       },
       {
         path: 'sunrise',
-        canActivate: [TitleMemorySetGuard],
+        canActivate: [RouteMemorySetGuard],
         children: [
           {
             path: '',
@@ -33,7 +33,7 @@ const routes: Routes = [
           },
           {
             path: ':id',
-            canActivate: [TitleMemorySetGuard],
+            canActivate: [RouteMemorySetGuard],
             component: SunriseUgcDetailsComponent,
             children: [
               {
@@ -43,7 +43,7 @@ const routes: Routes = [
               },
               {
                 path: ':type',
-                canActivate: [TitleMemorySetGuard],
+                canActivate: [RouteMemorySetGuard],
                 component: SunriseLookupComponent,
                 pathMatch: 'full',
               },
@@ -53,7 +53,7 @@ const routes: Routes = [
       },
       {
         path: 'woodstock',
-        canActivate: [TitleMemorySetGuard],
+        canActivate: [RouteMemorySetGuard],
         children: [
           {
             path: '',
@@ -62,7 +62,7 @@ const routes: Routes = [
           },
           {
             path: ':id',
-            canActivate: [TitleMemorySetGuard],
+            canActivate: [RouteMemorySetGuard],
             component: WoodstockUgcDetailsComponent,
             children: [
               {
@@ -72,7 +72,7 @@ const routes: Routes = [
               },
               {
                 path: ':type',
-                canActivate: [TitleMemorySetGuard],
+                canActivate: [RouteMemorySetGuard],
                 component: WoodstockLookupComponent,
                 pathMatch: 'full',
               },

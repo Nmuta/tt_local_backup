@@ -75,6 +75,7 @@ import { ToolsAvailabilityInterceptor } from '@interceptors/tools-availability.i
 import { ToolsAvailabilityModalModule } from '@views/tools-availability-modal/tools-availability-modal.module';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -155,6 +156,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         UserState,
         UserSettingsState,
         TitleMemoryState,
+        RouteMemoryState,
         MasterInventoryListMemoryState,
         LspGroupMemoryState,
         EndpointKeyMemoryState,
