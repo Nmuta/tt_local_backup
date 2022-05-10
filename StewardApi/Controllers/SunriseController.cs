@@ -29,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
+using static System.FormattableString;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -53,6 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
         private const string DefaultEndpointKey = "Sunrise|Retail";
+        private const TitleCodeName CodeName = TitleCodeName.Sunrise;
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -61,6 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         };
 
         private readonly IMemoryCache memoryCache;
+        private readonly IActionLogger actionLogger;
         private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider;
@@ -85,6 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         public SunriseController(
             IMemoryCache memoryCache,
+            IActionLogger actionLogger,
             ILoggingService loggingService,
             IKustoProvider kustoProvider,
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
@@ -107,6 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
+            actionLogger.ShouldNotBeNull(nameof(actionLogger));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
@@ -130,6 +135,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.memoryCache = memoryCache;
+            this.actionLogger = actionLogger;
             this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.sunrisePlayerDetailsProvider = sunrisePlayerDetailsProvider;
@@ -329,6 +335,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgent)]
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] SunriseUserFlagsInput userFlags)
@@ -406,6 +413,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin)]
         [HttpPost("player/xuid({xuid})/profileNotes")]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
         public async Task<IActionResult> AddProfileNoteAsync(
             ulong xuid,
             [FromBody] ProfileNote profileNote)
@@ -683,16 +691,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets featured status of a UGC content item.
         /// </summary>
-        [HttpPost("storefront/itemId({itemId})/featuredStatus")]
+        [HttpPost("storefront/itemId({ugcId})/featuredStatus")]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
         public async Task<IActionResult> SetUgcFeaturedStatus(
-            string itemId,
+            string ugcId,
             [FromBody] UgcFeaturedStatus status)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(itemId, out var itemIdGuid))
+            if (!Guid.TryParse(ugcId, out var itemIdGuid))
             {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {itemId}");
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
             }
 
             if (status.IsFeatured && !status.Expiry.HasValue)
@@ -738,11 +747,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("storefront/ugc/{ugcId}/hide")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> HideUGC(Guid ugcId)
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
+        public async Task<IActionResult> HideUGC(string ugcId)
         {
             var endpoint = GetSunriseEndpoint(this.Request.Headers);
+            if (!Guid.TryParse(ugcId, out var itemIdGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
+            }
 
-            await this.storefrontProvider.HideUgcAsync(ugcId, endpoint).ConfigureAwait(true);
+            await this.storefrontProvider.HideUgcAsync(itemIdGuid, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -756,19 +770,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgent)]
         [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, Guid ugcId)
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
+        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, string ugcId)
         {
             fileType.ShouldNotBeNull(nameof(fileType));
             xuid.EnsureValidXuid();
 
             var endpoint = GetSunriseEndpoint(this.Request.Headers);
+            if (!Guid.TryParse(ugcId, out var itemIdGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
+            }
 
             if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(FileType)} provided: {fileType}");
             }
 
-            await this.storefrontProvider.UnhideUgcAsync(xuid, ugcId, fileTypeEnum, endpoint).ConfigureAwait(true);
+            await this.storefrontProvider.UnhideUgcAsync(xuid, itemIdGuid, fileTypeEnum, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -806,11 +825,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("auctions/blocklist")]
         [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
+        [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.AuctionBlocklistEntry)]
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             await this.sunriseServiceManagementProvider.AddAuctionBlockListEntriesAsync(entries, endpoint).ConfigureAwait(true);
+
+            var blockedCars = entries.Select(entry => Invariant($"{entry.CarId}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.CarId, blockedCars).ConfigureAwait(true);
 
             return this.Ok(entries);
         }
@@ -820,6 +844,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("auctions/blocklist/carId({carId})")]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.AuctionBlocklistEntry)]
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
@@ -861,6 +886,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<SunriseBanParametersInput> banInput)
         {
@@ -907,6 +933,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                             jobStatus,
                             results)
                         .ConfigureAwait(true);
+
+                    var bannedXuids = results.Where(banResult => banResult.Error == null)
+                        .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -933,6 +965,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SunriseBanParametersInput> banInput)
         {
@@ -960,6 +993,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 banParameters,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
+
+            var bannedXuids = results.Where(banResult => banResult.Error == null)
+                .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                .ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -1029,6 +1068,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -1172,6 +1212,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] SunriseGroupGift groupGift)
         {
@@ -1238,6 +1279,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
+
+                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -1258,6 +1305,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] SunriseGroupGift groupGift)
         {
@@ -1309,6 +1357,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
+
+            var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                .ConfigureAwait(true);
+
             return this.Ok(response);
         }
 
@@ -1321,6 +1376,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] SunriseGift gift)
@@ -1365,6 +1421,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1409,6 +1466,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+
+                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -1431,6 +1494,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -1447,6 +1511,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var response = await this.sunrisePlayerInventoryProvider.SendCarLiveryAsync(gift, groupId, livery, requesterObjectId, endpoint).ConfigureAwait(true);
+
             return this.Ok(response);
         }
 
@@ -1572,6 +1637,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
+        [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> SendPlayerNotifications(
             [FromBody] BulkCommunityMessage communityMessage)
         {
@@ -1611,6 +1677,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
+            var recipientXuids = notifications.Where(result => result.Error == null)
+                .Select(result => Invariant($"{result.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, recipientXuids)
+                .ConfigureAwait(true);
+
             return this.Ok(notifications);
         }
 
@@ -1623,6 +1695,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
+        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
             [FromBody] LspGroupCommunityMessage communityMessage)
@@ -1666,6 +1739,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> EditPlayerNotification(
             Guid notificationId,
             ulong xuid,
@@ -1707,6 +1781,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
         public async Task<IActionResult> EditGroupNotification(
             Guid notificationId,
             [FromBody] LspGroupCommunityMessage editParameters)
@@ -1749,6 +1824,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
             xuid.EnsureValidXuid();
@@ -1781,6 +1857,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);

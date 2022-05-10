@@ -1549,7 +1549,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var ugcId = Fixture.Create<Guid>();
+            var ugcId = Fixture.Create<string>();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.HideUGC(ugcId).ConfigureAwait(false);
@@ -1565,7 +1565,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = ValidXuid;
-            var ugcId = Fixture.Create<Guid>();
+            var ugcId = Fixture.Create<string>();
             var fileType = "Livery";
 
             // Act.
@@ -1690,6 +1690,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 this.ItemsProvider.GetCarsAsync().Returns(Fixture.Create<IEnumerable<DetailedCar>>());
                 this.ItemsProvider.GetMasterInventoryAsync().Returns(fakeMasterInventory);
             }
+
+            public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
+
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
@@ -1740,6 +1743,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public WoodstockController Build() => new WoodstockController(
                 new MemoryCache(new MemoryCacheOptions()),
+                this.ActionLogger,
                 this.LoggingService,
                 this.KustoProvider,
                 this.WoodstockPlayerDetailsProvider,

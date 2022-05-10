@@ -28,6 +28,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Validation;
+using static System.FormattableString;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -52,6 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
         private const string DefaultEndpointKey = "Apollo|Retail";
+        private const TitleCodeName CodeName = TitleCodeName.Apollo;
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -60,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         };
 
         private readonly IMemoryCache memoryCache;
+        private readonly IActionLogger actionLogger;
         private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly IApolloPlayerDetailsProvider apolloPlayerDetailsProvider;
@@ -80,6 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         public ApolloController(
             IMemoryCache memoryCache,
+            IActionLogger actionLogger,
             ILoggingService loggingService,
             IKustoProvider kustoProvider,
             IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
@@ -98,6 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<ApolloUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
+            actionLogger.ShouldNotBeNull(nameof(actionLogger));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
@@ -117,6 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.memoryCache = memoryCache;
+            this.actionLogger = actionLogger;
             this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.apolloPlayerDetailsProvider = apolloPlayerDetailsProvider;
@@ -228,6 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<ApolloBanParametersInput> banInput)
         {
@@ -274,6 +281,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         requesterObjectId,
                         jobStatus,
                         results).ConfigureAwait(true);
+
+                    var bannedXuids = results.Where(banResult => banResult.Error == null)
+                        .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -301,6 +314,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<ApolloBanParametersInput> banInput)
         {
@@ -329,6 +343,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 banParameters,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
+
+            var bannedXuids = results.Where(banResult => banResult.Error == null)
+                .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                .ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -411,6 +431,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -491,6 +512,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] ApolloUserFlagsInput userFlags)
@@ -612,6 +634,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] ApolloGroupGift groupGift)
         {
@@ -678,6 +701,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
+
+                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -698,6 +727,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] ApolloGroupGift groupGift)
         {
@@ -749,6 +779,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
+
+            var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                .ConfigureAwait(true);
+
             return this.Ok(response);
         }
 
@@ -761,6 +798,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] ApolloGift gift)

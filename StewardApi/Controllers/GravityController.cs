@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
@@ -17,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
 
@@ -36,7 +38,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [LogTagTitle(TitleLogTags.Gravity)]
     public sealed class GravityController : ControllerBase
     {
+        private const TitleCodeName CodeName = TitleCodeName.Gravity;
+
         private readonly IMemoryCache memoryCache;
+        private readonly IActionLogger actionLogger;
         private readonly ILoggingService loggingService;
         private readonly IGravityPlayerDetailsProvider gravityPlayerDetailsProvider;
         private readonly IGravityPlayerInventoryProvider gravityPlayerInventoryProvider;
@@ -51,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         public GravityController(
             IMemoryCache memoryCache,
+            IActionLogger actionLogger,
             ILoggingService loggingService,
             IGravityPlayerDetailsProvider gravityPlayerDetailsProvider,
             IGravityPlayerInventoryProvider gravityPlayerInventoryProvider,
@@ -61,6 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<GravityGift> giftRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
+            actionLogger.ShouldNotBeNull(nameof(actionLogger));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             gravityPlayerDetailsProvider.ShouldNotBeNull(nameof(gravityPlayerDetailsProvider));
             gravityPlayerInventoryProvider.ShouldNotBeNull(nameof(gravityPlayerInventoryProvider));
@@ -71,6 +78,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
 
             this.memoryCache = memoryCache;
+            this.actionLogger = actionLogger;
             this.loggingService = loggingService;
             this.gravityPlayerDetailsProvider = gravityPlayerDetailsProvider;
             this.gravityPlayerInventoryProvider = gravityPlayerInventoryProvider;
@@ -241,6 +249,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/t10Id({t10Id})/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventory)]
         public async Task<IActionResult> UpdatePlayerInventoryByT10IdUseBackgroundProcessing(
             string t10Id,
             [FromBody] GravityGift gift)
@@ -294,6 +303,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         BackgroundJobStatus.CompletedWithErrors :
                         BackgroundJobStatus.Completed;
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+
+                    if (response.Errors == null || response.Errors.Count == 0)
+                    {
+                        await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.T10Id, new List<string> { response.PlayerOrLspGroup })
+                            .ConfigureAwait(true);
+                    }
                 }
                 catch (Exception)
                 {
@@ -313,6 +328,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/t10Id({t10Id})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventory)]
         public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -336,6 +352,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             try
             {
                 playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+
             }
             catch (Exception)
             {

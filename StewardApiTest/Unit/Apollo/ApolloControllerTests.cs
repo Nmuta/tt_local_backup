@@ -1047,6 +1047,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }
 
+            public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
+
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
@@ -1085,6 +1087,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             public ApolloController Build() => new ApolloController(
                 new MemoryCache(new MemoryCacheOptions()),
+                this.ActionLogger,
                 this.LoggingService,
                 this.KustoProvider,
                 this.ApolloPlayerDetailsProvider,

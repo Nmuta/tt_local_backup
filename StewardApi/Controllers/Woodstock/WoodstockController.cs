@@ -31,6 +31,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
+using static System.FormattableString;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -55,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     {
         private const int DefaultMaxResults = 100;
         private const string DefaultEndpointKey = "Woodstock|Retail";
+        private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -63,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         };
 
         private readonly IMemoryCache memoryCache;
+        private readonly IActionLogger actionLogger;
         private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider;
@@ -89,6 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         public WoodstockController(
             IMemoryCache memoryCache,
+            IActionLogger actionLogger,
             ILoggingService loggingService,
             IKustoProvider kustoProvider,
             IWoodstockPlayerDetailsProvider woodstockPlayerDetailsProvider,
@@ -113,6 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
+            actionLogger.ShouldNotBeNull(nameof(actionLogger));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             woodstockPlayerDetailsProvider.ShouldNotBeNull(nameof(woodstockPlayerDetailsProvider));
@@ -138,6 +143,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.memoryCache = memoryCache;
+            this.actionLogger = actionLogger;
             this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.woodstockPlayerDetailsProvider = woodstockPlayerDetailsProvider;
@@ -281,6 +287,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -352,6 +359,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(WoodstockUserFlags))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Group)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] WoodstockUserFlagsInput userFlags)
@@ -435,6 +443,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
+        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
         public async Task<IActionResult> AddProfileNoteAsync(
             ulong xuid,
             [FromBody] ProfileNote profileNote)
@@ -581,6 +590,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Auctions)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.Auction)]
         public async Task<IActionResult> DeleteAuction(string auctionId)
         {
             if (!Guid.TryParse(auctionId, out var parsedAuctionId))
@@ -639,11 +649,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
+        [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.AuctionBlocklistEntry)]
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             await this.woodstockServiceManagementProvider.AddAuctionBlockListEntriesAsync(entries, endpoint).ConfigureAwait(true);
+
+            var blockedCars = entries.Select(entry => Invariant($"{entry.CarId}")).ToList();
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.CarId, blockedCars).ConfigureAwait(true);
 
             return this.Ok(entries);
         }
@@ -655,6 +669,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.AuctionBlocklistEntry)]
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
@@ -815,18 +830,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets featured status of a UGC content item.
         /// </summary>
-        [HttpPost("storefront/itemId({itemId})/featuredStatus")]
+        [HttpPost("storefront/itemId({ugcId})/featuredStatus")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta | ActionAreaLogTags.Ugc)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
         public async Task<IActionResult> SetUgcFeaturedStatus(
-            string itemId,
+            string ugcId,
             [FromBody] UgcFeaturedStatus status)
         {
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(itemId, out var itemIdGuid))
+            if (!Guid.TryParse(ugcId, out var itemIdGuid))
             {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {itemId}");
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
             }
 
             if (status.IsFeatured && !status.Expiry.HasValue)
@@ -874,11 +890,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("storefront/ugc/{ugcId}/hide")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> HideUGC(Guid ugcId)
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
+        public async Task<IActionResult> HideUGC(string ugcId)
         {
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+            if (!Guid.TryParse(ugcId, out var itemIdGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
+            }
 
-            await this.storefrontProvider.HideUgcAsync(ugcId, endpoint).ConfigureAwait(true);
+            await this.storefrontProvider.HideUgcAsync(itemIdGuid, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -893,20 +914,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager)]
         [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
         [SwaggerResponse(200)]
-
-        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, Guid ugcId)
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
+        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, string ugcId)
         {
             fileType.ShouldNotBeNull(nameof(fileType));
             xuid.EnsureValidXuid();
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+            if (!Guid.TryParse(ugcId, out var itemIdGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
+            }
 
             if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(FileType)} provided: {fileType}");
             }
 
-            await this.storefrontProvider.UnhideUgcAsync(xuid, ugcId, fileTypeEnum, endpoint).ConfigureAwait(true);
+            await this.storefrontProvider.UnhideUgcAsync(xuid, itemIdGuid, fileTypeEnum, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -948,6 +973,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp| DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<WoodstockBanParametersInput> banInput)
         {
@@ -991,6 +1017,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
                         .ConfigureAwait(true);
+
+                    var bannedXuids = results.Where(banResult => banResult.Error == null)
+                        .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -1017,8 +1049,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.BackgroundProcessing)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<WoodstockBanParametersInput> banInput)
         {
@@ -1047,6 +1080,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 banParameters,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
+
+            var bannedXuids = results.Where(banResult => banResult.Error == null)
+                .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                .ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -1257,6 +1296,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] WoodstockGroupGift groupGift)
         {
@@ -1324,6 +1364,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
+
+                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -1346,6 +1392,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] WoodstockGroupGift groupGift)
         {
@@ -1397,6 +1444,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
+
+            var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                .ConfigureAwait(true);
+
             return this.Ok(response);
         }
 
@@ -1411,6 +1465,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] WoodstockGift gift)
@@ -1458,6 +1513,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1503,6 +1559,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+
+                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -1527,6 +1589,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -1680,6 +1743,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
+        [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> SendPlayerNotifications(
             [FromBody] BulkCommunityMessage communityMessage)
         {
@@ -1719,6 +1783,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
+            var recipientXuids = notifications.Where(result => result.Error == null)
+                .Select(result => Invariant($"{result.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, recipientXuids)
+                .ConfigureAwait(true);
+
             return this.Ok(notifications);
         }
 
@@ -1733,6 +1803,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
+        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
             [FromBody] LspGroupCommunityMessage communityMessage)
@@ -1778,6 +1849,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> EditPlayerNotification(
             Guid notificationId,
             ulong xuid,
@@ -1824,6 +1896,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
         public async Task<IActionResult> EditGroupNotification(
             Guid notificationId,
             [FromBody] LspGroupCommunityMessage editParameters)
@@ -1868,6 +1941,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
             xuid.EnsureValidXuid();
@@ -1902,6 +1976,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
@@ -2055,11 +2130,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Leaderboards)]
+        [ManualActionLogging(CodeName, StewardAction.Delete, StewardSubject.Leaderboards)]
         public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)
         {
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             await this.leaderboardProvider.DeleteLeaderboardScoresAsync(scoreIds, endpoint).ConfigureAwait(true);
+
+            var deletedScores = scoreIds.Select(scoreId => Invariant($"{scoreId}")).ToList();
+            await this.actionLogger.UpdateActionTrackingTableAsync(
+                RecipientType.ScoreId,
+                deletedScores).ConfigureAwait(true);
 
             return this.Ok();
         }

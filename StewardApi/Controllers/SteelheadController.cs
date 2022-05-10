@@ -29,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
+using static System.FormattableString;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -52,6 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private const int DefaultMaxResults = 100;
         private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Steelhead;
         private const string DefaultEndpointKey = "Steelhead|Development";
+        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -60,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         };
 
         private readonly IMemoryCache memoryCache;
+        private readonly IActionLogger actionLogger;
         private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly ISteelheadPlayerInventoryProvider steelheadPlayerInventoryProvider;
@@ -83,6 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         public SteelheadController(
             IMemoryCache memoryCache,
+            IActionLogger actionLogger,
             ILoggingService loggingService,
             IKustoProvider kustoProvider,
             ISteelheadPlayerDetailsProvider steelheadPlayerDetailsProvider,
@@ -104,6 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SteelheadUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
+            actionLogger.ShouldNotBeNull(nameof(actionLogger));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             steelheadPlayerDetailsProvider.ShouldNotBeNull(nameof(steelheadPlayerDetailsProvider));
@@ -126,6 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.memoryCache = memoryCache;
+            this.actionLogger = actionLogger;
             this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.steelheadPlayerDetailsProvider = steelheadPlayerDetailsProvider;
@@ -262,6 +268,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -323,6 +330,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] SteelheadUserFlagsInput userFlags)
@@ -359,6 +367,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {
@@ -402,6 +411,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
                         .ConfigureAwait(true);
+
+                    var bannedXuids = results.Where(banResult => banResult.Error == null)
+                        .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -423,6 +438,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {
@@ -451,6 +467,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 banParameters,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
+
+            var bannedXuids = results.Where(banResult => banResult.Error == null)
+                .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                .ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -667,6 +689,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] SteelheadGroupGift groupGift)
         {
@@ -735,6 +758,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
+
+                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -755,6 +784,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] SteelheadGroupGift groupGift)
         {
@@ -807,6 +837,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
+
+            var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                .ConfigureAwait(true);
+
             return this.Ok(response);
         }
 
@@ -818,6 +855,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] SteelheadGift gift)
@@ -977,6 +1015,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
+        [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> SendPlayerNotifications(
             [FromBody] BulkCommunityMessage communityMessage)
         {
@@ -1012,6 +1051,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 expireTime,
                 endpoint).ConfigureAwait(true);
 
+            var recipientXuids = notifications.Where(result => result.Error == null)
+                .Select(result => Invariant($"{result.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, recipientXuids)
+                .ConfigureAwait(true);
+
             return this.Ok(notifications);
         }
 
@@ -1024,6 +1069,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
+        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
             [FromBody] LspGroupCommunityMessage communityMessage)
@@ -1067,6 +1113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> EditPlayerNotification(
             Guid notificationId,
             ulong xuid,
@@ -1104,6 +1151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
         public async Task<IActionResult> EditGroupNotification(
             Guid notificationId,
             [FromBody] LspGroupCommunityMessage editParameters)
@@ -1137,6 +1185,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
@@ -1164,6 +1213,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200)]
+        [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);

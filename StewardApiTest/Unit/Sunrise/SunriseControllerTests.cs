@@ -1786,11 +1786,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var contentId = Fixture.Create<Guid>();
+            var contentId = Fixture.Create<string>();
             var expiry = Fixture.Create<TimeSpan>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.SetUgcFeaturedStatus(contentId.ToString(), new UgcFeaturedStatus()
+            async Task<IActionResult> Action() => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
             {
                 IsFeatured = false,
                 Expiry = expiry,
@@ -1809,12 +1809,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var contentId = Fixture.Create<Guid>();
+            var contentId = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.SetUgcFeaturedStatus(contentId.ToString(), new UgcFeaturedStatus()
+                async () => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
                 {
                     IsFeatured = true,
                     Expiry = null,
@@ -1834,13 +1834,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var contentId = Fixture.Create<Guid>();
+            var contentId = Fixture.Create<string>();
             var expiry = new TimeSpan(1, 0, 0); // 1 hour
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.SetUgcFeaturedStatus(contentId.ToString(), new UgcFeaturedStatus()
+                async () => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
                 {
                     IsFeatured = true,
                     Expiry = expiry,
@@ -1860,7 +1860,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var ugcId = Fixture.Create<Guid>();
+            var ugcId = Fixture.Create<string>();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.HideUGC(ugcId).ConfigureAwait(false);
@@ -1876,7 +1876,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = ValidXuid;
-            var ugcId = Fixture.Create<Guid>();
+            var ugcId = Fixture.Create<string>();
             var fileType = "Livery";
 
             // Act.
@@ -1993,6 +1993,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
             }
+
+            public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
+
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
@@ -2040,6 +2043,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public SunriseController Build() => new SunriseController(
                 new MemoryCache(new MemoryCacheOptions()),
+                this.ActionLogger,
                 this.LoggingService,
                 this.KustoProvider,
                 this.SunrisePlayerDetailsProvider,

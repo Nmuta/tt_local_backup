@@ -1520,6 +1520,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SteelheadGiftHistory>>());
             }
+
+            public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
+
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
@@ -1565,6 +1568,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public SteelheadController Build() => new SteelheadController(
                 new MemoryCache(new MemoryCacheOptions()),
+                this.ActionLogger,
                 this.LoggingService,
                 this.KustoProvider,
                 this.SteelheadPlayerDetailsProvider,

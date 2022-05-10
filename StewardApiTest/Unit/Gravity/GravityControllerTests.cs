@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
 
@@ -552,6 +553,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
             }
 
+            public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
+
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IGravityPlayerDetailsProvider GravityPlayerDetailsProvider { get; set; } = Substitute.For<IGravityPlayerDetailsProvider>();
@@ -570,6 +573,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
             public GravityController Build() => new GravityController(
                 new MemoryCache(new MemoryCacheOptions()),
+                this.ActionLogger,
                 this.LoggingService,
                 this.GravityPlayerDetailsProvider,
                 this.GravityPlayerInventoryProvider,

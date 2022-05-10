@@ -2,21 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using System.Reflection;
 using AutoMapper;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
@@ -24,12 +23,12 @@ using Turn10.Data.Kusto;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
-using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Hubs;
@@ -321,6 +320,8 @@ namespace Turn10.LiveOps.StewardApi
             var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
             services.AddSingleton<IKustoProvider>(kustoProvider);
 
+            services.AddScoped<ActionData>();
+            services.AddScoped<IActionLogger, ActionLogger>();
             services.AddSingleton<IScheduler, TaskExecutionScheduler>();
             services.AddSingleton<IRefreshableCacheStore, LocalCacheStore>();
 
@@ -374,6 +375,13 @@ namespace Turn10.LiveOps.StewardApi
             applicationBuilder.UseAuthentication();
             applicationBuilder.UseRouting();
             applicationBuilder.UseAuthorization();
+
+            applicationBuilder.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+                return next(context);
+            });
+
             applicationBuilder.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -390,6 +398,7 @@ namespace Turn10.LiveOps.StewardApi
             foreach (var address in addresses)
             {
                 if (address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) { continue; }
+
                 return address.ToString();
             }
 

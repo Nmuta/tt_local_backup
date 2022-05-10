@@ -1,22 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
-using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
-using WoodstockLiveOpsContent;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -40,6 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     public sealed class WoodstockPlayerController : ControllerBase
     {
         private const string DefaultEndpointKey = "Woodstock|Retail";
+        private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         private readonly IWoodstockNotificationProvider notificationProvider;
 
@@ -61,6 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
+        [AutoActionLogging(CodeName, StewardAction.DeleteAll, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> DeleteAllNotifications(ulong xuid)
         {
             xuid.EnsureValidXuid();
