@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -14,11 +13,10 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using static Forza.LiveOps.FH5_main.Generated.UserInventoryService;
+using Turn10.Services.LiveOps.FH5_main.Generated;
+using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using static Forza.WebServices.FH5_main.Generated.RareCarShopService;
-using AdminForzaProfile = Forza.LiveOps.FH5_main.Generated.AdminForzaProfile;
 using AdminForzaUserInventorySummary = Forza.UserInventory.FH5_main.Generated.AdminForzaUserInventorySummary;
-using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
@@ -399,12 +397,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             public Dependencies()
             {
-                this.WoodstockService.SendCarLiveryAsync(Arg.Any<ulong[]>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput>());
-                this.WoodstockService.SendCarLiveryAsync(Arg.Any<int>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput>());
-                this.Mapper.Map<IList<GiftResponse<ulong>>>(Arg.Any<ServicesLiveOps.ForzaLiveryGiftResult[]>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
+                this.WoodstockService.SendCarLiveryAsync(Arg.Any<ulong[]>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingManagementService.AdminSendLiveryGiftOutput>());
+                this.WoodstockService.SendCarLiveryAsync(Arg.Any<int>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingManagementService.AdminSendGroupLiveryGiftOutput>());
+                this.Mapper.Map<IList<GiftResponse<ulong>>>(Arg.Any<ForzaLiveryGiftResult[]>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<UserInventoryManagementService.GetAdminUserProfilesOutput>());
                 this.WoodstockService.GetTokenBalanceAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
                 this.NotificationHistoryProvider.UpdateNotificationHistoryAsync(Arg.Any<NotificationHistory>());
                 this.Mapper.Map<WoodstockPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockPlayerInventory>());

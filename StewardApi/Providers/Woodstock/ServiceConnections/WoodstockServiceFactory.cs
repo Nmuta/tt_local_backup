@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Contracts.STS;
@@ -13,7 +12,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.Services.ForzaClient;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
-using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 // Allow non-private fields as an abstract class.
 #pragma warning disable SA1307
@@ -79,12 +77,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint)
+        public async Task<ServicesLiveOps.UserInventoryManagementService> PrepareUserInventoryManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.UserInventoryManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>
@@ -134,12 +132,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
+        public async Task<ServicesLiveOps.StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new ServicesLiveOps.StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         /// <inheritdoc/>

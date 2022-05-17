@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
@@ -12,7 +11,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
-using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {
@@ -47,23 +45,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<LiveOpsService.GetLiveOpsUserDataByXuidOutput> GetUserDataByXuidAsync(
+        public async Task<LiveOpsService.GetLiveOpsUserDataByXuidV2Output> GetUserDataByXuidAsync(
             ulong xuid,
             string endpoint)
         {
             var userLookupService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await userLookupService.GetLiveOpsUserDataByXuid(xuid).ConfigureAwait(false);
+            return await userLookupService.GetLiveOpsUserDataByXuidV2(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetUserDataByGamertagAsync(
+        public async Task<LiveOpsService.GetLiveOpsUserDataByGamerTagV2Output> GetUserDataByGamertagAsync(
             string gamertag,
             string endpoint)
         {
             var userLookupService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await userLookupService.GetLiveOpsUserDataByGamerTag(gamertag).ConfigureAwait(false);
+            return await userLookupService.GetLiveOpsUserDataByGamerTagV2(gamertag).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -268,29 +266,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(
+        public async Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(
             ulong xuid,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserInventoryServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserInventory(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput>
+        public async Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput>
             GetAdminUserInventoryByProfileIdAsync(int profileId, string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserInventoryServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserInventoryByProfileId(profileId).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserInventoryService.GetAdminUserProfilesOutput>
+        public async Task<ServicesLiveOps.UserInventoryManagementService.GetAdminUserProfilesOutput>
             GetAdminUserProfilesAsync(ulong xuid, uint maxProfiles, string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserInventoryServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.liveProjectionServiceFactory.PrepareUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserProfiles(xuid, maxProfiles).ConfigureAwait(false);
         }
@@ -534,9 +532,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
-            ForzaUGCSearchRequest filters,
-            ForzaUGCContentType contentType,
+        public async Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
+            ServicesLiveOps.ForzaUGCSearchRequest filters,
+            ServicesLiveOps.ForzaUGCContentType contentType,
             string endpoint,
             bool includeThumbnails = false)
         {
@@ -546,7 +544,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
+        public async Task<ServicesLiveOps.StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
             Guid liveryId,
             string endpoint)
         {
@@ -556,7 +554,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
+        public async Task<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
             Guid photoId,
             string endpoint)
         {
@@ -566,7 +564,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
+        public async Task<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
             string endpoint)
         {

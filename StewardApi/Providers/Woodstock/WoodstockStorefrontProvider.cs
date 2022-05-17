@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -49,8 +47,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
-            var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
+            var mappedFilters = this.mapper.Map<ServicesLiveOps.ForzaUGCSearchRequest>(filters);
+            var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
             var results = await this.woodstockService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
             return this.mapper.Map<IList<UgcItem>>(results.result);

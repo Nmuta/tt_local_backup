@@ -13,11 +13,10 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using Xls.WebServices.FH5_main.Generated;
 using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using static Forza.WebServices.FH5_main.Generated.RareCarShopService;
-using ForzaUserBanDescription = Forza.LiveOps.FH5_main.Generated.ForzaUserBanDescription;
-using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
@@ -458,33 +457,33 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             public Dependencies()
             {
-                this.WoodstockService.GetUserIdsAsync(Arg.Any<ServicesLiveOps.ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.UserManagementService.GetUserIdsOutput>());
-                this.WoodstockService.GetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.WoodstockService.GetUserIdsAsync(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserIdsOutput>());
+                this.WoodstockService.GetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagV2Output>());
                 this.WoodstockService.GetUserDataByGamertagAsync("gamerT1", Arg.Any<string>()).Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
-                this.WoodstockService.GetUserDataByXuidAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
-                this.WoodstockService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.UserManagementService.GetConsolesOutput>());
-                this.WoodstockService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.UserManagementService.GetSharedConsoleUsersOutput>());
-                this.WoodstockService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.UserManagementService.GetUserGroupMembershipsOutput>());
-                this.WoodstockService.GetIsUnderReviewAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.UserManagementService.GetIsUnderReviewOutput>());
+                this.WoodstockService.GetUserDataByXuidAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidV2Output>());
+                this.WoodstockService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetConsolesOutput>());
+                this.WoodstockService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetSharedConsoleUsersOutput>());
+                this.WoodstockService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupMembershipsOutput>());
+                this.WoodstockService.GetIsUnderReviewAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetIsUnderReviewOutput>());
                 this.WoodstockService.GetProfileSummaryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.WoodstockService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
-                this.WoodstockService.BanUsersAsync(Arg.Any<ServicesLiveOps.ForzaUserBanParameters[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
-                this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.UserManagementService.GetUserBanSummariesOutput>());
+                this.WoodstockService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
+                this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserBanSummariesOutput>());
                 this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.WoodstockService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
-                this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ServicesLiveOps.ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
-                this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ServicesLiveOps.ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
+                this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.Mapper.Map<ProfileSummary>(Arg.Any<ForzaProfileSummary>()).Returns(Fixture.Create<ProfileSummary>());
                 this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<ForzaCredityUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
-                this.Mapper.Map<IList<BanResult>>(Arg.Any<ServicesLiveOps.ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
-                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ServicesLiveOps.ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.Mapper.Map<IList<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
-                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ServicesLiveOps.ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
+                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
@@ -501,35 +500,35 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.Mapper,
                 this.RefreshableCacheStore);
 
-            private static ServicesLiveOps.UserManagementService.GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
+            private static UserManagementService.GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {
                 // Cannot use random uint value for feature area, we must build our own valid fake data
                 var rnd = new Random();
-                var fakeBanHistories = new List<ServicesLiveOps.ForzaUserBanDescription>();
+                var fakeBanHistories = new List<ForzaUserBanDescription>();
                 var numberOfFakeBanHistories = rnd.Next(1, 10);
                 for (var i = 0; i < numberOfFakeBanHistories; i++)
                 {
-                    fakeBanHistories.Add(Fixture.Build<ServicesLiveOps.ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
+                    fakeBanHistories.Add(Fixture.Build<ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
                 }
 
-                return Fixture.Build<ServicesLiveOps.UserManagementService.GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+                return Fixture.Build<UserManagementService.GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
             }
 
-            private static ServicesLiveOps.UserManagementService.BanUsersOutput GenerateBanUsersOutput()
+            private static UserManagementService.BanUsersOutput GenerateBanUsersOutput()
             {
-                var fakeBanResults = new List<ServicesLiveOps.ForzaUserBanResult>
+                var fakeBanResults = new List<ForzaUserBanResult>
                 {
-                    Fixture.Build<ServicesLiveOps.ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
+                    Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
                 };
 
-                return Fixture.Build<ServicesLiveOps.UserManagementService.BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
+                return Fixture.Build<UserManagementService.BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
             }
 
-            private static GetLiveOpsUserDataByGamerTagOutput GenerateGetLiveOpsUserDataByGamerTagOutPut()
+            private static GetLiveOpsUserDataByGamerTagV2Output GenerateGetLiveOpsUserDataByGamerTagOutPut()
             {
-                var fakeUser = Fixture.Build<UserData>().With(x => x.qwXuid, (ulong)111).Create();
+                var fakeUser = Fixture.Build<ForzaUserData>().With(x => x.Xuid, (ulong)111).Create();
 
-                return Fixture.Build<GetLiveOpsUserDataByGamerTagOutput>().With(x => x.userData, fakeUser).Create();
+                return Fixture.Build<GetLiveOpsUserDataByGamerTagV2Output>().With(x => x.userData, fakeUser).Create();
             }
         }
     }

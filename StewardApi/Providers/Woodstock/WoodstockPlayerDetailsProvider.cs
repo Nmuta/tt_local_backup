@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FH5_main.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -107,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var response = await this.woodstockService.GetUserDataByXuidAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
-                if (response.userData.region <= 0) { return null; }
+                if (response.userData.Region <= 0) { return null; }
 
                 return this.mapper.Map<WoodstockPlayerDetails>(response.userData);
             }
@@ -146,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag, endpoint)
                     .ConfigureAwait(false);
 
-                return response.userData.region > 0;
+                return response.userData.Region > 0;
             }
             catch
             {
@@ -427,7 +426,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                                 endpoint)
                             .ConfigureAwait(false);
 
-                        param.Xuid = userResult.userData.qwXuid;
+                        param.Xuid = userResult.userData.Xuid;
                     }
                     catch (Exception ex)
                     {

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.Scoreboard.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;

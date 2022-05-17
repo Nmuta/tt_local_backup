@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
-using static Forza.LiveOps.FH5_main.Generated.AuctionManagementService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock

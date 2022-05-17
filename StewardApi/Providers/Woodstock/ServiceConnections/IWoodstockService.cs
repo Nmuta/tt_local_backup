@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Forza.UserGeneratedContent.FH5_main.Generated;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
-using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {
@@ -19,12 +17,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets user data by xuid.
         /// </summary>
-        Task<LiveOpsService.GetLiveOpsUserDataByXuidOutput> GetUserDataByXuidAsync(ulong xuid, string endpoint);
+        Task<LiveOpsService.GetLiveOpsUserDataByXuidV2Output> GetUserDataByXuidAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Gets user data by gamertag.
         /// </summary>
-        Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetUserDataByGamertagAsync(
+        Task<LiveOpsService.GetLiveOpsUserDataByGamerTagV2Output> GetUserDataByGamertagAsync(
             string gamertag,
             string endpoint);
 
@@ -145,21 +143,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets user inventory.
         /// </summary>
-        Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(
+        Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(
             ulong xuid,
             string endpoint);
 
         /// <summary>
         ///     Gets user inventory by profile ID.
         /// </summary>
-        Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(
+        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(
             int profileId,
             string endpoint);
 
         /// <summary>
         ///     Gets user inventory profiles.
         /// </summary>
-        Task<UserInventoryService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(
+        Task<ServicesLiveOps.UserInventoryManagementService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(
             ulong xuid,
             uint maxProfiles,
             string endpoint);
@@ -323,30 +321,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Search public and private UGC content for a single player.
         /// </summary>
-        Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
-            ForzaUGCSearchRequest filters,
-            ForzaUGCContentType contentType,
+        Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
+            ServicesLiveOps.ForzaUGCSearchRequest filters,
+            ServicesLiveOps.ForzaUGCContentType contentType,
             string endpoint,
             bool includeThumbnails = false);
 
         /// <summary>
         ///     Get a player livery.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
+        Task<ServicesLiveOps.StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
             Guid liveryId,
             string endpoint);
 
         /// <summary>
         ///     Get a player photo.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
+        Task<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
             Guid photoId,
             string endpoint);
 
         /// <summary>
         ///     Get a player tune.
         /// </summary>
-        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
+        Task<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
             Guid tuneId,
             string endpoint);
 

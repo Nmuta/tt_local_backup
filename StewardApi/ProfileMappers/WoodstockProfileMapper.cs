@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
@@ -15,8 +14,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH5_main.Generated;
-using Xls.WebServices.FH5_main.Generated;
-using LiveOpsContracts = Forza.LiveOps.FH5_main.Generated;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
 
@@ -53,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     new PlayerInventoryItem { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints },
                 }))
                 .ReverseMap();
-            this.CreateMap<AdminForzaProfile, WoodstockInventoryProfile>()
+            this.CreateMap<ServicesLiveOps.AdminForzaProfile, WoodstockInventoryProfile>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
                 .ReverseMap();
             this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>();
@@ -83,9 +80,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<WoodstockPlayerDetails, IdentityResultAlpha>().ReverseMap();
             this.CreateMap<WoodstockUserFlagsInput, WoodstockUserFlags>().ReverseMap();
             this.CreateMap<WoodstockGroupGift, WoodstockGift>().ReverseMap();
-            this.CreateMap<UserData, WoodstockPlayerDetails>()
-                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
-                .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
+            this.CreateMap<WebServicesContracts.ForzaUserData, WoodstockPlayerDetails>()
+                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.Xuid))
+                .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.Gamertag))
                 .ReverseMap();
             this.CreateMap<WebServicesContracts.RareCarTicketBalance, WoodstockAccountInventory>()
                 .ForMember(dest => dest.BackstagePasses, opt => opt.MapFrom(src => src.OfflineBalance))
@@ -118,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.CarId))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.MakeId))
                 .ForMember(dest => dest.AuctionStatus, opt => opt.MapFrom(source => source.Status))
-                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? ForzaSearchOrderBy.ClosingDateAsc : ForzaSearchOrderBy.ClosingDateDesc));
+                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? ServicesLiveOps.ForzaSearchOrderBy.ClosingDateAsc : ServicesLiveOps.ForzaSearchOrderBy.ClosingDateDesc));
 
             this.CreateMap<ServicesLiveOps.ForzaAuctionWithFileData, PlayerAuction>()
                 .ForMember(dest => dest.TextureMapImageBase64,
@@ -144,7 +141,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default ? source.Auction.TimeFlagged : (DateTime?)null));
             this.CreateMap<IdentityQueryAlpha, ServicesLiveOps.ForzaPlayerLookupParameters>()
                 .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(
-                    src => src.Xuid.HasValue ? ForzaUserIdType.Xuid : ForzaUserIdType.Gamertag))
+                    src => src.Xuid.HasValue ? ServicesLiveOps.ForzaUserIdType.Xuid : ServicesLiveOps.ForzaUserIdType.Gamertag))
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(
                     src => src.Xuid.HasValue ? src.Xuid.ToString() : src.Gamertag));
             this.CreateMap<ServicesLiveOps.ForzaPlayerLookupParameters, IdentityQueryAlpha>()
@@ -179,9 +176,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<DeviceType, ServicesLiveOps.ForzaLiveDeviceType>().ReverseMap();
 
-            this.CreateMap<UgcFilters, ForzaUGCSearchRequest>().ReverseMap();
-            this.CreateMap<UgcType, ForzaUGCContentType>().ReverseMap();
-            this.CreateMap<ForzaUGCData, UgcItem>()
+            this.CreateMap<UgcFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => -1))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => -1))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => -1))
+                .ForMember(dest => dest.ShareStatus, opt => opt.MapFrom(source => ServicesLiveOps.ForzaShareFilter.Any))
+                .ReverseMap();
+            this.CreateMap<UgcType, ServicesLiveOps.ForzaUGCContentType>().ReverseMap();
+            this.CreateMap<ServicesLiveOps.ForzaUGCData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(
                     dest => dest.ThumbnailOneImageBase64,
@@ -225,7 +227,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ForzaLiveryData, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaLiveryData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
                 .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
@@ -253,7 +255,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ForzaPhotoData, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaPhotoData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
@@ -280,7 +282,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ForzaTuneData, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaTuneData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
@@ -306,7 +308,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
+            this.CreateMap<DeviceType, ServicesLiveOps.ForzaLiveDeviceType>().ReverseMap();
 
             this.CreateMap<ServicesLiveOps.ForzaAuction, AuctionData>()
                 .ForMember(dest => dest.AuctionId, opt => opt.MapFrom(src => src.Id))

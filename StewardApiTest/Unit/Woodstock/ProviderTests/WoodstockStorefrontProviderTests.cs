@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -14,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
 using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
@@ -248,20 +248,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             public Dependencies()
             {
-                this.WoodstockService.SearchUgcContentAsync(Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<ForzaUGCContentType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCOutput>());
-                this.WoodstockService.GetPlayerLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCLiveryOutput>());
-                this.WoodstockService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCPhotoOutput>());
-                this.WoodstockService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCTuneOutput>());
+                this.WoodstockService.SearchUgcContentAsync(Arg.Any<ServicesLiveOps.ForzaUGCSearchRequest>(), Arg.Any<ServicesLiveOps.ForzaUGCContentType>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput>());
+                this.WoodstockService.GetPlayerLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCLiveryOutput>());
+                this.WoodstockService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput>());
+                this.WoodstockService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput>());
                 this.WoodstockService.GetHiddenUgcForUserAsync(Arg.Any<int>(), Arg.Any<ulong>(), Arg.Any<FileType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontService.GetHiddenUGCForUserOutput>());
-                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaPhotoData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
-                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaLiveryData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
-                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaTuneData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ServicesLiveOps.ForzaPhotoData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ServicesLiveOps.ForzaLiveryData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ServicesLiveOps.ForzaTuneData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
                 this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
                 var ugcItem = Fixture.Create<UgcItem>();
                 ugcItem.GameTitle = (int)GameTitle.FH5;
-                this.Mapper.Map<UgcItem>(Arg.Any<ForzaPhotoData>()).Returns(ugcItem);
-                this.Mapper.Map<UgcItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcItem);
-                this.Mapper.Map<UgcItem>(Arg.Any<ForzaTuneData>()).Returns(ugcItem);
+                this.Mapper.Map<UgcItem>(Arg.Any<ServicesLiveOps.ForzaPhotoData>()).Returns(ugcItem);
+                this.Mapper.Map<UgcItem>(Arg.Any<ServicesLiveOps.ForzaLiveryData>()).Returns(ugcItem);
+                this.Mapper.Map<UgcItem>(Arg.Any<ServicesLiveOps.ForzaTuneData>()).Returns(ugcItem);
             }
             
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
