@@ -5,8 +5,6 @@
     mat-icon-button
     routerLinkActive="stroked-icon-button"
     matTooltip="Settings"
-    aria-label="Settings"
-    (click)="clickedSettings()"
   >
     <mat-icon
       [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
@@ -17,14 +15,30 @@
 </span>
 <span>
   <a
+    [routerLink]="[{ outlets: { sidebar: 'changelog' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Changelog"
+    #changelogLink
+  >
+    <mat-icon
+      [matBadge]="changelogNotificationCount > 0 ? changelogNotificationCount : null"
+      matBadgeColor="accent"
+      matBadgeSize="small"
+      >sticky_note_2</mat-icon
+    >
+  </a>
+</span>
+<span>
+  <a
     [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
     routerLinkActive="stroked-icon-button"
     matTooltip="Profile"
-    aria-label="Profile"
   >
-    <mat-icon aria-label="User profile icon">account_circle</mat-icon>
+    <mat-icon>account_circle</mat-icon>
   </a>
 </span>
 <span>

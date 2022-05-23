@@ -1,0 +1,35 @@
+@import '/src/styles/mixins';
+
+.title-bar {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  .spacer {
+    flex-grow: 1;
+    & ~ * {
+      margin-left: 0.5em;
+    }
+  }
+}
+
+changelog-group {
+  display: block;
+}
+
+section {
+  margin-top: 2em;
+  h2 {
+    margin-bottom: 0;
+  }
+}
+
+old-changelog {
+  margin-top: 0;
+}
+
+.top-controls {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  color: app-color-lighter-contrast($app-background, 70%);
+}

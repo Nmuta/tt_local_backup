@@ -32,19 +32,7 @@
       <ng-content></ng-content>
     </mat-card-content>
     <mat-card-actions align="end" *ngIf="confluenceLink">
-      <a mat-button *ngIf="canProbablyViewConfluence" [href]="confluenceLink">
-        {{ confluenceName }} on Confluence
-      </a>
-      <a
-        mat-button
-        class="mat-button-disabled"
-        *ngIf="!canProbablyViewConfluence"
-        [href]="confluenceLink"
-        color="disabled"
-        matTooltip="It looks like you probably don't have access to confluence, but you can try following the link anyway."
-      >
-        {{ confluenceName }} on Confluence
-      </a>
+      <a mat-button [href]="confluenceLink"> {{ confluenceName }} on Confluence </a>
     </mat-card-actions>
   </mat-card>
 </ng-template>

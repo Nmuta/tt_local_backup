@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
@@ -6,11 +6,12 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
 
 /** Component for displaying a static data privacy notice. */
 @Component({
-  selector: 'changelog',
+  selector: 'old-changelog',
   templateUrl: '../../../../CHANGELOG.component.html',
-  styleUrls: ['./changelog.component.scss'],
+  styleUrls: ['./old-changelog.component.scss'],
 })
-export class ChangelogComponent implements OnInit {
+export class OldChangelogComponent implements OnInit {
+  @Input() public expandFirst = true;
   public clientOnNewVersion: boolean = false;
   public isProduction: boolean = false;
 

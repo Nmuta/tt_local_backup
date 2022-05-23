@@ -9,6 +9,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { UserModel } from '@models/user.model';
 import { RefreshEndpointKeys } from '@shared/state/user-settings/user-settings.actions';
 import { ThemeService } from '@shared/modules/theme/theme.service';
+import { SyncChangelog } from '@shared/state/changelog/changelog.actions';
 
 /** Defines the app component. */
 @Component({
@@ -39,5 +40,6 @@ export class AppComponent extends BaseComponent implements OnInit {
       .subscribe();
 
     this.store.dispatch(new RequestAccessToken());
+    this.store.dispatch(new SyncChangelog());
   }
 }

@@ -2,7 +2,7 @@
 GIT_CHANGES=$(git diff-tree --no-commit-id --name-status -r HEAD origin/main)
 echo $GIT_CHANGES;
 SRC_PATH='StewardClient/src'
-SUB='StewardClient/src/CHANGELOG.component.html'
+SUB='StewardClient/src/environments/app-data/changelog/2022-LATEST.changelog.ts'
 
 if [[ "$GIT_CHANGES" != *"$SRC_PATH"* ]]; then
   exit 0 # success

@@ -1,0 +1,15 @@
+:host ::ng-deep .no-expand {
+  .mat-expansion-panel-content {
+    display: none;
+  }
+}
+
+.title-bar {
+  margin-bottom: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  .spacer {
+    flex-grow: 1;
+  }
+}

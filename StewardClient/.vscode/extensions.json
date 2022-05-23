@@ -12,6 +12,7 @@
     "shd101wyy.markdown-preview-enhanced",
     "mrmlnc.vscode-scss",
     "angular.ng-template",
-    "maptz.camelcasenavigation"
+    "maptz.camelcasenavigation",
+    "netcorext.uuid-generator"
   ]
 }

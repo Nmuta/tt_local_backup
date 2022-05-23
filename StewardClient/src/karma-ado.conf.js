@@ -47,6 +47,7 @@ module.exports = function (config) {
             '**/*.spec.ts',
             '**/app/shared/interceptors/fake-api/**/*.ts',
             '**/app/pages/util/**/*',
+            '**/helpers/types.ts',
           ],
         },
         each: {
@@ -62,6 +63,9 @@ module.exports = function (config) {
             '**/app/shared/state/utilities/**/*.ts', // Ugly logic to test, use e2e testing
             '**/environments/**/*.ts', // Configuration
             '**/app/pages/util/**/*',
+            '**/app/shared/state/changelog/**/*.ts',
+            '**/app/sidebars/changelog/**/*.ts',
+            '**/helpers/types.ts',
           ],
         },
       },

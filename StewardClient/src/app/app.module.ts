@@ -75,6 +75,8 @@ import { ToolsAvailabilityInterceptor } from '@interceptors/tools-availability.i
 import { ToolsAvailabilityModalModule } from '@views/tools-availability-modal/tools-availability-modal.module';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { ChangelogState } from '@shared/state/changelog/changelog.state';
+import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
 import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
 
 function fakeApiOrNothing(): Provider[] {
@@ -156,6 +158,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         UserState,
         UserSettingsState,
         TitleMemoryState,
+        ChangelogState,
         RouteMemoryState,
         MasterInventoryListMemoryState,
         LspGroupMemoryState,
@@ -176,7 +179,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       { developmentMode: !environment.production },
     ),
     NgxsStoragePluginModule.forRoot({
-      key: [UserSettingsState, UserState],
+      key: [UserSettingsState, UserState, ChangelogState],
     }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule,
@@ -215,6 +218,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     MsalGuard,
     MsalBroadcastService,
     LoggerService,
+    UserSettingsService,
     { provide: RouteReuseStrategy, useClass: StoreForeverStrategy },
     Clipboard,
     ...fakeApiOrNothing(),

@@ -3,20 +3,20 @@ import { environment } from '@environments/environment';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { Store } from '@ngxs/store';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
-import { ChangelogComponent } from './changelog.component';
+import { OldChangelogComponent } from './old-changelog.component';
 
-describe('ChangelogComponent', () => {
-  let fixture: ComponentFixture<ChangelogComponent>;
-  let component: ChangelogComponent;
+describe('OldChangelogComponent', () => {
+  let fixture: ComponentFixture<OldChangelogComponent>;
+  let component: OldChangelogComponent;
 
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule(
-      createStandardTestModuleMetadata({ declarations: [ChangelogComponent] }),
+      createStandardTestModuleMetadata({ declarations: [OldChangelogComponent] }),
     ).compileComponents();
 
-    fixture = TestBed.createComponent(ChangelogComponent);
+    fixture = TestBed.createComponent(OldChangelogComponent);
     component = fixture.debugElement.componentInstance;
 
     mockStore = TestBed.inject(Store);

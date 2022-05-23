@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
-import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Select } from '@ngxs/store';
 import { environment } from '@environments/environment';
 import { MatDialog } from '@angular/material/dialog';
-import { ChangelogModalComponent } from '@views/changelog-modal/changelog-modal.component';
+import { ChangelogState } from '@shared/state/changelog/changelog.state';
+import { Observable, takeUntil } from 'rxjs';
+import { BaseComponent } from '@components/base-component/base.component';
+import { ChangelogService } from '@services/changelog/changelog.service';
+import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
 
 /** A menu dropdown with links to all Steward Apps. */
 @Component({
@@ -12,34 +14,36 @@ import { ChangelogModalComponent } from '@views/changelog-modal/changelog-modal.
   templateUrl: './sidebar-icons.component.html',
   styleUrls: ['./sidebar-icons.component.scss'],
 })
-export class SidebarIconsComponent implements OnInit {
-  public settingsNotificationCount: number = 0;
+export class SidebarIconsComponent extends BaseComponent implements AfterViewInit {
+  @ViewChild('changelogLink', { read: ElementRef }) changelogLink: ElementRef;
+  @Select(ChangelogState.allPendingIds) public allPendingIds$: Observable<string[]>;
+  public changelogNotificationCount = 0;
+  public settingsNotificationCount = 0;
 
-  constructor(private readonly store: Store, protected dialog: MatDialog) {}
+  constructor(
+    private readonly userSettingsService: UserSettingsService,
+    private readonly changelogService: ChangelogService,
+    protected dialog: MatDialog,
+  ) {
+    super();
+  }
 
   /** Lifecycle hook. */
-  public ngOnInit(): void {
-    const storedAppVersion = this.store.selectSnapshot<string>(UserSettingsState.appVersion);
-    const showAppUpdatePopup = this.store.selectSnapshot<boolean>(
-      UserSettingsState.showAppUpdatePopup,
-    );
-    if (!!storedAppVersion) {
+  public ngAfterViewInit(): void {
+    if (!!this.userSettingsService.appVersion) {
       const currentVersion = environment.adoVersion;
-      const isNewAppVersion = currentVersion !== storedAppVersion;
+      const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
       if (isNewAppVersion) {
-        if (showAppUpdatePopup) {
-          this.dialog.open(ChangelogModalComponent);
-        } else {
-          this.settingsNotificationCount += 1;
+        if (!this.changelogService.disableAutomaticPopup) {
+          this.changelogLink?.nativeElement?.click();
         }
       }
     } else {
-      this.store.dispatch(new SetAppVersion(environment.adoVersion));
+      this.userSettingsService.appVersion = environment.adoVersion;
     }
-  }
 
-  /** When the settings icon is clicked. */
-  public clickedSettings(): void {
-    this.settingsNotificationCount = 0;
+    this.allPendingIds$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
+      this.changelogNotificationCount = v?.length ?? 0;
+    });
   }
 }

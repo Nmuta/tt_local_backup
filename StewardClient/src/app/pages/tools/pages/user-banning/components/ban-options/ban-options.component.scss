@@ -19,7 +19,7 @@
   width: 100%;
 }
 
-.mat-button-toggle-checked {
+.mat-button-toggle-checked.mat-button-toggle-checked {
   background-color: app-color-default($app-primary);
   color: app-color-default-contrast($app-primary);
 }

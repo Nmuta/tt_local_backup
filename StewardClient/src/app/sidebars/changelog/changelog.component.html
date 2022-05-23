@@ -1,0 +1,46 @@
+<div class="top-controls">
+  <mat-checkbox [(ngModel)]="disableAutomaticPopup">Disable automatic popup</mat-checkbox>
+  <span class="app-version">{{ appVersion }}</span>
+</div>
+
+<section>
+  <h2 class="title-bar">
+    <span>Active Changelog</span>
+    <span class="spacer"></span>
+    <button mat-icon-button *ngIf="!allAreAcknowledged" (click)="acknowledgeAll()">
+      <mat-icon *ngIf="allArePending" matTooltip="Acknowledge All"
+        >check_box_outline_blank</mat-icon
+      >
+      <mat-icon *ngIf="!allArePending" matTooltip="Acknowledge All"
+        >indeterminate_check_box</mat-icon
+      >
+    </button>
+    <button mat-icon-button *ngIf="allAreAcknowledged" (click)="markAllPending()">
+      <mat-icon *ngIf="allAreAcknowledged" matTooltip="Mark All Active as Pending"
+        >check_box</mat-icon
+      >
+      <mat-icon *ngIf="!allAreAcknowledged" matTooltip="Mark All Active as Pending"
+        >indeterminate_check_box</mat-icon
+      >
+    </button>
+    <button mat-mini-fab color="warn" (click)="resetAll()">
+      <mat-icon matTooltip="Reset">refresh</mat-icon>
+    </button>
+    <button *ngIf="anyOpened" mat-icon-button (click)="closeAll()" matTooltip="Collapse All">
+      <mat-icon>expand_less</mat-icon>
+    </button>
+    <button *ngIf="!anyOpened" mat-icon-button (click)="openAll()" matTooltip="Expand All">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+  </h2>
+  <changelog-group *ngFor="let group of changelog.active" [group]="group"></changelog-group>
+</section>
+
+<!-- TODO: Inactive Changelog Group + queuing up new changelog entries -->
+
+<section>
+  <h2 class="title-bar">
+    <span>Legacy Changelog</span>
+  </h2>
+  <old-changelog [expandFirst]="false"></old-changelog>
+</section>

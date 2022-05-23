@@ -14,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { LocationDetailsModule } from '@shared/views/location-details/location-details.module';
 import { MatCardModule } from '@angular/material/card';
-import { ChangelogModule } from '@shared/views/changelog/changelog.module';
+import { ChangelogModule } from '@views/old-changelog/old-changelog.module';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -23,6 +23,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { HideChangelogModalCheckboxModule } from '@views/hide-changelog-modal-checkbox/hide-changelog-modal-checkbox.module';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
+import { ChangelogComponent } from './changelog/changelog.component';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { ChangelogGroupComponent } from './changelog/changelog-group/changelog-group.component';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -37,6 +40,11 @@ export const sidebarRoutes = [
     outlet: 'sidebar',
   },
   {
+    path: 'changelog',
+    component: ChangelogComponent,
+    outlet: 'sidebar',
+  },
+  {
     path: 'notifications',
     component: NotificationsComponent,
     outlet: 'sidebar',
@@ -45,29 +53,36 @@ export const sidebarRoutes = [
 
 /** Module containing all routable sidebar components. */
 @NgModule({
-  declarations: [ProfileComponent, SettingsComponent, NotificationsComponent],
+  declarations: [
+    ProfileComponent,
+    SettingsComponent,
+    NotificationsComponent,
+    ChangelogComponent,
+    ChangelogGroupComponent,
+  ],
   imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-    MatExpansionModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatOptionModule,
-    DataPrivacyNoticeModule,
-    MatCardModule,
-    LocationDetailsModule,
     ChangelogModule,
-    HubsModule,
+    CommonModule,
+    DataPrivacyNoticeModule,
+    DirectivesModule,
+    FontAwesomeModule,
+    FormsModule,
     HideChangelogModalCheckboxModule,
-    ThemeModule,
+    HubsModule,
+    LocationDetailsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatMenuModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTooltipModule,
     RouterModule.forChild(sidebarRoutes),
+    ThemeModule,
   ],
   exports: [RouterModule],
 })

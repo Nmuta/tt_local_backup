@@ -4,6 +4,7 @@ import { overrideExternalTools, externalToolUrls } from './app-data/external-too
 import { unprocessedToolList } from './app-data/tool-list';
 import { AllSecondaryAADScopes } from './app-data/aad';
 import { StewardEnvironment } from './steward-environment';
+import { CHANGELOG } from './app-data/changelog';
 
 export * from './app-data/aad';
 export * from './app-data/hci';
@@ -32,6 +33,7 @@ export const environment: StewardEnvironment = {
     consoleLogLevel: LogLevel.Everything,
   },
   tools: overrideExternalTools(cloneDeep(unprocessedToolList), externalToolUrls.dev),
+  changelog: CHANGELOG,
 };
 
 export const AllAADScopes: string[] = [...AllSecondaryAADScopes, environment.azureAppScope];

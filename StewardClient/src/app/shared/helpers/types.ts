@@ -8,3 +8,8 @@ export type Without<T, K> = Pick<T, Exclude<keyof T, K>>;
 export type PublicInterface<T> = {
   [P in keyof T]: T[P];
 };
+
+/** Does nothing. Adds type checking. */
+export function keyOf<T>(k: keyof T): keyof T {
+  return k;
+}

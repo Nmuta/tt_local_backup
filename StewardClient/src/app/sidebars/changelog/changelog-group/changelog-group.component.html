@@ -1,0 +1,38 @@
+<section>
+  <h3 class="title-bar">
+    <mat-checkbox
+      clickStop
+      [ngModel]="groupIsComplete"
+      [indeterminate]="groupIsIndeterminate"
+      (ngModelChange)="updateGroup($event)"
+      >{{ group.title }}</mat-checkbox
+    >
+    <span class="spacer"></span>
+    <button *ngIf="anyOpened" mat-icon-button (click)="closeAll()" matTooltip="Collapse All">
+      <mat-icon>expand_less</mat-icon>
+    </button>
+    <button *ngIf="!anyOpened" mat-icon-button (click)="openAll()" matTooltip="Expand All">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+  </h3>
+  <mat-accordion multi displayMode="flat">
+    <mat-expansion-panel
+      *ngFor="let entry of group.entries"
+      [class.no-expand]="!(entry.longText?.length ?? false)"
+      [hideToggle]="!(entry.longText?.length ?? false)"
+      [expanded]="entry.longText?.length ?? false"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-checkbox
+            clickStop
+            [ngModel]="isAcknowledgedEntry(entry)"
+            (change)="updateEntry(entry, $event)"
+            >{{ entry.shortText }}
+          </mat-checkbox>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p *ngFor="let paragraph of entry.longText">{{ paragraph }}</p>
+    </mat-expansion-panel>
+  </mat-accordion>
+</section>

@@ -1,5 +1,6 @@
 import { IConfig, IConfiguration } from '@microsoft/applicationinsights-web';
 import { LogLevel } from '@services/logger';
+import { Changelog } from './app-data/changelog/types';
 import { HomeTileInfo } from './app-data/tool-list';
 
 /** Type verification for Environment. */
@@ -34,4 +35,5 @@ export interface StewardEnvironment {
 
   /** The list of tools to show in the nav and homepage */
   tools: HomeTileInfo[];
+  changelog: Changelog;
 }
