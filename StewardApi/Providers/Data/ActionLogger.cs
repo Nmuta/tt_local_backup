@@ -91,9 +91,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             foreach (var id in recipientIds)
             {
-                this.actionData.RouteData.Add(camelCaseType, id);
+                try
+                {
+                    this.actionData.RouteData[camelCaseType] = id;
 
-                await this.UpdateActionTrackingTableAsync().ConfigureAwait(false);
+                    await this.UpdateActionTrackingTableAsync().ConfigureAwait(false);
+                }
+                catch
+                {
+                    this.loggingService.LogException(new LoggingFailedAppInsightsException(
+                        $"Action logging has failed for request: {this.actionData.Action}{this.actionData.RequestPath} at {DateTime.UtcNow}."));
+                }
             }
         }
     }
