@@ -141,6 +141,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Expires bans.
+        /// </summary>
+        Task<ServicesLiveOps.UserManagementService.ExpireBanEntriesOutput> ExpireBanEntriesAsync(
+            ServicesLiveOps.ForzaUserExpireBanParameters[] banParameters,
+            int entryCount,
+            string endpoint);
+
+        /// <summary>
+        ///     Deletes bans.
+        /// </summary>
+        Task<ServicesLiveOps.UserManagementService.DeleteBanEntriesOutput> DeleteBanEntriesAsync(
+            int[] banParameters,
+            string endpoint);
+
+        /// <summary>
         ///     Gets user inventory.
         /// </summary>
         Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(

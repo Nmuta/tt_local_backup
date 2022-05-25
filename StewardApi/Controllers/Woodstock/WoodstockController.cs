@@ -12,6 +12,7 @@ using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -1092,6 +1093,62 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Expire ban.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
+        [HttpPost("ban/{banEntryId}/expire")]
+        [SwaggerResponse(201, type: typeof(UnbanResult))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        public async Task<IActionResult> ExpireBan(int banEntryId)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+
+            var result = await this.woodstockPlayerDetailsProvider.ExpireBanAsync(banEntryId, endpoint)
+                .ConfigureAwait(true);
+
+            if (!result.Success)
+            {
+                throw new BadRequestStewardException($"Failed to expire ban with ID: {banEntryId}");
+            }
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Delete ban.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
+        [HttpPost("ban/{banEntryId}/delete")]
+        [SwaggerResponse(201, type: typeof(UnbanResult))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        public async Task<IActionResult> DeleteBan(int banEntryId)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+
+            var result = await this.woodstockPlayerDetailsProvider.DeleteBanAsync(banEntryId, endpoint)
+                .ConfigureAwait(true);
+
+            if (!result.Success && !result.Deleted)
+            {
+                throw new BadRequestStewardException($"Failed to delete ban with ID: {banEntryId}");
+            }
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///     Gets ban summaries.
         /// </summary>
         [HttpPost("players/banSummaries")]
@@ -2164,6 +2221,37 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
         {
+            LiveOpsBanHistory ConsolidateBanHistory(IGrouping<LiveOpsBanHistory, LiveOpsBanHistory> historyGroupings)
+            {
+                var serviceEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId == "From Services");
+                var liveOpsEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId != "From Services");
+
+                if (serviceEntry == null && liveOpsEntry == null)
+                {
+                    this.loggingService.LogException(new ConversionFailedAppInsightsException("BanHistory lookup consolidation for Woodstock has failed."));
+                    return null;
+                }
+
+                var resultEntry = new LiveOpsBanHistory(
+                    serviceEntry?.Xuid ?? liveOpsEntry.Xuid,
+                    serviceEntry?.BanEntryId ?? liveOpsEntry.BanEntryId,
+                    serviceEntry?.Title ?? liveOpsEntry?.Title,
+                    liveOpsEntry?.RequesterObjectId ?? serviceEntry?.RequesterObjectId,
+                    serviceEntry?.StartTimeUtc ?? liveOpsEntry.StartTimeUtc,
+                    serviceEntry?.ExpireTimeUtc ?? liveOpsEntry.ExpireTimeUtc,
+                    serviceEntry?.FeatureArea ?? liveOpsEntry?.FeatureArea,
+                    serviceEntry?.Reason ?? liveOpsEntry?.Reason,
+                    liveOpsEntry?.BanParameters ?? serviceEntry?.BanParameters,
+                    serviceEntry?.Endpoint ?? liveOpsEntry?.Endpoint);
+
+                resultEntry.IsActive = serviceEntry?.IsActive ?? false;
+                resultEntry.CountOfTimesExtended = serviceEntry?.CountOfTimesExtended ?? liveOpsEntry.CountOfTimesExtended;
+                resultEntry.LastExtendedTimeUtc = serviceEntry?.LastExtendedTimeUtc ?? liveOpsEntry.LastExtendedTimeUtc;
+                resultEntry.IsDeleted = serviceEntry == null;
+
+                return resultEntry;
+            }
+
             var getServicesBanHistory = this.woodstockPlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
                 xuid,
@@ -2175,16 +2263,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            var banHistories = liveOpsBanHistory.Union(
-                servicesBanHistory,
-                new LiveOpsBanHistoryComparer()).ToList();
+            // https://stackoverflow.com/questions/4873984/how-to-get-distinct-with-highest-value-using-linq
+            var banHistories = liveOpsBanHistory.Concat(servicesBanHistory)
+                                                .GroupBy(history => history, new LiveOpsBanHistoryComparer())
+                                                .Select(banGroups => ConsolidateBanHistory(banGroups))
+                                                .Where(entry => entry != null)
+                                                .ToList();
 
-            foreach (var banHistory in banHistories)
-            {
-                banHistory.IsActive = DateTime.UtcNow.CompareTo(banHistory.ExpireTimeUtc) < 0;
-            }
-
-            banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+            banHistories.Sort((x, y) => y.ExpireTimeUtc.CompareTo(x.ExpireTimeUtc));
 
             return banHistories;
         }

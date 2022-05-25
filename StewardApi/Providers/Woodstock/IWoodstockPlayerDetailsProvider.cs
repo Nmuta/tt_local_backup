@@ -101,6 +101,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             string endpoint);
 
         /// <summary>
+        ///     Expire bans.
+        /// </summary>
+        Task<UnbanResult> ExpireBanAsync(
+            int banEntryId,
+            string endpoint);
+
+        /// <summary>
+        ///     Delete bans.
+        /// </summary>
+        Task<UnbanResult> DeleteBanAsync(
+            int banEntryId,
+            string endpoint);
+
+        /// <summary>
         ///     Gets ban summaries.
         /// </summary>
         Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids, string endpoint);

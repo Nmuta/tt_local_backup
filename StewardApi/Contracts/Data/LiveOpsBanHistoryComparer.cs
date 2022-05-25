@@ -30,9 +30,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             var liveOpsBanHistoryTwoStartTime = liveOpsBanHistoryTwo.StartTimeUtc.AddTicks(-liveOpsBanHistoryTwo.StartTimeUtc.Ticks % TimeSpan.TicksPerSecond);
             var liveOpsBanHistoryOneExpireTime = liveOpsBanHistoryOne.ExpireTimeUtc.AddTicks(-liveOpsBanHistoryOne.ExpireTimeUtc.Ticks % TimeSpan.TicksPerSecond);
             var liveOpsBanHistoryTwoExpireTime = liveOpsBanHistoryTwo.ExpireTimeUtc.AddTicks(-liveOpsBanHistoryTwo.ExpireTimeUtc.Ticks % TimeSpan.TicksPerSecond);
+            var liveOpsBanHistoryOneLastExtendedTime = liveOpsBanHistoryOne.LastExtendedTimeUtc.AddTicks(-liveOpsBanHistoryOne.LastExtendedTimeUtc.Ticks % TimeSpan.TicksPerSecond);
+            var liveOpsBanHistoryTwoLastExtendedTime = liveOpsBanHistoryTwo.LastExtendedTimeUtc.AddTicks(-liveOpsBanHistoryTwo.LastExtendedTimeUtc.Ticks % TimeSpan.TicksPerSecond);
 
-            return liveOpsBanHistoryOneStartTime.CompareTo(liveOpsBanHistoryTwoStartTime) == 0
-                && liveOpsBanHistoryOneExpireTime.CompareTo(liveOpsBanHistoryTwoExpireTime) == 0;
+            var matchesExtension = liveOpsBanHistoryOneLastExtendedTime.CompareTo(liveOpsBanHistoryTwoStartTime) == 0
+                                || liveOpsBanHistoryTwoLastExtendedTime.CompareTo(liveOpsBanHistoryOneStartTime) == 0;
+
+            var matchesStart = liveOpsBanHistoryOneExpireTime.CompareTo(liveOpsBanHistoryTwoExpireTime) == 0;
+            var matchesExpire = liveOpsBanHistoryOneExpireTime.CompareTo(liveOpsBanHistoryTwoExpireTime) == 0;
+
+            var validStart = matchesStart || matchesExtension;
+
+            return validStart && matchesExpire;
         }
 
         /// <summary>

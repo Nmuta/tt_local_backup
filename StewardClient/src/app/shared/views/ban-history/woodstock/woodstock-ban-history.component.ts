@@ -1,11 +1,13 @@
 import BigNumber from 'bignumber.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
-import { LiveOpsBanDescription } from '@models/woodstock';
+import { LiveOpsExtendedBanDescription } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock/woodstock.service';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
 import { Observable } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
+import { UnbanResult } from '@models/unban-result';
+import { PermissionsService } from '@services/permissions';
 
 /** Retreives and displays Woodstock Ban history by XUID. */
 @Component({
@@ -23,12 +25,25 @@ import { GameTitleCodeName } from '@models/enums';
 export class WoodstockBanHistoryComponent extends BanHistoryBaseComponent {
   public gameTitle = GameTitleCodeName.FH5;
 
-  constructor(private readonly woodstock: WoodstockService) {
-    super();
+  constructor(
+    private readonly woodstock: WoodstockService,
+    permissionsService: PermissionsService,
+  ) {
+    super(permissionsService);
   }
 
   /** Gets the Woodstock ban history. */
-  public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsBanDescription[]> {
+  public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsExtendedBanDescription[]> {
     return this.woodstock.getBanHistoryByXuid$(xuid);
+  }
+
+  /** Expires the Woodstock ban. */
+  public expireBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.woodstock.expireBan$(banEntryId);
+  }
+
+  /** Deletes the Woodstock ban. */
+  public deleteBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.woodstock.deleteBan$(banEntryId);
   }
 }

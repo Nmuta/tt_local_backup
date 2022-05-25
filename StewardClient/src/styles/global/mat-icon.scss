@@ -1,0 +1,5 @@
+@import '/src/styles/mixins';
+
+mat-icon.disabled {
+  color: app-color($app-foreground, 'disabled-text') !important;
+}

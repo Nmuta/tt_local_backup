@@ -11,6 +11,7 @@ export enum PermissionServiceTool {
   UnhideUgc,
   HideUgc,
   FeatureUgc,
+  Unban,
 }
 
 /** Client permission service. */
@@ -48,6 +49,7 @@ export class PermissionsService {
       UserRole.SupportAgent,
       UserRole.CommunityManager,
     ],
+    [PermissionServiceTool.Unban]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
   };
 
   constructor(private readonly store: Store) {}

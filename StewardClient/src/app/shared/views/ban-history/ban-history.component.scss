@@ -1,5 +1,21 @@
 @import '/src/styles/mixins';
 
+.hidden {
+  visibility: hidden;
+}
+
+span.actions {
+  white-space: nowrap;
+
+  mat-checkbox {
+    margin-right: 0.5em;
+  }
+
+  & > *:not(:first-child) {
+    margin-left: 0.5em;
+  }
+}
+
 table {
   width: 100%;
 }

@@ -1,3 +1,4 @@
+import { GameTitle } from '@models/enums';
 import { NavbarTool } from '../tool-list';
 import { ChangelogGroup, ChangelogTag } from './types';
 
@@ -11,6 +12,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
       uuid: '1e13a1b0-44dc-48e8-8d97-9a8438f69cbf',
       shortText: 'Add new MediaTeam role',
       longText: [`MediaTeam role has read-only access to all data within the player details tool.`],
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: '0fc3d1ea-09be-471c-b146-2a3850244405',
+      shortText: 'Adds ban expiry and deletion options to Ban History display',
     },
     {
       tag: { title: 'all', tool: NavbarTool.UserBanning },

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using Newtonsoft.Json;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
@@ -22,6 +23,35 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             string reason,
             string banParameters,
             string endpoint)
+            : this(
+                xuid,
+                -1,
+                title,
+                requesterObjectId,
+                startTimeUtc,
+                expireTimeUtc,
+                featureArea,
+                reason,
+                banParameters,
+                endpoint)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="LiveOpsBanHistory"/> class.
+        /// </summary>
+        [JsonConstructor]
+        public LiveOpsBanHistory(
+            long xuid,
+            int banEntryId,
+            string title,
+            string requesterObjectId,
+            DateTime startTimeUtc,
+            DateTime expireTimeUtc,
+            string featureArea,
+            string reason,
+            string banParameters,
+            string endpoint)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -31,6 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             this.Xuid = xuid;
+            this.BanEntryId = banEntryId;
             this.Title = title;
             this.RequesterObjectId = requesterObjectId;
             this.StartTimeUtc = startTimeUtc;
@@ -102,11 +133,21 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public string Endpoint { get; set; }
 
         /// <summary>
+        ///     Gets or sets the ban entry ID.
+        /// </summary>
+        public int BanEntryId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the ban has been deleted.
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
         ///     Makes a query for ban history that this model can read.
         /// </summary>
         public static string MakeQuery(ulong xuid, string title, string endpoint)
         {
-            return $"BanHistory | where Xuid == {xuid} and Title == '{title}' and Endpoint == '{endpoint}' | project Xuid, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint";
+            return $"BanHistory | where Xuid == {xuid} and Title == '{title}' and Endpoint == '{endpoint}' | project Xuid, BanEntryId = coalesce(column_ifexists('BanEntryId', toint(-1)), toint(-1)), Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint";
         }
 
         /// <summary>
@@ -116,6 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         {
             return new LiveOpsBanHistory(
                 reader.Get<long>(nameof(Xuid)),
+                reader.Get<int>(nameof(BanEntryId)),
                 reader.Get<string>(nameof(Title)),
                 reader.Get<string>(nameof(RequesterObjectId)),
                 reader.Get<DateTime>(nameof(StartTimeUtc)),

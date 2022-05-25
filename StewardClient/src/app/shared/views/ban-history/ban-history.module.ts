@@ -21,6 +21,11 @@ import { WoodstockBanHistoryComponent } from './woodstock/woodstock-ban-history.
 import { WoodstockBanHistoryCompactComponent } from './woodstock/compact/woodstock-ban-history-compact.component';
 import { MatIconModule } from '@angular/material/icon';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
@@ -49,6 +54,11 @@ import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
     MatTooltipModule,
     StewardUserModule,
     MatIconModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    VerifyCheckboxModule,
+    StateManagersModule,
+    MonitorActionModule,
   ],
   exports: [
     WoodstockBanHistoryComponent,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -465,6 +466,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                             await
                                 this.banHistoryProvider.UpdateBanHistoryAsync(
                                         parameters.Xuid,
+                                        result.BanDescription.BanEntryId,
                                         TitleConstants.WoodstockCodeName,
                                         requesterObjectId,
                                         parameters,
@@ -484,6 +486,54 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("User banning has failed.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<UnbanResult> ExpireBanAsync(
+            int banEntryId,
+            string endpoint)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var forzaExpireBanParameters =
+                    this.mapper.Map<ServicesLiveOps.ForzaUserExpireBanParameters>(banEntryId);
+
+                ServicesLiveOps.ForzaUserExpireBanParameters[] parameterArray = { forzaExpireBanParameters };
+
+                var result = await this.woodstockService.ExpireBanEntriesAsync(parameterArray, 1, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Ban expiry has failed for ban ID: {banEntryId}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<UnbanResult> DeleteBanAsync(
+            int banEntryId,
+            string endpoint)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var banEntryIds = new int[] { banEntryId };
+            try
+            {
+                var result = await this.woodstockService.DeleteBanEntriesAsync(banEntryIds, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Ban deletion has failed for ban ID: {banEntryId}.", ex);
             }
         }
 

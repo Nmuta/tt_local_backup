@@ -22,3 +22,12 @@ export interface LiveOpsBanDescription {
 
 /** LiveOps model for multiple ban descriptions. */
 export type LiveOpsBanDescriptions = LiveOpsBanDescription[];
+
+/** LiveOps model for multiple ban descriptions with uniquely identifiable bans. */
+export interface LiveOpsExtendedBanDescription extends LiveOpsBanDescription {
+  isDeleted?: boolean;
+  banEntryId?: BigNumber;
+}
+
+/** LiveOps model for multiple extended ban descriptions. */
+export type LiveOpsExtendedBanDescriptions = LiveOpsBanDescription[];

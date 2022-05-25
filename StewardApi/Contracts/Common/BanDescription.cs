@@ -8,6 +8,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     public sealed class BanDescription
     {
         /// <summary>
+        ///     Gets or sets ban entry ID.
+        /// </summary>
+        public int BanEntryId { get; set; }
+
+        /// <summary>
         ///     Gets or sets the reason.
         /// </summary>
         public string Reason { get; set; }

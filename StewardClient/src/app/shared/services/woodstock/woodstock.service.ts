@@ -8,7 +8,7 @@ import {
 } from '@models/identity-query.model';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import {
-  LiveOpsBanDescriptions,
+  LiveOpsExtendedBanDescriptions,
   WoodstockBanRequest,
   WoodstockBanResult,
   WoodstockBanSummary,
@@ -65,6 +65,7 @@ import {
 import { HideableUgcFileType } from '@models/hideable-ugc.model';
 import { DeviceType, PegasusProjectionSlot } from '@models/enums';
 import { addQueryParamArray } from '@helpers/add-query-param-array';
+import { UnbanResult } from '@models/unban-result';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -201,10 +202,26 @@ export class WoodstockService {
     );
   }
 
-  /** Gets user flags by a XUID. */
-  public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsBanDescriptions> {
-    return this.apiService.getRequest$<LiveOpsBanDescriptions>(
+  /** Gets ban history by a XUID. */
+  public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsExtendedBanDescriptions> {
+    return this.apiService.getRequest$<LiveOpsExtendedBanDescriptions>(
       `${this.basePath}/player/xuid(${xuid})/banHistory`,
+    );
+  }
+
+  /** Expire bans by ban entry IDs. */
+  public expireBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apiService.postRequest$<UnbanResult>(
+      `${this.basePath}/ban/${banEntryId}/expire`,
+      null,
+    );
+  }
+
+  /** Delete bans by ban entry IDs. */
+  public deleteBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apiService.postRequest$<UnbanResult>(
+      `${this.basePath}/ban/${banEntryId}/delete`,
+      null,
     );
   }
 

@@ -259,11 +259,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       useClass: BigNumberInterceptor,
       multi: true,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: EndpointSelectionInterceptor,
-      multi: true,
-    },
   ],
   bootstrap: [AppComponent],
 })

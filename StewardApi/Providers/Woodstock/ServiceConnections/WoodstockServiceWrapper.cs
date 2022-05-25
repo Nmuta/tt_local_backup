@@ -237,6 +237,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return await userManagementService.BanUsers(banParameters, xuidCount).ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
+        public async Task<ServicesLiveOps.UserManagementService.ExpireBanEntriesOutput> ExpireBanEntriesAsync(
+            ServicesLiveOps.ForzaUserExpireBanParameters[] banParameters,
+            int entryCount,
+            string endpoint)
+        {
+            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userManagementService.ExpireBanEntries(banParameters, entryCount).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<ServicesLiveOps.UserManagementService.DeleteBanEntriesOutput> DeleteBanEntriesAsync(
+            int[] banParameters,
+            string endpoint)
+        {
+            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userManagementService.DeleteBanEntries(banParameters).ConfigureAwait(false);
+        }
+
         /// <inheritdoc/>
         public async Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(
             ulong xuid,

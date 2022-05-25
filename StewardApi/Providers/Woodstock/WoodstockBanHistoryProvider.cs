@@ -46,6 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <inheritdoc />
         public async Task UpdateBanHistoryAsync(
             ulong xuid,
+            int banEntryId,
             string title,
             string requesterObjectId,
             WoodstockBanParameters banParameters,
@@ -72,7 +73,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             };
 
             var banHistory = new LiveOpsBanHistory(
-                (long)xuid,
+                (long) xuid,
+                banEntryId,
                 title,
                 requesterObjectId,
                 banParameters.StartTimeUtc,

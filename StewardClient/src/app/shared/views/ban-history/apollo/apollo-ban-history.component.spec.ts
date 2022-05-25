@@ -2,8 +2,8 @@ import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockApolloService } from '@services/apollo/apollo.service.mock';
-
 import { ApolloBanHistoryComponent } from './apollo-ban-history.component';
+import { createMockPermissionsService } from '@services/permissions';
 
 describe('ApolloBanHistoryComponent', () => {
   let component: ApolloBanHistoryComponent;
@@ -12,7 +12,7 @@ describe('ApolloBanHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloBanHistoryComponent],
-      providers: [createMockApolloService()],
+      providers: [createMockApolloService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -383,6 +384,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<WoodstockLiveOpsContent.QuickChat, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ChatMessage));
+
+            this.CreateMap<int, ServicesLiveOps.ForzaUserExpireBanParameters>()
+                .ForMember(dest => dest.banEntryIds, opt => opt.MapFrom(src => new int[] { src }))
+                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => "Ban expired by Steward"));
+
+            this.CreateMap<ServicesLiveOps.ForzaUserUnBanResult, UnbanResult>();
         }
 
         private string PrepareDeviceType(string deviceType)

@@ -15,6 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// </summary>
         Task UpdateBanHistoryAsync(
             ulong xuid,
+            int banEntryId,
             string title,
             string requesterObjectId,
             WoodstockBanParameters banParameters,

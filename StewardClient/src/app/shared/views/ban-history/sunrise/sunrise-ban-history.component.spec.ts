@@ -2,8 +2,8 @@ import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
-
 import { SunriseBanHistoryComponent } from './sunrise-ban-history.component';
+import { createMockPermissionsService } from '@services/permissions';
 
 describe('SunriseBanHistoryComponent', () => {
   let component: SunriseBanHistoryComponent;
@@ -12,7 +12,7 @@ describe('SunriseBanHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseBanHistoryComponent],
-      providers: [createMockSunriseService()],
+      providers: [createMockSunriseService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

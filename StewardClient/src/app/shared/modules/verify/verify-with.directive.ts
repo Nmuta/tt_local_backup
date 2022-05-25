@@ -1,4 +1,4 @@
-import { Directive, forwardRef, Input } from '@angular/core';
+import { Directive, forwardRef, Input, Renderer2 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { BaseDirective } from '@components/base-component/base.directive';
@@ -36,7 +36,7 @@ export class VerifyWithButtonDirective extends BaseDirective implements DisableS
     this.checkbox$.next(value);
   }
 
-  constructor(private readonly host: MatButton) {
+  constructor(private readonly host: MatButton, private readonly renderer: Renderer2) {
     super();
 
     this.checkbox$.pipe(takeUntil(this.onDestroy$)).subscribe(checkbox => {
@@ -50,12 +50,18 @@ export class VerifyWithButtonDirective extends BaseDirective implements DisableS
       this.isVerified = checkbox.checked;
       this.updateHostState();
     });
+
+    renderer.listen(host._elementRef.nativeElement, 'click', () => {
+      this.clear();
+    });
   }
 
   /** Programmatically clear the verification. */
   public clear(): void {
     this.checkbox.checked = false;
     this.isVerified = false;
+    // Toggling checkbox from code doesn't trigger change callback. Need to manually emit.
+    this.checkbox.change.emit({ source: this.checkbox, checked: false });
     this.updateHostState();
   }
 
