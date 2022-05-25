@@ -27,7 +27,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
-        UserRole.CommunityManager)]
+        UserRole.CommunityManager,
+        UserRole.MediaTeam)]
     [LogTagTitle(TitleLogTags.Opus)]
     public sealed class OpusController : ControllerBase
     {

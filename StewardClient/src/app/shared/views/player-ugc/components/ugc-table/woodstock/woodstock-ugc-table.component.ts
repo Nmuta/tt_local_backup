@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { WoodstockService } from '@services/woodstock';
 import { pull } from 'lodash';
 import { renderGuard } from '@helpers/rxjs';
+import { PermissionsService } from '@services/permissions';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -20,8 +21,12 @@ import { renderGuard } from '@helpers/rxjs';
 export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH5;
 
-  constructor(protected dialog: MatDialog, private readonly woodstockService: WoodstockService) {
-    super();
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly woodstockService: WoodstockService,
+    permissionsService: PermissionsService,
+  ) {
+    super(permissionsService);
   }
 
   /** Opens the feature UGC modal. */

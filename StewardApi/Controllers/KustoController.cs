@@ -24,7 +24,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
-        UserRole.SupportAgentNew)]
+        UserRole.SupportAgentNew,
+        UserRole.MediaTeam)]
     [LogTagTitle(TitleLogTags.TitleAgnostic)]
     public class KustoController : Controller
     {
@@ -129,7 +130,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.CommunityManager,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
-            UserRole.SupportAgentNew)]
+            UserRole.SupportAgentNew,
+            UserRole.MediaTeam)]
         [SwaggerResponse(200, type: typeof(IEnumerable<Entitlement>))]
         public async Task<IActionResult> GetPlayerEntitlements(ulong xuid)
         {

@@ -1,2 +1,3 @@
 # Trying out MERGE DRIVER = union in hopes to stop merge conflicts: https://stackoverflow.com/questions/52182834/custom-git-merge-union-strategy-for-a-changelog
 .\CHANGELOG.component.html merge=union
+.\environments\app-data\changelog\2022-LATEST.changelog.ts merge=union

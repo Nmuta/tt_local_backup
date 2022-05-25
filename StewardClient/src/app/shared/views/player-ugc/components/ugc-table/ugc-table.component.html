@@ -76,10 +76,18 @@
         Copy UGC ID
       </button>
 
-      <button mat-raised-button color="accent" clickStop (click)="openFeatureUgcModal(entry)">
+      <button
+        mat-raised-button
+        color="accent"
+        clickStop
+        (click)="openFeatureUgcModal(entry)"
+        [disabled]="!entry.isPublic || !canFeatureUgc"
+      >
         <span
-          matTooltip="Cannot change featured status of private UGC content"
-          [matTooltipDisabled]="entry.isPublic"
+          [matTooltip]="
+            canFeatureUgc ? privateFeaturingDisabledTooltip : invalidRoleDisabledTooltip
+          "
+          [matTooltipDisabled]="entry.isPublic && canFeatureUgc"
           >{{ entry.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}</span
         >
       </button>
@@ -95,12 +103,14 @@
           stateManager
           [monitor]="entry.monitor"
           [waitOnMonitors]="allMonitors"
-          monitorDisable
           monitorWarn
           monitorWarnSnackbar
           monitorCompleteSnackbar
+          [disabled]="!canHideUgc || entry.monitor.isActive"
         >
-          Hide UGC
+          <span [matTooltip]="invalidRoleDisabledTooltip" [matTooltipDisabled]="canHideUgc"
+            >Hide UGC</span
+          >
         </button>
         <mat-checkbox clickStop #verifyHide matTooltip="Check to enable hide UGC.">
           Verify

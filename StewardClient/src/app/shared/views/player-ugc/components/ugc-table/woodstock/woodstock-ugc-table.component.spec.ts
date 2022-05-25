@@ -10,14 +10,14 @@ import { createMockWoodstockService, WoodstockService } from '@services/woodstoc
 import { EMPTY } from 'rxjs';
 import { PlayerUgcItemTableEntries } from '../ugc-table.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
   let fixture: ComponentFixture<WoodstockUgcTableComponent>;
   let mockWoodstockService: WoodstockService;
-  let mockMatDialog;
-
-  MatDialog;
+  let mockPermissionsService: PermissionsService;
+  let mockMatDialog: MatDialog;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,6 +25,7 @@ describe('WoodstockUgcTableComponent', () => {
       declarations: [WoodstockUgcTableComponent, BigJsonPipe],
       providers: [
         createMockWoodstockService(),
+        createMockPermissionsService(),
         {
           provide: MatDialog,
           useValue: { open: () => MatDialogRef },
@@ -37,6 +38,7 @@ describe('WoodstockUgcTableComponent', () => {
     component = fixture.componentInstance;
     mockMatDialog = TestBed.inject(MatDialog);
     mockWoodstockService = TestBed.inject(WoodstockService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
 
     fixture.detectChanges();
 
@@ -78,6 +80,62 @@ describe('WoodstockUgcTableComponent', () => {
         component.ngOnInit();
 
         expect(component.useExpandoColumnDef).toBeFalsy();
+      });
+
+      describe('When user has write permissions to feature UGC', () => {
+        beforeEach(() => {
+          mockPermissionsService.currentUserHasWritePermission = jasmine
+            .createSpy('currentUserHasWritePermission')
+            .and.returnValue(true);
+        });
+
+        it('should set canFeatureUgc to true', () => {
+          component.ngOnInit();
+
+          expect(component.canFeatureUgc).toBeTruthy();
+        });
+      });
+
+      describe('When user does not have write permissions to feature UGC', () => {
+        beforeEach(() => {
+          mockPermissionsService.currentUserHasWritePermission = jasmine
+            .createSpy('currentUserHasWritePermission')
+            .and.returnValue(false);
+        });
+
+        it('should set canFeatureUgc to false', () => {
+          component.ngOnInit();
+
+          expect(component.canFeatureUgc).toBeFalsy();
+        });
+      });
+
+      describe('When user has write permissions to hide UGC', () => {
+        beforeEach(() => {
+          mockPermissionsService.currentUserHasWritePermission = jasmine
+            .createSpy('currentUserHasWritePermission')
+            .and.returnValue(true);
+        });
+
+        it('should set canHideUgc to true', () => {
+          component.ngOnInit();
+
+          expect(component.canHideUgc).toBeTruthy();
+        });
+      });
+
+      describe('When user does not have write permissions to hide UGC', () => {
+        beforeEach(() => {
+          mockPermissionsService.currentUserHasWritePermission = jasmine
+            .createSpy('currentUserHasWritePermission')
+            .and.returnValue(false);
+        });
+
+        it('should set canHideUgc to false', () => {
+          component.ngOnInit();
+
+          expect(component.canHideUgc).toBeFalsy();
+        });
       });
     });
 

@@ -65,6 +65,14 @@ export const CommonAccessLevels = {
     UserRole.SupportAgentAdmin,
     UserRole.CommunityManager,
   ],
+  PlayerDetails: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.SupportAgent,
+    UserRole.SupportAgentNew,
+    UserRole.CommunityManager,
+    UserRole.MediaTeam,
+  ],
   Leaderboards: [
     UserRole.LiveOpsAdmin,
     UserRole.HorizonDesigner,
@@ -206,7 +214,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.UserDetails,
-    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
+    accessList: CommonAccessLevels.PlayerDetails,
     title: 'Player Details',
     subtitle: 'Detailed player info',
     imageUrl: undefined,

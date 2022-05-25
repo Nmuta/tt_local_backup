@@ -10,6 +10,7 @@ import { UgcType } from '@models/ugc-filters';
 import { Observable } from 'rxjs';
 import { pull } from 'lodash';
 import { renderGuard } from '@helpers/rxjs';
+import { PermissionsService } from '@services/permissions';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -20,8 +21,12 @@ import { renderGuard } from '@helpers/rxjs';
 export class SunriseUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH4;
 
-  constructor(protected dialog: MatDialog, private readonly sunriseService: SunriseService) {
-    super();
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly sunriseService: SunriseService,
+    permissionsService: PermissionsService,
+  ) {
+    super(permissionsService);
   }
 
   /** Opens the feature UGC modal. */

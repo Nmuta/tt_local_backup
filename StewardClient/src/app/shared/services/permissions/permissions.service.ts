@@ -9,6 +9,8 @@ export enum PermissionServiceTool {
   SetUserFlags,
   ConsoleBan,
   UnhideUgc,
+  HideUgc,
+  FeatureUgc,
 }
 
 /** Client permission service. */
@@ -33,6 +35,18 @@ export class PermissionsService {
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
+    ],
+    [PermissionServiceTool.HideUgc]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
+      UserRole.CommunityManager,
+    ],
+    [PermissionServiceTool.FeatureUgc]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
+      UserRole.CommunityManager,
     ],
   };
 

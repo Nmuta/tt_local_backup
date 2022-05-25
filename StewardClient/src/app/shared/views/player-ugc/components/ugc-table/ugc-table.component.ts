@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UgcType } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -60,6 +61,17 @@ export abstract class UgcTableBaseComponent
   public waitingForThumbnails = false;
   public allMonitors: ActionMonitor[] = [];
 
+  public canFeatureUgc: boolean = false;
+  public canHideUgc: boolean = false;
+
+  public readonly privateFeaturingDisabledTooltip =
+    'Cannot change featured status of private UGC content.';
+  public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
+
+  constructor(private readonly permissionService: PermissionsService) {
+    super();
+  }
+
   /** Opens the feature UGC modal. */
   public abstract openFeatureUgcModal(item: PlayerUgcItem): void;
   public abstract getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem>;
@@ -75,6 +87,13 @@ export abstract class UgcTableBaseComponent
       .subscribe(_event => {
         this.useExpandoColumnDef = this.shouldUseCondensedTableView();
       });
+
+    this.canFeatureUgc = this.permissionService.currentUserHasWritePermission(
+      PermissionServiceTool.FeatureUgc,
+    );
+    this.canHideUgc = this.permissionService.currentUserHasWritePermission(
+      PermissionServiceTool.HideUgc,
+    );
   }
 
   /** Angular hook. */

@@ -42,7 +42,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
-        UserRole.CommunityManager)]
+        UserRole.CommunityManager,
+        UserRole.MediaTeam)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",

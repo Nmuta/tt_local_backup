@@ -3,6 +3,8 @@
     /// <summary>
     ///     Represents the AAD app user roles.
     /// </summary>
+    #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    #pragma warning disable SA1600 // Elements should be documented
     public static class UserRole
     {
         public const string LiveOpsAdmin = "LiveOpsAdmin";
@@ -24,5 +26,7 @@
         public const string HorizonDesigner = "HorizonDesigner";
 
         public const string MotorsportDesigner = "MotorsportDesigner";
+
+        public const string MediaTeam = "MediaTeam";
     }
 }

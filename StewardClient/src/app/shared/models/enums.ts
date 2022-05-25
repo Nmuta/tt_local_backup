@@ -63,6 +63,7 @@ export enum UserRole {
   CommunityManager = 'CommunityManager',
   HorizonDesigner = 'HorizonDesigner',
   MotorsportDesigner = 'MotorsportDesigner',
+  MediaTeam = 'MediaTeam',
 }
 
 export enum NotificationHubEvents {

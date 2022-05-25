@@ -7,6 +7,12 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '1e13a1b0-44dc-48e8-8d97-9a8438f69cbf',
+      shortText: 'Add new MediaTeam role',
+      longText: [`MediaTeam role has read-only access to all data within the player details tool.`],
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserBanning },
       uuid: '68ad8f52-fb91-44af-b342-56460859df22',
       shortText: 'Correct light mode theming for Ban Options toggle group',

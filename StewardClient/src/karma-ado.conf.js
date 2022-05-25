@@ -48,6 +48,7 @@ module.exports = function (config) {
             '**/app/shared/interceptors/fake-api/**/*.ts',
             '**/app/pages/util/**/*',
             '**/helpers/types.ts',
+            '**/helpers/rxjs/render-guard.ts',
           ],
         },
         each: {
@@ -66,6 +67,7 @@ module.exports = function (config) {
             '**/app/shared/state/changelog/**/*.ts',
             '**/app/sidebars/changelog/**/*.ts',
             '**/helpers/types.ts',
+            '**/helpers/rxjs/render-guard.ts',
           ],
         },
       },
