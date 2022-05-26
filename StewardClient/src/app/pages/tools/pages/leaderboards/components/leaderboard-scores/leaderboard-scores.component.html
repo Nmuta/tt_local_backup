@@ -98,6 +98,16 @@
             <ng-template ngPluralCase="other">scores</ng-template>
           </span>
         </button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="disableExport"
+          matTooltip="Export Scores"
+          [downloadCsv]="exportableScores"
+          [filename]="exportFileName"
+        >
+          Export
+        </button>
         <mat-checkbox
           clickStop
           #verifyCheckboxMultiDelete

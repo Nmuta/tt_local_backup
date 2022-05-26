@@ -176,6 +176,10 @@ export function determineScoreTypeQualifier(scoreTypeId: BigNumber): string {
     return 'points';
   }
 
+  if (scoreTypeId.isEqualTo(LeaderboardScoreType.Laptime)) {
+    return 'seconds';
+  }
+
   return '';
 }
 

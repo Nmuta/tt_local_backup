@@ -33,6 +33,7 @@ import {
   getDeviceTypesFromQuery,
 } from '@models/leaderboards';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
 import { cloneDeep } from 'lodash';
 import { DateTime } from 'luxon';
@@ -84,6 +85,7 @@ enum LeaderboardView {
   selector: 'leaderboard-scores',
   templateUrl: './leaderboard-scores.component.html',
   styleUrls: ['./leaderboard-scores.component.scss'],
+  providers: [HumanizePipe],
 })
 export class LeaderboardScoresComponent
   extends BaseComponent
@@ -111,6 +113,9 @@ export class LeaderboardScoresComponent
   public selectedScores: LeaderboardScore[] = [];
   public allScores: LeaderboardScore[] = [];
   public filteredScores: LeaderboardScore[] = [];
+  public exportableScores: string[][];
+  public exportFileName: string;
+  public disableExport: boolean = true;
   public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
@@ -137,6 +142,7 @@ export class LeaderboardScoresComponent
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly snackbar: MatSnackBar,
+    private readonly humanizePipe: HumanizePipe,
   ) {
     super();
   }
@@ -165,7 +171,7 @@ export class LeaderboardScoresComponent
       )
       .subscribe(() => {
         this.filteredScores = this.filterScores(this.allScores);
-        this.leaderboardScores.data = this.filteredScores;
+        this.setLeaderboardScoresData(this.filteredScores);
       });
   }
 
@@ -309,7 +315,7 @@ export class LeaderboardScoresComponent
       this.filterFormControls.dateRange.enable();
     } else {
       this.filterFormControls.dateRange.disable();
-      this.leaderboardScores.data = this.allScores;
+      this.setLeaderboardScoresData(this.allScores);
     }
 
     // Make sure slide toggle matches the change event.
@@ -322,7 +328,7 @@ export class LeaderboardScoresComponent
     this.getLeaderboardScores$
       .pipe(
         tap(() => {
-          this.leaderboardScores.data = [];
+          this.setLeaderboardScoresData([]);
           this.selectedScores = [];
           this.isMultiDeleteActive = false;
           this.activeXuid = null;
@@ -362,7 +368,7 @@ export class LeaderboardScoresComponent
           this.paginator.pageSize = this.leaderboard.query.ps;
         }
 
-        this.leaderboardScores.data = this.allScores;
+        this.setLeaderboardScoresData(this.allScores);
       });
   }
 
@@ -409,6 +415,51 @@ export class LeaderboardScoresComponent
       const scoreDate = score.submissionTimeUtc.toLocal();
       return scoreDate >= startDate && scoreDate <= endDate;
     });
+  }
+
+  private setLeaderboardScoresData(scores: LeaderboardScore[]): void {
+    this.leaderboardScores.data = scores;
+    this.exportableScores = this.prepareExportableScores(scores);
+  }
+
+  private prepareExportableScores(scores: LeaderboardScore[]): string[][] {
+    let scoreType = this.scoreTypeQualifier ?? 'Score';
+    scoreType = this.humanizePipe.transform(scoreType);
+
+    const dateRange = this.filterFormControls.dateRange.value as DateRangePickerFormValue;
+    const startDate = dateRange.start.toLocal();
+    const endDate = dateRange.end.toLocal();
+
+    this.exportFileName = this.leaderboard?.metadata?.name;
+    if (this.filterFormControls.dateRange.enabled) {
+      this.exportFileName = `[${startDate.toISODate()}_to_${endDate.toISODate()}]`.concat(
+        this.exportFileName,
+      );
+    }
+
+    const newLeaderboardCsvData = [
+      [
+        'Position',
+        scoreType,
+        'Xuid',
+        'Submission Time (UTC)',
+        'Device Type',
+        'Leaderboard Entry ID',
+      ],
+    ];
+    for (const score of scores) {
+      newLeaderboardCsvData[newLeaderboardCsvData.length] = [
+        `${score.position}`, //Position
+        `${score.score}`, //Score
+        `${score.xuid}`, //Xuid
+        `${score.submissionTimeUtc}`, //Submission Time (UTC
+        `${score.deviceType}`, //DeviceType
+        `${score.id}`, //ID
+      ];
+    }
+
+    this.disableExport = scores.length === 0;
+    return newLeaderboardCsvData;
   }
 
   private unsetHighlightForAllLeaderboardScores() {

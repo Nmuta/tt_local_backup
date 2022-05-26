@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
+      uuid: 'd6d47959-e01d-48fe-bedd-a2845ade2941',
+      shortText: 'Add export functionality to Leaderboard scores.',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '1e13a1b0-44dc-48e8-8d97-9a8438f69cbf',
       shortText: 'Add new MediaTeam role',
