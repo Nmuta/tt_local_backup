@@ -246,7 +246,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             public Dependencies()
             {
                 this.WoodstockService
-                    .GetLeaderboardScoresAsync(Arg.Any<ServicesLiveOps.ForzaSearchLeaderboardsParameters>(), Arg.Any<int>(),
+                    .GetLeaderboardScoresAsync(Arg.Any<ServicesLiveOps.ForzaSearchLeaderboardsParametersV2>(), Arg.Any<int>(),
                         Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>());
                 this.PegasusService.GetCarClassesAsync().Returns(Fixture.Create<IEnumerable<CarClass>>());
                 this.PegasusService.GetLeaderboardsAsync().Returns(Fixture.Create<IEnumerable<Leaderboard>>());

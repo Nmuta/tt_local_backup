@@ -180,7 +180,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets supported gift types.
         /// </summary>
-        Task<ServicesLiveOps.GiftingManagementService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(
+        Task<ServicesLiveOps.GiftingManagementService.AdminGetSupportedGiftTypesV2Output> AdminGetSupportedGiftTypesAsync(
             int maxResults,
             string endpoint);
 
@@ -395,7 +395,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Gets leaderboard scores.
         /// </summary>
         Task<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
-            ServicesLiveOps.ForzaSearchLeaderboardsParameters searchParams,
+            ServicesLiveOps.ForzaSearchLeaderboardsParametersV2 searchParams,
             int startIndex,
             int maxResults,
             string endpoint);

@@ -99,14 +99,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
             pivotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pivotId));
 
-            var searchParams = new ServicesLiveOps.ForzaSearchLeaderboardsParameters()
+            var searchParams = new ServicesLiveOps.ForzaSearchLeaderboardsParametersV2()
             {
-                ScoreboardType = (byte)scoreboardType,
-                ScoreType = (byte)scoreType,
+                ScoreboardType = scoreboardType.ToString(),
+                ScoreType = scoreType.ToString(),
                 TrackId = trackId,
                 PivotId = pivotId,
                 DeviceTypes = this.mapper.SafeMap<ServicesLiveOps.ForzaLiveDeviceType[]>(deviceTypes),
-                ScoreView = (int)ScoreView.All,
+                ScoreView = ScoreView.All.ToString(),
                 Xuid = 1, // 1 = System ID
             };
 
@@ -136,14 +136,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
             pivotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pivotId));
 
-            var searchParams = new ServicesLiveOps.ForzaSearchLeaderboardsParameters()
+            var searchParams = new ServicesLiveOps.ForzaSearchLeaderboardsParametersV2()
             {
-                ScoreboardType = (byte)scoreboardType,
-                ScoreType = (byte)scoreType,
+                ScoreboardType = scoreboardType.ToString(),
+                ScoreType = scoreType.ToString(),
                 TrackId = trackId,
                 PivotId = pivotId,
                 DeviceTypes = this.mapper.SafeMap<ServicesLiveOps.ForzaLiveDeviceType[]>(deviceTypes),
-                ScoreView = (int)ScoreView.NearbyMe,
+                ScoreView = ScoreView.NearbyMe.ToString(),
                 Xuid = xuid,
             };
 
@@ -188,7 +188,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Builds string of leaderboard search parameters used for exception logging purposes.
         /// </summary>
-        private string BuildParametersErrorString(ServicesLiveOps.ForzaSearchLeaderboardsParameters parameters)
+        private string BuildParametersErrorString(ServicesLiveOps.ForzaSearchLeaderboardsParametersV2 parameters)
         {
             return $"(Xuid: {parameters.Xuid}) (ScoreboardType: {parameters.ScoreboardType}) (ScoreType: {parameters.ScoreType}) (ScoreView: {parameters.ScoreView}) (TrackId: {parameters.TrackId}) (PivotId: {parameters.PivotId})";
         }

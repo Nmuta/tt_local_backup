@@ -315,12 +315,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<ServicesLiveOps.GiftingManagementService.AdminGetSupportedGiftTypesOutput>
+        public async Task<ServicesLiveOps.GiftingManagementService.AdminGetSupportedGiftTypesV2Output>
             AdminGetSupportedGiftTypesAsync(int maxResults, string endpoint)
         {
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await giftingService.AdminGetSupportedGiftTypes(maxResults).ConfigureAwait(false);
+            return await giftingService.AdminGetSupportedGiftTypesV2(maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -332,7 +332,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGift(xuid, (int)itemType, itemValue).ConfigureAwait(false);
+            await giftingService.AdminSendItemGiftV2(xuid, itemType.ToString(), itemValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -350,7 +350,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGroupGift(groupId, (int)itemType, itemValue).ConfigureAwait(false);
+            await giftingService.AdminSendItemGroupGiftV2(groupId, itemType.ToString(), itemValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -638,14 +638,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         /// <inheritdoc/>
         public async Task<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
-            ServicesLiveOps.ForzaSearchLeaderboardsParameters searchParams,
+            ServicesLiveOps.ForzaSearchLeaderboardsParametersV2 searchParams,
             int startIndex,
             int maxResults,
             string endpoint)
         {
             var service = await this.liveProjectionServiceFactory.PrepareScoreboardManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            var result = await service.SearchLeaderboards(searchParams, startIndex, maxResults).ConfigureAwait(false);
+            var result = await service.SearchLeaderboardsV2(searchParams, startIndex, maxResults).ConfigureAwait(false);
 
             return result.results.Rows;
         }
