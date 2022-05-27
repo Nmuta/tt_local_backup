@@ -18,8 +18,21 @@
       <model-dump-simple-table
         [values]="source.processedModel.extractedNumbers.ids"
       ></model-dump-simple-table>
+      <model-dump-flags></model-dump-flags>
       <mat-card-actions align="end">
         <ng-content select="button"></ng-content>
+        <button
+          [disabled]="!canFeatureUgc"
+          mat-raised-button
+          color="primary"
+          (click)="featureUgcItem()"
+        >
+          <span
+            matTooltip="Cannot feature private UGC content"
+            [matTooltipDisabled]="canFeatureUgc"
+            >{{ ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}</span
+          >
+        </button>
       </mat-card-actions>
     </mat-card>
 
@@ -55,7 +68,6 @@
       <model-dump-number-table
         [values]="source.processedModel.extractedNumbers.other"
       ></model-dump-number-table>
-      <model-dump-flags></model-dump-flags>
     </mat-card>
 
     <div class="images">

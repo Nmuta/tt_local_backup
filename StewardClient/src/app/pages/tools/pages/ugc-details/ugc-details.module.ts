@@ -18,13 +18,14 @@ import { StandardFlagModule } from '@components/standard-flag/standard-flag.modu
 import { HelpModule } from '@shared/modules/help/help.module';
 import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { PipesModule } from '@shared/pipes/pipes.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { AuctionRoutingModule } from './ugc-details.routing';
 import { WoodstockLookupComponent } from './pages/woodstock-lookup/woodstock-lookup.component';
 import { SunriseLookupComponent } from './pages/sunrise-lookup/sunrise-lookup.component';
 import { WoodstockRedirectComponent } from './pages/woodstock-redirect/woodstock-redirect.component';
 import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redirect.component';
+import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -49,7 +50,6 @@ import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redir
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    PipesModule,
     MonitorActionModule,
     MatCardModule,
     StandardCopyModule,
@@ -60,6 +60,8 @@ import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redir
     MatTableModule,
     MatSortModule,
     HelpModule,
+    FeatureUgcModalModule,
+    PipesModule,
   ],
 })
 export class UgcDetailsModule {}

@@ -46,7 +46,6 @@ export class PermissionsService {
     [PermissionServiceTool.FeatureUgc]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
       UserRole.CommunityManager,
     ],
     [PermissionServiceTool.Unban]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
