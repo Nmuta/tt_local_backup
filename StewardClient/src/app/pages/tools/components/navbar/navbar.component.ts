@@ -116,7 +116,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
       this.notificationColor = unreadNotifications.some(
         n => n.status === BackgroundJobStatus.Failed,
       )
-        ? 'warn'
+        ? 'accent'
         : undefined;
     });
   }

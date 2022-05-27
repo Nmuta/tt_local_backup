@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '829603f4-1411-441d-8123-3a3694a1b514',
+      shortText: 'Fix color contrast issues in ban duration selector and notifications count icon.',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'a6047488-182f-4b0d-93f4-4c85c5c9d127',
       shortText: 'Add UGC feature button to UGC details',
