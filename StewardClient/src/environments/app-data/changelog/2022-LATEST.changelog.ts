@@ -19,6 +19,16 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: '5a8d7afa-e87f-4d99-b8af-342134bb09fe',
+      shortText: 'Link XUIDs to their player details page.',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '5c7fbae0-affa-4954-9546-7009b1e7a9e4',
+      shortText: 'Link UGC search to UGC details.',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: '1e13a1b0-44dc-48e8-8d97-9a8438f69cbf',
       shortText: 'Add new MediaTeam role',
       longText: [`MediaTeam role has read-only access to all data within the player details tool.`],

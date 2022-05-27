@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UgcType } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { GameTitle } from '@models/enums';
 import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
@@ -30,6 +31,7 @@ export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
 
 /** Extended type from HideableUgc. */
 export type PlayerUgcItemTableEntries = PlayerUgcItem & {
+  ugcDetailsLink?: string;
   monitor?: ActionMonitor;
 };
 
@@ -60,6 +62,7 @@ export abstract class UgcTableBaseComponent
   public expandoColumnDef = UGC_TABLE_COLUMNS_EXPANDO;
   public waitingForThumbnails = false;
   public allMonitors: ActionMonitor[] = [];
+  public ugcDetailsLinkSupported: boolean = true;
 
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
@@ -67,6 +70,8 @@ export abstract class UgcTableBaseComponent
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
+
+  public abstract gameTitle: GameTitle;
 
   constructor(private readonly permissionService: PermissionsService) {
     super();
@@ -102,6 +107,11 @@ export abstract class UgcTableBaseComponent
       const ugcItemsToProcess: PlayerUgcItemTableEntries[] = this.content;
 
       ugcItemsToProcess.forEach(item => {
+        if (this.ugcDetailsLinkSupported) {
+          item.ugcDetailsLink = `/app/tools/ugc-details/${this.gameTitle}/${
+            item.id
+          }/${item.type.toLowerCase()}`;
+        }
         item.monitor = new ActionMonitor(`POST Hide UGC with ID: ${item.id}`);
         this.allMonitors.push(item.monitor);
       });

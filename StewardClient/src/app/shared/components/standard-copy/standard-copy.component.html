@@ -6,6 +6,7 @@
   mat-button
   [cdkCopyToClipboard]="textToCopy"
   (cdkCopyToClipboardCopied)="onCopy($event)"
+  [class.always-show]="alwaysShowIcon"
   aria-label="Copy"
   clickStop
 >

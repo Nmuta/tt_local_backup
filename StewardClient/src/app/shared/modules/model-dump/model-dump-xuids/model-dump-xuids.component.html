@@ -3,7 +3,16 @@
     <th>{{ e.name }}</th>
     <!-- TODO: This should probably look up the xuid and print out some user meta information if possible -->
     <td>
-      <standard-copy>{{ e.value }}</standard-copy>
+      <standard-copy [text]="e.value.toString()" [alwaysShowIcon]="true">
+        <a
+          mat-button
+          matTooltip="Go to player details for XUID"
+          [routerLink]="playerDetailsRoute"
+          [queryParams]="{ lookupType: 'xuid', lookupName: e.value.toString() }"
+        >
+          {{ e.value }}
+        </a>
+      </standard-copy>
     </td>
   </tr>
 </table>

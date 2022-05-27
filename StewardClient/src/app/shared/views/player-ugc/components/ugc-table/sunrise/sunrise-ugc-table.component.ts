@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { MatDialog } from '@angular/material/dialog';
 import { SunriseFeatureUgcModalComponent } from '@views/feature-ugc-modal/sunrise/sunrise-feature-ugc-modal.component';
@@ -19,7 +19,7 @@ import { PermissionsService } from '@services/permissions';
   styleUrls: ['../ugc-table.component.scss'],
 })
 export class SunriseUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
 
   constructor(
     private readonly dialog: MatDialog,

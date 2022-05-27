@@ -5,7 +5,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
   selector: '[clickStop]',
 })
 export class ClickStopDirective {
-  private readonly elementsAllowDefault: string[] = ['mat-checkbox'];
+  private readonly elementsAllowDefault: string[] = ['mat-checkbox', 'a'];
 
   constructor(private elementRef: ElementRef) {}
 

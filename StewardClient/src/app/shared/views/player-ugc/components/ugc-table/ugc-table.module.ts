@@ -22,6 +22,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { RouterModule } from '@angular/router';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -47,7 +48,9 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
     MonitorActionModule,
     StateManagersModule,
     MatSnackBarModule,
+    MatIconModule,
     VerifyCheckboxModule,
+    RouterModule,
   ],
   exports: [SunriseUgcTableComponent, WoodstockUgcTableComponent],
 })

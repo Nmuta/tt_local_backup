@@ -30,7 +30,9 @@ table {
   }
 
   .mat-column-actions {
-    button {
+    @include table-width($table-column-width-300);
+    button,
+    a {
       margin-right: $gap-small;
       margin-left: $gap-small;
     }
@@ -39,7 +41,8 @@ table {
       display: flex;
       align-items: baseline;
 
-      button {
+      button,
+      a {
         margin-right: $gap-small;
         display: inline-block;
       }
@@ -66,7 +69,8 @@ table {
     }
   }
 
-  button {
+  button:not(.ignore-min-size),
+  a:not(.ignore-min-size) {
     min-width: $button-min-size;
     margin-bottom: $gap-small;
     display: block;
@@ -78,6 +82,11 @@ table {
 
   .mat-stroked-button {
     background-color: app-color-default-contrast($app-primary);
+  }
+
+  .inline-buttons > button,
+  .inline-buttons > a {
+    display: inline-block;
   }
 }
 

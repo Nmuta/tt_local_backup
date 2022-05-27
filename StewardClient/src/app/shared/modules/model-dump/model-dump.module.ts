@@ -19,6 +19,9 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 import { ModelDumpHumanizeArrayTableComponent } from './model-dump-simple/model-dump-humanize-array-table/model-dump-humanize-array-table.component';
 import { ModelDumpImagesComponent } from './model-dump-images/model-dump-images.component';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** A collection of utilities for rapidly outputting a raw model onto a page. */
 @NgModule({
@@ -45,6 +48,9 @@ import { ModelDumpImagesComponent } from './model-dump-images/model-dump-images.
     MatIconModule,
     LuxonModule,
     NgxHumanizeDurationModule,
+    MatButtonModule,
+    MatTooltipModule,
+    RouterModule,
   ],
   exports: [
     ModelDumpComponent,

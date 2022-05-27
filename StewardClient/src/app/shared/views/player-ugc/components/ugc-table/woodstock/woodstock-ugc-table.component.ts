@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { MatDialog } from '@angular/material/dialog';
 import { WoodstockFeatureUgcModalComponent } from '@views/feature-ugc-modal/woodstock/woodstock-feature-ugc-modal.component';
@@ -19,7 +19,7 @@ import { PermissionsService } from '@services/permissions';
   styleUrls: ['../ugc-table.component.scss'],
 })
 export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 
   constructor(
     private readonly dialog: MatDialog,

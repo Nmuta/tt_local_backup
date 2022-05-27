@@ -18,6 +18,7 @@ const AfterCopyFailedTooltip = 'Failed';
 export class StandardCopyComponent extends BaseComponent implements AfterViewInit {
   @ViewChild('content', { read: ElementRef, static: true }) content: ElementRef;
   @ViewChild('tooltip', { static: true }) tooltip: MatTooltip;
+  @Input() alwaysShowIcon: boolean = false;
 
   /** When true, suppresses errors. */
   @Input() public noError = false;
