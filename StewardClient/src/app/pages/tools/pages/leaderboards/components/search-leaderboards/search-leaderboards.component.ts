@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
@@ -9,13 +9,14 @@ import {
   isValidLeaderboardQuery,
   Leaderboard,
   toLeaderboardQuery,
+  LeaderboardEnvironment,
 } from '@models/leaderboards';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumberValidators } from '@shared/validators/bignumber-validators';
 import BigNumber from 'bignumber.js';
 import { keys, unionBy } from 'lodash';
 import { Observable } from 'rxjs';
-import { map, startWith, takeUntil, debounceTime, tap } from 'rxjs/operators';
+import { map, startWith, takeUntil, debounceTime, tap, pairwise, filter } from 'rxjs/operators';
 
 /** Available filter types for leaderboards. */
 enum LeaderboardFilterType {
@@ -39,7 +40,7 @@ interface LeaderboardFilterGroup {
 /** Service contract for search leaderboards. */
 export interface SearchLeaderboardsContract {
   /** Gets list of all leaderboards. */
-  getLeaderboards$(): Observable<Leaderboard[]>;
+  getLeaderboards$(pegasusEnvironment: string): Observable<Leaderboard[]>;
 }
 
 /** Displays the search leaderboards tool. */
@@ -59,10 +60,14 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   );
   /** The currently selected filters. */
   public selectedFilters: LeaderboardFilter[] = [];
+
   /** Possible device type filters */
   public readonly DeviceTypes = keys(DeviceType).filter(
     deviceType => deviceType !== DeviceType.All,
   );
+
+  /** Possible environment selections */
+  public readonly LeaderboardEnvironments = keys(LeaderboardEnvironment);
 
   public allLeaderboards: Leaderboard[] = [];
   /** Leaderboards available with the selected filters. */
@@ -81,6 +86,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     leaderboard: new FormControl(''),
     xuid: new FormControl('', [BigNumberValidators.isBigNumber()]),
     deviceTypes: new FormControl([]),
+    leaderboardEnvironment: new FormControl(LeaderboardEnvironment.Prod, [Validators.required]),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -111,7 +117,8 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
       throw new Error('No service is defined for search leaderboard.');
     }
 
-    this.setupLeaderboards();
+    this.listenToTargetEnvironmentChanges();
+    this.setupLeaderboards(true);
     this.listenToLeaderboardInputChanges();
   }
 
@@ -172,7 +179,11 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   public setLeaderboardQueryParams(): void {
     const leaderboard = this.formControls.leaderboard.value as Leaderboard;
     const deviceTypes = this.formControls.deviceTypes.value as DeviceType[];
+    const targetEnvironment = this.formControls.leaderboardEnvironment
+      .value as LeaderboardEnvironment;
+
     leaderboard.deviceTypes = deviceTypes;
+    leaderboard.leaderboardEnvironment = targetEnvironment;
     const leaderboardQuery = toLeaderboardQuery(leaderboard);
     const queryParams = {};
 
@@ -193,16 +204,20 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     });
   }
 
-  private setupLeaderboards(): void {
+  private setupLeaderboards(prefillParams: boolean): void {
+    this.getLeaderboards = this.getLeaderboards.repeat();
     this.service
-      .getLeaderboards$()
+      .getLeaderboards$(this.formControls.leaderboardEnvironment.value)
       .pipe(
         this.getLeaderboards.monitorSingleFire(),
         tap(leaderboards => {
           // Try best to prefill leaderboard and xuid form controls.
           const params = this.activatedRoute.snapshot.queryParams;
-          this.prefillLeaderboardWithParams(params, leaderboards);
-          this.prefillOptionalFiltersWithParams(params);
+          if (prefillParams) {
+            this.prefillEnvironmentWithParams(params);
+            this.prefillLeaderboardWithParams(params, leaderboards);
+            this.prefillOptionalFiltersWithParams(params);
+          }
         }),
         takeUntil(this.onDestroy$),
       )
@@ -238,6 +253,25 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
       )
       .subscribe(data => {
         this.autocompleteLeadeboards = data;
+      });
+  }
+
+  private listenToTargetEnvironmentChanges(): void {
+    this.formControls.leaderboardEnvironment.valueChanges
+      .pipe(
+        startWith(null),
+        pairwise(),
+        filter(([o, n]) => {
+          return o !== n;
+        }),
+        map(([_o, n]) => n),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.formControls.leaderboard.setValue('');
+        this.formControls.filters.setValue([]);
+        this.formControls.xuid.setValue('');
+        this.setupLeaderboards(false);
       });
   }
 
@@ -294,6 +328,15 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         .filter(deviceType => !!deviceType);
 
       this.formControls.deviceTypes.setValue(foundDeviceTypes);
+    }
+  }
+
+  private prefillEnvironmentWithParams(params: Params): void {
+    const query = paramsToLeadboardQuery(params);
+    const leaderboardEnvironmentParamExists = params['leaderboardEnvironment'];
+
+    if (leaderboardEnvironmentParamExists && !!query.leaderboardEnvironment) {
+      this.formControls.leaderboardEnvironment.setValue(query.leaderboardEnvironment.toString());
     }
   }
 

@@ -46,10 +46,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <inheritdoc />
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
 
-        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync()
+        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment)
         {
             var exceptions = new List<Exception>();
-            var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync().SuccessOrDefault(Array.Empty<Leaderboard>(), exceptions);
+            var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<Leaderboard>(), exceptions);
             var getCarClasses = this.pegasusService.GetCarClassesAsync().SuccessOrDefault(Array.Empty<CarClass>(), exceptions);
 
             await Task.WhenAll(getPegasusLeaderboards, getCarClasses).ConfigureAwait(false);

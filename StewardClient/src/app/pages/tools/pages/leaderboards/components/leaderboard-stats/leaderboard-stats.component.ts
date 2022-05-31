@@ -16,6 +16,7 @@ import {
   LeaderboardQuery,
   LeaderboardScore,
   getDeviceTypesFromQuery,
+  getLspEndpointFromLeaderboardEnvironment,
 } from '@models/leaderboards';
 import {
   LINE_CHART_SD_THRESHOLD_COLORS,
@@ -38,6 +39,7 @@ export interface LeaderboardStatsContract {
     deviceTypes: DeviceType[],
     startAt: BigNumber,
     maxResults?: BigNumber,
+    endpointKeyOverride?: string,
   ): Observable<LeaderboardScore[]>;
 }
 
@@ -136,6 +138,7 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
         getDeviceTypesFromQuery(query),
         ZERO,
         new BigNumber(this.maxNumberOfScores),
+        getLspEndpointFromLeaderboardEnvironment(query.leaderboardEnvironment),
       )
       .pipe(
         this.getLeaderboardScoresMonitor.monitorSingleFire(),

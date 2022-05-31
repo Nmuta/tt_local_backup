@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Gets leaderboard metadata.
         /// </summary>
-        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync();
+        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment);
 
         /// <summary>
         ///     Gets leaderboard scores.

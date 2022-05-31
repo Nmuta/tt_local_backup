@@ -84,13 +84,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync()
+        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment)
         {
-            var leaderboardsKey = $"{PegasusBaseCacheKey}Leaderboards";
+            var leaderboardsKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_Leaderboards";
 
             async Task<IEnumerable<Leaderboard>> GetLeaderboards()
             {
-                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<LeaderboardV2>>(CMSFileNames.LeaderboardsV2, this.cmsEnvironment).ConfigureAwait(false); ;
+                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<LeaderboardV2>>(CMSFileNames.LeaderboardsV2, pegasusEnvironment).ConfigureAwait(false);
                 var leaderboards = this.mapper.Map<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
                 this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);

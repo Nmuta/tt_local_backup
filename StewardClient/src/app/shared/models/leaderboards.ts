@@ -30,6 +30,9 @@ export interface UpsteamLeaderboard {
 }
 
 export interface Leaderboard extends UpsteamLeaderboard {
+  /** Target environment */
+  leaderboardEnvironment?: LeaderboardEnvironment;
+  /** Paginator index */
   /** Client-side only to track device type filters. */
   deviceTypes?: DeviceType[];
 }
@@ -88,6 +91,8 @@ export interface UpstreamLeaderboardQuery {
 
 /** Interface of required params for a leaderboard query. */
 export interface LeaderboardQuery extends UpstreamLeaderboardQuery {
+  /** Target environment */
+  leaderboardEnvironment?: LeaderboardEnvironment;
   /** Paginator index */
   [PaginatorQueryParams.Index]?: number;
   /** Paginator size */
@@ -109,6 +114,12 @@ export enum LeaderboardValidationType {
   Rival = 'RivalValidation',
 }
 
+/** Available environments for leaderboards. */
+export enum LeaderboardEnvironment {
+  Prod = 'prod',
+  Dev = 'dev',
+}
+
 /** Generates a leaderboard query based on a provided leaderboard. */
 export function toLeaderboardQuery(leaderboard: Leaderboard): LeaderboardQuery {
   return {
@@ -117,6 +128,7 @@ export function toLeaderboardQuery(leaderboard: Leaderboard): LeaderboardQuery {
     gameScoreboardId: leaderboard.gameScoreboardId,
     trackId: leaderboard.trackId,
     deviceTypes: leaderboard.deviceTypes.join(','),
+    leaderboardEnvironment: leaderboard.leaderboardEnvironment,
     ps: LEADERBOARD_PAGINATOR_SIZES[0],
   };
 }
@@ -128,6 +140,7 @@ export function paramsToLeadboardQuery(params: Params): Partial<LeaderboardQuery
   const gameScoreboardId = tryParseBigNumber(params['gameScoreboardId']);
   const trackId = tryParseBigNumber(params['trackId']);
   const deviceTypes: string = params['deviceTypes'];
+  const leaderboardEnvironment: LeaderboardEnvironment = params['leaderboardEnvironment'];
 
   const paginatorIndex = tryParseBigNumber(params['pi'])?.toNumber() ?? undefined;
   const paginatorSize =
@@ -145,6 +158,7 @@ export function paramsToLeadboardQuery(params: Params): Partial<LeaderboardQuery
     xuid: xuid,
     pi: paginatorIndex,
     ps: paginatorSize,
+    leaderboardEnvironment: leaderboardEnvironment,
   } as LeaderboardQuery;
 }
 
@@ -201,4 +215,18 @@ export function getDeviceTypesFromQuery(query: LeaderboardQuery): DeviceType[] {
     .split(',')
     .map(deviceType => DeviceType[deviceType])
     .filter(deviceType => !!deviceType);
+}
+
+/** Gets LSP endpoing from Leaderboard Environment. */
+export function getLspEndpointFromLeaderboardEnvironment(
+  targetEnvironment: LeaderboardEnvironment,
+) {
+  switch (targetEnvironment.toLowerCase()) {
+    case LeaderboardEnvironment.Dev:
+      return 'Studio';
+    case LeaderboardEnvironment.Prod:
+      return 'Retail';
+    default:
+      throw new Error(`Unsupported environment ${targetEnvironment}`);
+  }
 }

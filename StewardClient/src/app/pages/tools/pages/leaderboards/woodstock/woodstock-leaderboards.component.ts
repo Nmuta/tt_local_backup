@@ -92,6 +92,7 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
               this.temporaryLeaderboard.query.scoreTypeId,
               this.temporaryLeaderboard.query.trackId,
               this.temporaryLeaderboard.query.gameScoreboardId,
+              this.temporaryLeaderboard.query.leaderboardEnvironment,
             )
             .pipe(
               this.getActionMonitor.monitorSingleFire(),

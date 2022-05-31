@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Caching.Memory;
@@ -973,7 +972,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        [LogTagDependency(DependencyLogTags.Lsp| DependencyLogTags.BackgroundProcessing)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
@@ -2061,9 +2060,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IEnumerable<Leaderboard>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Leaderboards)]
-        public async Task<IActionResult> GetLeaderboards()
+        public async Task<IActionResult> GetLeaderboards([FromQuery] string pegasusEnvironment = null)
         {
-            var leaderboards = await this.leaderboardProvider.GetLeaderboardsAsync().ConfigureAwait(true);
+            var environment = WoodstockPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
+
+            var leaderboards = await this.leaderboardProvider.GetLeaderboardsAsync(environment).ConfigureAwait(true);
 
             return this.Ok(leaderboards);
         }
@@ -2084,9 +2085,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] ScoreboardType scoreboardType,
             [FromQuery] ScoreType scoreType,
             [FromQuery] int trackId,
-            [FromQuery] string pivotId)
+            [FromQuery] string pivotId,
+            [FromQuery] string pegasusEnvironment = null)
         {
-            var allLeaderboards = await this.leaderboardProvider.GetLeaderboardsAsync().ConfigureAwait(true);
+            var environment = WoodstockPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
+
+            var allLeaderboards = await this.leaderboardProvider.GetLeaderboardsAsync(environment).ConfigureAwait(true);
 
             var leaderboard = allLeaderboards.FirstOrDefault(leaderboard => leaderboard.ScoreboardTypeId == (int)scoreboardType
                 && leaderboard.ScoreTypeId == (int)scoreType

@@ -14,7 +14,7 @@ import faker from '@faker-js/faker';
 
 import { LeaderboardStatsComponent, LeaderboardStatsContract } from './leaderboard-stats.component';
 import { toDateTime } from '@helpers/luxon';
-import { LeaderboardQuery, LeaderboardScore } from '@models/leaderboards';
+import { LeaderboardEnvironment, LeaderboardQuery, LeaderboardScore } from '@models/leaderboards';
 import { NgxLineChartClickEvent } from '@models/ngx-charts';
 import { SimpleChanges } from '@angular/core';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
@@ -144,6 +144,7 @@ describe('LeaderboardStatsComponent', () => {
         gameScoreboardId: fakeBigNumber(),
         trackId: fakeBigNumber(),
         deviceTypes: '',
+        leaderboardEnvironment: LeaderboardEnvironment.Dev,
       };
 
       const changesWithQuery: SimpleChanges = {

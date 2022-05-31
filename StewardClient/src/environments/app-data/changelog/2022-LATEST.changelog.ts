@@ -19,6 +19,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
+      uuid: 'e58afaac-e7c0-4194-a7a1-0c789cf858db',
+      shortText: 'Add environment selection to Leaderboard lookup.',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: 'd6d47959-e01d-48fe-bedd-a2845ade2941',
       shortText: 'Add export functionality to Leaderboard scores.',
     },

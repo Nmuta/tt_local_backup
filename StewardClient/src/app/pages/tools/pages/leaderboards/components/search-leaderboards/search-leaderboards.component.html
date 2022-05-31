@@ -18,6 +18,18 @@
         <form [formGroup]="formGroup">
           <div class="line-break">
             <mat-form-field appearance="fill">
+              <mat-label>Leaderboard Environment</mat-label>
+              <mat-select [formControl]="formControls.leaderboardEnvironment">
+                <mat-option *ngFor="let type of LeaderboardEnvironments" [value]="type">{{
+                  type | deppoh
+                }}</mat-option>
+              </mat-select>
+              <mat-hint>Select an Environment</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="line-break">
+            <mat-form-field appearance="fill">
               <mat-label>Leaderboard Filters</mat-label>
               <mat-select
                 [formControl]="formControls.filters"

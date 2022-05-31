@@ -31,6 +31,7 @@ import {
   LEADERBOARD_PAGINATOR_SIZES,
   generateLeaderboardMetadataString,
   getDeviceTypesFromQuery,
+  getLspEndpointFromLeaderboardEnvironment,
 } from '@models/leaderboards';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
@@ -47,6 +48,7 @@ export interface LeaderboardScoresContract {
     scoreTypeId: BigNumber,
     trackId: BigNumber,
     pivotId: BigNumber,
+    pegasusEnvironment: string,
   ): Observable<Leaderboard>;
 
   /** Gets leaderboard scores from top of leaderboard. */
@@ -58,6 +60,7 @@ export interface LeaderboardScoresContract {
     deviceTypes: DeviceType[],
     startAt: BigNumber,
     maxResults?: BigNumber,
+    endpointKeyOverride?: string,
   ): Observable<LeaderboardScore[]>;
 
   /** Gets leaderboard scores near player XUID. */
@@ -69,10 +72,14 @@ export interface LeaderboardScoresContract {
     pivotId: BigNumber,
     deviceTypes: DeviceType[],
     maxResults?: BigNumber,
+    endpointKeyOverride?: string,
   ): Observable<LeaderboardScore[]>;
 
   /** Deletes leaderboard scores. */
-  deleteLeaderboardScores$(scoreIds: GuidLikeString[]): Observable<void>;
+  deleteLeaderboardScores$(
+    scoreIds: GuidLikeString[],
+    endpointKeyOverride?: string,
+  ): Observable<void>;
 }
 
 enum LeaderboardView {
@@ -246,7 +253,11 @@ export class LeaderboardScoresComponent
 
     const scoreIds = scores.map(score => score.id);
     this.service
-      .deleteLeaderboardScores$(scoreIds)
+      .deleteLeaderboardScores$(
+        scoreIds,
+        getLspEndpointFromLeaderboardEnvironment(this.leaderboard.query.leaderboardEnvironment),
+      )
+
       .pipe(this.deleteLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.getLeaderboardScores$.next(this.leaderboard.query);
@@ -382,6 +393,8 @@ export class LeaderboardScoresComponent
         query.trackId,
         query.gameScoreboardId,
         getDeviceTypesFromQuery(query),
+        undefined,
+        getLspEndpointFromLeaderboardEnvironment(query.leaderboardEnvironment),
       )
       .pipe(
         tap(scores => {
@@ -403,6 +416,8 @@ export class LeaderboardScoresComponent
       query.gameScoreboardId,
       getDeviceTypesFromQuery(query),
       new BigNumber(0),
+      undefined,
+      getLspEndpointFromLeaderboardEnvironment(query.leaderboardEnvironment),
     );
   }
 

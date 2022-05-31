@@ -631,8 +631,10 @@ export class WoodstockService {
   }
 
   /** Gets leaderboards. */
-  public getLeaderboards$(): Observable<Leaderboard[]> {
-    return this.apiService.getRequest$<Leaderboard[]>(`${this.basePath}/leaderboards`);
+  public getLeaderboards$(pegasusEnvironment: string): Observable<Leaderboard[]> {
+    const params = new HttpParams().set('pegasusEnvironment', pegasusEnvironment);
+
+    return this.apiService.getRequest$<Leaderboard[]>(`${this.basePath}/leaderboards`, params);
   }
 
   /** Gets leaderboard metadata. */
@@ -641,12 +643,14 @@ export class WoodstockService {
     scoreTypeId: BigNumber,
     trackId: BigNumber,
     pivotId: BigNumber,
+    pegasusEnvironment: string,
   ): Observable<Leaderboard> {
     const params = new HttpParams()
       .set('scoreboardType', scoreboardTypeId.toString())
       .set('scoreType', scoreTypeId.toString())
       .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString());
+      .set('pivotId', pivotId.toString())
+      .set('pegasusEnvironment', pegasusEnvironment);
 
     return this.apiService.getRequest$<Leaderboard>(
       `${this.basePath}/leaderboard/metadata`,
@@ -663,6 +667,7 @@ export class WoodstockService {
     deviceTypes: DeviceType[],
     startAt: BigNumber,
     maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS),
+    endpointKeyOverride?: string,
   ): Observable<LeaderboardScore[]> {
     let params = new HttpParams()
       .set('scoreboardType', scoreboardTypeId.toString())
@@ -671,12 +676,17 @@ export class WoodstockService {
       .set('pivotId', pivotId.toString())
       .set('startAt', startAt.toString())
       .set('maxResults', maxResults.toString());
-
     params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
+
+    let headers = new HttpHeaders();
+    if (!!endpointKeyOverride) {
+      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
+    }
 
     return this.apiService.getRequest$<LeaderboardScore[]>(
       `${this.basePath}/leaderboard/scores/top`,
       params,
+      headers,
     );
   }
 
@@ -689,6 +699,7 @@ export class WoodstockService {
     pivotId: BigNumber,
     deviceTypes: DeviceType[],
     maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS),
+    endpointKeyOverride?: string,
   ): Observable<LeaderboardScore[]> {
     let params = new HttpParams()
       .set('scoreboardType', scoreboardTypeId.toString())
@@ -696,20 +707,35 @@ export class WoodstockService {
       .set('trackId', trackId.toString())
       .set('pivotId', pivotId.toString())
       .set('maxResults', maxResults.toString());
-
     params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
+
+    let headers = new HttpHeaders();
+    if (!!endpointKeyOverride) {
+      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
+    }
 
     return this.apiService.getRequest$<LeaderboardScore[]>(
       `${this.basePath}/leaderboard/scores/near-player/${xuid}`,
       params,
+      headers,
     );
   }
 
   /** Deletes leaderboard scores. */
-  public deleteLeaderboardScores$(scoreIds: GuidLikeString[]): Observable<void> {
+  public deleteLeaderboardScores$(
+    scoreIds: GuidLikeString[],
+    endpointKeyOverride?: string,
+  ): Observable<void> {
+    let headers = new HttpHeaders();
+    if (!!endpointKeyOverride) {
+      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
+    }
+
     return this.apiService.postRequest$<void>(
       `${this.basePath}/leaderboard/scores/delete`,
       scoreIds,
+      undefined,
+      headers,
     );
   }
 }

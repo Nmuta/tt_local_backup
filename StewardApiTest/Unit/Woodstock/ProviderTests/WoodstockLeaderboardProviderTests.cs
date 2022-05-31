@@ -109,7 +109,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
 
             // Act.
-            Func<Task<IEnumerable<LeaderboardScore>>> action = async () => 
+            Func<Task<IEnumerable<LeaderboardScore>>> action = async () =>
                 await provider.GetLeaderboardScoresAsync(scoreboardType, scoreType, trackId, pivotId, deviceTypes, startAt, maxResults, null).ConfigureAwait(false);
 
             // Assert.
@@ -249,7 +249,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                     .GetLeaderboardScoresAsync(Arg.Any<ServicesLiveOps.ForzaSearchLeaderboardsParametersV2>(), Arg.Any<int>(),
                         Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>());
                 this.PegasusService.GetCarClassesAsync().Returns(Fixture.Create<IEnumerable<CarClass>>());
-                this.PegasusService.GetLeaderboardsAsync().Returns(Fixture.Create<IEnumerable<Leaderboard>>());
+                this.PegasusService.GetLeaderboardsAsync(Arg.Any<string>()).Returns(Fixture.Create<IEnumerable<Leaderboard>>());
                 this.Mapper.Map<IEnumerable<LeaderboardScore>>(Arg.Any<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>())
                     .Returns(Fixture.Create<IEnumerable<LeaderboardScore>>());
             }
