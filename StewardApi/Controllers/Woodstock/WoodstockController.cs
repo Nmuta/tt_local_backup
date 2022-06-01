@@ -697,9 +697,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
-            var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
+            var getUgcItems = this.storefrontProvider.GetPlayerUgcContentAsync(
+                xuid,
                 typeEnum,
-                new UgcFilters(xuid, null),
                 endpoint);
             var getCars = this.itemsProvider.GetCarsAsync();
 

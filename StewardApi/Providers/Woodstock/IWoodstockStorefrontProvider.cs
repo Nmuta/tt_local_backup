@@ -14,6 +14,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     public interface IWoodstockStorefrontProvider
     {
         /// <summary>
+        ///     Get a player's public and private UGC items.
+        /// </summary>
+        Task<IList<UgcItem>> GetPlayerUgcContentAsync(
+            ulong xuid,
+            UgcType ugcType,
+            string endpoint,
+            bool includeThumbnails = false);
+
+        /// <summary>
         ///     Search UGC items.
         /// </summary>
         Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, UgcFilters filters, string endpoint, bool includeThumbnails = false);

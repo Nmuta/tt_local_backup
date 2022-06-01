@@ -334,7 +334,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task DeleteAuctionBlocklistEntriesAsync(int[] carIds, string endpoint);
 
         /// <summary>
-        ///     Search public and private UGC content for a single player.
+        ///    Get public and private UGC content for a single player.
+        /// </summary>
+        Task<ServicesLiveOps.StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(
+            ulong xuid,
+            ServicesLiveOps.ForzaUGCContentType contentType,
+            string endpoint,
+            bool includeThumbnails = false);
+
+        /// <summary>
+        ///     Search UGC content.
         /// </summary>
         Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ServicesLiveOps.ForzaUGCSearchRequest filters,

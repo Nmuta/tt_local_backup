@@ -36,6 +36,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
+        public async Task<IList<UgcItem>> GetPlayerUgcContentAsync(ulong xuid, UgcType ugcType, string endpoint, bool includeThumbnails = false)
+        {
+            ugcType.ShouldNotBeNull(nameof(ugcType));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            if (ugcType == UgcType.Unknown)
+            {
+                throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
+            }
+
+            var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+            var results = await this.woodstockService.GetPlayerUgcContentAsync(xuid, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
+
+            return this.mapper.Map<IList<UgcItem>>(results.result);
+        }
+
+        /// <inheritdoc />
         public async Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, UgcFilters filters, string endpoint, bool includeThumbnails = false)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));

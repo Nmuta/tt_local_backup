@@ -181,7 +181,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => -1))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => -1))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => -1))
-                .ForMember(dest => dest.ShareStatus, opt => opt.MapFrom(source => ServicesLiveOps.ForzaShareFilter.Any))
                 .ReverseMap();
             this.CreateMap<UgcType, ServicesLiveOps.ForzaUGCContentType>().ReverseMap();
             this.CreateMap<ServicesLiveOps.ForzaUGCData, UgcItem>()

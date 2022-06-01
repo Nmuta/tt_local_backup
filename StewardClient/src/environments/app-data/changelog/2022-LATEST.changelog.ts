@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: 'e42964d9-2637-480d-a4ac-ce798a3c9ab8',
+      shortText: 'Fix UGC player search not pulling in private content.',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'ceaa380c-de3d-4a95-b880-7699d090d3d4',
       shortText: 'Modify file structure for UGC views.',

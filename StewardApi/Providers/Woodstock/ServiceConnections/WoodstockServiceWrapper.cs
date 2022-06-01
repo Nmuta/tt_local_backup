@@ -553,6 +553,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<ServicesLiveOps.StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(
+            ulong xuid,
+            ServicesLiveOps.ForzaUGCContentType contentType,
+            string endpoint,
+            bool includeThumbnails = false)
+        {
+            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 1_000).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ServicesLiveOps.ForzaUGCSearchRequest filters,
             ServicesLiveOps.ForzaUGCContentType contentType,
