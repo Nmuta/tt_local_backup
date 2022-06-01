@@ -163,7 +163,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
         private async Task<ServicesLiveOpsFH5.ForzaUGCContentType?> LookupFH5ShareCodeOrNullAsync(string shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType type)
         {
             var ugcList = await this.fh5Service.SearchUgcContentAsync(
-                new ServicesLiveOpsFH5.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue },
+                new ServicesLiveOpsFH5.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1},
                 type,
                 this.WoodstockEndpoint.Value,
                 includeThumbnails: true).ConfigureAwait(false);
