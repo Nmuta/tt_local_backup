@@ -15,11 +15,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { LuxonModule } from 'luxon-angular';
-import { UgcFiltersModule } from './components/ugc-filters/ugc-filters.module';
+import { UgcFiltersModule } from '../ugc-filters/ugc-filters.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { WoodstockPlayerUgcComponent } from './woodstock/woodstock-player-ugc.component';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
-import { UgcTableModule } from './components/ugc-table/ugc-table.module';
+import { UgcTableModule } from '../ugc-table/ugc-table.module';
 
 /** Display for player ugc. */
 @NgModule({

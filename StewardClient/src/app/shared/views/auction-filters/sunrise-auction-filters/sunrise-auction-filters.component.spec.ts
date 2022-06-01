@@ -10,7 +10,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DetailedCar } from '@models/detailed-car';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { MakeModelFilterGroup } from '@views/player-ugc/components/ugc-filters/ugc-filters.base.component';
+import { MakeModelFilterGroup } from '@views/ugc-filters/ugc-filters.base.component';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { AuctionFilters, AuctionSort, AuctionStatus } from '@models/auction-filters';
 
