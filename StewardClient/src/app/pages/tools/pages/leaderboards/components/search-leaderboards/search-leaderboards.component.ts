@@ -86,7 +86,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     leaderboard: new FormControl(''),
     xuid: new FormControl('', [BigNumberValidators.isBigNumber()]),
     deviceTypes: new FormControl([]),
-    leaderboardEnvironment: new FormControl(LeaderboardEnvironment.Prod, [Validators.required]),
+    leaderboardEnvironment: new FormControl('Prod', [Validators.required]),
   };
 
   public formGroup = new FormGroup(this.formControls);

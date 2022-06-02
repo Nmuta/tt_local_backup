@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
+      uuid: 'f2ccc26a-4c48-4d07-8c4f-cc842584f38e',
+      shortText: 'Fixed bug in Leaderboard environment selection.',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UgcDetails },
       uuid: '09a4ae82-f65f-4d8d-945b-124f004b5cf5',
       shortText: 'Bug fix for UGC lookup by sharecode.',
