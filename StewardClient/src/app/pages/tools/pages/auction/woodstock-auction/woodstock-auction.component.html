@@ -16,7 +16,7 @@
       </li>
     </ul>
   </help-popover-icon>
-  <button mat-flat-button color="warn" clickStop (click)="onCancel()" [disabled]="!canCancel">
+  <button mat-flat-button color="warn" clickStop (click)="onCancel()">
     Delete
     <button-spinner [monitor]="postCancelMonitor" defaultIcon="delete"></button-spinner>
   </button>

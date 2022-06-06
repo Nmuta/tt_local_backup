@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { AuctionData, AuctionDataAuctionAction } from '@models/auction-data';
+import { AuctionData } from '@models/auction-data';
 import { GameTitleAbbreviation } from '@models/enums';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -20,8 +20,6 @@ export class WoodstockAuctionComponent extends BaseComponent implements OnInit {
   public getMonitor: ActionMonitor = new ActionMonitor('GET FH5 Auction Data');
   public postCancelMonitor: ActionMonitor = new ActionMonitor('POST Cancel FH5 Auction Data');
 
-  public canCancel = false;
-
   constructor(
     private readonly route: ActivatedRoute,
     private readonly woodstock: WoodstockService,
@@ -36,18 +34,16 @@ export class WoodstockAuctionComponent extends BaseComponent implements OnInit {
         map(params => params.get('id')),
         tap(auctionId => {
           this.auctionId = auctionId;
-          this.canCancel = false;
         }),
         this.getMonitor.monitorStart(),
         switchMap(auctionId =>
           this.woodstock.getAuctionDataByAuctionId$(auctionId).pipe(this.getMonitor.monitorCatch()),
         ),
-        tap(auctionData => (this.auctionData = auctionData)),
         this.getMonitor.monitorEnd(),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(v => {
-        this.canCancel = v.allowedActions?.includes(AuctionDataAuctionAction.Cancel);
+      .subscribe(auctionData => {
+        this.auctionData = auctionData;
       });
   }
 
