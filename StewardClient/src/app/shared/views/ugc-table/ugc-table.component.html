@@ -117,7 +117,7 @@
         >
       </button>
 
-      <div class="hide-score">
+      <div *ngIf="supportHiding" class="hide-score">
         <button
           mat-raised-button
           color="warn"

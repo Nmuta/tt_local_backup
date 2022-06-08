@@ -22,11 +22,12 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { ApolloUgcTableComponent } from './apollo/apollo-ugc-table.component';
 import { RouterModule } from '@angular/router';
 
 /** Module for a UGC table. */
 @NgModule({
-  declarations: [SunriseUgcTableComponent, WoodstockUgcTableComponent],
+  declarations: [SunriseUgcTableComponent, WoodstockUgcTableComponent, ApolloUgcTableComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -52,6 +53,6 @@ import { RouterModule } from '@angular/router';
     VerifyCheckboxModule,
     RouterModule,
   ],
-  exports: [SunriseUgcTableComponent, WoodstockUgcTableComponent],
+  exports: [SunriseUgcTableComponent, WoodstockUgcTableComponent, ApolloUgcTableComponent],
 })
 export class UgcTableModule {}

@@ -278,6 +278,40 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(
+            ulong xuid,
+            ForzaUGCContentType contentType,
+            string endpoint,
+            bool includeThumbnails = false)
+        {
+            var storefrontService = this.GeStorefrontService(endpoint);
+
+            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, int.MaxValue).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.SearchUGCV2Output> SearchUgcContentAsync(
+            ForzaUGCSearchV2Request filters,
+            ForzaUGCContentType contentType,
+            string endpoint,
+            bool includeThumbnails = false)
+        {
+            var storefrontService = this.GeStorefrontService(endpoint);
+
+            return await storefrontService.SearchUGCV2(filters, contentType, includeThumbnails, int.MaxValue).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
+            string liveryId,
+            string endpoint)
+        {
+            var storefrontService = this.GeStorefrontService(endpoint);
+
+            return await storefrontService.GetUGCLivery(liveryId).ConfigureAwait(false);
+        }
+
         private X509Certificate2 ConvertToCertificate(string certificateSecret)
         {
             certificateSecret.ShouldNotBeNullEmptyOrWhiteSpace(nameof(certificateSecret));
@@ -306,6 +340,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         private GiftingService GetGiftingService(string endpoint)
         {
             return new GiftingService(this.forzaClient, endpoint, this.adminXuid, null, false);
+        }
+
+        private StorefrontManagementService GeStorefrontService(string endpoint)
+        {
+            return new StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, null, false);
         }
     }
 }

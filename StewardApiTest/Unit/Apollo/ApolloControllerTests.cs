@@ -1065,6 +1065,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             public IApolloBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IApolloBanHistoryProvider>();
 
+            public IApolloStorefrontProvider StorefrontProvider { get; set; } = Substitute.For<IApolloStorefrontProvider>();
+
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
             public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
@@ -1096,6 +1098,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,
+                this.StorefrontProvider,
                 this.Configuration,
                 this.Scheduler,
                 this.JobTracker,

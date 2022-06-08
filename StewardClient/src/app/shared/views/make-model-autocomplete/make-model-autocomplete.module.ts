@@ -18,12 +18,14 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { SunriseMakeModelAutocompleteComponent } from './sunrise-make-model-autocomplete/sunrise-make-model-autocomplete.component';
 import { WoodstockMakeModelAutocompleteComponent } from './woodstock-make-model-autocomplete/woodstock-make-model-autocomplete.component';
 import { MakeModelAutocompleteComponent } from './make-model-autocomplete/make-model-autocomplete.component';
+import { ApolloMakeModelAutocompleteComponent } from './apollo-make-model-autocomplete/apollo-make-model-autocomplete.component';
 
 /** Module for autocomplete input of car make & models. */
 @NgModule({
   declarations: [
     SunriseMakeModelAutocompleteComponent,
     WoodstockMakeModelAutocompleteComponent,
+    ApolloMakeModelAutocompleteComponent,
     MakeModelAutocompleteComponent,
   ],
   imports: [
@@ -48,6 +50,7 @@ import { MakeModelAutocompleteComponent } from './make-model-autocomplete/make-m
   exports: [
     SunriseMakeModelAutocompleteComponent,
     WoodstockMakeModelAutocompleteComponent,
+    ApolloMakeModelAutocompleteComponent,
     MakeModelAutocompleteComponent,
   ],
 })

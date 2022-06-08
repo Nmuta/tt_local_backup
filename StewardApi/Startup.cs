@@ -297,6 +297,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<ApolloGift>, ApolloGiftRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloGroupGift>, ApolloGroupGiftRequestValidator>();
             services.AddSingleton<IApolloGiftHistoryProvider, ApolloGiftHistoryProvider>();
+            services.AddSingleton<IApolloStorefrontProvider, ApolloStorefrontProvider>();
 
             services.AddSingleton<IOpusService, OpusServiceWrapper>();
             services.AddSingleton<IOpusPlayerDetailsProvider, OpusPlayerDetailsProvider>();

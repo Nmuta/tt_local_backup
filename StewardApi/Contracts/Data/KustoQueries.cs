@@ -25,6 +25,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public const string GetFH4CarsDetailed =
             "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName";
 
+        /// <summary>
+        ///     Basic query for getting the details FM7 Car data.
+        /// </summary>
+        public const string GetFM7CarsDetailed =
+            "FM7_DataCars | join kind = leftouter(database('T10Analytics').FM7_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = Id, MakeID, Make = MakeDisplayName, Model = DisplayName";
 
         /// <summary>
         ///     Basic query for getting the details FM8 Car data.
@@ -78,6 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public static readonly IList<string> AllowedDetailedKustoCarQueries = new List<string>()
         {
             GetFH4CarsDetailed,
+            GetFM7CarsDetailed,
             GetFM8CarsDetailed,
         };
     }

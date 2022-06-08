@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Forza.UserInventory.FM7.Generated;
 using Forza.WebServices.FM7.Generated;
 using GroupingService = Xls.WebServices.FM7.Generated.UserService;
@@ -146,5 +147,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         ///     Sends item group gifts.
         /// </summary>
         Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, string endpoint);
+
+        /// <summary>
+        ///     Gets a player's public and private UGC content.
+        /// </summary>
+        /// <remarks>This matches admin pages logic using int.MaxValue for maxResults.</remarks>
+        Task<StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(
+            ulong xuid,
+            ForzaUGCContentType contentType,
+            string endpoint,
+            bool includeThumbnails = false);
+
+        /// <summary>
+        ///     Search player UGC content.
+        /// </summary>
+        /// <remarks>This matches admin pages logic using int.MaxValue for maxResults.</remarks>
+        Task<StorefrontManagementService.SearchUGCV2Output> SearchUgcContentAsync(
+            ForzaUGCSearchV2Request filters,
+            ForzaUGCContentType contentType,
+            string endpoint,
+            bool includeThumbnails = false);
+
+        /// <summary>
+        ///     Get a player livery.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(
+            string liveryId,
+            string endpoint);
     }
 }

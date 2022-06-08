@@ -321,6 +321,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Search player UGC content.
         /// </summary>
+        /// <remarks>This matches admin pages logic using int.MaxValue for maxResults.</remarks>
         Task<StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ForzaUGCSearchRequest filters,
             ForzaUGCContentType contentType,

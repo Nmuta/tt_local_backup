@@ -71,6 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IApolloServiceManagementProvider apolloServiceManagementProvider;
         private readonly IApolloGiftHistoryProvider giftHistoryProvider;
         private readonly IApolloBanHistoryProvider banHistoryProvider;
+        private readonly IApolloStorefrontProvider storefrontProvider;
         private readonly IScheduler scheduler;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
@@ -93,6 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKeyVaultProvider keyVaultProvider,
             IApolloGiftHistoryProvider giftHistoryProvider,
             IApolloBanHistoryProvider banHistoryProvider,
+            IApolloStorefrontProvider storefrontProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
@@ -112,6 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
+            storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -131,6 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.apolloServiceManagementProvider = apolloServiceManagementProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
+            this.storefrontProvider = storefrontProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.mapper = mapper;
@@ -150,6 +154,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var masterInventory = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
 
             return this.Ok(masterInventory);
+        }
+
+        /// <summary>
+        ///     Gets the full detailed car list.
+        /// </summary>
+        [HttpGet("kusto/cars")]
+        [SwaggerResponse(200, type: typeof(IList<KustoCar>))]
+        public async Task<IActionResult> GetDetailedKustoCars()
+        {
+            var cars = await this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFM7CarsDetailed).ConfigureAwait(true);
+            return this.Ok(cars);
         }
 
         /// <summary>
@@ -892,6 +907,64 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endDate).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
+        }
+
+        /// <summary>
+        ///     Gets player UGC items.
+        /// </summary>
+        [HttpGet("storefront/xuid/{xuid}")]
+        [SwaggerResponse(200, type: typeof(IList<ApolloUgcItem>))]
+        public async Task<IActionResult> GetUgcItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            if (!Enum.TryParse(ugcType, out UgcType typeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
+            }
+
+            var getUgcItems = this.storefrontProvider.GetPlayerUgcContentAsync(
+                xuid,
+                typeEnum,
+                endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFM7CarsDetailed);
+
+            await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
+
+            var ugcItems = getUgcItems.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+
+            foreach (var item in ugcItems)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
+                item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+            }
+
+            return this.Ok(ugcItems);
+        }
+
+        /// <summary>
+        ///     Gets a UGC livery by ID.
+        /// </summary>
+        [HttpGet("storefront/livery/{id}/")]
+        [SwaggerResponse(200, type: typeof(ApolloUgcItem))]
+        public async Task<IActionResult> GetUgcLivery(string id)
+        {
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+
+            var getLivery = this.storefrontProvider.GetUgcLiveryAsync(id, endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
+
+            var livery = getLivery.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == livery.CarId);
+            livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(livery);
         }
 
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)

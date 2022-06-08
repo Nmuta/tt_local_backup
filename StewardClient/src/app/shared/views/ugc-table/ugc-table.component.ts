@@ -71,6 +71,10 @@ export abstract class UgcTableBaseComponent
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
 
+  // Action availability
+  public supportFeaturing: boolean = true;
+  public supportHiding: boolean = true;
+
   public abstract gameTitle: GameTitle;
 
   constructor(private readonly permissionService: PermissionsService) {

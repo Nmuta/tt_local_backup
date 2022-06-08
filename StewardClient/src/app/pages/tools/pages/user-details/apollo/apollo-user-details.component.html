@@ -32,6 +32,20 @@
           </mat-card>
         </div>
       </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Liveries
+          <inline-spinner [monitor]="ugcLiveries.getMonitor | renderGuard"
+            >({{ ugcLiveries?.ugcContent?.length }})</inline-spinner
+          >
+        </ng-template>
+        <apollo-player-ugc
+          #ugcLiveries
+          [identity]="identity"
+          [contentType]="UgcType.Livery"
+          [usingIdentities]="true"
+        ></apollo-player-ugc>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

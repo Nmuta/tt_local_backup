@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
+      uuid: '886c66fb-7125-4659-adb6-b1dd7428724f',
+      shortText: 'Add Livery UGC search to FM7',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionDetails },
       uuid: '8f098685-43d4-4ee0-9dec-135cfd5f3250',
       shortText: 'Allow all auctions to be deleted.',

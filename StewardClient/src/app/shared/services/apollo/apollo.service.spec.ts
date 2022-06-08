@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
 import { HttpParams } from '@angular/common/http';
+import { UgcType } from '@models/ugc-filters';
 
 describe('ApolloService', () => {
   let injector: TestBed;
@@ -264,6 +265,27 @@ describe('ApolloService', () => {
         expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/groupId(${lspGroup.id})`,
           gift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerUgcByXuid$', () => {
+    const xuid = fakeXuid();
+    const contentType = UgcType.Livery;
+    let httpParams = new HttpParams();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      httpParams = new HttpParams().append('ugcType', contentType);
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerUgcByXuid$(xuid, contentType).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/storefront/xuid/${xuid}`,
+          httpParams,
         );
         done();
       });

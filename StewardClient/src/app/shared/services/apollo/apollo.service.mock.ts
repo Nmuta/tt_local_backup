@@ -13,6 +13,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ApolloService } from './apollo.service';
+import { ApolloPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/ugc';
 
 /** Defines the mock for the API Service. */
 @Injectable()
@@ -89,6 +90,12 @@ export class MockApolloService {
     .createSpy('getPlayerInventoryByXuid')
     .and.callFake(xuid =>
       this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryFakeApi.make(xuid)))),
+    );
+
+  public getPlayerUgcByXuid$ = jasmine
+    .createSpy('getPlayerUgcByXuid$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidUgcFakeApi.makeMany()))),
     );
 }
 /** Creates an injectable mock for Apollo Service. */

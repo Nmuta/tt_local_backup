@@ -18,10 +18,15 @@ import { SunriseUgcFiltersComponent } from './sunrise-ugc-filters/sunrise-ugc-fi
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { WoodstockUgcFiltersComponent } from './woodstock-ugc-filters/woodstock-ugc-filters.component';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
+import { ApolloUgcFiltersComponent } from './apollo-ugc-filters/apollo-ugc-filters.component';
 
 /** Display for player ugcs. */
 @NgModule({
-  declarations: [SunriseUgcFiltersComponent, WoodstockUgcFiltersComponent],
+  declarations: [
+    SunriseUgcFiltersComponent,
+    WoodstockUgcFiltersComponent,
+    ApolloUgcFiltersComponent,
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -42,6 +47,6 @@ import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make
     DirectivesModule,
     MakeModelAutocompleteModule,
   ],
-  exports: [SunriseUgcFiltersComponent, WoodstockUgcFiltersComponent],
+  exports: [SunriseUgcFiltersComponent, WoodstockUgcFiltersComponent, ApolloUgcFiltersComponent],
 })
 export class UgcFiltersModule {}

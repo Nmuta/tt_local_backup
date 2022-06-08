@@ -3,6 +3,7 @@ import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
+import { UgcType } from '@models/ugc-filters';
 
 /** Component for displaying routed Apollo user details. */
 @Component({
@@ -12,6 +13,8 @@ import { UserDetailsComponent } from '../user-details.component';
 })
 export class ApolloUserDetailsComponent {
   public profileId: BigNumber;
+
+  public readonly UgcType = UgcType;
 
   /** The lookup type. */
   public get lookupType(): string {

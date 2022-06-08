@@ -19,11 +19,12 @@ import { UgcFiltersModule } from '../ugc-filters/ugc-filters.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { WoodstockPlayerUgcComponent } from './woodstock/woodstock-player-ugc.component';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
+import { ApolloPlayerUgcComponent } from './apollo/apollo-player-ugc.component';
 import { UgcTableModule } from '../ugc-table/ugc-table.module';
 
 /** Display for player ugc. */
 @NgModule({
-  declarations: [SunrisePlayerUgcComponent, WoodstockPlayerUgcComponent],
+  declarations: [SunrisePlayerUgcComponent, WoodstockPlayerUgcComponent, ApolloPlayerUgcComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -46,6 +47,6 @@ import { UgcTableModule } from '../ugc-table/ugc-table.module';
     MatDividerModule,
     UgcTableModule,
   ],
-  exports: [SunrisePlayerUgcComponent, WoodstockPlayerUgcComponent],
+  exports: [SunrisePlayerUgcComponent, WoodstockPlayerUgcComponent, ApolloPlayerUgcComponent],
 })
 export class PlayerUgcModule {}

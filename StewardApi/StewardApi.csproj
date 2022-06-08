@@ -114,7 +114,7 @@
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.0.22" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.5.0">
+    <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.9.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.4.0">

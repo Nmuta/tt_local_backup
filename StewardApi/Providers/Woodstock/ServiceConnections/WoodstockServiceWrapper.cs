@@ -561,7 +561,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 1_000).ConfigureAwait(false);
+            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, int.MaxValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -573,7 +573,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, 1_000).ConfigureAwait(false);
+            return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, int.MaxValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

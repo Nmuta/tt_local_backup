@@ -32,6 +32,9 @@ import { map, switchMap } from 'rxjs/operators';
 import { overrideApolloEndpointKey } from '@helpers/override-endpoint-key';
 import { DateTime } from 'luxon';
 import { HttpParams } from '@angular/common/http';
+import { UgcType } from '@models/ugc-filters';
+import { PlayerUgcItem } from '@models/player-ugc-item';
+import { DetailedCar } from '@models/detailed-car';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -250,5 +253,31 @@ export class ApolloService {
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
     );
+  }
+
+  /** Gets player UGC items by XUID. */
+  public getPlayerUgcByXuid$(xuid: BigNumber, contentType: UgcType): Observable<PlayerUgcItem[]> {
+    const httpParams = new HttpParams().append('ugcType', contentType.toString());
+
+    return this.apiService.getRequest$<PlayerUgcItem[]>(
+      `${this.basePath}/storefront/xuid/${xuid}`,
+      httpParams,
+    );
+  }
+
+  /** Gets a player's UGC item.  */
+  public getPlayerUgcItem(id: string, ugcType: UgcType): Observable<PlayerUgcItem> {
+    if (ugcType === UgcType.Unknown) {
+      throw new Error(`Invalid UGC item type for lookup: ${ugcType}}`);
+    }
+
+    return this.apiService.getRequest$<PlayerUgcItem>(
+      `${this.basePath}/storefront/${ugcType.toLowerCase()}/${id}`,
+    );
+  }
+
+  /** Gets the sunrise detailed car list. */
+  public getDetailedCars$(): Observable<DetailedCar[]> {
+    return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/kusto/cars`);
   }
 }

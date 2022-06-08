@@ -336,6 +336,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///    Get public and private UGC content for a single player.
         /// </summary>
+        /// <remarks>This matches admin pages logic using int.MaxValue for maxResults.</remarks>
         Task<ServicesLiveOps.StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(
             ulong xuid,
             ServicesLiveOps.ForzaUGCContentType contentType,
@@ -345,6 +346,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Search UGC content.
         /// </summary>
+        /// <remarks>This matches admin pages logic using int.MaxValue for maxResults.</remarks>
         Task<ServicesLiveOps.StorefrontManagementService.SearchUGCOutput> SearchUgcContentAsync(
             ServicesLiveOps.ForzaUGCSearchRequest filters,
             ServicesLiveOps.ForzaUGCContentType contentType,
