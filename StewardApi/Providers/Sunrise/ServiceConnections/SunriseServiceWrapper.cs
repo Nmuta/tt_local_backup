@@ -490,7 +490,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         {
             var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, int.MaxValue).ConfigureAwait(false);
+            return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, 5_000).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

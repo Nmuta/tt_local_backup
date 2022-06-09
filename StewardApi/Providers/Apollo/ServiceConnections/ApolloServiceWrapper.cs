@@ -287,7 +287,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         {
             var storefrontService = this.GeStorefrontService(endpoint);
 
-            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, int.MaxValue).ConfigureAwait(false);
+            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -299,7 +299,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         {
             var storefrontService = this.GeStorefrontService(endpoint);
 
-            return await storefrontService.SearchUGCV2(filters, contentType, includeThumbnails, int.MaxValue).ConfigureAwait(false);
+            return await storefrontService.SearchUGCV2(filters, contentType, includeThumbnails, 5_000).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

@@ -151,7 +151,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         /// <summary>
         ///     Gets a player's public and private UGC content.
         /// </summary>
-        /// <remarks>This matches admin pages logic using int.MaxValue for maxResults.</remarks>
         Task<StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(
             ulong xuid,
             ForzaUGCContentType contentType,
@@ -161,7 +160,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         /// <summary>
         ///     Search player UGC content.
         /// </summary>
-        /// <remarks>This matches admin pages logic using int.MaxValue for maxResults.</remarks>
         Task<StorefrontManagementService.SearchUGCV2Output> SearchUgcContentAsync(
             ForzaUGCSearchV2Request filters,
             ForzaUGCContentType contentType,
