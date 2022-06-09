@@ -19,16 +19,27 @@ Follow the instructions listed in the [LiveOps OneNote Setup Page](https://micro
 
 
 ### UI
-Steward's UI is built with Node, NPM, and Angular.
-In order to get started, you need to make sure [Node and NPM](https://nodejs.org/en/download/) is installed on your machine.
-> Make sure node version >= 12.16.x & npm version >= 6.14.x
+Steward's UI is built with Node, Yarn, and Angular.
+In order to get started, you need to make sure [Node and Yarn](https://nodejs.org/en/download/) is installed on your machine.
+> Make sure node version >= 16.x 
+To install yarn use the following command
+```console
+npm install --global yarn
+```
 
 <br>
+Before building the project, you need to run the yarn package script refreshVSToken and for the script to work you need to add the vsts-npm-auth package.
+In the StewardClient directory, run the following commands
+```console
+npm install -g vsts-npm-auth
+yarn run refreshVSToken
+```
+
 Next, you need to install the projects node package dependencies.
-In the StewardClient directory, run the install command
+In the StewardClient directory, run the yarn command
 
 ```console
-npm run install
+yarn 
 ```
 
 <br>
@@ -37,7 +48,11 @@ In order to gain access to the app's features, you also need to be given permiss
 Please reach out to anyone on the LiveOps dev team to give you permissions.
 
 ### API
-Steward's API is built with .NET Core.
+Steward's API is built with .NET Core 6.0.
+
+To run the API project in visual studio 2019, you need .NET Core 6.0.203 installed and NOT 6.0.300 or latest. (When downgrading a folder called 6.0.300 might still be in C:\Program Files\dotnet\sdk which is what dotnet
+will use when trying to use the latest version. The folder will be empty and deleting it will make dotnet use 6.0.203 (a way to check that is by simply opening a command prompt and typing "dotnet --version")
+
 You will need to install Visual Studio to run the app.
 
 <br>
@@ -55,9 +70,9 @@ You have two options to run Zendesk locally:
 ### UI
 There are two different types of local environments that can be used.
 
-1) All local - `npm run start` - this will run the Angular app locally and point all API requests to a local instance of Steward API.
+1) All local - `yarn start:local-api` - this will run the Angular app locally and point all API requests to a local instance of Steward API.
 
-2) Local UI/ Dev API - `npm run dev:start`- this will run the Angular app locally and point all API requests to the DEV instance of Steward API.
+2) Local UI/ Dev API - `yarn start`- this will run the Angular app locally and point all API requests to the DEV instance of Steward API.
   
 ### API
 To run the Steward API locally, open up the solution in Visual Studio. Make sure the StewardApi project is set as the Startup Project and click the Visual Studio's run button (green arrow).
