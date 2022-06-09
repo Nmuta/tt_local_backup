@@ -80,10 +80,6 @@ table {
     background-color: app-color-lighter($app-primary);
   }
 
-  .mat-stroked-button {
-    background-color: app-color-default-contrast($app-primary);
-  }
-
   .inline-buttons > button,
   .inline-buttons > a {
     display: inline-block;

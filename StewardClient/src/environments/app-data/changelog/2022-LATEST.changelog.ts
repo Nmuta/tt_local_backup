@@ -9,6 +9,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   entries: [
     {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
+      uuid: '70580359-449d-4e37-9cc2-0b0116712957',
+      shortText: 'Hide UGC feature button on FM7',
+    },
+    {
+      tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
       uuid: '886c66fb-7125-4659-adb6-b1dd7428724f',
       shortText: 'Add Livery UGC search to FM7',
     },
