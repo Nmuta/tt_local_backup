@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -28,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private readonly IMapper mapper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
-        private readonly ISunriseNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunrisePlayerInventoryProvider"/> class.
@@ -38,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             IMapper mapper,
             IRefreshableCacheStore refreshableCacheStore,
             ISunriseGiftHistoryProvider giftHistoryProvider,
-            ISunriseNotificationHistoryProvider notificationHistoryProvider)
+            INotificationHistoryProvider notificationHistoryProvider)
         {
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
             mapper.ShouldNotBeNull(nameof(mapper));
@@ -358,7 +359,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException("Message successfully edited; Logging of edit event failed.", ex);
+                throw new FailedToSendStewardException("Successfully gifted car livery; Logging of notification event failed.", ex);
             }
 
             return result;

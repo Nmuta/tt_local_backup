@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
@@ -28,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private readonly IMapper mapper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
-        private readonly IWoodstockNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayerInventoryProvider"/> class.
@@ -38,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             IMapper mapper,
             IRefreshableCacheStore refreshableCacheStore,
             IWoodstockGiftHistoryProvider giftHistoryProvider,
-            IWoodstockNotificationHistoryProvider notificationHistoryProvider)
+            INotificationHistoryProvider notificationHistoryProvider)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             mapper.ShouldNotBeNull(nameof(mapper));

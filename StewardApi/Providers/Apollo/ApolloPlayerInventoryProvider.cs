@@ -4,13 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.Notifications.FM7.Generated;
 using Forza.UserInventory.FM7.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 {
@@ -23,22 +26,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
         private readonly IApolloService apolloService;
         private readonly IApolloGiftHistoryProvider giftHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloPlayerInventoryProvider"/> class.
         /// </summary>
         public ApolloPlayerInventoryProvider(
-                                             IApolloService apolloService,
-                                             IApolloGiftHistoryProvider giftHistoryProvider,
-                                             IMapper mapper)
+            IApolloService apolloService,
+            IApolloGiftHistoryProvider giftHistoryProvider,
+            INotificationHistoryProvider notificationHistoryProvider,
+            IMapper mapper)
         {
             apolloService.ShouldNotBeNull(nameof(apolloService));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
+            notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.apolloService = apolloService;
             this.giftHistoryProvider = giftHistoryProvider;
+            this.notificationHistoryProvider = notificationHistoryProvider;
             this.mapper = mapper;
         }
 
@@ -223,6 +230,116 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             }
 
             return giftResponse;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(GroupGift groupGift, ApolloUgcItem livery, string requesterObjectId, string endpoint)
+        {
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var result = await this.apolloService.SendCarLiveryAsync(groupGift.Xuids.ToArray(), livery.Id, endpoint).ConfigureAwait(false);
+
+            var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
+            var notificationBatchId = Guid.NewGuid();
+            foreach (var giftResponse in giftResponses)
+            {
+                // Do not log if the gift failed to send to the player.
+                if (giftResponse.Errors.Count > 0)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var createdDate = DateTime.UtcNow;
+                    var notificationHistory = new NotificationHistory
+                    {
+                        Id = string.Empty, // No notification ids yet for individual player gifting
+                        Title = TitleConstants.ApolloCodeName,
+                        RequesterObjectId = requesterObjectId,
+                        RecipientId = giftResponse.PlayerOrLspGroup.ToString(CultureInfo.InvariantCulture),
+                        Type = Enum.GetName(typeof(NotificationType), NotificationType.GiftingReceiveCar),
+                        RecipientType = GiftIdentityAntecedent.Xuid.ToString(),
+                        GiftType = GiftType.CarLivery.ToString(),
+                        DeviceType = DeviceType.All.ToString(),
+                        BatchReferenceId = notificationBatchId.ToString(),
+                        Action = NotificationAction.Send.ToString(),
+                        Endpoint = endpoint,
+                        CreatedDateUtc = DateTime.UtcNow,
+                        ExpireDateUtc = createdDate.AddYears(10),
+                        Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
+                    };
+
+                    await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                        notificationHistory).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    giftResponse.Errors.Add(new FailedToSendStewardError("Successfully gifted car livery; Logging of notification event failed.", ex));
+                }
+            }
+
+            return giftResponses;
+        }
+
+        /// <inheritdoc/>
+        public async Task<GiftResponse<int>> SendCarLiveryAsync(Gift gift, int groupId, ApolloUgcItem livery, string requesterObjectId, string endpoint)
+        {
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var result = new GiftResponse<int>()
+            {
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
+                PlayerOrLspGroup = groupId,
+            };
+
+            long? notificationId = null;
+            try
+            {
+                // TODO: Log gift to gift history
+                var response = await this.apolloService.SendCarLiveryAsync(groupId, livery.Id, endpoint).ConfigureAwait(false);
+                notificationId = response.notificationId;
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add(new ServicesFailureStewardError($"LSP failed to gift livery to user group: {groupId}", ex));
+            }
+
+            try
+            {
+                if (!notificationId.HasValue)
+                {
+                    throw new UnknownFailureStewardException($"Failed to get notification id from gifted livery. LSP Group: {groupId}. Livery Id: {livery.Id}");
+                }
+
+                var createdDate = DateTime.UtcNow;
+                var notificationHistory = new NotificationHistory
+                {
+                    Id = notificationId.ToString(),
+                    Title = TitleConstants.ApolloCodeName,
+                    RequesterObjectId = requesterObjectId,
+                    RecipientId = groupId.ToString(CultureInfo.InvariantCulture),
+                    Type = Enum.GetName(typeof(NotificationType), NotificationType.GiftingReceiveCar),
+                    RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
+                    GiftType = GiftType.CarLivery.ToString(),
+                    BatchReferenceId = string.Empty,
+                    DeviceType = DeviceType.All.ToString(),
+                    Action = NotificationAction.Send.ToString(),
+                    Endpoint = endpoint,
+                    CreatedDateUtc = DateTime.UtcNow,
+                    ExpireDateUtc = createdDate.AddYears(10),
+                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
+                };
+
+                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                    notificationHistory).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Successfully gifted car livery; Logging of notification event failed.", ex);
+            }
+
+            return result;
         }
 
         private async Task<IList<StewardError>> SendGiftsAsync(

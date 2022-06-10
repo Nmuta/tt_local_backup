@@ -1711,7 +1711,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public IWoodstockBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IWoodstockBanHistoryProvider>();
 
-            public IWoodstockNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<IWoodstockNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
             public IWoodstockStorefrontProvider StorefrontProvider { get; set; } = Substitute.For<IWoodstockStorefrontProvider>();
 

@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IWoodstockNotificationProvider woodstockNotificationProvider;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
-        private readonly IWoodstockNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IWoodstockLeaderboardProvider leaderboardProvider;
         private readonly IWoodstockItemsProvider itemsProvider;
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKeyVaultProvider keyVaultProvider,
             IWoodstockGiftHistoryProvider giftHistoryProvider,
             IWoodstockBanHistoryProvider banHistoryProvider,
-            IWoodstockNotificationHistoryProvider notificationHistoryProvider,
+            INotificationHistoryProvider notificationHistoryProvider,
             IWoodstockStorefrontProvider storefrontProvider,
             IWoodstockLeaderboardProvider leaderboardProvider,
             IWoodstockItemsProvider itemsProvider,

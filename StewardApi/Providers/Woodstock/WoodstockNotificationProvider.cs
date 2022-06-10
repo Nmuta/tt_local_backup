@@ -9,6 +9,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
@@ -18,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     public sealed class WoodstockNotificationProvider : IWoodstockNotificationProvider
     {
         private readonly IWoodstockService woodstockService;
-        private readonly IWoodstockNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// </summary>
         public WoodstockNotificationProvider(
             IWoodstockService woodstockService,
-            IWoodstockNotificationHistoryProvider notificationHistoryProvider,
+            INotificationHistoryProvider notificationHistoryProvider,
             IMapper mapper)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));

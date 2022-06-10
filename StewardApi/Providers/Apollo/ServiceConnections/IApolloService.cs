@@ -149,6 +149,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, string endpoint);
 
         /// <summary>
+        ///    Sends car livery to a player xuid.
+        /// </summary>
+        Task<GiftingService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, string liveryId, string endpoint);
+
+        /// <summary>
+        ///    Sends car livery to a user group.
+        /// </summary>
+        Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, string liveryId, string endpoint);
+
+        /// <summary>
         ///     Gets a player's public and private UGC content.
         /// </summary>
         Task<StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(

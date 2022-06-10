@@ -2016,8 +2016,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public ISunriseBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<ISunriseBanHistoryProvider>();
 
-            public ISunriseNotificationHistoryProvider NotificationHistoryProvider { get; set; } =
-                Substitute.For<ISunriseNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } =
+                Substitute.For<INotificationHistoryProvider>();
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using static Forza.LiveOps.FH4.Generated.NotificationsManagementService;
@@ -322,7 +323,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
 
-            public ISunriseNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<ISunriseNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
             

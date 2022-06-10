@@ -12,6 +12,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using static Forza.LiveOps.FH4.Generated.UserInventoryService;
@@ -410,7 +411,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public ISunriseGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISunriseGiftHistoryProvider>();
 
-            public ISunriseNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<ISunriseNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
             public SunrisePlayerInventoryProvider Build() => new SunrisePlayerInventoryProvider(
                 this.SunriseService,

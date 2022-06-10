@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISunriseNotificationProvider sunriseNotificationProvider;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
-        private readonly ISunriseNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly ISunriseStorefrontProvider storefrontProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKeyVaultProvider keyVaultProvider,
             ISunriseGiftHistoryProvider giftHistoryProvider,
             ISunriseBanHistoryProvider banHistoryProvider,
-            ISunriseNotificationHistoryProvider notificationHistoryProvider,
+            INotificationHistoryProvider notificationHistoryProvider,
             ISunriseStorefrontProvider storefrontProvider,
             IConfiguration configuration,
             IScheduler scheduler,

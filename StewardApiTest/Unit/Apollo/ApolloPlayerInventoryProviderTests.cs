@@ -8,8 +8,11 @@ using Forza.WebServices.FM7.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Forza.WebServices.FM7.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Apollo
@@ -59,6 +62,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftHistoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenNotificationHistoryProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { NotificationHistoryProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "notificationHistoryProvider"));
         }
 
         [TestMethod]
@@ -248,28 +265,107 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToUserGroup_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var gift = Fixture.Create<Gift>();
+            var groupId = Fixture.Create<int>();
+            var livery = Fixture.Create<ApolloUgcItem>();
+            var requesterId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, requesterId, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<GiftResponse<int>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToUserGroup_WithNullRequesterId_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var gift = Fixture.Create<Gift>();
+            var groupId = Fixture.Create<int>();
+            var livery = Fixture.Create<ApolloUgcItem>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, null, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToPlayers_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupGift = Fixture.Create<GroupGift>();
+            var livery = Fixture.Create<ApolloUgcItem>();
+            var requesterId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, requesterId, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<List<GiftResponse<ulong>>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCarLiveryAsync_ToPlayers_WithNullRequesterId_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupGift = Fixture.Create<GroupGift>();
+            var livery = Fixture.Create<ApolloUgcItem>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, null, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
+        }
+
         private sealed class Dependencies
         {
             public Dependencies()
             {
+                this.ApolloService.SendCarLiveryAsync(Arg.Any<ulong[]>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingService.AdminSendLiveryGiftOutput>());
+                this.ApolloService.SendCarLiveryAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingService.AdminSendGroupLiveryGiftOutput>());
                 this.ApolloService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.ApolloService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
                 this.ApolloService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
                 this.ApolloService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<UserService.LiveOpsGetUserDataByGamertagOutput>());
+                this.NotificationHistoryProvider.UpdateNotificationHistoryAsync(Arg.Any<NotificationHistory>());
                 this.Mapper.Map<IList<ApolloInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.Mapper.Map<ApolloGift>(Arg.Any<ApolloGroupGift>()).Returns(Fixture.Create<ApolloGift>());
                 this.Mapper.Map<ApolloPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<ApolloPlayerInventory>());
+                this.Mapper.Map<IList<GiftResponse<ulong>>>(Arg.Any<ForzaLiveryGiftResult[]>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
             }
 
             public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();
 
             public IApolloGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IApolloGiftHistoryProvider>();
 
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public ApolloPlayerInventoryProvider Build() => new ApolloPlayerInventoryProvider(
                 this.ApolloService,
                 this.GiftHistoryProvider,
+                this.NotificationHistoryProvider,
                 this.Mapper);
         }
     }

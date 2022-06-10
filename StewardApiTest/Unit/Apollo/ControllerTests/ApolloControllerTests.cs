@@ -26,7 +26,7 @@ using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Validation;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Apollo
+namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
 {
     [TestClass]
     public sealed class ApolloControllerTests

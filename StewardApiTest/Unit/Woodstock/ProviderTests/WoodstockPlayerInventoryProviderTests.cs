@@ -11,6 +11,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.Services.LiveOps.FH5_main.Generated;
@@ -421,7 +422,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
             public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
-            public IWoodstockNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<IWoodstockNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
             public WoodstockPlayerInventoryProvider Build() => new WoodstockPlayerInventoryProvider(
                 this.WoodstockService,

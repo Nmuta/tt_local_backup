@@ -7,6 +7,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
@@ -320,7 +321,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
 
-            public IWoodstockNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<IWoodstockNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 

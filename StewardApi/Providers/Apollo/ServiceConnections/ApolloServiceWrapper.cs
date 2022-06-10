@@ -279,6 +279,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<GiftingService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, string liveryId, string endpoint)
+        {
+            var giftingService = this.GetGiftingService(endpoint);
+
+            return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<GiftingService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, string liveryId, string endpoint)
+        {
+            if (groupId == 0 && !this.allowGiftingToAllUsers)
+            {
+                throw new FailedToSendStewardException(
+                    "Sending to All User group is blocked outside of the production environment.");
+            }
+
+            var giftingService = this.GetGiftingService(endpoint);
+
+            return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<StorefrontManagementService.GetUGCForUserOutput> GetPlayerUgcContentAsync(
             ulong xuid,
             ForzaUGCContentType contentType,

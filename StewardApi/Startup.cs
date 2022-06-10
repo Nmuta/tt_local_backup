@@ -224,6 +224,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IStsClient, StsClientWrapper>();
 
             services.AddSingleton<ILoggingService, LoggingService>();
+            services.AddSingleton<INotificationHistoryProvider, NotificationHistoryProvider>();
 
             services.AddSingleton<IWoodstockService, WoodstockServiceWrapper>();
             services.AddSingleton<IWoodstockPegasusService, WoodstockPegasusService>();
@@ -235,7 +236,6 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IWoodstockNotificationProvider, WoodstockNotificationProvider>();
             services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
             services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
-            services.AddSingleton<IWoodstockNotificationHistoryProvider, WoodstockNotificationHistoryProvider>();
             services.AddSingleton<IWoodstockStorefrontProvider, WoodstockStorefrontProvider>();
             services.AddSingleton<IWoodstockLeaderboardProvider, WoodstockLeaderboardProvider>();
             services.AddSingleton<IWoodstockItemsProvider, WoodstockItemsProvider>();
@@ -283,7 +283,6 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<SunriseGroupGift>, SunriseGroupGiftRequestValidator>();
             services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
             services.AddSingleton<ISunriseBanHistoryProvider, SunriseBanHistoryProvider>();
-            services.AddSingleton<ISunriseNotificationHistoryProvider, SunriseNotificationHistoryProvider>();
             services.AddSingleton<ISunriseStorefrontProvider, SunriseStorefrontProvider>();
 
             services.AddSingleton<IApolloService, ApolloServiceWrapper>();

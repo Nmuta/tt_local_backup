@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
-namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
+namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     /// <summary>
-    ///     Exposes methods for interacting with Sunrise notification history.
+    ///     Exposes methods for interacting with notification history.
     /// </summary>
-    public interface ISunriseNotificationHistoryProvider
+    public interface INotificationHistoryProvider
     {
         /// <summary>
         ///     Updates notification history.
