@@ -20,11 +20,16 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { LuxonModule } from 'luxon-angular';
 import { GiftingResultModule } from '../gifting-result/gifting-result.module';
 import { PastableSingleInputModule } from '@views/pastable-single-input/pastable-single-input.module';
+import { ApolloGiftLiveryComponent } from './apollo/apollo-gift-livery.component';
 
 /** The gift livery module. */
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [WoodstockGiftLiveryComponent, SunriseGiftLiveryComponent],
+  declarations: [
+    WoodstockGiftLiveryComponent,
+    SunriseGiftLiveryComponent,
+    ApolloGiftLiveryComponent,
+  ],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
@@ -49,6 +54,6 @@ import { PastableSingleInputModule } from '@views/pastable-single-input/pastable
     MatIconModule,
     GiftingResultModule,
   ],
-  exports: [WoodstockGiftLiveryComponent, SunriseGiftLiveryComponent],
+  exports: [WoodstockGiftLiveryComponent, SunriseGiftLiveryComponent, ApolloGiftLiveryComponent],
 })
 export class GiftLiveryModule {}

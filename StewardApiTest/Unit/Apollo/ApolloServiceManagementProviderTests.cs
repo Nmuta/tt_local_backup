@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
-using Xls.WebServices.FM7.Generated;
 using Turn10.LiveOps.StewardApi.Logging;
+using Forza.WebServices.FM7.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 {
@@ -81,7 +81,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             public Dependencies()
             {
-                this.ApolloService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserService.GetUserGroupsOutput>());
+                this.ApolloService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
             }
 

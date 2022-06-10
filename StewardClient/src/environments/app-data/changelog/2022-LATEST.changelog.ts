@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FM7, tool: NavbarTool.Gifting },
+      uuid: '1a46fb61-979a-4c37-aad1-d1fa94f5d321',
+      shortText: 'Add gifting liveries to FM7',
+    },
+    {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
       uuid: '70580359-449d-4e37-9cc2-0b0116712957',
       shortText: 'Hide UGC feature button on FM7',

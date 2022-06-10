@@ -5,10 +5,7 @@
       {{ gameTitle }}
     </mat-card-subtitle>
   </mat-card-header>
-  <span
-    >Gifting car liveries is currently not tracked in gift history. Feature will be coming
-    soon.</span
-  >
+  <span>Gifting car liveries is currently not tracked in gift history.</span>
   <ng-container *ngIf="!postMonitor?.status?.error; else errorState">
     <ng-container *ngIf="!postMonitor?.isActive; else waitingState">
       <ng-container *ngIf="!giftResponse; else giftResponseState">

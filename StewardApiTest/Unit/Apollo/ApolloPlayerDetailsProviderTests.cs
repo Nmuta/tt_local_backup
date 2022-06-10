@@ -12,9 +12,8 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
-using Xls.WebServices.FM7.Generated;
+using static Forza.WebServices.FM7.Generated.UserManagementService;
 using static Forza.WebServices.FM7.Generated.UserService;
-using static Xls.WebServices.FM7.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 {

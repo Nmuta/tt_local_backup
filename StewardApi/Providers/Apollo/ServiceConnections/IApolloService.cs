@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Forza.UserInventory.FM7.Generated;
 using Forza.WebServices.FM7.Generated;
-using GroupingService = Xls.WebServices.FM7.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
 {
@@ -108,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         /// <summary>
         ///     Gets user group membership.
         /// </summary>
-        Task<GroupingService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
+        Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
             ulong xuid,
             int[] groupIdFilter,
             int maxResults,
@@ -117,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         /// <summary>
         ///     Gets user groups.
         /// </summary>
-        Task<GroupingService.GetUserGroupsOutput> GetUserGroupsAsync(
+        Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
             int startIndex,
             int maxResults,
             string endpoint);

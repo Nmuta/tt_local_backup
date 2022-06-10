@@ -13,7 +13,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using GroupingService = Xls.WebServices.FM7.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
 {
@@ -207,7 +206,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GroupingService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
+        public async Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
             ulong xuid,
             int[] groupIdFilter,
             int maxResults,
@@ -220,7 +219,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GroupingService.GetUserGroupsOutput> GetUserGroupsAsync(
+        public async Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
             int startIndex,
             int maxResults,
             string endpoint)
@@ -354,9 +353,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, null, false);
         }
 
-        private GroupingService GetGroupingService(string endpoint)
+        private UserManagementService GetGroupingService(string endpoint)
         {
-            return new GroupingService(this.forzaClient, endpoint, this.adminXuid, null, false);
+            return new UserManagementService(this.forzaClient, endpoint, this.adminXuid, null, false);
         }
 
         private GiftingService GetGiftingService(string endpoint)
