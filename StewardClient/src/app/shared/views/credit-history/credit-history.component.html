@@ -119,6 +119,8 @@
             [class.timeMatchesBelow]="data(element).timeMatchesBelow"
           ></tr>
         </table>
+
+        <div class="no-more-results" *ngIf="!showLoadMore">All credit events loaded</div>
       </cdk-virtual-scroll-viewport>
 
       <div class="load-more-container">

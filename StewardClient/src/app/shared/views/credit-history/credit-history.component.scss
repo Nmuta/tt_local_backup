@@ -49,6 +49,13 @@ mat-expansion-panel {
   margin-bottom: 2em;
 }
 
+.no-more-results {
+  padding-top: $gap-medium;
+  padding-bottom: $gap-medium;
+  text-align: center;
+  color: app-color-lighter-contrast($app-background, 70%);
+}
+
 ::ng-deep {
   .mat-expansion-panel-header-description,
   .mat-expansion-panel-header-title {
