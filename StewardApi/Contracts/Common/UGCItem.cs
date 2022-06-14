@@ -23,7 +23,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public int MakeId { get; set; }
         public int CarId { get; set; }
         public int ReportingState { get; set; }
-        public bool Searchable { get; set; }
         public DateTime ForceFeaturedEndDateUtc { get; set; }
         public DateTime FeaturedEndDateUtc { get; set; }
         public bool FeaturedByT10 { get; set; }
@@ -35,6 +34,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public int TimesUsed { get; set; }
         public int TimesLiked { get; set; }
         public int TimesDownloaded { get; set; }
+
+        /// <remarks>Mapped from 'Searchable' property on LSP.</remarks>
         public bool IsPublic { get; set; }
 
         /// <remarks>Property relates to in-game tagging that can be applied by the item's owner.</remarks>

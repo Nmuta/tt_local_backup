@@ -10,7 +10,7 @@ import { chain, values } from 'lodash';
  */
 export enum NavbarTool {
   DataObligation = 'obligation',
-  UGC = 'ugc',
+  SearchUGC = 'search-ugc',
   UgcDetails = 'ugc-details',
   Gifting = 'gifting',
   UserDetails = 'user-details',
@@ -290,14 +290,15 @@ export const unprocessedToolList: HomeTileInfo[] = [
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,
-    tool: NavbarTool.UGC,
+    tool: NavbarTool.SearchUGC,
+    oldToolRoutes: ['ugc'],
     accessList: CommonAccessLevels.CommunityManagersAndAdmins,
-    title: 'UGC',
-    subtitle: 'User Generated Content',
+    title: 'UGC Search',
+    subtitle: 'Search User Generated Content',
     imageUrl: undefined,
     imageAlt: undefined,
-    tooltipDescription: 'View and filter UGC by Player or Share Code',
-    shortDescription: [`View and filter User Generated Content by Player or Share Code`],
+    tooltipDescription: 'Search public UGC by model, ugc type, and keywords.',
+    shortDescription: [`Search public UGC by model, ugc type, and keywords.`],
     loadChildren: () => import('../../app/pages/tools/pages/ugc/ugc.module').then(m => m.UgcModule),
   },
   <HomeTileInfoInternal>{

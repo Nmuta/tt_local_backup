@@ -3,7 +3,7 @@ import { isString } from 'lodash';
 import { NavbarTool } from '../tool-list';
 
 export interface ChangelogArea {
-  tool: NavbarTool;
+  tool: NavbarTool | NavbarTool[];
   title: GameTitle | GameTitle[] | 'all';
 }
 

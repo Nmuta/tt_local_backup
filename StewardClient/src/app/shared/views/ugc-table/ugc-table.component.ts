@@ -63,6 +63,7 @@ export abstract class UgcTableBaseComponent
   public waitingForThumbnails = false;
   public allMonitors: ActionMonitor[] = [];
   public ugcDetailsLinkSupported: boolean = true;
+  public ugcType = UgcType;
 
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
@@ -156,6 +157,17 @@ export abstract class UgcTableBaseComponent
 
     this.ugcTableDataSource.data = dataSource;
     this.waitingForThumbnails = false;
+  }
+
+  /** Downloads the UGC Photo. */
+  public downloadPhoto(item: PlayerUgcItem): void {
+    const title = `${item.type}_${item.id}.jpg`;
+    const linkSource = item.thumbnailOneImageBase64;
+    const downloadLink = document.createElement('a');
+    downloadLink.href = linkSource;
+    downloadLink.download = title;
+    downloadLink.click();
+    downloadLink.remove();
   }
 
   private shouldLookupThumbnails(item: PlayerUgcItem): boolean {

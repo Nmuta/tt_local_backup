@@ -182,6 +182,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => -1))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => -1))
                 .ReverseMap();
+            this.CreateMap<UGCSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.CarId))
+                .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
+                .ForMember(dest => dest.Featured, opt => opt.MapFrom(source => source.IsFeatured))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => -1))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => -1))
+                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(source => ulong.MaxValue))
+                .ReverseMap();
             this.CreateMap<UgcType, ServicesLiveOps.ForzaUGCContentType>().ReverseMap();
             this.CreateMap<ServicesLiveOps.ForzaUGCData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { WoodstockSearchUgcComponent } from '@views/search-ugc/woodstock/woodstock-search-ugc.component';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { UgcComponent } from './ugc.component';
@@ -18,11 +19,7 @@ const routes: Routes = [
       {
         path: 'woodstock',
         canActivate: [TitleMemorySetGuard],
-        pathMatch: 'full',
-      },
-      {
-        path: 'sunrise',
-        canActivate: [TitleMemorySetGuard],
+        component: WoodstockSearchUgcComponent,
         pathMatch: 'full',
       },
     ],

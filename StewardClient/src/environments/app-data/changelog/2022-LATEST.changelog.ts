@@ -8,6 +8,19 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FH5, GameTitle.FH4],
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC],
+      },
+      uuid: 'd45c930b-a051-419c-a63a-7298f8630f6c',
+      shortText: 'Add Download button for individual photo results in UGC views.',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.SearchUGC },
+      uuid: 'ba7f6127-81d8-4dd4-b816-6c35f92c80fe',
+      shortText: 'Update deprecated UGC tool to Search UGC tool.',
+    },
+    {
       tag: { title: GameTitle.FM7, tool: NavbarTool.Gifting },
       uuid: '1a46fb61-979a-4c37-aad1-d1fa94f5d321',
       shortText: 'Add gifting liveries to FM7',

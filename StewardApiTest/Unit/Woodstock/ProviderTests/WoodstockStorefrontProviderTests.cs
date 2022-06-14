@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var filters = Fixture.Create<UgcFilters>();
+            var filters = Fixture.Create<ServicesLiveOps.ForzaUGCSearchRequest>();
             var endpointKey = Fixture.Create<string>();
 
             // Act.
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var filters = Fixture.Create<UgcFilters>();
+            var filters = Fixture.Create<ServicesLiveOps.ForzaUGCSearchRequest>();
             var endpointKey = Fixture.Create<string>();
 
             // Act.

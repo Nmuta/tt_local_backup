@@ -25,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
@@ -1679,7 +1680,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>());
                 this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.StorefrontProvider.SearchUgcContentAsync(Arg.Any<UgcType>(), Arg.Any<UgcFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.StorefrontProvider.SearchUgcContentAsync(Arg.Any<UgcType>(), Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UgcItem>>());
                 this.StorefrontProvider.GetUgcLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.GetUgcPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.GetUgcTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());

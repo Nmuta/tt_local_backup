@@ -87,12 +87,14 @@ describe('ToolsNavbarComponent', () => {
           enableFakeApi: false,
           enableStagingApi: false,
           appVersion: undefined,
-          navbarTools: { 'user-details': 1, ugc: 2, gifting: 3, 'ban-review': 4 },
+          navbarTools: { 'user-details': 1, 'search-ugc': 2, gifting: 3, 'ban-review': 4 },
           apolloEndpointKey: undefined,
           sunriseEndpointKey: undefined,
           woodstockEndpointKey: undefined,
           steelheadEndpointKey: undefined,
           showAppUpdatePopup: true,
+          themeOverride: undefined,
+          themeEnvironmentWarning: undefined,
         } as UserSettingsStateModel);
       });
 
@@ -101,7 +103,7 @@ describe('ToolsNavbarComponent', () => {
 
         expect(component.listedTools.length).toEqual(4);
         expect(component.listedTools[0].tool).toEqual('user-details');
-        expect(component.listedTools[1].tool).toEqual('ugc');
+        expect(component.listedTools[1].tool).toEqual('search-ugc');
         expect(component.listedTools[2].tool).toEqual('gifting');
         expect(component.listedTools[3].tool).toEqual('ban-review');
       });

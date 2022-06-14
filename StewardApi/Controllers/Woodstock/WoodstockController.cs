@@ -31,6 +31,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using static System.FormattableString;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
@@ -733,9 +734,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
+            var filters = this.mapper.Map<ForzaUGCSearchRequest>(new UgcFilters(ulong.MaxValue, shareCode));
+
             var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
-                new UgcFilters(ulong.MaxValue, shareCode),
+                filters,
                 endpoint,
                 includeThumbnails: true);
             var getCars = this.itemsProvider.GetCarsAsync();

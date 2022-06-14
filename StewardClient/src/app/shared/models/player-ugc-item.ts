@@ -19,7 +19,6 @@ export interface PlayerUgcItem {
   makeId: BigNumber;
   carId: BigNumber;
   reportingState: BigNumber;
-  searchable: boolean;
   forceFeaturedEndDateUtc: DateTime;
   featuredEndDateUtc: DateTime;
   featuredByT10: boolean;
@@ -51,7 +50,6 @@ export function fakePlayerUgcItem(): PlayerUgcItem {
     makeId: new BigNumber(0),
     carId: new BigNumber(0),
     reportingState: new BigNumber(0),
-    searchable: true,
     forceFeaturedEndDateUtc: null,
     featuredEndDateUtc: null,
     featuredByT10: false,

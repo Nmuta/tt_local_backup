@@ -1,5 +1,9 @@
 <h5 *ngIf="useExpandoColumnDef">* Click on a row to expand its details.</h5>
-
+<mat-paginator
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="getUgcThumbnailsForActiveDataset()"
+  showFirstLastButtons
+></mat-paginator>
 <table mat-table [dataSource]="ugcTableDataSource" multiTemplateDataRows #matTable>
   <ng-container matColumnDef="ugcInfo">
     <th mat-header-cell *matHeaderCellDef>UGC Info</th>
@@ -98,6 +102,16 @@
           matTooltip="Copy the UGC item's id"
         >
           <mat-icon>content_copy</mat-icon> Id
+        </button>
+
+        <button
+          *ngIf="entry.type === ugcType.Photo"
+          mat-stroked-button
+          color="primary"
+          clickStop
+          (click)="downloadPhoto(entry)"
+        >
+          Download
         </button>
       </div>
 
@@ -218,9 +232,4 @@
     ></tr>
   </ng-container>
 </table>
-<mat-paginator
-  [pageSizeOptions]="[5, 10, 20]"
-  (page)="getUgcThumbnailsForActiveDataset()"
-  showFirstLastButtons
-></mat-paginator>
 <mat-progress-spinner *ngIf="waitingForThumbnails" mode="indeterminate"></mat-progress-spinner>

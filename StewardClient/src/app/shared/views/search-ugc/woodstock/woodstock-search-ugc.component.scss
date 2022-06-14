@@ -1,7 +1,7 @@
 @import '/src/styles/mixins';
 
-@include flex-navbar-fill;
-
-mat-tab-group {
+mat-card {
   margin: $gap-medium;
+  flex-grow: unset;
+  max-height: unset;
 }

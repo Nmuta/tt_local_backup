@@ -26,6 +26,7 @@ import { PlayerUgcModule } from '@views/player-ugc/player-ugc.module';
 import { MatIconModule } from '@angular/material/icon';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { PastableSingleInputModule } from '@views/pastable-single-input/pastable-single-input.module';
+import { SearchUgcModule } from '@views/search-ugc/search-ugc.module';
 
 /** Routed module for ugc users. */
 @NgModule({
@@ -58,6 +59,7 @@ import { PastableSingleInputModule } from '@views/pastable-single-input/pastable
     MatIconModule,
     PastableSingleInputModule,
     EndpointSelectionModule,
+    SearchUgcModule,
   ],
 })
 export class UgcModule {}

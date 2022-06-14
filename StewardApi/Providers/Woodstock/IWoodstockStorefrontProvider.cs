@@ -23,9 +23,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             bool includeThumbnails = false);
 
         /// <summary>
-        ///     Search UGC items.
+        ///     Search UGC items by UGC share-code.
         /// </summary>
-        Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, UgcFilters filters, string endpoint, bool includeThumbnails = false);
+        Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, ServicesLiveOps.ForzaUGCSearchRequest filters, string endpoint, bool includeThumbnails = false);
 
         /// <summary>
         ///    Get player livery.

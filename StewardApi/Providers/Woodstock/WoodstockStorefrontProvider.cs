@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, UgcFilters filters, string endpoint, bool includeThumbnails = false)
+        public async Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, ServicesLiveOps.ForzaUGCSearchRequest filters, string endpoint, bool includeThumbnails = false)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));
             filters.ShouldNotBeNull(nameof(filters));
@@ -64,9 +64,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedFilters = this.mapper.Map<ServicesLiveOps.ForzaUGCSearchRequest>(filters);
             var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
-            var results = await this.woodstockService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
+            var results = await this.woodstockService.SearchUgcContentAsync(filters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
             return this.mapper.Map<IList<UgcItem>>(results.result);
         }

@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 
+/** Filters used to modify UGC results. */
 export interface UgcFilters {
   carId: BigNumber;
   makeId: BigNumber;
@@ -8,12 +9,22 @@ export interface UgcFilters {
   orderBy: UgcOrderBy;
 }
 
+/** Filters used to modify UGC lookup. */
+export interface UgcSearchFilters {
+  ugcType: UgcType;
+  carId: BigNumber;
+  keywords: string;
+  isFeatured: boolean;
+}
+
+/** Access level of UGC. */
 export enum UgcAccessLevel {
   Any = 'Any',
   Public = 'Public',
   Private = 'Private',
 }
 
+/** Type of UGC. */
 export enum UgcType {
   Unknown = 'Unknown',
   Livery = 'Livery',
@@ -21,6 +32,7 @@ export enum UgcType {
   Tune = 'Tune',
 }
 
+/** Order to display UGC results. */
 export enum UgcOrderBy {
   CreatedDateDesc = 'CreatedDateDesc',
   CreatedDateAsc = 'CreatedDateAsc',
@@ -28,6 +40,7 @@ export enum UgcOrderBy {
   PopularityScoreAsc = 'PopularityScoreAsc',
 }
 
+/** Default values for UgcFilters. */
 export const DefaultUgcFilters: UgcFilters = {
   makeId: undefined,
   carId: undefined,

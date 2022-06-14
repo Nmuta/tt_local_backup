@@ -1,0 +1,43 @@
+<form [formGroup]="formGroup" (submit)="emitFilterParameters()">
+  <!-- UGC Type Filter -->
+  <mat-form-field appearance="fill">
+    <mat-label>UGC Type</mat-label>
+    <mat-select matInput [formControl]="formControls.ugcType">
+      <mat-option *ngFor="let type of ugcType" [value]="type">{{ type }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Car Make & Model Filter -->
+  <woodstock-make-model-autocomplete
+    [formControl]="formControls.makeModelInput"
+    [makeOnlyOptions]="false"
+  ></woodstock-make-model-autocomplete>
+
+  <!-- UGC Keyword Filter -->
+  <mat-form-field appearance="fill">
+    <mat-label>Keywords</mat-label>
+    <input type="text" matInput [formControl]="formControls.keywords" />
+    <button
+      type="button"
+      mat-button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="clearKeyword()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    matSuffix
+    aria-label="Search"
+    (click)="emitFilterParameters()"
+  >
+    Search
+    <button-spinner defaultIcon="search" [monitor]="searchMonitor"></button-spinner>
+  </button>
+</form>
