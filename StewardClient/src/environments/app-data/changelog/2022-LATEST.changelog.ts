@@ -21,6 +21,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
       shortText: 'Update deprecated UGC tool to Search UGC tool.',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: 'd1e13ab2-1cff-4dda-969b-95c08838e454',
+      shortText: 'Add refresh button on login if user has no role',
+    },
+    {
       tag: { title: GameTitle.FM7, tool: NavbarTool.Gifting },
       uuid: '1a46fb61-979a-4c37-aad1-d1fa94f5d321',
       shortText: 'Add gifting liveries to FM7',

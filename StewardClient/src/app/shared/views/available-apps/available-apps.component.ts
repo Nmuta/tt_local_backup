@@ -15,6 +15,7 @@ import {
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { RecheckAuth } from '@shared/state/user/user.actions';
 
 /** Displays the apps available to the user, or a login button. */
 @Component({
@@ -78,6 +79,16 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
   /** Fired when any setting changes. */
   public syncStagingApiSettings(): void {
     this.store.dispatch(new SetStagingApi(this.enableStagingApi));
+  }
+
+  /** Refresh the user role */
+  public refreshLoginToken(): void {
+    this.store
+      .dispatch(new RecheckAuth())
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(_ => {
+        this.configure(this.store.selectSnapshot<UserModel>(UserState.profile));
+      });
   }
 
   private configure(userProfile: UserModel): void {

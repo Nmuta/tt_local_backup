@@ -28,7 +28,7 @@ export class SetNoUserProfile {
 /** RequestAccessToken action declaration. */
 export class RequestAccessToken {
   public static readonly type = '[User] Request Access Token';
-  constructor() {
+  constructor(public readonly forceTokenRefresh: boolean = false) {
     // Empty
   }
 }

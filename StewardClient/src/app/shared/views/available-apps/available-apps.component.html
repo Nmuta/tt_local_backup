@@ -24,6 +24,9 @@
       Try contacting us on <a [routerLink]="['/external/teams']" target="_blank">Teams</a> or
       <a [routerLink]="['/external/email']" target="_blank">Email</a>.
     </p>
+    <button class="refresh-button" mat-raised-button color="primary" (click)="refreshLoginToken()">
+      Refresh Role
+    </button>
   </div>
 
   <div class="app-list">

@@ -102,7 +102,7 @@ export class UserState {
     const requestAccessToken$ = this.actions$.pipe(
       ofActionSuccessful(ResetAccessToken),
       first(),
-      switchMap(() => ctx.dispatch(new RequestAccessToken())),
+      switchMap(() => ctx.dispatch(new RequestAccessToken(true))),
     );
     return concat(resetUserProfile$, requestAccessToken$);
   }
@@ -143,7 +143,10 @@ export class UserState {
 
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
-  public requestAccessToken$(ctx: StateContext<UserStateModel>): Observable<void> {
+  public requestAccessToken$(
+    ctx: StateContext<UserStateModel>,
+    action: RequestAccessToken,
+  ): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] requestAccessToken`);
     // If access token exists, exit logic
     const currentState = ctx.getState();
@@ -176,6 +179,7 @@ export class UserState {
       location?.origin === environment.stewardUiStagingUrl;
     return from(
       this.msalService.acquireTokenSilent({
+        forceRefresh: action.forceTokenRefresh,
         scopes: [environment.azureAppScope],
         redirectUri: `${
           useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl

@@ -7,6 +7,9 @@
 <b>Email:</b> {{ user?.emailAddress }}
 <b>Role:</b> {{ user?.role }}
     </pre>
+    <button class="refresh-button" mat-raised-button color="accent" (click)="refreshLoginToken()">
+      Refresh Role
+    </button>
     <button mat-raised-button color="accent" (click)="logout()">Logout</button>
   </mat-card-content>
 </mat-card>
