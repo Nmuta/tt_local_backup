@@ -156,7 +156,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Apollo
         /// <summary>
         ///     Gift a livery to an LSP user group.
         /// </summary>
-        [HttpPost("gifting/livery/{liveryId}/groupId/{groupId}")]
+        [HttpPost("livery/{liveryId}/groupId/{groupId}")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         public async Task<IActionResult> GiftLiveryToUserGroup(string liveryId, int groupId, [FromBody] Gift gift)

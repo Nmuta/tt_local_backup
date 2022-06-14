@@ -26,9 +26,9 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
       shortText: 'Add refresh button on login if user has no role',
     },
     {
-      tag: { title: GameTitle.FM7, tool: NavbarTool.Gifting },
+      tag: ChangelogTag.Internal,
       uuid: '1a46fb61-979a-4c37-aad1-d1fa94f5d321',
-      shortText: 'Add gifting liveries to FM7',
+      shortText: 'Set up gifting liveries in FM7',
     },
     {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },

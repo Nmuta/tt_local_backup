@@ -13,6 +13,7 @@ import { ApolloService } from '@services/apollo';
 import BigNumber from 'bignumber.js';
 import { Observable, throwError } from 'rxjs';
 import { GiftLiveryBaseComponent } from '../gift-livery.base.component';
+import { ApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/apollo-gifting.service';
 
 /** Apollo gift livery. */
 @Component({
@@ -32,6 +33,7 @@ export class ApolloGiftLiveryComponent extends GiftLiveryBaseComponent<IdentityR
 
   constructor(
     private readonly apolloService: ApolloService,
+    private readonly apolloGiftingService: ApolloGiftingService,
     backgroundJobService: BackgroundJobService,
   ) {
     super(backgroundJobService);
@@ -54,7 +56,7 @@ export class ApolloGiftLiveryComponent extends GiftLiveryBaseComponent<IdentityR
       );
     }
 
-    return this.apolloService.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, {
+    return this.apolloGiftingService.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, {
       xuids: xuids,
       giftReason: giftReason,
     } as GroupGift);
@@ -70,7 +72,7 @@ export class ApolloGiftLiveryComponent extends GiftLiveryBaseComponent<IdentityR
       return throwError(new Error('Failed to gift livery: lspGroup is null or undefined'));
     }
 
-    return this.apolloService.postGiftLiveryToLspGroup$(liveryId, lspGroup, {
+    return this.apolloGiftingService.postGiftLiveryToLspGroup$(liveryId, lspGroup, {
       giftReason: giftReason,
     } as Gift);
   }

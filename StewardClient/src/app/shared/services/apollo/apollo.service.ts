@@ -35,7 +35,6 @@ import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { DetailedCar } from '@models/detailed-car';
-import { Gift, GroupGift } from '@models/gift';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -280,28 +279,5 @@ export class ApolloService {
   /** Gets the sunrise detailed car list. */
   public getDetailedCars$(): Observable<DetailedCar[]> {
     return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/kusto/cars`);
-  }
-
-  /** Gifts livery to players.  */
-  public postGiftLiveryToPlayersUsingBackgroundJob$(
-    liveryId: string,
-    groupGift: GroupGift,
-  ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/gifting/livery/${liveryId}/players/useBackgroundProcessing`,
-      groupGift,
-    );
-  }
-
-  /** Gifts livery to an LSP group.  */
-  public postGiftLiveryToLspGroup$(
-    liveryId: string,
-    lspGroup: LspGroup,
-    gift: Gift,
-  ): Observable<GiftResponse<BigNumber>> {
-    return this.apiService.postRequest$<GiftResponse<BigNumber>>(
-      `${this.basePath}/gifting/livery/${liveryId}/groupId/${lspGroup.id}`,
-      gift,
-    );
   }
 }

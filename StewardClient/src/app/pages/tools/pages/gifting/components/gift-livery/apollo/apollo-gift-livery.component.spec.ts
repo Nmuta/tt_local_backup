@@ -22,12 +22,15 @@ import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { ApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/apollo-gifting.service';
+import { createMockApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/apollo-gifting.service.mock';
 
 describe('ApolloGiftLiveryComponent', () => {
   let fixture: ComponentFixture<ApolloGiftLiveryComponent>;
   let component: ApolloGiftLiveryComponent;
 
   let mockApolloService: ApolloService;
+  let mockApolloGiftingService: ApolloGiftingService;
   let mockBackgroundJobService: BackgroundJobService;
   const liveryId = faker.datatype.uuid();
 
@@ -41,13 +44,18 @@ describe('ApolloGiftLiveryComponent', () => {
       ],
       declarations: [ApolloGiftLiveryComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockBackgroundJobService(), createMockApolloService()],
+      providers: [
+        createMockBackgroundJobService(),
+        createMockApolloService(),
+        createMockApolloGiftingService(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ApolloGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;
 
     mockApolloService = TestBed.inject(ApolloService);
+    mockApolloGiftingService = TestBed.inject(ApolloGiftingService);
     mockBackgroundJobService = TestBed.inject(BackgroundJobService);
   }));
 
@@ -74,7 +82,7 @@ describe('ApolloGiftLiveryComponent', () => {
     const giftReason = faker.random.words(5);
 
     beforeEach(() => {
-      mockApolloService.postGiftLiveryToPlayersUsingBackgroundJob$ = jasmine
+      mockApolloGiftingService.postGiftLiveryToPlayersUsingBackgroundJob$ = jasmine
         .createSpy('postGiftLiveryToPlayersUsingBackgroundJob')
         .and.returnValue(of());
     });
@@ -94,7 +102,9 @@ describe('ApolloGiftLiveryComponent', () => {
             expect(true).toBeFalsy();
           });
 
-        expect(mockApolloService.postGiftLiveryToPlayersUsingBackgroundJob$).not.toHaveBeenCalled();
+        expect(
+          mockApolloGiftingService.postGiftLiveryToPlayersUsingBackgroundJob$,
+        ).not.toHaveBeenCalled();
       });
     });
 
@@ -113,7 +123,9 @@ describe('ApolloGiftLiveryComponent', () => {
             expect(true).toBeFalsy();
           });
 
-        expect(mockApolloService.postGiftLiveryToPlayersUsingBackgroundJob$).not.toHaveBeenCalled();
+        expect(
+          mockApolloGiftingService.postGiftLiveryToPlayersUsingBackgroundJob$,
+        ).not.toHaveBeenCalled();
       });
     });
 
@@ -121,10 +133,9 @@ describe('ApolloGiftLiveryComponent', () => {
       it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
         component.giftLiveryToPlayers$(liveryId, xuids, giftReason);
 
-        expect(mockApolloService.postGiftLiveryToPlayersUsingBackgroundJob$).toHaveBeenCalledWith(
-          liveryId,
-          { xuids: xuids, giftReason: giftReason } as GroupGift,
-        );
+        expect(
+          mockApolloGiftingService.postGiftLiveryToPlayersUsingBackgroundJob$,
+        ).toHaveBeenCalledWith(liveryId, { xuids: xuids, giftReason: giftReason } as GroupGift);
       });
     });
   });
@@ -134,7 +145,7 @@ describe('ApolloGiftLiveryComponent', () => {
     const giftReason = faker.random.words(5);
 
     beforeEach(() => {
-      mockApolloService.postGiftLiveryToLspGroup$ = jasmine
+      mockApolloGiftingService.postGiftLiveryToLspGroup$ = jasmine
         .createSpy('postGiftLiveryToLspGroup$')
         .and.returnValue(of());
     });
@@ -154,7 +165,7 @@ describe('ApolloGiftLiveryComponent', () => {
             expect(true).toBeFalsy();
           });
 
-        expect(mockApolloService.postGiftLiveryToLspGroup$).not.toHaveBeenCalled();
+        expect(mockApolloGiftingService.postGiftLiveryToLspGroup$).not.toHaveBeenCalled();
       });
     });
 
@@ -162,7 +173,7 @@ describe('ApolloGiftLiveryComponent', () => {
       it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
         component.giftLiveryToLspGroup$(liveryId, lspGroup, giftReason);
 
-        expect(mockApolloService.postGiftLiveryToLspGroup$).toHaveBeenCalledWith(
+        expect(mockApolloGiftingService.postGiftLiveryToLspGroup$).toHaveBeenCalledWith(
           liveryId,
           lspGroup,
           { giftReason: giftReason } as Gift,
