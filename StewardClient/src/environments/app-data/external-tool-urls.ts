@@ -9,6 +9,11 @@ import {
 /** External Tool URLs. */
 export type ExternalToolUrls = Record<NavbarTool, string>;
 
+export const StewardDashboard = {
+  actions:
+    'https://msit.powerbi.com/groups/me/apps/fd78489b-3fe6-4947-9df3-5c810f249b07/reports/b0e0b3d1-44b6-4f36-bc7b-cda5a3ea938a/ReportSection297d5da0c075521c0999',
+};
+
 /** URLs to external tools. */
 export const externalToolUrls = {
   local: <ExternalToolUrls>{
@@ -21,6 +26,7 @@ export const externalToolUrls = {
       'https://woodstockadmin-final.dev.services.forzamotorsport.net/UserDetails.aspx',
     [NavbarTool.AdminFH4]: 'https://admin.fh4.forzamotorsport.net/UserDetails.aspx',
     [NavbarTool.AdminFM7]: 'https://admin.fm7.forzamotorsport.net/Pages/UserDetails.aspx',
+    [NavbarTool.ActionsDashboard]: StewardDashboard.actions,
   },
   dev: <ExternalToolUrls>{
     [NavbarTool.Salus]: 'https://gamingmoderation.azureedge.net/#/dashboard',
@@ -32,6 +38,7 @@ export const externalToolUrls = {
       'https://woodstockadmin-final.dev.services.forzamotorsport.net/UserDetails.aspx',
     [NavbarTool.AdminFH4]: 'https://admin.fh4.forzamotorsport.net/UserDetails.aspx',
     [NavbarTool.AdminFM7]: 'https://admin.fm7.forzamotorsport.net/Pages/UserDetails.aspx',
+    [NavbarTool.ActionsDashboard]: StewardDashboard.actions,
   },
   prod: <ExternalToolUrls>{
     [NavbarTool.Salus]: 'https://gamingmoderation.azureedge.net/#/dashboard',
@@ -43,6 +50,7 @@ export const externalToolUrls = {
       'https://woodstockadmin-final.dev.services.forzamotorsport.net/UserDetails.aspx',
     [NavbarTool.AdminFH4]: 'https://admin.fh4.forzamotorsport.net/UserDetails.aspx',
     [NavbarTool.AdminFM7]: 'https://admin.fm7.forzamotorsport.net/Pages/UserDetails.aspx',
+    [NavbarTool.ActionsDashboard]: StewardDashboard.actions,
   },
 };
 

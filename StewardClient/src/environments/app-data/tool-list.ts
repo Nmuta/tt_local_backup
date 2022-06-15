@@ -34,6 +34,7 @@ export enum NavbarTool {
   Leaderboards = 'leaderboards',
   Theming = 'theming',
   RacersCup = 'racers-cup',
+  ActionsDashboard = 'actions-dashboard',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -106,6 +107,7 @@ export enum AppIcon {
   StewardManagement = 'cloud_sync',
   Leaderboards = 'leaderboard',
   RacersCup = 'calendar_today',
+  ActionsDashboard = 'dashboard',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -561,6 +563,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'FM7 Admin Pages',
     shortDescription: [`FM7 Admin Pages`],
     externalUrl: 'https://admin.fm7.forzamotorsport.net/',
+  },
+  <HomeTileInfoExternal>{
+    icon: AppIcon.ActionsDashboard,
+    extraIcon: ExtraIcon.External,
+    tool: NavbarTool.ActionsDashboard,
+    accessList: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
+    title: 'Actions Dashboard',
+    subtitle: 'PowerBi Dashboard',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription:
+      'Group of PowerBi dashboards showing actions done in Steward by type of action, application role and user',
+    shortDescription: [`Dashboard showing users actions in Steward`],
+    externalUrl:
+      'https://msit.powerbi.com/groups/me/apps/fd78489b-3fe6-4947-9df3-5c810f249b07/reports/b0e0b3d1-44b6-4f36-bc7b-cda5a3ea938a/ReportSection297d5da0c075521c0999',
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoCustomTile>{
     icon: AppIcon.DeveloperTool,

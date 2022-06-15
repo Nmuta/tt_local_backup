@@ -22,6 +22,12 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: '199c3e9a-a129-44bd-ad84-62b3b125b112',
+      shortText:
+        'Add new tile linking to PowerBi dashboard showing data on user actions in Steward',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'd1e13ab2-1cff-4dda-969b-95c08838e454',
       shortText: 'Add refresh button on login if user has no role',
     },
