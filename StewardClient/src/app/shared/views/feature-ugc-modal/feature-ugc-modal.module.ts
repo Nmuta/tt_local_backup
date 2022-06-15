@@ -18,6 +18,7 @@ import { LuxonModule } from 'luxon-angular';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { LuxonDateModule } from 'ngx-material-luxon';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
@@ -42,6 +43,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     DirectivesModule,
     StateManagersModule,
     MonitorActionModule,
+    LuxonDateModule,
   ],
   exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
 })
