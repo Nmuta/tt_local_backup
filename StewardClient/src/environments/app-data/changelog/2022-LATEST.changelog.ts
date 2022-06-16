@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },
+      uuid: '00e879e0-bc91-454f-9b12-6b890b0eb491',
+      shortText: 'Fix contrast issue with Featured UGC highlight background.',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UgcDetails },
       uuid: 'b1d0ed01-bfe9-48e2-883a-a9095489b399',
       shortText: 'Fix bug in featuring UGC.',
