@@ -616,6 +616,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
         }
 
+        /// <inheritdoc />
+        public async Task<int> GetUserReportWeightAsync(
+            ulong xuid,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var response = await this.woodstockService.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
+            return response.reportWeight;
+        }
+
+        /// <inheritdoc />
+        public async Task SetUserReportWeightAsync(
+            ulong xuid,
+            int reportWeight,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            if (reportWeight < 0 || reportWeight > 100)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Report weight must be between 0 and 100. Provided value: {reportWeight}");
+            }
+
+            await this.woodstockService.SetUserReportWeightAsync(xuid, reportWeight, endpoint).ConfigureAwait(false);
+        }
+
         private IList<int> PrepareGroupIds(WoodstockUserFlags userFlags, bool toggleOn)
         {
             var resultGroupIds = new List<int>();

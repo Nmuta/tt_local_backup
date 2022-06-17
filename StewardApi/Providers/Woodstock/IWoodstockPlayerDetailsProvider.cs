@@ -128,5 +128,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         ///     Gets player auctions.
         /// </summary>
         Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters, string endpoint);
+
+        /// <summary>
+        ///     Gets a user's report weight.
+        /// </summary>
+        Task<int> GetUserReportWeightAsync(
+            ulong xuid,
+            string endpoint);
+
+        /// <summary>
+        ///     Sets a user's report weight.
+        /// </summary>
+        Task SetUserReportWeightAsync(
+            ulong xuid,
+            int reportWeight,
+            string endpoint);
     }
 }

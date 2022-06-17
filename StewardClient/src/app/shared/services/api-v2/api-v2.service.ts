@@ -32,6 +32,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiV2Service {
   private readonly baseUrl = `${environment.stewardApiUrl}/api/v2`;
+
   constructor(private readonly http: HttpClient) {}
 
   /** Sends a GET request. */

@@ -156,6 +156,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Gets a user's report weight.
+        /// </summary>
+        Task<ServicesLiveOps.UserManagementService.GetUserReportWeightOutput> GetUserReportWeightAsync(
+            ulong xuid,
+            string endpoint);
+
+        /// <summary>
+        ///     Sets a user's report weight.
+        /// </summary>
+        Task SetUserReportWeightAsync(
+            ulong xuid,
+            int reportWeight,
+            string endpoint);
+
+        /// <summary>
         ///     Gets user inventory.
         /// </summary>
         Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(

@@ -259,6 +259,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<ServicesLiveOps.UserManagementService.GetUserReportWeightOutput> GetUserReportWeightAsync(
+            ulong xuid,
+            string endpoint)
+        {
+            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userService.GetUserReportWeight(xuid).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetUserReportWeightAsync(
+            ulong xuid,
+            int reportWeight,
+            string endpoint)
+        {
+            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            await userService.SetUserReportWeight(xuid, reportWeight).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(
             ulong xuid,
             string endpoint)

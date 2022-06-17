@@ -221,6 +221,57 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetUserReportWeightAsync_WithValidParameters_ReturnsValidValue()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            async Task<int> Action() => await provider.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeInRange(1, 99);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task SetUserReportWeightAsync_WithReportWeightOutOfRange_ShouldThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var reportWeight = -1;
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task> action = async () => await provider.SetUserReportWeightAsync(xuid, reportWeight, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentOutOfRangeException>($"Report weight must be between 0 and 100. Provided value: {reportWeight}");
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task SetUserReportWeightAsync_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var reportWeight = 4;
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task> action = async () => await provider.SetUserReportWeightAsync(xuid, reportWeight, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -457,6 +508,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             public Dependencies()
             {
+                Random rnd = new Random();
+                var fakeGetReportWeight = Fixture.Create<UserManagementService.GetUserReportWeightOutput>();
+                fakeGetReportWeight.reportWeight = rnd.Next(1, 100);
                 this.WoodstockService.GetUserIdsAsync(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserIdsOutput>());
                 this.WoodstockService.GetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagV2Output>());
                 this.WoodstockService.GetUserDataByGamertagAsync("gamerT1", Arg.Any<string>()).Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
@@ -471,6 +525,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserBanSummariesOutput>());
                 this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.WoodstockService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
+                this.WoodstockService.GetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(fakeGetReportWeight);
+                this.WoodstockService.SetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<Task>());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
