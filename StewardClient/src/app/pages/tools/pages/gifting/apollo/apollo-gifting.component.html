@@ -53,16 +53,7 @@
   </div>
 
   <div class="steward-layout-pane steward-layout-main-group">
-    <apollo-gift-basket
-      [referenceInventory]="selectedPlayerInventory"
-      [playerIdentities]="selectedPlayerIdentities"
-      [lspGroup]="selectedLspGroup"
-      [usingPlayerIdentities]="isUsingPlayerIdentities"
-    ></apollo-gift-basket>
-
-    <!-- Hiding gifting liveries feature until its ready services side - lugeiken 2022/06/14 -->
-    <!-- Task: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1170144 -->
-    <!-- <mat-tab-group class="steward-layout-vertical-fill">
+    <mat-tab-group class="steward-layout-vertical-fill">
       <mat-tab label="Gift Items">
         <apollo-gift-basket
           [referenceInventory]="selectedPlayerInventory"
@@ -78,7 +69,7 @@
           [usingPlayerIdentities]="isUsingPlayerIdentities"
         ></apollo-gift-livery>
       </mat-tab>
-    </mat-tab-group> -->
+    </mat-tab-group>
   </div>
 </div>
 
