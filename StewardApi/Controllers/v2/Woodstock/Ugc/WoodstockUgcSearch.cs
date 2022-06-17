@@ -29,6 +29,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IMapper mapper;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WoodstockUgcSearch"/> class.
+        /// </summary>
         public WoodstockUgcSearch(IWoodstockStorefrontProvider storefrontProvider, IWoodstockItemsProvider itemsProvider, IMapper mapper)
         {
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));

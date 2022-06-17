@@ -12,13 +12,26 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatColumnDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { state, style, trigger } from '@angular/animations';
-import { fromEvent, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { EMPTY, from, fromEvent, Observable } from 'rxjs';
+import {
+  catchError,
+  map as rxjsMap,
+  mergeAll,
+  switchMap,
+  takeUntil,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UgcType } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { GameTitle } from '@models/enums';
 import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import JSZip from 'jszip';
+import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
+import { GuidLikeString } from '@models/extended-types';
+import { saveAs } from 'file-saver';
+import { chunk, flatten } from 'lodash';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -54,6 +67,9 @@ export abstract class UgcTableBaseComponent
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() content: PlayerUgcItem[];
+  @Input() contentType: UgcType = UgcType.Unknown;
+  public readonly THUMBNAIL_LOOKUP_BATCH_SIZE = 250;
+  public readonly THUMBNAIL_LOOKUP_MAX_CONCURRENCY = 4;
 
   public ugcTableDataSource = new MatTableDataSource<PlayerUgcItemTableEntries>([]);
   public columnsToDisplay: string[] = UGC_TABLE_COLUMNS_TWO_IMAGES;
@@ -61,10 +77,12 @@ export abstract class UgcTableBaseComponent
   public useExpandoColumnDef: boolean = false;
   public expandoColumnDef = UGC_TABLE_COLUMNS_EXPANDO;
   public waitingForThumbnails = false;
+  public displayTableWideActions: boolean = false;
+  public ugcCount: number;
   public allMonitors: ActionMonitor[] = [];
+  public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcType = UgcType;
-
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
 
@@ -86,6 +104,9 @@ export abstract class UgcTableBaseComponent
   public abstract openFeatureUgcModal(item: PlayerUgcItem): void;
   public abstract getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem>;
   public abstract hideUgcItem(item: PlayerUgcItemTableEntries): void;
+  public abstract retrievePhotoThumbnails(
+    ugcIds: GuidLikeString[],
+  ): Observable<LookupThumbnailsResult[]>;
 
   /** Angular hook. */
   public ngOnInit(): void {
@@ -122,6 +143,9 @@ export abstract class UgcTableBaseComponent
       });
 
       this.ugcTableDataSource.data = ugcItemsToProcess;
+      this.ugcCount = this.ugcTableDataSource.data.length;
+      this.displayTableWideActions =
+        this.gameTitle === GameTitle.FH5 && this.contentType === UgcType.Photo && this.ugcCount > 0;
 
       if (this.paginator) {
         this.paginator.pageIndex = 0;
@@ -168,6 +192,71 @@ export abstract class UgcTableBaseComponent
     downloadLink.download = title;
     downloadLink.click();
     downloadLink.remove();
+  }
+
+  /** Downloads the UGC Photo. */
+  public downloadPhotosInZip(): void {
+    const zip = new JSZip();
+    const photoIds = this.content.map(x => x.id);
+    this.downloadAllMonitor = this.downloadAllMonitor.repeat();
+
+    // For now we will only download the top 500 results.
+    this.lookupThumbnails(photoIds.slice(0, 500))
+      .pipe(
+        tap(thumbnailLookupResults => {
+          this.content.slice(0, 500).forEach(item => {
+            const title = `${item.type}_${item.id}.jpg`;
+            const thumbnail: string = thumbnailLookupResults
+              .find(ugc => ugc.id === item.id)
+              .thumbnail.split(',')[1];
+
+            if (item.type !== UgcType.Photo) {
+              return;
+            }
+
+            zip.file(title, thumbnail, { base64: true });
+          });
+        }),
+        switchMap(() => {
+          return from(zip.generateAsync({ type: 'blob' }));
+        }),
+        this.downloadAllMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(base64Content => {
+        saveAs(base64Content, 'Photos.zip');
+      });
+  }
+
+  private lookupThumbnails(photoIds: string[]): Observable<LookupThumbnailsResult[]> {
+    const batchedQueries: Observable<LookupThumbnailsResult[]>[] = [];
+
+    // Generate batches of thumbnail queries to not overload the LSP
+    chunk(photoIds, this.THUMBNAIL_LOOKUP_BATCH_SIZE).forEach(batch => {
+      const query = this.retrievePhotoThumbnails(batch).pipe(
+        catchError(() => {
+          return EMPTY;
+        }),
+        takeUntil(this.onDestroy$),
+      );
+
+      batchedQueries.push(query);
+    });
+
+    return from(batchedQueries).pipe(
+      mergeAll(this.THUMBNAIL_LOOKUP_MAX_CONCURRENCY), // Set max concurrency for requesting thumbnails
+      toArray(), // Wait for all requests to complete
+      rxjsMap((results: LookupThumbnailsResult[][]) => {
+        const flatResults = flatten(results);
+        const thumbnailResults = flatResults.map(thumbnailResult => {
+          const finalResult = thumbnailResult as LookupThumbnailsResult;
+          return finalResult;
+        });
+
+        return thumbnailResults;
+      }),
+      takeUntil(this.onDestroy$),
+    );
   }
 
   private shouldLookupThumbnails(item: PlayerUgcItem): boolean {

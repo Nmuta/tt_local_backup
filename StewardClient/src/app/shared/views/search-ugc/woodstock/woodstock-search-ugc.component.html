@@ -10,7 +10,7 @@
     ></woodstock-ugc-search-filters>
 
     <ng-container *ngIf="!getMonitor?.status?.error; else failstate">
-      <woodstock-ugc-table #ugcTable [content]="ugcContent"></woodstock-ugc-table>
+      <woodstock-ugc-table [content]="ugcContent" [contentType]="ugcType"></woodstock-ugc-table>
     </ng-container>
 
     <ng-template #failstate>

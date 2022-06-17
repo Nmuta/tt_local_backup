@@ -97,6 +97,12 @@ export class MockApolloService {
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidUgcFakeApi.makeMany()))),
     );
+
+  public getPlayerUgcItem$ = jasmine
+    .createSpy('getPlayerUgcItem$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidUgcFakeApi.makeMany()[0]))),
+    );
 }
 /** Creates an injectable mock for Apollo Service. */
 export function createMockApolloService(): Provider {

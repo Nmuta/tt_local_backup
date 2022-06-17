@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { UgcSearchFilters } from '@models/ugc-filters';
+import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-search.service';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -18,6 +18,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   public searchUgc$ = new Subject<UgcSearchFilters>();
   public ugcContent: PlayerUgcItem[] = [];
   public getMonitor = new ActionMonitor('GET UGC Content');
+  public ugcType: UgcType = UgcType.Unknown;
 
   constructor(private readonly searchService: WoodstockUgcSearchService) {
     super();
@@ -31,6 +32,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
           this.ugcContent = [];
         }),
         switchMap(filters => {
+          this.ugcType = filters.ugcType;
           this.getMonitor = this.getMonitor.repeat();
 
           return this.getSystemUgc$(filters).pipe(

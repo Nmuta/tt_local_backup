@@ -65,15 +65,15 @@ describe('ApolloGiftLiveryComponent', () => {
 
   describe('Method: getLivery$', () => {
     beforeEach(() => {
-      mockApolloService.getPlayerUgcItem = jasmine
-        .createSpy('getPlayerUgcItem')
+      mockApolloService.getPlayerUgcItem$ = jasmine
+        .createSpy('getPlayerUgcItem$')
         .and.returnValue(of());
     });
 
-    it('should call unriseService.getPlayerUgcItem with correct parmas', () => {
+    it('should call sunriseService.getPlayerUgcItem$ with correct parmas', () => {
       component.getLivery$(liveryId);
 
-      expect(mockApolloService.getPlayerUgcItem).toHaveBeenCalledWith(liveryId, UgcType.Livery);
+      expect(mockApolloService.getPlayerUgcItem$).toHaveBeenCalledWith(liveryId, UgcType.Livery);
     });
   });
 

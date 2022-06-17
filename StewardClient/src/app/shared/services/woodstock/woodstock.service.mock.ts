@@ -173,6 +173,12 @@ export class MockWoodstockService {
       this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUgcFakeApi.makeMany()))),
     );
 
+  public getPlayerUgcItem$ = jasmine
+    .createSpy('getPlayerUgcItem$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUgcFakeApi.makeMany()[0]))),
+    );
+
   public getDetailedCars$ = jasmine
     .createSpy('getDetailedCars')
     .and.callFake(() =>

@@ -45,6 +45,6 @@ export class WoodstockFeatureUgcModalComponent extends FeatureUgcModalBaseCompon
 
   /** Gets UGC item. */
   public getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
-    return this.woodstockService.getPlayerUgcItem(itemId, type);
+    return this.woodstockService.getPlayerUgcItem$(itemId, type);
   }
 }

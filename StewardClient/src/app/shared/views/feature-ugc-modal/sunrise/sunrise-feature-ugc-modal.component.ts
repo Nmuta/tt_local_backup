@@ -45,6 +45,6 @@ export class SunriseFeatureUgcModalComponent extends FeatureUgcModalBaseComponen
 
   /** Gets UGC item. */
   public getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
-    return this.sunriseService.getPlayerUgcItem(itemId, type);
+    return this.sunriseService.getPlayerUgcItem$(itemId, type);
   }
 }

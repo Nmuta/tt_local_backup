@@ -71,7 +71,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
             this.service
               .getPlayerUgcByShareCode$(params.id, params.type)
               .pipe(catchError(() => of(null))),
-            this.service.getPlayerUgcItem(params.id, params.type).pipe(catchError(() => of(null))),
+            this.service.getPlayerUgcItem$(params.id, params.type).pipe(catchError(() => of(null))),
           ]),
         ),
         this.getMonitor.monitorCatch(),

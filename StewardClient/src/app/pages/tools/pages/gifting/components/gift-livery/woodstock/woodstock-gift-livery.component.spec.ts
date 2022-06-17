@@ -57,15 +57,15 @@ describe('WoodstockGiftLiveryComponent', () => {
 
   describe('Method: getLivery$', () => {
     beforeEach(() => {
-      mockWoodstockService.getPlayerUgcItem = jasmine
-        .createSpy('getPlayerUgcItem')
+      mockWoodstockService.getPlayerUgcItem$ = jasmine
+        .createSpy('getPlayerUgcItem$')
         .and.returnValue(of());
     });
 
-    it('should call unriseService.getPlayerUgcItem with correct parmas', () => {
+    it('should call unriseService.getPlayerUgcItem$ with correct parmas', () => {
       component.getLivery$(liveryId);
 
-      expect(mockWoodstockService.getPlayerUgcItem).toHaveBeenCalledWith(liveryId, UgcType.Livery);
+      expect(mockWoodstockService.getPlayerUgcItem$).toHaveBeenCalledWith(liveryId, UgcType.Livery);
     });
   });
 

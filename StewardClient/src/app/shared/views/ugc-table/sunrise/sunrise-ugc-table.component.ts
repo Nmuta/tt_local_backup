@@ -7,10 +7,12 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { PlayerUgcItemTableEntries, UgcTableBaseComponent } from '../ugc-table.component';
 import { SunriseService } from '@services/sunrise';
 import { UgcType } from '@models/ugc-filters';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { pull } from 'lodash';
 import { renderGuard } from '@helpers/rxjs';
 import { PermissionsService } from '@services/permissions';
+import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
+import { GuidLikeString } from '@models/extended-types';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -53,7 +55,7 @@ export class SunriseUgcTableComponent extends UgcTableBaseComponent implements O
 
   /** Gets player UGC item. */
   public getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
-    return this.sunriseService.getPlayerUgcItem(id, type);
+    return this.sunriseService.getPlayerUgcItem$(id, type);
   }
 
   /** Hide UGC item. */
@@ -66,6 +68,11 @@ export class SunriseUgcTableComponent extends UgcTableBaseComponent implements O
       .subscribe(() => {
         this.deleteEntry(item);
       });
+  }
+
+  /** Retrieve Photo thumnbnails. */
+  public retrievePhotoThumbnails(_ugcIds: GuidLikeString[]): Observable<LookupThumbnailsResult[]> {
+    return throwError(new Error('Sunrise does not support bulk photo thumbnail lookup.'));
   }
 
   private deleteEntry(item: PlayerUgcItemTableEntries): void {

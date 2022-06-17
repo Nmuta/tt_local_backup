@@ -5,8 +5,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { PlayerUgcItemTableEntries, UgcTableBaseComponent } from '../ugc-table.component';
 import { ApolloService } from '@services/apollo';
 import { UgcType } from '@models/ugc-filters';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { PermissionsService } from '@services/permissions';
+import { GuidLikeString } from '@models/extended-types';
+import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 
 /** Displays apollo UGC content in a table. */
 @Component({
@@ -30,7 +32,7 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
 
   /** Gets player UGC item. */
   public getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
-    return this.apolloService.getPlayerUgcItem(id, type);
+    return this.apolloService.getPlayerUgcItem$(id, type);
   }
 
   /** Opens the feature UGC modal. */
@@ -41,5 +43,10 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
   /** Hides UGC item.  */
   public hideUgcItem(_item: PlayerUgcItemTableEntries): void {
     throw new Error('Apollo does not support hiding UGC');
+  }
+
+  /** Retrieve Photo thumnbnails. */
+  public retrievePhotoThumbnails(_ugcIds: GuidLikeString[]): Observable<LookupThumbnailsResult[]> {
+    return throwError(new Error('Apollo does not support bulk photo thumbnail lookup.'));
   }
 }

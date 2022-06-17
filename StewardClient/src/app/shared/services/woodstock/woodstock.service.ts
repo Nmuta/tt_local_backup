@@ -564,7 +564,7 @@ export class WoodstockService {
   }
 
   /** Gets a player's UGC item.  */
-  public getPlayerUgcItem(id: string, ugcType: UgcType): Observable<PlayerUgcItem> {
+  public getPlayerUgcItem$(id: string, ugcType: UgcType): Observable<PlayerUgcItem> {
     if (ugcType === UgcType.Unknown) {
       throw new Error(`Invalid UGC item type for lookup: ${ugcType}}`);
     }

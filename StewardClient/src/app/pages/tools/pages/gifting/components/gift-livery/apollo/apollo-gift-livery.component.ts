@@ -41,7 +41,7 @@ export class ApolloGiftLiveryComponent extends GiftLiveryBaseComponent<IdentityR
 
   /** Gets a player's livery. */
   public getLivery$(liveryId: string): Observable<PlayerUgcItem> {
-    return this.apolloService.getPlayerUgcItem(liveryId, UgcType.Livery);
+    return this.apolloService.getPlayerUgcItem$(liveryId, UgcType.Livery);
   }
 
   /** Gifts a livery to group of players. */

@@ -24,6 +24,14 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     },
     {
       tag: {
+        title: GameTitle.FH5,
+        tool: NavbarTool.SearchUGC,
+      },
+      uuid: 'd45c930b-a051-419c-a63a-7298f8630f6c',
+      shortText: 'Add "Download Top 500" button to UGC search results for Photo thumbnails.',
+    },
+    {
+      tag: {
         title: [GameTitle.FH5, GameTitle.FH4],
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC],
       },

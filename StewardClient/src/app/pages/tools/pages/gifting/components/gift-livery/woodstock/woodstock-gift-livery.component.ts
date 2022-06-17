@@ -39,7 +39,7 @@ export class WoodstockGiftLiveryComponent extends GiftLiveryBaseComponent<Identi
 
   /** Gets a player's livery. */
   public getLivery$(liveryId: string): Observable<PlayerUgcItem> {
-    return this.woodstockService.getPlayerUgcItem(liveryId, UgcType.Livery);
+    return this.woodstockService.getPlayerUgcItem$(liveryId, UgcType.Livery);
   }
 
   /** Gifts a livery to group of players. */

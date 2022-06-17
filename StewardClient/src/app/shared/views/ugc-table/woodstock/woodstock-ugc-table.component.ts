@@ -11,6 +11,9 @@ import { WoodstockService } from '@services/woodstock';
 import { pull } from 'lodash';
 import { renderGuard } from '@helpers/rxjs';
 import { PermissionsService } from '@services/permissions';
+import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-lookup.service';
+import { GuidLikeString } from '@models/extended-types';
+import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -24,6 +27,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   constructor(
     private readonly dialog: MatDialog,
     private readonly woodstockService: WoodstockService,
+    private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
     permissionsService: PermissionsService,
   ) {
     super(permissionsService);
@@ -53,7 +57,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Gets player UGC item. */
   public getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
-    return this.woodstockService.getPlayerUgcItem(id, type);
+    return this.woodstockService.getPlayerUgcItem$(id, type);
   }
 
   /** Hide UGC item. */
@@ -66,6 +70,11 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
       .subscribe(() => {
         this.deleteEntry(item);
       });
+  }
+
+  /** Retrieve Photo thumnbnails. */
+  public retrievePhotoThumbnails(ugcIds: GuidLikeString[]): Observable<LookupThumbnailsResult[]> {
+    return this.woodstockUgcLookupService.GetPhotoThumbnails$(ugcIds);
   }
 
   private deleteEntry(item: PlayerUgcItemTableEntries): void {

@@ -1,4 +1,20 @@
 <h5 *ngIf="useExpandoColumnDef">* Click on a row to expand its details.</h5>
+<div class="table-wide-actions" *ngIf="displayTableWideActions">
+  <button
+    mat-stroked-button
+    color="primary"
+    clickStop
+    [disabled]="downloadAllMonitor.isActive"
+    (click)="downloadPhotosInZip()"
+    [ngPlural]="ugcCount"
+  >
+    <ng-template ngPluralCase="=1">Download Result</ng-template>
+    <ng-template ngPluralCase="other"
+      >Download {{ ugcCount > 500 ? 'Top 500' : ugcCount }} Results</ng-template
+    >
+    <button-spinner defaultIcon="download" [monitor]="downloadAllMonitor"></button-spinner>
+  </button>
+</div>
 <mat-paginator
   [pageSizeOptions]="[5, 10, 20]"
   (page)="getUgcThumbnailsForActiveDataset()"

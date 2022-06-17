@@ -47,7 +47,7 @@ describe('WoodstockFeatureUgcModalComponent', () => {
     mockMatDialogRef.close = jasmine.createSpy('close');
     mockMatDialogRef.beforeClosed = jasmine.createSpy('beforeClosed').and.returnValue(of());
 
-    mockWoodstockService.getPlayerUgcItem = jasmine
+    mockWoodstockService.getPlayerUgcItem$ = jasmine
       .createSpy('setUgcItemFeatureStatus')
       .and.returnValue(of(null));
     mockWoodstockService.setUgcItemFeatureStatus = jasmine
@@ -128,10 +128,10 @@ describe('WoodstockFeatureUgcModalComponent', () => {
     const itemId = faker.datatype.uuid().toString();
     const type = UgcType.Livery;
 
-    it('should call WoodstockService.getPlayerUgcItem() with correct params', () => {
+    it('should call WoodstockService.getPlayerUgcItem$() with correct params', () => {
       component.getUgcItem$(itemId, type);
 
-      expect(mockWoodstockService.getPlayerUgcItem).toHaveBeenCalledWith(itemId, type);
+      expect(mockWoodstockService.getPlayerUgcItem$).toHaveBeenCalledWith(itemId, type);
     });
   });
 });

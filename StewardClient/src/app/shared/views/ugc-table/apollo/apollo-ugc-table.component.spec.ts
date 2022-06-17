@@ -11,10 +11,14 @@ import { EMPTY } from 'rxjs';
 import { PlayerUgcItemTableEntries } from '../ugc-table.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import faker from '@faker-js/faker';
+import { UgcType } from '@models/ugc-filters';
+import { ApolloService } from '@services/apollo';
 
 describe('ApolloUgcTableComponent', () => {
   let component: ApolloUgcTableComponent;
   let fixture: ComponentFixture<ApolloUgcTableComponent>;
+  let mockApolloService: ApolloService;
   let mockPermissionsService: PermissionsService;
   let mockMatDialog: MatDialog;
 
@@ -35,6 +39,7 @@ describe('ApolloUgcTableComponent', () => {
 
     fixture = TestBed.createComponent(ApolloUgcTableComponent);
     component = fixture.componentInstance;
+    mockApolloService = TestBed.inject(ApolloService);
     mockMatDialog = TestBed.inject(MatDialog);
     mockPermissionsService = TestBed.inject(PermissionsService);
 
@@ -71,6 +76,22 @@ describe('ApolloUgcTableComponent', () => {
       } catch (e) {
         expect(e.message).toEqual('Apollo does not support featuring UGC');
       }
+    });
+  });
+
+  describe('Method: retrievePhotoThumbnails', () => {
+    it('should call throw', () => {
+      component.retrievePhotoThumbnails([]);
+
+      expect(component).toThrowError;
+    });
+  });
+
+  describe('Method: getUgcItem', () => {
+    it('should call ApolloService.getPlayerUgcItem$', () => {
+      component.getUgcItem(faker.datatype.uuid(), UgcType.Livery);
+
+      expect(mockApolloService.getPlayerUgcItem$).toHaveBeenCalled();
     });
   });
 
@@ -153,6 +174,14 @@ describe('ApolloUgcTableComponent', () => {
 
         expect(component.canHideUgc).toBeFalsy();
       });
+    });
+  });
+
+  describe('Method: ngAfterViewInit', () => {
+    it('Should set ugcTableDataSource.paginator', () => {
+      component.ngAfterViewInit();
+
+      expect(component.ugcTableDataSource.paginator).toBeTruthy();
     });
   });
 });

@@ -12,6 +12,8 @@ import { SunriseService } from '@services/sunrise';
 import { PlayerUgcItemTableEntries } from '../ugc-table.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PermissionsService, createMockPermissionsService } from '@services/permissions';
+import { UgcType } from '@models/ugc-filters';
+import faker from '@faker-js/faker';
 
 describe('SunriseUgcTableComponent', () => {
   let component: SunriseUgcTableComponent;
@@ -68,6 +70,22 @@ describe('SunriseUgcTableComponent', () => {
       component.openFeatureUgcModal(item);
 
       expect(mockMatDialog.open).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: retrievePhotoThumbnails', () => {
+    it('should call throw', () => {
+      component.retrievePhotoThumbnails([]);
+
+      expect(component).toThrowError;
+    });
+  });
+
+  describe('Method: getUgcItem', () => {
+    it('should call SunriseService.getPlayerUgcItem$', () => {
+      component.getUgcItem(faker.datatype.uuid(), UgcType.Livery);
+
+      expect(mockSunriseService.getPlayerUgcItem$).toHaveBeenCalled();
     });
   });
 
@@ -150,6 +168,14 @@ describe('SunriseUgcTableComponent', () => {
 
         expect(component.useExpandoColumnDef).toBeTruthy();
       });
+    });
+  });
+
+  describe('Method: ngAfterViewInit', () => {
+    it('Should set ugcTableDataSource.paginator', () => {
+      component.ngAfterViewInit();
+
+      expect(component.ugcTableDataSource.paginator).toBeTruthy();
     });
   });
 });

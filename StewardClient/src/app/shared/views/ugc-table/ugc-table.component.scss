@@ -86,6 +86,13 @@ table {
   }
 }
 
+div.table-wide-actions {
+  display: flow-root;
+  button {
+    float: right;
+  }
+}
+
 mat-progress-spinner {
   margin: auto;
   margin-top: $gap-small;

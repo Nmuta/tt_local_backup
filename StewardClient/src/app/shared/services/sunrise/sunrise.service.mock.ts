@@ -167,6 +167,12 @@ export class MockSunriseService {
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUgcFakeApi.makeMany()))),
     );
 
+  public getPlayerUgcItem$ = jasmine
+    .createSpy('getPlayerUgcItem$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUgcFakeApi.makeMany()[0]))),
+    );
+
   public getDetailedCars$ = jasmine
     .createSpy('getDetailedCars')
     .and.callFake(() =>

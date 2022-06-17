@@ -57,15 +57,15 @@ describe('SunriseGiftLiveryComponent', () => {
 
   describe('Method: getLivery$', () => {
     beforeEach(() => {
-      mockSunriseService.getPlayerUgcItem = jasmine
-        .createSpy('getPlayerUgcItem')
+      mockSunriseService.getPlayerUgcItem$ = jasmine
+        .createSpy('getPlayerUgcItem$')
         .and.returnValue(of());
     });
 
-    it('should call unriseService.getPlayerUgcItem with correct parmas', () => {
+    it('should call unriseService.getPlayerUgcItem$ with correct parmas', () => {
       component.getLivery$(liveryId);
 
-      expect(mockSunriseService.getPlayerUgcItem).toHaveBeenCalledWith(liveryId, UgcType.Livery);
+      expect(mockSunriseService.getPlayerUgcItem$).toHaveBeenCalledWith(liveryId, UgcType.Livery);
     });
   });
 
