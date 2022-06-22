@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '4b68c770-fc42-4534-a777-33896d6d5d0f',
+      shortText: 'Correct phrasing on splash page.',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '1677ddca-c912-4e4f-8dd8-bb499cdfdef0',
       shortText: 'Setup report weight integration with Services.',
