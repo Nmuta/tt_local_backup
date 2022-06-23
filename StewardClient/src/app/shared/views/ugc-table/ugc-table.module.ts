@@ -11,7 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { LuxonModule } from 'luxon-angular';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ImageModalModule } from '@views/image-modal/image-modal.module';
 import { SunriseUgcTableComponent } from './sunrise/sunrise-ugc-table.component';
@@ -24,6 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { ApolloUgcTableComponent } from './apollo/apollo-ugc-table.component';
 import { RouterModule } from '@angular/router';
+import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -41,7 +41,6 @@ import { RouterModule } from '@angular/router';
     MatTableModule,
     MatPaginatorModule,
     DirectivesModule,
-    LuxonModule,
     ClipboardModule,
     ImageModalModule,
     MatProgressSpinnerModule,
@@ -52,6 +51,7 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     VerifyCheckboxModule,
     RouterModule,
+    FeatureUgcModalModule,
   ],
   exports: [SunriseUgcTableComponent, WoodstockUgcTableComponent, ApolloUgcTableComponent],
 })

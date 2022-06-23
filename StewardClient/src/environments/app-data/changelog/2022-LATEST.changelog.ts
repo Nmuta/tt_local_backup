@@ -37,6 +37,14 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     },
     {
       tag: {
+        title: 'all',
+        tool: [NavbarTool.UgcDetails],
+      },
+      uuid: '358d6b5f-c769-4c5c-ab0e-89764c839a82',
+      shortText: 'Fix date not showing when selecting a UGC feature date.',
+    },
+    {
+      tag: {
         title: [GameTitle.FH5, GameTitle.FH4],
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC],
       },

@@ -10,15 +10,14 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SunriseFeatureUgcModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
 import { WoodstockFeatureUgcModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LuxonModule } from 'luxon-angular';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { LuxonDateModule } from 'ngx-material-luxon';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
@@ -36,14 +35,13 @@ import { LuxonDateModule } from 'ngx-material-luxon';
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDatepickerModule,
     MatProgressSpinnerModule,
     JsonDumpModule,
-    LuxonModule,
     DirectivesModule,
     StateManagersModule,
     MonitorActionModule,
-    LuxonDateModule,
+    MatDatepickerModule,
+    StandardDateModule,
   ],
   exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
 })
