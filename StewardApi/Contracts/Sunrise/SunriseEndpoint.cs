@@ -11,6 +11,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
     public static class SunriseEndpoint
     {
         /// <summary>
+        ///     The default value for V1 endpoint key header.
+        /// </summary>
+        public const string V1Default = "Sunrise|Retail";
+
+        /// <summary>
+        ///     The default value for V2 endpoint key header.
+        /// </summary>
+        public const string V2Default = "Retail";
+
+        /// <summary>
         ///     Gets Sunrise production LSP endpoint.
         /// </summary>
         public static string Retail => "https://gameservices.fh4.forzamotorsport.net/Services/o.xtsw";

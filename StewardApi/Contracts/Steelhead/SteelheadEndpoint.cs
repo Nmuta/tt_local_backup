@@ -11,6 +11,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     public static class SteelheadEndpoint
     {
         /// <summary>
+        ///     The default value for V1 endpoint key header.
+        /// </summary>
+        public const string V1Default = "Steelhead|Development";
+
+        /// <summary>
+        ///     The default value for V2 endpoint key header.
+        /// </summary>
+        public const string V2Default = "Development";
+
+        /// <summary>
         ///     Gets development LSP endpoint.
         /// </summary>
         public static string Development => "https://steelhead-15.dev.services.forzamotorsport.net/Services/o.xtsw";

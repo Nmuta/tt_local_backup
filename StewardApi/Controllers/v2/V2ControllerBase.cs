@@ -1,6 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
+using ApolloContracts = Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using SteelheadContracts = Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using SunriseContracts = Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+
 namespace Turn10.LiveOps.StewardApi.Controllers.v2
 {
     /// <summary>
@@ -30,46 +35,42 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
 
         private string GetWoodstockEndpoint()
         {
-            const string DefaultEndpointKey = "Retail";
             if (!this.Request.Headers.TryGetValue("Endpoint-Woodstock", out var key))
             {
-                key = DefaultEndpointKey;
+                key = WoodstockContracts.WoodstockEndpoint.V2Default;
             }
 
-            return Contracts.Woodstock.WoodstockEndpoint.GetEndpoint(key);
+            return WoodstockContracts.WoodstockEndpoint.GetEndpoint(key);
         }
 
         private string GetSunriseEndpoint()
         {
-            const string DefaultEndpointKey = "Retail";
             if (!this.Request.Headers.TryGetValue("Endpoint-Sunrise", out var key))
             {
-                key = DefaultEndpointKey;
+                key = SunriseContracts.SunriseEndpoint.V2Default;
             }
 
-            return Turn10.LiveOps.StewardApi.Contracts.Sunrise.SunriseEndpoint.GetEndpoint(key);
+            return SunriseContracts.SunriseEndpoint.GetEndpoint(key);
         }
 
         private string GetApolloEndpoint()
         {
-            const string DefaultEndpointKey = "Retail";
             if (!this.Request.Headers.TryGetValue("Endpoint-Apollo", out var key))
             {
-                key = DefaultEndpointKey;
+                key = ApolloContracts.ApolloEndpoint.V2Default;
             }
 
-            return Turn10.LiveOps.StewardApi.Contracts.Apollo.ApolloEndpoint.GetEndpoint(key);
+            return ApolloContracts.ApolloEndpoint.GetEndpoint(key);
         }
 
         private string GetSteelheadEndpoint()
         {
-            const string DefaultEndpointKey = "Retail";
             if (!this.Request.Headers.TryGetValue("Endpoint-Steelhead", out var key))
             {
-                key = DefaultEndpointKey;
+                key = SteelheadContracts.SteelheadEndpoint.V2Default;
             }
 
-            return Turn10.LiveOps.StewardApi.Contracts.Steelhead.SteelheadEndpoint.GetEndpoint(key);
+            return SteelheadContracts.SteelheadEndpoint.GetEndpoint(key);
         }
     }
 }

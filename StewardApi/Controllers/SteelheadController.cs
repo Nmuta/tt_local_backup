@@ -53,7 +53,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
         private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Steelhead;
-        private const string DefaultEndpointKey = "Steelhead|Development";
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
 
         private static readonly IList<string> RequiredSettings = new List<string>
@@ -1452,7 +1451,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             if (!headers.TryGetValue("endpointKey", out var headerValue))
             {
-                headerValue = DefaultEndpointKey;
+                headerValue = SteelheadEndpoint.V1Default;
             }
 
             var endpointKeyValue = headerValue.ToString();

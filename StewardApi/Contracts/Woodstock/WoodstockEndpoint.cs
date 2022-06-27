@@ -12,7 +12,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
     /// </summary>
     public static class WoodstockEndpoint
     {
-        private const string DefaultEndpointKey = "Woodstock|Retail";
+        /// <summary>
+        ///     The default value for V1 endpoint key header.
+        /// </summary>
+        public const string V1Default = "Woodstock|Retail";
+
+        /// <summary>
+        ///     The default value for V2 endpoint key header.
+        /// </summary>
+        public const string V2Default = "Retail";
 
         /// <summary>
         ///     Gets Woodstock retail LSP endpoint.
@@ -31,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         {
             if (!headers.TryGetValue("endpointKey", out var headerValue))
             {
-                headerValue = DefaultEndpointKey;
+                headerValue = V1Default;
             }
 
             var endpointKeyValue = headerValue.ToString();

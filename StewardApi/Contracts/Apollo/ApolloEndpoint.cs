@@ -11,6 +11,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     public static class ApolloEndpoint
     {
         /// <summary>
+        ///     The default value for V1 endpoint key header.
+        /// </summary>
+        public const string V1Default = "Apollo|Retail";
+
+        /// <summary>
+        ///     The default value for V2 endpoint key header.
+        /// </summary>
+        public const string V2Default = "Retail";
+
+        /// <summary>
         ///     Gets Apollo production LSP endpoint.
         /// </summary>
         public static string Retail => "https://serverservices.fm7.forzamotorsport.net/ServerServices.FM7Release/o.xtsw";
