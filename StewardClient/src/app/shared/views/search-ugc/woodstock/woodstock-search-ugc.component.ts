@@ -6,6 +6,8 @@ import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-search.service';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import BigNumber from 'bignumber.js';
+import { Params } from '@angular/router';
 
 /** Retreives and displays Woodstock ugc by search filters. */
 @Component({
@@ -19,6 +21,9 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   public ugcContent: PlayerUgcItem[] = [];
   public getMonitor = new ActionMonitor('GET UGC Content');
   public ugcType: UgcType = UgcType.Unknown;
+  public filterXuid: BigNumber = undefined;
+  public routerLink: string = '/app/tools/user-details/woodstock';
+  public routerParams: Params = undefined;
 
   constructor(private readonly searchService: WoodstockUgcSearchService) {
     super();
@@ -30,9 +35,17 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
       .pipe(
         tap(() => {
           this.ugcContent = [];
+          this.filterXuid = undefined;
+          this.routerParams = undefined;
         }),
         switchMap(filters => {
           this.ugcType = filters.ugcType;
+
+          if (filters.xuid) {
+            this.filterXuid = filters.xuid;
+            this.routerParams = { lookupType: 'xuid', lookupName: filters.xuid };
+          }
+
           this.getMonitor = this.getMonitor.repeat();
 
           return this.getSystemUgc$(filters).pipe(

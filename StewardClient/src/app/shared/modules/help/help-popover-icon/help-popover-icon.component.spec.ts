@@ -1,5 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { HelpPopoverIconComponent } from './help-popover-icon.component';
 
@@ -10,7 +11,7 @@ describe('HelpPopoverIconComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HelpPopoverIconComponent],
-      imports: [OverlayModule],
+      imports: [OverlayModule, RouterTestingModule.withRoutes([])],
     }).compileComponents();
   });
 

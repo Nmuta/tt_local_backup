@@ -21,6 +21,8 @@ import { UgcTableModule } from '../ugc-table/ugc-table.module';
 import { UgcSearchFiltersModule } from '@views/ugc-search-filters/ugc-search-filters.module';
 import { WoodstockSearchUgcComponent } from './woodstock/woodstock-search-ugc.component';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { RouterModule } from '@angular/router';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Display for public ugc. */
 @NgModule({
@@ -48,6 +50,8 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     UgcTableModule,
     UgcSearchFiltersModule,
     MonitorActionModule,
+    RouterModule,
+    HelpModule,
   ],
   exports: [WoodstockSearchUgcComponent],
 })

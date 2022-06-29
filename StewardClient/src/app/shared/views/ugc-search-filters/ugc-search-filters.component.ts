@@ -8,6 +8,8 @@ import BigNumber from 'bignumber.js';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
+import { IdentityResultAlpha } from '@models/identity-query.model';
 
 export type MakeModelFilterGroup = {
   category: string;
@@ -24,6 +26,8 @@ export class UgcSearchFiltersComponent extends BaseComponent {
   @Output() public changes = new EventEmitter<UgcSearchFilters>();
   @Input() public searchMonitor: ActionMonitor;
   @Input() public gameTitle: GameTitleCodeName;
+  @Input() public rejectionFn: (identity: AugmentedCompositeIdentity) => string | null;
+  @Input() public foundFn: (identity: AugmentedCompositeIdentity) => IdentityResultAlpha | null;
 
   public ugcType = keys(UgcType).filter(type => type !== UgcType.Unknown) as UgcType[];
 
@@ -32,6 +36,7 @@ export class UgcSearchFiltersComponent extends BaseComponent {
     makeModelInput: new FormControl(null),
     keywords: new FormControl(''),
     isFeatured: new FormControl(false, Validators.required),
+    identity: new FormControl(null),
   };
 
   /** UGC filters form group. */
@@ -53,6 +58,7 @@ export class UgcSearchFiltersComponent extends BaseComponent {
     }
 
     const parameters = {
+      xuid: (this.formControls.identity.value as IdentityResultAlpha)?.xuid,
       ugcType: this.formControls.ugcType.value,
       carId: carId,
       keywords: this.formControls.keywords.value,
@@ -65,5 +71,12 @@ export class UgcSearchFiltersComponent extends BaseComponent {
   /** Clears the keyword input and outputs the updated search filters */
   public clearKeyword(): void {
     this.formControls.keywords.setValue(null);
+  }
+
+  /** Player identity selected */
+  public playerIdentityFound(newIdentity: AugmentedCompositeIdentity): void {
+    const titleSpecificIdentity = this.foundFn(newIdentity);
+
+    this.formControls.identity.setValue(titleSpecificIdentity);
   }
 }

@@ -1,5 +1,7 @@
 <ugc-search-filters
-  title="gameTitle"
+  [gameTitle]="gameTitle"
   [searchMonitor]="searchMonitor"
   (changes)="changes.emit($event)"
+  [rejectionFn]="identityRejectionFn"
+  [foundFn]="playerIdentityFound"
 ></ugc-search-filters>

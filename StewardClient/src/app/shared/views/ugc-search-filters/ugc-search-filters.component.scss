@@ -4,15 +4,15 @@ form {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
-  align-items: center;
-
-  woodstock-make-model-autocomplete {
-    flex-basis: 400px;
-    flex-shrink: 1;
-  }
+  align-items: flex-end;
 
   > * {
     margin: $gap-small / 2;
+  }
+
+  .filter-search {
+    min-width: $button-min-size;
+    margin-bottom: 2em;
   }
 }
 
@@ -26,8 +26,4 @@ form {
 
 .item-id-text {
   color: app-color-default($app-primary);
-}
-
-button.filter-search {
-  min-width: $button-min-size;
 }

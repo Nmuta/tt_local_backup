@@ -1,6 +1,16 @@
 <mat-card>
+  <a
+    mat-stroked-button
+    color="primary"
+    class="private-ugc-search-link"
+    matTooltip="Private UGC is not searchable, must be looked up by creator."
+    [routerLink]="routerLink"
+    [queryParams]="routerParams"
+    >{{ !!filterXuid ? 'Search Private UGC for ' + filterXuid : 'Search Private UGC' }}</a
+  >
+
   <mat-card-header>
-    <mat-card-title>Public UGC Search</mat-card-title>
+    <mat-card-title>Search Public UGC</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>

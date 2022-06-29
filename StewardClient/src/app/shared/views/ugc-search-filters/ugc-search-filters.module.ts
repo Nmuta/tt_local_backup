@@ -20,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UgcSearchFiltersComponent } from './ugc-search-filters.component';
 import { WoodstockUgcSearchFiltersComponent } from './woodstock-ugc-search-filters/woodstock-ugc-search-filters.component';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { PlayerSelectionModule } from '@views/player-selection/player-selection.module';
 
 /** Display for player ugcs. */
 @NgModule({
@@ -45,6 +46,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     MakeModelAutocompleteModule,
     MatCheckboxModule,
     MonitorActionModule,
+    PlayerSelectionModule,
   ],
   exports: [WoodstockUgcSearchFiltersComponent],
 })

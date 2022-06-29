@@ -9,19 +9,19 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     public sealed class UGCSearchFilters
     {
         /// <summary>
-        ///     Value to pass into carId filter when you want that field to be ignored during the search.
+        ///     Gets or sets the Keywords.
         /// </summary>
-        private static int NoCar = -1;
+        public ulong Xuid { get; set; } = UgcSearchConstants.NoXuid;
 
         /// <summary>
         ///     Gets or sets the Keywords.
         /// </summary>
-        public string Keywords { get; set; } = string.Empty;
+        public string Keywords { get; set; } = UgcSearchConstants.NoKeywords;
 
         /// <summary>
         ///     Gets or sets the Car ID.
         /// </summary>
-        public int CarId { get; set; } = UGCSearchFilters.NoCar;
+        public int CarId { get; set; } = UgcSearchConstants.NoCarId;
 
         /// <summary>
         ///     Gets or sets a value indicating whether the search result must be featured.

@@ -53,6 +53,7 @@ describe('UgcSearchFiltersComponent', () => {
   describe('Method: searchParameters', () => {
     let carInput: DetailedCar;
     const testUgcSearchParameters = {
+      xuid: fakeBigNumber(),
       ugcType: UgcType.Livery,
       carId: fakeBigNumber(),
       keywords: faker.random.word(),
@@ -73,6 +74,7 @@ describe('UgcSearchFiltersComponent', () => {
         component.emitFilterParameters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({
+          xuid: undefined,
           ugcType: testUgcSearchParameters.ugcType,
           carId: undefined,
           keywords: testUgcSearchParameters.keywords,
@@ -90,6 +92,7 @@ describe('UgcSearchFiltersComponent', () => {
         component.emitFilterParameters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({
+          xuid: undefined,
           ugcType: testUgcSearchParameters.ugcType,
           carId: carInput.id,
           keywords: testUgcSearchParameters.keywords,
@@ -108,6 +111,7 @@ describe('UgcSearchFiltersComponent', () => {
         component.emitFilterParameters();
 
         expect(component.changes.emit).toHaveBeenCalledWith({
+          xuid: undefined,
           ugcType: testUgcSearchParameters.ugcType,
           carId: carInput.id,
           keywords: testUgcSearchParameters.keywords,

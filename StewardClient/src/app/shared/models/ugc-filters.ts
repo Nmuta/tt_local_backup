@@ -11,6 +11,7 @@ export interface UgcFilters {
 
 /** Filters used to modify UGC lookup. */
 export interface UgcSearchFilters {
+  xuid: BigNumber;
   ugcType: UgcType;
   carId: BigNumber;
   keywords: string;

@@ -1,4 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { BaseComponent } from '@components/base-component/base.component';
+import { takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs';
 
 /** Produces a questionmark icon which contains helpful text and an optional link to the docs. */
 @Component({
@@ -6,10 +10,27 @@ import { Component, Input } from '@angular/core';
   templateUrl: './help-popover-icon.component.html',
   styleUrls: ['./help-popover-icon.component.scss'],
 })
-export class HelpPopoverIconComponent {
+export class HelpPopoverIconComponent extends BaseComponent implements OnInit {
   @Input() public cardTitle: string = '';
   @Input() public cardSubtitle: string = 'Help card';
   @Input() public confluenceName: string = '';
+
+  public isOpen = false;
+
+  constructor(private readonly router: Router) {
+    super();
+  }
+
+  /** Life-cycle hook. */
+  public ngOnInit(): void {
+    // https://stackoverflow.com/questions/51821766/angular-material-dialog-not-closing-after-navigation
+    this.router.events
+      .pipe(
+        filter(x => x instanceof NavigationStart),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => (this.isOpen = false));
+  }
 
   /** The link to the page for this tooltip. */
   public get confluenceLink(): string {
@@ -24,6 +45,4 @@ export class HelpPopoverIconComponent {
       ? 'Click to view help card and confluence link'
       : 'Click to view help card';
   }
-
-  public isOpen = false;
 }

@@ -1,4 +1,11 @@
 <form [formGroup]="formGroup" (submit)="emitFilterParameters()">
+  <player-selection-single
+    [disableLookupTypes]="['t10Id']"
+    [allowSelection]="false"
+    [rejectionFn]="rejectionFn"
+    (found)="playerIdentityFound($event)"
+  ></player-selection-single>
+
   <!-- UGC Type Filter -->
   <mat-form-field appearance="fill">
     <mat-label>UGC Type</mat-label>
@@ -30,6 +37,7 @@
   </mat-form-field>
 
   <button
+    class="filter-search"
     type="button"
     mat-raised-button
     color="primary"
