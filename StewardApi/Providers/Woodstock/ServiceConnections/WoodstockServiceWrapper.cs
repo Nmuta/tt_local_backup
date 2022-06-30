@@ -455,7 +455,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 xuids.Count,
                 message,
                 expireTimeUtc,
-                string.Empty).ConfigureAwait(false);
+                string.Empty,
+                DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -481,7 +482,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 message,
                 expireTimeUtc,
                 deviceType != ServicesLiveOps.ForzaLiveDeviceType.Invalid,
-                deviceType).ConfigureAwait(false);
+                deviceType,
+                DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
