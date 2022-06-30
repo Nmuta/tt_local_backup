@@ -29,5 +29,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Photo UGC item type.
         /// </summary>
         Photo = 5,
+
+        /// <summary>
+        ///     Event Blueprint UGC item type.
+        /// </summary>
+        EventBlueprint = 6,
     }
 }

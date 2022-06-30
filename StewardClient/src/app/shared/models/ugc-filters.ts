@@ -31,6 +31,7 @@ export enum UgcType {
   Livery = 'Livery',
   Photo = 'Photo',
   Tune = 'Tune',
+  EventBlueprint = 'EventBlueprint',
 }
 
 /** Order to display UGC results. */

@@ -832,6 +832,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets a UGC tune by ID.
+        /// </summary>
+        [HttpGet("storefront/eventBlueprint({id})")]
+        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetUgvEventBlueprint(string id)
+        {
+            if (!Guid.TryParse(id, out var idAsGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {id}");
+            }
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+
+            var eventBlueprint = await this.storefrontProvider.GetUgcEventBlueprintAsync(idAsGuid, endpoint).ConfigureAwait(true);
+
+            return this.Ok(eventBlueprint);
+        }
+
+        /// <summary>
         ///     Sets featured status of a UGC content item.
         /// </summary>
         [HttpPost("storefront/itemId({ugcId})/featuredStatus")]

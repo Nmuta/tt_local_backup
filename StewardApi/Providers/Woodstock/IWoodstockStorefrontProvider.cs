@@ -43,6 +43,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<UgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint);
 
         /// <summary>
+        ///    Get player event blueprint.
+        /// </summary>
+        Task<UgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint);
+
+        /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
         Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);

@@ -127,6 +127,20 @@
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
+              Events
+              <inline-spinner [monitor]="ugcEvents.getMonitor | renderGuard"
+                >({{ ugcEvents?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <woodstock-player-ugc
+              #ugcEvents
+              [identity]="identity"
+              [contentType]="UgcType.EventBlueprint"
+              [usingIdentities]="true"
+            ></woodstock-player-ugc>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
               Hidden
               <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner>
             </ng-template>

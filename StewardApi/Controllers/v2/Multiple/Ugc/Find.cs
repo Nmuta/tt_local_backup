@@ -54,6 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Livery),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Tune),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
+                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
                 this.LookupFH5IdOrNullAsync(
                     shareCodeOrId,
                     ServicesLiveOpsFH5.ForzaUGCContentType.Livery,
@@ -69,6 +70,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
                     ServicesLiveOpsFH5.ForzaUGCContentType.Photo,
                     (id) => this.fh5Service.GetPlayerPhotoAsync(id, this.WoodstockEndpoint.Value),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
+                 this.LookupFH5IdOrNullAsync(
+                    shareCodeOrId,
+                    ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint,
+                    (id) => this.fh5Service.GetEventBlueprintAsync(id, this.WoodstockEndpoint.Value),
+                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
             };
 
             var fh4Lookups = new[]

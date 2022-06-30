@@ -630,6 +630,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<LiveOpsService.GetUGCEventBlueprintOutput> GetEventBlueprintAsync(
+            Guid eventBlueprintId,
+            string endpoint)
+        {
+            var liveOpsService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await liveOpsService.GetUGCEventBlueprint(eventBlueprintId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(
             int maxUgcCount,
             ulong xuid,

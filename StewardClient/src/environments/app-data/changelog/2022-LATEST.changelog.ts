@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails] },
+      uuid: 'bcfe4514-f698-467b-8247-68f812af0dc7',
+      shortText: 'Add searching and featuring event blueprints to FH5.',
+    },
+    {
       tag: {
         title: GameTitle.FH5,
         tool: NavbarTool.SearchUGC,

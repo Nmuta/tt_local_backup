@@ -260,7 +260,9 @@ export abstract class UgcTableBaseComponent
   }
 
   private shouldLookupThumbnails(item: PlayerUgcItem): boolean {
-    return !!item && item.type !== UgcType.Tune && !item.thumbnailOneImageBase64;
+    const typesWithThumbnails = [UgcType.Livery, UgcType.Photo];
+    const shouldLookupThumbnails = !!typesWithThumbnails.find(type => type === item?.type);
+    return !!item && !item.thumbnailOneImageBase64 && shouldLookupThumbnails;
   }
 
   private shouldUseCondensedTableView(): boolean {

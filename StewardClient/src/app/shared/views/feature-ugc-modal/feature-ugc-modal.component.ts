@@ -44,11 +44,15 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
     this.ugcItem = cloneDeep(data);
 
     const isUnsupportedType =
-      data.type !== UgcType.Livery && data.type !== UgcType.Photo && data.type !== UgcType.Tune;
+      data.type !== UgcType.Livery &&
+      data.type !== UgcType.Photo &&
+      data.type !== UgcType.Tune &&
+      data.type !== UgcType.EventBlueprint;
+
     if (isUnsupportedType) {
       dialogRef.close();
       throw new Error(
-        `Bad UGC Type: ${data.type}. Featuring UGC content is limited to types: ${UgcType.Livery}, ${UgcType.Photo}, ${UgcType.Tune}.`,
+        `Bad UGC Type: ${data.type}. Featuring UGC content is limited to types: ${UgcType.Livery}, ${UgcType.Photo}, ${UgcType.Tune}, ${UgcType.EventBlueprint}.`,
       );
     }
 

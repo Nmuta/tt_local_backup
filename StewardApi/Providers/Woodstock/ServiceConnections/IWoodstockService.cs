@@ -388,6 +388,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Get a player event blueprint.
+        /// </summary>
+        Task<LiveOpsService.GetUGCEventBlueprintOutput> GetEventBlueprintAsync(
+            Guid eventBlueprintId,
+            string endpoint);
+
+        /// <summary>
         ///     Get hidden UGC.
         /// </summary>
         Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(

@@ -13,7 +13,7 @@ import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.s
 export class WoodstockUgcDetailsComponent extends BaseComponent implements OnInit {
   public GameTitleCodeName = GameTitleCodeName;
 
-  public supportedTypes = [UgcType.Livery, UgcType.Photo, UgcType.Tune];
+  public supportedTypes = [UgcType.Livery, UgcType.Photo, UgcType.Tune, UgcType.EventBlueprint];
   public hasTypeLookup = {};
 
   constructor(public readonly sharedLookupService: ScopedSharedLookupService) {

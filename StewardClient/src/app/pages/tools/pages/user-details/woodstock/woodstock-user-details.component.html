@@ -84,6 +84,9 @@
           <inline-spinner [monitor]="ugcTunes.getMonitor | renderGuard"
             >({{ ugcTunes?.ugcContent?.length }})</inline-spinner
           >
+          <inline-spinner [monitor]="ugcEvents.getMonitor | renderGuard"
+            >({{ ugcEvents?.ugcContent?.length }})</inline-spinner
+          >
           <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner>
         </ng-template>
         <mat-tab-group>
@@ -126,6 +129,20 @@
               #ugcTunes
               [identity]="identity"
               [contentType]="UgcType.Tune"
+              [usingIdentities]="true"
+            ></woodstock-player-ugc>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Events
+              <inline-spinner [monitor]="ugcEvents.getMonitor | renderGuard"
+                >({{ ugcEvents?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <woodstock-player-ugc
+              #ugcEvents
+              [identity]="identity"
+              [contentType]="UgcType.EventBlueprint"
               [usingIdentities]="true"
             ></woodstock-player-ugc>
           </mat-tab>

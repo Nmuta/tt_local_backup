@@ -119,6 +119,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
+        public async Task<UgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var eventBlueprintOutput = await this.woodstockService.GetEventBlueprintAsync(eventBlueprintId, endpoint).ConfigureAwait(false);
+            var eventBlueprint = this.mapper.Map<UgcItem>(eventBlueprintOutput.result);
+
+            if (eventBlueprint.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Event blueprint id could not found: {eventBlueprintId}");
+            }
+
+            return eventBlueprint;
+        }
+
+        /// <inheritdoc />
         public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -183,8 +199,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var layerGroups = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.LayerGroup, endpoint).SuccessOrDefault(defaultValue, exceptions);
             var photos = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Photo, endpoint).SuccessOrDefault(defaultValue, exceptions);
             var tunings = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Tuning, endpoint).SuccessOrDefault(defaultValue, exceptions);
+            var eventBlueprints = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.EventBlueprint, endpoint).SuccessOrDefault(defaultValue, exceptions);
 
-            await Task.WhenAll(liveries, layerGroups, photos, tunings).ConfigureAwait(false);
+            await Task.WhenAll(liveries, layerGroups, photos, tunings, eventBlueprints).ConfigureAwait(false);
 
             var results = new List<ForzaStorefrontFile>();
             if (liveries.IsCompletedSuccessfully)
@@ -205,6 +222,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             if (tunings.IsCompletedSuccessfully)
             {
                 results.AddRange(tunings.GetAwaiter().GetResult().ugcData);
+            }
+
+            if (eventBlueprints.IsCompletedSuccessfully)
+            {
+                results.AddRange(eventBlueprints.GetAwaiter().GetResult().ugcData);
             }
 
             var convertedResults = this.mapper.Map<List<HideableUgc>>(results);
