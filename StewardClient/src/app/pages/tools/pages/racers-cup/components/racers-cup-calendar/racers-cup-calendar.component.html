@@ -30,7 +30,7 @@
         </button>
       </div>
     </div>
-    <ng-container *ngIf="!getMonitor.isActive; else loading">
+    <ng-container *waitForMonitor="getMonitor">
       <div class="steward-layout-pane steward-layout-main-group">
         <mat-card>
           <mat-card-title>Racer's Cup Schedule</mat-card-title>
@@ -178,8 +178,4 @@
     [tooltipAppendToBody]="tooltipAppendToBody"
     [tooltipDelay]="tooltipDelay"
   ></div>
-</ng-template>
-
-<ng-template #loading>
-  <big-spinner [monitor]="getMonitor"></big-spinner>
 </ng-template>

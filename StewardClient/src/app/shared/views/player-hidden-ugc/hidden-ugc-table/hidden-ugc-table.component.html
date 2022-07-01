@@ -6,7 +6,7 @@
       <mat-icon>sync</mat-icon>
     </button>
   </mat-card-subtitle>
-  <ng-container *ngIf="!getMonitor.isActive; else loading">
+  <ng-container *waitForMonitor="getMonitor">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="preview">
         <th mat-header-cell *matHeaderCellDef>Preview</th>
@@ -112,10 +112,6 @@
     </table>
   </ng-container>
 </mat-card>
-
-<ng-template #loading>
-  <big-spinner [monitor]="getMonitor"></big-spinner>
-</ng-template>
 
 <ng-template #noPreviewImage>
   <span>No preview for this UGC file type.</span>

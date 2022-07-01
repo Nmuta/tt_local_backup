@@ -21,6 +21,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
       shortText: 'Add player lookup to UGC search filters.',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '15cfea84-ba33-45e3-aec3-39d3d3fe68cd',
+      shortText: 'Add new wrapper for loading component.',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '4b68c770-fc42-4534-a777-33896d6d5d0f',
       shortText: 'Correct phrasing on splash page.',

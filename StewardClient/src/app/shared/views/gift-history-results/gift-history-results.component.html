@@ -3,7 +3,7 @@
   <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
   <mat-card-content>
     <div class="notification">{{ giftHistoryDelay }}</div>
-    <ng-container *ngIf="getHistoryMonitor.isSuccess; else monitorTemplate">
+    <ng-container *waitForMonitor="getHistoryMonitor">
       <ng-container *ngIf="giftHistoryList?.length > 0; else noHistoryFoundTemplate">
         <div #historyViewOverride>
           <ng-content select="[historyViewOverride]"></ng-content>
@@ -64,8 +64,4 @@
       [endTimeUtc]="endDate"
     ></standard-absolute-time-range>
   </span>
-</ng-template>
-
-<ng-template #monitorTemplate>
-  <big-spinner [monitor]="getHistoryMonitor"></big-spinner>
 </ng-template>

@@ -15,6 +15,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { ButtonSpinnerComponent } from './button-spinner/button-spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { WaitForMonitorDirective } from './wait-for-monitor.directive';
 
 /** A feature module that enables monitoring RXJS actions. */
 @NgModule({
@@ -26,6 +27,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     BigSpinnerComponent,
     InlineSpinnerComponent,
     ButtonSpinnerComponent,
+    WaitForMonitorDirective,
   ],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     BigSpinnerComponent,
     InlineSpinnerComponent,
     ButtonSpinnerComponent,
+    WaitForMonitorDirective,
   ],
 })
 export class MonitorActionModule {}

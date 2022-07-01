@@ -40,11 +40,16 @@ export class ActionMonitor {
 
   private _status$ = new BehaviorSubject<ActionStatus<unknown>>(ActionMonitor.DEFAULT_STATUS);
   private _allStatuses: ActionStatus<unknown>[] = [];
-  private mode: ActionMonitorMode = null;
+  private _mode: ActionMonitorMode = null;
 
   /** The current status of the action. */
   public get status(): ActionStatus<unknown> {
     return last(this._allStatuses) || ActionMonitor.DEFAULT_STATUS;
+  }
+
+  /** The mode of the action. */
+  public get mode(): ActionMonitorMode {
+    return this._mode;
   }
 
   /** Gets all historic statuses. */
@@ -88,7 +93,7 @@ export class ActionMonitor {
       error: undefined,
       value: undefined,
       state: 'active',
-      mode: this.mode,
+      mode: this._mode,
       dates: {
         lastStart: DateTime.local(),
         lastEnd: undefined,
@@ -116,7 +121,7 @@ export class ActionMonitor {
       error: undefined,
       value: undefined,
       state: 'inactive',
-      mode: this.mode,
+      mode: this._mode,
       dates: {
         lastStart: undefined,
         lastEnd: undefined,
@@ -262,11 +267,13 @@ export class ActionMonitor {
   /** Updates the mode. Produces an error if attempting to use in multiple modes. */
   private setMode(mode: ActionMonitorMode): void {
     if (!!mode) {
-      this.mode = mode;
+      this._mode = mode;
     }
 
-    if (this.mode !== mode) {
-      throw new Error(`Cannot use ActionMonitor in '${mode}' mode. Current mode is '${this.mode}'`);
+    if (this._mode !== mode) {
+      throw new Error(
+        `Cannot use ActionMonitor in '${mode}' mode. Current mode is '${this._mode}'`,
+      );
     }
   }
 }

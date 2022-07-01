@@ -1,4 +1,4 @@
-<ng-container *ngIf="!getMonitor.isActive; else spinner">
+<ng-container *waitForMonitor="getMonitor">
   <model-dump #source [model]="ugcItem" *ngIf="ugcItem; else noItem">
     <mat-card>
       <mat-card-header>
@@ -75,9 +75,7 @@
     </div>
   </model-dump>
 </ng-container>
-<ng-template #spinner>
-  <big-spinner [monitor]="getMonitor"></big-spinner>
-</ng-template>
+
 <ng-template #noItem>
   <p>No Item Found.</p>
 </ng-template>

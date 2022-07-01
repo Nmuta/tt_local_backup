@@ -1,9 +1,6 @@
 <page-auction-data
-  *ngIf="auctionData && !getMonitor.isErrored; else spinner"
+  *waitForMonitor="getMonitor"
   [auctionData]="auctionData"
   [title]="GameTitleAbbreviation.FH4"
 >
 </page-auction-data>
-<ng-template #spinner>
-  <big-spinner [monitor]="getMonitor"></big-spinner>
-</ng-template>
