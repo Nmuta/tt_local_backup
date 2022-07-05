@@ -1713,15 +1713,15 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@microsoft/dynamicproto-js/-/dynamicproto-js-1.1.4.tgz#40e1c0ad20743fcee1604a7df2c57faf0aa1af87"
   integrity sha1-QOHArSB0P87hYEp98sV/rwqhr4c=
 
-"@microsoft/signalr@^6.0.1":
-  version "6.0.3"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@microsoft/signalr/-/signalr-6.0.3.tgz#9904efd48cd488e3c1c80930ff9fbb3c9f55895d"
-  integrity sha1-mQTv1IzUiOPByAkw/5+7PJ9ViV0=
+"@microsoft/signalr@^6.0.6":
+  version "6.0.6"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@microsoft/signalr/-/signalr-6.0.6.tgz#6ba53623a64df64a80126694db4e37146647d3fe"
+  integrity sha1-a6U2I6ZN9kqAEmaU2043FGZH0/4=
   dependencies:
     abort-controller "^3.0.0"
     eventsource "^1.0.7"
     fetch-cookie "^0.11.0"
-    node-fetch "^2.6.1"
+    node-fetch "^2.6.7"
     ws "^7.4.5"
 
 "@ngtools/webpack@13.3.0":
@@ -5009,12 +5009,10 @@ events@^3.2.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha1-Mala0Kkk4tLEGagTrrLE6HjqdAA=
 
-eventsource@^1.0.7:
-  version "1.1.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/eventsource/-/eventsource-1.1.0.tgz#00e8ca7c92109e94b0ddf32dac677d841028cfaf"
-  integrity sha1-AOjKfJIQnpSw3fMtrGd9hBAoz68=
-  dependencies:
-    original "^1.0.0"
+eventsource@^1.0.7, eventsource@^1.1.1:
+  version "1.1.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/eventsource/-/eventsource-1.1.2.tgz#bc75ae1c60209e7cb1541231980460343eaea7c2"
+  integrity sha1-vHWuHGAgnnyxVBIxmARgND6up8I=
 
 execa@4.1.0:
   version "4.1.0"
@@ -7260,7 +7258,7 @@ node-addon-api@^3.0.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/node-addon-api/-/node-addon-api-3.2.1.tgz#81325e0a2117789c0128dab65e7e38f07ceba161"
   integrity sha1-gTJeCiEXeJwBKNq2Xn448HzroWE=
 
-node-fetch@^2.6.1:
+node-fetch@^2.6.7:
   version "2.6.7"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha1-JN6fuoJ+O0rkTciyAlajeRYAUq0=
@@ -7596,13 +7594,6 @@ ora@5.4.1, ora@^5.4.1:
     log-symbols "^4.1.0"
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
-
-original@^1.0.0:
-  version "1.0.2"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/original/-/original-1.0.2.tgz#e442a61cffe1c5fd20a65f3261c26663b303f25f"
-  integrity sha1-5EKmHP/hxf0gpl8yYcJmY7MD8l8=
-  dependencies:
-    url-parse "^1.4.3"
 
 os-tmpdir@~1.0.2:
   version "1.0.2"
@@ -8273,11 +8264,6 @@ qs@~6.5.2:
   version "6.5.3"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
   integrity sha1-Ou7/yRln7241wOSI70b7KWq3aq0=
-
-querystringify@^2.1.1:
-  version "2.2.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
-  integrity sha1-M0WUG0FTy50ILY7uTNogFqmu9/Y=
 
 queue-microtask@^1.2.2:
   version "1.2.3"
@@ -9707,14 +9693,6 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-url-parse@^1.4.3:
-  version "1.5.10"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/url-parse/-/url-parse-1.5.10.tgz#9d3c2f736c1d75dd3bd2be507dcc111f1e2ea9c1"
-  integrity sha1-nTwvc2wddd070r5QfcwRHx4uqcE=
-  dependencies:
-    querystringify "^2.1.1"
-    requires-port "^1.0.0"
-
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -10064,10 +10042,15 @@ wrappy@1:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-ws@^7.3.1, ws@^7.4.5:
+ws@^7.3.1:
   version "7.5.7"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/ws/-/ws-7.5.7.tgz#9e0ac77ee50af70d58326ecff7e85eb3fa375e67"
   integrity sha1-ngrHfuUK9w1YMm7P9+hes/o3Xmc=
+
+ws@^7.4.5:
+  version "7.5.8"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/ws/-/ws-7.5.8.tgz#ac2729881ab9e7cbaf8787fe3469a48c5c7f636a"
+  integrity sha1-rCcpiBq558uvh4f+NGmkjFx/Y2o=
 
 ws@^8.1.0, ws@^8.2.3:
   version "8.5.0"
