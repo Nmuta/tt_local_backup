@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { EMPTY } from 'rxjs';
 import { LspGroup, LspGroups } from '@models/lsp-group';
-import { catchError, takeUntil, tap, filter, map, startWith } from 'rxjs/operators';
+import { catchError, takeUntil, filter, map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
+import BigNumber from 'bignumber.js';
 
 /** The shared top-level navbar. */
 @Component({
@@ -15,6 +16,9 @@ export abstract class LspGroupSelectionBaseComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor
 {
+  /** Preselects a group id in dropdown if id exists. */
+  @Input() preselectGroupId: BigNumber;
+
   /** Lsp Groups. */
   public lspGroups: LspGroups = [];
   /** Selected lsp group. */
@@ -23,12 +27,14 @@ export abstract class LspGroupSelectionBaseComponent
   /** Mat-Autocomplete form controls */
   public autocompleteControl = new FormControl();
   public filteredLspGroupOptions$: Observable<LspGroups>;
-  public lspInputValue: string = '';
+  public lspInputValue: LspGroup = null;
 
   /** True while waiting on a request. */
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
+
+  public showPreselectError: boolean = false;
 
   public abstract title: GameTitleCodeName;
 
@@ -50,10 +56,6 @@ export abstract class LspGroupSelectionBaseComponent
     selector$
       .pipe(
         filter(data => data.length > 0),
-        tap((data: LspGroups) => {
-          this.isLoading = false;
-          this.lspGroups = data;
-        }),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
@@ -61,23 +63,39 @@ export abstract class LspGroupSelectionBaseComponent
         }),
         takeUntil(this.onDestroy$),
       )
-      .subscribe();
+      .subscribe((data: LspGroups) => {
+        this.isLoading = false;
+        this.lspGroups = data;
+
+        if (!!this.preselectGroupId) {
+          const foundGroup = this.lspGroups.find(group =>
+            group.id.isEqualTo(this.preselectGroupId),
+          );
+          if (!!foundGroup) {
+            this.writeValue(foundGroup);
+            this.emitNewSelection(foundGroup);
+          } else {
+            this.showPreselectError = true;
+          }
+        }
+      });
 
     this.filteredLspGroupOptions$ = this.autocompleteControl.valueChanges.pipe(
       startWith(''),
-      map(value => (typeof value === 'string' ? value : value.name)),
+      map(value => (typeof value === 'string' ? value : value?.name)),
       map(name => (name ? this.filter(name) : this.lspGroups.slice())),
     );
   }
 
   /** Clear the current selection. */
   public clearSelection(): void {
-    this.lspInputValue = '';
+    this.lspInputValue = null;
     this.emitNewSelection(null);
   }
 
   /** New LSP Group selected event */
   public emitNewSelection(value: LspGroup): void {
+    this.showPreselectError = false;
     this.onChangeFunction(value);
   }
 
@@ -89,6 +107,7 @@ export abstract class LspGroupSelectionBaseComponent
   /** Form control hook. */
   public writeValue(obj: LspGroup): void {
     this.selectedLspGroup = obj;
+    this.lspInputValue = obj;
   }
 
   /** Form control hook. */

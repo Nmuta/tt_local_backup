@@ -52,9 +52,11 @@ export class LspGroupMemoryState {
     const state = ctx.getState();
     const title = action.title;
 
-    // Check if memory already has lsp groups
-    if (!!state[title] && state[title].length > 0) {
-      return of(state[title]);
+    if (!action.ignoreMemory) {
+      // Check if memory already has lsp groups
+      if (!!state[title] && state[title].length > 0) {
+        return of(state[title]);
+      }
     }
 
     // Set request to get lsp groups

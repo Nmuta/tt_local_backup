@@ -1,0 +1,37 @@
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane">
+      <steelhead-lsp-group-selection
+        [formControl]="formControls.userGroup"
+        [preselectGroupId]="preselectedGroupId"
+      ></steelhead-lsp-group-selection>
+    </div>
+    <div class="steward-layout-pane">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>group_add</mat-icon>
+          <mat-card-title>Create User Group</mat-card-title>
+          <mat-card-subtitle>Steelhead</mat-card-subtitle>
+        </mat-card-header>
+        <steelhead-create-user-group
+          (newUserGroup)="newUserGroupCreated($event)"
+        ></steelhead-create-user-group>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="steward-layout-pane steward-layout-fill reference-inventory">
+    <div>
+      <mat-card class="manage-user-group-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>manage_accounts</mat-icon>
+          <mat-card-title>User Group Management</mat-card-title>
+          <mat-card-subtitle>Steelhead</mat-card-subtitle>
+        </mat-card-header>
+        <steelhead-list-users-in-user-group
+          [userGroup]="selectedUserGroup"
+        ></steelhead-list-users-in-user-group>
+      </mat-card>
+    </div>
+  </div>
+</div>

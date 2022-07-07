@@ -22,4 +22,5 @@ export class TitleMemoryModel {
   public auctionDetails: Horizons;
   public leaderboards: GameTitleCodeName.FH5;
   public racersCup: GameTitleCodeName.FM8;
+  public userGroupManagement: GameTitleCodeName.FH5;
 }

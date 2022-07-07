@@ -8,6 +8,7 @@ import { LspGroupSelectionBaseComponent } from './lsp-group-selection.base.compo
 import { of } from 'rxjs';
 import { throwError } from 'rxjs';
 import { LspGroup } from '@models/lsp-group';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
 
 describe('LspGroupSelectionBaseComponent', () => {
   let fixture: ComponentFixture<LspGroupSelectionBaseComponent>;
@@ -81,14 +82,14 @@ describe('LspGroupSelectionBaseComponent', () => {
 
   describe('Method: clearSelection', () => {
     beforeEach(() => {
-      component.lspInputValue = 'test';
+      component.lspInputValue = { id: fakeBigNumber(), name: 'test' } as LspGroup;
       component.emitNewSelection = jasmine.createSpy('emitNewSelection');
     });
 
     it('should set lspInputValue to empty string', () => {
       component.clearSelection();
 
-      expect(component.lspInputValue).toEqual('');
+      expect(component.lspInputValue).toEqual(null);
     });
 
     it('should call emitNewSelection', () => {

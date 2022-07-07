@@ -23,6 +23,7 @@ import { TitleMemoryModel } from './title-memory.model';
     auctionDetails: GameTitleCodeName.FH5,
     leaderboards: GameTitleCodeName.FH5,
     racersCup: GameTitleCodeName.FM8,
+    userGroupManagement: GameTitleCodeName.FH5,
   },
 })
 @Injectable()

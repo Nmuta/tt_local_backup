@@ -1,0 +1,21 @@
+<div>
+  <form [formGroup]="formGroup">
+    <mat-form-field appearance="fill">
+      <mat-label>Group name</mat-label>
+      <input matInput formControlName="groupName" autocomplete="off" />
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="createUserGroup()"
+      [disabled]="!formGroup.valid"
+      stateManager
+      [monitor]="monitor"
+      monitorDisable
+      monitorWarn
+      monitorWarnSnackbar
+    >
+      Create <button-spinner [monitor]="monitor" defaultIcon="trash"></button-spinner>
+    </button>
+  </form>
+</div>

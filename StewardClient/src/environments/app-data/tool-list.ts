@@ -34,6 +34,7 @@ export enum NavbarTool {
   Leaderboards = 'leaderboards',
   Theming = 'theming',
   RacersCup = 'racers-cup',
+  UserGroupManagement = 'user-group-management',
   ActionsDashboard = 'actions-dashboard',
 }
 
@@ -81,6 +82,7 @@ export const CommonAccessLevels = {
     UserRole.CommunityManager,
   ],
   RacersCup: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
+  UserGroupManagement: [UserRole.LiveOpsAdmin],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
 };
 
@@ -107,6 +109,7 @@ export enum AppIcon {
   StewardManagement = 'cloud_sync',
   Leaderboards = 'leaderboard',
   RacersCup = 'calendar_today',
+  UserGroupManagement = 'group',
   ActionsDashboard = 'dashboard',
 }
 
@@ -459,6 +462,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/racers-cup/racers-cup.module').then(
         m => m.RacersCupModule,
       ),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.UserGroupManagement,
+    tool: NavbarTool.UserGroupManagement,
+    accessList: CommonAccessLevels.UserGroupManagement,
+    title: 'User Group Management',
+    subtitle: 'Create & Edit User Groups',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Management all operations for user groups.',
+    shortDescription: ['Management all operations for user groups.'],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/user-group-management/user-group-management.module').then(
+        m => m.UserGroupManagementModule,
+      ),
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoExternal>{
     icon: AppIcon.DeveloperTool,

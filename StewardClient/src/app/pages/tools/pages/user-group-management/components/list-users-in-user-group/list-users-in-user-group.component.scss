@@ -1,0 +1,15 @@
+@import '/src/styles/mixins';
+
+$actions-column-width: 250px;
+
+table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  @include table-width($actions-column-width);
+}
+
+mat-checkbox {
+  margin-left: $gap-small;
+}

@@ -1,5 +1,9 @@
 <mat-card>
-  <h2>Select {{ title }} LSP Group</h2>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>group</mat-icon>
+    <mat-card-title>User Groups</mat-card-title>
+    <mat-card-subtitle>{{ title }}</mat-card-subtitle>
+  </mat-card-header>
 
   <ng-container
     content-body
@@ -28,16 +32,18 @@
         </mat-autocomplete>
       </mat-form-field>
       <button
-        mat-mini-fab
-        color="accent"
+        mat-icon-button
         aria-label="Clear LSP Group Selection"
         matTooltip="Clear LSP Group Selection"
         class="clear-selection-button"
         (click)="clearSelection()"
       >
-        <mat-icon svgIcon="steward-trash"></mat-icon>
+        <mat-icon>close</mat-icon>
       </button>
     </form>
+    <div *ngIf="showPreselectError" class="preselect-error">
+      Pre-selected user group could not be found.
+    </div>
   </ng-container>
 </mat-card>
 

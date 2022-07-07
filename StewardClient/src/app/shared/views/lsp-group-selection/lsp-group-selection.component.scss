@@ -16,3 +16,7 @@ mat-card {
     @include align-mat-fab-button-with-input();
   }
 }
+
+.preselect-error {
+  color: app-color-default($app-warn);
+}

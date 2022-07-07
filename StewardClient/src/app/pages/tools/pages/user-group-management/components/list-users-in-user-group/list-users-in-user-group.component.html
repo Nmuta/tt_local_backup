@@ -1,0 +1,83 @@
+<button
+  [disabled]="!verifyDelete.checked"
+  mat-raised-button
+  color="warn"
+  (click)="deleteAllUsersInGroup()"
+  stateManager
+  [monitor]="deleteAllMonitor"
+  monitorDisable
+  monitorWarn
+  monitorWarnSnackbar
+>
+  Delete All Users
+  <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
+</button>
+<mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
+  >Verify</mat-checkbox
+>
+<table *ngIf="!!userGroup && getmonitor.isSuccess" class="info-table">
+  <tr>
+    <th>Group Name</th>
+    <td>
+      {{ userGroup.name }}
+    </td>
+  </tr>
+  <tr>
+    <th>Player Count</th>
+    <td>{{ allPlayers.length }}</td>
+  </tr>
+</table>
+<mat-paginator
+  [pageSize]="10"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  showFirstLastButtons
+></mat-paginator>
+<ng-container *ngIf="!!userGroup; else noProvidedUserGroupTemplate">
+  <ng-container *ngIf="getmonitor.isSuccess; else monitorTemplate">
+    <table mat-table [dataSource]="playersDataSource">
+      <ng-container matColumnDef="xuid">
+        <th mat-header-cell *matHeaderCellDef>XUID</th>
+        <td mat-cell *matCellDef="let element">{{ element.xuid }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="gamertag">
+        <th mat-header-cell *matHeaderCellDef>Gamertag</th>
+        <td mat-cell *matCellDef="let element">{{ element.gamertag }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            [disabled]="!verifyDelete.checked"
+            mat-raised-button
+            color="warn"
+            (click)="deletePlayerFromUserGroup(element)"
+            stateManager
+            [monitor]="element.monitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+          >
+            Remove
+            <button-spinner [monitor]="element.deleteMonitor" defaultIcon="delete"></button-spinner>
+          </button>
+          <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
+            >Verify</mat-checkbox
+          >
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </ng-container>
+</ng-container>
+
+<ng-template #noProvidedUserGroupTemplate>
+  <span>Selelct a user group to view players</span>
+</ng-template>
+
+<ng-template #monitorTemplate>
+  <big-spinner [monitor]="getmonitor"></big-spinner>
+</ng-template>
