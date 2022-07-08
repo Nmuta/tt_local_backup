@@ -31,6 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Apollo
     [ApiController]
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
         UserRole.CommunityManager)]
     [SuppressMessage(
         "Microsoft.Maintainability",

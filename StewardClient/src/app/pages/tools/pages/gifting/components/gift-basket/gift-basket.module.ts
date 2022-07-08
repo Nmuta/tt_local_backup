@@ -10,7 +10,6 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { GravityGiftBasketComponent } from './gravity/gravity-gift-basket.component';
 import { SunriseGiftBasketComponent } from './sunrise/sunrise-gift-basket.component';
 import { ApolloGiftBasketComponent } from './apollo/apollo-gift-basket.component';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
@@ -30,7 +29,6 @@ import { HelpModule } from '@shared/modules/help/help.module';
   declarations: [
     WoodstockGiftBasketComponent,
     SteelheadGiftBasketComponent,
-    GravityGiftBasketComponent,
     SunriseGiftBasketComponent,
     ApolloGiftBasketComponent,
   ],
@@ -61,7 +59,6 @@ import { HelpModule } from '@shared/modules/help/help.module';
   exports: [
     WoodstockGiftBasketComponent,
     SteelheadGiftBasketComponent,
-    GravityGiftBasketComponent,
     SunriseGiftBasketComponent,
     ApolloGiftBasketComponent,
   ],

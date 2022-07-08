@@ -3,6 +3,7 @@ import { GameTitle, UserRole } from '@models/enums';
 /** Enum of restricted features. */
 export enum RestrictedFeature {
   GroupGifting = 'Group Gifting',
+  GiftLivery = 'Gift Livery',
 }
 
 /** The role restrictions for tooling features. */
@@ -10,6 +11,13 @@ export const RestrictedToolAccessLookup = {
   [RestrictedFeature.GroupGifting]: {
     [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
     [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+  },
+  [RestrictedFeature.GiftLivery]: {
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
   },
 };

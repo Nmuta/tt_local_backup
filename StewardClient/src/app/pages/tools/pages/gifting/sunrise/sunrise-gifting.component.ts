@@ -3,10 +3,8 @@ import { GameTitle } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
-import { UserModel } from '@models/user.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
-import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,7 +14,6 @@ import {
   SetSunriseGiftingSelectedPlayerIdentities,
 } from './state/sunrise-gifting.state.actions';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 
 /** The sunrise gifting page. */
 @Component({
@@ -27,6 +24,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
+  public gameTitle = GameTitle.FH4;
   /** All selected player identities from player selection tool. */
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected LSP group. */
@@ -36,27 +34,13 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   public selectedPlayerInventoryProfile: SunrisePlayerInventoryProfile;
   public selectedPlayerInventory: SunriseMasterInventory;
 
-  public disableLspGroupSelection: boolean = true;
-
-  /** Tooltip for disabled LSP group selection tab., */
-  public groupGiftTabTooltip: string = null;
-
-  constructor(private readonly store: Store) {
-    super();
+  constructor(protected readonly store: Store) {
+    super(store);
   }
 
   /** Initialization hook */
   public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = !hasAccessToRestrictedFeature(
-      RestrictedFeature.GroupGifting,
-      GameTitle.FM7,
-      user.role,
-    );
-
-    if (this.disableLspGroupSelection) {
-      this.groupGiftTabTooltip = `Feature is not supported for your user role: ${user.role}`;
-    }
+    super.ngOnInit();
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftingState.selectedMatTabIndex,

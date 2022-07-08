@@ -41,7 +41,6 @@ import { UtcInterceptor } from '@interceptors/luxon.interceptor';
 // States
 import { UserState } from '@shared/state/user/user.state';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
-import { GravityGiftingState } from '@tools-app/pages/gifting/gravity/state/gravity-gifting.state';
 import { SunriseGiftingState } from '@tools-app/pages/gifting/sunrise/state/sunrise-gifting.state';
 import { ApolloGiftingState } from '@tools-app/pages/gifting/apollo/state/apollo-gifting.state';
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
@@ -166,7 +165,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         // Gifting page states
         WoodstockGiftingState,
         SteelheadGiftingState,
-        GravityGiftingState,
         SunriseGiftingState,
         ApolloGiftingState,
         // Gift History page states

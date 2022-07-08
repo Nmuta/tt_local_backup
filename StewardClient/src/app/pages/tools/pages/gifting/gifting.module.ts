@@ -10,7 +10,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { GiftingComponent } from './gifting.component';
 import { GiftingRouterModule } from './gifting.routing';
-import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 import { MatCardModule } from '@angular/material/card';
@@ -32,7 +31,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     GiftingComponent,
-    GravityGiftingComponent,
     SunriseGiftingComponent,
     ApolloGiftingComponent,
     SteelheadGiftingComponent,

@@ -19,7 +19,7 @@
         </mat-tab>
         <mat-tab [disabled]="disableLspGroupSelection">
           <ng-template mat-tab-label>
-            <span [matTooltip]="groupGiftTabTooltip"> LSP Group Selection </span>
+            <span [matTooltip]="groupGiftingTooltip"> LSP Group Selection </span>
           </ng-template>
           <apollo-lsp-group-selection [(ngModel)]="selectedLspGroup"></apollo-lsp-group-selection>
         </mat-tab>
@@ -62,7 +62,10 @@
           [usingPlayerIdentities]="isUsingPlayerIdentities"
         ></apollo-gift-basket>
       </mat-tab>
-      <mat-tab label="Gift Livery">
+      <mat-tab [disabled]="disableGiftingLiveries">
+        <ng-template mat-tab-label>
+          <span [matTooltip]="giftingLiveryTooltip">Gift Livery</span>
+        </ng-template>
         <apollo-gift-livery
           [playerIdentities]="selectedPlayerIdentities"
           [lspGroup]="selectedLspGroup"

@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitle, GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { WoodstockMasterInventory, WoodstockPlayerInventoryProfile } from '@models/woodstock';
-import { UserModel } from '@models/user.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
-import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WoodstockGiftingState } from './state/woodstock-gifting.state';
@@ -16,7 +14,6 @@ import {
 } from './state/woodstock-gifting.state.actions';
 import BigNumber from 'bignumber.js';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 
 /** The woodstock gifting page. */
 @Component({
@@ -27,8 +24,7 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
   @Select(WoodstockGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
-  /** Game title. */
-  public title: GameTitleCodeName = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
   /** All selected player identities from player selection tool. */
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected LSP group. */
@@ -38,27 +34,13 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
   public selectedPlayerInventoryProfile: WoodstockPlayerInventoryProfile;
   public selectedPlayerInventory: WoodstockMasterInventory;
 
-  public disableLspGroupSelection: boolean = true;
-
-  /** Tooltip for disabled LSP group selection tab., */
-  public groupGiftTabTooltip: string = null;
-
-  constructor(private readonly store: Store) {
-    super();
+  constructor(protected readonly store: Store) {
+    super(store);
   }
 
   /** Initialization hook */
   public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = !hasAccessToRestrictedFeature(
-      RestrictedFeature.GroupGifting,
-      GameTitle.FM7,
-      user.role,
-    );
-
-    if (this.disableLspGroupSelection) {
-      this.groupGiftTabTooltip = `Feature is not supported for your user role: ${user.role}`;
-    }
+    super.ngOnInit();
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       WoodstockGiftingState.selectedMatTabIndex,

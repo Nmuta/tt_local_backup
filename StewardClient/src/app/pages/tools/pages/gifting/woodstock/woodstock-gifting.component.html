@@ -20,7 +20,7 @@
         </mat-tab>
         <mat-tab [disabled]="disableLspGroupSelection" class="steward-layout-vertical-fill">
           <ng-template mat-tab-label>
-            <span [matTooltip]="groupGiftTabTooltip"> LSP Group Selection </span>
+            <span [matTooltip]="groupGiftingTooltip"> LSP Group Selection </span>
           </ng-template>
           <woodstock-lsp-group-selection
             class="steward-layout-vertical-fill"
@@ -71,7 +71,10 @@
           [usingPlayerIdentities]="isUsingPlayerIdentities"
         ></woodstock-gift-basket>
       </mat-tab>
-      <mat-tab label="Gift Livery">
+      <mat-tab [disabled]="disableGiftingLiveries">
+        <ng-template mat-tab-label>
+          <span [matTooltip]="giftingLiveryTooltip">Gift Livery</span>
+        </ng-template>
         <woodstock-gift-livery
           [playerIdentities]="selectedPlayerIdentities"
           [lspGroup]="selectedLspGroup"

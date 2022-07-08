@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.Gifting },
+      uuid: 'a1768c67-ca16-4448-a762-3f41497353c6',
+      shortText: 'Add support agent admin role to list users allowed to gift liveries.',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '4798cdbb-16da-45ed-8242-1f4282391cb6',
       shortText: 'Design UI for user group management',

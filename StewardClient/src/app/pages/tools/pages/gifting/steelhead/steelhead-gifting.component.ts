@@ -7,11 +7,9 @@ import {
   SetSteelheadGiftingSelectedPlayerIdentities,
 } from './state/steelhead-gifting.state.actions';
 import { SteelheadGiftingState } from './state/steelhead-gifting.state';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
-import { UserModel } from '@models/user.model';
-import { UserState } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { SteelheadMasterInventory, SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
@@ -26,7 +24,7 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
   @Select(SteelheadGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
-  public title: GameTitleCodeName = GameTitleCodeName.FM8;
+  public gameTitle = GameTitle.FM8;
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
@@ -34,14 +32,13 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
   public selectedPlayerInventoryProfile: SteelheadPlayerInventoryProfile;
   public selectedPlayerInventory: SteelheadMasterInventory;
 
-  constructor(private readonly store: Store) {
-    super();
+  constructor(protected readonly store: Store) {
+    super(store);
   }
 
   /** Initialization hook */
   public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
+    super.ngOnInit();
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SteelheadGiftingState.selectedMatTabIndex,
