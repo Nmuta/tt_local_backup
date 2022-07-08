@@ -23,6 +23,8 @@ import { WoodstockSearchUgcComponent } from './woodstock/woodstock-search-ugc.co
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { RouterModule } from '@angular/router';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 
 /** Display for public ugc. */
 @NgModule({
@@ -52,6 +54,9 @@ import { HelpModule } from '@shared/modules/help/help.module';
     MonitorActionModule,
     RouterModule,
     HelpModule,
+    FormsModule,
+    ReactiveFormsModule,
+    StateManagersModule,
   ],
   exports: [WoodstockSearchUgcComponent],
 })

@@ -27,6 +27,14 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
         title: GameTitle.FH5,
         tool: NavbarTool.SearchUGC,
       },
+      uuid: 'e864a69f-a4b8-44f2-b31c-987c0a32eca2',
+      shortText: 'Add featured only filter to public UGC search filters',
+    },
+    {
+      tag: {
+        title: GameTitle.FH5,
+        tool: NavbarTool.SearchUGC,
+      },
       uuid: 'a7ad5c58-9b1f-422b-848c-25813ce352db',
       shortText: 'Add player lookup to UGC search filters.',
     },

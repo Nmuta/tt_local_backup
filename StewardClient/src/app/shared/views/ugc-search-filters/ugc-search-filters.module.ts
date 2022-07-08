@@ -17,14 +17,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { UgcSearchFiltersComponent } from './ugc-search-filters.component';
-import { WoodstockUgcSearchFiltersComponent } from './woodstock-ugc-search-filters/woodstock-ugc-search-filters.component';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PlayerSelectionModule } from '@views/player-selection/player-selection.module';
+import { UgcSearchFiltersComponent } from './ugc-search-filters.component';
 
 /** Display for player ugcs. */
 @NgModule({
-  declarations: [UgcSearchFiltersComponent, WoodstockUgcSearchFiltersComponent],
+  declarations: [UgcSearchFiltersComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -48,6 +47,6 @@ import { PlayerSelectionModule } from '@views/player-selection/player-selection.
     MonitorActionModule,
     PlayerSelectionModule,
   ],
-  exports: [WoodstockUgcSearchFiltersComponent],
+  exports: [UgcSearchFiltersComponent],
 })
 export class UgcSearchFiltersModule {}

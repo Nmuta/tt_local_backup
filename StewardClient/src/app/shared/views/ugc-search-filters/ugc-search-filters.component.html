@@ -1,8 +1,8 @@
-<form [formGroup]="formGroup" (submit)="emitFilterParameters()">
+<form [formGroup]="formGroup">
   <player-selection-single
     [disableLookupTypes]="['t10Id']"
     [allowSelection]="false"
-    [rejectionFn]="rejectionFn"
+    [rejectionFn]="serviceContract.rejectionFn"
     (found)="playerIdentityFound($event)"
   ></player-selection-single>
 
@@ -15,10 +15,11 @@
   </mat-form-field>
 
   <!-- Car Make & Model Filter -->
-  <woodstock-make-model-autocomplete
+  <make-model-autocomplete
     [formControl]="formControls.makeModelInput"
     [makeOnlyOptions]="false"
-  ></woodstock-make-model-autocomplete>
+    [service]="this.serviceContract.makeModelAutocompleteServiceContract"
+  ></make-model-autocomplete>
 
   <!-- UGC Keyword Filter -->
   <mat-form-field appearance="fill">
@@ -36,16 +37,8 @@
     </button>
   </mat-form-field>
 
-  <button
-    class="filter-search"
-    type="button"
-    mat-raised-button
-    color="primary"
-    matSuffix
-    aria-label="Search"
-    (click)="emitFilterParameters()"
-  >
-    Search
-    <button-spinner defaultIcon="search" [monitor]="searchMonitor"></button-spinner>
-  </button>
+  <!-- UGC Featured Status Filter -->
+  <mat-checkbox class="featured-toggle" [formControl]="formControls.isFeatured">
+    Limit Search to Featured UGC
+  </mat-checkbox>
 </form>

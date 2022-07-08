@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FH5_main.Generated;
@@ -67,7 +68,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
             var results = await this.woodstockService.SearchUgcContentAsync(filters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<UgcItem>>(results.result);
+            // Client filters out any featured UGC that has expired.
+            var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow);
+
+            return this.mapper.Map<IList<UgcItem>>(filteredResults);
         }
 
         /// <inheritdoc />

@@ -14,10 +14,25 @@
     <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <woodstock-ugc-search-filters
-      (changes)="changeUgcSearchParameters($event)"
-      [searchMonitor]="getMonitor"
-    ></woodstock-ugc-search-filters>
+    <ugc-search-filters
+      [formControl]="formControls.ugcFilters"
+      [serviceContract]="serviceContract"
+    ></ugc-search-filters>
+
+    <button
+      class="filter-search"
+      mat-raised-button
+      color="primary"
+      matTooltip="Search Public UGC"
+      (click)="searchUgc()"
+      [monitor]="getMonitor"
+      stateManager
+      monitorDisable
+      monitorWarnSnackbar
+    >
+      Search
+      <button-spinner defaultIcon="search" [monitor]="getMonitor"></button-spinner>
+    </button>
 
     <ng-container *ngIf="!getMonitor?.status?.error; else failstate">
       <woodstock-ugc-table [content]="ugcContent" [contentType]="ugcType"></woodstock-ugc-table>
