@@ -89,8 +89,6 @@ describe('PlayerSelectionSingleComponent', () => {
   beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(PlayerSelectionSingleComponent);
     component = fixture.componentInstance;
-    component.lookupListChange.emit = jasmine.createSpy('emit').and.callThrough();
-    component.lookupTypeChange.emit = jasmine.createSpy('emit').and.callThrough();
     component.found.emit = jasmine.createSpy('emit').and.callThrough();
     fixture.detectChanges();
   }));
@@ -136,7 +134,6 @@ describe('PlayerSelectionSingleComponent', () => {
 
       it('should have value in lookupList', waitForAsync(() => {
         expect(component.lookupList).toContain(fakeGamertag);
-        expect(component.lookupListChange.emit).toHaveBeenCalled();
       }));
 
       it('should call getPlayerIdentities$', waitForAsync(() => {
@@ -154,7 +151,6 @@ describe('PlayerSelectionSingleComponent', () => {
         }));
 
         it('should emit lookupListChange', waitForAsync(() => {
-          expect(component.lookupListChange.emit).toHaveBeenCalled();
           expect(component.lookupList.length).toBe(0);
         }));
       });
@@ -199,7 +195,6 @@ describe('PlayerSelectionSingleComponent', () => {
 
       it('should have value in lookupList', waitForAsync(() => {
         expect(component.lookupList).toContain(fakeGamertag);
-        expect(component.lookupListChange.emit).toHaveBeenCalled();
       }));
 
       describe('when results come back', () => {

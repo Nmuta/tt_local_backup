@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '3b1f8729-6415-4db8-b15f-7974d2408fc9',
+      shortText: 'Add query params to single and multi player selection',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.Gifting },
       uuid: 'a1768c67-ca16-4448-a762-3f41497353c6',
       shortText: 'Add support agent admin role to list users allowed to gift liveries.',
@@ -46,22 +51,22 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     {
       tag: ChangelogTag.General,
       uuid: '4b68c770-fc42-4534-a777-33896d6d5d0f',
-      shortText: 'Correct phrasing on splash page.',
+      shortText: 'Correct phrasing on splash page',
     },
     {
       tag: ChangelogTag.Internal,
       uuid: '1677ddca-c912-4e4f-8dd8-bb499cdfdef0',
-      shortText: 'Setup report weight integration with Services.',
+      shortText: 'Setup report weight integration with Services',
     },
     {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },
       uuid: '00e879e0-bc91-454f-9b12-6b890b0eb491',
-      shortText: 'Fix contrast issue with Featured UGC highlight background.',
+      shortText: 'Fix contrast issue with Featured UGC highlight background',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UgcDetails },
       uuid: 'b1d0ed01-bfe9-48e2-883a-a9095489b399',
-      shortText: 'Fix bug in featuring UGC.',
+      shortText: 'Fix bug in featuring UGC',
     },
     {
       tag: {
@@ -69,7 +74,7 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
         tool: NavbarTool.SearchUGC,
       },
       uuid: 'd45c930b-a051-419c-a63a-7298f8630f6c',
-      shortText: 'Add "Download Top 500" button to UGC search results for Photo thumbnails.',
+      shortText: 'Add "Download Top 500" button to UGC search results for Photo thumbnails',
     },
     {
       tag: {
@@ -77,7 +82,7 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
         tool: [NavbarTool.UgcDetails],
       },
       uuid: '358d6b5f-c769-4c5c-ab0e-89764c839a82',
-      shortText: 'Fix date not showing when selecting a UGC feature date.',
+      shortText: 'Fix date not showing when selecting a UGC feature date',
     },
     {
       tag: {
@@ -85,12 +90,12 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC],
       },
       uuid: 'd45c930b-a051-419c-a63a-7298f8630f6c',
-      shortText: 'Add Download button for individual photo results in UGC views.',
+      shortText: 'Add Download button for individual photo results in UGC views',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.SearchUGC },
       uuid: 'ba7f6127-81d8-4dd4-b816-6c35f92c80fe',
-      shortText: 'Update deprecated UGC tool to Search UGC tool.',
+      shortText: 'Update deprecated UGC tool to Search UGC tool',
     },
     {
       tag: ChangelogTag.General,
@@ -126,32 +131,32 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionDetails },
       uuid: '8f098685-43d4-4ee0-9dec-135cfd5f3250',
-      shortText: 'Allow all auctions to be deleted.',
+      shortText: 'Allow all auctions to be deleted',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: 'f2ccc26a-4c48-4d07-8c4f-cc842584f38e',
-      shortText: 'Fixed bug in Leaderboard environment selection.',
+      shortText: 'Fixed bug in Leaderboard environment selection',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UgcDetails },
       uuid: '09a4ae82-f65f-4d8d-945b-124f004b5cf5',
-      shortText: 'Bug fix for UGC lookup by sharecode.',
+      shortText: 'Bug fix for UGC lookup by sharecode',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
       uuid: 'e42964d9-2637-480d-a4ac-ce798a3c9ab8',
-      shortText: 'Fix UGC player search not pulling in private content.',
+      shortText: 'Fix UGC player search not pulling in private content',
     },
     {
       tag: ChangelogTag.Internal,
       uuid: 'ceaa380c-de3d-4a95-b880-7699d090d3d4',
-      shortText: 'Modify file structure for UGC views.',
+      shortText: 'Modify file structure for UGC views',
     },
     {
       tag: ChangelogTag.General,
       uuid: '829603f4-1411-441d-8123-3a3694a1b514',
-      shortText: 'Fix color contrast issues in ban duration selector and notifications count icon.',
+      shortText: 'Fix color contrast issues in ban duration selector and notifications count icon',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
@@ -161,22 +166,22 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: 'e58afaac-e7c0-4194-a7a1-0c789cf858db',
-      shortText: 'Add environment selection to Leaderboard lookup.',
+      shortText: 'Add environment selection to Leaderboard lookup',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: 'd6d47959-e01d-48fe-bedd-a2845ade2941',
-      shortText: 'Add export functionality to Leaderboard scores.',
+      shortText: 'Add export functionality to Leaderboard scores',
     },
     {
       tag: ChangelogTag.General,
       uuid: '5a8d7afa-e87f-4d99-b8af-342134bb09fe',
-      shortText: 'Link XUIDs to their player details page.',
+      shortText: 'Link XUIDs to their player details page',
     },
     {
       tag: { title: 'all', tool: NavbarTool.UserDetails },
       uuid: '5c7fbae0-affa-4954-9546-7009b1e7a9e4',
-      shortText: 'Link UGC search to UGC details.',
+      shortText: 'Link UGC search to UGC details',
     },
     {
       tag: ChangelogTag.General,
@@ -209,7 +214,7 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
       uuid: '7098fd1b-aa81-4b72-9022-bbe779066c93',
       shortText: 'Rework Changelog behavior and structure',
       longText: [
-        'Changelog is now configured to automatically show changes by area and batch.',
+        'Changelog is now configured to automatically show changes by area and batch',
         'A number of changelogs may be "active" at a time, and older changelogs are considered "inactive"',
         'Among the active changelogs, each area can be acknowledged or ignored, as well as all areas or individual changelog entries',
       ],

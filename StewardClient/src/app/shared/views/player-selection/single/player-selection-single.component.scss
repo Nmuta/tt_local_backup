@@ -47,3 +47,7 @@ mat-chip {
     color: app-color-default-contrast($app-warn);
   }
 }
+
+.cut-lookup-list-error {
+  color: app-color-default($app-warn);
+}

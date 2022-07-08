@@ -79,4 +79,16 @@
       (matChipInputTokenEnd)="add($event)"
     />
   </mat-chip-list>
+  <mat-hint>{{ foundIdentities?.length }}/{{ maxFoundIndentities }} Identities</mat-hint>
 </mat-form-field>
+<div *ngIf="!displayInSingleLine && cutLookupList?.length > 0" class="cut-lookup-list-error">
+  <span>{{ cutLookupList?.length }} identities were cut from the lookup.</span>
+  <button
+    mat-icon-button
+    color="warn"
+    matTooltip="Copy identities that were cut from lookup list."
+    [cdkCopyToClipboard]="cutLookupList.join('\n')"
+  >
+    <mat-icon>content_copy</mat-icon>
+  </button>
+</div>

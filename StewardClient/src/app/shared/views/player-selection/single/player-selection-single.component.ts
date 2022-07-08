@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatChipList, MatChipListChange } from '@angular/material/chips';
+import { ActivatedRoute, Router } from '@angular/router';
 import { renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { first } from 'lodash';
@@ -24,19 +25,19 @@ import {
 })
 export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent {
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity>();
-  @Output() public selected = new EventEmitter<AugmentedCompositeIdentity>();
   @ContentChild(TemplateRef) templateRef: TemplateRef<AugmentedCompositeIdentity>;
   @ViewChild('chipList') public chipList: MatChipList;
 
   protected selectedValue: AugmentedCompositeIdentity = null;
+  public maxFoundIndentities: number = 1;
 
   /** True when the input should be disabled */
   public get disable(): boolean {
     return this.knownIdentities.size > 0;
   }
 
-  constructor(multi: MultiEnvironmentService) {
-    super(multi);
+  constructor(multi: MultiEnvironmentService, route: ActivatedRoute, router: Router) {
+    super(multi, route, router);
     this.foundIdentities$.pipe(delay(0), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       if (foundIdentities.length > 1) {
         throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);

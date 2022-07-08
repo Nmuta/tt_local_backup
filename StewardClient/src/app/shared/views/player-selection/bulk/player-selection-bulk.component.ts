@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatChipList, MatChipListChange } from '@angular/material/chips';
+import { ActivatedRoute, Router } from '@angular/router';
 import { renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { delay, takeUntil } from 'rxjs/operators';
@@ -23,19 +24,23 @@ import {
 })
 export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity[]>();
-  @Output() public selected = new EventEmitter<AugmentedCompositeIdentity>();
   @ContentChild(TemplateRef) templateRef: TemplateRef<AugmentedCompositeIdentity>;
   @ViewChild('chipList') public chipList: MatChipList;
 
   protected selectedValue: AugmentedCompositeIdentity = null;
+  public maxFoundIndentities: number = 500;
 
   /** True when the input should be disabled */
   public get disable(): boolean {
     return this.knownIdentities.size >= 500;
   }
 
-  constructor(multi: MultiEnvironmentService) {
-    super(multi);
+  constructor(
+    protected readonly router: Router,
+    multi: MultiEnvironmentService,
+    route: ActivatedRoute,
+  ) {
+    super(multi, route, router);
     this.foundIdentities$.pipe(delay(0), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       this.found.emit(foundIdentities);
       const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
@@ -60,8 +65,15 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
     renderGuard(() => {
       this.knownIdentities.clear();
       this.foundIdentities = [];
+      this.cutLookupList = [];
       this.selectedValue = null;
       this.foundIdentities$.next(this.foundIdentities);
+
+      this.router.navigate([], {
+        queryParams: {
+          [this.lookupType]: undefined,
+        },
+      });
     });
   }
 }

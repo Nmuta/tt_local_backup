@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlayerSelectionBulkComponent } from './bulk/player-selection-bulk.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 /** Feature module for selecting a single player. */
 @NgModule({
@@ -28,6 +29,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatTooltipModule,
     MatButtonModule,
     FontAwesomeModule,
+    ClipboardModule,
   ],
   exports: [PlayerSelectionSingleComponent, PlayerSelectionBulkComponent],
 })

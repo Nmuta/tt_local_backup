@@ -5,6 +5,9 @@ import BigNumber from 'bignumber.js';
 /** Enum for all query param strings used in Steward. */
 export enum QueryParam {
   UserGroup = 'userGroup',
+  Xuid = 'xuid',
+  Gamertag = 'gamertag',
+  T10Id = 't10Id',
 }
 
 /** Functions that parse query params to their expected type. Else returns null. */

@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatChipInputEvent, MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -14,8 +22,8 @@ import {
   toAlphaIdentity,
 } from '@models/identity-query.model';
 import { COMMA, ENTER, SEMICOLON } from '@angular/cdk/keycodes';
-import { chain, find, isEmpty, isEqual } from 'lodash';
-import { map, pairwise, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { chain, find, intersection, isEmpty, isEqual, sortBy } from 'lodash';
+import { filter, map, pairwise, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
 import {
   AnyIdentityQuery,
@@ -23,6 +31,15 @@ import {
   SingleUserResult,
   SingleUserResultSet,
 } from '@services/multi-environment/multi-environment.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  addToPlayerSelectionQueryParams,
+  handleOldPlayerSelectionQueryParams,
+  mapPlayerSelectionQueryParam,
+  PlayerSelectionQueryParam,
+  routeToUpdatedPlayerSelectionQueryParams,
+} from './player-selection-query-params';
+import { QueryParam } from '@models/query-params';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
@@ -58,14 +75,15 @@ export interface AugmentedCompositeIdentity {
 @Component({
   template: '',
 })
-export abstract class PlayerSelectionBaseComponent extends BaseComponent implements AfterViewInit {
+export abstract class PlayerSelectionBaseComponent
+  extends BaseComponent
+  implements OnInit, AfterViewInit
+{
   /** The lookup toggle. */
   @ViewChild(MatButtonToggleGroup) public lookupTypeGroup: MatButtonToggleGroup;
 
   /** Disables the lookup types provided in array. */
   @Input() public disableLookupTypes: string[] = [];
-  /** The chosen type of lookup. */
-  @Input() public lookupType: keyof IdentityQueryBetaIntersection = 'gamertag';
   /** When set to true, allows chips to be selected. */
   @Input() public allowSelection: boolean = false;
   /** When set to true, displays in a single line suitable for a navbar. */
@@ -77,15 +95,19 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
    */
   @Input() public rejectionFn: (identity: AugmentedCompositeIdentity) => string | null;
 
-  /** The chosen type of lookup (two way bindings). */
-  @Output() public lookupTypeChange = new EventEmitter<keyof IdentityQueryBetaIntersection>();
+  /** Outputs a selected identity. */
+  @Output() public selected = new EventEmitter<AugmentedCompositeIdentity>();
 
-  /** The list of things to look up. */
-  @Input() public set lookupList(values: string[]) {
-    this.knownIdentities.clear();
-    this.foundIdentities = [];
-    if (!isEmpty(values)) {
-      this.handleNewValues(values, false);
+  /** The lookup type (XUID | GT | T10Id) */
+  public lookupType: keyof IdentityQueryBetaIntersection = 'gamertag';
+  /** Logic when setting the list of things to look up. */
+  public set lookupList(values: string[]) {
+    const sortedValues = sortBy(values, val => val);
+    if (!isEmpty(sortedValues)) {
+      this.handleNewValues(sortedValues);
+    } else {
+      this.foundIdentities = [];
+      this.foundIdentities$.next(this.foundIdentities);
     }
   }
 
@@ -94,9 +116,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     return this.foundIdentities.map(i => <string>i.query[this.lookupType]);
   }
 
-  /** Triggers a lookup on these items (two way bindings). */
-  @Output() public lookupListChange = new EventEmitter<string[]>();
-
   /** True when the input should be disabled */
   public abstract get disable(): boolean;
 
@@ -104,6 +123,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   public foundIdentities: AugmentedCompositeIdentity[] = [];
   /** The identities we're currently trying to find. */
   public knownIdentities = new Set<string>();
+  /** List of identities to lookup that got cut due to max identity requirements. */
+  public cutLookupList: string[] = [];
 
   /** Separators that trigger a lookup. */
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA, SEMICOLON];
@@ -114,7 +135,13 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   // this has to be its own value because we don't have the actual thing until ngAfterViewInit, and lookupList is called before that
   private lookupTypeGroupChange$ = new Subject<void>();
 
-  constructor(private readonly multi: MultiEnvironmentService) {
+  public abstract maxFoundIndentities: number;
+
+  constructor(
+    private readonly multi: MultiEnvironmentService,
+    private readonly route: ActivatedRoute,
+    protected readonly router: Router,
+  ) {
     super();
     this.foundIdentities$
       .pipe(
@@ -133,36 +160,65 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   ) => Observable<AugmentedCompositeIdentity[]> = identities => of(identities);
 
   /** Lifecycle hook. */
+  public ngOnInit(): void {
+    this.route.queryParams
+      .pipe(
+        filter(params => !handleOldPlayerSelectionQueryParams(params, this.router)),
+        map(params => mapPlayerSelectionQueryParam(params) ?? {}),
+        startWith({}),
+        pairwise(),
+        filter(([prev, cur]) => {
+          const prevLookupVals = prev[this.lookupType] ?? [];
+          const curLookupVals = cur[this.lookupType] ?? [];
+          if (prevLookupVals.length <= 0 || curLookupVals.length <= 0) {
+            return true;
+          }
+
+          const diff = intersection(prevLookupVals, curLookupVals);
+          return diff.length > 0;
+        }),
+        map(([_prev, cur]) => cur),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((param: PlayerSelectionQueryParam) => {
+        // Check which param key is being used and set it to the lookupType
+        if (!!param[QueryParam.Xuid]) {
+          this.lookupType = QueryParam.Xuid;
+        } else if (!!param[QueryParam.Gamertag]) {
+          this.lookupType = QueryParam.Gamertag;
+        } else if (!!param[QueryParam.T10Id]) {
+          this.lookupType = QueryParam.T10Id;
+        }
+
+        this.lookupList = param[this.lookupType];
+      });
+  }
+
+  /** Lifecycle hook. */
   public ngAfterViewInit(): void {
     this.lookupTypeGroup.change
       .pipe(
         map(v => v.value as keyof IdentityQueryBetaIntersection),
-        tap(v => this.lookupTypeChange.next(v)),
         tap(_ => this.lookupTypeGroupChange$.next()),
-        startWith(this.lookupType),
-        pairwise(),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(v => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [previousType, currentType] = v;
-
-        // TODO: If you switch to XUID from Gamertag, the behavior is now the same as if you had tried to search for a gamertag as a xuid. string is not convertable to BigNumber, and as a result, user input is replaced with NaN.
-        const values = this.foundIdentities.map(i =>
-          chain(i)
-            .values()
-            .filter(v => !!v) // Handle T10Id not available in Alpha identities
-            .map(v => v[previousType])
-            .filter(v => !!v) // Verify the new type lookup is a valid object
-            .uniq()
-            .first()
-            .value(),
-        );
+      .subscribe(currentType => {
+        const updatedQueryParams = this.foundIdentities
+          .map(identity => identity.general) // Map to general identity
+          .filter(identity => !identity.error) // Filter our bad identities
+          .map(identity => identity[currentType])
+          .filter(currentTypeIdentity => !!currentTypeIdentity)
+          .map(currentTypeIdentity => currentTypeIdentity.toString()); // Handle XUIDs
 
         this.foundIdentities = [];
+        this.foundIdentities$.next([]);
         this.knownIdentities.clear();
 
-        this.handleNewValues(values);
+        routeToUpdatedPlayerSelectionQueryParams(
+          currentType,
+          updatedQueryParams.join(','),
+          this.router,
+        );
       });
   }
 
@@ -176,13 +232,13 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     let pastedText = clipboardData.getData('text');
     pastedText = pastedText.replace(/\n|\r/g, ', ');
 
-    const values = pastedText
-      .split(/,|\r|\n/)
-      .map(v => v.trim())
-      .filter(v => v.length > 0);
-
-    this.handleNewValues(values, true);
-
+    this.cutLookupList = addToPlayerSelectionQueryParams(
+      pastedText,
+      this.lookupType,
+      this.maxFoundIndentities,
+      this.route,
+      this.router,
+    );
     event.preventDefault();
   }
 
@@ -190,13 +246,17 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   public add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
+    if (value.trim().length <= 0) {
+      return;
+    }
 
-    const values = value
-      .split(/,|\r|\n/)
-      .map(v => v.trim())
-      .filter(v => v.length > 0);
-
-    this.handleNewValues(values, true);
+    this.cutLookupList = addToPlayerSelectionQueryParams(
+      value,
+      this.lookupType,
+      this.maxFoundIndentities,
+      this.route,
+      this.router,
+    );
 
     // Reset the input value
     if (input) {
@@ -207,30 +267,45 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   /** Remove event handler. */
   public remove(item: AugmentedCompositeIdentity): void {
     const index = this.foundIdentities.indexOf(item);
+    this.cutLookupList = [];
 
     if (index >= 0) {
       this.foundIdentities.splice(index, 1);
       this.knownIdentities.delete(item.query[this.lookupType].toString());
-      this.lookupListChange.emit(this.lookupList);
       this.foundIdentities$.next(this.foundIdentities);
+
+      const updatedQueryParams = this.foundIdentities
+        .map(identity => identity.general[this.lookupType])
+        .join(',');
+
+      routeToUpdatedPlayerSelectionQueryParams(this.lookupType, updatedQueryParams, this.router);
     }
   }
 
   /**
    * Handles new values
-   * 1. dedupes input
-   * 2. create queries
-   * 3. adds empty temp results for each query
-   * 4. makes queries
-   * 5. updates results with the query results, if possible
+   * 1. handle removed values from found identities
+   * 2. dedupes input
+   * 3. create queries
+   * 4. adds empty temp results for each query
+   * 5. makes queries
+   * 6. updates results with the query results, if possible
    */
-  private handleNewValues(values: string[], emit = true): void {
+  private handleNewValues(values: string[]): void {
+    this.foundIdentities = this.foundIdentities.filter(
+      identity => !!values.find(val => val === identity.general[this.lookupType]),
+    );
+    this.foundIdentities$.next(this.foundIdentities);
+    this.knownIdentities = new Set(
+      this.foundIdentities.map(identity => identity.query[this.lookupType]),
+    );
+
     const uniqueValues = chain(values)
       .uniq()
       .filter(v => !this.knownIdentities.has(v));
 
     const newQueries = uniqueValues.map(v => makeBetaQuery(this.lookupType, v)).value();
-    this.handleNewQueries(newQueries, emit);
+    this.handleNewQueries(newQueries);
   }
 
   /**
@@ -239,14 +314,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
    * 2. makes queries
    * 3. updates results with the query results, if possible
    */
-  private handleNewQueries(newQueries: IdentityQueryBeta[], emit = true): void {
+  private handleNewQueries(newQueries: IdentityQueryBeta[]): void {
     if (isEmpty(newQueries)) {
-      if (emit) {
-        this.lookupListChange.emit(this.lookupList);
-      }
-
       this.foundIdentities$.next(this.foundIdentities);
-
       return;
     }
 
@@ -259,10 +329,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
       this.knownIdentities.add(result.query[this.lookupType].toString());
       this.foundIdentities.push(result);
-    }
-
-    if (emit) {
-      this.lookupListChange.emit(this.lookupList);
     }
 
     this.foundIdentities$.next(this.foundIdentities);
