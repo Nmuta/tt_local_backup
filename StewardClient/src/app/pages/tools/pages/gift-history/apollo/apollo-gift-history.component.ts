@@ -13,7 +13,7 @@ import {
 } from './state/apollo-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import { ApolloMasterInventory } from '@models/apollo';
+import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
 import BigNumber from 'bignumber.js';
 import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
@@ -123,5 +123,10 @@ export class ApolloGiftHistoryComponent
     }
 
     return null;
+  }
+
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: ApolloPlayerInventoryProfile): void {
+    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

@@ -17,8 +17,7 @@
             <mat-card-content>
               <opus-player-inventory-profile-picker
                 [identity]="identity"
-                [(profileId)]="profileId"
-                (profileIdChange)="onProfileIdChange($event)"
+                (profileChange)="onProfileChange($event)"
               ></opus-player-inventory-profile-picker>
               <opus-player-inventory
                 [identity]="identity"

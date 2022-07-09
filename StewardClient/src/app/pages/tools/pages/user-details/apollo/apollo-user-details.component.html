@@ -21,8 +21,7 @@
             <mat-card-content>
               <apollo-player-inventory-profile-picker
                 [identity]="identity"
-                [(profileId)]="profileId"
-                (profileIdChange)="onProfileIdChange($event)"
+                (profileChange)="onProfileChange($event)"
               ></apollo-player-inventory-profile-picker>
               <apollo-player-inventory
                 [identity]="identity"

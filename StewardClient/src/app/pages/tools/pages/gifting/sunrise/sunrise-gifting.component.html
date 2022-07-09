@@ -44,7 +44,7 @@
 
             <sunrise-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
-              [(profileId)]="selectedPlayerInventoryProfileId"
+              (profileChange)="onProfileChange($event)"
             ></sunrise-player-inventory-profile-picker>
 
             <div class="inventory-div">

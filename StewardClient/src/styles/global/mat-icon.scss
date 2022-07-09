@@ -1,5 +1,15 @@
 @import '/src/styles/mixins';
 
-mat-icon.disabled {
-  color: app-color($app-foreground, 'disabled-text') !important;
+mat-icon {
+  &.disabled {
+    color: app-color($app-foreground, 'disabled-text') !important;
+  }
+
+  &.green-icon {
+    color: app-color-default($app-success);
+  }
+
+  &.red-icon {
+    color: app-color-default($app-warn);
+  }
 }

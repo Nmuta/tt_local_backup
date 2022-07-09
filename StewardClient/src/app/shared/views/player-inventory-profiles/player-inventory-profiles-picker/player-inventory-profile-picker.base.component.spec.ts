@@ -48,6 +48,8 @@ export function baseTests<
           .and.callFake(inventoryEndpointFn());
         replaceInventoryEndpointFn(inventoryEndpointSpy);
 
+        component.profileChange.emit = jasmine.createSpy('profileChange.emit');
+
         component.identity = makeIdentityFn();
         component.ngOnChanges({ identity: new SimpleChange(null, component.identity, true) });
         fixture.detectChanges();
@@ -62,7 +64,7 @@ export function baseTests<
       });
 
       it('should have nulled out profileId', () => {
-        expect(component.profileId).toBeFalsy();
+        expect(component.profileChange.emit).toHaveBeenCalled();
       });
     });
   });

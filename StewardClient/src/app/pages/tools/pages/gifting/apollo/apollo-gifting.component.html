@@ -36,7 +36,7 @@
           <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
             <apollo-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
-              [(profileId)]="selectedPlayerInventoryProfileId"
+              (profileChange)="onProfileChange($event)"
             ></apollo-player-inventory-profile-picker>
 
             <div class="inventory-div">

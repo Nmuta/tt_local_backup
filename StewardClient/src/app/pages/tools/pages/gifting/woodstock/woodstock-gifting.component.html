@@ -45,7 +45,7 @@
 
             <woodstock-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
-              [(profileId)]="selectedPlayerInventoryProfileId"
+              (profileChange)="onProfileChange($event)"
             ></woodstock-player-inventory-profile-picker>
 
             <div class="inventory-div">

@@ -8,6 +8,16 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails] },
+      uuid: 'eb80c3e9-09eb-4013-897b-3cc7c708014f',
+      shortText: 'Added Loyalty Rewards to new Loyalty tab',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails] },
+      uuid: 'fdc7dc23-224b-45aa-abf1-4ffbb71437a4',
+      shortText: 'Entitlements have been moved to new Loyalty tab',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '3b1f8729-6415-4db8-b15f-7974d2408fc9',
       shortText: 'Add query params to single and multi player selection',
@@ -15,7 +25,7 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     {
       tag: { title: 'all', tool: NavbarTool.Gifting },
       uuid: 'a1768c67-ca16-4448-a762-3f41497353c6',
-      shortText: 'Add support agent admin role to list users allowed to gift liveries.',
+      shortText: 'Add support agent admin role to list users allowed to gift liveries',
     },
     {
       tag: ChangelogTag.Internal,
@@ -25,7 +35,7 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails] },
       uuid: 'bcfe4514-f698-467b-8247-68f812af0dc7',
-      shortText: 'Add searching and featuring event blueprints to FH5.',
+      shortText: 'Add searching and featuring event blueprints to FH5',
     },
     {
       tag: {
@@ -41,12 +51,12 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
         tool: NavbarTool.SearchUGC,
       },
       uuid: 'a7ad5c58-9b1f-422b-848c-25813ce352db',
-      shortText: 'Add player lookup to UGC search filters.',
+      shortText: 'Add player lookup to UGC search filters',
     },
     {
       tag: ChangelogTag.Internal,
       uuid: '15cfea84-ba33-45e3-aec3-39d3d3fe68cd',
-      shortText: 'Add new wrapper for loading component.',
+      shortText: 'Add new wrapper for loading component',
     },
     {
       tag: ChangelogTag.General,
@@ -187,7 +197,7 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
       tag: ChangelogTag.General,
       uuid: '1e13a1b0-44dc-48e8-8d97-9a8438f69cbf',
       shortText: 'Add new MediaTeam role',
-      longText: [`MediaTeam role has read-only access to all data within the player details tool.`],
+      longText: [`MediaTeam role has read-only access to all data within the player details tool`],
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },

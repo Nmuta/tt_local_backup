@@ -280,6 +280,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<ServicesLiveOps.UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecordAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            string endpoint)
+        {
+            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userService.GetHasPlayedRecord(xuid, externalProfileId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetHasPlayedRecordAsync(
+            ulong xuid,
+            int title,
+            bool hasPlayed,
+            string endpoint)
+        {
+            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            await userService.SetHasPlayedRecord(xuid, title, hasPlayed).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task ResendProfileHasPlayedNotificationAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            int[] titles,
+            string endpoint)
+        {
+            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            await userService.ResendProfileHasPlayedNotification(xuid, externalProfileId, titles).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(
             ulong xuid,
             string endpoint)

@@ -5,6 +5,7 @@ import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UgcType } from '@models/ugc-filters';
+import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 
 /** Component for displaying routed Sunrise user details. */
 @Component({
@@ -35,9 +36,9 @@ export class SunriseUserDetailsComponent {
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {}
 
-  /** Called when a new profile ID is picked. */
-  public onProfileIdChange(_newId: string | BigNumber): void {
-    // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: SunrisePlayerInventoryProfile): void {
+    this.profileId = newProfile?.profileId;
   }
 
   /** Hook when mat-tab changes. */

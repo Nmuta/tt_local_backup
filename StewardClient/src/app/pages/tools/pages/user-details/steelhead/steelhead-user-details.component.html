@@ -21,8 +21,7 @@
             <mat-card-content>
               <steelhead-player-inventory-profile-picker
                 [identity]="identity"
-                [(profileId)]="profileId"
-                (profileIdChange)="onProfileIdChange($event)"
+                (profileChange)="onProfileChange($event)"
               ></steelhead-player-inventory-profile-picker>
               <steelhead-player-inventory
                 [identity]="identity"

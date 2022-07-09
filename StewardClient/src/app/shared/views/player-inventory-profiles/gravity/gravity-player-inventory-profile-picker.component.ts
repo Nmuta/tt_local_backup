@@ -15,7 +15,6 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
   ],
 })
 export class GravityPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  string,
   IdentityResultBeta,
   GravityPseudoPlayerInventoryProfile
 > {

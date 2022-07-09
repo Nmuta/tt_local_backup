@@ -17,8 +17,7 @@
             <mat-card-content>
               <gravity-player-inventory-profile-picker
                 [identity]="identity"
-                [(profileId)]="profileId"
-                (profileIdChange)="onProfileIdChange($event)"
+                (profileChange)="onProfileChange($event)"
               ></gravity-player-inventory-profile-picker>
               <gravity-player-inventory
                 [identity]="identity"

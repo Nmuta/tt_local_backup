@@ -13,6 +13,8 @@ import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead/stee
 import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock/woodstock-player-inventory-profile-picker.component';
 import { MatIconModule } from '@angular/material/icon';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 
 /**
  * Player Inventory Profile -related components.
@@ -35,6 +37,8 @@ import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
     MatProgressSpinnerModule,
     MatIconModule,
     FontAwesomeModule,
+    MonitorActionModule,
+    ErrorSpinnerModule,
   ],
   exports: [
     WoodstockPlayerInventoryProfilePickerComponent,

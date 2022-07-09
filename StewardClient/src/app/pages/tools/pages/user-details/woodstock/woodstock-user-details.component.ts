@@ -5,6 +5,10 @@ import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UgcType } from '@models/ugc-filters';
+import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodstock-player.service';
+import { LoyaltyRewardsServiceContract } from '@views/loyalty-rewards/loyalty-rewards.component';
+import { GameTitle } from '@models/enums';
+import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
@@ -31,13 +35,23 @@ export class WoodstockUserDetailsComponent {
     return this.parent.identity?.woodstock;
   }
 
+  /** The service contract for loyalty rewards. */
+  public loyaltyRewardsServiceContract: LoyaltyRewardsServiceContract = {
+    gameTitle: GameTitle.FH5,
+    getUserHasPlayedRecord$: (xuid, externalProfileId) =>
+      this.woodstockPlayerService.getUserHasPlayedRecord$(xuid, externalProfileId),
+    postResendLoyaltyRewards$: (xuid, externalProfileId, gameTitles) =>
+      this.woodstockPlayerService.postResendLoyaltyRewards$(xuid, externalProfileId, gameTitles),
+  };
+
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
+    private woodstockPlayerService: WoodstockPlayerService,
   ) {}
 
-  /** Called when a new profile ID is picked. */
-  public onProfileIdChange(_newId: BigNumber): void {
-    // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: WoodstockPlayerInventoryProfile): void {
+    this.profileId = newProfile?.profileId;
   }
 
   /** Hook when mat-tab changes. */

@@ -171,6 +171,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Gets record of what user has played.
+        /// </summary>
+        Task<ServicesLiveOps.UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecordAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            string endpoint);
+
+        /// <summary>
+        ///     Sets record of what user has played.
+        /// </summary>
+        /// <remarks>
+        ///     Support as stated they don't want to be in the business of changing the hasPlayedRecord manually.
+        ///     Use only when specifically requested.
+        /// </remarks>
+        Task SetHasPlayedRecordAsync(
+            ulong xuid,
+            int title,
+            bool hasPlayed,
+            string endpoint);
+
+        /// <summary>
+        ///     Resends Loyalty Reward gifts for given titles.
+        /// </summary>
+        Task ResendProfileHasPlayedNotificationAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            int[] titles,
+            string endpoint);
+
+        /// <summary>
         ///     Gets user inventory.
         /// </summary>
         Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(

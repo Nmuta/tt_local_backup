@@ -6,7 +6,6 @@
         <div class="tab-container">
           <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
           <woodstock-ban-history [xuid]="identity.xuid"></woodstock-ban-history>
-          <entitlements [identity]="identity"></entitlements>
           <woodstock-profile-notes [identity]="identity"></woodstock-profile-notes>
           <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
           <woodstock-consoles [identity]="identity"></woodstock-consoles>
@@ -36,8 +35,7 @@
               ></woodstock-player-account-inventory> -->
               <woodstock-player-inventory-profile-picker
                 [identity]="identity"
-                [(profileId)]="profileId"
-                (profileIdChange)="onProfileIdChange($event)"
+                (profileChange)="onProfileChange($event)"
               ></woodstock-player-inventory-profile-picker>
               <woodstock-player-inventory
                 [identity]="identity"
@@ -157,6 +155,13 @@
             ></woodstock-player-hidden-ugc>
           </mat-tab>
         </mat-tab-group>
+      </mat-tab>
+      <mat-tab label="Loyalty">
+        <div class="tab-container">
+          <loyalty-rewards [identity]="identity" [serviceContract]="loyaltyRewardsServiceContract">
+          </loyalty-rewards>
+          <entitlements [identity]="identity"></entitlements>
+        </div>
       </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">

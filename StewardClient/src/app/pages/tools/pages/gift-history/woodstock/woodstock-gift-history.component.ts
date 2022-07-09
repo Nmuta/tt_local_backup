@@ -125,4 +125,9 @@ export class WoodstockGiftHistoryComponent
 
     return null;
   }
+
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: WoodstockPlayerInventoryProfile): void {
+    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+  }
 }

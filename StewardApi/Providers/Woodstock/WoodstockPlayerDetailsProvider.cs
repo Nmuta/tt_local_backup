@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.UGC.Contracts;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
@@ -642,6 +643,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
 
             await this.woodstockService.SetUserReportWeightAsync(xuid, reportWeight, endpoint).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<HasPlayedRecord>> GetHasPlayedRecordAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var response = await this.woodstockService.GetHasPlayedRecordAsync(xuid, externalProfileId, endpoint).ConfigureAwait(false);
+            var results = this.mapper.Map<IList<HasPlayedRecord>>(response.records);
+            return results;
+        }
+
+        /// <inheritdoc />
+        public async Task ResendProfileHasPlayedNotificationAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            IList<int> gameTitles,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            await this.woodstockService.ResendProfileHasPlayedNotificationAsync(xuid, externalProfileId, gameTitles.ToArray(), endpoint).ConfigureAwait(false);
         }
 
         private IList<int> PrepareGroupIds(WoodstockUserFlags userFlags, bool toggleOn)

@@ -1,0 +1,26 @@
+@import '/src/styles/mixins';
+
+table {
+  width: 100%;
+}
+
+td,
+th {
+  text-align: center !important;
+}
+
+.mat-sort-header-container {
+  justify-content: center;
+}
+
+.submit-field {
+  margin-top: $gap-medium;
+}
+
+mat-checkbox {
+  margin-left: $gap-small;
+}
+
+.no-xuid {
+  margin-top: $gap-medium;
+}

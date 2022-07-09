@@ -80,4 +80,9 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
     return null;
   }
+
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: SteelheadPlayerInventoryProfile): void {
+    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+  }
 }

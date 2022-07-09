@@ -32,8 +32,7 @@
               ></sunrise-player-account-inventory>
               <sunrise-player-inventory-profile-picker
                 [identity]="identity"
-                [(profileId)]="profileId"
-                (profileIdChange)="onProfileIdChange($event)"
+                (profileChange)="onProfileChange($event)"
               ></sunrise-player-inventory-profile-picker>
               <sunrise-player-inventory
                 [identity]="identity"

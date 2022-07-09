@@ -1,6 +1,6 @@
 <mat-chip-list
   aria-label="Profile selection"
-  *ngIf="profiles; else failstate"
+  *ngIf="!!profiles?.length; else failstate"
   selectable="true"
   multiple="false"
   (change)="onSelectionChange($event)"

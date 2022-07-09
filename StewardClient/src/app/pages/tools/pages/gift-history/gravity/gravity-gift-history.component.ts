@@ -110,4 +110,9 @@ export class GravityGiftHistoryComponent
 
     return null;
   }
+
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: GravityPseudoPlayerInventoryProfile): void {
+    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+  }
 }

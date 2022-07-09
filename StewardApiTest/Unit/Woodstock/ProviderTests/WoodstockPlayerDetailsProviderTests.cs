@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SetUserReportWeightAsync_WithReportWeightOutOfRange_ShouldThrow()
+        public void SetUserReportWeightAsync_WithReportWeightOutOfRange_ShouldThrow()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -255,7 +255,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SetUserReportWeightAsync_WithValidParameters_DoesNotThrow()
+        public void SetUserReportWeightAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -265,6 +265,42 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
             // Act.
             Func<Task> action = async () => await provider.SetUserReportWeightAsync(xuid, reportWeight, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetHasPlayedRecordAsync_WithValidParameters_ReturnsValidValue()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var profileId = Fixture.Create<Guid>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            async Task<IList<HasPlayedRecord>> Action() => await provider.GetHasPlayedRecordAsync(xuid, profileId, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<List<HasPlayedRecord>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void ResendProfileHasPlayedNotificationAsync_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var profileId = Fixture.Create<Guid>();
+            var titles = Fixture.Create<int[]>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            Func<Task> action = async () => await provider.ResendProfileHasPlayedNotificationAsync(xuid, profileId, titles, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -527,6 +563,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
                 this.WoodstockService.GetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(fakeGetReportWeight);
                 this.WoodstockService.SetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<Task>());
+                this.WoodstockService.GetHasPlayedRecordAsync(Arg.Any<ulong>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetHasPlayedRecordOutput>());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -537,6 +574,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.Mapper.Map<IList<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
+                this.Mapper.Map<IList<HasPlayedRecord>>(Arg.Any<ForzaLiveOpsHasPlayedRecord[]>()).Returns(Fixture.Create<IList<HasPlayedRecord>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
                 this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());

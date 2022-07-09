@@ -3,6 +3,7 @@ import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
+import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -32,8 +33,8 @@ export class SteelheadUserDetailsComponent {
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {}
 
-  /** Called when a new profile ID is picked. */
-  public onProfileIdChange(_newId: string | BigNumber): void {
-    // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: SteelheadPlayerInventoryProfile): void {
+    this.profileId = newProfile?.profileId;
   }
 }

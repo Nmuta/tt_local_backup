@@ -419,6 +419,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => "Ban expired by Steward"));
 
             this.CreateMap<ServicesLiveOps.ForzaUserUnBanResult, UnbanResult>();
+
+            this.CreateMap<ServicesLiveOps.ForzaLiveOpsHasPlayedRecord, HasPlayedRecord>() // Use UGC contracts GameTitle, confirmed with Caleb 6/23/22
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(src => Enum.GetName(typeof(Turn10.UGC.Contracts.GameTitle), src.gameTitle)))
+                .ReverseMap();
         }
 
         private string PrepareDeviceType(string deviceType)

@@ -82,4 +82,9 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
 
     return null;
   }
+
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: SunrisePlayerInventoryProfile): void {
+    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+  }
 }

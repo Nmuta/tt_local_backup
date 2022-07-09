@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import {
   Component,
   EventEmitter,
@@ -17,7 +16,7 @@ import { OpusPlayerInventoryProfile } from '@models/opus';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
-import { chain, isEmpty, sortBy } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap, map } from 'rxjs/operators';
@@ -46,7 +45,6 @@ type AcceptableInventoryProfileTypesIntersection =
   template: '',
 })
 export abstract class PlayerInventoryProfilesPickerBaseComponent<
-    ProfileIdType extends string | BigNumber,
     IdentityResultType extends IdentityResultUnion,
     InventoryProfileType extends AcceptableInventoryProfileTypes,
   >
@@ -54,8 +52,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   implements OnInit, OnChanges
 {
   @Input() public identity: IdentityResultType;
-  @Input() public profileId: ProfileIdType;
-  @Output() public profileIdChange = new EventEmitter<ProfileIdType>();
+  @Output() public profileChange = new EventEmitter<InventoryProfileType>();
 
   public profiles: AcceptableInventoryProfileTypesIntersection[] = [];
   /** True while loading. */
@@ -95,13 +92,8 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
       .subscribe(profiles => {
         this.profiles = profiles as unknown as AcceptableInventoryProfileTypesIntersection[];
 
-        // clear selected profile if the currently set ID does not exist
-        if (
-          chain(profiles)
-            .filter(p => p.profileId === this.profileId)
-            .isEmpty()
-        ) {
-          this.profileId = null;
+        if (!!profiles[0]) {
+          this.profileChange.emit(profiles[0]);
         }
       });
 
@@ -118,6 +110,6 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   /** Handle chip-list selection change. */
   public onSelectionChange(newSelection: MatChipListChange): void {
     const newProfile = newSelection?.value as InventoryProfileType;
-    this.profileIdChange.emit(newProfile?.profileId as ProfileIdType);
+    this.profileChange.emit(newProfile);
   }
 }

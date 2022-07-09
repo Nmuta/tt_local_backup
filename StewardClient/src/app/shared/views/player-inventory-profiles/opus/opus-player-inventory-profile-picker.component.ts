@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { OpusPlayerInventoryProfile } from '@models/opus';
 import { OpusService } from '@services/opus';
-import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
 
@@ -16,7 +15,6 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
   ],
 })
 export class OpusPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  BigNumber,
   IdentityResultAlpha,
   OpusPlayerInventoryProfile
 > {

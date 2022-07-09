@@ -1,8 +1,8 @@
-import BigNumber from 'bignumber.js';
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
+import { GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 
 /** Component for displaying routed Gravity user details. */
 @Component({
@@ -32,8 +32,8 @@ export class GravityUserDetailsComponent {
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {}
 
-  /** Called when a new profile ID is picked. */
-  public onProfileIdChange(_newId: string | BigNumber): void {
-    // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: GravityPseudoPlayerInventoryProfile): void {
+    this.profileId = newProfile?.profileId;
   }
 }

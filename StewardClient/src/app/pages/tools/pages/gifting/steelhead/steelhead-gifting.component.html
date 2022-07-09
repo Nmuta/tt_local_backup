@@ -35,7 +35,7 @@
           <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
             <steelhead-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
-              [(profileId)]="selectedPlayerInventoryProfileId"
+              (profileChange)="onProfileChange($event)"
             ></steelhead-player-inventory-profile-picker>
 
             <div class="inventory-div">

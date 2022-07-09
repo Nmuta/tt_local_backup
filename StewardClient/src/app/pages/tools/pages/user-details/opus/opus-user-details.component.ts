@@ -3,6 +3,7 @@ import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
+import { OpusPlayerInventoryProfile } from '@models/opus';
 
 /** Component for displaying routed Opus user details. */
 @Component({
@@ -31,8 +32,8 @@ export class OpusUserDetailsComponent {
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {}
 
-  /** Called when a new profile ID is picked. */
-  public onProfileIdChange(_newId: string | BigNumber): void {
-    // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
+  /** Called when a new profile is picked. */
+  public onProfileChange(newProfile: OpusPlayerInventoryProfile): void {
+    this.profileId = newProfile?.profileId;
   }
 }

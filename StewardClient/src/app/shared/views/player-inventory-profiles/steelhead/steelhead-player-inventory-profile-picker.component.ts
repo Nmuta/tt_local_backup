@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { SteelheadService } from '@services/steelhead';
-import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
 
@@ -16,7 +15,6 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
   ],
 })
 export class SteelheadPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  BigNumber,
   IdentityResultAlpha,
   SteelheadPlayerInventoryProfile
 > {

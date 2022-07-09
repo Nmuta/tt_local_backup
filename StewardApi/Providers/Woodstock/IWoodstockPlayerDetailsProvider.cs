@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -142,6 +143,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task SetUserReportWeightAsync(
             ulong xuid,
             int reportWeight,
+            string endpoint);
+
+        /// <summary>
+        ///     Gets a user's record of titles played.
+        /// </summary>
+        Task<IList<HasPlayedRecord>> GetHasPlayedRecordAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            string endpoint);
+
+        /// <summary>
+        ///     Resends Loyalty Reward gifts for given titles.
+        /// </summary>
+        Task ResendProfileHasPlayedNotificationAsync(
+            ulong xuid,
+            Guid externalProfileId,
+            IList<int> gameTitles,
             string endpoint);
     }
 }
