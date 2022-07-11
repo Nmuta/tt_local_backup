@@ -623,7 +623,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC livery by ID.
         /// </summary>
         [HttpGet("storefront/livery({id})")]
-        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [SwaggerResponse(200, type: typeof(UgcLiveryItem))]
         public async Task<IActionResult> GetUgcLivery(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);

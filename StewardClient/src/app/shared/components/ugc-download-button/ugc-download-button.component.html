@@ -1,0 +1,16 @@
+<button
+  mat-stroked-button
+  color="primary"
+  [matMenuTriggerFor]="menu"
+  [disabled]="downloadOptions?.length <= 0"
+  clickStop
+>
+  <span [matTooltip]="downloadOptions?.length <= 0 ? noDownloadOptionsTooltip : null"
+    >Download <mat-icon>download</mat-icon></span
+  >
+</button>
+<mat-menu #menu="matMenu">
+  <button *ngFor="let option of downloadOptions" mat-menu-item (click)="option.clickFn()" clickStop>
+    {{ option.label }}
+  </button>
+</mat-menu>

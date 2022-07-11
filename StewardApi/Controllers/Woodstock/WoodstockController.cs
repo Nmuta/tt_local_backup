@@ -760,7 +760,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC livery by ID.
         /// </summary>
         [HttpGet("storefront/livery({id})")]
-        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [SwaggerResponse(200, type: typeof(UgcLiveryItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcLivery(Guid id)

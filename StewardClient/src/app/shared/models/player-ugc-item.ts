@@ -31,6 +31,9 @@ export interface PlayerUgcItem {
   timesLiked: BigNumber;
   timesDownloaded: BigNumber;
   isPublic: boolean;
+
+  /** Only for livery type UGC items.  */
+  liveryDownloadData?: string;
 }
 
 /** Creates a fake player UGC item */

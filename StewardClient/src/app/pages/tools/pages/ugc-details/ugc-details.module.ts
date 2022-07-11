@@ -26,6 +26,7 @@ import { WoodstockRedirectComponent } from './pages/woodstock-redirect/woodstock
 import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redirect.component';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -62,6 +63,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
     HelpModule,
     FeatureUgcModalModule,
     PipesModule,
+    UgcDownloadButtonModule,
   ],
 })
 export class UgcDetailsModule {}

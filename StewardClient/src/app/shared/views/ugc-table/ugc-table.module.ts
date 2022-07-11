@@ -24,6 +24,7 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { ApolloUgcTableComponent } from './apollo/apollo-ugc-table.component';
 import { RouterModule } from '@angular/router';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
+import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -52,6 +53,7 @@ import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-moda
     VerifyCheckboxModule,
     RouterModule,
     FeatureUgcModalModule,
+    UgcDownloadButtonModule,
   ],
   exports: [SunriseUgcTableComponent, WoodstockUgcTableComponent, ApolloUgcTableComponent],
 })

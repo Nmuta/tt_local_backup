@@ -93,22 +93,6 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let entry">
       <div class="inline-buttons">
-        <a
-          mat-stroked-button
-          color="primary"
-          clickStop
-          [routerLink]="entry.ugcDetailsLink"
-          [disabled]="!ugcDetailsLinkSupported || !entry.ugcDetailsLink"
-        >
-          <span
-            [matTooltip]="
-              ugcDetailsLinkSupported
-                ? 'Go to UGC details page for this item'
-                : 'UGC details page is not supported for this title'
-            "
-            >View Full Details</span
-          >
-        </a>
         <button
           mat-stroked-button
           color="primary"
@@ -117,19 +101,27 @@
           class="ignore-min-size"
           matTooltip="Copy the UGC item's id"
         >
-          <mat-icon>content_copy</mat-icon> Id
+          Id <mat-icon>content_copy</mat-icon>
         </button>
-
-        <button
-          *ngIf="entry.type === ugcType.Photo"
-          mat-stroked-button
-          color="primary"
-          clickStop
-          (click)="downloadPhoto(entry)"
-        >
-          Download
-        </button>
+        <ugc-download-button [item]="entry"></ugc-download-button>
       </div>
+
+      <a
+        mat-stroked-button
+        color="primary"
+        clickStop
+        [routerLink]="entry.ugcDetailsLink"
+        [disabled]="!ugcDetailsLinkSupported || !entry.ugcDetailsLink"
+      >
+        <span
+          [matTooltip]="
+            ugcDetailsLinkSupported
+              ? 'Go to UGC details page for this item'
+              : 'UGC details page is not supported for this title'
+          "
+          >View Full Details</span
+        >
+      </a>
 
       <button
         *ngIf="supportFeaturing"

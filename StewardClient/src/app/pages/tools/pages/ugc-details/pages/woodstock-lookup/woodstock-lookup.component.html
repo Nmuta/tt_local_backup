@@ -21,6 +21,7 @@
       <model-dump-flags></model-dump-flags>
       <mat-card-actions align="end">
         <ng-content select="button"></ng-content>
+        <ugc-download-button [item]="ugcItem"></ugc-download-button>
         <button
           [disabled]="!canFeatureUgc"
           mat-raised-button

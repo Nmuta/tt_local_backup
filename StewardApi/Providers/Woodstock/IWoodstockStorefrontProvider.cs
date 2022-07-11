@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///    Get player livery.
         /// </summary>
-        Task<UgcItem> GetUgcLiveryAsync(Guid liveryId, string endpoint);
+        Task<UgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint);
 
         /// <summary>
         ///    Get player photo.

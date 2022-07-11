@@ -142,11 +142,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<UgcItem> Action() => await provider.GetUgcLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
+            async Task<UgcLiveryItem> Action() => await provider.GetUgcLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<UgcItem>();
+            result.Should().BeOfType<UgcLiveryItem>();
         }
 
         [TestMethod]
@@ -258,14 +258,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCPhotoOutput>());
                 this.SunriseService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCTuneOutput>());
                 this.SunriseService.GetHiddenUgcForUserAsync(Arg.Any<int>(), Arg.Any<ulong>(), Arg.Any<Forza.UserGeneratedContent.FH4.Generated.FileType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontService.GetHiddenUGCForUserOutput>());
-                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaPhotoData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
-                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaLiveryData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
-                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaTuneData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
                 this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
                 var ugcItem = Fixture.Create<UgcItem>();
+                var ugcLiveryItem = Fixture.Create<UgcLiveryItem>();
                 ugcItem.GameTitle = (int)GameTitle.FH4;
+                ugcLiveryItem.GameTitle = (int)GameTitle.FH4;
                 this.Mapper.Map<UgcItem>(Arg.Any<ForzaPhotoData>()).Returns(ugcItem);
-                this.Mapper.Map<UgcItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcItem);
+                this.Mapper.Map<UgcLiveryItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcLiveryItem);
                 this.Mapper.Map<UgcItem>(Arg.Any<ForzaTuneData>()).Returns(ugcItem);
             }
 

@@ -75,12 +75,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUgcLiveryAsync(Guid liveryId, string endpoint)
+        public async Task<UgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var liveryOutput = await this.woodstockService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
-            var livery = this.mapper.Map<UgcItem>(liveryOutput.result);
+            var livery = this.mapper.Map<UgcLiveryItem>(liveryOutput.result);
 
             if (livery.GameTitle != (int)GameTitle.FH5)
             {

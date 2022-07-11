@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: 'all', tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails] },
+      uuid: '08cb5d2f-3c13-4ba8-96e7-4b03b5067e2d',
+      shortText: 'Add download c livery option to UGC items',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails] },
       uuid: 'eb80c3e9-09eb-4013-897b-3cc7c708014f',
       shortText: 'Added Loyalty Rewards to new Loyalty tab',

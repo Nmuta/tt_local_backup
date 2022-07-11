@@ -31,7 +31,7 @@ import JSZip from 'jszip';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { GuidLikeString } from '@models/extended-types';
 import { saveAs } from 'file-saver';
-import { chunk, flatten } from 'lodash';
+import { chunk, cloneDeep, flatten } from 'lodash';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -174,24 +174,16 @@ export abstract class UgcTableBaseComponent
       const ugcItem = dataSource[i];
       if (this.shouldLookupThumbnails(ugcItem)) {
         const fullUgcItem = await this.getUgcItem(ugcItem.id, ugcItem.type).toPromise();
+        // Deep clone so object is considered new within NgOnChanges
+        dataSource[i] = cloneDeep(dataSource[i]);
         dataSource[i].thumbnailOneImageBase64 = fullUgcItem.thumbnailOneImageBase64;
         dataSource[i].thumbnailTwoImageBase64 = fullUgcItem.thumbnailTwoImageBase64;
+        dataSource[i].liveryDownloadData = fullUgcItem.liveryDownloadData;
       }
     }
 
     this.ugcTableDataSource.data = dataSource;
     this.waitingForThumbnails = false;
-  }
-
-  /** Downloads the UGC Photo. */
-  public downloadPhoto(item: PlayerUgcItem): void {
-    const title = `${item.type}_${item.id}.jpg`;
-    const linkSource = item.thumbnailOneImageBase64;
-    const downloadLink = document.createElement('a');
-    downloadLink.href = linkSource;
-    downloadLink.download = title;
-    downloadLink.click();
-    downloadLink.remove();
   }
 
   /** Downloads the UGC Photo. */

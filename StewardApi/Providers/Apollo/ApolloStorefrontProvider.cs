@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
@@ -67,12 +68,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<ApolloUgcItem> GetUgcLiveryAsync(string liveryId, string endpoint)
+        public async Task<ApolloUgcLiveryItem> GetUgcLiveryAsync(string liveryId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var liveryOutput = await this.apolloService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
-            var livery = this.mapper.Map<ApolloUgcItem>(liveryOutput.result);
+            var livery = this.mapper.Map<ApolloUgcLiveryItem>(liveryOutput.result);
 
             if (livery.GameTitle != (int)GameTitle.FM7)
             {

@@ -31,11 +31,8 @@ table {
 
   .mat-column-actions {
     @include table-width($table-column-width-300);
-    button,
-    a {
-      margin-right: $gap-small;
-      margin-left: $gap-small;
-    }
+    padding-right: $gap-small;
+    padding-left: $gap-small;
 
     .hide-score {
       display: flex;
@@ -69,11 +66,19 @@ table {
     }
   }
 
-  button:not(.ignore-min-size),
-  a:not(.ignore-min-size) {
-    min-width: $button-min-size;
+  button,
+  a,
+  ugc-download-button {
     margin-bottom: $gap-small;
-    display: block;
+
+    &:not(.ignore-min-size) {
+      min-width: $button-min-size;
+      display: inline-block;
+    }
+  }
+
+  ugc-download-button {
+    margin-left: $gap-small;
   }
 
   .is-featured-item {

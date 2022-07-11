@@ -9,10 +9,15 @@ $full-screen-height-calc-basic: calc(
 $button-min-size: 150px;
 
 $auction-row-height: 120px;
-$ugc-row-height-thumbnails: 170px;
+$ugc-row-height-thumbnails: 200px;
 $max-table-image-width: 150px;
 
 $single-input-max-width: 300px;
 
 /** NGX-CHART matches container size, required to set height of container. */
 $ngx-chart-height: 500px;
+
+$container-width-small: 250px;
+$container-width-medium: 500px;
+$container-width-large: 750px;
+$container-width-jumbo: 1000px;

@@ -9,6 +9,7 @@ using Forza.WebServices.FM7.Generated;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
@@ -143,11 +144,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<ApolloUgcItem> Action() => await provider.GetUgcLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
+            async Task<ApolloUgcLiveryItem> Action() => await provider.GetUgcLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<ApolloUgcItem>();
+            result.Should().BeOfType<ApolloUgcLiveryItem>();
         }
 
         private sealed class Dependencies
@@ -156,11 +157,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 this.ApolloService.SearchUgcContentAsync(Arg.Any<ForzaUGCSearchV2Request>(), Arg.Any<ForzaUGCContentType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCV2Output>());
                 this.ApolloService.GetPlayerLiveryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCLiveryOutput>());
-                this.Mapper.Map<IList<UgcItem>>(Arg.Any<ForzaLiveryData[]>()).Returns(Fixture.Create<IList<UgcItem>>());
                 this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
-                var ugcItem = Fixture.Create<ApolloUgcItem>();
+                var ugcItem = Fixture.Create<ApolloUgcLiveryItem>();
                 ugcItem.GameTitle = (int)GameTitle.FM7;
-                this.Mapper.Map<ApolloUgcItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcItem);
+                this.Mapper.Map<ApolloUgcLiveryItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcItem);
             }
 
             public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();
