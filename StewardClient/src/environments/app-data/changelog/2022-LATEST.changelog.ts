@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '8c41df65-98ee-4420-9f0a-dd2cd96c9d8d',
+      shortText: 'Fix IIS to support 32k URLs',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails] },
       uuid: '08cb5d2f-3c13-4ba8-96e7-4b03b5067e2d',
       shortText: 'Add download c livery option to UGC items',

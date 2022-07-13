@@ -75,7 +75,7 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.disableSendActions = !hasAccessToRestrictedFeature(
-      RestrictedFeature.GroupGifting,
+      RestrictedFeature.SendLoyaltyRewards,
       this.serviceContract?.gameTitle,
       user.role,
     );

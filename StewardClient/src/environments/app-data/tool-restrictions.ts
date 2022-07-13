@@ -21,7 +21,7 @@ export const RestrictedToolAccessLookup = {
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
   },
-  [RestrictedFeature.GiftLivery]: {
+  [RestrictedFeature.SendLoyaltyRewards]: {
     [GameTitle.FH5]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
