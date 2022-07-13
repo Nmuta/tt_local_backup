@@ -51,6 +51,7 @@ using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Proxies;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.LiveOps.StewardApi.Validation.Apollo;
 using Turn10.LiveOps.StewardApi.Validation.Gravity;
@@ -63,6 +64,8 @@ using Turn10.Services.Diagnostics.Geneva;
 using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -73,6 +76,8 @@ namespace Turn10.LiveOps.StewardApi
     public sealed class Startup
     {
         private readonly IConfiguration configuration;
+
+        private IServiceCollection allServices;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Startup"/> class.
@@ -179,6 +184,9 @@ namespace Turn10.LiveOps.StewardApi
                             .AllowAnyMethod()
                             .AllowAnyHeader());
             });
+
+            ProviderRegistrations.Register(services);
+            ProxyRegistrations.Register(services);
 
             services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
             services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
@@ -342,6 +350,8 @@ namespace Turn10.LiveOps.StewardApi
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
+
+            this.allServices = services;
         }
 
         /// <summary>
@@ -349,6 +359,15 @@ namespace Turn10.LiveOps.StewardApi
         /// </summary>
         public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment, IApiVersionDescriptionProvider provider)
         {
+            // initialize everything
+            var initializeableServices = this.allServices.Where(s => typeof(IInitializeable).IsAssignableFrom(s.ServiceType));
+            var initializationTasks = initializeableServices
+                .Select(service => applicationBuilder.ApplicationServices.GetService(service.ServiceType))
+                .Cast<IInitializeable>()
+                .Select(s => s.InitializeAsync())
+                .ToList();
+            Task.WhenAll(initializationTasks).GetAwaiter().GetResult();
+
             if (webHostEnvironment.IsDevelopment())
             {
                 applicationBuilder.UseDeveloperExceptionPage();

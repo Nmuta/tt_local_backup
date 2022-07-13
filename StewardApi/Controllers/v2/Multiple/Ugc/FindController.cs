@@ -25,14 +25,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Multiple", "Woodstock", "Sunrise")]
-    public class Find : V2ControllerBase
+    public class FindController : V2ControllerBase
     {
         private readonly IWoodstockService fh5Service;
         private readonly ISunriseService fh4Service;
         private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IKustoProvider kustoProvider;
 
-        public Find(IWoodstockService fh5Service, ISunriseService fh4Service, IWoodstockStorefrontProvider storefrontProvider, IKustoProvider kustoProvider)
+        public FindController(IWoodstockService fh5Service, ISunriseService fh4Service, IWoodstockStorefrontProvider storefrontProvider, IKustoProvider kustoProvider)
         {
             this.fh5Service = fh5Service;
             this.fh4Service = fh4Service;
