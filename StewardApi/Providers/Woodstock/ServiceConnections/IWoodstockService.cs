@@ -88,6 +88,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Creates LSP group.
+        /// </summary>
+        Task<ServicesLiveOps.UserManagementService.CreateUserGroupOutput> CreateUserGroupAsync(
+            string groupName,
+            string endpoint);
+
+        /// <summary>
         ///     Gets user group memberships.
         /// </summary>
         Task<ServicesLiveOps.UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(

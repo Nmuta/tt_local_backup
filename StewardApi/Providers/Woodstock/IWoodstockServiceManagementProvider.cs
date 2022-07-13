@@ -15,6 +15,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<LspGroup>> GetLspGroupsAsync(string endpoint);
 
         /// <summary>
+        ///     Create LSP group.
+        /// </summary>
+        Task<LspGroup> CreateLspGroupAsync(string groupName, string endpoint);
+
+        /// <summary>
+        ///     Add users to LSP group.
+        /// </summary>
+        Task<IList<UserGroupManagementResponse>> AddUsersToLspGroupAsync(IList<ulong> xuids, int groupId, string endpoint);
+
+        /// <summary>
+        ///     Remove users from LSP group.
+        /// </summary>
+        Task<IList<UserGroupManagementResponse>> RemoveUsersFromLspGroupAsync(IList<ulong> xuids, int groupId, string endpoint);
+
+        /// <summary>
         ///     Gets auction house block list.
         /// </summary>
         Task<IList<AuctionBlockListEntry>> GetAuctionBlockListAsync(int maxResults, string endpoint);

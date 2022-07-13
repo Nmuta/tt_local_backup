@@ -21,5 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         Leaderboards,
         PlayerMessages,
         GroupMessages,
+        UserGroup,
     }
 }

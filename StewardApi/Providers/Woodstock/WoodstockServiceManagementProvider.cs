@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
@@ -60,6 +62,87 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.WoodstockFullName}", ex);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task<LspGroup> CreateLspGroupAsync(string groupName, string endpoint)
+        {
+            groupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupName));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var result = await this.woodstockService.CreateUserGroupAsync(groupName, endpoint).ConfigureAwait(false);
+                return new LspGroup()
+                {
+                    Id = result.groupId,
+                    Name = groupName
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Create user group failed.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<UserGroupManagementResponse>> AddUsersToLspGroupAsync(IList<ulong> xuids, int groupId, string endpoint)
+        {
+            groupId.ShouldBeGreaterThanValue(0, nameof(groupId));
+            xuids.EnsureValidXuids();
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var response = new List<UserGroupManagementResponse>();
+            var groups = new int[] { groupId };
+
+            foreach (var xuid in xuids)
+            {
+                var userGroupManagementResponse = new UserGroupManagementResponse() { Xuid = xuid };
+
+                try
+                {
+                    await this.woodstockService.AddToUserGroupsAsync(xuid, groups, endpoint).ConfigureAwait(false);
+                }
+                catch (Exception)
+                {
+                    var error = new StewardError($"Failed to add user {xuid} to group {groupId}");
+                    userGroupManagementResponse.Error = error;
+                }
+
+                response.Add(userGroupManagementResponse);
+            }
+
+            return response;
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<UserGroupManagementResponse>> RemoveUsersFromLspGroupAsync(IList<ulong> xuids, int groupId, string endpoint)
+        {
+            groupId.ShouldBeGreaterThanValue(0, nameof(groupId));
+            xuids.EnsureValidXuids();
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var response = new List<UserGroupManagementResponse>();
+            var groups = new int[] { groupId };
+
+            foreach (var xuid in xuids)
+            {
+                var userGroupManagementResponse = new UserGroupManagementResponse() { Xuid = xuid };
+
+                try
+                {
+                    await this.woodstockService.RemoveFromUserGroupsAsync(xuid, groups, endpoint).ConfigureAwait(false);
+                }
+                catch (Exception)
+                {
+                    var error = new StewardError($"Failed to remove user {xuid} from group {groupId}");
+                    userGroupManagementResponse.Error = error;
+                }
+
+                response.Add(userGroupManagementResponse);
+            }
+
+            return response;
         }
 
         /// <inheritdoc />

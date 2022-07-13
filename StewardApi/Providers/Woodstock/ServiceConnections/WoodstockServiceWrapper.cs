@@ -158,6 +158,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<ServicesLiveOps.UserManagementService.CreateUserGroupOutput> CreateUserGroupAsync(
+            string groupName,
+            string endpoint)
+        {
+            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userManagementService.CreateUserGroup(groupName).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<ServicesLiveOps.UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
             ulong xuid,
             int[] groupFilter,
