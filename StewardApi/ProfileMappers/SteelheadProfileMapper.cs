@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using AutoMapper;
-using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -11,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
+using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
 
@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
                 .ReverseMap();
-            this.CreateMap<LiveOpsNotification, Notification>()
+            this.CreateMap<ForzaLiveOpsNotification, Notification>()
                 .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))

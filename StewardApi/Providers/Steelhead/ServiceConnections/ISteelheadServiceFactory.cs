@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
-using Forza.LiveOps.FM8.Generated;
-using Forza.WebServices.FM8.Generated;
-using AuctionManagementService = Forza.LiveOps.FM8.Generated.AuctionManagementService;
-using GiftingService = Forza.LiveOps.FM8.Generated.GiftingService;
-using UserInventoryService = Forza.LiveOps.FM8.Generated.UserInventoryService;
-using UserManagementService = Forza.LiveOps.FM8.Generated.UserManagementService;
+using AuctionManagementService = Turn10.Services.LiveOps.FM8.Generated.AuctionManagementService;
+using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingManagementService;
+using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
+using LocalizationManagementService = Turn10.Services.LiveOps.FM8.Generated.LocalizationManagementService;
+using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
+using OldUserInventoryManagementService = Forza.LiveOps.FM8.Generated.UserInventoryService;
+using StorefrontManagementService = Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
+using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
+using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {
@@ -21,22 +24,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Prepares a <see cref="LiveOpsService" />.
         /// </summary>
-        Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint);
+        Task<LiveOpsService> PrepareLiveOpsServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="UserInventoryService" />.
+        ///     Prepares a <see cref="UserInventoryManagementService" />.
         /// </summary>
-        Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint);
+        Task<UserInventoryManagementService> PrepareUserInventoryManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="GiftingService" />.
+        ///     Prepares a <see cref="OldUserInventoryManagementService" />.
         /// </summary>
-        Task<GiftingService> PrepareGiftingServiceAsync(string endpoint);
+        Task<OldUserInventoryManagementService> PrepareOldUserInventoryManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="NotificationsManagementService" />.
+        ///     Prepares a <see cref="GiftingManagementService" />.
         /// </summary>
-        Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint);
+        Task<GiftingManagementService> PrepareGiftingManagementServiceAsync(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="NotificationManagementService" />.
+        /// </summary>
+        Task<NotificationManagementService> PrepareNotificationManagementServiceAsync(string endpoint);
 
         /// <summary>
         ///     Prepares a <see cref="AuctionManagementService" />.
@@ -47,5 +55,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Prepares a <see cref="LocalizationManagementService" />.
         /// </summary>
         Task<LocalizationManagementService> PrepareLocalizationManagementServiceAsync(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="StorefrontManagementService" />.
+        /// </summary>
+        Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint);
     }
 }

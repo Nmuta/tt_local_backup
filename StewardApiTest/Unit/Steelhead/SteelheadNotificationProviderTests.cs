@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FM8.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using static Forza.LiveOps.FM8.Generated.NotificationsManagementService;
+using Turn10.Services.LiveOps.FM8.Generated;
+using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
+
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -329,11 +327,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
-                this.SteelheadService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsRetrieveForUserExOutput>());
-                this.SteelheadService.GetUserGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAllUserGroupMessagesOutput>());
-                this.SteelheadService.GetUserGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupMessageOutput>());
-                this.SteelheadService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
-                this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.SteelheadService.GetNotificationsForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<NotificationManagementService.LiveOpsRetrieveForUserOutput>());
+                this.SteelheadService.GetAllUserGroupMessagesAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<NotificationManagementService.GetAllUserGroupMessagesOutput>());
+                this.SteelheadService.GetUserGroupMessageAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<NotificationManagementService.GetUserGroupMessageOutput>());
+                this.SteelheadService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<NotificationManagementService.SendMessageNotificationToMultipleUsersOutput>());
+                this.Mapper.Map<IList<Notification>>(Arg.Any<ForzaLiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
                 this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());

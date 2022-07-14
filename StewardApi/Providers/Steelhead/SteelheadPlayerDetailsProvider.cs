@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -15,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+using Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 {
@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
-                var result = await this.steelheadService.GetUserIdsAsync(convertedQueries, endpoint)
+                var result = await this.steelheadService.LookupPlayersAsync(convertedQueries, endpoint)
                     .ConfigureAwait(false);
 
                 var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
@@ -428,7 +428,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.steelheadService.GetPlayerAuctionsAsync(forzaAuctionFilters, endpoint)
+                var forzaAuctions = await this.steelheadService.SearchAuctionsAsync(forzaAuctionFilters, endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
@@ -446,7 +446,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var result = await this.steelheadService.GetCmsRacersCupScheduleForUserAsync(xuid, startTimeUtc, daysForward, endpoint)
+                var result = await this.steelheadService.GetCmsRacersCupScheduleForUserAsync(xuid, startTimeUtc, daysForward, Array.Empty<ForzaEventSessionType>(), endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<RacersCupSchedule>(result.scheduleData);

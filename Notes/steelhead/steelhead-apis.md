@@ -15,8 +15,10 @@ Task<GetCMSRacersCupScheduleOutput> GetCMSRacersCupSchedule(string environment, 
 
 Task<GetCMSRacersCupScheduleForUserOutput> GetCMSRacersCupScheduleForUser(ulong xuid, DateTime startDate, int daysForwardToProject, ForzaEventSessionType[] gameOptionsFilter)  { }
 
+// Don't think we need this. Message sending will be through NotificationManagementService
 Task<SendMessageOutput> SendMessage(ulong[] recipients, Guid messageId, DateTime expirationTime, ForzaNotificationType notificationType)  { }
 
+// Don't think we need this. It goes unused in Woodstock and I don't see a scenario for it yet in Steelhead.
 Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, ForzaCarUserInventoryItem[] clientCars)  { }
 ```
 
@@ -30,6 +32,7 @@ Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, ForzaCarUserIn
 ```c#
 Task<SearchAuctionHouseOutput> SearchAuctionHouse(ForzaAuctionFilters auctionFilters) { }
 
+// Need to confirm pre-release cars will be automated in Steelhead as well. If so, we dont need this.
 Task AddToAuctionBlocklist(ForzaAuctionBlocklistEntry[] carsToBlock) { }
 
 Task<GetAuctionBlocklistOutput> GetAuctionBlocklist(int maxResult) { }
@@ -52,14 +55,17 @@ Task<AdminSendLiveryGiftOutput> AdminSendLiveryGift(ulong[] recipientXuids, int 
 
 Task<AdminSendGroupLiveryGiftOutput> AdminSendGroupLiveryGift(int groupId, Guid liveryId) {}
 
+// Ignore this one. We will want to integrate V2 endpoints only in Steelhead.
 Task AdminSendItemGift(ulong recipientXuid, int itemType, int itemValue) {}
 
 Task AdminSendItemGiftV2(ulong recipientXuid, string itemType, int itemValue) {}
 
+// Ignore this one. We will want to integrate V2 endpoints only in Steelhead.
 Task AdminSendItemGroupGift(int groupId, int itemType, int itemValue) {}
 
 Task AdminSendItemGroupGiftV2(int groupId, string itemType, int itemValue) {}
 
+// Ignore this one. We will want to integrate V2 endpoints only in Steelhead.
 Task<AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypes(int maxResults) {}
 
 Task<AdminGetSupportedGiftTypesV2Output> AdminGetSupportedGiftTypesV2(int maxResults) {}
@@ -96,6 +102,7 @@ Task<GetNotificationOutput> GetNotification(ulong xuid, Guid notificationId) { }
 
 Task<DeleteNotificationsForUserOutput> DeleteNotificationsForUser(ulong xuid) { }
 
+// This is unused in Woodstock. I don't think we will need this in Steelhead either.
 Task<SendMessageOutput> SendMessage(ulong[] recipients, Guid messageId, DateTime expirationTime) { }
 ```
 
@@ -118,10 +125,13 @@ Task<GetUGCTuneOutput> GetUGCTune(Guid id) { }
 
 Task SetFeatured(Guid id, bool featured, DateTime featureEndDate, DateTime forceFeatureEndDate) { }
 
+// This is unused in Woodstock. I don't think we will need this in Steelhead either.
 Task<GetUGCObjectOutput> GetUGCObject(Guid id) { }
 ```
 
 ### UserInventoryManagementService
+
+This is missing `GetAdminUserInventoryAsync` and `GetAdminUserInventoryByProfileIdAsync` that exists in old user inventory service: `Forza.LiveOps.FM8.Generated.UserInventoryService;`
 
 ```c#
 Task<GetAdminUserProfilesOutput> GetAdminUserProfiles(ulong xuid, uint maxProfiles) {}
@@ -134,6 +144,8 @@ Task RemoveCarFromUserInventoryWithVin(Guid vin, int profileId) {}
 <br />
 
 ### UserManagementService
+
+V2 report weight endpoints in Woodstock need to be ported to Steelhead as well (Report Weight Locktypes)
 
 ```c#
 Task<BanUsersOutput> BanUsers(ForzaUserBanParameters[] banParameters, int xuidCount) { }

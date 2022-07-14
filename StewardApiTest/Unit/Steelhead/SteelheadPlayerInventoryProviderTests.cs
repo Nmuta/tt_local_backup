@@ -4,15 +4,18 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FM8.Generated;
-using Forza.UserInventory.FM8.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using static Forza.LiveOps.FM8.Generated.UserInventoryService;
+using Turn10.Services.LiveOps.FM8.Generated;
+
+using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
+using OldUserInventoryManagementService = Forza.LiveOps.FM8.Generated.UserInventoryService;
+using OldAdminForzaUserInventorySummary = Forza.UserInventory.FM8.Generated.AdminForzaUserInventorySummary;
+
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -276,10 +279,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
-                this.SteelheadService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.SteelheadService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.SteelheadService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.Mapper.Map<SteelheadPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
+                this.SteelheadService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<OldUserInventoryManagementService.GetAdminUserInventoryOutput>());
+                this.SteelheadService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<OldUserInventoryManagementService.GetAdminUserInventoryByProfileIdOutput>());
+                this.SteelheadService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<UserInventoryManagementService.GetAdminUserProfilesOutput>());
+                this.Mapper.Map<SteelheadPlayerInventory>(Arg.Any<OldAdminForzaUserInventorySummary>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.Mapper.Map<IList<SteelheadInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<SteelheadGift>(Arg.Any<SteelheadGroupGift>()).Returns(Fixture.Create<SteelheadGift>());

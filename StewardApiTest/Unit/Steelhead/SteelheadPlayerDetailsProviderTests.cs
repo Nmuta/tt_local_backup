@@ -4,20 +4,20 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FM8.Generated;
-using Forza.WebServices.FM8.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+
+using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
+using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
+using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
-using static Forza.LiveOps.FM8.Generated.UserManagementService;
-using static Forza.WebServices.FM8.Generated.LiveOpsService;
+using Forza.WebServices.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -428,18 +428,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
-                this.SteelheadUserService.GetUserIdsAsync(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserIdsOutput>());
-                this.SteelheadUserService.GetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.SteelheadUserService.LookupPlayersAsync(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserIdsOutput>());
+                this.SteelheadUserService.GetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput>());
                 this.SteelheadUserService.GetUserDataByGamertagAsync("gamerT1", Arg.Any<string>()).Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
-                this.SteelheadUserService.GetUserDataByXuidAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
-                this.SteelheadUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetConsolesOutput>());
-                this.SteelheadUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
-                this.SteelheadUserService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
-                this.SteelheadUserService.GetIsUnderReviewAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
+                this.SteelheadUserService.GetUserDataByXuidAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetLiveOpsUserDataByXuidOutput>());
+                this.SteelheadUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetConsolesOutput>());
+                this.SteelheadUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetSharedConsoleUsersOutput>());
+                this.SteelheadUserService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupMembershipsOutput>());
+                this.SteelheadUserService.GetIsUnderReviewAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetIsUnderReviewOutput>());
                 this.SteelheadUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
-                this.SteelheadUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
+                this.SteelheadUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserBanSummariesOutput>());
                 this.SteelheadUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
-                this.SteelheadUserService.GetCmsRacersCupScheduleForUserAsync(Arg.Any<ulong>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleForUserOutput>());
+                this.SteelheadUserService.GetCmsRacersCupScheduleForUserAsync(Arg.Any<ulong>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<ForzaEventSessionType[]>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleForUserOutput>());
                 this.Mapper.Map<SteelheadPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -462,7 +462,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.BanHistoryProvider,
                 this.Mapper);
 
-            private static GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
+            private static UserManagementService.GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {
                 // Cannot use random uint value for feature area, we must build our own valid fake data
                 var rnd = new Random();
@@ -473,24 +473,24 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                     fakeBanHistories.Add(Fixture.Build<ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
                 }
 
-                return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+                return Fixture.Build<UserManagementService.GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
             }
 
-            private static BanUsersOutput GenerateBanUsersOutput()
+            private static UserManagementService.BanUsersOutput GenerateBanUsersOutput()
             {
                 var fakeBanResults = new List<ForzaUserBanResult>
                 {
                     Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
                 };
 
-                return Fixture.Build<BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
+                return Fixture.Build<UserManagementService.BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
             }
 
-            private static GetLiveOpsUserDataByGamerTagOutput GenerateGetLiveOpsUserDataByGamerTagOutPut()
+            private static LiveOpsService.GetLiveOpsUserDataByGamerTagOutput GenerateGetLiveOpsUserDataByGamerTagOutPut()
             {
                 var fakeUser = Fixture.Build<UserData>().With(x => x.qwXuid, (ulong)111).Create();
 
-                return Fixture.Build<GetLiveOpsUserDataByGamerTagOutput>().With(x => x.userData, fakeUser).Create();
+                return Fixture.Build<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput>().With(x => x.userData, fakeUser).Create();
             }
         }
     }

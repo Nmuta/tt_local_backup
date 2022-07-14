@@ -4,13 +4,15 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+
+// Using this for type safety when sending gifts to LSP.
+using InventoryItemType = Forza.UserInventory.FM8.Generated.InventoryItemType;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 {
@@ -127,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.steelheadService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId, endpoint)
+                    await this.steelheadService.SendItemGiftV2Async(xuid, inventoryItemType.ToString(), itemId, endpoint)
                         .ConfigureAwait(false);
                 }
 
@@ -205,9 +207,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.steelheadService.AdminSendItemGroupGiftAsync(
+                    await this.steelheadService.SendItemGroupGiftV2Async(
                         groupId,
-                        inventoryItemType,
+                        inventoryItemType.ToString(),
                         itemId,
                         endpoint).ConfigureAwait(false);
                 }

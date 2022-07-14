@@ -1,19 +1,21 @@
 ﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Forza.WebServices.FM8.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+using Turn10.Services.LiveOps.FM8.Generated;
+
+using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
+using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -126,7 +128,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public Dependencies()
             {
                 this.SteelheadService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
-                this.SteelheadService.GetCmsRacersCupScheduleAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleOutput>());
+                this.SteelheadService.GetCmsRacersCupScheduleAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<ForzaEventSessionType[]>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleOutput>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<RacersCupSchedule>(Arg.Any<ForzaRacersCupScheduleData>()).Returns(Fixture.Create<RacersCupSchedule>());
             }

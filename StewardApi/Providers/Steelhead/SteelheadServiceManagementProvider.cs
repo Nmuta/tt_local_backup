@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+using Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 {
@@ -74,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var result = await this.steelheadService.GetCmsRacersCupScheduleAsync(environment, slotId, snapshotId, startTimeUtc, daysForward, endpoint)
+                var result = await this.steelheadService.GetCmsRacersCupScheduleAsync(environment, slotId, snapshotId, startTimeUtc, daysForward, Array.Empty<ForzaEventSessionType>(), endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<RacersCupSchedule>(result.scheduleData);

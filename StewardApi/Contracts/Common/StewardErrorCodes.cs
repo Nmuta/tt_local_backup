@@ -57,6 +57,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     A test error code, only for use within the /util/ routes.
         /// </summary>
-        RelayedFromUtil
+        RelayedFromUtil,
+
+        /// <summary>
+        ///     An error occured in a service proxy.
+        /// </summary>
+        ServiceProxyError
     }
 }

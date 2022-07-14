@@ -8,9 +8,18 @@ using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using UserInventoryService = Forza.LiveOps.FM8.Generated.UserInventoryService;
+using AuctionManagementService = Turn10.Services.LiveOps.FM8.Generated.AuctionManagementService;
+using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingManagementService;
+using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
+using LocalizationManagementService = Turn10.Services.LiveOps.FM8.Generated.LocalizationManagementService;
+using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
+using OldUserInventoryManagementService = Forza.LiveOps.FM8.Generated.UserInventoryService;
+using StorefrontManagementService = Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
+using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
+using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
 {
@@ -47,10 +56,74 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         private Client ForzaClient { get; }
 
         /// <inheritdoc/>
-        public IUserInventoryService PrepareUserInventoryService(string endpoint)
+        public IAuctionManagementService PrepareAuctionManagementService(string endpoint)
         {
-            var service = new UserInventoryService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
-            var serviceProxy = service.ProxyInterface<UserInventoryService, IUserInventoryService>();
+            var service = new AuctionManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<AuctionManagementService, IAuctionManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IGiftingManagementService PrepareGiftingManagementService(string endpoint)
+        {
+            var service = new GiftingManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<GiftingManagementService, IGiftingManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public ILiveOpsService PrepareLiveOpsService(string endpoint)
+        {
+            var service = new LiveOpsService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<LiveOpsService, ILiveOpsService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public ILocalizationManagementService PrepareLocalizationManagementService(string endpoint)
+        {
+            var service = new LocalizationManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<LocalizationManagementService, ILocalizationManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IUserManagementService PrepareUserManagementService(string endpoint)
+        {
+            var service = new UserManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<UserManagementService, IUserManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IUserInventoryManagementService PrepareUserInventoryManagementService(string endpoint)
+        {
+            var service = new UserInventoryManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<UserInventoryManagementService, IUserInventoryManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IOldUserInventoryManagementService PrepareOldUserInventoryManagementService(string endpoint)
+        {
+            var service = new OldUserInventoryManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<OldUserInventoryManagementService, IOldUserInventoryManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IStorefrontManagementService PrepareStorefrontManagementService(string endpoint)
+        {
+            var service = new StorefrontManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<StorefrontManagementService, IStorefrontManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public INotificationManagementService PrepareNotificationManagementService(string endpoint)
+        {
+            var service = new NotificationManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<NotificationManagementService, INotificationManagementService>();
             return serviceProxy;
         }
     }

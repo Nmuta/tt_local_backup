@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -11,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+using Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 {
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var notifications = await this.steelheadService.LiveOpsRetrieveForUserAsync(
+                var notifications = await this.steelheadService.GetNotificationsForUserAsync(
                     xuid,
                     maxResults,
                     endpoint).ConfigureAwait(false);
@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var notifications = await this.steelheadService.GetUserGroupNotificationsAsync(
+                var notifications = await this.steelheadService.GetAllUserGroupMessagesAsync(
                     groupId,
                     maxResults,
                     endpoint).ConfigureAwait(false);
@@ -145,6 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                     groupId,
                     message,
                     expireTimeUtc,
+                    forzaDeviceType != ForzaLiveDeviceType.Invalid,
                     forzaDeviceType,
                     endpoint).ConfigureAwait(false);
 
@@ -160,8 +161,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var notificationInfo = await this.steelheadService
-                    .GetUserGroupNotificationAsync(notificationId, endpoint).ConfigureAwait(false);
+                var notificationInfo = await this.steelheadService.GetUserGroupMessageAsync(
+                    notificationId,
+                    endpoint).ConfigureAwait(false);
 
                 var notificationHistory = new NotificationHistory
                 {
@@ -263,8 +265,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var notificationInfo = await this.steelheadService
-                    .GetUserGroupNotificationAsync(notificationId, endpoint).ConfigureAwait(false);
+                var notificationInfo = await this.steelheadService.GetUserGroupMessageAsync(
+                    notificationId,
+                    endpoint).ConfigureAwait(false);
 
                 var notificationHistory = new NotificationHistory
                 {
@@ -339,8 +342,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var notificationInfo = await this.steelheadService
-                    .GetUserGroupNotificationAsync(notificationId, endpoint).ConfigureAwait(false);
+                var notificationInfo = await this.steelheadService.GetUserGroupMessageAsync(
+                    notificationId,
+                    endpoint).ConfigureAwait(false);
 
                 await this.steelheadService.EditGroupNotificationAsync(
                     notificationId,

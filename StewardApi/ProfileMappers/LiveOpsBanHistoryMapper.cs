@@ -8,7 +8,7 @@ using FH5LiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using FH5Security = Xls.Security.FH5_main.Generated;
 using FM7Security = Xls.Security.FM7.Generated;
 using FM7WebServices = Forza.WebServices.FM7.Generated;
-using FM8LiveOps = Forza.LiveOps.FM8.Generated;
+using FM8LiveOps = Turn10.Services.LiveOps.FM8.Generated;
 using FM8Security = Xls.Security.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers

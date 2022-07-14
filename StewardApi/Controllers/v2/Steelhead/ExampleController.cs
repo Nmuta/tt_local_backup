@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         public async Task<IActionResult> GetInventory(ulong xuid)
         {
             var services = this.SteelheadServices.Value;
-            var x = await services.UserInventory.GetAdminUserInventory(xuid).ConfigureAwait(true);
+            var x = await services.OldUserInventoryManagementService.GetAdminUserInventory(xuid).ConfigureAwait(true);
 
             return this.Ok(x.summary);
         }
