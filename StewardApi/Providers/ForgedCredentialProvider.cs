@@ -79,8 +79,8 @@ namespace Turn10.LiveOps.StewardApi.Providers
             this.refreshableCacheStore.PutItem(
                 SunriseCacheKey.MakeAuthTokenKey(),
                 TimeSpan.FromMinutes(55),
-                woodstockToken,
-                () => this.ForgeCachedWoodstockAuthTokenAsync().GetAwaiter().GetResult());
+                sunriseToken,
+                () => this.ForgeCachedSunriseAuthTokenAsync().GetAwaiter().GetResult());
         }
 
         private async Task<string> ForgeCachedSteelheadAuthTokenAsync()
