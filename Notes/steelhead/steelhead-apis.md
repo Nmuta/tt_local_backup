@@ -46,7 +46,11 @@ Task<DeleteAuctionsOutput> DeleteAuctions(Guid[] auctionIds) { }
 
 ### GiftingManagementService
 
+Tested by lugeiken; FM8 nuget version 2.5.1-prerelease
+Cannot test sending cars/vanity item/liveries as none exist in pegasus
+
 ```c#
+// Unused. We now use AdminSendItemGiftV2
 Task AdminSendCreditsGift(ulong recipientXuid, uint creditAmount, string reason) {}
 
 Task AdminSendCarGift(ulong recipientXuid, int carId) {}
@@ -58,16 +62,19 @@ Task<AdminSendGroupLiveryGiftOutput> AdminSendGroupLiveryGift(int groupId, Guid 
 // Ignore this one. We will want to integrate V2 endpoints only in Steelhead.
 Task AdminSendItemGift(ulong recipientXuid, int itemType, int itemValue) {}
 
+/// Tested with only credits; GiftReceiveMoneyNotification Sent; XUID: 1234; Credit: 10;
 Task AdminSendItemGiftV2(ulong recipientXuid, string itemType, int itemValue) {}
 
 // Ignore this one. We will want to integrate V2 endpoints only in Steelhead.
 Task AdminSendItemGroupGift(int groupId, int itemType, int itemValue) {}
 
+/// Tested with only credits; GiftReceiveMoneyNotification Sent; GroupId: 23; Credit: 10;
 Task AdminSendItemGroupGiftV2(int groupId, string itemType, int itemValue) {}
 
 // Ignore this one. We will want to integrate V2 endpoints only in Steelhead.
 Task<AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypes(int maxResults) {}
 
+// Unused
 Task<AdminGetSupportedGiftTypesV2Output> AdminGetSupportedGiftTypesV2(int maxResults) {}
 ```
 
@@ -146,6 +153,7 @@ Task RemoveCarFromUserInventoryWithVin(Guid vin, int profileId) {}
 ### UserManagementService
 
 V2 report weight endpoints in Woodstock need to be ported to Steelhead as well (Report Weight Locktypes)
+We also need the user groups endpoints added to woodstock added to steelhead as well
 
 ```c#
 Task<BanUsersOutput> BanUsers(ForzaUserBanParameters[] banParameters, int xuidCount) { }

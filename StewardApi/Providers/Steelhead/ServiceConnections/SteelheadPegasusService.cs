@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
+using SteelheadContent;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
+using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
+using SupportedLocale = Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus.SupportedLocale;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {
@@ -117,5 +123,141 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return results;
         }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<CarClass>> GetCarClassesAsync()
+        {
+            var carClassKey = $"{PegasusBaseCacheKey}CarClasses";
+
+            async Task<IEnumerable<CarClass>> GetCarClasses()
+            {
+                var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadContent.CarClass>>(
+                    CMSFileNames.CarClasses,
+                    this.cmsEnvironment).ConfigureAwait(false);
+                var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
+
+                this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
+
+                return carClasses;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<CarClass>>(carClassKey)
+                   ?? await GetCarClasses().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Live)
+        {
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            }
+
+            var carsKey = $"{PegasusBaseCacheKey}{slotId}_Cars";
+
+            async Task<IEnumerable<DataCar>> GetCars()
+            {
+                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
+
+                return cars;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<DataCar>>(carsKey)
+                   ?? await GetCars().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        //public async Task<IEnumerable<ListCarMake>> GetCarMakesAsync()
+        //{
+        //    var carMakesKey = $"{PegasusBaseCacheKey}CarMakes";
+
+        //    async Task<IEnumerable<ListCarMake>> GetCarMakes()
+        //    {
+        //        var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment).ConfigureAwait(false);
+        //        this.refreshableCacheStore.PutItem(carMakesKey, TimeSpan.FromDays(1), pegasusResults);
+
+        //        return pegasusResults;
+        //    }
+
+        //    return this.refreshableCacheStore.GetItem<IEnumerable<ListCarMake>>(carMakesKey)
+        //           ?? await GetCarMakes().ConfigureAwait(false);
+        //}
+
+        /// <inheritdoc />
+        //public async Task<IEnumerable<CarHorn>> GetCarHornsAsync()
+        //{
+        //    var carHornsKey = $"{PegasusBaseCacheKey}CarHorns";
+
+        //    async Task<IEnumerable<CarHorn>> GetCarHorns()
+        //    {
+        //        var carHorns = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<CarHorn>>(CMSFileNames.CarHorns, this.cmsEnvironment).ConfigureAwait(false);
+
+        //        this.refreshableCacheStore.PutItem(carHornsKey, TimeSpan.FromDays(1), carHorns);
+
+        //        return carHorns;
+        //    }
+
+        //    return this.refreshableCacheStore.GetItem<IEnumerable<CarHorn>>(carHornsKey)
+        //           ?? await GetCarHorns().ConfigureAwait(false);
+        //}
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync()
+        {
+            var vanityItemsKey = $"{PegasusBaseCacheKey}VanityItems";
+
+            async Task<IEnumerable<VanityItem>> GetVanityItems()
+            {
+                var vanityItems = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<VanityItem>>(CMSFileNames.VanityItems, this.cmsEnvironment).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(vanityItemsKey, TimeSpan.FromDays(1), vanityItems);
+
+                return vanityItems;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<VanityItem>>(vanityItemsKey)
+                   ?? await GetVanityItems().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        //public async Task<IEnumerable<EmoteData>> GetEmotesAsync()
+        //{
+        //    var emotesKey = $"{PegasusBaseCacheKey}Emotes";
+
+        //    async Task<IEnumerable<EmoteData>> GetEmotes()
+        //    {
+        //        var emotes = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<EmoteData>>(CMSFileNames.EmoteData, this.cmsEnvironment).ConfigureAwait(false);
+
+        //        this.refreshableCacheStore.PutItem(emotesKey, TimeSpan.FromDays(1), emotes);
+
+        //        return emotes;
+        //    }
+
+        //    return this.refreshableCacheStore.GetItem<IEnumerable<EmoteData>>(emotesKey)
+        //           ?? await GetEmotes().ConfigureAwait(false);
+        //}
+
+        /// <inheritdoc />
+        //public async Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync()
+        //{
+        //    var quickChatLinesKey = $"{PegasusBaseCacheKey}QuickChatLines";
+
+        //    async Task<IEnumerable<QuickChat>> GetQuickChatLines()
+        //    {
+        //        var quickChatLines = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<QuickChat>>(CMSFileNames.QuickChatData, this.cmsEnvironment).ConfigureAwait(false);
+
+        //        this.refreshableCacheStore.PutItem(quickChatLinesKey, TimeSpan.FromDays(1), quickChatLines);
+
+        //        return quickChatLines;
+        //    }
+
+        //    return this.refreshableCacheStore.GetItem<IEnumerable<QuickChat>>(quickChatLinesKey)
+        //           ?? await GetQuickChatLines().ConfigureAwait(false);
+        //}
     }
 }
