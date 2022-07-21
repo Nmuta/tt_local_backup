@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: [NavbarTool.RacersCup] },
+      uuid: '0d060b5d-bb53-4aa8-aae5-316371ab022b',
+      shortText: 'Fix bug in Racers Cup slot selection',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '8c41df65-98ee-4420-9f0a-dd2cd96c9d8d',
       shortText: 'Fix IIS to support 32k URLs',

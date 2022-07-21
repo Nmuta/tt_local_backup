@@ -367,11 +367,11 @@ export class SteelheadService {
     }
 
     if (info?.slot) {
-      httpParams = httpParams.append('pegasusSlot', info.slot);
+      httpParams = httpParams.append('pegasusSlotId', info.slot);
     }
 
     if (info?.snapshot) {
-      httpParams = httpParams.append('pegasusSnapshot', info.snapshot);
+      httpParams = httpParams.append('pegasusSnapshotId', info.snapshot);
     }
 
     if (startTime) {
