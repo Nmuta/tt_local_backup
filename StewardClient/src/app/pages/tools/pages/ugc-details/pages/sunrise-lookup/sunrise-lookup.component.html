@@ -28,11 +28,9 @@
           color="primary"
           (click)="featureUgcItem()"
         >
-          <span
-            matTooltip="Cannot feature private UGC content"
-            [matTooltipDisabled]="canFeatureUgc"
-            >{{ ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}</span
-          >
+          <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+            ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
+          }}</span>
         </button>
       </mat-card-actions>
     </mat-card>

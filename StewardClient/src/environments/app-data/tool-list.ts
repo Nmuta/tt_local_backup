@@ -74,6 +74,8 @@ export const CommonAccessLevels = {
     UserRole.SupportAgentNew,
     UserRole.CommunityManager,
     UserRole.MediaTeam,
+    UserRole.HorizonDesigner,
+    UserRole.MotorsportDesigner,
   ],
   Leaderboards: [
     UserRole.LiveOpsAdmin,
@@ -309,7 +311,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.UgcDetails,
-    accessList: CommonAccessLevels.OldCommunityAppOnly,
+    accessList: CommonAccessLevels.PlayerDetails,
     title: 'UGC Details',
     subtitle: 'User Generated Content',
     imageUrl: undefined,

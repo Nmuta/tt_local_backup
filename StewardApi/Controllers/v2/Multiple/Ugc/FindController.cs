@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,6 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
     /// </summary>
     [Route("api/v{version:apiVersion}/title/multi/ugc/find")]
     [LogTagTitle(TitleLogTags.Woodstock | TitleLogTags.Sunrise)]
+    [Authorize]
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Multiple", "Woodstock", "Sunrise")]

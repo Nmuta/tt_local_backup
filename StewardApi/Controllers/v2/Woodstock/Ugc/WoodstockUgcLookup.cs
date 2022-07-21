@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
@@ -18,6 +19,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/ugc/lookup")]
     [LogTagTitle(TitleLogTags.Woodstock)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.HorizonDesigner,
+        UserRole.MotorsportDesigner,
+        UserRole.MediaTeam)]
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Woodstock")]

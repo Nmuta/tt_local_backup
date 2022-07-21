@@ -33,6 +33,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
+  public featureMatToolip: string = null;
+  private readonly privateUgcTooltip = 'Cannot feature private UGC content';
+  private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -81,6 +84,12 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .subscribe(([shareCodeItems, idItem]) => {
         this.ugcItem = idItem ?? first(shareCodeItems);
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
+
+        if (!this.userHasWritePerms) {
+          this.featureMatToolip = this.incorrectPermsTooltip;
+        } else if (!this.ugcItem?.isPublic) {
+          this.featureMatToolip = this.privateUgcTooltip;
+        }
       });
   }
 
