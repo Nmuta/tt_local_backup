@@ -55,6 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
         System = 1,
         Player = 2,
         Group = 4,
+        Console = 8,
     }
 
     [Flags]

@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
         /// <inheritdoc />
         public void ValidateIds(SteelheadUserFlagsInput model, ModelStateDictionary modelState)
         {
-            throw new NotImplementedException("ID validation not supported for SunriseUserFlags");
+            throw new NotImplementedException("ID validation not supported for SteelheadUserFlags");
         }
     }
 }

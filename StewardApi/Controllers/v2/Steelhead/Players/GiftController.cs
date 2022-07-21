@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
             var jobId = await this.AddJobIdToHeaderAsync(
                 groupGift.ToJson(),
                 requesterObjectId,
-                $"Steeling Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+                $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {

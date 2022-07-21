@@ -6,19 +6,25 @@
 
 ### LiveOpsService
 
+Tested by v-jyates on Steelhead ForzaClient nuget: 2.5.1-prerelease
+
 ```c#
+// Works as expected
 Task<GetLiveOpsUserDataByXuidOutput> GetLiveOpsUserDataByXuid(ulong xuid) { }
 
+// Works as expected
 Task<GetLiveOpsUserDataByGamerTagOutput> GetLiveOpsUserDataByGamerTag(string gamertag)  { }
 
+// Works as expected
 Task<GetCMSRacersCupScheduleOutput> GetCMSRacersCupSchedule(string environment, string slotId, string snapshotId, DateTime startDate, int daysForwardToProject, ForzaEventSessionType[] gameOptionsFilter)  { }
 
+// Works as expected
 Task<GetCMSRacersCupScheduleForUserOutput> GetCMSRacersCupScheduleForUser(ulong xuid, DateTime startDate, int daysForwardToProject, ForzaEventSessionType[] gameOptionsFilter)  { }
 
-// Don't think we need this. Message sending will be through NotificationManagementService
+// Unused in Woodstock, and I believe unused in Steelhead. We have a better API for sending Notifications in the Notifications Service. Not needed or tested.
 Task<SendMessageOutput> SendMessage(ulong[] recipients, Guid messageId, DateTime expirationTime, ForzaNotificationType notificationType)  { }
 
-// Don't think we need this. It goes unused in Woodstock and I don't see a scenario for it yet in Steelhead.
+// Unused in Woodstock, and I believe unused in Steelhead. Not needed or tested.
 Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, ForzaCarUserInventoryItem[] clientCars)  { }
 ```
 
@@ -121,18 +127,26 @@ No service for leaderboards in FM8 yet.
 
 ### StorefrontManagementService
 
+Tested by v-jyates on Steelhead ForzaClient nuget: 2.5.1-prerelease
+Found issues tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1222065
+
 ```c#
+/// Not working, returning 500 for all requests I've tried. Mostly I was looking for any Livery/Photo/Tune so I could test below APIs
 Task<SearchUGCOutput> SearchUGC(ForzaUGCSearchRequest searchRequest, ForzaUGCContentType contentType, bool includeThumbnails, int maxResults) { }
 
+/// UGC ID: ca6c0853-ef54-4b66-9af8-29b0cd441d77 Throws: System.ComponentModel.DataAnnotations.ValidationException: 'Length of field LiveryData exceeded the max of 5242880. Length: 942887663'
 Task<GetUGCLiveryOutput> GetUGCLivery(Guid id) { }
 
+/// UGC ID: 60754c0e-a3dd-4fab-abf3-e6f464796e73 Works as expected
 Task<GetUGCPhotoOutput> GetUGCPhoto(Guid id) { }
 
+/// UGC ID: e000adb1-7233-4918-ad60-341b1aaec5d6 Works as expected
 Task<GetUGCTuneOutput> GetUGCTune(Guid id) { }
 
+/// Need valid UGC ID to test.
 Task SetFeatured(Guid id, bool featured, DateTime featureEndDate, DateTime forceFeatureEndDate) { }
 
-// This is unused in Woodstock. I don't think we will need this in Steelhead either.
+// Unused and untested.
 Task<GetUGCObjectOutput> GetUGCObject(Guid id) { }
 ```
 
@@ -152,51 +166,74 @@ Task RemoveCarFromUserInventoryWithVin(Guid vin, int profileId) {}
 
 ### UserManagementService
 
+Tested by v-jyates on Steelhead ForzaClient nuget: 2.5.1-prerelease
 V2 report weight endpoints in Woodstock need to be ported to Steelhead as well (Report Weight Locktypes)
 We also need the user groups endpoints added to woodstock added to steelhead as well
+Found issues tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1222002
 
 ```c#
+// Works as expected
 Task<BanUsersOutput> BanUsers(ForzaUserBanParameters[] banParameters, int xuidCount) { }
 
+// Works as expected
 Task<GetUserBanHistoryOutput> GetUserBanHistory(ulong xuid, int startIndex, int maxResults) { }
 
+// Works as expected
 Task<GetUserBanSummariesOutput> GetUserBanSummaries(ulong[] xuids, int xuidCount) { }
 
+// Works as expected
 Task<ExpireBanEntriesOutput> ExpireBanEntries(ForzaUserExpireBanParameters[] parameters, int entryCount) { }
 
+// Works as expected
 Task<DeleteBanEntriesOutput> DeleteBanEntries(int[] banEntryIds) { }
 
+// Works as expected
 Task<GetUserGroupsOutput> GetUserGroups(int startIndex, int maxResults) { }
 
+// Works as expected
 Task<GetUserGroupMembershipsOutput> GetUserGroupMemberships(ulong xuid, int[] groupIdFilter, int maxResults) { }
 
+// Works as expected
 Task AddToUserGroups(ulong xuid, int[] groupIds) { }
 
+// Works as expected
 Task RemoveFromUserGroups(ulong xuid, int[] groupIds) { }
 
+// Works as expected
 Task<GetIsUnderReviewOutput> GetIsUnderReview(ulong xuid) { }
 
+// Works as expected
 Task SetIsUnderReview(ulong xuid, bool isUnderReview) { }
 
+// Works as expected
 Task<GetConsolesOutput> GetConsoles(ulong xuid, int maxResults) { }
 
+// Works as expected
 Task SetConsoleBanStatus(ulong consoleId, bool isBanned) { }
 
+// Works as expected
 Task<GetSharedConsoleUsersOutput> GetSharedConsoleUsers(ulong xuid, int startAt, int maxResults) { }
 
+// Works as expected
 Task<GetAdminCommentsOutput> GetAdminComments(ulong xuid, int maxResults) { }
 
 Task AddAdminComment(ulong xuid, string text, string author) { }
 
+// Works as expected
 Task<GetUserIdsOutput> GetUserIds(int paramCount, ForzaPlayerLookupParameters[] playerLookupParameters) { }
 
+// Blocked, need new report weight logic ala woodstock
 Task<GetUserReportWeightOutput> GetUserReportWeight(ulong xuid) { }
 
+// Blocked, need new report weight logic ala woodstock
 Task SetUserReportWeight(ulong xuid, int reportWeight) { }
 
+// API is not working
 Task<GetHasPlayedRecordOutput> GetHasPlayedRecord(ulong xuid, Guid externalProfileId) { }
 
+// This is unused per Supports request. They don't want to be in the business of changing these values.
 Task SetHasPlayedRecord(ulong xuid, int title, bool hasPlayed) { }
 
+// Cannot verify results without GetHasPlayedRecord
 Task ResendProfileHasPlayedNotification(ulong xuid, Guid externalProfileId, int[] titles) { }
 ```

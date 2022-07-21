@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
         }
 
         /// <summary>Gets (lazily) the Steelhead Endpoint passed to this call.</summary>
-        private Lazy<string> SteelheadEndpoint { get; }
+        protected Lazy<string> SteelheadEndpoint { get; }
 
         /// <summary>Gets (lazily) the Steelhead services.</summary>
         private Lazy<SteelheadProxyBundle> SteelheadServices { get; }

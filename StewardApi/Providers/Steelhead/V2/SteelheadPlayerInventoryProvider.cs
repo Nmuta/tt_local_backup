@@ -26,6 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
 
+        private readonly ISteelheadService steelheadService;
         private readonly IMapper mapper;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
         private readonly ISteelheadNotificationHistoryProvider notificationHistoryProvider;
@@ -34,14 +35,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         ///     Initializes a new instance of the <see cref="SteelheadPlayerInventoryProvider"/> class.
         /// </summary>
         public SteelheadPlayerInventoryProvider(
+            ISteelheadService steelheadService,
             IMapper mapper,
             ISteelheadGiftHistoryProvider giftHistoryProvider,
             ISteelheadNotificationHistoryProvider notificationHistoryProvider)
         {
+            steelheadService.ShouldNotBeNull(nameof(steelheadService));
             mapper.ShouldNotBeNull(nameof(mapper));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
 
+            this.steelheadService = steelheadService;
             this.mapper = mapper;
             this.giftHistoryProvider = giftHistoryProvider;
             this.notificationHistoryProvider = notificationHistoryProvider;

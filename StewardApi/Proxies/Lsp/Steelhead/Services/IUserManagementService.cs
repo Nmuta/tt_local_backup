@@ -154,14 +154,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             Guid externalProfileId);
 
         /// <summary>
-        ///     Sets has played record of a player.
-        /// </summary>
-        Task SetHasPlayedRecord(
-            ulong xuid,
-            int title,
-            bool hasPlayed);
-
-        /// <summary>
         ///     Resends has played rewards to a player.
         /// </summary>
         Task ResendProfileHasPlayedNotification(
