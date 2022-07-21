@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
@@ -114,7 +115,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
-                this.storefrontProvider.SearchUgcContentAsync(Arg.Any<UgcType>(), Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UgcItem>>());
+                this.storefrontProvider.SearchUgcContentAsync(Arg.Any<UgcType>(), Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockUgcItem>>());
                 this.ItemsProvider.GetCarsAsync().Returns(Fixture.Create<IEnumerable<DetailedCar>>());
             }
             public IWoodstockStorefrontProvider storefrontProvider { get; set; } = Substitute.For<IWoodstockStorefrontProvider>();
@@ -127,7 +128,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 mc.AllowNullCollections = true;
             }));
 
-            public WoodstockUgcSearch Build() => new WoodstockUgcSearch(
+            public WoodstockUgcSearchController Build() => new WoodstockUgcSearchController(
                 this.storefrontProvider,
                 this.ItemsProvider,
                 mapper)

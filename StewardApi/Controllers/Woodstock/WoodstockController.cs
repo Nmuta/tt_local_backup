@@ -686,7 +686,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets player UGC items.
         /// </summary>
         [HttpGet("storefront/xuid({xuid})")]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcItems(ulong xuid, [FromQuery] string ugcType = "Unknown")

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
@@ -16,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Get a player's public and private UGC items.
         /// </summary>
-        Task<IList<UgcItem>> GetPlayerUgcContentAsync(
+        Task<IList<WoodstockUgcItem>> GetPlayerUgcContentAsync(
             ulong xuid,
             UgcType ugcType,
             string endpoint,
@@ -25,27 +26,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Search UGC items by UGC share-code.
         /// </summary>
-        Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, ServicesLiveOps.ForzaUGCSearchRequest filters, string endpoint, bool includeThumbnails = false);
+        Task<IList<WoodstockUgcItem>> SearchUgcContentAsync(UgcType ugcType, ServicesLiveOps.ForzaUGCSearchRequest filters, string endpoint, bool includeThumbnails = false);
 
         /// <summary>
         ///    Get player livery.
         /// </summary>
-        Task<UgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint);
+        Task<WoodstockUgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint);
 
         /// <summary>
         ///    Get player photo.
         /// </summary>
-        Task<UgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint);
+        Task<WoodstockUgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint);
 
         /// <summary>
         ///    Get player tune.
         /// </summary>
-        Task<UgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint);
+        Task<WoodstockUgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint);
 
         /// <summary>
         ///    Get player event blueprint.
         /// </summary>
-        Task<UgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint);
+        Task<WoodstockUgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint);
 
         /// <summary>
         ///     Sets featured state of a UGC content item.
