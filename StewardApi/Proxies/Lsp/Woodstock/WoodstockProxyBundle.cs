@@ -43,6 +43,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         public IUserInventoryManagementService UserInventory => this.WoodstockFactory.PrepareUserInventoryManagementService(this.Endpoint);
 
         /// <summary>
+        ///     Gets storefront service.
+        /// </summary>
+        public IStorefrontManagementService Storefront => this.WoodstockFactory.PrepareStorefrontManagementService(this.Endpoint);
+
+        /// <summary>
         ///     Gets live ops service.
         /// </summary>
         public ILiveOpsService LiveOps => this.WoodstockFactory.PrepareLiveOpsService(this.Endpoint);

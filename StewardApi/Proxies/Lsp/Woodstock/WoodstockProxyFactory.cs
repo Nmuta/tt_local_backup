@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.Services.ForzaClient;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using Turn10.Services.MessageEncryption;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using UserInventoryManagementService = Turn10.Services.LiveOps.FH5_main.Generated.UserInventoryManagementService;
@@ -62,6 +63,14 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         {
             var service = new UserInventoryManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
             var serviceProxy = service.ProxyInterface<UserInventoryManagementService, IUserInventoryManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IStorefrontManagementService PrepareStorefrontManagementService(string endpoint)
+        {
+            var service = new StorefrontManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
+            var serviceProxy = service.ProxyInterface<StorefrontManagementService, IStorefrontManagementService>();
             return serviceProxy;
         }
     }

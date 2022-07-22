@@ -15,6 +15,7 @@
     "check:ado:changelog-is-modified": "bash ./scripts/changelog-is-modified-or-fail.sh",
     "zat": "C:\\Windows\\system32\\bash.exe -c \"cd app-local && zat serve\"",
     "debug-open:ff": "\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" -start-debugger-server",
+    "start:local": "yarn start:local-api",
     "start:local-api": "ng serve",
     "start": "ng serve --configuration=dev-api",
     "start:prod-api": "ng serve --configuration=prod-api",

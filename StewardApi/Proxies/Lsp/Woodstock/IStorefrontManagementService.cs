@@ -9,8 +9,8 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.UserInventoryManagementS
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {
-    public interface IUserInventoryManagementService
+    public interface IStorefrontManagementService
     {
-        Task<GetAdminUserProfilesOutput> GetAdminUserProfiles(ulong xuid, uint maxProfiles);
+        Task SetUGCGeoFlag(Guid id, int[] geoFlags);
     }
 }

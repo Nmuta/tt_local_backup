@@ -34,16 +34,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Woodstock")]
-    public class WoodstockUgcSearchController : V2ControllerBase
+    public class SearchController : V2ControllerBase
     {
         private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IMapper mapper;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WoodstockUgcSearchController"/> class.
+        ///     Initializes a new instance of the <see cref="SearchController"/> class.
         /// </summary>
-        public WoodstockUgcSearchController(IWoodstockStorefrontProvider storefrontProvider, IWoodstockItemsProvider itemsProvider, IMapper mapper)
+        public SearchController(IWoodstockStorefrontProvider storefrontProvider, IWoodstockItemsProvider itemsProvider, IMapper mapper)
         {
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));

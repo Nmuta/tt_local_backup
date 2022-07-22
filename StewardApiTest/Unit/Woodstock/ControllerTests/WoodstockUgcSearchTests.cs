@@ -128,7 +128,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 mc.AllowNullCollections = true;
             }));
 
-            public WoodstockUgcSearchController Build() => new WoodstockUgcSearchController(
+            public SearchController Build() => new SearchController(
                 this.storefrontProvider,
                 this.ItemsProvider,
                 mapper)
