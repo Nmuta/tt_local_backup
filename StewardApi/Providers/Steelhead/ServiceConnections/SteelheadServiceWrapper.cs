@@ -261,7 +261,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareNotificationManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.SendMessageNotificationToMultipleUsers(recipients.ToArray(), recipients.Count, message, expirationTime, null).ConfigureAwait(false);
+            return await service.SendMessageNotificationToMultipleUsers(recipients.ToArray(), recipients.Count, message, expirationTime, null, DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -275,7 +275,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareNotificationManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.SendGroupMessageNotification(groupId, message, expirationTime, hasDeviceType, deviceType).ConfigureAwait(false);
+            return await service.SendGroupMessageNotification(groupId, message, expirationTime, hasDeviceType, deviceType, DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -287,7 +287,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareNotificationManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.SendNotificationByDeviceType(deviceType, message, expirationTime).ConfigureAwait(false);
+            return await service.SendNotificationByDeviceType(deviceType, message, expirationTime, DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

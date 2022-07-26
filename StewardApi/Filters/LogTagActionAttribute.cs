@@ -74,5 +74,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Meta = 4096,
         Notification = 8192,
         Leaderboards = 16384,
+        Profile = 32768,
     }
 }
