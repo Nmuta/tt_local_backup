@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
@@ -84,11 +84,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
         public async Task<IActionResult> SetReportWeight(
             ulong xuid,
-            [FromBody] int reportWeight)
+            [FromBody] string reportWeightType)
         {
+            if(!Enum.TryParse(reportWeightType, out ForzaUserReportWeightType reportWeightEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaUserReportWeightType)} provided: {reportWeightType}");
+            }
+
             try
             {
-                await this.Services.UserManagementService.SetUserReportWeight(xuid, reportWeight).ConfigureAwait(true);
+                await this.Services.UserManagementService.SetUserReportWeight(xuid, reportWeightEnum).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

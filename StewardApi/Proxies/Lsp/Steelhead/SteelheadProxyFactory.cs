@@ -16,7 +16,6 @@ using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingMa
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 using LocalizationManagementService = Turn10.Services.LiveOps.FM8.Generated.LocalizationManagementService;
 using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
-using OldUserInventoryManagementService = Forza.LiveOps.FM8.Generated.UserInventoryService;
 using StorefrontManagementService = Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
 using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
@@ -100,14 +99,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         {
             var service = new UserInventoryManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
             var serviceProxy = service.ProxyInterface<UserInventoryManagementService, IUserInventoryManagementService>();
-            return serviceProxy;
-        }
-
-        /// <inheritdoc/>
-        public IOldUserInventoryManagementService PrepareOldUserInventoryManagementService(string endpoint)
-        {
-            var service = new OldUserInventoryManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
-            var serviceProxy = service.ProxyInterface<OldUserInventoryManagementService, IOldUserInventoryManagementService>();
             return serviceProxy;
         }
 

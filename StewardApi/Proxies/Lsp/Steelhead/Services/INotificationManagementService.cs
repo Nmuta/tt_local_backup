@@ -28,7 +28,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             int xuidCount,
             string message,
             DateTime expirationTime,
-            string imageUrl = null);
+            string imageUrl,
+            DateTime sentTime);
 
         /// <summary>
         ///     Sends message to a LSP user group.
@@ -38,7 +39,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             string message,
             DateTime expirationTime,
             bool hasDeviceType,
-            ForzaLiveDeviceType deviceType);
+            ForzaLiveDeviceType deviceType,
+            DateTime sentTime);
 
         /// <summary>
         ///     Sends message to a specific device type.
@@ -46,7 +48,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task<NotificationManagementService.SendNotificationByDeviceTypeOutput> SendNotificationByDeviceType(
             ForzaLiveDeviceType deviceType,
             string message,
-            DateTime expirationTime);
+            DateTime expirationTime,
+            DateTime sentTime);
 
         /// <summary>
         ///     Edits a player message.

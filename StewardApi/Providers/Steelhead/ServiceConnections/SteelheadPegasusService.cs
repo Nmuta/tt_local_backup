@@ -148,27 +148,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Live)
         {
-            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+            // Temporary return value until Pegasus contains actual data.
+            return Enumerable.Empty<DataCar>();
 
-            if (slotStatus == null)
-            {
-                throw new PegasusStewardException(
-                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
-            }
+            //var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
 
-            var carsKey = $"{PegasusBaseCacheKey}{slotId}_Cars";
+            //if (slotStatus == null)
+            //{
+            //    throw new PegasusStewardException(
+            //        $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            //}
 
-            async Task<IEnumerable<DataCar>> GetCars()
-            {
-                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+            //var carsKey = $"{PegasusBaseCacheKey}{slotId}_Cars";
 
-                this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
+            //async Task<IEnumerable<DataCar>> GetCars()
+            //{
+            //    var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
 
-                return cars;
-            }
+            //    this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
 
-            return this.refreshableCacheStore.GetItem<IEnumerable<DataCar>>(carsKey)
-                   ?? await GetCars().ConfigureAwait(false);
+            //    return cars;
+            //}
+
+            //return this.refreshableCacheStore.GetItem<IEnumerable<DataCar>>(carsKey)
+            //       ?? await GetCars().ConfigureAwait(false);
         }
 
         /// <inheritdoc />

@@ -53,46 +53,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
         /// <inheritdoc />
         [Obsolete("Method deprecated, please use SteelheadProxyBundle directly instead.")]
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(SteelheadProxyBundle service, ulong xuid)
-        {
-            service.ShouldNotBeNull(nameof(service));
-
-            try
-            {
-                var response = await service.OldUserInventoryManagementService.GetAdminUserInventory(xuid)
-                    .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                return playerInventoryDetails;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        [Obsolete("Method deprecated, please use SteelheadProxyBundle directly instead.")]
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(SteelheadProxyBundle service, int profileId)
-        {
-            service.ShouldNotBeNull(nameof(service));
-
-            try
-            {
-                var response = await service.OldUserInventoryManagementService.GetAdminUserInventoryByProfileId(profileId)
-                    .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                return inventoryProfile;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        [Obsolete("Method deprecated, please use SteelheadProxyBundle directly instead.")]
         public async Task<IList<SteelheadInventoryProfile>> GetInventoryProfilesAsync(
             SteelheadProxyBundle service,
             ulong xuid)

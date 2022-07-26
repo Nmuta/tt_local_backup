@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
@@ -51,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
         ///     Gets user groups for Steelhead.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(AdminForzaUserInventorySummary))]
+        [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetUserGroups()

@@ -12,20 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
     public interface ISteelheadPlayerInventoryProvider
     {
         /// <summary>
-        ///     Gets player inventory.
-        /// </summary>
-        Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(
-            SteelheadProxyBundle service,
-            ulong xuid);
-
-        /// <summary>
-        ///     Gets player inventory.
-        /// </summary>
-        Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(
-            SteelheadProxyBundle service,
-            int profileId);
-
-        /// <summary>
         ///     Gets inventory profiles.
         /// </summary>
         Task<IList<SteelheadInventoryProfile>> GetInventoryProfilesAsync(

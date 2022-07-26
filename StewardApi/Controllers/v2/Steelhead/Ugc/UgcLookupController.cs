@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
@@ -134,15 +133,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
 
             var getLivery = GetLiveryAsync();
-            //var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getLivery/*, getCars*/).ConfigureAwait(true);
+            await Task.WhenAll(getLivery, getCars).ConfigureAwait(true);
 
             var livery = getLivery.GetAwaiter().GetResult();
-            //var cars = getCars.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
 
-            //var carData = cars.FirstOrDefault(car => car.Id == livery.CarId);
-            //livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
+            var carData = cars.FirstOrDefault(car => car.Id == livery.CarId);
+            livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(livery);
         }
@@ -182,15 +181,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
 
             var getPhoto = GetPhotoAsync();
-            //var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getPhoto/*, getCars*/).ConfigureAwait(true);
+            await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
 
             var photo = getPhoto.GetAwaiter().GetResult();
-            //var cars = getCars.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
 
-            //var carData = cars.FirstOrDefault(car => car.Id == photo.CarId);
-            //photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
+            var carData = cars.FirstOrDefault(car => car.Id == photo.CarId);
+            photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(photo);
         }
@@ -230,15 +229,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
 
             var getTune = GetTuneAsync();
-            //var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync();
 
-            await Task.WhenAll(getTune/*, getCars*/).ConfigureAwait(true);
+            await Task.WhenAll(getTune, getCars).ConfigureAwait(true);
 
             var tune = getTune.GetAwaiter().GetResult();
-            //var cars = getCars.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
 
-            //var carData = cars.FirstOrDefault(car => car.Id == tune.CarId);
-            //tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
+            var carData = cars.FirstOrDefault(car => car.Id == tune.CarId);
+            tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(tune);
         }

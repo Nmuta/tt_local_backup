@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bond;
-using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
@@ -66,11 +65,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
 
             if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out exception))
-            {
-                failedServiceProcies.Append($"{exception.Message}, ");
-            }
-
-            if (!this.VerifyServiceProxy(() => services.OldUserInventoryManagementService, "OldUserInventoryManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
@@ -188,23 +182,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             var services = this.SteelheadServices.Value;
 
             if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out var exception))
-            {
-                throw exception;
-            }
-
-            return this.Ok();
-        }
-
-        /// <summary>
-        ///     Verifies old user inventory management service proxy.
-        /// </summary>
-        [HttpGet("OldUserInventoryManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
-        public IActionResult TestOldUserInventoryManagementServiceProxy()
-        {
-            var services = this.SteelheadServices.Value;
-
-            if (!this.VerifyServiceProxy(() => services.OldUserInventoryManagementService, "OldUserInventoryManagementService", out var exception))
             {
                 throw exception;
             }

@@ -1,4 +1,6 @@
 # Steelhead APIs
+## Issues with nuget 2.5.5
+Missing Inventory retrieval APIs on LiveOpsService
 
 ## Forza.WebServices.FM8.Generated
 
