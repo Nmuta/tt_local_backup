@@ -169,8 +169,8 @@ Task RemoveCarFromUserInventoryWithVin(Guid vin, int profileId) {}
 ### UserManagementService
 
 Tested by v-jyates on Steelhead ForzaClient nuget: 2.5.1-prerelease
-V2 report weight endpoints in Woodstock need to be ported to Steelhead as well (Report Weight Locktypes)
 We also need the user groups endpoints added to woodstock added to steelhead as well
+V2 report weight endpoints have been ported to Steelhead, but setting ReportWeightType appears to be bugged. Seems to be reading ReportWeightType enum as an integer and applying it to the weight. Feels like we need 'SetUserReportWeightType' and not 'SetUserReportWeight(type)'
 Found issues tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1222002
 
 ```c#

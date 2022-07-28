@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
+using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
@@ -308,6 +309,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
                 .ForMember(dest => dest.Make, opt => opt.MapFrom(src => "Update Projection to include MakeDisplayName"));
+            this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
+            this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
+                .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.reportWeightType));
         }
     }
 }

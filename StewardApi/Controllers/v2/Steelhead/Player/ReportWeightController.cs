@@ -36,6 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Tags("ProfileNotes", "Steelhead", "InDev")]
     public class ReportWeightController : V2SteelheadControllerBase
     {
+        private const int DefaultReportWeight = 10; // Value players are initialized with.
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
@@ -50,20 +51,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Gets the user's profile notes.
+        ///     Gets a player's report weight.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(int))]
+        [SwaggerResponse(200, type: typeof(UserReportWeight))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetReportWeightAsync(
-            ulong xuid)
+        public async Task<IActionResult> GetReportWeightAsync(ulong xuid)
         {
+            //xuid.IsValidXuid();
+
             try
             {
                 var response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
+                var mappedResponse = this.mapper.Map<UserReportWeight>(response);
 
-                return this.Ok(response.reportWeight);
+                return this.Ok(mappedResponse);
             }
             catch (Exception ex)
             {
@@ -72,35 +75,36 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Adds a profile note to a user's profile.
+        ///    Sets a player's report weight.
         /// </summary>
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
-        [HttpPut]
-        [SwaggerResponse(200)]
+        [HttpPost]
+        [SwaggerResponse(200, type: typeof(UserReportWeight))]
         [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
-        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
-        public async Task<IActionResult> SetReportWeight(
-            ulong xuid,
-            [FromBody] string reportWeightType)
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
+        [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
+        public async Task<IActionResult> SetUserReportWeight(ulong xuid, [FromBody] UserReportWeightType reportWeightType)
         {
-            if(!Enum.TryParse(reportWeightType, out ForzaUserReportWeightType reportWeightEnum))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaUserReportWeightType)} provided: {reportWeightType}");
-            }
+            //xuid.IsValidXuid();
 
             try
             {
-                await this.Services.UserManagementService.SetUserReportWeight(xuid, reportWeightEnum).ConfigureAwait(true);
+                var mappedReportWeightType = this.mapper.Map<ForzaUserReportWeightType>(reportWeightType);
+                await this.Services.UserManagementService.SetUserReportWeight(xuid, mappedReportWeightType).ConfigureAwait(false);
+
+                if (reportWeightType == UserReportWeightType.Default)
+                {
+                    await this.Services.UserManagementService.SetUserReportWeight(xuid, DefaultReportWeight).ConfigureAwait(false);
+                }
+
+                var response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
+                var mappedRepsonse = this.mapper.Map<UserReportWeight>(response);
+
+                return this.Ok(mappedRepsonse);
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException($"Could not set report weight for XUID: {xuid}.", ex);
+                throw new UnknownFailureStewardException("Failed to set report weight.", ex);
             }
-
-            return this.Ok();
         }
     }
 }
