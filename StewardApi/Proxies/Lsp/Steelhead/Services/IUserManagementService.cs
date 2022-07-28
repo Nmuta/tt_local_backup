@@ -149,7 +149,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Sets report weight type of a player.
         /// </summary>
-        Task SetUserReportWeight(
+        Task SetUserReportWeightType(
             ulong xuid,
             ForzaUserReportWeightType reportWeightType);
 

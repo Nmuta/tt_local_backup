@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             try
             {
                 var mappedReportWeightType = this.mapper.Map<ForzaUserReportWeightType>(reportWeightType);
-                await this.Services.UserManagementService.SetUserReportWeight(xuid, mappedReportWeightType).ConfigureAwait(false);
+                await this.Services.UserManagementService.SetUserReportWeightType(xuid, mappedReportWeightType).ConfigureAwait(false);
 
                 if (reportWeightType == UserReportWeightType.Default)
                 {
