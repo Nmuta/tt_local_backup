@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 
@@ -29,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         private readonly ISteelheadService steelheadService;
         private readonly IMapper mapper;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
-        private readonly ISteelheadNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SteelheadPlayerInventoryProvider"/> class.
@@ -38,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             ISteelheadService steelheadService,
             IMapper mapper,
             ISteelheadGiftHistoryProvider giftHistoryProvider,
-            ISteelheadNotificationHistoryProvider notificationHistoryProvider)
+            INotificationHistoryProvider notificationHistoryProvider)
         {
             steelheadService.ShouldNotBeNull(nameof(steelheadService));
             mapper.ShouldNotBeNull(nameof(mapper));

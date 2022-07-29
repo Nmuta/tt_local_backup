@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
@@ -339,7 +340,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public ISteelheadService SteelheadService { get; set; } = Substitute.For<ISteelheadService>();
 
-            public ISteelheadNotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<ISteelheadNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 

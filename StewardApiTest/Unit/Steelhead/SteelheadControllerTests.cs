@@ -1511,8 +1511,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public ISteelheadBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<ISteelheadBanHistoryProvider>();
 
-            public ISteelheadNotificationHistoryProvider NotificationHistoryProvider { get; set; } =
-                Substitute.For<ISteelheadNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } =
+                Substitute.For<INotificationHistoryProvider>();
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 

@@ -9,6 +9,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
 
@@ -18,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
     public sealed class SteelheadNotificationProvider : ISteelheadNotificationProvider
     {
         private readonly ISteelheadService steelheadService;
-        private readonly ISteelheadNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// </summary>
         public SteelheadNotificationProvider(
             ISteelheadService steelheadService,
-            ISteelheadNotificationHistoryProvider notificationHistoryProvider,
+            INotificationHistoryProvider notificationHistoryProvider,
             IMapper mapper)
         {
             steelheadService.ShouldNotBeNull(nameof(steelheadService));

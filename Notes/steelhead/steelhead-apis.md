@@ -90,21 +90,28 @@ Task<AdminGetSupportedGiftTypesV2Output> AdminGetSupportedGiftTypesV2(int maxRes
 
 ### LocalizationManagementService
 
+
 ```c#
 Task<AddStringToLocalizeOutput> AddStringToLocalize(ForzaLocalizedStringData localizedStringData) {}
 ```
 
 ### NotificationManagementService
 
+Tested by lugeiken; FM8 nuget version 2.5.1-prerelease
+
 ```c#
+
+// Tested w/ XUID 1234
 Task<LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUser(ulong xuid, int maxResults) { }
 
+// Failed w/ error {"Object reference not set to an instance of an object."}. XUIDS: [ 1234 ]. Expiration 1 day.
 Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsers(ulong[] recipients, int xuidCount, string message, DateTime expirationTime, string imageUrl) { }
 
 Task<SendGroupMessageNotificationOutput> SendGroupMessageNotification(int groupId, string message, DateTime expirationTime, bool hasDeviceType, ForzaLiveDeviceType deviceType) { }
 
 Task<SendNotificationByDeviceTypeOutput> SendNotificationByDeviceType(ForzaLiveDeviceType deviceType, string message, DateTime expirationTime) { }
 
+// Failed w/ error {"Response status code does not indicate success: 500 (Internal Server Error)."}. XUID: 1234; Notification ID: 999c6f35-f031-4155-9673-6e9216ba09d6
 Task EditNotification(Guid notificationId, ulong xuid, ForzaCommunityMessageNotificationEditParameters editParameters) { }
 
 Task EditGroupNotification(Guid notificationId, ForzaCommunityMessageNotificationEditParameters editParameters) { }
