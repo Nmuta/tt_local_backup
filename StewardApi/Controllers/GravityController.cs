@@ -319,9 +319,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Created(
-                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
-                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
         }
 
         /// <summary>

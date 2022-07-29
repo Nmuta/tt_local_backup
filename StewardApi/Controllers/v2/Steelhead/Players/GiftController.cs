@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
                         requesterObjectId,
                         allowedToExceedCreditLimit).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 
@@ -211,7 +211,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
                 {
                     var response = await this.playerInventoryProvider.SendCarLiveryAsync(this.Services, groupGift, mappedLivery, requesterObjectId).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
 
                     var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)

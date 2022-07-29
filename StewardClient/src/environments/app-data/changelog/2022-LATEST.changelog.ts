@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserGroupManagement] },
+      uuid: '2cea2732-f195-49bc-b0df-35e2beb95167',
+      shortText: 'Integrate User Group management for FH5',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails] },
       uuid: 'afa9f358-4401-45e3-a435-b934732be6aa',
       shortText: 'Allow Horizon and Motorsport desginers to access Player Details',

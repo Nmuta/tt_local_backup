@@ -103,9 +103,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 {
                     await this.woodstockService.AddToUserGroupsAsync(xuid, groups, endpoint).ConfigureAwait(false);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    var error = new StewardError($"Failed to add user {xuid} to group {groupId}");
+                    var correlationId = Guid.NewGuid().ToString();
+                    var errorMessage = $"Failed to add user {xuid} to group {groupId} (cid:{correlationId})";
+                    this.loggingService.LogException(new UserGroupManagementAppInsightsException(errorMessage, ex));
+                    var error = new StewardError(errorMessage);
                     userGroupManagementResponse.Error = error;
                 }
 
@@ -133,9 +136,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 {
                     await this.woodstockService.RemoveFromUserGroupsAsync(xuid, groups, endpoint).ConfigureAwait(false);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    var error = new StewardError($"Failed to remove user {xuid} from group {groupId}");
+                    var correlationId = Guid.NewGuid().ToString();
+                    var errorMessage = $"Failed to remove user {xuid} from group {groupId} (cid:{correlationId})";
+                    this.loggingService.LogException(new UserGroupManagementAppInsightsException(errorMessage, ex));
+                    var error = new StewardError(errorMessage);
                     userGroupManagementResponse.Error = error;
                 }
 

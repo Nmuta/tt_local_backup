@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.UserGroup;
+using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
@@ -71,11 +73,47 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             action.Should().NotThrow();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddUsersToGroup_UseBackgroundProcessing_ShouldNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuids = new List<ulong>() { ValidXuid };
+            var userGroupId = Fixture.Create<int>();
+
+            // Act.
+            Func<Task> action = async () => await controller.AddUsersToGroupUseBackgroundProcessing(userGroupId, xuids).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RemoveUsersFromGroup_UseBackgroundProcessing_ShouldNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuids = new List<ulong>() { ValidXuid };
+            var userGroupId = Fixture.Create<int>();
+
+            // Act.
+            Func<Task> action = async () => await controller.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, xuids).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
         private sealed class Dependencies
         {
             private readonly ControllerContext ControllerContext;
 
             public IWoodstockServiceManagementProvider serviceManagementProvider { get; set; } = Substitute.For<IWoodstockServiceManagementProvider>();
+            public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
+            public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
+            public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
+
 
             public Dependencies()
             {
@@ -98,7 +136,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             }
 
             public UserGroupController Build() => new UserGroupController(
-                this.serviceManagementProvider)
+                this.serviceManagementProvider,
+                this.JobTracker,
+                this.ActionLogger,
+                this.Scheduler)
             { ControllerContext = this.ControllerContext };
         }
     } 

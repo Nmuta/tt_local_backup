@@ -1,21 +1,55 @@
-<button
-  [disabled]="!verifyDelete.checked"
-  mat-raised-button
-  color="warn"
-  (click)="deleteAllUsersInGroup()"
-  stateManager
-  [monitor]="deleteAllMonitor"
-  monitorDisable
-  monitorWarn
-  monitorWarnSnackbar
->
-  Delete All Users
-  <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
-</button>
-<mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
-  >Verify</mat-checkbox
->
-<table *ngIf="!!userGroup && getmonitor.isSuccess" class="info-table">
+<form [formGroup]="formGroup" *ngIf="!!userGroup">
+  <mat-form-field class="xuids" appearance="fill">
+    <mat-label>Player XUIDs</mat-label>
+    <textarea matInput [formControl]="formControls.xuids" cdkTextareaAutosize></textarea>
+  </mat-form-field>
+  <div class="actions-group">
+    <div class="action">
+      <button
+        [disabled]="!verifyBulkAdd.checked"
+        mat-raised-button
+        color="primary"
+        (click)="addUsersInGroup()"
+        stateManager
+        [monitor]="addPlayersMonitor"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+      >
+        Add Users
+        <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
+      </button>
+      <mat-checkbox #verifyBulkAdd matTooltip="Verify Bulk Add" aria-label="Verify Bulk Add"
+        >Verify</mat-checkbox
+      >
+    </div>
+    <div class="action">
+      <button
+        [disabled]="!verifyBulkDelete.checked"
+        mat-raised-button
+        color="warn"
+        (click)="deleteUsersInGroup()"
+        stateManager
+        [monitor]="deletePlayersMonitor"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+      >
+        Delete Users
+        <button-spinner [monitor]="deletePlayersMonitor" defaultIcon="delete"></button-spinner>
+      </button>
+      <mat-checkbox
+        #verifyBulkDelete
+        matTooltip="Verify Bulk Deletion"
+        aria-label="Verify Bulk Deletion"
+        >Verify</mat-checkbox
+      >
+    </div>
+  </div>
+</form>
+
+<!-- TODO Re-enable when following task are done. PBIs: 1192729, 1222439
+<table *ngIf="!!userGroup && getMonitor.isSuccess" class="info-table">
   <tr>
     <th>Group Name</th>
     <td>
@@ -33,7 +67,7 @@
   showFirstLastButtons
 ></mat-paginator>
 <ng-container *ngIf="!!userGroup; else noProvidedUserGroupTemplate">
-  <ng-container *ngIf="getmonitor.isSuccess; else monitorTemplate">
+  <ng-container *waitForMonitor="getMonitor">
     <table mat-table [dataSource]="playersDataSource">
       <ng-container matColumnDef="xuid">
         <th mat-header-cell *matHeaderCellDef>XUID</th>
@@ -73,11 +107,30 @@
     </table>
   </ng-container>
 </ng-container>
+-->
+
+<!-- TODO Re-enable when following task are done. PBIs: 1222113, 1222124, 1222128, 1222140
+<ng-container>
+  <button
+    [disabled]="!verifyDelete.checked"
+    mat-raised-button
+    color="warn"
+    (click)="deleteAllUsersInGroup()"
+    stateManager
+    [monitor]="deleteAllMonitor"
+    monitorDisable
+    monitorWarn
+    monitorWarnSnackbar
+  >
+    Delete All Users
+    <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
+  </button>
+  <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
+    >Verify</mat-checkbox
+  >
+</ng-container>
+-->
 
 <ng-template #noProvidedUserGroupTemplate>
-  <span>Selelct a user group to view players</span>
-</ng-template>
-
-<ng-template #monitorTemplate>
-  <big-spinner [monitor]="getmonitor"></big-spinner>
+  <span>Select a user group to view players</span>
 </ng-template>

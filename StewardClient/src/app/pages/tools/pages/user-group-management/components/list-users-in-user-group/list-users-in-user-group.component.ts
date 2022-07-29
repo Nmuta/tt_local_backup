@@ -6,19 +6,35 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { tryParseBigNumbers } from '@helpers/bignumbers';
+import { BackgroundJob } from '@models/background-job';
 import { LspGroup } from '@models/lsp-group';
+import { UserGroupManagementResponse } from '@models/user-group-management-response';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { remove } from 'lodash';
-import { delay, Observable, takeUntil } from 'rxjs';
+import { Observable, takeUntil, switchMap } from 'rxjs';
 
 export interface ListUsersInGroupServiceContract {
   getPlayersInUserGroup$(userGroup: LspGroup): Observable<PlayerInUserGroup[]>;
-  deletePlayerFromUserGroup$(xuid: BigNumber, userGroup: LspGroup): Observable<boolean>;
-  deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<boolean>;
+  deletePlayerFromUserGroup$(
+    xuid: BigNumber,
+    userGroup: LspGroup,
+  ): Observable<UserGroupManagementResponse[]>;
+  deletePlayersFromUserGroupUsingBackgroundTask$(
+    xuids: BigNumber[],
+    userGroup: LspGroup,
+  ): Observable<BackgroundJob<void>>;
+  addPlayersToUserGroupUsingBackgroundTask$(
+    xuids: BigNumber[],
+    userGroup: LspGroup,
+  ): Observable<BackgroundJob<void>>;
+  deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<UserGroupManagementResponse[]>;
 }
 
 /** A player object within a user group. */
@@ -42,12 +58,25 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
   /** User group to list users and manage. */
   @Input() userGroup: LspGroup;
 
-  public getmonitor = new ActionMonitor('Get players in user group.');
+  /** Add/remove bulk xuids submit form */
+  public formControls = {
+    xuids: new FormControl('', Validators.required),
+  };
+
+  public formGroup = new FormGroup(this.formControls);
+
+  public getMonitor = new ActionMonitor('Get players in user group.');
   public deleteAllMonitor = new ActionMonitor('Delete all players in user group.');
+  public deletePlayersMonitor = new ActionMonitor('Delete specified players in user group.');
+  public addPlayersMonitor = new ActionMonitor('Add specified players in user group.');
   public allPlayers: PlayerInUserGroup[];
 
   public displayedColumns = ['xuid', 'gamertag', 'actions'];
   public playersDataSource = new BetterMatTableDataSource<PlayerInUserGroup>();
+
+  constructor(private readonly backgroundJobService: BackgroundJobService) {
+    super();
+  }
 
   /** Lifecycle hook */
   public ngOnChanges(changes: SimpleChanges): void {
@@ -66,22 +95,64 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
     this.playersDataSource.paginator = this.paginator;
   }
 
+  /** Deletes specified users from a user group. */
+  public deleteUsersInGroup(): void {
+    this.deletePlayersMonitor = this.deletePlayersMonitor.repeat();
+
+    const xuids = tryParseBigNumbers(this.formControls.xuids.value);
+
+    this.service
+      .deletePlayersFromUserGroupUsingBackgroundTask$(xuids, this.userGroup)
+      .pipe(
+        switchMap(response => {
+          return this.backgroundJobService.waitForBackgroundJobToComplete<UserGroupManagementResponse>(
+            response as BackgroundJob<void>,
+          );
+        }),
+        this.deletePlayersMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.formGroup.reset();
+      });
+  }
+
+  /** Adds specified users to a user group. */
+  public addUsersInGroup(): void {
+    this.addPlayersMonitor = this.addPlayersMonitor.repeat();
+
+    const xuids = tryParseBigNumbers(this.formControls.xuids.value);
+
+    this.service
+      .addPlayersToUserGroupUsingBackgroundTask$(xuids, this.userGroup)
+      .pipe(
+        switchMap(response => {
+          return this.backgroundJobService.waitForBackgroundJobToComplete<UserGroupManagementResponse>(
+            response as BackgroundJob<void>,
+          );
+        }),
+        this.addPlayersMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.formGroup.reset();
+      });
+  }
+
   /** Deletes a player from a user group */
   public deletePlayerFromUserGroup(playerToDelete: PlayerInUserGroup): void {
     playerToDelete.deleteMonitor = playerToDelete.deleteMonitor.repeat();
     this.service
       .deletePlayerFromUserGroup$(playerToDelete.xuid, this.userGroup)
-      .pipe(
-        delay(3_000),
-        playerToDelete.deleteMonitor.monitorSingleFire(),
-        takeUntil(this.onDestroy$),
-      )
+      .pipe(playerToDelete.deleteMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(result => {
-        if (result) {
+        if (result[0].error === null) {
           remove(this.allPlayers, player => {
             return player.xuid.isEqualTo(playerToDelete.xuid);
           });
           this.playersDataSource.data = this.allPlayers;
+        } else {
+          throw new Error(result[0].error.message);
         }
       });
   }
@@ -91,17 +162,17 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
     this.deleteAllMonitor = this.deleteAllMonitor.repeat();
     this.service
       .deleteAllPlayersFromUserGroup$(this.userGroup)
-      .pipe(delay(3_000), this.deleteAllMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(this.deleteAllMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         // TODO: Handle success group deletion in UI.
       });
   }
 
   private getPlayersInUserGroup(): void {
-    this.getmonitor = this.getmonitor.repeat();
+    this.getMonitor = this.getMonitor.repeat();
     this.service
       .getPlayersInUserGroup$(this.userGroup)
-      .pipe(delay(3_000), this.getmonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(players => {
         this.allPlayers = players.map(player => {
           player.deleteMonitor = new ActionMonitor(

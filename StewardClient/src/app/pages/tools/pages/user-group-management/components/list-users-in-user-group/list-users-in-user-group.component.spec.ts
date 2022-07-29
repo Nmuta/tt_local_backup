@@ -21,10 +21,16 @@ describe('ListUsersInGroupComponent', () => {
       return of([]);
     },
     deletePlayerFromUserGroup$: (_xuid: BigNumber, _userGroup: LspGroup) => {
-      return of(true);
+      return of([]);
     },
     deleteAllPlayersFromUserGroup$: (_userGroup: LspGroup) => {
-      return of(true);
+      return of([]);
+    },
+    deletePlayersFromUserGroupUsingBackgroundTask$: (_xuids: BigNumber[], _userGroup: LspGroup) => {
+      return of(undefined);
+    },
+    addPlayersToUserGroupUsingBackgroundTask$: (_xuids: BigNumber[], _userGroup: LspGroup) => {
+      return of(undefined);
     },
   };
 

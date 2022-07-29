@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { LspGroup } from '@models/lsp-group';
-import BigNumber from 'bignumber.js';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CreateUserGroupServiceContract } from '../create-user-group.component';
+import { WoodstockUserGroupService } from '@services/api-v2/woodstock/user-group/woodstock-user-group.service';
 
 /** Tool that creates new user groups. */
 @Component({
@@ -15,9 +15,15 @@ export class WoodstockCreateUserGroupComponent extends BaseComponent {
   /** Outputs when a new user group is created */
   @Output() newUserGroup = new EventEmitter<LspGroup>();
 
-  public service: CreateUserGroupServiceContract = {
-    createUserGroup$(groupName: string): Observable<LspGroup> {
-      return of({ name: groupName, id: new BigNumber(1) });
-    },
-  };
+  public service: CreateUserGroupServiceContract;
+
+  constructor(userGroupService: WoodstockUserGroupService) {
+    super();
+
+    this.service = {
+      createUserGroup$(groupName: string): Observable<LspGroup> {
+        return userGroupService.createUserGroup$(groupName);
+      },
+    };
+  }
 }

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
@@ -7,7 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// <summary>
     ///     Contains assorted extension methods for use in Steward.
     /// </summary>
-    public static class BackgroundJobExtensions
+    public static class BackgroundJobHelpers
     {
         /// <summary>
         ///     Generates a background job status based on a list of gift responses.
@@ -28,6 +31,26 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             var foundErrors = results.Any(ban => ban.Error != null);
             return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
+        }
+
+        /// <summary>
+        ///     Generates a background job status based on a list of user group management (add/remove) responses.
+        /// </summary>
+        public static BackgroundJobStatus GetBackgroundJobStatus(
+            IList<UserGroupManagementResponse> results)
+        {
+            var foundErrors = results.Any(ban => ban.Error != null);
+            return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
+        }
+
+        /// <summary>
+        /// Generate a CreatedResult to be returned by the controller for background jobs
+        /// </summary>
+        public static CreatedResult GetCreatedResult(Func<Uri, object?, CreatedResult> createdResultMethod, string scheme, HostString host, string jobId)
+        {
+            return createdResultMethod(
+                new Uri($"{scheme}://{host}/api/v1/jobs/jobId({jobId})"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
         }
     }
 }

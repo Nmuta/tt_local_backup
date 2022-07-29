@@ -410,7 +410,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         requesterObjectId,
                         endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
                         .ConfigureAwait(true);
 
@@ -690,7 +690,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         allowedToExceedCreditLimit,
                         endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 

@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         banParameters,
                         requesterObjectId).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
                         .ConfigureAwait(true);
 
