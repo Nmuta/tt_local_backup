@@ -170,7 +170,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Auction Data lookup failed for auction {auctionId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to get auction data. (auctionId: {auctionId})", ex);
             }
         }
 
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Auction Data lookup failed for auction {auctionId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to delete auction. (auctionId: {auctionId})", ex);
             }
         }
 

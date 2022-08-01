@@ -37,6 +37,9 @@ Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, ForzaCarUserIn
 
 ### AuctionManagementService
 
+Untested. Cannot generate fake auctions to test.
+Need to request new endpoint from services that generates fake auctions for testing.
+
 ```c#
 Task<SearchAuctionHouseOutput> SearchAuctionHouse(ForzaAuctionFilters auctionFilters) { }
 
