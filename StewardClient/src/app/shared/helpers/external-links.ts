@@ -9,17 +9,9 @@ export type HomeTileInfoForNav = HomeTileInfo &
   Partial<HomeTileModifiersUnion> & { target: string };
 
 /** Sets target property on external links. Internal links are returned with default target value. */
-export function setExternalLinkTarget(
-  tool: HomeTileInfo,
-  isInZendesk: boolean,
-): HomeTileInfoForNav {
+export function setExternalLinkTarget(tool: HomeTileInfo): HomeTileInfoForNav {
   const updatedTool = tool as HomeTileInfoForNav;
-  updatedTool.target = '_self';
-
-  if (isHomeTileInfoExternal(tool) && isInZendesk) {
-    updatedTool.target = '_blank';
-    return updatedTool;
-  }
+  updatedTool.target = isHomeTileInfoExternal(tool) ? '_blank' : '_self';
 
   return updatedTool;
 }

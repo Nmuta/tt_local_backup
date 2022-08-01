@@ -105,7 +105,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
         .filter(tool => !!navbarTools[tool.tool])
         .orderBy(tool => navbarTools[tool.tool])
         .map(tool => {
-          return setExternalLinkTarget(tool, this.isInZendesk);
+          return setExternalLinkTarget(tool);
         })
         .value();
     });

@@ -8,6 +8,24 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '4b5ed37b-835e-49ef-9bae-68e780f124d1',
+      shortText: 'All external tools now auto-open in new tap',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [
+          NavbarTool.AdminSteelheadDev,
+          NavbarTool.AdminSteelheadStudio,
+          NavbarTool.AdminFH4Studio,
+          NavbarTool.AdminFM7Studio,
+        ],
+      },
+      uuid: '77922281-d545-46a4-9fbd-1067523b84b1',
+      shortText: 'Add external tool links for steelhead dev and steelhead, fh4, and fm7 studio',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.UserGroupManagement] },
       uuid: '2cea2732-f195-49bc-b0df-35e2beb95167',
       shortText: 'Integrate User Group management for FH5',
