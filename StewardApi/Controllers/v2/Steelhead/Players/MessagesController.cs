@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
                     communityMessage.Xuids.Count,
                     communityMessage.Message,
                     expireTime,
-                    null,
+                    string.Empty, // Image Url is unused in Steward
                     DateTime.Now).ConfigureAwait(true);
 
                 notifications.AddRange(this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults));

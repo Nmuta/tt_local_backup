@@ -104,27 +104,34 @@ Tested by lugeiken; FM8 nuget version 2.5.1-prerelease
 
 ```c#
 
-// Tested w/ XUID 1234
+// Successful test
 Task<LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUser(ulong xuid, int maxResults) { }
 
-// Failed w/ error {"Object reference not set to an instance of an object."}. XUIDS: [ 1234 ]. Expiration 1 day.
+// Successful test
 Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsers(ulong[] recipients, int xuidCount, string message, DateTime expirationTime, string imageUrl) { }
 
+// Successful test
 Task<SendGroupMessageNotificationOutput> SendGroupMessageNotification(int groupId, string message, DateTime expirationTime, bool hasDeviceType, ForzaLiveDeviceType deviceType) { }
 
+// Unused (SendGroupMessageNotification allows for device type)
 Task<SendNotificationByDeviceTypeOutput> SendNotificationByDeviceType(ForzaLiveDeviceType deviceType, string message, DateTime expirationTime) { }
 
-// Failed w/ error {"Response status code does not indicate success: 500 (Internal Server Error)."}. XUID: 1234; Notification ID: 999c6f35-f031-4155-9673-6e9216ba09d6
+// Successful test
 Task EditNotification(Guid notificationId, ulong xuid, ForzaCommunityMessageNotificationEditParameters editParameters) { }
 
+// Successful test
 Task EditGroupNotification(Guid notificationId, ForzaCommunityMessageNotificationEditParameters editParameters) { }
 
+// Successful test
 Task<GetAllUserGroupMessagesOutput> GetAllUserGroupMessages(int groupId, int maxResults) { }
 
+// Successful test
 Task<GetUserGroupMessageOutput> GetUserGroupMessage(Guid notificationId) { }
 
+// Successful test
 Task<GetNotificationOutput> GetNotification(ulong xuid, Guid notificationId) { }
 
+// Successful test
 Task<DeleteNotificationsForUserOutput> DeleteNotificationsForUser(ulong xuid) { }
 
 // This is unused in Woodstock. I don't think we will need this in Steelhead either.

@@ -143,7 +143,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException($"Failed to edit message. (messageId: {messageIdAsGuid})", ex);
+                throw new FailedToSendStewardException($"Failed to get message. (messageId: {messageIdAsGuid})", ex);
             }
 
             return this.Ok(message);
