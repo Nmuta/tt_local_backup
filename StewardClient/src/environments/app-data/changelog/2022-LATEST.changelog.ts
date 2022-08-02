@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.Leaderboards] },
+      uuid: '950d4cd0-87a2-4de7-9fc0-5756b40922c0',
+      shortText: 'Fix bug in Leaderboard jump to score functionality',
+    },
+    {
       tag: {
         title: 'all',
         tool: [NavbarTool.UgcDetails],
@@ -23,7 +28,7 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     {
       tag: ChangelogTag.General,
       uuid: '4b5ed37b-835e-49ef-9bae-68e780f124d1',
-      shortText: 'All external tools now auto-open in new tap',
+      shortText: 'All external tools now auto-open in new tab',
     },
     {
       tag: {

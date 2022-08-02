@@ -36,7 +36,7 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, first, last } from 'lodash';
 import { DateTime } from 'luxon';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap, catchError, filter, debounceTime } from 'rxjs/operators';
@@ -124,6 +124,7 @@ export class LeaderboardScoresComponent
   public exportFileName: string;
   public disableExport: boolean = true;
   public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
+  private scoresAscendWithPosition: boolean;
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
   public matCardSubtitle = this.matCardSubtitleDefault;
@@ -282,9 +283,15 @@ export class LeaderboardScoresComponent
     const pageSize = this.leaderboardScores.paginator.pageSize;
 
     // Determine page where searched score exists
-    const scoreIndex = this.leaderboardScores.data.findIndex(s =>
-      s.score.isGreaterThanOrEqualTo(new BigNumber(score)),
-    );
+    const scoreIndex = this.leaderboardScores.data.findIndex(s => {
+      // A high/low score is better depending on criteria.
+      if (this.scoresAscendWithPosition) {
+        return s.score.isGreaterThanOrEqualTo(new BigNumber(score));
+      } else {
+        return s.score.isLessThanOrEqualTo(new BigNumber(score));
+      }
+    });
+
     const foundPageIndex = Math.floor(scoreIndex / pageSize);
     const highestPageIndex = Math.floor(this.leaderboardScores.data.length / pageSize) - 1;
 
@@ -435,6 +442,7 @@ export class LeaderboardScoresComponent
   private setLeaderboardScoresData(scores: LeaderboardScore[]): void {
     this.leaderboardScores.data = scores;
     this.exportableScores = this.prepareExportableScores(scores);
+    this.scoresAscendWithPosition = first(scores)?.score.isLessThanOrEqualTo(last(scores)?.score);
   }
 
   private prepareExportableScores(scores: LeaderboardScore[]): string[][] {
