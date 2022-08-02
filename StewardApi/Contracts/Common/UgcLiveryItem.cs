@@ -10,6 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// </summary>
     public class UgcLiveryItem : UgcItem
     {
-        public byte[] LiveryDownloadData { get; set; }
+        public byte[] LiveryDownloadDataBase64 { get; set; }
     }
 }

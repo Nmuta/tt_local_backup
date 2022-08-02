@@ -33,7 +33,7 @@ export interface PlayerUgcItem {
   isPublic: boolean;
 
   /** Only for livery type UGC items.  */
-  liveryDownloadData?: string;
+  liveryDownloadDataBase64?: string;
 }
 
 /** Creates a fake player UGC item */

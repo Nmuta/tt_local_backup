@@ -10,6 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     /// </summary>
     public class ApolloUgcLiveryItem : ApolloUgcItem
     {
-        public byte[] LiveryDownloadData { get; set; }
+        public byte[] LiveryDownloadDataBase64 { get; set; }
     }
 }

@@ -8,6 +8,14 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: {
+        title: 'all',
+        tool: [NavbarTool.UgcDetails],
+      },
+      uuid: 'f9a3ee9c-d4a8-4d53-99e8-bec9e1c5f3a4',
+      shortText: 'Do not display base64 C-Livery data in UGC Details',
+    },
+    {
       tag: { title: GameTitle.FH4, tool: [NavbarTool.UserDetails] },
       uuid: 'df898ffc-b96a-4cc5-8037-5ad4afe7bf2e',
       shortText: 'Add user save rollback information to FH4',

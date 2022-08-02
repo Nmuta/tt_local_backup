@@ -178,7 +178,7 @@ export abstract class UgcTableBaseComponent
         dataSource[i] = cloneDeep(dataSource[i]);
         dataSource[i].thumbnailOneImageBase64 = fullUgcItem.thumbnailOneImageBase64;
         dataSource[i].thumbnailTwoImageBase64 = fullUgcItem.thumbnailTwoImageBase64;
-        dataSource[i].liveryDownloadData = fullUgcItem.liveryDownloadData;
+        dataSource[i].liveryDownloadDataBase64 = fullUgcItem.liveryDownloadDataBase64;
       }
     }
 
