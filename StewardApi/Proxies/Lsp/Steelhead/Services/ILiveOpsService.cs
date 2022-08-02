@@ -43,5 +43,31 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             DateTime startDateUtc,
             int daysForward,
             ForzaEventSessionType[] gameOptionsFilter);
+
+        /// <summary>
+        ///     Saves a profile id to a player.
+        /// </summary>
+        Task SaveProfile(
+            Guid profileId,
+            string templateName,
+            bool overwriteIfExists);
+
+        /// <summary>
+        ///     Loads a profile id to a player.
+        /// </summary>
+        Task<LiveOpsService.LoadProfileOutput> LoadProfile(
+            Guid profileId,
+            string templateName,
+            bool continueOnBreakingChanges);
+
+        /// <summary>
+        ///     Gets all profile template names;
+        /// </summary>
+        Task<LiveOpsService.GetAllProfileTemplateNamesOutput> GetAllProfileTemplateNames();
+
+        /// <summary>
+        ///     Resets the profile. A single car will be applied to the reset profile.
+        /// </summary>
+        Task<LiveOpsService.ResetProfileOutput> ResetProfile(ForzaProfileResetConfiguration configuration, Guid profileId);
     }
 }

@@ -8,6 +8,42 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: {
+        title: 'all',
+        tool: [NavbarTool.UgcDetails],
+      },
+      uuid: 'f9a3ee9c-d4a8-4d53-99e8-bec9e1c5f3a4',
+      shortText: 'Do not display base64 C-Livery data in UGC Details',
+    },
+    {
+      tag: { title: GameTitle.FH4, tool: [NavbarTool.UserDetails] },
+      uuid: 'df898ffc-b96a-4cc5-8037-5ad4afe7bf2e',
+      shortText: 'Add user save rollback information to FH4',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '4b5ed37b-835e-49ef-9bae-68e780f124d1',
+      shortText: 'All external tools now auto-open in new tap',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [
+          NavbarTool.AdminSteelheadDev,
+          NavbarTool.AdminSteelheadStudio,
+          NavbarTool.AdminFH4Studio,
+          NavbarTool.AdminFM7Studio,
+        ],
+      },
+      uuid: '77922281-d545-46a4-9fbd-1067523b84b1',
+      shortText: 'Add external tool links for steelhead dev and steelhead, fh4, and fm7 studio',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserGroupManagement] },
+      uuid: '2cea2732-f195-49bc-b0df-35e2beb95167',
+      shortText: 'Integrate User Group management for FH5',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails] },
       uuid: 'afa9f358-4401-45e3-a435-b934732be6aa',
       shortText: 'Allow Horizon and Motorsport desginers to access Player Details',

@@ -927,7 +927,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         banParameters,
                         requesterObjectId,
                         endpoint).ConfigureAwait(true);
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
                     await this.jobTracker
                         .UpdateJobAsync(
                             jobId,
@@ -951,9 +951,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Created(
-                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
-                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
         }
 
         /// <summary>
@@ -1278,7 +1276,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         allowedToExceedCreditLimit,
                         endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 
@@ -1297,9 +1295,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Created(
-                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
-                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
         }
 
         /// <summary>
@@ -1467,7 +1463,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     var response = await this.sunrisePlayerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
 
                     var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
@@ -1484,9 +1480,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Created(
-                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
-                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
         }
 
         /// <summary>

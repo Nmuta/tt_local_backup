@@ -1,10 +1,14 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import {
+  BackgroundJob,
+  BackgroundJobRetryStatus,
+  BackgroundJobStatus,
+} from '@models/background-job';
 import { ApiService } from '@shared/services/api';
 import { Duration } from 'luxon';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of, delayWhen, map, switchMap, throwError, timer } from 'rxjs';
+import { retryWhen, tap } from 'rxjs/operators';
 
 /** Defines the User Service. */
 @Injectable({
@@ -83,5 +87,38 @@ export class BackgroundJobService {
           }
         }),
       );
+  }
+
+  /** Waits for a background job to complete. */
+  public waitForBackgroundJobToComplete<T>(job: BackgroundJob<void>): Observable<T[]> {
+    return this.getBackgroundJob$<T>(job.jobId).pipe(
+      map(job => {
+        let returnValue: T[];
+        switch (job.status) {
+          case BackgroundJobStatus.Completed:
+          case BackgroundJobStatus.CompletedWithErrors:
+            returnValue = Array.isArray(job.result) ? job.result : [job.result];
+            break;
+          case BackgroundJobStatus.InProgress:
+            throw new Error(BackgroundJobRetryStatus.InProgress);
+          default:
+            throw new Error(BackgroundJobRetryStatus.UnexpectedError);
+        }
+
+        return returnValue;
+      }),
+      retryWhen(errors$ =>
+        errors$.pipe(
+          switchMap((error: Error) => {
+            if (error.message === BackgroundJobRetryStatus.UnexpectedError) {
+              return throwError(error);
+            }
+
+            return of(error);
+          }),
+          delayWhen(() => timer(3_000)),
+        ),
+      ),
+    );
   }
 }

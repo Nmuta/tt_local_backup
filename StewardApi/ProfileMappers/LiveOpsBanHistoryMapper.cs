@@ -90,8 +90,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 "{}",
                 endpoint);
 
+            liveOpsBanHistory.BanEntryId = banDescription.BanEntryId;
             liveOpsBanHistory.LastExtendedTimeUtc = banDescription.LastExtendTime;
             liveOpsBanHistory.CountOfTimesExtended = banDescription.ExtendTimes;
+            liveOpsBanHistory.IsActive = banDescription.IsActive;
 
             return liveOpsBanHistory;
         }

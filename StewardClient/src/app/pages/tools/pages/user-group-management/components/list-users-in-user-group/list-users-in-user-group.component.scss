@@ -1,15 +1,34 @@
 @import '/src/styles/mixins';
 
-$actions-column-width: 250px;
-
 table {
   width: 100%;
 }
 
 .mat-column-actions {
-  @include table-width($actions-column-width);
+  @include table-width($container-width-small);
 }
 
 mat-checkbox {
   margin-left: $gap-small;
+}
+
+form {
+  mat-form-field.xuids {
+    max-width: $container-width-large;
+    width: 100%;
+
+    textarea {
+      min-height: $container-height-small;
+      max-height: $container-height-medium;
+    }
+  }
+
+  .actions-group {
+    display: inline-block;
+  }
+
+  .action {
+    margin-left: $gap-small;
+    margin-bottom: $gap-small;
+  }
 }

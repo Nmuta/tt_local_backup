@@ -45,44 +45,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var response = await this.steelheadService.GetAdminUserInventoryAsync(xuid, endpoint)
-                    .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                return playerInventoryDetails;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(int profileId, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var response = await this.steelheadService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
-                    .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                return inventoryProfile;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
         public async Task<IList<SteelheadInventoryProfile>> GetInventoryProfilesAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));

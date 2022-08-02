@@ -147,19 +147,18 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             int reportWeight);
 
         /// <summary>
+        ///     Sets report weight type of a player.
+        /// </summary>
+        Task SetUserReportWeightType(
+            ulong xuid,
+            ForzaUserReportWeightType reportWeightType);
+
+        /// <summary>
         ///     Gets has played record of a player.
         /// </summary>
         Task<UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecord(
             ulong xuid,
             Guid externalProfileId);
-
-        /// <summary>
-        ///     Sets has played record of a player.
-        /// </summary>
-        Task SetHasPlayedRecord(
-            ulong xuid,
-            int title,
-            bool hasPlayed);
 
         /// <summary>
         ///     Resends has played rewards to a player.

@@ -69,11 +69,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         public IUserInventoryManagementService UserInventoryManagementService => this.SteelheadFactory.PrepareUserInventoryManagementService(this.Endpoint);
 
         /// <summary>
-        ///     Gets a <see cref="IOldUserInventoryManagementService" />.
-        /// </summary>
-        public IOldUserInventoryManagementService OldUserInventoryManagementService => this.SteelheadFactory.PrepareOldUserInventoryManagementService(this.Endpoint);
-
-        /// <summary>
         ///     Gets a <see cref="IStorefrontManagementService" />.
         /// </summary>
         public IStorefrontManagementService StorefrontManagementService => this.SteelheadFactory.PrepareStorefrontManagementService(this.Endpoint);

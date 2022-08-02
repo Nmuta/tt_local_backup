@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Apollo
                 {
                     var response = await this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, this.ApolloEndpoint.Value).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
 
                     var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)

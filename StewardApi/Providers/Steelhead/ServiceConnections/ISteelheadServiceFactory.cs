@@ -4,7 +4,6 @@ using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingMa
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 using LocalizationManagementService = Turn10.Services.LiveOps.FM8.Generated.LocalizationManagementService;
 using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
-using OldUserInventoryManagementService = Forza.LiveOps.FM8.Generated.UserInventoryService;
 using StorefrontManagementService = Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
 using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
@@ -30,11 +29,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Prepares a <see cref="UserInventoryManagementService" />.
         /// </summary>
         Task<UserInventoryManagementService> PrepareUserInventoryManagementServiceAsync(string endpoint);
-
-        /// <summary>
-        ///     Prepares a <see cref="OldUserInventoryManagementService" />.
-        /// </summary>
-        Task<OldUserInventoryManagementService> PrepareOldUserInventoryManagementServiceAsync(string endpoint);
 
         /// <summary>
         ///     Prepares a <see cref="GiftingManagementService" />.

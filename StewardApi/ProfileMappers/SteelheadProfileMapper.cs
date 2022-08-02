@@ -5,6 +5,7 @@ using System.Globalization;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
+using SteelheadContent;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
@@ -13,6 +14,8 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
+using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
+using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
@@ -28,22 +31,23 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public SteelheadProfileMapper()
         {
-            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
-                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
-                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
-                .ReverseMap();
-            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
-                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
-                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
-                .ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
-                {
-                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
-                }))
-                .ReverseMap();
+            // TODO Uncomment this once inventory lookup APIs exist for Steelhead.
+            //this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
+            //    .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
+            //    .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+            //    .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+            //    .ReverseMap();
+            //this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
+            //    .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
+            //    .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+            //    .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+            //    .ReverseMap();
+            //this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
+            //    .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
+            //    {
+            //        new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
+            //    }))
+            //    .ReverseMap();
             this.CreateMap<AdminForzaProfile, SteelheadInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
@@ -154,10 +158,161 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaWeatherCondition, RacersCupWeatherCondition>()
                 .ReverseMap();
             this.CreateMap<LocalizedStringData, ForzaLocalizedStringData>().ReverseMap();
-            this.CreateMap<SupportedLocale, SteelheadContent.SupportedLocale>().ReverseMap();
+            this.CreateMap<Contracts.Steelhead.Pegasus.SupportedLocale, SteelheadContent.SupportedLocale>().ReverseMap();
             this.CreateMap<LocalizationStringResult, SteelheadContent.LocalizedString>()
                 .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
                 .ReverseMap();
+            this.CreateMap<ForzaUserAdminComment, ProfileNote>()
+                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(source => source.date))
+                .ForMember(dest => dest.Author, opt => opt.MapFrom(source => source.author))
+                .ForMember(dest => dest.Text, opt => opt.MapFrom(source => source.text));
+            this.CreateMap<int, ForzaUserExpireBanParameters>()
+                .ForMember(dest => dest.banEntryIds, opt => opt.MapFrom(src => new int[] { src }))
+                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => "Ban expired by Steward"));
+            this.CreateMap<ForzaUserUnBanResult, UnbanResult>();
+            this.CreateMap<ForzaLiveOpsHasPlayedRecord, HasPlayedRecord>() // Use UGC contracts GameTitle, confirmed with Caleb 6/23/22
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(src => Enum.GetName(typeof(Turn10.UGC.Contracts.GameTitle), src.gameTitle)))
+                .ReverseMap();
+            this.CreateMap<ServicesLiveOps.ForzaUGCData, UgcItem>()
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
+                .ForMember(
+                    dest => dest.ThumbnailOneImageBase64,
+                    opt => opt.MapFrom(source =>
+                        source.Payloads.Length > 0
+                            ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[0].Payload)
+                            : null))
+                .ForMember(
+                    dest => dest.ThumbnailTwoImageBase64,
+                    opt => opt.MapFrom(source =>
+                        source.Payloads.Length > 1
+                            ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[1].Payload)
+                            : null))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Metadata.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
+                .ForMember(
+                    dest => dest.ForceFeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
+                .ForMember(
+                    dest => dest.FeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
+                .ForMember(
+                    dest => dest.PopularityBucket,
+                    opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ReverseMap();
+            this.CreateMap<ForzaLiveryData, UgcLiveryItem>()
+                .ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Livery))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Metadata.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
+                .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ReverseMap();
+            this.CreateMap<ForzaPhotoData, UgcItem>()
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Metadata.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
+                .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ReverseMap();
+            this.CreateMap<ForzaTuneData, UgcItem>()
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Metadata.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
+                .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ReverseMap();
+            this.CreateMap<UGCSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
+                .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
+                .ForMember(dest => dest.Featured, opt => opt.MapFrom(source => source.IsFeatured))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
+                .ReverseMap();
+            this.CreateMap<DataCar, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"Update Projection to include MakeDisplayName {src.DisplayName} {src.Year}"));
+            this.CreateMap<DataCar, DetailedCar>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
+                .ForMember(dest => dest.Make, opt => opt.MapFrom(src => "Update Projection to include MakeDisplayName"));
+            this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
+            this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
+                .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.reportWeightType));
         }
     }
 }

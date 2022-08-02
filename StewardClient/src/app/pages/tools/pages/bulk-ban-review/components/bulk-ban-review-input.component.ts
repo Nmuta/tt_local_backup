@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { tryParseBigNumbers } from '@helpers/bignumbers';
 import { Select } from '@ngxs/store';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import {
@@ -8,7 +9,6 @@ import {
   EndpointKeyMemoryState,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import BigNumber from 'bignumber.js';
-import { uniqBy } from 'lodash';
 import { Observable } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 
@@ -94,14 +94,7 @@ export class BulkBanReviewInputComponent extends BaseComponent implements OnInit
     const apolloEnvironments: string[] = this.apolloEnvironments;
     const xuidsInput: string = this.formControls.xuids.value;
 
-    let xuids = xuidsInput
-      .replace(/\n|\r/g, ', ') // Convert new lines to commas
-      .split(/,|\r|\n/) // Split on commas
-      .map(x => new BigNumber(x.trim())) // Try to convered string to BigNumber
-      .filter((x: BigNumber) => !!x && !x.isNaN()); // Ignore null/undefined or invalid BigNumbers in the list
-
-    // Remove duplicates
-    xuids = uniqBy(xuids, xuid => xuid.toString());
+    const xuids = tryParseBigNumbers(xuidsInput);
 
     this.selection.emit({
       xuids: xuids,

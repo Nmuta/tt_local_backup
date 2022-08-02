@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
@@ -40,6 +41,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     MatExpansionModule,
     MatTooltipModule,
     DirectivesModule,
+    MonitorActionModule,
   ],
   exports: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
 })

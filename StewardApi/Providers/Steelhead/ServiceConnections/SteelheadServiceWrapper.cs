@@ -12,7 +12,6 @@ using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingMa
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 using LocalizationManagementService = Turn10.Services.LiveOps.FM8.Generated.LocalizationManagementService;
 using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
-using OldUserInventoryManagementService = Forza.LiveOps.FM8.Generated.UserInventoryService;
 using StorefrontManagementService = Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
 using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
@@ -261,7 +260,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareNotificationManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.SendMessageNotificationToMultipleUsers(recipients.ToArray(), recipients.Count, message, expirationTime, null).ConfigureAwait(false);
+            return await service.SendMessageNotificationToMultipleUsers(recipients.ToArray(), recipients.Count, message, expirationTime, null, DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -275,7 +274,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareNotificationManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.SendGroupMessageNotification(groupId, message, expirationTime, hasDeviceType, deviceType).ConfigureAwait(false);
+            return await service.SendGroupMessageNotification(groupId, message, expirationTime, hasDeviceType, deviceType, DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -287,7 +286,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareNotificationManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.SendNotificationByDeviceType(deviceType, message, expirationTime).ConfigureAwait(false);
+            return await service.SendNotificationByDeviceType(deviceType, message, expirationTime, DateTime.UtcNow).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -441,26 +440,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var service = await this.serviceFactory.PrepareUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await service.RemoveCarFromUserInventoryWithVin(vin, profileId).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<OldUserInventoryManagementService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(
-            ulong xuid,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareOldUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await service.GetAdminUserInventory(xuid).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<OldUserInventoryManagementService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(
-            int profileId,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareOldUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await service.GetAdminUserInventoryByProfileId(profileId).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

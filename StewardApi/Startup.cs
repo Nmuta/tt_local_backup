@@ -264,7 +264,6 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISteelheadNotificationProvider, SteelheadNotificationProvider>();
             services.AddSingleton<ISteelheadBanHistoryProvider, SteelheadBanHistoryProvider>();
             services.AddSingleton<ISteelheadGiftHistoryProvider, SteelheadGiftHistoryProvider>();
-            services.AddSingleton<ISteelheadNotificationHistoryProvider, SteelheadNotificationHistoryProvider>();
             services.AddSingleton<IRequestValidator<SteelheadBanParametersInput>, SteelheadBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<SteelheadGroupGift>, SteelheadGroupGiftRequestValidator>();
             services.AddSingleton<IRequestValidator<SteelheadGift>, SteelheadGiftRequestValidator>();
@@ -273,8 +272,8 @@ namespace Turn10.LiveOps.StewardApi
             // V2 providers
             services.AddSingleton<SteelheadV2Providers.ISteelheadItemsProvider, SteelheadV2Providers.SteelheadItemsProvider>();
             services.AddSingleton<SteelheadV2Providers.ISteelheadGiftHistoryProvider, SteelheadV2Providers.SteelheadGiftHistoryProvider>();
-            services.AddSingleton<SteelheadV2Providers.ISteelheadNotificationHistoryProvider, SteelheadV2Providers.SteelheadNotificationHistoryProvider>();
             services.AddSingleton<SteelheadV2Providers.ISteelheadPlayerInventoryProvider, SteelheadV2Providers.SteelheadPlayerInventoryProvider>();
+            services.AddSingleton<SteelheadV2Providers.ISteelheadServiceManagementProvider, SteelheadV2Providers.SteelheadServiceManagementProvider>();
 
             services.AddSingleton<IGravityService, GravityServiceWrapper>();
             services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();

@@ -15,9 +15,16 @@ export interface BackgroundJob<T> {
   isMarkingRead: boolean;
 }
 
+/** Status of a background job */
 export enum BackgroundJobStatus {
   Completed = 'Completed',
   CompletedWithErrors = 'CompletedWithErrors',
   InProgress = 'InProgress',
   Failed = 'Failed',
+}
+
+/** Reason why the application retries to query the status of a background job */
+export enum BackgroundJobRetryStatus {
+  InProgress = 'Still in progress',
+  UnexpectedError = 'Background job failed unexpectedly.',
 }

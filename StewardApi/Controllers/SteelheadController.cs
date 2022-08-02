@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISteelheadNotificationProvider steelheadNotificationProvider;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
-        private readonly ISteelheadNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
@@ -98,7 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKeyVaultProvider keyVaultProvider,
             ISteelheadGiftHistoryProvider giftHistoryProvider,
             ISteelheadBanHistoryProvider banHistoryProvider,
-            ISteelheadNotificationHistoryProvider notificationHistoryProvider,
+            INotificationHistoryProvider notificationHistoryProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
@@ -410,7 +410,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         requesterObjectId,
                         endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
                         .ConfigureAwait(true);
 
@@ -546,73 +546,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
-        }
-
-        /// <summary>
-        ///     Gets the player inventory.
-        /// </summary>
-        [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventory(
-            ulong xuid)
-        {
-            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
-
-            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
-
-            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            var masterInventory = await getMasterInventory.ConfigureAwait(true);
-
-            if (playerInventory == null)
-            {
-                throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.");
-            }
-
-            playerInventory.SetItemDescriptions(
-                masterInventory,
-                $"XUID: {xuid}",
-                this.loggingService);
-            return this.Ok(playerInventory);
-        }
-
-        /// <summary>
-        ///     Gets the player inventory.
-        /// </summary>
-        [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventoryByProfileId(
-            int profileId)
-        {
-            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(
-                profileId,
-                endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
-
-            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
-
-            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            var masterInventory = await getMasterInventory.ConfigureAwait(true);
-
-            if (playerInventory == null)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.");
-            }
-
-            playerInventory.SetItemDescriptions(
-                masterInventory,
-                $"Profile ID: {profileId}",
-                this.loggingService);
-            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -757,7 +690,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         allowedToExceedCreditLimit,
                         endpoint).ConfigureAwait(true);
 
-                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(response);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 

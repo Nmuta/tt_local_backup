@@ -47,7 +47,7 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
       });
     }
 
-    if (!!this.item?.liveryDownloadData) {
+    if (!!this.item?.liveryDownloadDataBase64) {
       this.downloadOptions.push({
         label: 'C Livery',
         clickFn: () => this.downloadCLivery(this.item),
@@ -73,7 +73,7 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
   public downloadCLivery(item: PlayerUgcItem): void {
     this.menuTrigger.closeMenu();
     const title = `${item.id}_C_Livery`;
-    const liveryData = item.liveryDownloadData;
+    const liveryData = item.liveryDownloadDataBase64;
 
     const binaryString = window.atob(liveryData);
     const binaryLen = binaryString.length;

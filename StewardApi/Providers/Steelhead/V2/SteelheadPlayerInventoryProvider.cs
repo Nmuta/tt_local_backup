@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 
@@ -26,65 +27,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
 
+        private readonly ISteelheadService steelheadService;
         private readonly IMapper mapper;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
-        private readonly ISteelheadNotificationHistoryProvider notificationHistoryProvider;
+        private readonly INotificationHistoryProvider notificationHistoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SteelheadPlayerInventoryProvider"/> class.
         /// </summary>
         public SteelheadPlayerInventoryProvider(
+            ISteelheadService steelheadService,
             IMapper mapper,
             ISteelheadGiftHistoryProvider giftHistoryProvider,
-            ISteelheadNotificationHistoryProvider notificationHistoryProvider)
+            INotificationHistoryProvider notificationHistoryProvider)
         {
+            steelheadService.ShouldNotBeNull(nameof(steelheadService));
             mapper.ShouldNotBeNull(nameof(mapper));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
 
+            this.steelheadService = steelheadService;
             this.mapper = mapper;
             this.giftHistoryProvider = giftHistoryProvider;
             this.notificationHistoryProvider = notificationHistoryProvider;
-        }
-
-        /// <inheritdoc />
-        [Obsolete("Method deprecated, please use SteelheadProxyBundle directly instead.")]
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(SteelheadProxyBundle service, ulong xuid)
-        {
-            service.ShouldNotBeNull(nameof(service));
-
-            try
-            {
-                var response = await service.OldUserInventoryManagementService.GetAdminUserInventory(xuid)
-                    .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                return playerInventoryDetails;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        [Obsolete("Method deprecated, please use SteelheadProxyBundle directly instead.")]
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(SteelheadProxyBundle service, int profileId)
-        {
-            service.ShouldNotBeNull(nameof(service));
-
-            try
-            {
-                var response = await service.OldUserInventoryManagementService.GetAdminUserInventoryByProfileId(profileId)
-                    .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                return inventoryProfile;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
-            }
         }
 
         /// <inheritdoc />

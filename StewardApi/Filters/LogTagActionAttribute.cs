@@ -55,7 +55,8 @@ namespace Turn10.LiveOps.StewardApi.Filters
         System = 1,
         Player = 2,
         Group = 4,
-        UgcItem = 8,
+        Console = 8,
+        UgcItem = 16,
     }
 
     [Flags]
@@ -74,5 +75,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Meta = 4096,
         Notification = 8192,
         Leaderboards = 16384,
+        Profile = 32768,
     }
 }

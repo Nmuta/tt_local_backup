@@ -63,7 +63,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
         t => !this.hasAccess[t.tool] && !t.hideFromUnauthorized,
       );
       this.possibleNavbarItems = [...accessibleTools, ...inaccessibleTools].map(tool => {
-        return setExternalLinkTarget(tool, this.isInZendesk);
+        return setExternalLinkTarget(tool);
       });
     });
 

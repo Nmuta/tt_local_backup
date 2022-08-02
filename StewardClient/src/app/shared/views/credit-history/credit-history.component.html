@@ -20,9 +20,11 @@
           </mat-panel-title>
           <mat-panel-description [ngPlural]="xpAnalysisDates.length">
             <ng-template ngPluralCase="=1">
-              XP went backwards on
-              <standard-absolute-time [timeUtc]="xpAnalysisDates[0].eventTimestampUtc">
-              </standard-absolute-time>
+              <span class="panel-description-with-timestamp">
+                XP went backwards on
+                <standard-absolute-time [timeUtc]="xpAnalysisDates[0].eventTimestampUtc">
+                </standard-absolute-time>
+              </span>
             </ng-template>
             <ng-template ngPluralCase="other">
               XP went backwards on {{ xpAnalysisDates.length }} dates. Expand to view.
@@ -49,6 +51,33 @@
           </li>
         </ul>
       </mat-expansion-panel>
+      <ng-container *waitForMonitor="saveRollbackMonitor">
+        <mat-expansion-panel *ngIf="saveRollbackHistory">
+          <mat-expansion-panel-header color="warn">
+            <mat-panel-title>
+              Save Rollbacks
+              <mat-icon color="warn">warning</mat-icon>
+            </mat-panel-title>
+            <mat-panel-description [ngPlural]="saveRollbackHistory.length">
+              <ng-template ngPluralCase="=1">
+                <span class="panel-description-with-timestamp">
+                  Save rollback happened on
+                  <standard-absolute-time [timeUtc]="saveRollbackHistory[0].eventTimeUtc">
+                  </standard-absolute-time>
+                </span>
+              </ng-template>
+              <ng-template ngPluralCase="other">
+                Save rollbacks happened on {{ saveRollbackHistory.length }} dates. Expand to view.
+              </ng-template>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <ul>
+            <li *ngFor="let rollback of saveRollbackHistory">
+              <standard-absolute-time [timeUtc]="rollback.eventTimeUtc"></standard-absolute-time>
+            </li>
+          </ul>
+        </mat-expansion-panel>
+      </ng-container>
       <cdk-virtual-scroll-viewport tvsItemSize="48" headerHeight="56" class="cdk-wrapper">
         <table mat-table [dataSource]="creditHistory">
           <ng-container matColumnDef="eventTimestampUtc">

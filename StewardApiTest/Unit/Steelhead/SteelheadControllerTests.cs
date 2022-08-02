@@ -825,34 +825,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerInventory_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var profileId = Fixture.Create<int>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.GetPlayerInventory(xuid).ConfigureAwait(false),
-                async () => await controller.GetPlayerInventoryByProfileId(profileId).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as SteelheadPlayerInventory;
-                details.Should().NotBeNull();
-                details.Should().BeOfType<SteelheadPlayerInventory>();
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task GetgiftInventoryProfiles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1509,8 +1481,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadNotificationProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.SteelheadNotificationProvider.SendNotificationsAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.SteelheadNotificationProvider.SendGroupNotificationAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
-                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
-                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
                 this.SteelheadServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.SteelheadServiceManagementProvider.GetCmsRacersCupScheduleAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<RacersCupSchedule>());
@@ -1541,8 +1511,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public ISteelheadBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<ISteelheadBanHistoryProvider>();
 
-            public ISteelheadNotificationHistoryProvider NotificationHistoryProvider { get; set; } =
-                Substitute.For<ISteelheadNotificationHistoryProvider>();
+            public INotificationHistoryProvider NotificationHistoryProvider { get; set; } =
+                Substitute.For<INotificationHistoryProvider>();
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 

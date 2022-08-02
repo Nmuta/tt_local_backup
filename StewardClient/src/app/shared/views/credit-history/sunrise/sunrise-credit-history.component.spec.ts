@@ -5,6 +5,7 @@ import { SunriseCreditHistoryComponent } from './sunrise-credit-history.componen
 import { first } from 'lodash';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { createMockSunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service.mock';
 
 describe('SunriseCreditHistoryComponent', () => {
   let component: SunriseCreditHistoryComponent;
@@ -15,7 +16,7 @@ describe('SunriseCreditHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseCreditHistoryComponent],
-      providers: [createMockSunriseService()],
+      providers: [createMockSunriseService(), createMockSunrisePlayerService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
