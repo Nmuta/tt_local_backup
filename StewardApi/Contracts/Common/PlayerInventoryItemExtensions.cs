@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
                 catch
                 {
                     item.Description = "No item name";
-                    loggingService.LogException(new InventoryItemAppInsightsException($"Missing Description for {logName} Item ID: {item.Id} ( {logMetadata} )"));
+                    loggingService.LogInventoryEvent("Missing Description", logName, item, logMetadata);
                 }
             }
 
