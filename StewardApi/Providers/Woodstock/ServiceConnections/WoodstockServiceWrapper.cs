@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
@@ -290,6 +291,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task SetUserReportWeightTypeAsync(
+            ulong xuid,
+            ForzaUserReportWeightType reportWeightType,
+            string endpoint)
+        {
+          var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+          await userService.SetUserReportWeightType(xuid, reportWeightType).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>   
         public async Task<ServicesLiveOps.UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecordAsync(
             ulong xuid,
             Guid externalProfileId,

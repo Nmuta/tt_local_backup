@@ -14,7 +14,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using Xls.Security.FH5_main.Generated;
+using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
 
@@ -420,7 +422,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => "Ban expired by Steward"));
 
             this.CreateMap<ServicesLiveOps.ForzaUserUnBanResult, UnbanResult>();
-
+            this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
+            this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
+                .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.reportWeightType));
             this.CreateMap<ServicesLiveOps.ForzaLiveOpsHasPlayedRecord, HasPlayedRecord>() // Use UGC contracts GameTitle, confirmed with Caleb 6/23/22
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(src => Enum.GetName(typeof(Turn10.UGC.Contracts.GameTitle), src.gameTitle)))
                 .ReverseMap();

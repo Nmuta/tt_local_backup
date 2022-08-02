@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
@@ -178,6 +179,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Sets a user's report weight type.
+        /// </summary>
+        Task SetUserReportWeightTypeAsync(
+            ulong xuid,
+            ForzaUserReportWeightType reportWeightType,
+            string endpoint);
+
         ///     Gets record of what user has played.
         /// </summary>
         Task<ServicesLiveOps.UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecordAsync(

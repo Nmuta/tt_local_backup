@@ -17,6 +17,7 @@ using Turn10.Services.LiveOps.FH5_main.Generated;
 using Xls.WebServices.FH5_main.Generated;
 using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using static Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 {
@@ -229,28 +230,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<int> Action() => await provider.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<UserReportWeight> Action() => await provider.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.Should().BeInRange(1, 99);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SetUserReportWeightAsync_WithReportWeightOutOfRange_ShouldThrow()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var reportWeight = -1;
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> action = async () => await provider.SetUserReportWeightAsync(xuid, reportWeight, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>($"Report weight must be between 0 and 100. Provided value: {reportWeight}");
+            result.Weight.Should().BeInRange(1, 99);
         }
 
         [TestMethod]
@@ -260,7 +244,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var reportWeight = 4;
+            var reportWeight = Fixture.Create<UserReportWeightType>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
@@ -545,8 +529,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             public Dependencies()
             {
                 Random rnd = new Random();
-                var fakeGetReportWeight = Fixture.Create<UserManagementService.GetUserReportWeightOutput>();
-                fakeGetReportWeight.reportWeight = rnd.Next(1, 100);
+                var fakeGetUserReportWeightOutput = Fixture.Create<UserManagementService.GetUserReportWeightOutput>();
+                var fakeGetReportWeight = Fixture.Create<UserReportWeight>();
+                fakeGetUserReportWeightOutput.reportWeight = rnd.Next(1, 100);
+                fakeGetReportWeight.Weight = fakeGetUserReportWeightOutput.reportWeight;
+
                 this.WoodstockService.GetUserIdsAsync(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserIdsOutput>());
                 this.WoodstockService.GetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagV2Output>());
                 this.WoodstockService.GetUserDataByGamertagAsync("gamerT1", Arg.Any<string>()).Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
@@ -561,8 +548,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserBanSummariesOutput>());
                 this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.WoodstockService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
-                this.WoodstockService.GetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(fakeGetReportWeight);
+                this.WoodstockService.GetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(fakeGetUserReportWeightOutput);
                 this.WoodstockService.SetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<Task>());
+                this.WoodstockService.SetUserReportWeightTypeAsync(Arg.Any<ulong>(), Arg.Any<ForzaUserReportWeightType>(), Arg.Any<string>()).Returns(Fixture.Create<Task>());
                 this.WoodstockService.GetHasPlayedRecordAsync(Arg.Any<ulong>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetHasPlayedRecordOutput>());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
@@ -574,6 +562,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.Mapper.Map<IList<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
+                this.Mapper.Map<UserReportWeight>(Arg.Any<GetUserReportWeightOutput>()).Returns(fakeGetReportWeight);
                 this.Mapper.Map<IList<HasPlayedRecord>>(Arg.Any<ForzaLiveOpsHasPlayedRecord[]>()).Returns(Fixture.Create<IList<HasPlayedRecord>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);

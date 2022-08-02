@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-title>Player Report Weight</mat-card-title>
+  <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+  <p *ngIf="currentReportWeight?.type === ReportWeightType.Default">
+    <b>Player report weight:</b> {{ currentReportWeight.weight }}
+  </p>
+  <div *ngIf="getMonitor.isSuccess; else monitorTemplate" class="div-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Report Weight</mat-label>
+      <mat-select [formControl]="formControls.reportWeightType">
+        <mat-option *ngFor="let reportWeightType of reportWeightTypes" [value]="reportWeightType">
+          {{ reportWeightType | humanize }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!canSetReportWeight && (!hasChanges || postMonitor.isActive)"
+      (click)="setReportWeight()"
+    >
+      <span [matTooltip]="!canSetReportWeight ? featureDisabledText : null">
+        Update <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+      </span>
+    </button>
+  </div>
+</mat-card>
+
+<ng-template #monitorTemplate>
+  <big-spinner [monitor]="getMonitor"></big-spinner>
+</ng-template>

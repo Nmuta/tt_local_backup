@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using Turn10.UGC.Contracts;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
@@ -23,6 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 500;
+        private const int DefaultReportWeight = 10; // Value players are initialized with.
         private const int VipUserGroupId = 1;
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
@@ -618,31 +620,45 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<int> GetUserReportWeightAsync(
+        public async Task<UserReportWeight> GetUserReportWeightAsync(
             ulong xuid,
             string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var response = await this.woodstockService.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
-            return response.reportWeight;
+            try
+            {
+                var response = await this.woodstockService.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
+                return this.mapper.Map<UserReportWeight>(response);
+            }
+            catch(Exception ex)
+            {
+                throw new UnknownFailureStewardException("Failed to get user report weight.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task SetUserReportWeightAsync(
             ulong xuid,
-            int reportWeight,
+            UserReportWeightType reportWeightType,
             string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            if (reportWeight < 0 || reportWeight > 100)
+            try
             {
-                throw new ArgumentOutOfRangeException(
-                    $"Report weight must be between 0 and 100. Provided value: {reportWeight}");
-            }
+                var mappedReportWeightType = this.mapper.Map<ForzaUserReportWeightType>(reportWeightType);
+                await this.woodstockService.SetUserReportWeightTypeAsync(xuid, mappedReportWeightType, endpoint).ConfigureAwait(false);
 
-            await this.woodstockService.SetUserReportWeightAsync(xuid, reportWeight, endpoint).ConfigureAwait(false);
+                if (reportWeightType == UserReportWeightType.Default)
+                {
+                    await this.woodstockService.SetUserReportWeightAsync(xuid, DefaultReportWeight, endpoint).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Failed to get set report weight.", ex);
+            }
         }
 
         /// <inheritdoc />

@@ -18,12 +18,12 @@ using Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
-using Turn10.Services.LiveOps.FH5_main.Generated;
+using Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Player;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
     [TestClass]
-    public sealed class WoodstockPlayerTests
+    public sealed class ReportWeightControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
 
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var reportWeight = 4;
+            var reportWeight = Fixture.Create<UserReportWeightType>();
 
             // Act.
             Func<Task> action = async () => await controller.SetUserReportWeight(xuid, reportWeight).ConfigureAwait(false);
@@ -237,8 +237,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
-                this.playerDetailsProvider.GetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<int>());
-                this.playerDetailsProvider.SetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<Task>());
+                this.playerDetailsProvider.GetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<UserReportWeight>());
+                this.playerDetailsProvider.SetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<UserReportWeightType>(), Arg.Any<string>()).Returns(Fixture.Create<Task>());
                 this.playerDetailsProvider.GetHasPlayedRecordAsync(Arg.Any<ulong>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<IList<HasPlayedRecord>>());
             }
             public IWoodstockPlayerDetailsProvider playerDetailsProvider { get; set; } = Substitute.For<IWoodstockPlayerDetailsProvider>();
@@ -249,7 +249,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 mc.AllowNullCollections = true;
             }));
 
-            public WoodstockPlayer Build() => new WoodstockPlayer(
+            public ReportWeightController Build() => new ReportWeightController(
                 this.playerDetailsProvider,
                 this.mapper)
             { ControllerContext = this.ControllerContext };

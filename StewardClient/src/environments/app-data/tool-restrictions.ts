@@ -5,6 +5,7 @@ export enum RestrictedFeature {
   GroupGifting = 'Group Gifting',
   GiftLivery = 'Gift Livery',
   SendLoyaltyRewards = 'Send Loyalty Rewards',
+  SetReportWeight = 'Set Report Weight',
 }
 
 /** The role restrictions for tooling features. */
@@ -31,6 +32,12 @@ export const RestrictedToolAccessLookup = {
     [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
+  },
+  [RestrictedFeature.SetReportWeight]: {
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
   },
 };
 

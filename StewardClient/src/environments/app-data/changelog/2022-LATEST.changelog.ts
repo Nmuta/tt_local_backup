@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: 'a78cc115-4b08-4a30-b9ef-360811ae8da0',
+      shortText: 'Add report weight tooling to player details.',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.Leaderboards] },
       uuid: '950d4cd0-87a2-4de7-9fc0-5756b40922c0',
       shortText: 'Fix bug in Leaderboard jump to score functionality',
@@ -123,11 +128,6 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
       tag: ChangelogTag.General,
       uuid: '4b68c770-fc42-4534-a777-33896d6d5d0f',
       shortText: 'Correct phrasing on splash page',
-    },
-    {
-      tag: ChangelogTag.Internal,
-      uuid: '1677ddca-c912-4e4f-8dd8-bb499cdfdef0',
-      shortText: 'Setup report weight integration with Services',
     },
     {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },

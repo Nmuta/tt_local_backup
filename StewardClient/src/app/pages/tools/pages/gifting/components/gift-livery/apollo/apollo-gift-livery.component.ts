@@ -29,7 +29,7 @@ import { ApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/ap
   ],
 })
 export class ApolloGiftLiveryComponent extends GiftLiveryBaseComponent<IdentityResultAlpha> {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitleCodeName.FM7;
 
   constructor(
     private readonly apolloService: ApolloService,

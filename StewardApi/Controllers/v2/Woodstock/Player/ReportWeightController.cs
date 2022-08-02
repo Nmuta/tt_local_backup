@@ -16,12 +16,12 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
+namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Player
 {
     /// <summary>
     ///     Handles requests for Woodstock.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}")]
+    [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/reportWeight")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(
@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         UserRole.MediaTeam)]
     [ApiVersion("2.0")]
     [Tags("Player", "Woodstock")]
-    public class WoodstockPlayer : V2ControllerBase
+    public class ReportWeightController : V2ControllerBase
     {
         private readonly IWoodstockPlayerDetailsProvider playerDetailsProvider;
         private readonly IMapper mapper;
@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayer"/> class.
         /// </summary>
-        public WoodstockPlayer(IWoodstockPlayerDetailsProvider playerDetailsProvider, IMapper mapper)
+        public ReportWeightController(IWoodstockPlayerDetailsProvider playerDetailsProvider, IMapper mapper)
         {
             playerDetailsProvider.ShouldNotBeNull(nameof(playerDetailsProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
@@ -55,8 +55,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         /// <summary>
         ///    Gets a player's report weight.
         /// </summary>
-        [HttpGet("reportWeight")]
-        [SwaggerResponse(200, type: typeof(int))]
+        [HttpGet]
+        [SwaggerResponse(200, type: typeof(UserReportWeight))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetUserReportWeight(ulong xuid)
@@ -70,17 +70,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         /// <summary>
         ///    Sets a player's report weight.
         /// </summary>
-        [HttpPost("reportWeight")]
-        [SwaggerResponse(200)]
+        [HttpPost]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.SupportAgentNew)]
+        [SwaggerResponse(200, type: typeof(UserReportWeight))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
-        public async Task<IActionResult> SetUserReportWeight(ulong xuid, [FromBody] int reportWeight)
+        public async Task<IActionResult> SetUserReportWeight(ulong xuid, [FromBody] UserReportWeightType reportWeightType)
         {
             xuid.IsValidXuid();
 
-            await this.playerDetailsProvider.SetUserReportWeightAsync(xuid, reportWeight, this.WoodstockEndpoint.Value).ConfigureAwait(true);
-            return this.Ok();
+            await this.playerDetailsProvider.SetUserReportWeightAsync(xuid, reportWeightType, this.WoodstockEndpoint.Value).ConfigureAwait(true);
+
+            var reportWeight = await this.playerDetailsProvider.GetUserReportWeightAsync(xuid, this.WoodstockEndpoint.Value).ConfigureAwait(true);
+            return this.Ok(reportWeight);
         }
 
         /// <summary>
