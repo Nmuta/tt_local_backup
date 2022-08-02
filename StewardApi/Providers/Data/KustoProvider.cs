@@ -463,6 +463,45 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
         }
 
+        /// <inheritdoc />
+        public async Task<IList<SaveRollbackHistory>> GetSaveRollbackHistoryAsync(ulong xuid)
+        {
+            try
+            {
+                var query = SaveRollbackHistory.MakeQuery(xuid);
+
+                async Task<IList<SaveRollbackHistory>> SaveRollbackHistories()
+                {
+                    var saveRollbackHistories = new List<SaveRollbackHistory>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (reader.Read())
+                        {
+                            var saveRollback = SaveRollbackHistory.FromQueryResult(reader);
+                            // Only add the successful save rollback
+                            if (saveRollback.ResultCode == 1)
+                            {
+                                saveRollbackHistories.Add(saveRollback);
+                            }
+                        }
+
+                        reader.Close();
+                    }
+
+                    return saveRollbackHistories;
+                }
+
+                return await SaveRollbackHistories().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Failed to query rollback history for XUID: {xuid}", ex);
+            }
+        }
+
         private async Task<string> GetGameDbNameAsync(KustoGameDbSupportedTitle supportedTitle)
         {
             var titleMap = await this.GetTitleMapAsync().ConfigureAwait(false);

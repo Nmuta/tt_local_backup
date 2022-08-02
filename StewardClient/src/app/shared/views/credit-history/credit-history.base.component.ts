@@ -9,6 +9,8 @@ import BigNumber from 'bignumber.js';
 import { SunriseCreditDetailsEntry } from '@models/sunrise';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 import { clamp, slice } from 'lodash';
+import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 export type CreditDetailsEntryUnion = SunriseCreditDetailsEntry | WoodstockCreditDetailsEntry;
 export type CreditDetailsEntryMixin = {
@@ -122,10 +124,13 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 {
   @Input() public identity?: IdentityResultUnion;
 
+  public saveRollbackMonitor = new ActionMonitor('GET save rollback');
+
   /** A list of player credit events. */
   public creditHistory = new TableVirtualScrollDataSource<
     CreditDetailsEntryUnion & CreditDetailsEntryMixin
   >([]);
+  public saveRollbackHistory: ProfileRollbackHistory[];
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -150,11 +155,15 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public xpAnalysisDates: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[] = null;
 
   public abstract gameTitle: GameTitleCodeName;
+  public abstract isSaveRollbackSupported: boolean;
   public abstract getCreditHistoryByXuid$(
     xuid: BigNumber,
     startIndex: number,
     maxResults: number,
   ): Observable<T[]>;
+  public abstract getSaveRollbackHistoryByXuid$(
+    xuid: BigNumber,
+  ): Observable<ProfileRollbackHistory[]>;
 
   /** Lifecycle hook */
   public ngOnInit(): void {
@@ -195,6 +204,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
     if (!!this.identity?.xuid) {
       this.getCreditUpdates$.next();
+      this.loadSaveRollbackHistory();
     }
   }
 
@@ -208,6 +218,8 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
     this.loadError = undefined;
     this.startIndex = 0;
     this.creditHistory.data = [];
+    this.saveRollbackHistory = null;
+    this.loadSaveRollbackHistory();
     this.getCreditUpdates$.next();
   }
 
@@ -219,5 +231,18 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   /** Type safety! */
   public data(source: unknown): T & CreditDetailsEntryMixin {
     return source as T & CreditDetailsEntryMixin;
+  }
+
+  /** Load save rollbacks history for player */
+  private loadSaveRollbackHistory(): void {
+    if (this.isSaveRollbackSupported) {
+      this.saveRollbackMonitor = this.saveRollbackMonitor.repeat();
+      const getSaveRollbackHistoryByXuid$ = this.getSaveRollbackHistoryByXuid$(this.identity.xuid);
+      getSaveRollbackHistoryByXuid$
+        .pipe(this.saveRollbackMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+        .subscribe(rollbackHistory => {
+          this.saveRollbackHistory = rollbackHistory.length > 0 ? rollbackHistory : null;
+        });
+    }
   }
 }

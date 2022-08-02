@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH4, tool: [NavbarTool.UserDetails] },
+      uuid: 'df898ffc-b96a-4cc5-8037-5ad4afe7bf2e',
+      shortText: 'Add user save rollback information to FH4',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '4b5ed37b-835e-49ef-9bae-68e780f124d1',
       shortText: 'All external tools now auto-open in new tap',

@@ -63,3 +63,16 @@ mat-expansion-panel {
     align-items: center;
   }
 }
+
+.mat-expansion-panel-header-description,
+.mat-expansion-panel-header-title {
+  flex-basis: 0;
+}
+
+.panel-description-with-timestamp {
+  display: flex;
+
+  standard-absolute-time {
+    padding-left: $gap-micro;
+  }
+}

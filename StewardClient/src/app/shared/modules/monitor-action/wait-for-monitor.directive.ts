@@ -1,4 +1,4 @@
-import { Directive, Input, TemplateRef, ViewContainerRef, OnChanges } from '@angular/core';
+import { Directive, Input, TemplateRef, ViewContainerRef, OnChanges, OnInit } from '@angular/core';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigSpinnerComponent } from './big-spinner/big-spinner.component';
 import { BaseDirective } from '@components/base-component/base.directive';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 @Directive({
   selector: '[waitForMonitor]',
 })
-export class WaitForMonitorDirective extends BaseDirective implements OnChanges {
+export class WaitForMonitorDirective extends BaseDirective implements OnChanges, OnInit {
   // ActionMonitor to wait for before displaying content
   @Input() waitForMonitor: ActionMonitor;
 
@@ -25,6 +25,12 @@ export class WaitForMonitorDirective extends BaseDirective implements OnChanges 
   };
 
   /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    // The showSpinnerOrContent is also called here in case the action monitor is completed before the component is instantiated
+    this.showSpinnerOrContent();
+  }
+
+  /** Angular lifecycle hook. */
   public ngOnChanges(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -33,28 +39,32 @@ export class WaitForMonitorDirective extends BaseDirective implements OnChanges 
     this.subscription = this.waitForMonitor.status$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(_ => {
-        switch (this.waitForMonitor.mode) {
-          case 'single-fire':
-            if (!this.waitForMonitor.isSuccess) {
-              this.viewContainer.clear();
-              this.viewContainer.createComponent(BigSpinnerComponent).instance.monitor =
-                this.waitForMonitor;
-            } else {
-              this.viewContainer.clear();
-              this.viewContainer.createEmbeddedView(this.templateRef);
-            }
-            break;
-          case 'multi-fire':
-            if (this.waitForMonitor.isActive || this.waitForMonitor.isErrored) {
-              this.viewContainer.clear();
-              this.viewContainer.createComponent(BigSpinnerComponent).instance.monitor =
-                this.waitForMonitor;
-            } else {
-              this.viewContainer.clear();
-              this.viewContainer.createEmbeddedView(this.templateRef);
-            }
-            break;
-        }
+        this.showSpinnerOrContent();
       });
+  }
+
+  private showSpinnerOrContent(): void {
+    switch (this.waitForMonitor.mode) {
+      case 'single-fire':
+        if (!this.waitForMonitor.isSuccess) {
+          this.viewContainer.clear();
+          this.viewContainer.createComponent(BigSpinnerComponent).instance.monitor =
+            this.waitForMonitor;
+        } else {
+          this.viewContainer.clear();
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        }
+        break;
+      case 'multi-fire':
+        if (this.waitForMonitor.isActive || this.waitForMonitor.isErrored) {
+          this.viewContainer.clear();
+          this.viewContainer.createComponent(BigSpinnerComponent).instance.monitor =
+            this.waitForMonitor;
+        } else {
+          this.viewContainer.clear();
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        }
+        break;
+    }
   }
 }
