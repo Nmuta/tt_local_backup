@@ -8,9 +8,14 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '4828148f-e5d8-4085-a85d-3b1fa4412917',
+      shortText: 'Update list of Steward devs for contact us',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
       uuid: 'a78cc115-4b08-4a30-b9ef-360811ae8da0',
-      shortText: 'Add report weight tooling to player details.',
+      shortText: 'Add report weight tooling to player details',
     },
     {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.Leaderboards] },

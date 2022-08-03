@@ -20,6 +20,7 @@ export class ExternalRedirectComponent implements OnInit {
     'v-jyates@microsoft.com',
     'sharerdavid@microsoft.com',
     'caleb.moore@microsoft.com',
+    'v-blebois@microsoft.com',
   ];
 
   constructor(private readonly store: Store, private readonly route: ActivatedRoute) {}
