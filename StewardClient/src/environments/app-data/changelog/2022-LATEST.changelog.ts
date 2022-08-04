@@ -8,6 +8,14 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: {
+        title: 'all',
+        tool: [NavbarTool.UserBanning, NavbarTool.Messaging, NavbarTool.Gifting],
+      },
+      uuid: '66db4d20-33fa-4301-8a35-479b5304f2d3',
+      shortText: 'Remove unnecessary scrollbar in player selection component',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '4828148f-e5d8-4085-a85d-3b1fa4412917',
       shortText: 'Update list of Steward devs for contact us',
