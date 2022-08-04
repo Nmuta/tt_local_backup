@@ -93,8 +93,11 @@ Task<AdminGetSupportedGiftTypesV2Output> AdminGetSupportedGiftTypesV2(int maxRes
 
 ### LocalizationManagementService
 
+Tested by lugeiken; FM8 nuget version 2.5.7
+
 
 ```c#
+// Successful test
 Task<AddStringToLocalizeOutput> AddStringToLocalize(ForzaLocalizedStringData localizedStringData) {}
 ```
 

@@ -406,7 +406,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            controller.Request.Headers.Add("endpointKey", "Steelhead|Development");
+            controller.Request.Headers.Add("endpointKey", "Steelhead|Studio");
             var gamertag = Fixture.Create<string>();
 
             // Act.
