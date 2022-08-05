@@ -17,7 +17,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -26,7 +25,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Group
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 {
     /// <summary>
     ///     Group gift controller.
@@ -42,44 +41,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Group
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
 
         private readonly ISteelheadItemsProvider itemsProvider;
-        private readonly IActionLogger actionLogger;
-        private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly ISteelheadPlayerInventoryProvider playerInventoryProvider;
         private readonly IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<SteelheadGift> giftRequestValidator;
-        private readonly IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GiftController"/> class.
         /// </summary>
         public GiftController(
             ISteelheadItemsProvider itemsProvider,
-            IActionLogger actionLogger,
-            IJobTracker jobTracker,
             IMapper mapper,
             ISteelheadPlayerInventoryProvider playerInventoryProvider,
             IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator,
-            IRequestValidator<SteelheadGift> giftRequestValidator,
-            IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator)
+            IRequestValidator<SteelheadGift> giftRequestValidator)
         {
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
-            actionLogger.ShouldNotBeNull(nameof(actionLogger));
-            jobTracker.ShouldNotBeNull(nameof(jobTracker));
             mapper.ShouldNotBeNull(nameof(mapper));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
-            groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
 
             this.itemsProvider = itemsProvider;
-            this.actionLogger = actionLogger;
-            this.jobTracker = jobTracker;
             this.mapper = mapper;
             this.playerInventoryProvider = playerInventoryProvider;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
-            this.groupGiftRequestValidator = groupGiftRequestValidator;
         }
 
         /// <summary>

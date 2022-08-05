@@ -19,7 +19,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Auctions
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
 {
     /// <summary>
     ///     Handles requests for Steelhead auctions blocklist.

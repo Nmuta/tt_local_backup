@@ -20,7 +20,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.Services.LiveOps.FM8.Generated;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Controller for Steelhead localized string.

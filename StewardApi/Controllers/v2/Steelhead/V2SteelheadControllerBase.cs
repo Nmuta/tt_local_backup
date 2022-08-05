@@ -16,7 +16,7 @@ using SteelheadContracts = Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using SunriseContracts = Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Base class for v2 controllers.

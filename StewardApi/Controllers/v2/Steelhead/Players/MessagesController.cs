@@ -26,7 +26,7 @@ using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 {
     /// <summary>
     ///     Messaging players steelhead controller.
@@ -102,7 +102,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException("Failed to send messages to players.", ex);
+
+                throw new UnknownFailureStewardException("Failed to send messages to players.", ex);
             }
 
             // TODO: Add notification logging for individual users Task(948868)

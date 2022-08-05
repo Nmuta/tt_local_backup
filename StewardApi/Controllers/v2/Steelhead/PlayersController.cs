@@ -16,8 +16,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -293,7 +291,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     }
                     catch (Exception ex)
                     {
-                        throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
+                        throw new NotFoundStewardException($"No profile found. (Gamertag: {param.Gamertag}).", ex);
                     }
                 }
             }

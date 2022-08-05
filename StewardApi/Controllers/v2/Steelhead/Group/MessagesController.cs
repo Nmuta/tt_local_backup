@@ -27,7 +27,7 @@ using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Group
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 {
     /// <summary>
     ///     Player messages steelhead controller.

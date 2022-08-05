@@ -17,7 +17,7 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Controller for Steelhead user groups.
@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.SteelheadFullName}", ex);
+                throw new UnknownFailureStewardException($"No LSP groups found for {TitleConstants.SteelheadFullName}", ex);
             }
         }
     }

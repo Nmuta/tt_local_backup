@@ -17,7 +17,7 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Controller for steelhead consoles.
@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No console found for Console ID: {consoleId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to update console ban status. (consoleID: {consoleId}).", ex);
             }
         }
     }

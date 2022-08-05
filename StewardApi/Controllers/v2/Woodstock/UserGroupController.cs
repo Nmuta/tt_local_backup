@@ -17,7 +17,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using static System.FormattableString;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.UserGroup
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 {
     /// <summary>
     ///     Handles requests for Woodstock user groups.

@@ -69,5 +69,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Resets the profile. A single car will be applied to the reset profile.
         /// </summary>
         Task<LiveOpsService.ResetProfileOutput> ResetProfile(ForzaProfileResetConfiguration configuration, Guid profileId);
+
+        /// <summary>
+        ///     Gets active user inventory for user.
+        /// </summary>
+        Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventory(ulong xuid);
+
+        /// <summary>
+        ///     Gets specific user inventory by Profile ID.
+        /// </summary>
+        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
     }
 }

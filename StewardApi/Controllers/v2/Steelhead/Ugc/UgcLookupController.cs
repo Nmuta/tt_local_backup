@@ -20,7 +20,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.UGC.Contracts;
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Controller for Steelhead user groups.
@@ -128,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
                 }
                 catch (Exception ex)
                 {
-                    throw new NotFoundStewardException($"No livery found with id: {parsedUgcId}.", ex);
+                    throw new UnknownFailureStewardException($"No livery found. (ugcId: {parsedUgcId}).", ex);
                 }
             }
 
@@ -176,7 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
                 }
                 catch (Exception ex)
                 {
-                    throw new NotFoundStewardException($"No Photo found with id: {parsedUgcId}.", ex);
+                    throw new UnknownFailureStewardException($"No photo found. (ugcId: {parsedUgcId}).", ex);
                 }
             }
 
@@ -224,7 +224,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
                 }
                 catch (Exception ex)
                 {
-                    throw new NotFoundStewardException($"No Tune found with id: {parsedUgcId}.", ex);
+                    throw new UnknownFailureStewardException($"No tune found. (ugcId: {parsedUgcId}).", ex);
                 }
             }
 

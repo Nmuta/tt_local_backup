@@ -26,7 +26,7 @@ using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
     ///     Player messages steelhead controller.
@@ -81,6 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
             }
             catch (Exception ex)
             {
+                throw new UnknownFailureStewardException($"User flags not updated. (XUID: {xuid})", ex);
                 throw new NotFoundStewardException(
                     $"Failed to retrieve messages for player. (xuid: {xuid})", ex);
             }

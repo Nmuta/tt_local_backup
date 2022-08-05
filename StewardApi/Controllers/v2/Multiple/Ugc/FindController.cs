@@ -16,7 +16,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using FH4 = Forza.LiveOps.FH4.Generated;
 using ServicesLiveOpsFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Multiple.Ugc
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
 {
     /// <summary>
     ///     Handles requests for Woodstock.

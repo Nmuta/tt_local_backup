@@ -22,7 +22,7 @@ using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static System.FormattableString;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Apollo
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
 {
     /// <summary>
     ///     Handles requests for Apollo gifting.

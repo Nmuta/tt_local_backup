@@ -15,15 +15,13 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
     ///     Test controller for testing Steelhead LSP APIs.
@@ -69,8 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
             }
 
-            // var serv = this.Services.UserInventoryManagementService;
-            // var x = await serv.GetAdminUserProfiles(1234, 5).ConfigureAwait(true);
             try
             {
                 var response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
@@ -80,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No record of legacy titles played found for XUID: {xuid}.", ex);
+                throw new UnknownFailureStewardException($"No record of legacy titles played found. (XUID: {xuid})", ex);
             }
         }
 
@@ -135,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"Failed to send loyalty rewards for XUID: {xuid}.", ex);
+                throw new UnknownFailureStewardException($"Failed to send loyalty rewards. (XUID: {xuid})", ex);
             }
 
             return this.Ok();

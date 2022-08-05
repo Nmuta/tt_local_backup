@@ -16,7 +16,7 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 {
     /// <summary>
     ///     Handles requests for Woodstock.

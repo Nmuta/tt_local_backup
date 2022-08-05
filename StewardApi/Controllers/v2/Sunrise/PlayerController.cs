@@ -14,7 +14,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Sunrise
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
 {
     /// <summary>
     ///     Handles requests for Sunrise players.

@@ -19,7 +19,7 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Controller for Steelhead user groups.
@@ -98,7 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No racer schedule data found for {TitleConstants.SteelheadFullName}", ex);
+                throw new UnknownFailureStewardException($"No racer schedule data found for {TitleConstants.SteelheadFullName}", ex);
             }
         }
 
@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No racer schedule data found for XUID: {xuid}.", ex);
+                throw new UnknownFailureStewardException($"No racer schedule data found for {TitleConstants.SteelheadFullName}", ex);
             }
         }
     }
