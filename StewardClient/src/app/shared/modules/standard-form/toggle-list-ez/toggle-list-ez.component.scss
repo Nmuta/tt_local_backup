@@ -1,0 +1,17 @@
+:host ::ng-deep .mat-card-title-group {
+  justify-content: unset;
+}
+
+.reset-button {
+  margin: 0 0.5em;
+}
+.action-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  height: 40px; // sizing based off title+subtitle
+  margin-left: 1em;
+  & > * {
+    margin: .5em;
+  }
+}

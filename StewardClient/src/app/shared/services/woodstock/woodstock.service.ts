@@ -42,7 +42,7 @@ import {
 import { AuctionFilters } from '@models/auction-filters';
 import { PlayerAuction } from '@models/player-auction';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
-import { PlayerUgcItem } from '@models/player-ugc-item';
+import { PlayerUgcItem, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
 import { DetailedCar } from '@models/detailed-car';
@@ -73,6 +73,7 @@ import { UnbanResult } from '@models/unban-result';
 })
 export class WoodstockService {
   public basePath: string = 'v1/title/woodstock';
+  public basePathV2: string = 'v2/title/woodstock';
 
   constructor(private readonly apiService: ApiService) {}
 
@@ -512,6 +513,13 @@ export class WoodstockService {
       httpParams,
     );
   }
+  /** Sets a UGC item's GeoFlags*/
+  public setUgcGeoFlag$(ugcId: string, geoFlags: string[]): Observable<void> {
+    return this.apiService.postRequest$(
+      `${this.basePathV2}/ugc/${ugcId}/geoFlags`,
+      geoFlags
+    );
+  }
 
   /** Gets a player's hidden UGC item. */
   public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
@@ -544,10 +552,10 @@ export class WoodstockService {
   public getPlayerUgcByShareCode$(
     shareCode: string,
     contentType: UgcType,
-  ): Observable<PlayerUgcItem[]> {
+  ): Observable<WoodstockPlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.apiService.getRequest$<PlayerUgcItem[]>(
+    return this.apiService.getRequest$<WoodstockPlayerUgcItem[]>(
       `${this.basePath}/storefront/sharecode(${shareCode})`,
       httpParams,
     );
@@ -564,12 +572,12 @@ export class WoodstockService {
   }
 
   /** Gets a player's UGC item.  */
-  public getPlayerUgcItem$(id: string, ugcType: UgcType): Observable<PlayerUgcItem> {
+  public getPlayerUgcItem$(id: string, ugcType: UgcType): Observable<WoodstockPlayerUgcItem> {
     if (ugcType === UgcType.Unknown) {
       throw new Error(`Invalid UGC item type for lookup: ${ugcType}}`);
     }
 
-    return this.apiService.getRequest$<PlayerUgcItem>(
+    return this.apiService.getRequest$<WoodstockPlayerUgcItem>(
       `${this.basePath}/storefront/${ugcType.toLowerCase()}(${id})`,
     );
   }

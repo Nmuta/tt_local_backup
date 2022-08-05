@@ -59,15 +59,19 @@
       ></model-dump-price-table>
     </mat-card>
 
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>UGC Info</mat-card-title>
-        <mat-card-subtitle>Flags, counters, etc</mat-card-subtitle>
-      </mat-card-header>
-      <model-dump-number-table
-        [values]="source.processedModel.extractedNumbers.other"
-      ></model-dump-number-table>
-    </mat-card>
+    <div>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>UGC Info</mat-card-title>
+          <mat-card-subtitle>Flags, counters, etc</mat-card-subtitle>
+        </mat-card-header>
+        <model-dump-number-table
+          [values]="source.processedModel.extractedNumbers.other"
+        ></model-dump-number-table>
+      </mat-card>
+      
+      <toggle-list-ez [contract]="geoFlagsToggleListEzContract"></toggle-list-ez>
+    </div>
 
     <div class="images">
       <model-dump-images></model-dump-images>

@@ -27,6 +27,7 @@ import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redir
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
+import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -64,6 +65,7 @@ import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-dow
     FeatureUgcModalModule,
     PipesModule,
     UgcDownloadButtonModule,
+    StandardFormModule,
   ],
 })
 export class UgcDetailsModule {}

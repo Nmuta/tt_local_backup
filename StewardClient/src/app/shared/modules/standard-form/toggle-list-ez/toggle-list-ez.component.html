@@ -1,0 +1,49 @@
+<mat-card>
+  <mat-card-title-group>
+    <mat-card-title>{{contract.title}}</mat-card-title>
+    <mat-card-subtitle>
+      <ng-container *ngIf="!!contract.error"><mat-icon color="warn">warn</mat-icon>{{contract.error}}</ng-container>
+      <ng-container *ngIf="!contract.error">Toggle and submit flags</ng-container>
+    </mat-card-subtitle>
+    <div class="action-wrapper">
+      <button
+        mat-mini-fab
+        color="warn"
+        class="reset-button"
+        (click)="resetToInitial()"
+        [disabled]="!(formControl.dirty && !submitMonitor.isActive)"
+        matTooltip="Clear Changes"
+      >
+        <mat-icon>undo</mat-icon>
+      </button>
+
+      <button
+        mat-mini-fab
+        color="primary"
+        matTooltip="Submit"
+        (click)="submit()"
+        clickStop
+        stateManager
+        [monitor]="submitMonitor"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        [disabled]="!verifyDelete.checked || !!contract.error"
+      >
+        <mat-icon>done</mat-icon>
+      </button>
+      <mat-checkbox
+        #verifyDelete
+        matTooltip="Verify Submit"
+        [disabled]="!!contract.error"
+        ></mat-checkbox
+      >
+    </div>
+  </mat-card-title-group>
+
+  <toggle-list 
+    [disabled]="!!contract.error"
+    [formControl]="formControl"
+    [order]="contract.order"
+    [initial]="contract.initialModel"></toggle-list>
+</mat-card>

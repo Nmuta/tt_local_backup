@@ -1,0 +1,5 @@
+<div *ngFor="let key of order" [formGroup]="formGroup">
+  <standard-flag [value]="initial[key]">
+    <mat-checkbox [formControl]="formControls[key]">{{ key | humanize }}</mat-checkbox>
+  </standard-flag>
+</div>
