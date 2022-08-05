@@ -23,7 +23,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { RacersCupCalendarComponent } from './components/racers-cup-calendar/racers-cup-calendar.component';
 import { RacersCupComponent } from './racers-cup.component';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
@@ -41,6 +40,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RacersCupKeyComponent } from './components/racers-cup-key/racers-cup-key.component';
+import { angularCalendarCustomFactory } from '@helpers/angular-calendar-custom-factory';
 
 /** A module for Racer's Cup schedule. */
 @NgModule({
@@ -94,7 +94,7 @@ import { RacersCupKeyComponent } from './components/racers-cup-key/racers-cup-ke
     MatCheckboxModule,
     MatExpansionModule,
     MatTreeModule,
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: angularCalendarCustomFactory }),
   ],
 })
 export class RacersCupModule {}

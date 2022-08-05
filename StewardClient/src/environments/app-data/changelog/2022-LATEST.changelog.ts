@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.RacersCup },
+      uuid: 'f3d99f82-f538-47e6-b0ef-054174e10ce8',
+      shortText: 'Improve Racers Cup filtering performance',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '9d8f363f-45b4-4ff5-a901-3dc029f5429b',
       shortText: 'Remove identity hint on inline player selection',
