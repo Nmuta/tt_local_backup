@@ -8,6 +8,12 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '328d3279-097c-494f-be96-af50f15b233e',
+      shortText:
+        'Wire up Steelhead V2 services and UI for console banning and shared console users',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.RacersCup },
       uuid: 'f3d99f82-f538-47e6-b0ef-054174e10ce8',
       shortText: 'Improve Racers Cup filtering performance',

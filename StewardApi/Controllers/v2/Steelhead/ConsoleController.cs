@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     /// <summary>
     ///     Controller for steelhead consoles.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/console")]
+    [Route("api/v{version:apiVersion}/title/steelhead/console/{consoleId}")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
-        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
+        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, [FromBody] bool isBanned)
         {
             try
             {

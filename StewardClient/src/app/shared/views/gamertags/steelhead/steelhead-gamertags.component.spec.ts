@@ -1,12 +1,13 @@
 import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { of, throwError } from 'rxjs';
 import { SteelheadGamertagsComponent } from './steelhead-gamertags.component';
 import faker from '@faker-js/faker';
 import { SteelheadSharedConsoleUser } from '@models/steelhead';
 import { ActivatedRoute } from '@angular/router';
+import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
+import { createMockSteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service.mock';
 
 const activatedRouteMock = {
   pathFromRoot: [
@@ -20,13 +21,13 @@ describe('SteelheadGamertagsComponent', () => {
   let component: SteelheadGamertagsComponent;
   let fixture: ComponentFixture<SteelheadGamertagsComponent>;
 
-  let mockSteelheadService: SteelheadService;
+  let mockSteelheadService: SteelheadPlayerConsolesService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadGamertagsComponent],
       providers: [
-        createMockSteelheadService(),
+        createMockSteelheadPlayerConsolesService(),
         {
           provide: ActivatedRoute,
           useValue: activatedRouteMock,
@@ -39,7 +40,7 @@ describe('SteelheadGamertagsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SteelheadGamertagsComponent);
     component = fixture.componentInstance;
-    mockSteelheadService = TestBed.inject(SteelheadService);
+    mockSteelheadService = TestBed.inject(SteelheadPlayerConsolesService);
     fixture.detectChanges();
   });
 
