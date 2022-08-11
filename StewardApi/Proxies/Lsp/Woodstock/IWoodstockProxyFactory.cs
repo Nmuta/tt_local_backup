@@ -16,5 +16,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         ///     Prepares a <see cref="IUserInventoryManagementService" />.
         /// </summary>
         IUserInventoryManagementService PrepareUserInventoryManagementService(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="IUserManagementService" />.
+        /// </summary>
+        IUserManagementService PrepareUserManagementService(string endpoint);
     }
 }

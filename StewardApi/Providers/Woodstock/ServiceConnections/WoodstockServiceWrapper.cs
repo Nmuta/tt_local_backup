@@ -8,6 +8,7 @@ using Forza.WebServices.FH5_main.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
@@ -159,16 +160,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<ServicesLiveOps.UserManagementService.CreateUserGroupOutput> CreateUserGroupAsync(
-            string groupName,
-            string endpoint)
-        {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await userManagementService.CreateUserGroup(groupName).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
         public async Task<ServicesLiveOps.UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
             ulong xuid,
             int[] groupFilter,
@@ -301,7 +292,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
           await userService.SetUserReportWeightType(xuid, reportWeightType).ConfigureAwait(false);
         }
 
-        /// <inheritdoc/>   
+        /// <inheritdoc/>
         public async Task<ServicesLiveOps.UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecordAsync(
             ulong xuid,
             Guid externalProfileId,

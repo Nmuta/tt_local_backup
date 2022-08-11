@@ -5,6 +5,7 @@ using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
@@ -86,13 +87,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<ServicesLiveOps.UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
             int startIndex,
             int maxResults,
-            string endpoint);
-
-        /// <summary>
-        ///     Creates LSP group.
-        /// </summary>
-        Task<ServicesLiveOps.UserManagementService.CreateUserGroupOutput> CreateUserGroupAsync(
-            string groupName,
             string endpoint);
 
         /// <summary>

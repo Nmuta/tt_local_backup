@@ -8,6 +8,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
+      uuid: 'a0715fb8-2af7-4b21-9a57-5897e0197e6d',
+      shortText: 'Implement User Group API endpoints',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '328d3279-097c-494f-be96-af50f15b233e',
       shortText:

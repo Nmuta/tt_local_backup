@@ -5,6 +5,7 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 import { UserGroupManagementResponse } from '@models/user-group-management-response';
 import { BackgroundJob } from '@models/background-job';
+import { BasicPlayerList } from '@models/basic-player-list';
 
 /** The /v2/woodstock/usergroup endpoints. */
 @Injectable({
@@ -22,33 +23,33 @@ export class WoodstockUserGroupService {
   /** Remove users from a user group. */
   public removeUsersFromGroup$(
     userGroupId: BigNumber,
-    xuids: BigNumber[],
+    playerList: BasicPlayerList,
   ): Observable<UserGroupManagementResponse[]> {
     return this.api.postRequest$<UserGroupManagementResponse[]>(
-      `${this.basePath}/${userGroupId}/remove`,
-      xuids,
+      `${this.basePath}/${userGroupId}/remove?useBackgroundProcessing=false`,
+      playerList,
     );
   }
 
-  /** Add users to a user group. */
-  public addUsersToGroupUsingBackgroundTask$(
-    userGroupId: BigNumber,
-    xuids: BigNumber[],
-  ): Observable<BackgroundJob<void>> {
-    return this.api.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/${userGroupId}/add/useBackgroundProcessing`,
-      xuids,
-    );
-  }
-
-  /** Remove users from a user group. */
+  /** Remove users from a user group using a background job. */
   public removeUsersFromGroupUsingBackgroundTask$(
     userGroupId: BigNumber,
-    xuids: BigNumber[],
+    playerList: BasicPlayerList,
   ): Observable<BackgroundJob<void>> {
     return this.api.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/${userGroupId}/remove/useBackgroundProcessing`,
-      xuids,
+      `${this.basePath}/${userGroupId}/remove?useBackgroundProcessing=true`,
+      playerList,
+    );
+  }
+
+  /** Add users to a user group using a background job. */
+  public addUsersToGroupUsingBackgroundTask$(
+    userGroupId: BigNumber,
+    playerList: BasicPlayerList,
+  ): Observable<BackgroundJob<void>> {
+    return this.api.postRequest$<BackgroundJob<void>>(
+      `${this.basePath}/${userGroupId}/add?useBackgroundProcessing=true`,
+      playerList,
     );
   }
 }

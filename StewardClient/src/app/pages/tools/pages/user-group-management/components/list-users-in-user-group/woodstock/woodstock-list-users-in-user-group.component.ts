@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJob } from '@models/background-job';
+import { BasicPlayerList } from '@models/basic-player-list';
 import { LspGroup } from '@models/lsp-group';
 import { UserGroupManagementResponse } from '@models/user-group-management-response';
 import { WoodstockUserGroupService } from '@services/api-v2/woodstock/user-group/woodstock-user-group.service';
@@ -32,10 +33,14 @@ export class WoodstockListUsersInGroupComponent extends BaseComponent {
         );
       },
       deletePlayerFromUserGroup$(
-        _xuid: BigNumber,
-        _userGroup: LspGroup,
+        xuid: BigNumber,
+        userGroup: LspGroup,
       ): Observable<UserGroupManagementResponse[]> {
-        return userGroupService.removeUsersFromGroup$(_userGroup.id, [_xuid]);
+        const playerList: BasicPlayerList = {
+          xuids: [xuid],
+          gamertags: null,
+        };
+        return userGroupService.removeUsersFromGroup$(userGroup.id, playerList);
       },
       deleteAllPlayersFromUserGroup$(
         _userGroup: LspGroup,
@@ -49,13 +54,21 @@ export class WoodstockListUsersInGroupComponent extends BaseComponent {
         xuids: BigNumber[],
         userGroup: LspGroup,
       ): Observable<BackgroundJob<void>> {
-        return userGroupService.removeUsersFromGroupUsingBackgroundTask$(userGroup.id, xuids);
+        const playerList: BasicPlayerList = {
+          xuids: xuids,
+          gamertags: null,
+        };
+        return userGroupService.removeUsersFromGroupUsingBackgroundTask$(userGroup.id, playerList);
       },
       addPlayersToUserGroupUsingBackgroundTask$(
         xuids: BigNumber[],
         userGroup: LspGroup,
       ): Observable<BackgroundJob<void>> {
-        return userGroupService.addUsersToGroupUsingBackgroundTask$(userGroup.id, xuids);
+        const playerList: BasicPlayerList = {
+          xuids: xuids,
+          gamertags: null,
+        };
+        return userGroupService.addUsersToGroupUsingBackgroundTask$(userGroup.id, playerList);
       },
     };
   }
