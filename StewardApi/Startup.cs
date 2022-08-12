@@ -99,19 +99,20 @@ namespace Turn10.LiveOps.StewardApi
             services.AddMvc(options => options.Filters.Add(new ServiceExceptionFilter()));
             services.AddApiVersioning(o =>
             {
-                o.AssumeDefaultVersionWhenUnspecified = true;
-                o.DefaultApiVersion = new ApiVersion(1, 0);
                 o.ReportApiVersions = true;
                 o.UseApiBehavior = false;
             });
 
-            services.AddVersionedApiExplorer(setup =>
+            services.AddVersionedApiExplorer(o =>
             {
-                setup.GroupNameFormat = "'v'VVV";
-                setup.SubstituteApiVersionInUrl = true;
+                o.GroupNameFormat = "'v'VVV";
+                o.SubstituteApiVersionInUrl = true;
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1, 0);
             });
 
             services.AddSwaggerGen();
+            services.AddSwaggerGenNewtonsoftSupport();
             services.ConfigureOptions<ConfigureSwaggerOptions>();
 
             services.AddMemoryCache();
@@ -384,7 +385,7 @@ namespace Turn10.LiveOps.StewardApi
             applicationBuilder.UseSwaggerUI(c =>
             {
                 c.OAuthScopes(new[] { $"api://{this.configuration[ConfigurationKeyConstants.AzureClientId]}/api_access" });
-                foreach (var description in provider.ApiVersionDescriptions)
+                foreach (var description in provider.ApiVersionDescriptions.Reverse())
                 {
                     c.SwaggerEndpoint(
                         $"/swagger/{description.GroupName}/swagger.json",
