@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("LspGroups", "Steelhead", "InDev")]
+    [Tags("LspGroups", "Steelhead")]
     public class UserGroupsController : V2SteelheadControllerBase
     {
         private const int GroupLookupMaxResults = 1000;

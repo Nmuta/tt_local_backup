@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Console", "Steelhead", "InDev")]
+    [Tags("Console", "Steelhead")]
     public class ConsoleController : V2SteelheadControllerBase
     {
         /// <summary>

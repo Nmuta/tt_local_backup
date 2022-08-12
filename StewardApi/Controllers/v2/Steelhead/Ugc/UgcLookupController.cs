@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Ugc", "Steelhead", "InDev")]
+    [Tags("Ugc", "Steelhead")]
     public class UgcLookupController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;

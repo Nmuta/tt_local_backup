@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Flags", "Steelhead", "InDev")]
+    [Tags("Flags", "Steelhead")]
     public class FlagsController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;

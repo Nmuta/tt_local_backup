@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("RacersCup", "Steelhead", "InDev")]
+    [Tags("RacersCup", "Steelhead")]
     public class RacersCupController : V2SteelheadControllerBase
     {
         private const int GroupLookupMaxResults = 1000;
