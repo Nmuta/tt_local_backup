@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
@@ -27,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("Auctions", "Steelhead")]
+    [Tags(Title.Steelhead, Topic.Auctions, Target.Details, Dev.ReviseTags)]
     public class AuctionsController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;

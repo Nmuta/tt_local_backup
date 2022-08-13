@@ -24,6 +24,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
@@ -35,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("BanHistory", "Steelhead")]
+    [Tags(Title.Steelhead, Target.Player, Topic.BanHistory)]
     public class BanHistoryController : V2SteelheadControllerBase
     {
         private const int DefaultStartIndex = 0;

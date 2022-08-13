@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
 {
@@ -29,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("Auctions", "Steelhead")]
+    [Tags(Topic.Auctions, Title.Steelhead)]
     public class BlocklistController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;

@@ -19,6 +19,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.Services.LiveOps.FM8.Generated;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
@@ -30,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Localization", "Steelhead")]
+    [Tags(Title.Steelhead, Topic.Localization, Target.Details, Dev.ReviseTags)]
     public class LocalizationController : V2SteelheadControllerBase
     {
         private readonly ISteelheadPegasusService pegasusService;

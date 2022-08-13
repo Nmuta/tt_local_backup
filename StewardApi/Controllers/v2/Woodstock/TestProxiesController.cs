@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 {
@@ -25,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Woodstock Test")]
+    [Tags(Dev.WoodstockTest)]
     public class TestProxiesController : V2ControllerBase
     {
         /// <summary>

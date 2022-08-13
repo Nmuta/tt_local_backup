@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using static System.FormattableString;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 {
@@ -31,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("UserGroup", "Woodstock")]
+    [Tags(Title.Woodstock, Target.LspGroup, Target.Details, Dev.ReviseTags)]
     public class UserGroupController : V2WoodstockControllerBase
     {
         private readonly IJobTracker jobTracker;

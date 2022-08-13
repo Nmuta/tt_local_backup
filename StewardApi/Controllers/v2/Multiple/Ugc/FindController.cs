@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using FH4 = Forza.LiveOps.FH4.Generated;
 using ServicesLiveOpsFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
 {
@@ -26,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
     [Authorize]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("UGC", "Multiple", "Woodstock", "Sunrise")]
+    [Tags(Topic.Ugc, Title.Multiple, Title.Woodstock, Title.Sunrise)]
     public class FindController : V2ControllerBase
     {
         private readonly IWoodstockService fh5Service;

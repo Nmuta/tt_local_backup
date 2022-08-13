@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
@@ -31,17 +32,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("LoyaltyRewards", "Steelhead")]
-    public class LoyaltyController : V2SteelheadControllerBase
+    [Tags(Title.Steelhead, Target.Player, Topic.LoyaltyRewards)]
+    public class LoyaltyRewardsController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LoyaltyController"/> class.
+        ///     Initializes a new instance of the <see cref="LoyaltyRewardsController"/> class.
         /// </summary>
-        public LoyaltyController(IMapper mapper)
+        public LoyaltyRewardsController(IMapper mapper)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
 

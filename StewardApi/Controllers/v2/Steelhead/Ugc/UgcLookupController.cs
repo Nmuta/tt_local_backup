@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.UGC.Contracts;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
@@ -30,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Ugc", "Steelhead")]
+    [Tags(Title.Steelhead, Topic.Ugc, Target.Details)]
     public class UgcLookupController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;

@@ -4,11 +4,13 @@ using System.Linq;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+
 namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
 {
     /// <summary>
     ///     Forces tags on the Swagger UI page to appear in a certain order: <br/>
-    ///     1. Priority tags in a custom order (see <see cref="PriorityThenAlphanumericComparer.PriorityOrder"/>). <br/>
+    ///     1. Priority tags in a custom order (see <see cref="ReorderTagsDocumentFilter.Order"/>). <br/>
     ///     2. Alphabetic. <br/>
     /// </summary>
     /// <remarks>
@@ -16,58 +18,79 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     /// </remarks>
     public class ReorderTagsDocumentFilter : IDocumentFilter
     {
-        public void Apply(OpenApiDocument document, DocumentFilterContext context)
+        private static IEnumerable<string> Order { get; } = new List<string>
         {
-            var aggregateTags = document.Paths.SelectMany(path => path.Value.Operations.SelectMany(operation => operation.Value.Tags)).Distinct();
-            var orderedTags = aggregateTags
-                .OrderBy(tag => tag.Name, new PriorityThenAlphanumericComparer())
-                .ToList();
-            document.Tags = orderedTags;
+            Dev.InDev,
+
+            Title.Multiple,
+            Title.Agnostic,
+
+            Title.Steelhead,
+            Title.Woodstock,
+            Title.Sunrise,
+            Title.Gravity,
+            Title.Apollo,
+
+            Sentinel.UnknownAlphabetic,
+
+            Dev.SteelheadTest,
+            Dev.WoodstockTest,
+            Dev.SunriseTest,
+            Dev.ApolloTest,
+            Dev.ReviseTags,
+            Dev.Incomplete,
+        };
+
+        public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
+        {
+            swaggerDoc.Tags = this.OrderTags(swaggerDoc).ToList();
         }
 
-        private class PriorityThenAlphanumericComparer : IComparer<string>
+        private IEnumerable<OpenApiTag> OrderTags(OpenApiDocument document)
         {
-            /// <summary>
-            ///     The priority order of tags to display at the top of the Swagger UI page.
-            /// </summary>
-            private enum PriorityOrder
+            var aggregateTags = document.Paths.SelectMany(path => path.Value.Operations.SelectMany(operation => operation.Value.Tags)).Distinct();
+            var aggregateTagsByName = aggregateTags.GroupBy(t => t.Name).ToDictionary(t => t.Key, t => t.ToList());
+
+            var knownNonSentinelTags = Order.Where(v => !Sentinel.Values.Contains(v)).ToHashSet();
+            var aggregateTagsWithoutSlots = aggregateTagsByName.Keys.Where(v => !knownNonSentinelTags.Contains(v)).ToHashSet();
+
+            foreach (var item in Order)
             {
-                /// <summary>Use to bring in-development APIs to the top of the docs list.</summary>
-                InDev,
-
-                /// <summary>Use for services that call multiple upstream LSPs.</summary>
-                Multiple,
-
-                /// <summary>Use for services that do not call LSP, or do not care which LSP/title they call.</summary>
-                Agnostic,
-
-                Steelhead,
-                Woodstock,
-                Sunrise,
-                Gravity,
-                Apollo,
+                if (Sentinel.Values.Contains(item))
+                {
+                    // if we see a sentinel, we should order the unknown tags by the chosen method
+                    var orderedTagsWithoutSlots = this.OrderUnknownTags(item, aggregateTagsByName, aggregateTagsWithoutSlots);
+                    foreach (var tag in orderedTagsWithoutSlots)
+                    {
+                        yield return tag;
+                    }
+                }
+                else if (aggregateTagsByName.TryGetValue(item, out var tags))
+                {
+                    // if this isn't a sentinel and we have values, spit them out
+                    foreach (var tag in tags)
+                    {
+                        yield return tag;
+                    }
+                }
+                else
+                {
+                    // we don't have values for this known tag, which means it is unused.
+                }
             }
+        }
 
-            public int Compare(string x, string y)
+        private IEnumerable<OpenApiTag> OrderUnknownTags(
+            string sentinel,
+            Dictionary<string, List<OpenApiTag>> aggregateTagsByName,
+            HashSet<string> aggregateTagsWithoutSlots)
+        {
+            switch (sentinel)
             {
-                var foundX = Enum.TryParse(typeof(PriorityOrder), x, out var xEnum);
-                var foundY = Enum.TryParse(typeof(PriorityOrder), y, out var yEnum);
-                if (foundX && !foundY)
-                {
-                    return -1;
-                }
-
-                if (foundY && !foundX)
-                {
-                    return 1;
-                }
-
-                if (foundX && foundY)
-                {
-                    return (int)xEnum - (int)yEnum;
-                }
-
-                return string.Compare(x, y, StringComparison.OrdinalIgnoreCase);
+                case Sentinel.UnknownAlphabetic:
+                    return aggregateTagsWithoutSlots.OrderBy(v => v).SelectMany(v => aggregateTagsByName[v]).ToList();
+                default:
+                    throw new InvalidOperationException($"Unknown sentinel '{sentinel}'");
             }
         }
     }

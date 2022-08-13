@@ -25,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 {
@@ -36,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Steelhead", "Players", "Messages")]
+    [Tags(Title.Steelhead, Target.Players, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;

@@ -24,6 +24,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 {
@@ -35,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Steelhead", "Group", "Gift")]
+    [Tags(Title.Steelhead, Target.LspGroup, Topic.Gifting)]
     public class GiftController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
