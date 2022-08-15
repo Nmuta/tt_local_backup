@@ -79,6 +79,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
             if (failedServiceProcies.Length > 0)
             {
                 throw new ServiceProxyStewardException(failedServiceProcies.ToString());
@@ -216,6 +221,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var services = this.SteelheadServices.Value;
 
             if (!this.VerifyServiceProxy(() => services.NotificationManagementService, "NotificationManagementService", out var exception))
+            {
+                throw exception;
+            }
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Verifies permissions management service proxy.
+        /// </summary>
+        [HttpGet("PermissionsManagementService")]
+        [SwaggerResponse(200, type: typeof(bool))]
+        public IActionResult TestPermissionsManagementServiceProxy()
+        {
+            var services = this.SteelheadServices.Value;
+
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out var exception))
             {
                 throw exception;
             }

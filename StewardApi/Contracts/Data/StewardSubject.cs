@@ -22,5 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         PlayerMessages,
         GroupMessages,
         UserGroup,
+        CmsOverride,
+        ApiPermissions,
     }
 }

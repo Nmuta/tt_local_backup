@@ -47,5 +47,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         ///     Prepares a <see cref="INotificationManagementService" />.
         /// </summary>
         INotificationManagementService PrepareNotificationManagementService(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="IPermissionsManagementService" />.
+        /// </summary>
+        IPermissionsManagementService PreparePermissionsManagementService(string endpoint);
     }
 }

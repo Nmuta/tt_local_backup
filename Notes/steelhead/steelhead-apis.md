@@ -193,6 +193,9 @@ We also need the user groups endpoints added to woodstock added to steelhead as 
 V2 report weight endpoints have been ported to Steelhead, but setting ReportWeightType appears to be bugged. Seems to be reading ReportWeightType enum as an integer and applying it to the weight. Feels like we need 'SetUserReportWeightType' and not 'SetUserReportWeight(type)'
 Found issues tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1222002
 
+
+Missing: Endpoint to delete CMS override entry in DB (lugeiken)
+
 ```c#
 // Works as expected
 Task<BanUsersOutput> BanUsers(ForzaUserBanParameters[] banParameters, int xuidCount) { }
@@ -258,4 +261,25 @@ Task SetHasPlayedRecord(ulong xuid, int title, bool hasPlayed) { }
 
 // Cannot verify results without GetHasPlayedRecord
 Task ResendProfileHasPlayedNotification(ulong xuid, Guid externalProfileId, int[] titles) { }
+
+// Successfully test
+Task SetCMSOverride(ulong xuid, string snapshot, string environment, string slot);
+
+// Successfully test
+Task<UserManagementService.GetCMSOverrideOutput> GetCMSOverride(ulong xuid);
 ```
+
+<br />
+
+### UserManagementService
+
+Cannot test yet. Vinh is working on the bug blocking this.
+From Vinh, 8/4 "permissions API is having a forzaclient generator bug that i need to work around"
+
+```c#
+// Untested
+Task<GetApiPermissionsOutput> GetApiPermissions(int deviceRegion, int startAt, int maxResults);
+
+// Untested 
+Task<UpdateApiPermissionsOutput> UpdateApiPermissions(ILiveOpsPermissionsUpdateParameters[] parametersList);
+ ```

@@ -19,6 +19,7 @@ using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.Noti
 using StorefrontManagementService = Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
 using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
+using PermissionsManagementService = Turn10.Services.LiveOps.FM8.Generated.PermissionsManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
 {
@@ -115,6 +116,14 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         {
             var service = new NotificationManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
             var serviceProxy = service.ProxyInterface<NotificationManagementService, INotificationManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IPermissionsManagementService PreparePermissionsManagementService(string endpoint)
+        {
+            var service = new PermissionsManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<PermissionsManagementService, IPermissionsManagementService>();
             return serviceProxy;
         }
     }

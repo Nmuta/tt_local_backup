@@ -56,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Player = 2,
         Group = 4,
         Console = 8,
+        ServiceApis = 16,
     }
 
     [Flags]

@@ -78,6 +78,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         /// </summary>
         public INotificationManagementService NotificationManagementService => this.SteelheadFactory.PrepareNotificationManagementService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets a <see cref="IPermissionsManagementService" />.
+        /// </summary>
+        public IPermissionsManagementService PermissionsManagementService => this.SteelheadFactory.PreparePermissionsManagementService(this.Endpoint);
+
         private ISteelheadProxyFactory SteelheadFactory { get; }
     }
 }
