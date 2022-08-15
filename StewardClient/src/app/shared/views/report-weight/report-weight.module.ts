@@ -15,10 +15,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SteelheadReportWeightComponent } from './steelhead/steelhead-report-weight.component';
 
 /** Module for getting and setting a player's report weight. */
 @NgModule({
-  declarations: [ReportWeightComponent, WoodstockReportWeightComponent],
+  declarations: [
+    ReportWeightComponent,
+    WoodstockReportWeightComponent,
+    SteelheadReportWeightComponent,
+  ],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -37,6 +42,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatCardModule,
   ],
-  exports: [WoodstockReportWeightComponent],
+  exports: [WoodstockReportWeightComponent, SteelheadReportWeightComponent],
 })
 export class ReportWeightModule {}
