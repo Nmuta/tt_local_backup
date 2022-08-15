@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { ApolloService } from '@services/apollo';
 import { ApolloUserFlags } from '@models/apollo';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -15,7 +15,7 @@ import { PermissionsService } from '@services/permissions';
   styleUrls: ['../user-flags.component.scss'],
 })
 export class ApolloUserFlagsComponent extends UserFlagsBaseComponent<ApolloUserFlags> {
-  public gameTitle = GameTitleCodeName.FM7;
+  public gameTitle = GameTitle.FM7;
 
   public formControls = {
     isVip: new FormControl(false),

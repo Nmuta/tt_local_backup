@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { BaseComponent } from '@components/base-component/base.component';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { FormGroup } from '@angular/forms';
 import { WoodstockUserFlags } from '@models/woodstock';
@@ -19,7 +19,7 @@ export type UserFlagsUnion =
   | SunriseUserFlags
   | ApolloUserFlags;
 
-/** Retreives and displays Sunrise User Flags by XUID. */
+/** Retreives and displays User Flags by XUID. */
 @Component({
   template: '',
 })
@@ -56,7 +56,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
     isUnderReview: 'Is Under Review (Console Banned)',
   };
 
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
   public abstract formControls: unknown;
   public abstract formGroup: FormGroup;
 

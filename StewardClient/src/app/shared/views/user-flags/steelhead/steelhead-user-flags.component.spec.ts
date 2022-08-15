@@ -1,24 +1,25 @@
 import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { of, throwError } from 'rxjs';
 import { SteelheadUserFlagsComponent } from './steelhead-user-flags.component';
 import faker from '@faker-js/faker';
 import { SteelheadUserFlags } from '@models/steelhead';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service';
+import { createMockSteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service.mock';
 
 describe('SteelheadUserFlagsComponent', () => {
   let component: SteelheadUserFlagsComponent;
   let fixture: ComponentFixture<SteelheadUserFlagsComponent>;
 
-  let mockSteelheadService: SteelheadService;
+  let mockSteelheadPlayerFlagsService: SteelheadPlayerFlagsService;
   let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadUserFlagsComponent],
-      providers: [createMockSteelheadService(), createMockPermissionsService()],
+      providers: [createMockSteelheadPlayerFlagsService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -26,7 +27,7 @@ describe('SteelheadUserFlagsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SteelheadUserFlagsComponent);
     component = fixture.componentInstance;
-    mockSteelheadService = TestBed.inject(SteelheadService);
+    mockSteelheadPlayerFlagsService = TestBed.inject(SteelheadPlayerFlagsService);
     mockPermissionsService = TestBed.inject(PermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
@@ -122,17 +123,17 @@ describe('SteelheadUserFlagsComponent', () => {
         gamertag: faker.name.firstName(),
         xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
-      mockSteelheadService.getFlagsByXuid$ = jasmine
+      mockSteelheadPlayerFlagsService.getFlagsByXuid$ = jasmine
         .createSpy('getFlagsByXuid$')
         .and.returnValue(of({}));
     });
 
-    it('should call sunriseService.getSharedConsoleUsersByXuid', () => {
+    it('should call steelheadPlayerFlagsService.getFlagsByXuid', () => {
       const expectedXuid = component.identity.xuid;
       component.getFlagsByXuid$(component.identity.xuid);
 
-      expect(mockSteelheadService.getFlagsByXuid$).toHaveBeenCalledTimes(1);
-      expect(mockSteelheadService.getFlagsByXuid$).toHaveBeenCalledWith(expectedXuid);
+      expect(mockSteelheadPlayerFlagsService.getFlagsByXuid$).toHaveBeenCalledTimes(1);
+      expect(mockSteelheadPlayerFlagsService.getFlagsByXuid$).toHaveBeenCalledWith(expectedXuid);
     });
   });
 });

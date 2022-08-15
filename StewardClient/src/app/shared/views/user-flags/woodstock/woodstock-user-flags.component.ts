@@ -4,7 +4,7 @@ import { WoodstockUserFlags } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock/woodstock.service';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PermissionsService } from '@services/permissions';
 
@@ -15,7 +15,7 @@ import { PermissionsService } from '@services/permissions';
   styleUrls: ['../user-flags.component.scss'],
 })
 export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<WoodstockUserFlags> {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 
   public formControls = {
     isVip: new FormControl(false),
