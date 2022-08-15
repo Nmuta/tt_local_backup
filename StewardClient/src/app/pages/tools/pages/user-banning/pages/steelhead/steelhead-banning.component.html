@@ -14,7 +14,7 @@
             >
               <ng-template let-identity>
                 <ban-chip-icon
-                  *ngIf="identity?.extra?.hasApollo"
+                  *ngIf="identity?.extra?.hasSteelhead"
                   [identity]="identity.steelhead"
                   [banSummary]="summaryLookup[identity.steelhead.xuid]"
                 ></ban-chip-icon>

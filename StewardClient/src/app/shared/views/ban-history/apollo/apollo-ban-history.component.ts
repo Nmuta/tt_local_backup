@@ -5,7 +5,7 @@ import { ApolloService } from '@services/apollo/apollo.service';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
 import { Observable, throwError } from 'rxjs';
 import { LiveOpsBanDescription } from '@models/sunrise';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { PermissionsService } from '@services/permissions';
 
@@ -23,7 +23,7 @@ import { PermissionsService } from '@services/permissions';
   ],
 })
 export class ApolloBanHistoryComponent extends BanHistoryBaseComponent {
-  public gameTitle = GameTitleCodeName.FM7;
+  public gameTitle = GameTitle.FM7;
 
   constructor(private readonly apollo: ApolloService, permissionsService: PermissionsService) {
     super(permissionsService);

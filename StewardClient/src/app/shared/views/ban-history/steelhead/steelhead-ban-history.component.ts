@@ -1,13 +1,14 @@
 import BigNumber from 'bignumber.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
-import { SteelheadService } from '@services/steelhead/steelhead.service';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LiveOpsBanDescription } from '@models/sunrise';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { PermissionsService } from '@services/permissions';
+import { SteelheadBanHistoryService } from '@services/api-v2/steelhead/player/ban-history/steelhead-ban-history.service';
+import { SteelheadBanService } from '@services/api-v2/steelhead/ban/steelhead-ban.service';
 
 /** Retreives and displays Steelhead Ban history by XUID. */
 @Component({
@@ -23,10 +24,12 @@ import { PermissionsService } from '@services/permissions';
   ],
 })
 export class SteelheadBanHistoryComponent extends BanHistoryBaseComponent {
-  public gameTitle = GameTitleCodeName.FM8;
+  public gameTitle = GameTitle.FM8;
+  public actionsEnabled = true;
 
   constructor(
-    private readonly steelhead: SteelheadService,
+    private readonly steelheadBanHistoryService: SteelheadBanHistoryService,
+    private readonly steelheadBanService: SteelheadBanService,
     permissionsService: PermissionsService,
   ) {
     super(permissionsService);
@@ -34,16 +37,16 @@ export class SteelheadBanHistoryComponent extends BanHistoryBaseComponent {
 
   /** Gets the Steelhead ban history. */
   public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsBanDescription[]> {
-    return this.steelhead.getBanHistoryByXuid$(xuid);
+    return this.steelheadBanHistoryService.getBanHistoryByXuid$(xuid);
   }
 
   /** Expires the Steelhead ban. */
-  public expireBan$(_banEntryId: BigNumber): Observable<UnbanResult> {
-    return throwError(new Error('Steelhead does not support ban expiration.'));
+  public expireBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.steelheadBanService.expireBan$(banEntryId);
   }
 
   /** Deletes the Steelhead ban. */
-  public deleteBan$(_banEntryId: BigNumber): Observable<UnbanResult> {
-    return throwError(new Error('Steelhead does not support ban deletion.'));
+  public deleteBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.steelheadBanService.deleteBan$(banEntryId);
   }
 }

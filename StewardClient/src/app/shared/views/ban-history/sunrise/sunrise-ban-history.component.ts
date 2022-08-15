@@ -5,7 +5,7 @@ import { LiveOpsBanDescription } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable, throwError } from 'rxjs';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { PermissionsService } from '@services/permissions';
 
@@ -23,7 +23,7 @@ import { PermissionsService } from '@services/permissions';
   ],
 })
 export class SunriseBanHistoryComponent extends BanHistoryBaseComponent {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
 
   constructor(private readonly sunrise: SunriseService, permissionsService: PermissionsService) {
     super(permissionsService);

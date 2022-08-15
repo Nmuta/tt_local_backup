@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { LiveOpsBanDescription } from '@models/sunrise';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { LiveOpsExtendedBanDescription } from '@models/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -40,7 +40,9 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
   /** Columns to always display. */
   private baseColumns = ['state', 'reason', 'banDetails', 'startTimeUtc', 'expireTimeUtc'];
 
-  public abstract gameTitle: GameTitleCodeName;
+  public actionsEnabled: boolean = false;
+
+  public abstract gameTitle: GameTitle;
 
   constructor(private readonly permissionsService: PermissionsService) {
     super();
@@ -61,7 +63,7 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
       PermissionServiceTool.Unban,
     );
 
-    if (this.gameTitle === GameTitleCodeName.FH5) {
+    if (this.actionsEnabled) {
       this.columnsToDisplay = this.baseColumns.concat('actions');
     } else {
       this.columnsToDisplay = this.baseColumns;

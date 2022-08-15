@@ -31,7 +31,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
-    ///     Test controller for testing Steelhead LSP APIs.
+    ///     Handles requests for Steelhead players.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/players")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -120,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets ban summaries.
         /// </summary>
-        [HttpPost("players/banSummaries")]
+        [HttpPost("banSummaries")]
         [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
         public async Task<IActionResult> GetBanSummaries(
             [FromBody] IList<ulong> xuids)
@@ -151,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Bans players.
         /// </summary>
-        [HttpPost("players/ban")]
+        [HttpPost("ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
@@ -195,7 +195,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Bans players.
         /// </summary>
-        [HttpPost("players/ban/useBackgroundProcessing")]
+        [HttpPost("ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(

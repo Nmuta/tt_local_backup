@@ -24,6 +24,11 @@ export const CHANGELOG_2022_LATEST: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '231ae6ea-5f6d-45a3-a030-38477e9d7c09',
+      shortText: 'Wire up Steelhead V2 services and UI for user banning and ban history',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '328d3279-097c-494f-be96-af50f15b233e',
       shortText:
         'Wire up Steelhead V2 services and UI for console banning and shared console users',

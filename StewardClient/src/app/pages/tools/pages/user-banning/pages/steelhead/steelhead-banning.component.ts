@@ -5,13 +5,13 @@ import { SteelheadBanArea, SteelheadBanRequest, SteelheadBanSummary } from '@mod
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { BackgroundJob } from '@models/background-job';
-import { SteelheadService } from '@services/steelhead';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
 import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
+import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
 /** Routed Component; Steelhead Banning Tool. */
 @Component({
   templateUrl: './steelhead-banning.component.html',
@@ -40,7 +40,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
 
   constructor(
     backgroundJobService: BackgroundJobService,
-    private readonly steelhead: SteelheadService,
+    private readonly steelheadPlayersService: SteelheadPlayersService,
   ) {
     super(backgroundJobService);
 
@@ -49,7 +49,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
     this.playerIdentities$
       .pipe(
         map(identities => identities.map(i => i.xuid)), // to xuid list
-        switchMap(xuids => this.steelhead.getBanSummariesByXuids$(xuids)), // make request
+        switchMap(xuids => this.steelheadPlayersService.getBanSummariesByXuids$(xuids)), // make request
       )
       .subscribe(summaries$);
     summaries$
@@ -105,7 +105,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.steelhead.postBanPlayersWithBackgroundProcessing$(bans).pipe(
+    return this.steelheadPlayersService.postBanPlayersWithBackgroundProcessing$(bans).pipe(
       catchError(error => {
         this.loadError = error;
         this.isLoading = false;

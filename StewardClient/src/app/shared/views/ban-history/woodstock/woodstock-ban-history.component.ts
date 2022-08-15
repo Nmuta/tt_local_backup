@@ -5,7 +5,7 @@ import { LiveOpsExtendedBanDescription } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock/woodstock.service';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
 import { Observable } from 'rxjs';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { PermissionsService } from '@services/permissions';
 
@@ -23,7 +23,8 @@ import { PermissionsService } from '@services/permissions';
   ],
 })
 export class WoodstockBanHistoryComponent extends BanHistoryBaseComponent {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
+  public actionsEnabled = true;
 
   constructor(
     private readonly woodstock: WoodstockService,

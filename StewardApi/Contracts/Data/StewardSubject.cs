@@ -24,5 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         UserGroup,
         CmsOverride,
         ApiPermissions,
+        Ban,
     }
 }
