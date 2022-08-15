@@ -99,6 +99,8 @@ namespace Turn10.LiveOps.StewardApi
             services.AddMvc(options => options.Filters.Add(new ServiceExceptionFilter()));
             services.AddApiVersioning(o =>
             {
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1, 0);
                 o.ReportApiVersions = true;
                 o.UseApiBehavior = false;
             });
