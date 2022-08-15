@@ -3,10 +3,15 @@ import { NavbarTool } from '../tool-list';
 import { ChangelogGroup, ChangelogTag } from './types';
 
 /** User-facing changes to the code. */
-export const CHANGELOG_2022_LATEST: ChangelogGroup = {
-  title: '2022 Q2',
+export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
+  title: '2022 Q2 - Q3',
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '3974e3cb-558a-4c88-96f7-143c52d39275',
+      shortText: 'Restructuring changelog data to make it easier to cut for Q4',
+    },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
       uuid: 'a0715fb8-2af7-4b21-9a57-5897e0197e6d',
