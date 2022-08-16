@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.Gifting },
+      uuid: '6e1b24d6-3549-4ae9-9255-231bf8da191b',
+      shortText: 'Adjust Gifting tool layout. Standardizing header button layout',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '3974e3cb-558a-4c88-96f7-143c52d39275',
       shortText: 'Restructuring changelog data to make it easier to cut for Q4',

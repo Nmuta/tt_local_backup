@@ -1,10 +1,41 @@
 <mat-card class="steward-layout-sticky-scroll">
-  <mat-card-header>
+  <mat-card-header class="sf-header">
     <mat-card-title>Gift Basket</mat-card-title>
     <mat-card-subtitle>
       {{ title }}
       <span *ngIf="hasGameSettings">(Game Settings: {{ selectedGameSettingsId || 'None' }})</span>
     </mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="resetGiftBasketUI(true)"
+      [disabled]="giftBasket?.data?.length <= 0"
+    >
+      Clear Gift Basket
+    </button>
+
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="populateGiftBasketFromReference()"
+      [disabled]="!referenceInventory"
+      [matTooltip]="referenceInventory ? null : 'No reference inventory selected'"
+    >
+      Set Inventory from Reference
+    </button>
+    <help-popover-icon
+      clickStop
+      cardTitle="Set Inventory from Reference"
+      cardSubtitle="Button help"
+    >
+      <p>After looking up a user, click on their chip, then select a player inventory.</p>
+      <p>Then, this button will populate the gift basket as a clone of that inventory.</p>
+      <p>
+        Items which cannot be deleted by the user will not be included. These items will have an
+        icon next to the item name.
+      </p>
+    </help-popover-icon>
   </mat-card-header>
   <mat-card-content>
     <ng-container
@@ -154,36 +185,6 @@
             <span *ngIf="usingPlayerIdentities">To Player(s)</span>
             <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
           </button>
-
-          <button
-            mat-raised-button
-            color="warn"
-            (click)="resetGiftBasketUI(true)"
-            [disabled]="giftBasket?.data?.length <= 0"
-          >
-            Clear Gift Basket
-          </button>
-          <button
-            mat-raised-button
-            color="accent"
-            (click)="populateGiftBasketFromReference()"
-            [disabled]="!referenceInventory"
-            [matTooltip]="referenceInventory ? null : 'No reference inventory selected'"
-          >
-            Set Inventory from Reference
-          </button>
-          <help-popover-icon
-            clickStop
-            cardTitle="Set Inventory from Reference"
-            cardSubtitle="Button help"
-          >
-            <p>After looking up a user, click on their chip, then select a player inventory.</p>
-            <p>Then, this button will populate the gift basket as a clone of that inventory.</p>
-            <p>
-              Items which cannot be deleted by the user will not be included. These items will have
-              an icon next to the item name.
-            </p>
-          </help-popover-icon>
         </div>
       </form>
     </div>

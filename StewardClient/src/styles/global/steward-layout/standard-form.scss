@@ -88,3 +88,17 @@
     flex-shrink: 1;
   }
 }
+
+.sf-header.sf-header.sf-header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+
+  > button {
+    margin: 0 0.5em;
+  }
+}
+
+.sf-spacer {
+  flex-grow: 1;
+}
