@@ -74,17 +74,4 @@ mat-card {
       }
     }
   }
-
-  .send-gift-basket-container {
-    .send-gift-basket {
-      @include align-button-with-input;
-    }
-  }
-
-  .gift-response-template {
-    button {
-      margin-right: $gap-medium;
-      margin-top: $gap-medium;
-    }
-  }
 }

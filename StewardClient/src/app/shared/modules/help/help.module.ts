@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** Various utility components for generating helpful popovers. */
 @NgModule({
@@ -19,6 +20,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatCardModule,
     MatTooltipModule,
     MatBadgeModule,
+    DirectivesModule,
   ],
   exports: [HelpPopoverIconComponent],
 })

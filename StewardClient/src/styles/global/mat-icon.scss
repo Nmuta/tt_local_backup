@@ -13,3 +13,9 @@ mat-icon {
     color: app-color-default($app-warn);
   }
 }
+
+button button.mat-icon-button {
+  height: 36px;
+  width: 36px;
+  line-height: 36px;
+}

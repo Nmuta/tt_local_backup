@@ -13,6 +13,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
       shortText: 'Restructuring changelog data to make it easier to cut for Q4',
     },
     {
+      tag: { title: 'all', tool: NavbarTool.Gifting },
+      uuid: '6e1b24d6-3549-4ae9-9255-231bf8da191b',
+      shortText: 'Standardizing form layout',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
       uuid: 'a0715fb8-2af7-4b21-9a57-5897e0197e6d',
       shortText: 'Implement User Group API endpoints',
