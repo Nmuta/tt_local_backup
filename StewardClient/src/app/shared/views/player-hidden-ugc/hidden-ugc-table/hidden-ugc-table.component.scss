@@ -24,3 +24,28 @@ td.mat-column-actions {
     }
   }
 }
+
+img {
+  border: 1px solid #00000088;
+  border-radius: 5px;
+}
+
+.placeholder-image-wrapper {
+  width: 20em;
+  position: relative;
+  > img {
+    width: 100%;
+    filter: sepia() hue-rotate(-44deg) saturate(500%) opacity(0.1); // faded red image
+  }
+
+  > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

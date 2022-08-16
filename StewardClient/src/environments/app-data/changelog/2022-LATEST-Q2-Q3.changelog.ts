@@ -8,8 +8,18 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '3ba37c6d-ddce-4504-953c-e51105af7b7d',
+      shortText: 'Add placeholder preview image to Hidden UGC without a preview',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '884b4929-f0ec-4817-920a-2b89228cca4b',
+      shortText: 'Add border around UGC preview images in player details',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.Gifting },
-      uuid: '6e1b24d6-3549-4ae9-9255-231bf8da191b',
+      uuid: '6379f0d9-8d16-418a-b037-04b5f325371a',
       shortText: 'Adjust Gifting tool layout. Standardizing header button layout',
     },
     {
