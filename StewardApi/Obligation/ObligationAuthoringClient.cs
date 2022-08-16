@@ -22,10 +22,10 @@ namespace Turn10.LiveOps.StewardApi.Obligation
     /// <inheritdoc />
     public sealed class ObligationAuthoringClient : IObligationAuthoringClient
     {
-        private const string WebHost = "https://343Harvester.azurewebsites.net/";
+        private const string WebHost = "https://obligation.azurewebsites.net/";
         private const string RedirectUrl = "http://localhost";
         private const string Authority = "https://login.windows.net/microsoft.onmicrosoft.com";
-        private const string HarvesterResourceId = "4426548c-d0c8-4d31-ad64-00e4fc49e9a4";
+        private const string HarvesterResourceId = "e3c7b30a-9502-4a14-825e-ebb19106be43";
         private const string T10ObligationClientId = "dd9dfc49-54ba-4c2d-936b-98f0d9858aad";
 
         private static readonly HttpClient HttpClient = new HttpClient();
