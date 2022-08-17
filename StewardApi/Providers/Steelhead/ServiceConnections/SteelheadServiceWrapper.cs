@@ -182,7 +182,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.AdminSendLiveryGift(recipientXuids, xuidCount, liveryId).ConfigureAwait(false);
+            return await service.AdminSendLiveryGift(recipientXuids, xuidCount, liveryId, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -193,7 +193,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await service.AdminSendGroupLiveryGift(groupId, liveryId).ConfigureAwait(false);
+            return await service.AdminSendGroupLiveryGift(groupId, liveryId, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await service.AdminSendItemGiftV2(recipientXuid, itemType, itemValue).ConfigureAwait(false);
+            await service.AdminSendItemGiftV2(recipientXuid, itemType, itemValue, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var service = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await service.AdminSendItemGroupGiftV2(groupId, itemType, itemValue).ConfigureAwait(false);
+            await service.AdminSendItemGroupGiftV2(groupId, itemType, itemValue, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
