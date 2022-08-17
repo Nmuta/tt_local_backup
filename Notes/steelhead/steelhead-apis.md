@@ -151,6 +151,7 @@ No service for leaderboards in FM8 yet.
 
 Tested by v-jyates on Steelhead ForzaClient nuget: 2.5.1-prerelease
 Found issues tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1222065
+We are also missing the ability GET/SET hidden UGC items.
 
 ```c#
 /// Not working, returning 500 for all requests I've tried. Mostly I was looking for any Livery/Photo/Tune so I could test below APIs
@@ -170,6 +171,12 @@ Task SetFeatured(Guid id, bool featured, DateTime featureEndDate, DateTime force
 
 // Unused and untested.
 Task<GetUGCObjectOutput> GetUGCObject(Guid id) { }
+
+// Failed. Same thing occuring in Woodstock
+Task SetUGCGeoFlag(Guid id, int[] geoFlags);
+
+// Successful test
+Task<StorefrontManagementService.GetUGCForUserOutput> GetUGCForUser(ulong xuid, ForzaUGCContentType contentType, bool includeThumbnails, int maxResults);
 ```
 
 ### UserInventoryManagementService
