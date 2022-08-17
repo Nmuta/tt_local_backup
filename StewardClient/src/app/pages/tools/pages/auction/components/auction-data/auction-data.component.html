@@ -65,6 +65,7 @@
       <mat-card-title>Car Summary</mat-card-title>
       <mat-card-subtitle>IDs and flags</mat-card-subtitle>
     </mat-card-header>
+    {{ auctionData.car.carId }}
     <model-dump-xuids></model-dump-xuids>
     <model-dump-simple-table
       [values]="carSource.processedModel.extractedNumbers.ids"
