@@ -16,8 +16,9 @@ import { LeaderboardStatsComponent, LeaderboardStatsContract } from './leaderboa
 import { toDateTime } from '@helpers/luxon';
 import { LeaderboardEnvironment, LeaderboardQuery, LeaderboardScore } from '@models/leaderboards';
 import { NgxLineChartClickEvent } from '@models/ngx-charts';
-import { SimpleChanges } from '@angular/core';
+import { QueryList, SimpleChanges } from '@angular/core';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 describe('LeaderboardStatsComponent', () => {
   let component: LeaderboardStatsComponent;
@@ -25,6 +26,10 @@ describe('LeaderboardStatsComponent', () => {
 
   const mockService: LeaderboardStatsContract = {
     getLeaderboardScores$: () => {
+      return of([]);
+    },
+
+    getLeaderboardTalentIdentities$: () => {
       return of([]);
     },
   };
@@ -91,6 +96,7 @@ describe('LeaderboardStatsComponent', () => {
     fixture = TestBed.createComponent(LeaderboardStatsComponent);
     component = fixture.componentInstance;
     component.service = mockService;
+    component.childMenuTriggers = new QueryList<MatMenuTrigger>();
     component.scores = testLeaderboardScores;
 
     component.selectedScore.emit = jasmine.createSpy('selectedScore.emit');

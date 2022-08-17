@@ -19,10 +19,32 @@ mat-icon {
 
 // Default sizing to match the matChipRemove directive
 mat-chip {
-  .mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
+  .mat-icon.mat-icon.mat-icon {
+    width: $mat-icon-width;
+    height: $mat-icon-height;
+    font-size: 24px;
+    line-height: $mat-icon-line-height;
+
+    &.leading-icon {
+      margin-left: -8px;
+    }
+
+    &.trailing-icon,
+    &[matChipRemove] {
+      margin-right: -8px;
+    }
+  }
+
+  .mat-button-wrapper {
+    width: $mat-icon-width;
+    height: $mat-icon-height;
+    line-height: $mat-icon-line-height;
+  }
+
+  .mat-icon-button {
+    width: $mat-icon-width;
+    height: $mat-icon-height;
+    line-height: $mat-icon-line-height;
   }
 }
 

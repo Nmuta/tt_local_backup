@@ -22,7 +22,7 @@ import {
   toAlphaIdentity,
 } from '@models/identity-query.model';
 import { COMMA, ENTER, SEMICOLON } from '@angular/cdk/keycodes';
-import { chain, find, intersection, isEmpty, isEqual, sortBy } from 'lodash';
+import { chain, find, isEmpty, isEqual, sortBy, xor } from 'lodash';
 import { filter, map, pairwise, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
 import {
@@ -165,6 +165,16 @@ export abstract class PlayerSelectionBaseComponent
       .pipe(
         filter(params => !handleOldPlayerSelectionQueryParams(params, this.router)),
         map(params => mapPlayerSelectionQueryParam(params) ?? {}),
+        tap(params => {
+          // Check which param key is being used and set it to the lookupType
+          if (!!params[QueryParam.Xuid]) {
+            this.lookupType = QueryParam.Xuid;
+          } else if (!!params[QueryParam.Gamertag]) {
+            this.lookupType = QueryParam.Gamertag;
+          } else if (!!params[QueryParam.T10Id]) {
+            this.lookupType = QueryParam.T10Id;
+          }
+        }),
         startWith({}),
         pairwise(),
         filter(([prev, cur]) => {
@@ -174,22 +184,13 @@ export abstract class PlayerSelectionBaseComponent
             return true;
           }
 
-          const diff = intersection(prevLookupVals, curLookupVals);
+          const diff = xor(prevLookupVals, curLookupVals);
           return diff.length > 0;
         }),
         map(([_prev, cur]) => cur),
         takeUntil(this.onDestroy$),
       )
       .subscribe((param: PlayerSelectionQueryParam) => {
-        // Check which param key is being used and set it to the lookupType
-        if (!!param[QueryParam.Xuid]) {
-          this.lookupType = QueryParam.Xuid;
-        } else if (!!param[QueryParam.Gamertag]) {
-          this.lookupType = QueryParam.Gamertag;
-        } else if (!!param[QueryParam.T10Id]) {
-          this.lookupType = QueryParam.T10Id;
-        }
-
         this.lookupList = param[this.lookupType];
       });
   }

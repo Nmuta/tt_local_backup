@@ -49,6 +49,8 @@ import { LeaderboardValidationsComponent } from './components/leaderboard-valida
 import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { PlayerSelectionModule } from '@views/player-selection/player-selection.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -112,6 +114,8 @@ import { StandardCopyModule } from '@components/standard-copy/standard-copy.modu
     LuxonModule,
     DatetimeRangePickerModule,
     HelpModule,
+    PlayerSelectionModule,
+    MatMenuModule,
   ],
   exports: [],
 })

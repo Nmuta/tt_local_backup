@@ -142,6 +142,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
                 .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
                 .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default ? source.Auction.TimeFlagged : (DateTime?)null));
+            this.CreateMap<ulong, ServicesLiveOps.ForzaPlayerLookupParameters>()
+                .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(src => ServicesLiveOps.ForzaUserIdType.Xuid))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(xuid => xuid.ToString()));
             this.CreateMap<IdentityQueryAlpha, ServicesLiveOps.ForzaPlayerLookupParameters>()
                 .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(
                     src => src.Xuid.HasValue ? ServicesLiveOps.ForzaUserIdType.Xuid : ServicesLiveOps.ForzaUserIdType.Gamertag))

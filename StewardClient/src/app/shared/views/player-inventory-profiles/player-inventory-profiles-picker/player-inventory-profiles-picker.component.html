@@ -13,8 +13,12 @@
     (click)="chip.toggleSelected(true)"
     [selected]="profile?.isCurrent"
   >
-    <mat-icon *ngIf="profile.isCurrent" matTooltip="Profile Active"> person </mat-icon>
-    <mat-icon *ngIf="!profile.isCurrent" matTooltip="Profile Inactive"> person_off </mat-icon>
+    <mat-icon *ngIf="profile.isCurrent" class="leading-icon" matTooltip="Profile Active">
+      person
+    </mat-icon>
+    <mat-icon *ngIf="!profile.isCurrent" class="leading-icon" matTooltip="Profile Inactive">
+      person_off
+    </mat-icon>
     <span class="id" [matTooltip]="'Profile ID: ' + profile.profileId">{{
       profile.profileId
     }}</span>
@@ -30,7 +34,7 @@
     </mat-icon>
     <mat-icon
       *ngIf="profile.externalProfileId"
-      class="external-id"
+      class="external-id trailing-icon"
       [matTooltip]="'External ID: ' + profile.externalProfileId"
     >
       badge
