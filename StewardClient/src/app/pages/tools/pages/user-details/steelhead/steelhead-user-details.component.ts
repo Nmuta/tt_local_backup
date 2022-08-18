@@ -1,9 +1,9 @@
-import BigNumber from 'bignumber.js';
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { first } from 'lodash';
+import { cloneDeep, first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
+import { GuidLikeString } from '@models/extended-types';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -12,7 +12,7 @@ import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
   styleUrls: ['./steelhead-user-details.component.scss'],
 })
 export class SteelheadUserDetailsComponent {
-  public profileId: BigNumber;
+  public profile: SteelheadPlayerInventoryProfile;
 
   /** The lookup type. */
   public get lookupType(): string {
@@ -29,12 +29,24 @@ export class SteelheadUserDetailsComponent {
     return this.parent.identity?.steelhead;
   }
 
+  /** A string overview of the profile ids. */
+  public get profileOverviewString(): string {
+    return `Profile Id: ${this.profile?.profileId} (External Id: ${this.profile?.externalProfileId})`;
+  }
+
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {}
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: SteelheadPlayerInventoryProfile): void {
-    this.profileId = newProfile?.profileId;
+    this.profile = newProfile;
+  }
+
+  /** Called when external profile id changes due to loading/reseting profile. */
+  public onExternalProfileIdChange(newExternalProfileId: GuidLikeString): void {
+    const tmpProfile = cloneDeep(this.profile);
+    tmpProfile.externalProfileId = newExternalProfileId;
+    this.profile = tmpProfile;
   }
 }

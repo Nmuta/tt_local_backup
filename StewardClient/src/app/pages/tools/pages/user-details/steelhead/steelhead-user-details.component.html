@@ -12,11 +12,11 @@
           <steelhead-consoles [identity]="identity"></steelhead-consoles>
         </div>
       </mat-tab>
-      <mat-tab label="Inventory">
+      <mat-tab label="Inventory Profiles">
         <div class="tab-container">
           <mat-card>
             <mat-card-header>
-              <mat-card-title>Player Inventory</mat-card-title>
+              <mat-card-title>Player Profiles</mat-card-title>
               <mat-card-subtitle>Steelhead</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
@@ -24,9 +24,30 @@
                 [identity]="identity"
                 (profileChange)="onProfileChange($event)"
               ></steelhead-player-inventory-profile-picker>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Profile Management</mat-card-title>
+              <mat-card-subtitle>Steelhead | {{ profileOverviewString }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <steelhead-player-profile-management
+                [identity]="identity"
+                [externalProfileId]="profile?.externalProfileId"
+                (externalProfileIdUpdated)="onExternalProfileIdChange($event)"
+              ></steelhead-player-profile-management>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Profile Inventory</mat-card-title>
+              <mat-card-subtitle>Steelhead | {{ profileOverviewString }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
               <steelhead-player-inventory
                 [identity]="identity"
-                [profileId]="profileId"
+                [profileId]="profile?.profileId"
               ></steelhead-player-inventory>
             </mat-card-content>
           </mat-card>
