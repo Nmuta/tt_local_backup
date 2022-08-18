@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 
@@ -50,5 +51,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         ///     Creates a LSP user group.
         /// </summary>
         Task<CreateUserGroupOutput> CreateUserGroup(string groupName);
+
+        /// <summary>
+        ///     Gets record of what user has played.
+        /// </summary>
+        Task<GetHasPlayedRecordOutput> GetHasPlayedRecord(ulong xuid, Guid externalProfileId);
+
+        /// <summary>
+        ///     Resends Loyalty Reward gifts for given titles.
+        /// </summary>
+        Task ResendProfileHasPlayedNotification(ulong xuid, Guid externalProfileId, int[] titles);
     }
 }

@@ -99,123 +99,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             action.Should().NotThrow();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task GetHasPlayedRecord_ShouldReturnValidValue()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var profileId = Fixture.Create<Guid>();
-
-            // Act.
-            async Task<IActionResult> action() => await controller.GetHasPlayedRecord(xuid, profileId.ToString()).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
-            result.Value.ShouldNotBeNull();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetHasPlayedRecord_WithNullProfileId_ShouldThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetHasPlayedRecord(xuid, null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "externalProfileId"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetHasPlayedRecord_WithNonGuidProfileId_ShouldThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var profileId = "abcde";
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetHasPlayedRecord(xuid, profileId).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"External Profile ID provided is not a valid Guid: {profileId}");
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void ResendLoyaltyRewards_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var profileId = Fixture.Create<Guid>();
-            var titles = new string[] { "FM5" };
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.ResendLoyaltyRewards(xuid, profileId.ToString(), titles).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void ResendLoyaltyRewards_WithNullProfileId_ShouldThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var profileId = Fixture.Create<Guid>();
-            var titles = new string[] { "FM5" };
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.ResendLoyaltyRewards(xuid, null, titles).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "externalProfileId"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void ResendLoyaltyRewards_WithNonGuidProfileId_ShouldThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var profileId = "abcde";
-            var titles = new string[] { "FM5" };
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.ResendLoyaltyRewards(xuid, profileId, titles).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"External Profile ID provided is not a valid Guid: {profileId}");
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void ResendLoyaltyRewards_WithNullTitles_ShouldThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var profileId = Fixture.Create<Guid>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.ResendLoyaltyRewards(xuid, profileId.ToString(), null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gameTitles"));
-        }
-
         private sealed class Dependencies
         {
             private readonly ControllerContext ControllerContext;
@@ -235,7 +118,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
                 this.playerDetailsProvider.GetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<UserReportWeight>());
                 this.playerDetailsProvider.SetUserReportWeightAsync(Arg.Any<ulong>(), Arg.Any<UserReportWeightType>(), Arg.Any<string>()).Returns(Fixture.Create<Task>());
-                this.playerDetailsProvider.GetHasPlayedRecordAsync(Arg.Any<ulong>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<IList<HasPlayedRecord>>());
             }
             public IWoodstockPlayerDetailsProvider playerDetailsProvider { get; set; } = Substitute.For<IWoodstockPlayerDetailsProvider>();
 

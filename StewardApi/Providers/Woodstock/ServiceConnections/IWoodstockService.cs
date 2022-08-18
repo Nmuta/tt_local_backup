@@ -180,6 +180,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ForzaUserReportWeightType reportWeightType,
             string endpoint);
 
+        /// <summary>
         ///     Gets record of what user has played.
         /// </summary>
         Task<ServicesLiveOps.UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecordAsync(

@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: 'dcc40063-cf82-44d9-862c-79b3597a7fec',
+      shortText: 'Fix bug in Loyalty Rewards tool',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '0639be33-195e-422b-a338-9e590708d803',
       shortText: 'Combine Admin Pages tools into single tile and nav dropdown',
