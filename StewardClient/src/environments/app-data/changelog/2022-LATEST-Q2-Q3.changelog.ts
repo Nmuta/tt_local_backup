@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '0639be33-195e-422b-a338-9e590708d803',
+      shortText: 'Combine Admin Pages tools into single tile and nav dropdown',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '5d289485-7bc4-42e8-b196-01b76eb99684',
       shortText: 'Add player profile management tools',
@@ -125,15 +130,7 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
       shortText: 'All external tools now auto-open in new tab',
     },
     {
-      tag: {
-        title: [GameTitle.FM8],
-        tool: [
-          NavbarTool.AdminSteelheadDev,
-          NavbarTool.AdminSteelheadStudio,
-          NavbarTool.AdminFH4Studio,
-          NavbarTool.AdminFM7Studio,
-        ],
-      },
+      tag: ChangelogTag.General,
       uuid: '77922281-d545-46a4-9fbd-1067523b84b1',
       shortText: 'Add external tool links for steelhead dev and steelhead, fh4, and fm7 studio',
     },

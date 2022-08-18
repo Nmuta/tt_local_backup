@@ -12,16 +12,18 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { CustomTileComponent } from '@environments/environment';
+import { HomeTileInfoForNav } from '@helpers/external-links';
 import { from } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-/** Provides an attachment point to an arbitrary element. */
+/** Provides an attachment point to render a dynamic tool-tile element. */
 @Directive({
-  selector: '[anchor]',
+  selector: '[navAnchor]',
 })
 export class AnchorDirective implements OnChanges, AfterViewInit, OnDestroy {
-  @Input('anchor') public componentToResolve?: () => Promise<Type<CustomTileComponent>>;
-  @Input() public anchorDisabled?: boolean;
+  @Input('navAnchor') public componentToResolve?: () => Promise<Type<CustomTileComponent>>;
+  @Input() public navItem: HomeTileInfoForNav;
+  @Input() public navAnchorDisabled?: boolean;
 
   private componentRef: ComponentRef<CustomTileComponent>;
 
@@ -47,14 +49,16 @@ export class AnchorDirective implements OnChanges, AfterViewInit, OnDestroy {
       .subscribe(componentToResolve => {
         const componentFactory = this.resolver.resolveComponentFactory(componentToResolve);
         this.componentRef = viewContainerRef.createComponent<CustomTileComponent>(componentFactory);
-        this.componentRef.instance.disabled = this.anchorDisabled;
+        this.componentRef.instance.item = this.navItem;
+        this.componentRef.instance.disabled = this.navAnchorDisabled;
       });
   }
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_: SimpleChanges): void {
     if (this.componentRef) {
-      this.componentRef.instance.disabled = this.anchorDisabled;
+      this.componentRef.instance.disabled = this.navAnchorDisabled;
+      this.componentRef.instance.item = this.navItem;
     }
   }
 

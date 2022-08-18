@@ -25,12 +25,14 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { NavModule } from '@shared/modules/nav/nav.module';
 
 /** A module for all tools, with a configurable navbar. */
 @NgModule({
   declarations: [ToolsAppHomeComponent, ToolsAppComponent, NavbarComponent],
   imports: [
     ToolsAppRouterModule,
+    NavModule,
     CommonModule,
     DataPrivacyNoticeModule,
     FontAwesomeModule,

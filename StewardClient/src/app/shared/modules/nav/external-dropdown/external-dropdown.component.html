@@ -1,0 +1,10 @@
+<button mat-button [matMenuTriggerFor]="externalMenu" [disabled]="disabled">
+  <mat-icon>more_vert</mat-icon>{{ item.title }}
+</button>
+
+<mat-menu #externalMenu>
+  <a *ngFor="let entry of entries" [href]="entry.url" mat-menu-item
+    ><mat-icon>{{ entry.icon ?? '' }}</mat-icon
+    >{{ entry.text }}</a
+  >
+</mat-menu>

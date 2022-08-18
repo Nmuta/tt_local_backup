@@ -77,6 +77,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
 import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
+import { NavModule } from '@shared/modules/nav/nav.module';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -137,6 +138,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   imports: [
     BrowserAnimationsModule,
     ThemeModule,
+    NavModule,
     AppRoutingModule,
     SidebarsModule,
     FontAwesomeModule,
