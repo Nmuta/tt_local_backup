@@ -3,24 +3,24 @@ import { GameTitle } from '@models/enums';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { LspGroup } from '@models/lsp-group';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { WoodstockGroupNotificationManagementComponent } from '../components/notification-management/group-notification-management/woodstock/woodstock-group-notification-management.component';
-import { WoodstockIndividualNotificationManagementComponent } from '../components/notification-management/individual-notification-management/woodstock/woodstock-individual-notification-management.component';
 import BigNumber from 'bignumber.js';
+import { SteelheadGroupNotificationManagementComponent } from '../components/notification-management/group-notification-management/steelhead/steelhead-group-notification-management.component';
+import { SteelheadIndividualNotificationManagementComponent } from '../components/notification-management/individual-notification-management/steelhead/steelhead-individual-notification-management.component';
 
 /**
- *  Woodstock notification component.
+ *  Steelhead notification component.
  */
 @Component({
-  templateUrl: './woodstock-notifications.component.html',
-  styleUrls: ['./woodstock-notifications.component.scss'],
+  templateUrl: './steelhead-notifications.component.html',
+  styleUrls: ['./steelhead-notifications.component.scss'],
 })
-export class WoodstockNotificationsComponent {
-  @ViewChild(WoodstockGroupNotificationManagementComponent)
-  private groupManagementComponent: WoodstockGroupNotificationManagementComponent;
-  @ViewChild(WoodstockIndividualNotificationManagementComponent)
-  private playerManagementComponent: WoodstockIndividualNotificationManagementComponent;
+export class SteelheadNotificationsComponent {
+  @ViewChild(SteelheadGroupNotificationManagementComponent)
+  private groupManagementComponent: SteelheadGroupNotificationManagementComponent;
+  @ViewChild(SteelheadIndividualNotificationManagementComponent)
+  private playerManagementComponent: SteelheadIndividualNotificationManagementComponent;
 
-  public gameTitle = GameTitle.FH4;
+  public gameTitle = GameTitle.FM8;
   /** The selected player identities */
   public playerIdentities: IdentityResultAlpha[] = [];
   /** The selected LSP Group ID. */
@@ -34,7 +34,7 @@ export class WoodstockNotificationsComponent {
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {
-    const newIdentities = identities.filter(i => i?.extra?.hasWoodstock).map(i => i.woodstock);
+    const newIdentities = identities.filter(i => i?.extra?.hasSteelhead).map(i => i.steelhead);
     this.playerIdentities = newIdentities;
     if (this.playerIdentities.length === 1) {
       this.selectedXuid = this.playerIdentities[0]?.xuid;
@@ -47,13 +47,13 @@ export class WoodstockNotificationsComponent {
       return;
     }
 
-    this.selectedXuid = selected?.woodstock?.xuid;
+    this.selectedXuid = selected?.steelhead?.xuid;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
-    if (!identity?.extra?.hasWoodstock) {
-      return `Player does not have a Woodstock account at the selected endpoint. Player will be ignored.`;
+    if (!identity?.extra?.hasSteelhead) {
+      return `Player does not have a Steelhead account at the selected endpoint. Player will be ignored.`;
     }
 
     return null;

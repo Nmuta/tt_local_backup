@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { NotificationsComponent } from './notifications.component';
+import { SteelheadNotificationsComponent } from './steelhead/steelhead-notifications.component';
 import { SunriseNotificationsComponent } from './sunrise/sunrise-notifications.component';
 import { WoodstockNotificationsComponent } from './woodstock/woodstock-notifications.component';
 
@@ -15,6 +16,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'steelhead',
+        canActivate: [TitleMemorySetGuard],
+        component: SteelheadNotificationsComponent,
         pathMatch: 'full',
       },
       {

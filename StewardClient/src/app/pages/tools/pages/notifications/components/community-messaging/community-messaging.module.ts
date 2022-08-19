@@ -27,12 +27,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { LuxonModule } from 'luxon-angular';
 import { LuxonDateModule, MatLuxonDateModule } from 'ngx-material-luxon';
 import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-community-messaging.component';
+import { SteelheadCommunityMessagingComponent } from './steelhead/steelhead-community-messaging.component';
 
 /** Routed module for banning users. */
 @NgModule({
   declarations: [
     SunriseCommunityMessagingComponent,
     WoodstockCommunityMessagingComponent,
+    SteelheadCommunityMessagingComponent,
     NewCommunityMessageComponent,
   ],
   imports: [
@@ -67,6 +69,7 @@ import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-comm
   exports: [
     SunriseCommunityMessagingComponent,
     WoodstockCommunityMessagingComponent,
+    SteelheadCommunityMessagingComponent,
     NewCommunityMessageComponent,
   ],
 })

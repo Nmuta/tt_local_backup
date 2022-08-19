@@ -89,8 +89,10 @@ export class SunriseService {
     );
   }
 
+  // TODO: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1285965
   /** Edits a group community message. */
   public postEditLspGroupCommunityMessage$(
+    _lspGroupId: BigNumber,
     notificationId: string,
     communityMessage: CommunityMessage,
   ): Observable<void> {
@@ -100,8 +102,13 @@ export class SunriseService {
     );
   }
 
+  // TODO: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1285965
   /** Deletes a player's community message. */
-  public deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
+  public deletePlayerCommunityMessage$(
+    _lspGroupId: BigNumber,
+    xuid: BigNumber,
+    notificationId: string,
+  ): Observable<void> {
     return this.apiService.deleteRequest$<void>(
       `${this.basePath}/player/xuid(${xuid})/notifications/notificationId(${notificationId})`,
     );

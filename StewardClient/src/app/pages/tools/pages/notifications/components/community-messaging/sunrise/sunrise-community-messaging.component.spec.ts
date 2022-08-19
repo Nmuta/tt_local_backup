@@ -9,6 +9,7 @@ import BigNumber from 'bignumber.js';
 import { of, throwError } from 'rxjs';
 
 import { SunriseCommunityMessagingComponent } from './sunrise-community-messaging.component';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SunriseCommunityMessagingComponent', () => {
   let component: SunriseCommunityMessagingComponent;
@@ -18,6 +19,7 @@ describe('SunriseCommunityMessagingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseCommunityMessagingComponent],
+      imports: [PipesModule],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

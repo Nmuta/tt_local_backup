@@ -1,37 +1,37 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
-import { WoodstockPlayerXuidNotificationsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/notifications';
-import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { Subject } from 'rxjs';
-
-import { WoodstockPlayerNotificationsComponent } from './woodstock-player-notifications.component';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { PlayerNotification } from '@models/notifications.model';
+import { SteelheadPlayerMessagesService } from '@services/api-v2/steelhead/player/messages/steelhead-player-messages.service';
+import { SteelheadPlayerNotificationsComponent } from './steelhead-player-notifications.component';
+import { createMockSteelheadPlayerMessagesService } from '@services/api-v2/steelhead/player/messages/steelhead-player-messages.service.mock';
+import { SteelheadPlayerXuidNotificationsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/notifications';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
-describe('WoodstockPlayerNotificationsComponent', () => {
+describe('SteelheadPlayerNotificationsComponent', () => {
   let injector: TestBed;
-  let service: WoodstockService;
-  let component: WoodstockPlayerNotificationsComponent;
-  let fixture: ComponentFixture<WoodstockPlayerNotificationsComponent>;
+  let steelheadPlayerMessagesService: SteelheadPlayerMessagesService;
+  let component: SteelheadPlayerNotificationsComponent;
+  let fixture: ComponentFixture<SteelheadPlayerNotificationsComponent>;
 
   beforeEach(waitForAsync(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WoodstockPlayerNotificationsComponent],
+      declarations: [SteelheadPlayerNotificationsComponent],
       imports: [PipesModule],
-      providers: [createMockWoodstockService()],
+      providers: [createMockSteelheadPlayerMessagesService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     injector = getTestBed();
-    service = injector.inject(WoodstockService);
+    steelheadPlayerMessagesService = injector.inject(SteelheadPlayerMessagesService);
   }));
 
   beforeEach(waitForAsync(() => {
-    fixture = TestBed.createComponent(WoodstockPlayerNotificationsComponent);
+    fixture = TestBed.createComponent(SteelheadPlayerNotificationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
@@ -49,8 +49,8 @@ describe('WoodstockPlayerNotificationsComponent', () => {
       // notifications list prep
       playerNotifications$ = new Subject<PlayerNotification[]>();
       playerNotificationsValue =
-        WoodstockPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
-      service.getPlayerNotifications$ = jasmine
+        SteelheadPlayerXuidNotificationsFakeApi.makeMany() as PlayerNotification[];
+      steelheadPlayerMessagesService.getPlayerNotifications$ = jasmine
         .createSpy('getPlayerNotifications')
         .and.returnValue(playerNotifications$);
 
