@@ -5,4 +5,6 @@ export interface SteelheadUserFlags {
   isTurn10Employee: boolean;
   isEarlyAccess: boolean;
   isUnderReview: boolean;
+  isRaceMarshall: boolean;
+  isContentCreator: boolean;
 }
