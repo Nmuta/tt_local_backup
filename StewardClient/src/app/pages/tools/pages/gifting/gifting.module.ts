@@ -26,6 +26,7 @@ import { PlayerAccountInventoryModule } from '@views/player-account-inventory/pl
 import { GiftLiveryModule } from './components/gift-livery/gift-livery.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { WoodstockGiftSpecialLiveriesComponent } from './components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -35,6 +36,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ApolloGiftingComponent,
     SteelheadGiftingComponent,
     WoodstockGiftingComponent,
+    WoodstockGiftSpecialLiveriesComponent,
   ],
   imports: [
     CommonModule,
