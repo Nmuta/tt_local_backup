@@ -24,21 +24,18 @@ export const externalToolUrls = {
     [NavbarTool.Zendesk]: 'https://forzasupport1570048282.zendesk.com/agent',
     [NavbarTool.Sprinklr]: 'https://app.sprinklr.com/ui/app-redirect',
     [NavbarTool.Pegasus]: 'https://cms.services.forzamotorsport.net/',
-    [NavbarTool.ActionsDashboard]: StewardDashboard.actions,
   },
   dev: <ExternalToolUrls>{
     [NavbarTool.Salus]: 'https://gamingmoderation.azureedge.net/#/dashboard',
     [NavbarTool.Zendesk]: 'https://forzasupport1570048282.zendesk.com/agent',
     [NavbarTool.Sprinklr]: 'https://app.sprinklr.com/ui/app-redirect',
     [NavbarTool.Pegasus]: 'https://cms.services.forzamotorsport.net/',
-    [NavbarTool.ActionsDashboard]: StewardDashboard.actions,
   },
   prod: <ExternalToolUrls>{
     [NavbarTool.Salus]: 'https://gamingmoderation.azureedge.net/#/dashboard',
     [NavbarTool.Zendesk]: 'https://support.forzamotorsport.net/agent',
     [NavbarTool.Sprinklr]: 'https://app.sprinklr.com/ui/app-redirect',
     [NavbarTool.Pegasus]: 'https://cms.services.forzamotorsport.net/',
-    [NavbarTool.ActionsDashboard]: StewardDashboard.actions,
   },
 };
 

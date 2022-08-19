@@ -1,11 +1,17 @@
-<button mat-button [matMenuTriggerFor]="externalMenu" [disabled]="disabled">
+<button
+  [matTooltip]="item.tooltipDescription"
+  mat-button
+  [matMenuTriggerFor]="externalMenu"
+  [disabled]="disabled"
+>
   <mat-icon>more_vert</mat-icon>{{ item.title }}
 </button>
 
 <mat-menu #externalMenu>
   <a
-    [matTooltip]="entry.tooltip"
     *ngFor="let entry of entries"
+    [matTooltip]="entry.tooltip"
+    matTooltipPosition="right"
     [href]="entry.url"
     target="_blank"
     mat-menu-item

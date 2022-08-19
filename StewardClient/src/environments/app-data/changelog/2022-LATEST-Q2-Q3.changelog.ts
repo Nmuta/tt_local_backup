@@ -9,6 +9,12 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: '894c31a1-2cf2-4c69-9abf-1b2b4318d3fb',
+      shortText:
+        'Add external link to Notifications group of Power BI Dashboards; Group Power BI Dashboards',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'eafc0f0e-7409-4e15-8285-fb2b70c0b3c8',
       shortText: 'Make External Links dropdowns open links in new tabs',
     },
