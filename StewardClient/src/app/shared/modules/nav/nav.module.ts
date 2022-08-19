@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { AnchorDirective } from './anchor.directive';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** Container for various general nav/tile customization features. */
 @NgModule({
@@ -24,6 +25,7 @@ import { AnchorDirective } from './anchor.directive';
     FormsModule,
     MatFormFieldModule,
     MatIconModule,
+    MatTooltipModule,
   ],
   exports: [ExternalDropdownComponent, AnchorDirective],
 })

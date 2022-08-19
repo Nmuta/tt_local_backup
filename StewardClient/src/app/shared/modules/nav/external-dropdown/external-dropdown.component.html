@@ -3,7 +3,12 @@
 </button>
 
 <mat-menu #externalMenu>
-  <a *ngFor="let entry of entries" [href]="entry.url" mat-menu-item
+  <a
+    [matTooltip]="entry.tooltip"
+    *ngFor="let entry of entries"
+    [href]="entry.url"
+    target="_blank"
+    mat-menu-item
     ><mat-icon>{{ entry.icon ?? '' }}</mat-icon
     >{{ entry.text }}</a
   >
