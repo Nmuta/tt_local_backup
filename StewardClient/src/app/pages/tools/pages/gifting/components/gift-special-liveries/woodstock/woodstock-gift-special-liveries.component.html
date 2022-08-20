@@ -1,4 +1,48 @@
 <p>woodstock-gift-special-livery works!</p>
-<ul>
-  <li *ngFor="let id of contract.liveryIds">{{id}}</li>
-</ul>
+
+<mat-accordion multi displayMode="flat">
+  <mat-expansion-panel
+    *ngFor="let livery of liveries"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-checkbox
+          clickStop
+          [ngModel]="livery.checked"
+          matTooltip="Check to send this livery"
+          (change)="checkboxChanged()"
+          >{{ livery.data.notes }}
+        </mat-checkbox>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <ul *waitForMonitor="livery.monitor">
+      <li><b>Car:</b> {{ livery.ugcData.carDescription }}</li>
+      <li><b>Title:</b> {{ livery.ugcData.title }}</li>
+      <li><b>Description:</b> {{ livery.ugcData.description }}</li>
+      <li><b>Created:</b> {{ livery.ugcData.createdDateUtc | utcDate: 'short' }}</li>
+      <li><b>Share Code:</b> {{ livery.ugcData.shareCode || 'N/A' }}</li>
+      <li><b>Id:</b> {{ livery.ugcData.id }}</li>
+      <li>
+        <img
+          type="button"
+          matTooltip="Click to enlarge image"
+          [src]="livery.ugcData.thumbnailOneImageBase64"
+          [enlargeImage]="livery.ugcData.thumbnailOneImageBase64"
+          title="Thumbnail One"
+        />
+      </li>
+      <li>
+        <img
+          type="button"
+          matTooltip="Click to enlarge image"
+          *ngIf="!!livery.ugcData.thumbnailTwoImageBase64"
+          [src]="livery.ugcData.thumbnailTwoImageBase64"
+          [enlargeImage]="livery.ugcData.thumbnailTwoImageBase64"
+          title="Thumbnail Two"
+        />
+      </li>
+    </ul>
+
+  </mat-expansion-panel>
+</mat-accordion>

@@ -27,6 +27,12 @@ import { GiftLiveryModule } from './components/gift-livery/gift-livery.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { WoodstockGiftSpecialLiveriesComponent } from './components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
+import { PipesModule } from '@shared/pipes/pipes.module';
+import { LuxonModule } from 'luxon-angular';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -60,6 +66,12 @@ import { WoodstockGiftSpecialLiveriesComponent } from './components/gift-special
     PlayerInventoryModule,
     PlayerAccountInventoryModule,
     EndpointSelectionModule,
+    PipesModule,
+    LuxonModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    DirectivesModule,
+    MonitorActionModule,
   ],
 })
 export class GiftingsModule {}

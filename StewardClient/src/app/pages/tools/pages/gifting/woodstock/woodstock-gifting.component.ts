@@ -14,12 +14,15 @@ import {
 } from './state/woodstock-gifting.state.actions';
 import BigNumber from 'bignumber.js';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
-import { GiftSpecialLiveriesContract } from '../components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
+import { GiftSpecialLiveriesContract, SpecialLiveryData } from '../components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
 import { WoodstockService } from '@services/woodstock';
 import { UgcType } from '@models/ugc-filters';
 import { Gift, GroupGift } from '@models/gift';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJob } from '@models/background-job';
+import { chain } from 'lodash';
+import { toDateTime } from '@helpers/luxon';
+import { DateTime } from 'luxon';
 
 const SPECIAL_LIVERY_TABLE = [
   ['2/1/2022', 'Forza OPI Livery', 'N/A'],
@@ -68,9 +71,11 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
     super.ngOnInit();
 
     this.specialLiveriesContract = {
-      liveryIds: [
-
-      ],
+      liveries: chain(SPECIAL_LIVERY_TABLE)
+        .map(v => <SpecialLiveryData>{ date: DateTime.fromFormat(v[0], 'M/d/yy'), notes: v[1], id: v[2] })
+        .tail()
+        // .filter(v => !!v.id && !!v.date)
+        .value(),
       getLivery$: id => this.service.getPlayerUgcItem$(id, UgcType.Livery),
       giftLiveryToPlayers$(
         liveryId: string,
@@ -82,13 +87,13 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
             new Error('Failed to gift livery: playerIdentities is invalid or empty array'),
           );
         }
-    
+
         return this.woodstockService.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, {
           xuids: xuids,
           giftReason: giftReason,
         } as GroupGift);
       },
-    
+
       giftLiveryToLspGroup$(
         liveryId: string,
         lspGroup: LspGroup,
@@ -97,12 +102,12 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
         if (!lspGroup) {
           return throwError(new Error('Failed to gift livery: lspGroup is null or undefined'));
         }
-    
+
         return this.woodstockService.postGiftLiveryToLspGroup$(liveryId, lspGroup, {
           giftReason: giftReason,
         } as Gift);
-      }
-    }
+      },
+    };
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       WoodstockGiftingState.selectedMatTabIndex,
