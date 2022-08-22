@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '73cff6a8-eebf-40a2-a78c-5522631c5ca3',
+      shortText: 'Update view for deleted bans',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '894c31a1-2cf2-4c69-9abf-1b2b4318d3fb',
       shortText:
