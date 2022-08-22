@@ -8,6 +8,14 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7],
+        tool: [NavbarTool.UserBanning, NavbarTool.UserDetails],
+      },
+      uuid: '6d13db33-b85e-4b54-a65e-3f8bc569ac22',
+      shortText: 'Add ban expiry and deletion to FH4 and FH5 ban history view',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserDetails },
       uuid: '73cff6a8-eebf-40a2-a78c-5522631c5ca3',
       shortText: 'Update view for deleted bans',

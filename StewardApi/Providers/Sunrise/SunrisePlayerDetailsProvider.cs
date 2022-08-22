@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH4.Generated;
+using Forza.WebServices.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -14,7 +15,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using ForzaAuctionFilters = Forza.LiveOps.FH4.Generated.ForzaAuctionFilters;
-using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
+using ForzaUserBanParameters = Forza.WebServices.FH4.Generated.ForzaUserBanParameters;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -431,7 +432,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
                     var result = await this.sunriseService
-                        .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count, endpoint)
+                        .BanUsersAsync(mappedBanParameters.ToArray(), endpoint)
                         .ConfigureAwait(false);
 
                     banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
@@ -469,6 +470,54 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("User banning has failed.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<UnbanResult> ExpireBanAsync(
+            int banEntryId,
+            string endpoint)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var forzaExpireBanParameters =
+                    this.mapper.Map<ForzaUserExpireBanParameters>(banEntryId);
+
+                ForzaUserExpireBanParameters[] parameterArray = { forzaExpireBanParameters };
+
+                var result = await this.sunriseService.ExpireBanEntriesAsync(parameterArray, 1, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to expire ban. (banId: {banEntryId}).", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<UnbanResult> DeleteBanAsync(
+            int banEntryId,
+            string endpoint)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var banEntryIds = new int[] { banEntryId };
+            try
+            {
+                var result = await this.sunriseService.DeleteBanEntriesAsync(banEntryIds, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to delete ban. (banId: {banEntryId}).", ex);
             }
         }
 

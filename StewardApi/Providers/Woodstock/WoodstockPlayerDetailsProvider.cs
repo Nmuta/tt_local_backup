@@ -519,7 +519,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Ban expiry has failed for ban ID: {banEntryId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to expire ban. (banId: {banEntryId}).", ex);
             }
         }
 
@@ -541,7 +541,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Ban deletion has failed for ban ID: {banEntryId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to delete ban. (banId: {banEntryId}).", ex);
             }
         }
 

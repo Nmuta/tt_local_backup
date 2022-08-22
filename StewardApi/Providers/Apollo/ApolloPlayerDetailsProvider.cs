@@ -218,9 +218,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 {
                     var paramBatch = banParameters.ToList()
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
-                    var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
+                    var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParametersV2>>(paramBatch);
                     var result = await this.apolloService
-                        .BanUsersAsync(mappedBanParameters.ToArray(), endpoint)
+                        .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count, endpoint)
                         .ConfigureAwait(false);
 
                     banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
@@ -257,6 +257,54 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("User banning has failed.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<UnbanResult> ExpireBanAsync(
+            int banEntryId,
+            string endpoint)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var forzaExpireBanParameters =
+                    this.mapper.Map<ForzaUserExpireBanParameters>(banEntryId);
+
+                ForzaUserExpireBanParameters[] parameterArray = { forzaExpireBanParameters };
+
+                var result = await this.apolloService.ExpireBanEntriesAsync(parameterArray, 1, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to expire ban. (banId: {banEntryId}).", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<UnbanResult> DeleteBanAsync(
+            int banEntryId,
+            string endpoint)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var banEntryIds = new int[] { banEntryId };
+            try
+            {
+                var result = await this.apolloService.DeleteBanEntriesAsync(banEntryIds, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to delete ban. (banId: {banEntryId}).", ex);
             }
         }
 
@@ -304,7 +352,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 var result = await this.apolloService.GetUserBanSummariesAsync(
                     xuids.ToArray(),
-                    xuids.Count,
                     endpoint).ConfigureAwait(false);
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);

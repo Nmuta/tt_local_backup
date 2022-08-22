@@ -88,17 +88,39 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.BanUsersOutput> BanUsersAsync(
-            ForzaUserBanParameters[] banParameters,
+        public async Task<UserService.BanUsersV2Output> BanUsersAsync(
+            ForzaUserBanParametersV2[] banParameters,
+            int xuidCount,
             string endpoint)
         {
             var userService = this.GetUserService(endpoint);
 
-            return await userService.BanUsers(banParameters, banParameters.Length).ConfigureAwait(false);
+            return await userService.BanUsersV2(banParameters, xuidCount).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<UserService.ExpireBanEntriesOutput> ExpireBanEntriesAsync(
+            ForzaUserExpireBanParameters[] banParameters,
+            int entryCount,
+            string endpoint)
+        {
+            var userService = this.GetUserService(endpoint);
+
+            return await userService.ExpireBanEntries(banParameters, entryCount).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<UserService.DeleteBanEntriesOutput> DeleteBanEntriesAsync(
+            int[] banParameters,
+            string endpoint)
+        {
+            var userService = this.GetUserService(endpoint);
+
+            return await userService.DeleteBanEntries(banParameters).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
+        public async Task<UserService.GetUserBanHistoryV2Output> GetUserBanHistoryAsync(
             ulong xuid,
             int startIndex,
             int maxResults,
@@ -106,18 +128,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         {
             var userService = this.GetUserService(endpoint);
 
-            return await userService.GetUserBanHistory(xuid, startIndex, maxResults).ConfigureAwait(false);
+            return await userService.GetUserBanHistoryV2(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
+        public async Task<UserService.GetUserBanSummariesV2Output> GetUserBanSummariesAsync(
             ulong[] xuids,
-            int xuidCount,
             string endpoint)
         {
             var userService = this.GetUserService(endpoint);
 
-            return await userService.GetUserBanSummaries(xuids, xuidCount).ConfigureAwait(false);
+            return await userService.GetUserBanSummariesV2(xuids).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

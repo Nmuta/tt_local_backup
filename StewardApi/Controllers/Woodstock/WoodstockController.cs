@@ -2248,37 +2248,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
         {
-            LiveOpsBanHistory ConsolidateBanHistory(IGrouping<LiveOpsBanHistory, LiveOpsBanHistory> historyGroupings)
-            {
-                var serviceEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId == "From Services");
-                var liveOpsEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId != "From Services");
-
-                if (serviceEntry == null && liveOpsEntry == null)
-                {
-                    this.loggingService.LogException(new ConversionFailedAppInsightsException("BanHistory lookup consolidation for Woodstock has failed."));
-                    return null;
-                }
-
-                var resultEntry = new LiveOpsBanHistory(
-                    serviceEntry?.Xuid ?? liveOpsEntry.Xuid,
-                    serviceEntry?.BanEntryId ?? liveOpsEntry.BanEntryId,
-                    serviceEntry?.Title ?? liveOpsEntry?.Title,
-                    liveOpsEntry?.RequesterObjectId ?? serviceEntry?.RequesterObjectId,
-                    serviceEntry?.StartTimeUtc ?? liveOpsEntry.StartTimeUtc,
-                    serviceEntry?.ExpireTimeUtc ?? liveOpsEntry.ExpireTimeUtc,
-                    serviceEntry?.FeatureArea ?? liveOpsEntry?.FeatureArea,
-                    serviceEntry?.Reason ?? liveOpsEntry?.Reason,
-                    liveOpsEntry?.BanParameters ?? serviceEntry?.BanParameters,
-                    serviceEntry?.Endpoint ?? liveOpsEntry?.Endpoint);
-
-                resultEntry.IsActive = serviceEntry?.IsActive ?? false;
-                resultEntry.CountOfTimesExtended = serviceEntry?.CountOfTimesExtended ?? liveOpsEntry.CountOfTimesExtended;
-                resultEntry.LastExtendedTimeUtc = serviceEntry?.LastExtendedTimeUtc ?? liveOpsEntry.LastExtendedTimeUtc;
-                resultEntry.IsDeleted = serviceEntry == null;
-
-                return resultEntry;
-            }
-
             var getServicesBanHistory = this.woodstockPlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
                 xuid,
@@ -2290,12 +2259,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            // https://stackoverflow.com/questions/4873984/how-to-get-distinct-with-highest-value-using-linq
-            var banHistories = liveOpsBanHistory.Concat(servicesBanHistory)
-                                                .GroupBy(history => history, new LiveOpsBanHistoryComparer())
-                                                .Select(banGroups => ConsolidateBanHistory(banGroups))
-                                                .Where(entry => entry != null)
-                                                .ToList();
+            var banHistories = BanHistoryConsolidationHelper.ConsolidateBanHistory(liveOpsBanHistory, servicesBanHistory, this.loggingService, CodeName.ToString());
 
             banHistories.Sort((x, y) => y.ExpireTimeUtc.CompareTo(x.ExpireTimeUtc));
 
