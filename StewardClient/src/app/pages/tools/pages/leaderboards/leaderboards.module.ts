@@ -46,11 +46,11 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { LuxonModule } from 'luxon-angular';
 import { LeaderboardValidationsComponent } from './components/leaderboard-validations/leaderboard-validations.component';
-import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
 import { PlayerSelectionModule } from '@views/player-selection/player-selection.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -112,7 +112,7 @@ import { MatMenuModule } from '@angular/material/menu';
     VerifyCheckboxModule,
     PipesModule,
     LuxonModule,
-    DatetimeRangePickerModule,
+    DateTimePickersModule,
     HelpModule,
     PlayerSelectionModule,
     MatMenuModule,

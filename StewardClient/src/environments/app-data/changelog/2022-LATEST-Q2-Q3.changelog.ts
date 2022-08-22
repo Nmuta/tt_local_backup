@@ -25,6 +25,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '57dc1601-673e-48b6-a018-6c6cd38a7b37',
+      shortText: 'Create datetime-picker form control component',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '345e6e31-27e2-42dd-8710-571982ce1e66',
       shortText: 'Wire up Steelhead V2 services and UI for user and group messaging',
     },

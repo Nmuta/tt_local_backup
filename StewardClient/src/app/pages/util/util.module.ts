@@ -21,12 +21,15 @@ import { ActionMonitorSinglefireComponent } from './action-monitor-singlefire/ac
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { ActionMonitorMultifireComponent } from './action-monitor-multifire/action-monitor-multifire.component';
 import { LoggingComponent } from './logging/logging.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DateTimePickerDemoComponent } from './datetime-picker-demo/datetime-picker-demo.component';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -40,6 +43,7 @@ import { LoggingComponent } from './logging/logging.component';
     ActionMonitorSinglefireComponent,
     ActionMonitorMultifireComponent,
     LoggingComponent,
+    DateTimePickerDemoComponent,
   ],
   imports: [
     DemoRouterModule,
@@ -61,6 +65,10 @@ import { LoggingComponent } from './logging/logging.component';
     MatCheckboxModule,
     MonitorActionModule,
     StateManagersModule,
+    DateTimePickersModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
   ],
 })
 export class UtilModule {}
