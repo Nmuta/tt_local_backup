@@ -6,6 +6,7 @@ import { IconsComponent } from './icons/icons.component';
 import { LoggingComponent } from './logging/logging.component';
 import { SelectorHelperComponent } from './selector-helper/selector-helper.component';
 import { SetFakeApiComponent } from './set-fake-api/set-fake-api.component';
+import { StandardFormsComponent } from './standard-forms/standard-forms.component';
 import { TypographyComponent } from './typography/typography.component';
 
 export const demoRoutes: Routes = [
@@ -32,6 +33,10 @@ export const demoRoutes: Routes = [
   {
     path: 'logging',
     component: LoggingComponent,
+  },
+  {
+    path: 'standard-forms',
+    component: StandardFormsComponent,
   },
   {
     path: 'action-monitor-singlefire',

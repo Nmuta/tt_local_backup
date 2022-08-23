@@ -27,6 +27,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { ActionMonitorMultifireComponent } from './action-monitor-multifire/action-monitor-multifire.component';
 import { LoggingComponent } from './logging/logging.component';
+import { StandardFormsComponent } from './standard-forms/standard-forms.component';
+import { HelpModule } from '@shared/modules/help/help.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -40,6 +45,7 @@ import { LoggingComponent } from './logging/logging.component';
     ActionMonitorSinglefireComponent,
     ActionMonitorMultifireComponent,
     LoggingComponent,
+    StandardFormsComponent,
   ],
   imports: [
     DemoRouterModule,
@@ -57,10 +63,14 @@ import { LoggingComponent } from './logging/logging.component';
     MatButtonModule,
     MatInputModule,
     FormsModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MonitorActionModule,
     StateManagersModule,
+    HelpModule,
   ],
 })
 export class UtilModule {}
