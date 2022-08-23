@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,30 +12,30 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
-using Turn10.Services.LiveOps.FM8.Generated;
-using Turn10.Services.LiveOps.Interfaces.FM8.Generated;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
+using Turn10.Services.LiveOps.FH5_main.Generated;
+using Turn10.Services.LiveOps.Interfaces.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using PermissionsManagementService = Turn10.Services.LiveOps.FM8.Generated.PermissionsManagementService;
+using PermissionsManagementService = Turn10.Services.LiveOps.FH5_main.Generated.PermissionsManagementService;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
+namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Services
 {
     /// <summary>
-    ///     Controller for steelhead services API permission.
+    ///     Controller for woodstock services API permission.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/services/apiPermissions")]
-    [LogTagTitle(TitleLogTags.Steelhead)]
+    [Route("api/v{version:apiVersion}/title/woodstock/services/apiPermissions")]
+    [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.Lsp, Topic.Permissions)]
-    public class ApiPermissions : V2SteelheadControllerBase
+    [Tags(Title.Woodstock, Target.Lsp, Topic.Permissions)]
+    public class ApiPermissions : V2WoodstockControllerBase
     {
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
+        private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         /// <summary>
         ///    Gets API permissions.

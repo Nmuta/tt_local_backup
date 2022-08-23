@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {

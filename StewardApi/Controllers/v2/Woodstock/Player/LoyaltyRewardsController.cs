@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             UserManagementService.GetHasPlayedRecordOutput response;
             try
             {
-                response = await this.Services.UserManagement.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
+                response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 
             try
             {
-                await this.Services.UserManagement.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, gameTitleIds.ToArray()).ConfigureAwait(true);
+                await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, gameTitleIds.ToArray()).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
