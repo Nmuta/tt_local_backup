@@ -1,48 +1,92 @@
-<p>woodstock-gift-special-livery works!</p>
+<mat-card class="steward-layout-sticky-scroll">
+  <mat-card-header class="sf-header">
+    <mat-card-title>Gift Livery + Car</mat-card-title>
+    <mat-card-subtitle>
+      Woodstock special liveries
+    </mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <help-popover-icon
+      clickStop
+      cardTitle="Gift Special Livery + Car"
+      cardSubtitle="Button help"
+      confluenceName="gift-special-livery"
+    >
+      <p>These are special liveries that have been given out as rewards to active players on certain dates.</p>
+    </help-popover-icon>
+  </mat-card-header>
 
-<mat-accordion multi displayMode="flat">
-  <mat-expansion-panel
-    *ngFor="let livery of liveries"
-  >
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-checkbox
-          clickStop
-          [ngModel]="livery.checked"
-          matTooltip="Check to send this livery"
-          (change)="checkboxChanged()"
-          >{{ livery.data.notes }}
-        </mat-checkbox>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+  <mat-card-content>
+    <mat-accordion multi displayMode="flat">
+      <mat-expansion-panel
+        *ngFor="let livery of liveries"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-checkbox
+              clickStop
+              [ngModel]="livery.checked"
+              matTooltip="Check to send this livery"
+              (change)="checkboxChanged()"
+              >{{ livery.data.notes }}
+            </mat-checkbox>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-    <ul *waitForMonitor="livery.monitor">
-      <li><b>Car:</b> {{ livery.ugcData.carDescription }}</li>
-      <li><b>Title:</b> {{ livery.ugcData.title }}</li>
-      <li><b>Description:</b> {{ livery.ugcData.description }}</li>
-      <li><b>Created:</b> {{ livery.ugcData.createdDateUtc | utcDate: 'short' }}</li>
-      <li><b>Share Code:</b> {{ livery.ugcData.shareCode || 'N/A' }}</li>
-      <li><b>Id:</b> {{ livery.ugcData.id }}</li>
-      <li>
-        <img
-          type="button"
-          matTooltip="Click to enlarge image"
-          [src]="livery.ugcData.thumbnailOneImageBase64"
-          [enlargeImage]="livery.ugcData.thumbnailOneImageBase64"
-          title="Thumbnail One"
-        />
-      </li>
-      <li>
-        <img
-          type="button"
-          matTooltip="Click to enlarge image"
-          *ngIf="!!livery.ugcData.thumbnailTwoImageBase64"
-          [src]="livery.ugcData.thumbnailTwoImageBase64"
-          [enlargeImage]="livery.ugcData.thumbnailTwoImageBase64"
-          title="Thumbnail Two"
-        />
-      </li>
-    </ul>
+        <ul *waitForMonitor="livery.monitor">
+          <li><b>Car:</b> {{ livery.ugcData.carDescription }}</li>
+          <li><b>Title:</b> {{ livery.ugcData.title }}</li>
+          <li><b>Description:</b> {{ livery.ugcData.description }}</li>
+          <li><b>Created:</b> {{ livery.ugcData.createdDateUtc | utcDate: 'short' }}</li>
+          <li><b>Share Code:</b> {{ livery.ugcData.shareCode || 'N/A' }}</li>
+          <li><b>Id:</b> {{ livery.ugcData.id }}</li>
+          <li>
+            <img
+              type="button"
+              matTooltip="Click to enlarge image"
+              [src]="livery.ugcData.thumbnailOneImageBase64"
+              [enlargeImage]="livery.ugcData.thumbnailOneImageBase64"
+              title="Thumbnail One"
+            />
+          </li>
+          <li>
+            <img
+              type="button"
+              matTooltip="Click to enlarge image"
+              *ngIf="!!livery.ugcData.thumbnailTwoImageBase64"
+              [src]="livery.ugcData.thumbnailTwoImageBase64"
+              [enlargeImage]="livery.ugcData.thumbnailTwoImageBase64"
+              title="Thumbnail Two"
+            />
+          </li>
+        </ul>
 
-  </mat-expansion-panel>
-</mat-accordion>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+
+  <mat-card-actions class="sf-wrapper">
+    <div class="sf-horizontal">
+      <button
+        mat-raised-button
+        color="primary"
+        stateManager
+        [monitor]="null"
+        [waitOnMonitors]="allMonitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        [disabled]="!verifyGift.checked"
+        (click)="sendGiftLiveries()"
+      >
+        Send Liveries
+        <span *ngIf="usingPlayerIdentities">To Player(s)</span>
+        <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
+      </button>
+      <mat-checkbox
+        #verifyGift
+        matTooltip="Verify Gift"
+        >Verify Gift</mat-checkbox
+      >
+    </div>
+  </mat-card-actions>
+</mat-card>

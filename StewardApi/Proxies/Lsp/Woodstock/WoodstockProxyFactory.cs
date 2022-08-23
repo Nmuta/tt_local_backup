@@ -73,5 +73,13 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
             var serviceProxy = service.ProxyInterface<UserManagementService, IUserManagementService>();
             return serviceProxy;
         }
+
+        /// <inheritdoc/>
+        public IStorefrontManagementService PrepareStorefrontManagementService(string endpoint)
+        {
+            var service = new StorefrontManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
+            var serviceProxy = service.ProxyInterface<StorefrontManagementService, IStorefrontManagementService>();
+            return serviceProxy;
+        }
     }
 }

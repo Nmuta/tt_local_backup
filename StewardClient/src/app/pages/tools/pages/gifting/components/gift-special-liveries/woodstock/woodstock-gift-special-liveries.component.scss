@@ -1,3 +1,9 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill;
+}
+
 img {
   max-width: 100%;
 }

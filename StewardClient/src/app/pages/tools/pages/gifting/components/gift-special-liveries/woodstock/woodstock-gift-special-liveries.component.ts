@@ -48,8 +48,11 @@ export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent impleme
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
   @Input() public contract: GiftSpecialLiveriesContract;
+  
 
   public liveries: SpecialLiveryModel[];
+  public allMonitors: ActionMonitor[];
+  public sendGiftMonitor = new ActionMonitor('Send liveries');
 
   constructor() {
     super();
@@ -57,7 +60,8 @@ export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent impleme
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
-    this.liveries = this.contract.liveries.map(v => ({ data: v, checked: false, monitor: new ActionMonitor('GET '  + v.id) }));
+    this.liveries = this.contract.liveries.map(v => ({ data: v, checked: true, monitor: new ActionMonitor('GET '  + v.id) }));
+    this.allMonitors = this.liveries.map(l => l.monitor);
     for (const livery of this.liveries) {
       this.contract.getLivery$(livery.data.id).pipe(livery.monitor.monitorSingleFire()).subscribe(r => livery.ugcData = r);
     }
@@ -65,5 +69,9 @@ export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent impleme
 
   /** Called when a checkbox is clicked. */
   public checkboxChanged(): void { }
+
+  public sendGiftLiveries(): void {
+    this.sendGiftMonitor = this.sendGiftMonitor.repeat();
+  }
 
 }

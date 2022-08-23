@@ -13,6 +13,17 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class BackgroundJobHelpers
     {
         /// <summary>
+        ///     Generates a background job status based on a multi-list of gift responses.
+        /// </summary>
+        /// <typeparam name="T">Type of the value in the <see cref="GiftResponse{T}"/> to be returned.</typeparam>
+        public static BackgroundJobStatus GetBackgroundJobStatus<T>(
+            IList<IList<GiftResponse<T>>> results)
+        {
+            var foundErrors = results.SelectMany(g => g).Any(gift => gift.Errors.Count > 0);
+            return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
+        }
+
+        /// <summary>
         ///     Generates a background job status based on a list of gift responses.
         /// </summary>
         /// <typeparam name="T">Type of the value in the <see cref="GiftResponse{T}"/> to be returned.</typeparam>

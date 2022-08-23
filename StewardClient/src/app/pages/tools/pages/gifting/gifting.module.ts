@@ -33,6 +33,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { HelpModule } from '@shared/modules/help/help.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -72,6 +74,8 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     MatCheckboxModule,
     DirectivesModule,
     MonitorActionModule,
+    StateManagersModule,
+    HelpModule,
   ],
 })
 export class GiftingsModule {}
