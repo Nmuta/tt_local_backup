@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { Observable } from 'rxjs';
 import { PlayerUgcBaseComponent } from '../player-ugc.base.component';
 import { WoodstockService } from '@services/woodstock';
@@ -13,7 +13,7 @@ import { UgcType } from '@models/ugc-filters';
   styleUrls: ['../player-ugc.component.scss'],
 })
 export class WoodstockPlayerUgcComponent extends PlayerUgcBaseComponent implements OnChanges {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 
   constructor(private readonly woodstockService: WoodstockService) {
     super();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
@@ -12,11 +13,14 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.Services.LiveOps.FM8.Generated;
 using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
@@ -161,27 +165,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            async Task<UgcItem> GetPhotoAsync()
-            {
-                try
-                {
-                    var photoOutput = await this.Services.StorefrontManagementService.GetUGCPhoto(parsedUgcId).ConfigureAwait(false);
-                    var photo = this.mapper.Map<UgcItem>(photoOutput.result);
-
-                    if (photo.GameTitle != (int)GameTitle.FM8)
-                    {
-                        throw new NotFoundStewardException($"Photo id could not found: {parsedUgcId}");
-                    }
-
-                    return photo;
-                }
-                catch (Exception ex)
-                {
-                    throw new UnknownFailureStewardException($"No photo found. (ugcId: {parsedUgcId}).", ex);
-                }
-            }
-
-            var getPhoto = GetPhotoAsync();
+            var getPhoto = this.GetPhotoAsync(parsedUgcId);
             var getCars = this.itemsProvider.GetCarsAsync();
 
             await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
@@ -193,6 +177,37 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(photo);
+        }
+
+        /// <summary>
+        ///    Gets list of photo thumbnails from id.
+        /// </summary>
+        [HttpPost("photos/thumbnails")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetPhotoThumbnails([FromBody] IList<Guid> ugcIds)
+        {
+            var thumbnails = new List<ThumbnailLookupOutput>();
+            var thumbnailLookups = new List<Task<UgcItem>>();
+
+            foreach (var id in ugcIds)
+            {
+                thumbnailLookups.Add(this.GetPhotoAsync(id));
+            }
+
+            await Task.WhenAll(thumbnailLookups).ConfigureAwait(true);
+
+            foreach (var query in thumbnailLookups)
+            {
+                var lookupResult = query.GetAwaiter().GetResult();
+                var thumbnailResult = new ThumbnailLookupOutput
+                { Id = lookupResult.Id, Thumbnail = lookupResult.ThumbnailOneImageBase64 };
+
+                thumbnails.Add(thumbnailResult);
+            }
+
+            return this.Ok(thumbnails);
         }
 
         /// <summary>
@@ -241,6 +256,85 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
 
             return this.Ok(tune);
+        }
+
+        /// <summary>
+        ///     Gets UGC item by share code.
+        /// </summary>
+        [HttpGet("shareCode/{shareCode}")]
+        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetUgcItemBySharecode(string shareCode, [FromQuery] string ugcType = "Unknown")
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+
+            if (!Enum.TryParse(ugcType, out UgcType parseUgcType))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid UGC type provided. (type: {ugcType})");
+            }
+
+            if (parseUgcType == UgcType.Unknown)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid UGC item type to search: (type: {parseUgcType})");
+            }
+
+            var filters = this.mapper.SafeMap<ForzaUGCSearchRequest>(new UgcFilters(ulong.MaxValue, shareCode));
+
+            async Task<IList<UgcItem>> GetUgcItemBySharecodeAsync()
+            {
+                var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+
+                StorefrontManagementService.SearchUGCOutput results;
+                try
+                {
+                    results = await this.Services.StorefrontManagementService.SearchUGC(filters, mappedContentType, false, 5_000).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    throw new UnknownFailureStewardException($"Failed to search UGC by sharecode. (shareCode: {shareCode}) (ugcType: {ugcType})", ex);
+                }
+
+                // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
+                var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
+
+                return this.mapper.SafeMap<IList<UgcItem>>(filteredResults);
+            }
+
+            var getUgcItems = GetUgcItemBySharecodeAsync();
+            var getCars = this.itemsProvider.GetCarsAsync();
+
+            await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
+
+            var ugCItems = getUgcItems.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+
+            foreach (var item in ugCItems)
+            {
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
+            }
+
+            return this.Ok(ugCItems);
+        }
+
+        private async Task<UgcItem> GetPhotoAsync(Guid ugcId)
+        {
+            try
+            {
+                var photoOutput = await this.Services.StorefrontManagementService.GetUGCPhoto(ugcId).ConfigureAwait(false);
+                var photo = this.mapper.Map<UgcItem>(photoOutput.result);
+
+                if (photo.GameTitle != (int)GameTitle.FM8)
+                {
+                    throw new NotFoundStewardException($"Photo id could not found: {ugcId}");
+                }
+
+                return photo;
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"No photo found. (ugcId: {ugcId}).", ex);
+            }
         }
     }
 }

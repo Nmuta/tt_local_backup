@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
 
 /** Component for Sunrise UGC filters. */
@@ -9,5 +9,5 @@ import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
   styleUrls: ['./sunrise-ugc-filters.component.scss'],
 })
 export class SunriseUgcFiltersComponent extends UgcFiltersBaseComponent {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
 }
