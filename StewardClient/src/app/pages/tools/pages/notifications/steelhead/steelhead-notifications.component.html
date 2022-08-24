@@ -1,0 +1,54 @@
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group
+        mat-stretch-tabs
+        class="steward-layout-vertical-fill"
+        (selectedTabChange)="playerSelectionTypeChange($event.index)"
+      >
+        <mat-tab label="Player Selection">
+          <mat-card class="player-selection steward-layout-vertical-fill">
+            <player-selection-bulk
+              [disableLookupTypes]="['t10Id']"
+              [allowSelection]="isInEditTab"
+              [rejectionFn]="identityRejectionFn"
+              (found)="onPlayerIdentitiesChange($event)"
+              (selected)="onPlayerSelected($event)"
+            ></player-selection-bulk>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="LSP Group Selection" class="steward-layout-vertical-fill">
+          <steelhead-lsp-group-selection
+            class="steward-layout-vertical-fill"
+            [(ngModel)]="selectedLspGroup"
+          ></steelhead-lsp-group-selection>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+  <div class="steward-layout-pane steward-layout-main-group">
+    <mat-tab-group
+      class="steward-layout-vertical-fill"
+      (selectedTabChange)="viewSelectionTypeChange($event.index)"
+    >
+      <mat-tab label="Send">
+        <steelhead-community-messaging
+          [playerIdentities]="playerIdentities"
+          [selectedLspGroup]="selectedLspGroup"
+          [isUsingPlayerIdentities]="isUsingPlayerIdentities"
+        ></steelhead-community-messaging>
+      </mat-tab>
+      <mat-tab label="Edit/Delete">
+        <steelhead-individual-notification-management
+          [hidden]="!isUsingPlayerIdentities"
+          [selectedXuid]="selectedXuid"
+        ></steelhead-individual-notification-management>
+        <steelhead-group-notification-management
+          [hidden]="isUsingPlayerIdentities"
+          [selectedLspGroup]="selectedLspGroup"
+        ></steelhead-group-notification-management>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

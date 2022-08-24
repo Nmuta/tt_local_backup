@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
 
 /** Component for Apollo UGC filters. */
@@ -9,5 +9,5 @@ import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
   styleUrls: ['./apollo-ugc-filters.component.scss'],
 })
 export class ApolloUgcFiltersComponent extends UgcFiltersBaseComponent {
-  public gameTitle = GameTitleCodeName.FM7;
+  public gameTitle = GameTitle.FM7;
 }

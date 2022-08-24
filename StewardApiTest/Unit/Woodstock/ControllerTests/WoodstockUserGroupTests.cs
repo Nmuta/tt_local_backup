@@ -17,6 +17,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 using Microsoft.Extensions.Configuration;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {

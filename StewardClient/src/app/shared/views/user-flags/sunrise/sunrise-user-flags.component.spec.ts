@@ -9,6 +9,7 @@ import { of, throwError } from 'rxjs';
 
 import { SunriseUserFlagsComponent } from './sunrise-user-flags.component';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SunriseUserFlagsComponent', () => {
   let component: SunriseUserFlagsComponent;
@@ -20,6 +21,7 @@ describe('SunriseUserFlagsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseUserFlagsComponent],
+      imports: [PipesModule],
       providers: [createMockSunriseService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

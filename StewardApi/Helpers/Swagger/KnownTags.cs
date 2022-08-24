@@ -72,6 +72,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
 
             /// <summary>For endpoints which perform operations on non-player, non-lsp-group IDs; or which perform queries on such resources.</summary>
             public const string Details = "Target: Details";
+
+            /// <summary>For endpoints which perform operations on the LSP.</summary>
+            public const string Lsp = "Target: LSP";
         }
 
         /// <summary>
@@ -97,6 +100,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string ProfileTemplates = "Topic: Profile Templates";
             public const string Calendar = "Topic: Calendar";
             public const string RacersCup = "Topic: Racers Cup";
+            public const string CmsOverride = "Topic: Cms Override";
+            public const string Permissions = "Topic: Permissions";
         }
 
         /// <summary>

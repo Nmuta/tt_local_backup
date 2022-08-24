@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { cloneDeep, sortBy } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
@@ -40,7 +40,7 @@ export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotificat
     'expirationDateUtc',
   ];
 
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
   public abstract getPlayerNotificationsByXuid$(xuid: BigNumber): Observable<T[]>;
 
   /** Initialization hook. */

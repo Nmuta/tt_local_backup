@@ -30,6 +30,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { GroupNotificationManagementComponent } from './group-notification-management.component';
 import { WoodstockGroupNotificationManagementContract } from './woodstock/woodstock-group-notification-management.contract';
 import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-group-notification-management.contract';
+import { SteelheadGroupNotificationManagementComponent } from './steelhead/steelhead-group-notification-management.component';
+import { SteelheadGroupNotificationManagementContract } from './steelhead/steelhead-group-notification-management.contract';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -37,6 +39,7 @@ import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-gr
     GroupNotificationManagementComponent,
     SunriseGroupNotificationManagementComponent,
     WoodstockGroupNotificationManagementComponent,
+    SteelheadGroupNotificationManagementComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
@@ -72,8 +75,10 @@ import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-gr
     GroupNotificationManagementComponent,
     SunriseGroupNotificationManagementComponent,
     WoodstockGroupNotificationManagementComponent,
+    SteelheadGroupNotificationManagementComponent,
   ],
   providers: [
+    SteelheadGroupNotificationManagementContract,
     WoodstockGroupNotificationManagementContract,
     SunriseGroupNotificationManagementContract,
   ],

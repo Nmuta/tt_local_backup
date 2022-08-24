@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { SunriseBanHistoryComponent } from './sunrise-ban-history.component';
 import { createMockPermissionsService } from '@services/permissions';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SunriseBanHistoryComponent', () => {
   let component: SunriseBanHistoryComponent;
@@ -12,6 +13,7 @@ describe('SunriseBanHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseBanHistoryComponent],
+      imports: [PipesModule],
       providers: [createMockSunriseService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

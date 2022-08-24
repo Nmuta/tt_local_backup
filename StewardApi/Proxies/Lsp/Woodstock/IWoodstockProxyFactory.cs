@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {
@@ -21,6 +22,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         ///     Prepares a <see cref="IUserManagementService" />.
         /// </summary>
         IUserManagementService PrepareUserManagementService(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="IPermissionsManagementService" />.
+        /// </summary>
+        IPermissionsManagementService PreparePermissionsManagementService(string endpoint);
 
         /// <summary>
         ///     Prepares a <see cref="IStorefrontManagementService" />.

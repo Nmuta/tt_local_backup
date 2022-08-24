@@ -58,5 +58,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         ///     Prepares a <see cref="StorefrontService" />.
         /// </summary>
         Task<StorefrontService> PrepareStorefrontServiceAsync(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="UserService" />.
+        /// </summary>
+        Task<UserService> PrepareUserServiceAsync(string endpoint);
     }
 }

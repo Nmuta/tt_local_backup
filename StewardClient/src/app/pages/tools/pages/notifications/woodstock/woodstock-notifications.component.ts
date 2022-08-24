@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { LspGroup } from '@models/lsp-group';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -20,7 +20,7 @@ export class WoodstockNotificationsComponent {
   @ViewChild(WoodstockIndividualNotificationManagementComponent)
   private playerManagementComponent: WoodstockIndividualNotificationManagementComponent;
 
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
   /** The selected player identities */
   public playerIdentities: IdentityResultAlpha[] = [];
   /** The selected LSP Group ID. */

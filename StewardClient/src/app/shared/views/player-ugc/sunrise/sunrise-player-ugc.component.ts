@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
 import { PlayerUgcBaseComponent } from '../player-ugc.base.component';
@@ -13,7 +13,7 @@ import { UgcType } from '@models/ugc-filters';
   styleUrls: ['../player-ugc.component.scss'],
 })
 export class SunrisePlayerUgcComponent extends PlayerUgcBaseComponent implements OnChanges {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
 
   constructor(private readonly sunriseSerice: SunriseService) {
     super();

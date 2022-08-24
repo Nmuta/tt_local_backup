@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment, NavbarTool } from '@environments/environment';
+import {
+  environment,
+  HomeTileInfo,
+  isHomeTileInfoMultiExternal,
+  NavbarTool,
+} from '@environments/environment';
 import { HomeTileInfoForNav, setExternalLinkTarget } from '@helpers/external-links';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
@@ -39,6 +44,11 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   constructor(private readonly store: Store, private readonly zendeskService: ZendeskService) {
     super();
+  }
+
+  /** Produces true when the item is a multi external tool. */
+  public isMultiExternal(item: HomeTileInfo): boolean {
+    return isHomeTileInfoMultiExternal(item);
   }
 
   /** Initialization hook. */

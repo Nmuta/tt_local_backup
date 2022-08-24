@@ -40,17 +40,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             var failedServiceProcies = new StringBuilder();
 
             Exception exception;
-            if (!this.VerifyServiceProxy(() => services.LiveOps, "LiveOps", out exception))
+            if (!this.VerifyServiceProxy(() => services.LiveOpsService, "LiveOpsService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.UserInventory, "UserInventory", out exception))
+            if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.UserManagement, "UserManagement", out exception))
+            if (!this.VerifyServiceProxy(() => services.UserManagementService, "UserManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
@@ -66,13 +71,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         /// <summary>
         ///     Verifies LiveOps service proxy.
         /// </summary>
-        [HttpGet("LiveOps")]
+        [HttpGet("LiveOpsService")]
         [SwaggerResponse(200)]
         public IActionResult TestLiveOpsProxy()
         {
             var services = this.WoodstockServices.Value;
 
-            if (!this.VerifyServiceProxy(() => services.LiveOps, "LiveOps", out var exception))
+            if (!this.VerifyServiceProxy(() => services.LiveOpsService, "LiveOpsService", out var exception))
             {
                 throw exception;
             }
@@ -81,15 +86,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         }
 
         /// <summary>
-        ///     Verifies User Inventory service proxy.
+        ///     Verifies User Inventory Management Service proxy.
         /// </summary>
-        [HttpGet("UserInventory")]
+        [HttpGet("UserInventoryManagementService")]
         [SwaggerResponse(200, type: typeof(bool))]
         public IActionResult TestUserInventoryProxy()
         {
             var services = this.WoodstockServices.Value;
 
-            if (!this.VerifyServiceProxy(() => services.UserInventory, "UserInventory", out var exception))
+            if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out var exception))
             {
                 throw exception;
             }
@@ -98,15 +103,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         }
 
         /// <summary>
-        ///     Verifies User Management proxy.
+        ///     Verifies User Management Service proxy.
         /// </summary>
-        [HttpGet("UserManagement")]
+        [HttpGet("UserManagementService")]
         [SwaggerResponse(200, type: typeof(bool))]
         public IActionResult TestUserManagementProxy()
         {
             var services = this.WoodstockServices.Value;
 
-            if (!this.VerifyServiceProxy(() => services.UserManagement, "UserManagement", out var exception))
+            if (!this.VerifyServiceProxy(() => services.UserManagementService, "UserManagementService", out var exception))
+            {
+                throw exception;
+            }
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Verifies Permissions Management Service proxy.
+        /// </summary>
+        [HttpGet("PermissionsManagementService")]
+        [SwaggerResponse(200, type: typeof(bool))]
+        public IActionResult TestPermissionsManagementServiceProxy()
+        {
+            var services = this.WoodstockServices.Value;
+
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out var exception))
             {
                 throw exception;
             }

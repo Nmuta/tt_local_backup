@@ -1,5 +1,5 @@
-import { DatetimeRangeOption } from '@components/datetime-range-picker/date-range-picker/date-range-picker.component';
 import { DateTime } from 'luxon';
+import { DatetimeRangeOption } from './date-range-picker/date-range-picker.component';
 
 export const DATE_TIME_TOGGLE_OPTIONS: DatetimeRangeOption[] = [
   {

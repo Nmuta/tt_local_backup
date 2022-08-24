@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { WoodstockService } from '@services/woodstock';
 import { PlayerNotificationsBaseComponent } from '../player-notifications.base.component';
 import { Observable } from 'rxjs';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { PlayerNotification } from '@models/notifications.model';
 
 /** Retreives and displays a players' Woodstock notifications by XUID. */
@@ -13,7 +13,7 @@ import { PlayerNotification } from '@models/notifications.model';
   styleUrls: ['../player-notifications.component.scss'],
 })
 export class WoodstockPlayerNotificationsComponent extends PlayerNotificationsBaseComponent<PlayerNotification> {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 
   constructor(private readonly woodstock: WoodstockService) {
     super();

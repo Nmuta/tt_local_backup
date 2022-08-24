@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { SunriseService } from '@services/sunrise';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { Observable } from 'rxjs';
 import { PlayerNotificationsBaseComponent } from '../player-notifications.base.component';
 import { PlayerNotification } from '@models/notifications.model';
@@ -13,7 +13,7 @@ import { PlayerNotification } from '@models/notifications.model';
   styleUrls: ['../player-notifications.component.scss'],
 })
 export class SunrisePlayerNotificationsComponent extends PlayerNotificationsBaseComponent<PlayerNotification> {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
 
   constructor(private readonly sunrise: SunriseService) {
     super();

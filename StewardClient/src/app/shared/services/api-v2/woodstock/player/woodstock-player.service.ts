@@ -39,7 +39,7 @@ export class WoodstockPlayerService {
     const params = new HttpParams().append('externalProfileId', externalProfileId);
 
     return this.api.getRequest$<HasPlayedRecord[]>(
-      `${this.basePath}/${xuid}/hasPlayedRecord`,
+      `${this.basePath}/${xuid}/loyaltyRewards/hasPlayedRecord`,
       params,
     );
   }

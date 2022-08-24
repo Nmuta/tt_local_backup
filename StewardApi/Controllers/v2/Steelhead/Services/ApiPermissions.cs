@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Turn10.Services.LiveOps.Interfaces.FM8.Generated;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using PermissionsManagementService = Turn10.Services.LiveOps.FM8.Generated.PermissionsManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
@@ -32,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("API Permissions", "Steelhead")]
+    [Tags(Title.Steelhead, Target.Lsp, Topic.Permissions)]
     public class ApiPermissions : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;

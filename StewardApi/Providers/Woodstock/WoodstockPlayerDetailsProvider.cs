@@ -29,6 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
+        private const int RaceMarshallUserGroupId = 9;
 
         private readonly IWoodstockService woodstockService;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
@@ -266,13 +267,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                 userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
 
+                var nonStandardUserGroups = NonStandardUserGroupHelpers.GetUserGroups(endpoint);
+
                 return new WoodstockUserFlags
                 {
                     IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
                     IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
                     IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
                     IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                    IsUnderReview = suspiciousResults.isUnderReview
+                    IsUnderReview = suspiciousResults.isUnderReview,
+                    IsRaceMarshall = userGroupResults.userGroups.Any(r => r.Id == RaceMarshallUserGroupId),
+                    IsContentCreator = userGroupResults.userGroups.Any(r => r.Id == nonStandardUserGroups.ContentCreatorId),
                 };
             }
             catch (Exception ex)
@@ -289,8 +294,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var addGroupList = this.PrepareGroupIds(userFlags, true);
-                var removeGroupList = this.PrepareGroupIds(userFlags, false);
+                var addGroupList = this.PrepareGroupIds(userFlags, true, endpoint);
+                var removeGroupList = this.PrepareGroupIds(userFlags, false, endpoint);
 
                 await this.woodstockService.AddToUserGroupsAsync(xuid, addGroupList.ToArray(), endpoint)
                     .ConfigureAwait(false);
@@ -514,7 +519,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Ban expiry has failed for ban ID: {banEntryId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to expire ban. (banId: {banEntryId}).", ex);
             }
         }
 
@@ -536,7 +541,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Ban deletion has failed for ban ID: {banEntryId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to delete ban. (banId: {banEntryId}).", ex);
             }
         }
 
@@ -686,13 +691,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             await this.woodstockService.ResendProfileHasPlayedNotificationAsync(xuid, externalProfileId, gameTitles.ToArray(), endpoint).ConfigureAwait(false);
         }
 
-        private IList<int> PrepareGroupIds(WoodstockUserFlags userFlags, bool toggleOn)
+        private IList<int> PrepareGroupIds(WoodstockUserFlags userFlags, bool toggleOn, string endpoint)
         {
+            var nonStandardUserGroups = NonStandardUserGroupHelpers.GetUserGroups(endpoint);
+
             var resultGroupIds = new List<int>();
             if (userFlags.IsVip == toggleOn) { resultGroupIds.Add(VipUserGroupId); }
             if (userFlags.IsUltimateVip == toggleOn) { resultGroupIds.Add(UltimateVipUserGroupId); }
             if (userFlags.IsTurn10Employee == toggleOn) { resultGroupIds.Add(T10EmployeeUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleOn) { resultGroupIds.Add(WhitelistUserGroupId); }
+            if (userFlags.IsRaceMarshall == toggleOn) { resultGroupIds.Add(RaceMarshallUserGroupId); }
+            if (userFlags.IsContentCreator == toggleOn) { resultGroupIds.Add(nonStandardUserGroups.ContentCreatorId); }
 
             return resultGroupIds;
         }

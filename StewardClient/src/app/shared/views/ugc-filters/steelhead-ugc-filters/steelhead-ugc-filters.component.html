@@ -1,0 +1,52 @@
+<form [formGroup]="formGroup" (submit)="searchFilters()">
+  <!-- Car Make & Model Filter -->
+  <steelhead-make-model-autocomplete
+    (changes)="searchFilters()"
+    [formControl]="formControls.makeModelInput"
+  ></steelhead-make-model-autocomplete>
+
+  <!-- UGC Access Level Filter -->
+  <mat-form-field appearance="fill">
+    <mat-label>Keyword</mat-label>
+    <input
+      type="text"
+      matInput
+      [formControl]="formControls.keyword"
+      (keyup.enter)="searchFilters()"
+    />
+    <button
+      type="button"
+      mat-button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="clearKeyword()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- UGC Access Level Filter -->
+  <mat-form-field appearance="fill">
+    <mat-label>Access Level</mat-label>
+    <mat-select
+      matInput
+      [formControl]="formControls.accessLevel"
+      (selectionChange)="searchFilters()"
+    >
+      <mat-option *ngFor="let accessLevel of accessLevelOptions" [value]="accessLevel">{{
+        accessLevel
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- UGC Order By Filter -->
+  <mat-form-field appearance="fill">
+    <mat-label>Order By</mat-label>
+    <mat-select matInput [formControl]="formControls.orderBy" (selectionChange)="searchFilters()">
+      <mat-option *ngFor="let orderBy of orderByOptions" [value]="orderBy">{{
+        orderBy
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

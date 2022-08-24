@@ -30,6 +30,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { IndividualNotificationManagementComponent } from './individual-notification-management.component';
 import { WoodstockIndividualNotificationManagementContract } from './woodstock/woodstock-individual-notification-management.contract';
 import { SunriseIndividualNotificationManagementContract } from './sunrise/sunrise-individual-notification-management.contract';
+import { SteelheadIndividualNotificationManagementComponent } from './steelhead/steelhead-individual-notification-management.component';
+import { SteelheadIndividualNotificationManagementContract } from './steelhead/steelhead-individual-notification-management.contract';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -37,6 +39,7 @@ import { SunriseIndividualNotificationManagementContract } from './sunrise/sunri
     IndividualNotificationManagementComponent,
     SunriseIndividualNotificationManagementComponent,
     WoodstockIndividualNotificationManagementComponent,
+    SteelheadIndividualNotificationManagementComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
@@ -72,8 +75,10 @@ import { SunriseIndividualNotificationManagementContract } from './sunrise/sunri
     IndividualNotificationManagementComponent,
     SunriseIndividualNotificationManagementComponent,
     WoodstockIndividualNotificationManagementComponent,
+    SteelheadIndividualNotificationManagementComponent,
   ],
   providers: [
+    SteelheadIndividualNotificationManagementContract,
     WoodstockIndividualNotificationManagementContract,
     SunriseIndividualNotificationManagementContract,
   ],

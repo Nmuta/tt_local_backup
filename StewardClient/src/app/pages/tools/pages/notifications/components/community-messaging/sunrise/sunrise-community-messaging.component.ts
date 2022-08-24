@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { SunriseService } from '@services/sunrise';
 import { CommunityMessagingComponent } from '../community-messaging.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 
 /**
  *  Sunrise community messaging component.
@@ -16,7 +16,7 @@ import { GameTitleCodeName } from '@models/enums';
   styleUrls: ['../community-messaging.component.scss'],
 })
 export class SunriseCommunityMessagingComponent extends CommunityMessagingComponent {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
 
   constructor(private readonly sunriseService: SunriseService) {
     super();

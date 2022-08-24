@@ -13,6 +13,75 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
       shortText: 'Allow gifting certain time-limited liveries as part of inventory restoration',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'a1ea6167-794c-4e57-8daa-66155cc26f1c',
+      shortText: 'Add more form standardization tools',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96e55816-4103-430c-85f8-25fff0123348',
+      shortText: 'Add UGC to Steelhead player details',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7],
+        tool: [NavbarTool.UserBanning, NavbarTool.UserDetails],
+      },
+      uuid: '6d13db33-b85e-4b54-a65e-3f8bc569ac22',
+      shortText: 'Add ban expiry and deletion to FH4 and FH5 ban history view',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '73cff6a8-eebf-40a2-a78c-5522631c5ca3',
+      shortText: 'Update view for deleted bans',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '894c31a1-2cf2-4c69-9abf-1b2b4318d3fb',
+      shortText:
+        'Add external link to Notifications group of Power BI Dashboards; Group Power BI Dashboards',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'eafc0f0e-7409-4e15-8285-fb2b70c0b3c8',
+      shortText: 'Make External Links dropdowns open links in new tabs',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '57dc1601-673e-48b6-a018-6c6cd38a7b37',
+      shortText: 'Create datetime-picker form control component',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '345e6e31-27e2-42dd-8710-571982ce1e66',
+      shortText: 'Wire up Steelhead V2 services and UI for user and group messaging',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '4fd836ba-ac4f-4349-9b91-e7f6451f5911',
+      shortText: 'Add race marshall and content creator user flags',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: 'dcc40063-cf82-44d9-862c-79b3597a7fec',
+      shortText: 'Fix bug in Loyalty Rewards tool',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '0639be33-195e-422b-a338-9e590708d803',
+      shortText: 'Combine Admin Pages tools into single tile and nav dropdown',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '5d289485-7bc4-42e8-b196-01b76eb99684',
+      shortText: 'Add player profile management tools',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e833e389-43a9-41f2-ba3f-19f1a0cacfe3',
+      shortText: 'Restructuring standard gaps file',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: '91b5cae4-d232-40dd-8b65-689a09541524',
       shortText: 'Add leaderboard talent gridlines to graph view',
@@ -120,15 +189,7 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
       shortText: 'All external tools now auto-open in new tab',
     },
     {
-      tag: {
-        title: [GameTitle.FM8],
-        tool: [
-          NavbarTool.AdminSteelheadDev,
-          NavbarTool.AdminSteelheadStudio,
-          NavbarTool.AdminFH4Studio,
-          NavbarTool.AdminFM7Studio,
-        ],
-      },
+      tag: ChangelogTag.General,
       uuid: '77922281-d545-46a4-9fbd-1067523b84b1',
       shortText: 'Add external tool links for steelhead dev and steelhead, fh4, and fm7 studio',
     },

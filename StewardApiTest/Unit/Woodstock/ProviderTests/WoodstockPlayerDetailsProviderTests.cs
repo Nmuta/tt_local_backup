@@ -316,7 +316,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var endpoint = Fixture.Create<string>();
+            var endpoint = WoodstockEndpoint.Studio;
 
             // Act.
             async Task<WoodstockUserFlags> Action() => await provider.GetUserFlagsAsync(xuid, endpoint).ConfigureAwait(false);
@@ -335,7 +335,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var userFlags = Fixture.Create<WoodstockUserFlags>();
-            var endpoint = Fixture.Create<string>();
+            var endpoint = WoodstockEndpoint.Studio;
 
             // Act.
             Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, userFlags, endpoint).ConfigureAwait(false);
@@ -351,7 +351,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var endpoint = Fixture.Create<string>();
+            var endpoint = WoodstockEndpoint.Studio;
 
             // Act.
             Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, null, endpoint).ConfigureAwait(false);

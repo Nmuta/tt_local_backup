@@ -7,7 +7,6 @@ import { BeforeDateDirective } from './validators/before-date.directive';
 import { AfterDateDirective } from './validators/after-date.directive';
 import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
 import { MatBadgeIconDirective } from './mat-badge-icon.directive';
-import { AnchorDirective } from './anchor.directive';
 
 /**
  * Module containing various utility directives.
@@ -21,7 +20,6 @@ import { AnchorDirective } from './anchor.directive';
     AfterDateDirective,
     ClickEnlargeImageDirective,
     MatBadgeIconDirective,
-    AnchorDirective,
   ],
   imports: [CommonModule],
   exports: [
@@ -32,7 +30,6 @@ import { AnchorDirective } from './anchor.directive';
     AfterDateDirective,
     ClickEnlargeImageDirective,
     MatBadgeIconDirective,
-    AnchorDirective,
   ],
 })
 export class DirectivesModule {}

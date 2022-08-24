@@ -19,6 +19,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { WoodstockUgcFiltersComponent } from './woodstock-ugc-filters/woodstock-ugc-filters.component';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { ApolloUgcFiltersComponent } from './apollo-ugc-filters/apollo-ugc-filters.component';
+import { SteelheadUgcFiltersComponent } from './steelhead-ugc-filters/steelhead-ugc-filters.component';
 
 /** Display for player ugcs. */
 @NgModule({
@@ -26,6 +27,7 @@ import { ApolloUgcFiltersComponent } from './apollo-ugc-filters/apollo-ugc-filte
     SunriseUgcFiltersComponent,
     WoodstockUgcFiltersComponent,
     ApolloUgcFiltersComponent,
+    SteelheadUgcFiltersComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +49,11 @@ import { ApolloUgcFiltersComponent } from './apollo-ugc-filters/apollo-ugc-filte
     DirectivesModule,
     MakeModelAutocompleteModule,
   ],
-  exports: [SunriseUgcFiltersComponent, WoodstockUgcFiltersComponent, ApolloUgcFiltersComponent],
+  exports: [
+    SunriseUgcFiltersComponent,
+    WoodstockUgcFiltersComponent,
+    ApolloUgcFiltersComponent,
+    SteelheadUgcFiltersComponent,
+  ],
 })
 export class UgcFiltersModule {}

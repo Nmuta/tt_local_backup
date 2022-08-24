@@ -104,6 +104,5 @@ mat-progress-spinner {
 }
 
 img {
-  border: 1px solid #00000022;
-  border-radius: 5px;
+  @include standard-image-border();
 }

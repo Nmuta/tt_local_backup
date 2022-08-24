@@ -1,7 +1,7 @@
 .sf-wrapper {
-  $mat-form-field-bottom-spacing: 2em;
+  $mat-form-field-bottom-spacing: 2em; // chosen to support 2 lines of text w/o conflict
 
-  @mixin mat-form-field-horizontal-sizing($name: 'unknown', $basis: 5em) {
+  @mixin _mat-form-field-horizontal-sizing($name: 'unknown', $basis: 5em) {
     > mat-form-field.sf-#{$name} {
       flex-basis: $basis;
       flex-grow: 0;
@@ -56,20 +56,20 @@
     }
 
     // support for up to 5 characters
-    @include mat-form-field-horizontal-sizing('1-char', 5em);
-    @include mat-form-field-horizontal-sizing('2-char', 5em);
-    @include mat-form-field-horizontal-sizing('3-char', 5em);
-    @include mat-form-field-horizontal-sizing('4-char', 5em);
-    @include mat-form-field-horizontal-sizing('5-char', 5em);
+    @include _mat-form-field-horizontal-sizing('1-char', 5em);
+    @include _mat-form-field-horizontal-sizing('2-char', 5em);
+    @include _mat-form-field-horizontal-sizing('3-char', 5em);
+    @include _mat-form-field-horizontal-sizing('4-char', 5em);
+    @include _mat-form-field-horizontal-sizing('5-char', 5em);
 
     // support for up to 8 characters
-    @include mat-form-field-horizontal-sizing('6-char', 6em);
-    @include mat-form-field-horizontal-sizing('7-char', 6em);
-    @include mat-form-field-horizontal-sizing('8-char', 6em);
+    @include _mat-form-field-horizontal-sizing('6-char', 6em);
+    @include _mat-form-field-horizontal-sizing('7-char', 6em);
+    @include _mat-form-field-horizontal-sizing('8-char', 6em);
 
     // support for up to 10 characters
-    @include mat-form-field-horizontal-sizing('9-char', 7em);
-    @include mat-form-field-horizontal-sizing('10-char', 7em);
+    @include _mat-form-field-horizontal-sizing('9-char', 7em);
+    @include _mat-form-field-horizontal-sizing('10-char', 7em);
   }
 
   .sf-vertical {
@@ -96,6 +96,28 @@
 
   > button {
     margin: 0 0.5em;
+  }
+}
+
+.mat-card-actions.sf-actions {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  margin-left: -0.5em;
+  margin-right: -0.5em;
+  > * {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  .mat-button-base {
+    &:last-child {
+      margin-right: 0;
+    }
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }
 

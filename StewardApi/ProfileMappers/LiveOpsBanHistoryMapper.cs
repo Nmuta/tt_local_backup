@@ -3,7 +3,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers;
 using FH4Security = Xls.Security.FH4.Generated;
-using FH4WebServices = Forza.LiveOps.FH4.Generated;
+using FH4WebServices = Forza.WebServices.FH4.Generated;
 using FH5LiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using FH5Security = Xls.Security.FH5_main.Generated;
 using FM7Security = Xls.Security.FM7.Generated;
@@ -42,8 +42,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 "{}",
                 endpoint);
 
+            liveOpsBanHistory.BanEntryId = banDescription.BanEntryId;
             liveOpsBanHistory.LastExtendedTimeUtc = banDescription.LastExtendTime;
             liveOpsBanHistory.CountOfTimesExtended = banDescription.ExtendTimes;
+            liveOpsBanHistory.IsActive = banDescription.IsActive;
 
             return liveOpsBanHistory;
         }
@@ -51,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// <summary>
         ///     Maps FM7 forza user ban description to live ops ban history.
         /// </summary>
-        public static LiveOpsBanHistory Map(FM7WebServices.ForzaUserBanDescription banDescription, string endpoint)
+        public static LiveOpsBanHistory Map(FM7WebServices.ForzaUserBanDescriptionV2 banDescription, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -66,8 +68,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 "{}",
                 endpoint);
 
+            liveOpsBanHistory.BanEntryId = banDescription.BanEntryId;
             liveOpsBanHistory.LastExtendedTimeUtc = banDescription.LastExtendTime;
             liveOpsBanHistory.CountOfTimesExtended = banDescription.ExtendTimes;
+            liveOpsBanHistory.IsActive = banDescription.IsActive;
 
             return liveOpsBanHistory;
         }

@@ -14,10 +14,11 @@ export interface GroupNotificationManagementContract {
 
   /** Update group notification. */
   postEditLspGroupCommunityMessage$(
+    lspGroupId: BigNumber,
     notificationId: string,
     communityMessage: CommunityMessage,
   ): Observable<void>;
 
   /** Delete group notification. */
-  deleteLspGroupCommunityMessage$(notificationId: string): Observable<void>;
+  deleteLspGroupCommunityMessage$(lspGroupId: BigNumber, notificationId: string): Observable<void>;
 }

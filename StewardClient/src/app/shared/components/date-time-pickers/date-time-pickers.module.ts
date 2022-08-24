@@ -1,28 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DatetimeRangePickerComponent } from './datetime-range-picker.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatInputModule } from '@angular/material/input';
-import { TimepickerComponent } from './timepicker/timepicker.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { SafeNgxTimepickerDirective } from './timepicker/safe-ngx-timepicker.directive';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
+import { DatetimePickerComponent } from './datetime-picker/datetime-picker.component';
+import { TimepickerComponent } from './timepicker/timepicker.component';
+import { DatetimeRangePickerComponent } from './datetime-range-picker/datetime-range-picker.component';
+import { SafeNgxTimepickerDirective } from './timepicker/safe-ngx-timepicker.directive';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { DateRangePickerComponent } from './datetime-range-picker/date-range-picker/date-range-picker.component';
 
 /** A utility module that exports a datetime picker component for forms. */
 @NgModule({
   declarations: [
-    DatetimeRangePickerComponent,
-    DateRangePickerComponent,
+    DatetimePickerComponent,
     TimepickerComponent,
     SafeNgxTimepickerDirective,
+    DateRangePickerComponent,
+    DatetimeRangePickerComponent,
   ],
   imports: [
     CommonModule,
@@ -36,9 +38,15 @@ import { DateRangePickerComponent } from './date-range-picker/date-range-picker.
     MatButtonToggleModule,
     DirectivesModule,
     MatLuxonDateModule,
-    NgxMaterialTimepickerModule.setLocale('en-US'),
     PipesModule,
+    NgxMaterialTimepickerModule.setLocale('en-US'),
   ],
-  exports: [DatetimeRangePickerComponent, DateRangePickerComponent],
+  exports: [
+    DatetimePickerComponent,
+    TimepickerComponent,
+    SafeNgxTimepickerDirective,
+    DateRangePickerComponent,
+    DatetimeRangePickerComponent,
+  ],
 })
-export class DatetimeRangePickerModule {}
+export class DateTimePickersModule {}

@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get([FromBody] List<Guid> ugcIds)
         {
-            var thumbnails = new List<ThumbnailLookupOutputModel>();
+            var thumbnails = new List<ThumbnailLookupOutput>();
             var thumbnailLookups = new List<Task<UgcItem>>();
 
             foreach (var id in ugcIds)
@@ -68,19 +68,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             foreach (var query in thumbnailLookups)
             {
                 var lookupResult = query.GetAwaiter().GetResult();
-                var thumbnailResult = new ThumbnailLookupOutputModel
-                        {Id = lookupResult.Id, Thumbnail = lookupResult.ThumbnailOneImageBase64};
+                var thumbnailResult = new ThumbnailLookupOutput
+                { Id = lookupResult.Id, Thumbnail = lookupResult.ThumbnailOneImageBase64};
 
                 thumbnails.Add(thumbnailResult);
             }
+
             return this.Ok(thumbnails);
-        }
-
-        private class ThumbnailLookupOutputModel
-        {
-            public Guid Id { get; set; }
-
-            public string Thumbnail { get; set; }
         }
     }
 }
