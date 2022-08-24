@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'dce806b3-c476-463e-b3e1-1c770714daba',
+      shortText: 'Add public searching of UGC to Steelhead',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'a1ea6167-794c-4e57-8daa-66155cc26f1c',
       shortText: 'Add more form standardization tools',
     },
