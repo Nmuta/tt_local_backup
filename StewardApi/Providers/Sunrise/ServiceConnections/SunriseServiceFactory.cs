@@ -151,6 +151,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             return new StorefrontService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
+        /// <inheritdoc />
+        public async Task<UserService> PrepareUserServiceAsync(string endpoint)
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new UserService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+        }
+
         private async Task<string> GetAuthTokenAsync()
         {
             var tokenForgeryParameters = new TokenForgeryRequest

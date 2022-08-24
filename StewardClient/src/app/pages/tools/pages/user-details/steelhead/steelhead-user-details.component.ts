@@ -3,6 +3,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { cloneDeep, first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
+import { UgcType } from '@models/ugc-filters';
 import { GuidLikeString } from '@models/extended-types';
 
 /** Component for displaying routed Steelhead user details. */
@@ -13,6 +14,8 @@ import { GuidLikeString } from '@models/extended-types';
 })
 export class SteelheadUserDetailsComponent {
   public profile: SteelheadPlayerInventoryProfile;
+
+  public readonly UgcType = UgcType;
 
   /** The lookup type. */
   public get lookupType(): string {

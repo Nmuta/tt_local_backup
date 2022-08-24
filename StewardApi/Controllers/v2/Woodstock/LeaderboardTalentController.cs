@@ -66,11 +66,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         {
             try
             {
-                var leaderboardTalent = await this.Services.UserManagement.GetUserGroupUsers(this.leaderboardTalentGroupId, 0, this.maxResults).ConfigureAwait(true);
+                var leaderboardTalent = await this.Services.UserManagementService.GetUserGroupUsers(this.leaderboardTalentGroupId, 0, this.maxResults).ConfigureAwait(true);
 
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(leaderboardTalent.xuids);
 
-                var result = await this.Services.UserManagement.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
+                var result = await this.Services.UserManagementService.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
 
                 var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
                 identityResults.SetErrorsForInvalidXuids();

@@ -1,0 +1,8 @@
+<steelhead-ugc-filters (changes)="changeUgcFilters($event)"></steelhead-ugc-filters>
+
+<ng-container *waitForMonitor="getMonitor">
+  <steelhead-ugc-table
+    [content]="filteredUgcContent"
+    [contentType]="contentType"
+  ></steelhead-ugc-table>
+</ng-container>

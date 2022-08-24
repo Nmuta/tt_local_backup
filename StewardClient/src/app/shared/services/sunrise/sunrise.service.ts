@@ -55,6 +55,7 @@ import { AuctionData } from '@models/auction-data';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
+import { UnbanResult } from '@models/unban-result';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -221,6 +222,22 @@ export class SunriseService {
   public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsBanDescriptions> {
     return this.apiService.getRequest$<LiveOpsBanDescriptions>(
       `${this.basePath}/player/xuid(${xuid})/banHistory`,
+    );
+  }
+
+  /** Expire bans by ban entry IDs. */
+  public expireBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apiService.postRequest$<UnbanResult>(
+      `${this.basePath}/ban/${banEntryId}/expire`,
+      null,
+    );
+  }
+
+  /** Delete bans by ban entry IDs. */
+  public deleteBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apiService.postRequest$<UnbanResult>(
+      `${this.basePath}/ban/${banEntryId}/delete`,
+      null,
     );
   }
 

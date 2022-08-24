@@ -10,7 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
+using static Forza.WebServices.FH4.Generated.UserService;
+using ForzaUserBanParameters = Forza.WebServices.FH4.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
@@ -400,25 +401,57 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
+        public async Task<UserService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
             ulong[] xuids,
             int xuidCount,
             string endpoint)
         {
-            var enforcementService = await this.serviceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.serviceFactory.PrepareUserServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await enforcementService.GetUserBanSummaries(xuids, xuidCount).ConfigureAwait(false);
+            return await userService.GetUserBanSummaries(xuids, xuidCount).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.BanUsersOutput> BanUsersAsync(
-            ForzaUserBanParameters[] banParameters,
-            int xuidCount,
+        public async Task<UserService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
             string endpoint)
         {
-            var userManagementService = await this.serviceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.serviceFactory.PrepareUserServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await userManagementService.BanUsers(banParameters, xuidCount).ConfigureAwait(false);
+            return await userService.GetUserBanHistory(xuid, startIndex, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<UserService.BanUsersOutput> BanUsersAsync(
+            ForzaUserBanParameters[] banParameters,
+            string endpoint)
+        {
+            var userService = await this.serviceFactory.PrepareUserServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userService.BanUsers(banParameters).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<ExpireBanEntriesOutput> ExpireBanEntriesAsync(
+            ForzaUserExpireBanParameters[] banParameters,
+            int entryCount,
+            string endpoint)
+        {
+            var userService = await this.serviceFactory.PrepareUserServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userService.ExpireBanEntries(banParameters, entryCount).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<DeleteBanEntriesOutput> DeleteBanEntriesAsync(
+            int[] banParameters,
+            string endpoint)
+        {
+            var userService = await this.serviceFactory.PrepareUserServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userService.DeleteBanEntries(banParameters).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -447,18 +480,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             var rareCarShopService = await this.serviceFactory.PrepareRareCarShopServiceAsync(endpoint).ConfigureAwait(false);
 
             return await rareCarShopService.AdminGetTransactions(xuid).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        public async Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
-            ulong xuid,
-            int startIndex,
-            int maxResults,
-            string endpoint)
-        {
-            var enforcementService = await this.serviceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await enforcementService.GetUserBanHistory(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         {
             try
             {
-                var users = await this.Services.UserManagement.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
+                var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
 
                 // Temporary code until the service call returns gamertags //
                 var playerLookupParameters = users.xuids
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                                                 {
                                                     UserID = xuid.ToString(),
                                                 }).ToArray();
-                var getUserIdsOutput = await this.Services.UserManagement.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
+                var getUserIdsOutput = await this.Services.UserManagementService.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
 
                 var userList = new List<BasicPlayer>();
                 foreach (var playerLookupResult in getUserIdsOutput.playerLookupResult)
@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 
             try
             {
-                var result = await this.Services.UserManagement.CreateUserGroup(userGroupName).ConfigureAwait(false);
+                var result = await this.Services.UserManagementService.CreateUserGroup(userGroupName).ConfigureAwait(false);
                 var newGroup = new LspGroup()
                 {
                     Id = result.groupId,
@@ -242,7 +242,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             // Greater than 0 blocks removing users from the "All" group
             userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
-            await this.Services.UserManagement.ClearUserGroup(userGroupId).ConfigureAwait(false);
+            await this.Services.UserManagementService.ClearUserGroup(userGroupId).ConfigureAwait(false);
 
             return this.Ok();
         }
@@ -262,7 +262,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 
                 try
                 {
-                    await this.Services.UserManagement.AddToUserGroups(xuid, groups).ConfigureAwait(false);
+                    await this.Services.UserManagementService.AddToUserGroups(xuid, groups).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -331,7 +331,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 
                 try
                 {
-                    await this.Services.UserManagement.RemoveFromUserGroups(xuid, groups).ConfigureAwait(false);
+                    await this.Services.UserManagementService.RemoveFromUserGroups(xuid, groups).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -404,7 +404,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 
                 try
                 {
-                    await this.Services.UserManagement.RemoveFromUserGroupsByGamertag(gamertag, groups).ConfigureAwait(false);
+                    await this.Services.UserManagementService.RemoveFromUserGroupsByGamertag(gamertag, groups).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -442,7 +442,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 
                 try
                 {
-                    await this.Services.UserManagement.AddToUserGroupsByGamertag(gamertag, groups).ConfigureAwait(false);
+                    await this.Services.UserManagementService.AddToUserGroupsByGamertag(gamertag, groups).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {

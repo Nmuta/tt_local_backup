@@ -25,10 +25,16 @@ import { ApolloUgcTableComponent } from './apollo/apollo-ugc-table.component';
 import { RouterModule } from '@angular/router';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
+import { SteelheadUgcTableComponent } from './steelhead/steelhead-ugc-table.component';
 
 /** Module for a UGC table. */
 @NgModule({
-  declarations: [SunriseUgcTableComponent, WoodstockUgcTableComponent, ApolloUgcTableComponent],
+  declarations: [
+    SunriseUgcTableComponent,
+    WoodstockUgcTableComponent,
+    ApolloUgcTableComponent,
+    SteelheadUgcTableComponent,
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -55,6 +61,11 @@ import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-dow
     FeatureUgcModalModule,
     UgcDownloadButtonModule,
   ],
-  exports: [SunriseUgcTableComponent, WoodstockUgcTableComponent, ApolloUgcTableComponent],
+  exports: [
+    SunriseUgcTableComponent,
+    WoodstockUgcTableComponent,
+    ApolloUgcTableComponent,
+    SteelheadUgcTableComponent,
+  ],
 })
 export class UgcTableModule {}

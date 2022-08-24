@@ -13,9 +13,38 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
       shortText: 'Add more form standardization tools',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96e55816-4103-430c-85f8-25fff0123348',
+      shortText: 'Add UGC to Steelhead player details',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7],
+        tool: [NavbarTool.UserBanning, NavbarTool.UserDetails],
+      },
+      uuid: '6d13db33-b85e-4b54-a65e-3f8bc569ac22',
+      shortText: 'Add ban expiry and deletion to FH4 and FH5 ban history view',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '73cff6a8-eebf-40a2-a78c-5522631c5ca3',
+      shortText: 'Update view for deleted bans',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '894c31a1-2cf2-4c69-9abf-1b2b4318d3fb',
+      shortText:
+        'Add external link to Notifications group of Power BI Dashboards; Group Power BI Dashboards',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'eafc0f0e-7409-4e15-8285-fb2b70c0b3c8',
       shortText: 'Make External Links dropdowns open links in new tabs',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '57dc1601-673e-48b6-a018-6c6cd38a7b37',
+      shortText: 'Create datetime-picker form control component',
     },
     {
       tag: ChangelogTag.Internal,

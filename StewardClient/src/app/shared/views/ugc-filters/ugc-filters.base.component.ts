@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { DefaultUgcFilters, UgcAccessLevel, UgcFilters, UgcOrderBy } from '@models/ugc-filters';
 import { DetailedCar } from '@models/detailed-car';
 import BigNumber from 'bignumber.js';
@@ -35,7 +35,7 @@ export abstract class UgcFiltersBaseComponent extends BaseComponent {
   public stateGroupOptions$: Observable<MakeModelFilterGroup[]>;
   public makeModelFilterGroups: MakeModelFilterGroup[];
 
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
 
   constructor() {
     super();

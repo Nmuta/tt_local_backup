@@ -1,0 +1,30 @@
+<div class="wrapper" [formGroup]="formGroup">
+  <section formGroupName="date" class="vertical">
+    <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput [formControl]="formControls.date" [matDatepicker]="picker" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="formControls.date.hasError('matDateInvalid')">Invalid date</mat-error>
+    </mat-form-field>
+  </section>
+  <section formGroupName="time">
+    <mat-form-field>
+      <mat-label>Time</mat-label>
+      <timepicker [formControl]="formControls.time" #timePicker></timepicker>
+      <button
+        mat-button
+        matSuffix
+        mat-icon-button
+        matTooltip="Select Time"
+        [disabled]="timePicker.disabled"
+        (click)="timePicker.openPicker($event)"
+      >
+        <mat-icon>schedule</mat-icon>
+      </button>
+      <mat-error *ngIf="formControls.time.hasError('required')">Required</mat-error>
+      <mat-error *ngIf="formControls.time.hasError('bad-time')">Unrecognized Time</mat-error>
+      <mat-hint>UTC</mat-hint>
+    </mat-form-field>
+  </section>
+</div>

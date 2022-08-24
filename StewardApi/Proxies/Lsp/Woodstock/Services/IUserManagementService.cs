@@ -5,7 +5,7 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 
-namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
+namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
     /// <summary>
     ///     Proxy interface for <see cref="UserManagementService"/>.
@@ -61,5 +61,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         ///     Resends Loyalty Reward gifts for given titles.
         /// </summary>
         Task ResendProfileHasPlayedNotification(ulong xuid, Guid externalProfileId, int[] titles);
+
+        /// <summary>
+        ///     Sets player CMS override.
+        /// </summary>
+        Task SetCMSOverride(ulong xuid, string snapshot, string environment, string slot);
+
+        /// <summary>
+        ///     Gets player CMS override.
+        /// </summary>
+        Task<UserManagementService.GetCMSOverrideOutput> GetCMSOverride(ulong xuid);
     }
 }

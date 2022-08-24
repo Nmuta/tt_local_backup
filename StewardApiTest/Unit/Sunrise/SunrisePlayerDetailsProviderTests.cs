@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Xls.WebServices.FH4.Generated;
-using static Forza.LiveOps.FH4.Generated.NotificationsManagementService;
 using static Forza.LiveOps.FH4.Generated.UserManagementService;
 using static Forza.WebServices.FH4.Generated.LiveOpsService;
 using static Forza.WebServices.FH4.Generated.RareCarShopService;
@@ -556,8 +555,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminCommentsOutput>());
                 this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
                 this.SunriseService.GetUserIdsAsync(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserIdsOutput>());
-                this.SunriseService.BanUsersAsync(Arg.Any<LiveOpsContracts.ForzaUserBanParameters[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
-                this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
+                this.SunriseService.BanUsersAsync(Arg.Any<WebServicesContracts.ForzaUserBanParameters[]>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
+                this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<WebServicesContracts.UserService.GetUserBanSummariesOutput>());
                 this.SunriseService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.SunriseService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
                 this.SunriseService.GetPlayerAuctionsAsync(Arg.Any<LiveOpsContracts.ForzaAuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsContracts.AuctionManagementService.SearchAuctionHouseOutput>());
@@ -566,9 +565,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<LiveOpsContracts.ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.Mapper.Map<ProfileSummary>(Arg.Any<WebServicesContracts.ForzaProfileSummary>()).Returns(Fixture.Create<ProfileSummary>());
                 this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<WebServicesContracts.ForzaCreditUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
-                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
-                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
-                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
+                this.Mapper.Map<IList<BanResult>>(Arg.Any<WebServicesContracts.ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.Mapper.Map<IList<BanSummary>>(Arg.Any<WebServicesContracts.ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.Mapper.Map<List<BanDescription>>(Arg.Any<WebServicesContracts.ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<ProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<ProfileNote>>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<WebServicesContracts.RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
@@ -594,28 +593,28 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper,
                 this.RefreshableCacheStore);
 
-            private static GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
+            private static WebServicesContracts.UserService.GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {
                 // Cannot use random uint value for feature area, we must build our own valid fake data
                 var rnd = new Random();
-                var fakeBanHistories = new List<LiveOpsContracts.ForzaUserBanDescription>();
+                var fakeBanHistories = new List<WebServicesContracts.ForzaUserBanDescription>();
                 var numberOfFakeBanHistories = rnd.Next(1, 10);
                 for (var i = 0; i < numberOfFakeBanHistories; i++)
                 {
-                    fakeBanHistories.Add(Fixture.Build<LiveOpsContracts.ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
+                    fakeBanHistories.Add(Fixture.Build<WebServicesContracts.ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
                 }
 
-                return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+                return Fixture.Build<WebServicesContracts.UserService.GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
             }
 
-            private static BanUsersOutput GenerateBanUsersOutput()
+            private static WebServicesContracts.UserService.BanUsersOutput GenerateBanUsersOutput()
             {
-                var fakeBanResults = new List<LiveOpsContracts.ForzaUserBanResult>
+                var fakeBanResults = new List<WebServicesContracts.ForzaUserBanResult>
                 {
-                    Fixture.Build<LiveOpsContracts.ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
+                    Fixture.Build<WebServicesContracts.ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
                 };
 
-                return Fixture.Build<BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
+                return Fixture.Build<WebServicesContracts.UserService.BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
             }
 
             private static GetLiveOpsUserDataByGamerTagOutput GenerateGetLiveOpsUserDataByGamerTagOutPut()

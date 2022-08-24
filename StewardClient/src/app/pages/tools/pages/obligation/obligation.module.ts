@@ -15,7 +15,6 @@ import { DataPipelineObligationRoutingModule } from './obligation.routing';
 import { MatIconModule } from '@angular/material/icon';
 import { FullObligationInputComponent } from './components/full-obligation-input/full-obligation-input.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ObligationsService } from '@services/obligations';
 import { KustoDataActivityComponent } from './components/kusto-data-activities/kusto-data-activity/kusto-data-activity.component';
@@ -38,6 +37,7 @@ import { RestateOMaticComponent } from './components/kusto-data-activities/resta
 import { MatTabsModule } from '@angular/material/tabs';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { BundleComponent } from './components/kusto-data-activities/bundle/bundle.component';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** Module for displaying the data pipeline obligation page. */
 @NgModule({
@@ -56,7 +56,7 @@ import { BundleComponent } from './components/kusto-data-activities/bundle/bundl
   imports: [
     CommonModule,
     DataPipelineObligationRoutingModule,
-    DatetimeRangePickerModule,
+    DateTimePickersModule,
     DirectivesModule,
     FontAwesomeModule,
     FormsModule,
