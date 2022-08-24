@@ -30,6 +30,10 @@ import { LoggingComponent } from './logging/logging.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DateTimePickerDemoComponent } from './datetime-picker-demo/datetime-picker-demo.component';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
+import { StandardFormsComponent } from './standard-forms/standard-forms.component';
+import { HelpModule } from '@shared/modules/help/help.module';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -44,6 +48,7 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     ActionMonitorMultifireComponent,
     LoggingComponent,
     DateTimePickerDemoComponent,
+    StandardFormsComponent,
   ],
   imports: [
     DemoRouterModule,
@@ -61,6 +66,9 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     MatButtonModule,
     MatInputModule,
     FormsModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MonitorActionModule,
@@ -69,6 +77,7 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    HelpModule,
   ],
 })
 export class UtilModule {}
