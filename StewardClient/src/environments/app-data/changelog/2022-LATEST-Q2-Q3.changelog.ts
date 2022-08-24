@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'a1ea6167-794c-4e57-8daa-66155cc26f1c',
+      shortText: 'Add more form standardization tools',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'eafc0f0e-7409-4e15-8285-fb2b70c0b3c8',
       shortText: 'Make External Links dropdowns open links in new tabs',
