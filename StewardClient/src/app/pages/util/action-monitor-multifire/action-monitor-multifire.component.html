@@ -7,7 +7,9 @@
       Trigger Monitor {{ id }}
       <ul>
         <li *ngFor="let which of actionsAvailable">
-          <a [routerLink]="['/util', 'action-monitor-multifire', id, which]">{{ which }} @ {{ id }}</a>
+          <a [routerLink]="['/util', 'action-monitor-multifire', id, which]"
+            >{{ which }} @ {{ id }}</a
+          >
         </li>
       </ul>
     </ng-container>
@@ -27,49 +29,101 @@
       <mat-checkbox [(ngModel)]="disableToggles[0]">Disable</mat-checkbox>
     </div>
     <div>
-      <button mat-mini-fab color="accent"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[0]" [monitor]="monitors[0]" monitorDisable monitorWarn monitorWarnSnackbar clickStop>
+      <button
+        mat-mini-fab
+        color="accent"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[0]"
+        [monitor]="monitors[0]"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
         <button-spinner defaultIcon="check" [monitor]="monitors[0]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
-        matTooltip="This produces an exception in the observable that is being monitored." stateManager
-        [disabled]="disableToggles[0]" [monitor]="monitors[0]" monitorDisable monitorWarnSnackbar clickStop>
+      <button
+        mat-raised-button
+        color="warn"
+        matTooltip="This produces an exception in the observable that is being monitored."
+        stateManager
+        [disabled]="disableToggles[0]"
+        [monitor]="monitors[0]"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger Internal Exception
         <button-spinner [monitor]="monitors[0]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
+      <button
+        mat-raised-button
+        color="warn"
         matTooltip="This produces an exception upstream (in Angular's API layer) for the action that is being monitored."
-        stateManager [disabled]="disableToggles[0]" [monitor]="monitors[0]" monitorDisable monitorWarnSnackbar
-        clickStop>
+        stateManager
+        [disabled]="disableToggles[0]"
+        [monitor]="monitors[0]"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger Angular API Exception
         <button-spinner [monitor]="monitors[0]"></button-spinner>
       </button>
-      <button mat-raised-button color="accent"
+      <button
+        mat-raised-button
+        color="accent"
         matTooltip="Trigger standard 4xx error upstream (as if it came from the API), following MS-API conventions"
-        stateManager [disabled]="disableToggles[0]" [monitor]="monitors[0]" monitorDisable monitorWarnSnackbar
-        clickStop>
+        stateManager
+        [disabled]="disableToggles[0]"
+        [monitor]="monitors[0]"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 4xx MS-API Error
         <button-spinner [monitor]="monitors[0]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
+      <button
+        mat-raised-button
+        color="warn"
         matTooltip="Trigger standard 4xx error upstream (as if it came from the API), but without a properly formatted MS-API error response"
-        stateManager [disabled]="disableToggles[0]" [monitor]="monitors[0]" monitorDisable monitorWarnSnackbar
-        clickStop>
+        stateManager
+        [disabled]="disableToggles[0]"
+        [monitor]="monitors[0]"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 4xx Unknown Error
         <button-spinner [monitor]="monitors[0]"></button-spinner>
       </button>
-      <button mat-raised-button color="accent"
+      <button
+        mat-raised-button
+        color="accent"
         matTooltip="Trigger standard 5xx error upstream (as if it came from the API), following MS-API conventions"
-        stateManager [disabled]="disableToggles[0]" [monitor]="monitors[0]" monitorDisable monitorWarnSnackbar
-        clickStop>
+        stateManager
+        [disabled]="disableToggles[0]"
+        [monitor]="monitors[0]"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 5xx MS-API Error
         <button-spinner [monitor]="monitors[0]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
+      <button
+        mat-raised-button
+        color="warn"
         matTooltip="Trigger standard 5xx error upstream (as if it came from the API), but without a properly formatted MS-API error response"
-        stateManager [disabled]="disableToggles[0]" [monitor]="monitors[0]" monitorDisable monitorWarnSnackbar
-        clickStop>
+        stateManager
+        [disabled]="disableToggles[0]"
+        [monitor]="monitors[0]"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 5xx Unknown Error
         <button-spinner [monitor]="monitors[0]"></button-spinner>
       </button>
@@ -94,51 +148,108 @@
       <mat-checkbox [(ngModel)]="disableToggles[1]">Disable</mat-checkbox>
     </div>
     <div>
-      <button mat-mini-fab color="accent"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[1]" [monitor]="monitors[1]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
+      <button
+        mat-mini-fab
+        color="accent"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[1]"
+        [monitor]="monitors[1]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
         <button-spinner defaultIcon="check" [monitor]="monitors[1]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
-        matTooltip="This produces an exception in the observable that is being monitored." stateManager
-        [disabled]="disableToggles[1]" [monitor]="monitors[1]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarnSnackbar clickStop>
+      <button
+        mat-raised-button
+        color="warn"
+        matTooltip="This produces an exception in the observable that is being monitored."
+        stateManager
+        [disabled]="disableToggles[1]"
+        [monitor]="monitors[1]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger Internal Exception
         <button-spinner defaultIcon="pending" [monitor]="monitors[1]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
+      <button
+        mat-raised-button
+        color="warn"
         matTooltip="This produces an exception upstream (in Angular's API layer) for the action that is being monitored."
-        stateManager [disabled]="disableToggles[1]" [monitor]="monitors[1]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarnSnackbar clickStop>
+        stateManager
+        [disabled]="disableToggles[1]"
+        [monitor]="monitors[1]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger Angular API Exception
         <button-spinner defaultIcon="pending" [monitor]="monitors[1]"></button-spinner>
       </button>
-      <button mat-raised-button color="accent"
+      <button
+        mat-raised-button
+        color="accent"
         matTooltip="Trigger standard 4xx error upstream (as if it came from the API), following MS-API conventions"
-        stateManager [disabled]="disableToggles[1]" [monitor]="monitors[1]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarnSnackbar clickStop>
+        stateManager
+        [disabled]="disableToggles[1]"
+        [monitor]="monitors[1]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 4xx MS-API Error
         <button-spinner defaultIcon="pending" [monitor]="monitors[1]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
+      <button
+        mat-raised-button
+        color="warn"
         matTooltip="Trigger standard 4xx error upstream (as if it came from the API), but without a properly formatted MS-API error response"
-        stateManager [disabled]="disableToggles[1]" [monitor]="monitors[1]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarnSnackbar clickStop>
+        stateManager
+        [disabled]="disableToggles[1]"
+        [monitor]="monitors[1]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 4xx Unknown Error
         <button-spinner defaultIcon="pending" [monitor]="monitors[1]"></button-spinner>
       </button>
-      <button mat-raised-button color="accent"
+      <button
+        mat-raised-button
+        color="accent"
         matTooltip="Trigger standard 5xx error upstream (as if it came from the API), following MS-API conventions"
-        stateManager [disabled]="disableToggles[1]" [monitor]="monitors[1]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarnSnackbar clickStop>
+        stateManager
+        [disabled]="disableToggles[1]"
+        [monitor]="monitors[1]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 5xx MS-API Error
         <button-spinner defaultIcon="pending" [monitor]="monitors[1]"></button-spinner>
       </button>
-      <button mat-raised-button color="warn"
+      <button
+        mat-raised-button
+        color="warn"
         matTooltip="Trigger standard 5xx error upstream (as if it came from the API), but without a properly formatted MS-API error response"
-        stateManager [disabled]="disableToggles[1]" [monitor]="monitors[1]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarnSnackbar clickStop>
+        stateManager
+        [disabled]="disableToggles[1]"
+        [monitor]="monitors[1]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
         Trigger 5xx Unknown Error
         <button-spinner defaultIcon="pending" [monitor]="monitors[1]"></button-spinner>
       </button>
@@ -157,15 +268,9 @@
     <p>This trigger is blocked by other trigger monitors.</p>
     <p><code>button-spinner</code> icons have all been set.</p>
     <ul>
-      <li>
-        <mat-icon>pending</mat-icon> for default
-      </li>
-      <li>
-        <mat-icon>done_all</mat-icon> for success
-      </li>
-      <li>
-        <mat-icon>sync_problem</mat-icon> for error
-      </li>
+      <li><mat-icon>pending</mat-icon> for default</li>
+      <li><mat-icon>done_all</mat-icon> for success</li>
+      <li><mat-icon>sync_problem</mat-icon> for error</li>
     </ul>
     <p>All button types are represented.</p>
     <p>Click a <code>warn</code> icon to produce an error.</p>
@@ -173,192 +278,588 @@
       <mat-checkbox [(ngModel)]="disableToggles[2]">Disable</mat-checkbox>
     </div>
     <div>
-      <button mat-mini-fab color="default"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-mini-fab
+        color="default"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-mini-fab color="primary"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-mini-fab
+        color="primary"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-mini-fab color="accent"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-mini-fab
+        color="accent"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-mini-fab color="warn"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-mini-fab
+        color="warn"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
     </div>
     <div>
-      <button mat-fab color="default" matTooltip="This causes flow to complete normally as if there was a 2xx response"
-        stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarn monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-fab
+        color="default"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-fab color="primary" matTooltip="This causes flow to complete normally as if there was a 2xx response"
-        stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarn monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-fab
+        color="primary"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-fab color="accent" matTooltip="This causes flow to complete normally as if there was a 2xx response"
-        stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarn monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-fab
+        color="accent"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-fab color="warn" matTooltip="This causes flow to complete normally as if there was a 2xx response"
-        stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable
-        monitorWarn monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-fab
+        color="warn"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
     </div>
     <div>
-      <button mat-icon-button color="default"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-icon-button
+        color="default"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-icon-button color="primary"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-icon-button
+        color="primary"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-icon-button color="accent"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-icon-button
+        color="accent"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-icon-button color="warn"
-        matTooltip="This causes flow to complete normally as if there was a 2xx response" stateManager
-        [disabled]="disableToggles[2]" [monitor]="monitors[2]" [waitOnMonitors]="monitors" monitorDisable monitorWarn
-        monitorWarnSnackbar clickStop>
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+      <button
+        mat-icon-button
+        color="warn"
+        matTooltip="This causes flow to complete normally as if there was a 2xx response"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+        clickStop
+      >
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
     </div>
     <div>
-      <button mat-raised-button color="default" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-raised-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="default"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-raised-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-raised-button color="primary" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-raised-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="primary"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-raised-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-raised-button color="accent" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-raised-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="accent"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-raised-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-raised-button color="warn" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-raised-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="warn"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-raised-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
     </div>
     <div>
-      <button mat-button color="default" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="default"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-button color="primary" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="primary"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-button color="accent" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="accent"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-button color="warn" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="warn"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
     </div>
     <div>
-      <button mat-flat-button color="default" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-flat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="default"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-flat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-flat-button color="primary" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-flat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="primary"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-flat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-flat-button color="accent" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-flat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="accent"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-flat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-flat-button color="warn" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-flat-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="warn"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-flat-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
     </div>
     <div>
-      <button mat-stroked-button color="default" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-stroked-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="default"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-stroked-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-stroked-button color="primary" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-stroked-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="primary"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-stroked-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-stroked-button color="accent" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-stroked-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="accent"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-stroked-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
-      <button mat-stroked-button color="warn" stateManager [disabled]="disableToggles[2]" [monitor]="monitors[2]"
-        [waitOnMonitors]="monitors" monitorDisable monitorWarnSnackbar clickStop>
+      <button
         mat-stroked-button
-        <button-spinner defaultIcon="pending" successIcon="done_all" errorIcon="sync_problem" [monitor]="monitors[2]">
+        color="warn"
+        stateManager
+        [disabled]="disableToggles[2]"
+        [monitor]="monitors[2]"
+        [waitOnMonitors]="monitors"
+        monitorDisable
+        monitorWarnSnackbar
+        clickStop
+      >
+        mat-stroked-button
+        <button-spinner
+          defaultIcon="pending"
+          successIcon="done_all"
+          errorIcon="sync_problem"
+          [monitor]="monitors[2]"
+        >
         </button-spinner>
       </button>
     </div>
