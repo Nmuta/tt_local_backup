@@ -1,3 +1,5 @@
+@import '/src/styles/mixins/';
+
 .sf-wrapper {
   $mat-form-field-bottom-spacing: 2em; // chosen to support 2 lines of text w/o conflict
 
@@ -123,4 +125,8 @@
 
 .sf-spacer {
   flex-grow: 1;
+}
+
+.mat-card-actions.sf-actions, .sf-header {
+  background-color: app-color($app-background, 'card');
 }

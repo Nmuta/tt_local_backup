@@ -64,29 +64,27 @@
     </mat-accordion>
   </mat-card-content>
 
-  <mat-card-actions class="sf-wrapper">
-    <div class="sf-horizontal">
-      <button
-        mat-raised-button
-        color="primary"
-        stateManager
-        [monitor]="null"
-        [waitOnMonitors]="allMonitors"
-        monitorDisable
-        monitorWarn
-        monitorWarnSnackbar
-        [disabled]="!verifyGift.checked"
-        (click)="sendGiftLiveries()"
-      >
-        Send Liveries
-        <span *ngIf="usingPlayerIdentities">To Player(s)</span>
-        <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
-      </button>
-      <mat-checkbox
-        #verifyGift
-        matTooltip="Verify Gift"
-        >Verify Gift</mat-checkbox
-      >
-    </div>
+  <mat-card-actions class="sf-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      stateManager
+      [monitor]="null"
+      [waitOnMonitors]="allMonitors"
+      monitorDisable
+      monitorWarn
+      monitorWarnSnackbar
+      [disabled]="!verifyGift.checked"
+      (click)="sendGiftLiveries()"
+    >
+      Send Liveries
+      <span *ngIf="usingPlayerIdentities">To Player(s)</span>
+      <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
+    </button>
+    <mat-checkbox
+      #verifyGift
+      matTooltip="Verify Gift"
+      >Verify Gift</mat-checkbox
+    >
   </mat-card-actions>
 </mat-card>
