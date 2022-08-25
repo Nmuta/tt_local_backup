@@ -13,6 +13,11 @@ export class UgcComponent implements OnInit {
   public ngOnInit(): void {
     this.navbarRouterLinks = [
       {
+        name: GameTitleAbbreviation.FM8,
+        codename: GameTitleCodeName.FM8,
+        route: ['.', GameTitle.FM8],
+      },
+      {
         name: GameTitleAbbreviation.FH5,
         codename: GameTitleCodeName.FH5,
         route: ['.', GameTitle.FH5],

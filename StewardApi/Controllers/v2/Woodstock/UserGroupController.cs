@@ -57,10 +57,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         }
 
         /// <summary>
-        ///    Get a user group users.
+        ///    Get a user group users. User list index starts at 1.
         /// </summary>
         [HttpGet("{userGroupId}")]
-        [SwaggerResponse(200, type: typeof(IList<BasicPlayer>))]
+        [SwaggerResponse(200, type: typeof(GetUserGroupUsersResponse))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.UserGroup)]
@@ -88,8 +88,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                     });
                 }
                 // End of temporary code //
+                var response = new GetUserGroupUsersResponse()
+                {
+                    PlayerList = userList,
+                    PlayerCount = users.available
+                };
 
-                return this.Ok(userList);
+                return this.Ok(response);
             }
             catch (Exception ex)
             {
@@ -138,6 +143,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             // Greater than 0 blocks adding users to the "All" group
             userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
+            // Check if both xuids and gamertags were specified. Will be a valid request in the future. (PBI #1290729)
+            if (userList.Xuids != null && userList.Xuids.Length > 0 &&
+                userList.Gamertags != null && userList.Gamertags.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Providing both Xuids and Gamertags is not supported.");
+            }
+
             if (userList.Xuids != null && userList.Xuids.Length > 0)
             {
                 userList.Xuids.EnsureValidXuids();
@@ -145,7 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                 if (useBackgroundProcessing)
                 {
                     var response = await this.AddUsersToGroupUseBackgroundProcessing(userGroupId, userList.Xuids).ConfigureAwait(false);
-                    return this.Ok(response);
+                    return response;
                 }
                 else
                 {
@@ -153,8 +165,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                     return this.Ok(response);
                 }
             }
-
-            if (userList.Gamertags != null && userList.Gamertags.Length > 0)
+            else if (userList.Gamertags != null && userList.Gamertags.Length > 0)
             {
                 userList.Gamertags.ShouldNotBeNull(nameof(userList.Gamertags));
                 foreach (var gamertag in userList.Gamertags)
@@ -165,7 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                 if (useBackgroundProcessing)
                 {
                     var response = await this.AddUsersToGroupUseBackgroundProcessing(userGroupId, userList.Gamertags).ConfigureAwait(false);
-                    return this.Ok(response);
+                    return response;
                 }
                 else
                 {
@@ -173,8 +184,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                     return this.Ok(response);
                 }
             }
-
-            return this.Ok();
+            else
+            {
+                throw new InvalidArgumentsStewardException($"No player gamertags or xuids provided.");
+            }
         }
 
         /// <summary>
@@ -190,6 +203,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             // Greater than 0 blocks removing users from the "All" group
             userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
+            // Check if both xuids and gamertags were specified. Will be a valid request in the future. (PBI #1290729)
+            if (userList.Xuids != null && userList.Xuids.Length > 0 &&
+                userList.Gamertags != null && userList.Gamertags.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Providing both Xuids and Gamertags is not supported.");
+            }
+
             if (userList.Xuids != null && userList.Xuids.Length > 0)
             {
                 userList.Xuids.EnsureValidXuids();
@@ -197,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                 if (useBackgroundProcessing)
                 {
                     var response = await this.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, userList.Xuids).ConfigureAwait(false);
-                    return this.Ok(response);
+                    return response;
                 }
                 else
                 {
@@ -205,8 +225,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                     return this.Ok(response);
                 }
             }
-
-            if (userList.Gamertags != null && userList.Gamertags.Length > 0)
+            else if (userList.Gamertags != null && userList.Gamertags.Length > 0)
             {
                 userList.Gamertags.ShouldNotBeNull(nameof(userList.Gamertags));
                 foreach (var gamertag in userList.Gamertags)
@@ -217,7 +236,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                 if (useBackgroundProcessing)
                 {
                     var response = await this.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, userList.Gamertags).ConfigureAwait(false);
-                    return this.Ok(response);
+                    return response;
                 }
                 else
                 {
@@ -225,8 +244,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                     return this.Ok(response);
                 }
             }
-
-            return this.Ok();
+            else
+            {
+                throw new InvalidArgumentsStewardException($"No player gamertags or xuids provided.");
+            }
         }
 
         /// <summary>
@@ -239,12 +260,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.DeleteAll, StewardSubject.UserGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
-            // Greater than 0 blocks removing users from the "All" group
-            userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
+            try
+            {
+                // Greater than 0 blocks removing users from the "All" group
+                userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
             await this.Services.UserManagementService.ClearUserGroup(userGroupId).ConfigureAwait(false);
 
-            return this.Ok();
+                return this.Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Remove all users from user group failed.", ex);
+            }
         }
 
         // Add users to a user group using xuids

@@ -27,6 +27,9 @@ import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redir
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
+import { SteelheadUgcDetailsComponent } from './pages/steelhead/steelhead-ugc-details.component';
+import { SteelheadLookupComponent } from './pages/steelhead-lookup/steelhead-lookup.component';
+import { SteelheadRedirectComponent } from './pages/steelhead-redirect/steelhead-redirect.component';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -34,10 +37,13 @@ import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-dow
 @NgModule({
   declarations: [
     UgcDetailsComponent,
+    SteelheadUgcDetailsComponent,
     WoodstockUgcDetailsComponent,
     SunriseUgcDetailsComponent,
+    SteelheadLookupComponent,
     WoodstockLookupComponent,
     SunriseLookupComponent,
+    SteelheadRedirectComponent,
     WoodstockRedirectComponent,
     SunriseRedirectComponent,
   ],

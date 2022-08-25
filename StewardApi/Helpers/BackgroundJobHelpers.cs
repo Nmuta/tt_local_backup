@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         }
 
         /// <summary>
-        /// Generate a CreatedResult to be returned by the controller for background jobs
+        ///     Generate a CreatedResult to be returned by the controller for background jobs.
         /// </summary>
         public static CreatedResult GetCreatedResult(Func<Uri, object?, CreatedResult> createdResultMethod, string scheme, HostString host, string jobId)
         {

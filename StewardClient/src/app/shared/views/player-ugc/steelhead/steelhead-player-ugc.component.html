@@ -1,8 +1,14 @@
 <steelhead-ugc-filters (changes)="changeUgcFilters($event)"></steelhead-ugc-filters>
 
-<ng-container *waitForMonitor="getMonitor">
+<ng-container *ngIf="!getMonitor?.status?.error; else failstate">
   <steelhead-ugc-table
     [content]="filteredUgcContent"
     [contentType]="contentType"
   ></steelhead-ugc-table>
 </ng-container>
+
+<mat-progress-spinner *ngIf="getMonitor?.isActive" mode="indeterminate"> </mat-progress-spinner>
+
+<ng-template #failstate>
+  <json-dump [input]="getMonitor?.status?.error">Failed to search UGC content.</json-dump>
+</ng-template>
