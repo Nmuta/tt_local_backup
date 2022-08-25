@@ -15,6 +15,11 @@ export class ScopedSharedLookupService extends BaseService {
   public latestResults$: Observable<ShareCodeOutputModel> = new Subject<ShareCodeOutputModel>();
   public locations: ShareCodeOutputModel;
 
+  /** True when the content has any result in FM8 */
+  public get hasAnyFM8(): boolean {
+    return !!this.locations?.fm8?.length;
+  }
+
   /** True when the content has any result in FH5 */
   public get hasAnyFH5(): boolean {
     return !!this.locations?.fh5?.length;

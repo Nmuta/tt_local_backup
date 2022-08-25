@@ -5,7 +5,7 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 /** The /v2/title/steelhead/ugc/lookup endpoints. */
 @Injectable({
@@ -24,14 +24,15 @@ export class SteelheadUgcLookupService {
     );
   }
 
-  /** Gets UGC livery item. */
-  public getUgcLivery$(ugcId: GuidLikeString): Observable<PlayerUgcItem> {
-    return this.api.getRequest$<PlayerUgcItem>(`${this.basePath}/livery/${ugcId}`);
-  }
+  /** Gets a UGC item by type and id.  */
+  public getPlayerUgcItem$(ugcId: string, ugcType: UgcType): Observable<PlayerUgcItem> {
+    if (ugcType === UgcType.Unknown || ugcType === UgcType.EventBlueprint) {
+      return throwError(() => new Error(`Invalid UGC item type for lookup: ${ugcType}}`));
+    }
 
-  /** Gets UGC photo item. */
-  public getUgcPhoto$(ugcId: GuidLikeString): Observable<PlayerUgcItem> {
-    return this.api.getRequest$<PlayerUgcItem>(`${this.basePath}/photo/${ugcId}`);
+    return this.api.getRequest$<PlayerUgcItem>(
+      `${this.basePath}/${ugcType.toLowerCase()}/${ugcId}`,
+    );
   }
 
   /** Gets UGC photo thumbnails. */
@@ -40,11 +41,6 @@ export class SteelheadUgcLookupService {
       `${this.basePath}/photos/thumbnails`,
       ugcIds,
     );
-  }
-
-  /** Gets UGC tune item. */
-  public getUgcTune$(ugcId: GuidLikeString): Observable<PlayerUgcItem> {
-    return this.api.getRequest$<PlayerUgcItem>(`${this.basePath}/tune/${ugcId}`);
   }
 
   /** Gets UGC item by sharecode. */

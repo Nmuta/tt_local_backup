@@ -3,7 +3,7 @@ import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { PlayerUgcItemTableEntries, UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PermissionsService } from '@services/permissions';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
@@ -34,18 +34,7 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Gets player UGC item. */
   public getUgcItem(id: GuidLikeString, type: UgcType): Observable<PlayerUgcItem> {
-    switch (type) {
-      case UgcType.Livery:
-        return this.steelheadUgcLookupService.getUgcLivery$(id);
-      case UgcType.Photo:
-        return this.steelheadUgcLookupService.getUgcPhoto$(id);
-      case UgcType.Tune:
-        return this.steelheadUgcLookupService.getUgcTune$(id);
-      default:
-        return throwError(
-          () => new Error(`Cannot get UGC item of invalid type. (id: ${id}) (type: ${type})`),
-        );
-    }
+    return this.steelheadUgcLookupService.getPlayerUgcItem$(id, type);
   }
 
   /** Hides UGC item.  */
