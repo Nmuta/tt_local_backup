@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bond;
 using Forza.Notifications.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Turn10.Data.Common;
@@ -146,6 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var giftResponse = new GiftResponse<ulong>
             {
                 PlayerOrLspGroup = xuid,
+                PlayerXuid = xuid,
                 IdentityAntecedent = GiftIdentityAntecedent.Xuid
             };
 
@@ -230,6 +233,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var giftResponse = new GiftResponse<int>
             {
                 PlayerOrLspGroup = groupId,
+                LspGroup = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
             };
 
@@ -330,6 +334,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
                 PlayerOrLspGroup = groupId,
+                LspGroup = groupId,
             };
 
             Guid? notificationId = null;

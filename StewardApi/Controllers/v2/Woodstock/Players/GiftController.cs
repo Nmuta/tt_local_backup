@@ -255,7 +255,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 throw new InvalidArgumentsStewardException($"Livery not found: {liveryId}");
             }
 
-            var mappedLivery = this.mapper.Map<UgcItem>(livery);
+            var mappedLivery = this.mapper.Map<UgcLiveryItem>(livery.result);
             return mappedLivery;
         }
 

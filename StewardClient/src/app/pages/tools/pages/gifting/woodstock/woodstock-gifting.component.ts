@@ -17,15 +17,13 @@ import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { GiftSpecialLiveriesContract, SpecialLiveryData } from '../components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
 import { WoodstockService } from '@services/woodstock';
 import { UgcType } from '@models/ugc-filters';
-import { Gift, GroupGift } from '@models/gift';
 import { GiftResponse } from '@models/gift-response';
-import { BackgroundJob } from '@models/background-job';
 import { chain } from 'lodash';
-import { toDateTime } from '@helpers/luxon';
 import { DateTime } from 'luxon';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
 
 const SPECIAL_LIVERY_TABLE = [
-  ['2/1/2022', 'Forza OPI Livery', 'N/A'],
+  ['2/1/2022', 'Forza OPI Livery', ''],
   ['11/15/2021', 'Xbox 20th Anniversary Livery', ''],
   ['12/17/2021', 'Forza Ugly Sweater Livery', '7a49af23-00bf-45f5-8a1b-624ae849d6cf'],
   ['1/3/2022', 'New Year\'s 2022 Livery', '5d2def45-d902-4f83-8c49-2872da00284c'],
@@ -61,7 +59,8 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
   constructor(
     protected readonly store: Store,
-    private readonly service: WoodstockService
+    private readonly service: WoodstockService,
+    private readonly giftService: WoodstockPlayersGiftService,
   ) {
     super(store);
   }
@@ -72,40 +71,32 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
     this.specialLiveriesContract = {
       liveries: chain(SPECIAL_LIVERY_TABLE)
-        .map(v => <SpecialLiveryData>{ date: DateTime.fromFormat(v[0], 'M/d/yy'), notes: v[1], id: v[2] })
-        .tail()
-        // .filter(v => !!v.id && !!v.date)
+        .map(v => <SpecialLiveryData>{ date: DateTime.fromFormat(v[0], 'M/d/yy'), label: v[1], id: v[2] })
+        .filter(v => !!v.id && !!v.label)
         .value(),
       getLivery$: id => this.service.getPlayerUgcItem$(id, UgcType.Livery),
-      giftLiveryToPlayers$(
-        liveryId: string,
-        xuids: BigNumber[],
+      giftLiveryToPlayers$: (
         giftReason: string,
-      ): Observable<BackgroundJob<unknown>> {
+        liveryIds: string[],
+        xuids: BigNumber[],
+      ) => {
         if (!xuids || xuids.length <= 0) {
           return throwError(
             new Error('Failed to gift livery: playerIdentities is invalid or empty array'),
           );
         }
 
-        return this.woodstockService.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, {
-          xuids: xuids,
-          giftReason: giftReason,
-        } as GroupGift);
+        return this.giftService.giftLiveriesByXuids$(giftReason, liveryIds, xuids);
       },
 
-      giftLiveryToLspGroup$(
-        liveryId: string,
-        lspGroup: LspGroup,
+      giftLiveriesToLspGroup$(
         giftReason: string,
+        liveryIds: string[],
+        lspGroup: LspGroup,
       ): Observable<GiftResponse<BigNumber>> {
         if (!lspGroup) {
-          return throwError(new Error('Failed to gift livery: lspGroup is null or undefined'));
+          return throwError(new Error('Unsupported'));
         }
-
-        return this.woodstockService.postGiftLiveryToLspGroup$(liveryId, lspGroup, {
-          giftReason: giftReason,
-        } as Gift);
       },
     };
 

@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using Xls.Security.FH5_main.Generated;
+using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
@@ -167,6 +168,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<ServicesLiveOps.ForzaLiveryGiftResult, GiftResponse<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
+                .ForMember(dest => dest.PlayerXuid, opt => opt.MapFrom(source => source.xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid))
                 .ForMember(dest => dest.Errors, opt => opt.MapFrom(source =>
                         source.Success

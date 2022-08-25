@@ -8,26 +8,25 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
 import { DateTime } from 'luxon';
-import { Observable } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 
 export interface SpecialLiveryData {
   date: DateTime;
   id: string;
-  notes: string;
+  label: string;
 }
-
 export interface GiftSpecialLiveriesContract {
   liveries: SpecialLiveryData[];
   getLivery$(liveryId: string): Observable<PlayerUgcItem>;
   giftLiveryToPlayers$(
-    liveryId: string,
+    giftReason: string,
+    liveryIds: string[],
     xuids: BigNumber[],
-    giftReason: string,
   ): Observable<BackgroundJob<unknown>>;
-  giftLiveryToLspGroup$(
-    liveryId: string,
-    lspGroup: LspGroup,
+  giftLiveriesToLspGroup$(
     giftReason: string,
+    liveryIds: string[],
+    lspGroup: LspGroup,
   ): Observable<GiftResponse<BigNumber>>;
 }
 
@@ -43,7 +42,7 @@ interface SpecialLiveryModel {
   templateUrl: './woodstock-gift-special-liveries.component.html',
   styleUrls: ['./woodstock-gift-special-liveries.component.scss']
 })
-export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent implements OnChanges {
+export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent implements OnInit {
   @Input() public playerIdentities: IdentityResultAlpha[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
@@ -59,7 +58,7 @@ export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent impleme
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnInit(): void {
     this.liveries = this.contract.liveries.map(v => ({ data: v, checked: true, monitor: new ActionMonitor('GET '  + v.id) }));
     this.allMonitors = this.liveries.map(l => l.monitor);
     for (const livery of this.liveries) {
@@ -70,8 +69,14 @@ export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent impleme
   /** Called when a checkbox is clicked. */
   public checkboxChanged(): void { }
 
+  /** Sends gift liveries to players. */
   public sendGiftLiveries(): void {
     this.sendGiftMonitor = this.sendGiftMonitor.repeat();
+    const liveryIdsToSend = this.liveries.filter(l => l.checked).map(l => l.data.id);
+    const xuidsToSendTo = this.playerIdentities.map(p => p.xuid);
+    debugger;
+    this.contract.giftLiveryToPlayers$('Gift Livery', liveryIdsToSend, xuidsToSendTo)
+      .pipe(this.sendGiftMonitor.monitorSingleFire(), takeUntil(this.onDestroy$)).subscribe();
   }
 
 }

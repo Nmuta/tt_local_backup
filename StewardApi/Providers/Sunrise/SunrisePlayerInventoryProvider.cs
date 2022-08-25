@@ -138,7 +138,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             var giftResponse = new GiftResponse<ulong>
             {
-                PlayerOrLspGroup = xuid, IdentityAntecedent = GiftIdentityAntecedent.Xuid
+                PlayerOrLspGroup = xuid,
+                PlayerXuid = xuid,
+                IdentityAntecedent = GiftIdentityAntecedent.Xuid
             };
 
             try
@@ -219,7 +221,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             var giftResponse = new GiftResponse<int>
             {
-                PlayerOrLspGroup = groupId, IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+                PlayerOrLspGroup = groupId,
+                LspGroup = groupId,
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
 
             try
@@ -314,6 +318,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
                 PlayerOrLspGroup = groupId,
+                LspGroup = groupId,
             };
 
             Guid? notificationId = null;
