@@ -43,9 +43,12 @@ export class WoodstockUserGroupService {
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
   ): Observable<UserGroupManagementResponse[]> {
+    const params = new HttpParams().set('useBackgroundProcessing', false);
+
     return this.api.postRequest$<UserGroupManagementResponse[]>(
-      `${this.basePath}/${userGroupId}/remove?useBackgroundProcessing=false`,
+      `${this.basePath}/${userGroupId}/remove`,
       playerList,
+      params,
     );
   }
 
@@ -54,9 +57,12 @@ export class WoodstockUserGroupService {
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
   ): Observable<BackgroundJob<void>> {
+    const params = new HttpParams().set('useBackgroundProcessing', true);
+
     return this.api.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/${userGroupId}/remove?useBackgroundProcessing=true`,
+      `${this.basePath}/${userGroupId}/remove`,
       playerList,
+      params,
     );
   }
 
@@ -65,9 +71,12 @@ export class WoodstockUserGroupService {
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
   ): Observable<BackgroundJob<void>> {
+    const params = new HttpParams().set('useBackgroundProcessing', true);
+
     return this.api.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/${userGroupId}/add?useBackgroundProcessing=true`,
+      `${this.basePath}/${userGroupId}/add`,
       playerList,
+      params,
     );
   }
 
