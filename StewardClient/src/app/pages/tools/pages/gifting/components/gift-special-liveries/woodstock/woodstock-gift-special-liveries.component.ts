@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJob } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
@@ -9,6 +10,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { Observable, takeUntil } from 'rxjs';
+import { GiftReason } from '../../gift-basket/gift-basket.base.component';
 
 export interface SpecialLiveryData {
   date: DateTime;
@@ -55,6 +57,18 @@ export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent impleme
   public allMonitors: ActionMonitor[];
   public sendGiftMonitor = new ActionMonitor('Send liveries');
 
+  public formControls = {
+    giftReason: new FormControl('', [Validators.required]),
+  };
+  public formGroup = new FormGroup(this.formControls);
+  public giftReasons: string[] = [
+    GiftReason.CommunityGift,
+    GiftReason.LostSave,
+    GiftReason.AuctionHouse,
+    GiftReason.GameError,
+    GiftReason.SaveRollback,
+  ];
+
   constructor() {
     super();
   }
@@ -77,13 +91,25 @@ export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent impleme
 
   /** Sends gift liveries to players. */
   public sendGiftLiveries(): void {
+    if (!this.isGiftLiveryReady()) {
+      return;
+    }
+
     this.sendGiftMonitor = this.sendGiftMonitor.repeat();
     const liveryIdsToSend = this.liveries.filter(l => l.checked).map(l => l.data.id);
     const xuidsToSendTo = this.playerIdentities.map(p => p.xuid);
+    const giftReason = this.formControls.giftReason.value;
 
     this.contract
-      .giftLiveryToPlayers$('Gift Livery', liveryIdsToSend, xuidsToSendTo)
+      .giftLiveryToPlayers$(giftReason, liveryIdsToSend, xuidsToSendTo)
       .pipe(this.sendGiftMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe();
+  }
+
+  /** Returns true if all required info is valid to send a gift livery. */
+  public isGiftLiveryReady(): boolean {
+    const hasPlayerIdentities = this.usingPlayerIdentities && this.playerIdentities?.length > 0;
+    const hasLiveries = this.liveries.filter(l => l.checked).length > 0;
+    return this.formGroup.valid && hasPlayerIdentities && hasLiveries;
   }
 }

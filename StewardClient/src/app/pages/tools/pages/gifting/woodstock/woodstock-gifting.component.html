@@ -81,7 +81,7 @@
           [usingPlayerIdentities]="isUsingPlayerIdentities"
         ></woodstock-gift-livery>
       </mat-tab>
-      <mat-tab [disabled]="disableGiftingLiveries">
+      <mat-tab [disabled]="disableGiftingLiveries || disableBulkGiftingLiveries">
         <ng-template mat-tab-label>
           <span [matTooltip]="giftingLiveryTooltip">Gift Special Liveries</span>
         </ng-template>
