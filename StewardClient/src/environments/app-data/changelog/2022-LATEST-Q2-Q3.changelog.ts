@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '6ade09bc-c4e2-4473-9a16-34e054491fa6',
+      shortText: 'Refactor User Group controller for FH5',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: 'cd971220-28b2-4606-b3ea-a24f5491e68f',
       shortText: 'Fix leaderboard talent lookup in stats card',

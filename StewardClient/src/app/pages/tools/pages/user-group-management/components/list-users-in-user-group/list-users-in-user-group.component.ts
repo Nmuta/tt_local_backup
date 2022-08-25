@@ -142,6 +142,7 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
         });
         this.allPlayers = [];
         this.playersDataSource.data = this.allPlayers;
+        this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
       });
   }
@@ -172,6 +173,7 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
         });
         this.allPlayers = [];
         this.playersDataSource.data = this.allPlayers;
+        this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
       });
   }
@@ -191,7 +193,7 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
       .subscribe(result => {
         if (result[0].error === null) {
           remove(this.allPlayers, player => {
-            return player.xuid.isEqualTo(playerToDelete.xuid);
+            return player?.xuid.isEqualTo(playerToDelete.xuid);
           });
           this.playersDataSource.data = this.allPlayers;
         } else {
@@ -207,7 +209,8 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
       .deleteAllPlayersFromUserGroup$(this.userGroup)
       .pipe(this.deleteAllMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.playersDataSource.data = [];
+        this.allPlayers = [];
+        this.playersDataSource.data = this.allPlayers;
       });
   }
 
