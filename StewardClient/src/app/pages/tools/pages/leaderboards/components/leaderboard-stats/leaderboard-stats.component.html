@@ -64,53 +64,58 @@
           </ngx-charts-line-chart>
         </div>
         <div>{{ talentFormControls.numberToShow.value }}/{{ sortedTalentScores?.length }}</div>
-        <form [formGroup]="talentForm">
-          <mat-form-field>
-            <mat-label># of top talent gridlines to chart</mat-label>
-            <input
-              matInput
-              type="number"
-              [max]="sortedTalentScores?.length"
-              [formControl]="talentFormControls.numberToShow"
-            />
-          </mat-form-field>
-        </form>
-        <mat-chip-list
-          aria-label="Top Talent"
-          [selectable]="true"
-          [multiple]="false"
-          (change)="onSelect($event)"
-        >
-          <mat-chip
-            #chipRef="matChip"
-            (click)="chipRef.toggleSelected(true)"
-            *ngFor="let talent of topTalent"
-            [value]="talent.identity"
+        <ng-container *waitForMonitor="getLeaderboardTalentMonitor">
+          <form [formGroup]="talentForm">
+            <mat-form-field>
+              <mat-label># of top talent gridlines to chart</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                [max]="sortedTalentScores?.length"
+                [formControl]="talentFormControls.numberToShow"
+              />
+            </mat-form-field>
+          </form>
+          <mat-chip-list
+            aria-label="Top Talent"
+            [selectable]="true"
+            [multiple]="false"
+            (change)="onSelect($event)"
           >
-            <span matTooltip="Out of View" *ngIf="talent?.position.toNumber() > selectedViewOption"
-              ><mat-icon color="warn">visibility_off</mat-icon></span
+            <mat-chip
+              #chipRef="matChip"
+              (click)="chipRef.toggleSelected(true)"
+              *ngFor="let talent of topTalent"
+              [value]="talent.identity"
             >
-            {{ talent?.identity?.gamertag ?? talent?.identity?.xuid }} [{{ talent?.position }}]
-            <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" clickStop>
               <span
-                [matTooltip]="
-                  'Options for ' + talent?.identity?.gamertag ?? talent?.identity.xuid.toString()
-                "
-                ><mat-icon class="trailing-icon" color="accent">more_vert</mat-icon></span
+                matTooltip="Out of View"
+                *ngIf="talent?.position.toNumber() > selectedViewOption"
+                ><mat-icon color="warn">visibility_off</mat-icon></span
               >
-            </button>
-            <mat-menu #menu="matMenu">
-              <button
-                *ngFor="let option of topTalentOptions"
-                mat-menu-item
-                (click)="option.clickFn(talent?.identity.xuid)"
-                clickStop
-              >
-                {{ option.label }}
+              {{ talent?.identity?.gamertag ?? talent?.identity?.xuid }} [{{ talent?.position }}]
+              <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" clickStop>
+                <span
+                  [matTooltip]="
+                    'Options for ' + talent?.identity?.gamertag ?? talent?.identity.xuid.toString()
+                  "
+                  ><mat-icon class="trailing-icon" color="accent">more_vert</mat-icon></span
+                >
               </button>
-            </mat-menu>
-          </mat-chip>
-        </mat-chip-list>
+              <mat-menu #menu="matMenu">
+                <button
+                  *ngFor="let option of topTalentOptions"
+                  mat-menu-item
+                  (click)="option.clickFn(talent?.identity.xuid)"
+                  clickStop
+                >
+                  {{ option.label }}
+                </button>
+              </mat-menu>
+            </mat-chip>
+          </mat-chip-list>
+        </ng-container>
       </ng-container>
     </ng-container>
   </mat-card-content>

@@ -21,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static System.FormattableString;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
@@ -29,11 +30,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     ///     Handles requests for Woodstock leaderboard talent.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/leaderboard/talent")]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager,
+        UserRole.HorizonDesigner)]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("UserGroup", "Woodstock")]
+    [Tags(Title.Woodstock, Target.LspGroup, Topic.LspGroups)]
     public class LeaderboardTalentController : V2WoodstockControllerBase
     {
         private readonly int leaderboardTalentGroupId = 14;
