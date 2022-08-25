@@ -1,9 +1,7 @@
 <mat-card class="steward-layout-sticky-scroll">
   <mat-card-header class="sf-header">
     <mat-card-title>Gift Livery + Car</mat-card-title>
-    <mat-card-subtitle>
-      Woodstock special liveries
-    </mat-card-subtitle>
+    <mat-card-subtitle> Woodstock special liveries </mat-card-subtitle>
     <div class="sf-spacer"></div>
     <help-popover-icon
       clickStop
@@ -11,23 +9,23 @@
       cardSubtitle="Button help"
       confluenceName="gift-special-livery"
     >
-      <p>These are special liveries that have been given out as rewards to active players on certain dates.</p>
+      <p>
+        These are special liveries that have been given out as rewards to active players on certain
+        dates.
+      </p>
     </help-popover-icon>
   </mat-card-header>
 
   <mat-card-content>
     <mat-accordion multi displayMode="flat">
-      <mat-expansion-panel
-        *ngFor="let livery of liveries"
-      >
+      <mat-expansion-panel *ngFor="let livery of liveries">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <mat-checkbox
               clickStop
               [(ngModel)]="livery.checked"
               matTooltip="Check to send this livery"
-              (change)="checkboxChanged()"
-              >{{ livery.data.label }} on {{ livery.data.date | dateTimeToJsDate | date:'short' }}
+              >{{ livery.data.label }} on {{ livery.data.date | dateTimeToJsDate | date: 'short' }}
             </mat-checkbox>
           </mat-panel-title>
         </mat-expansion-panel-header>
@@ -59,7 +57,6 @@
             />
           </li>
         </ul>
-
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card-content>
@@ -81,10 +78,6 @@
       <span *ngIf="usingPlayerIdentities">To Player(s)</span>
       <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
     </button>
-    <mat-checkbox
-      #verifyGift
-      matTooltip="Verify Gift"
-      >Verify Gift</mat-checkbox
-    >
+    <mat-checkbox #verifyGift matTooltip="Verify Gift">Verify Gift</mat-checkbox>
   </mat-card-actions>
 </mat-card>

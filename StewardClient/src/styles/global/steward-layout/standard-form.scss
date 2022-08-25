@@ -127,6 +127,7 @@
   flex-grow: 1;
 }
 
-.mat-card-actions.sf-actions, .sf-header {
+.mat-card-actions.sf-actions,
+.sf-header {
   background-color: app-color($app-background, 'card');
 }

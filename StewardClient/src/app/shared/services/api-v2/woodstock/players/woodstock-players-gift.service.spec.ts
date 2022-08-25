@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WoodstockPlayersGiftingService } from './woodstock-players-gifting.service';
+import { WoodstockPlayersGiftService } from './woodstock-players-gift.service';
 
-describe('WoodstockPlayerSGiftingService', () => {
-  let service: WoodstockPlayersGiftingService;
+describe('WoodstockPlayersGiftService', () => {
+  let service: WoodstockPlayersGiftService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(WoodstockPlayersGiftingService);
+    service = TestBed.inject(WoodstockPlayersGiftService);
   });
 
   it('should be created', () => {

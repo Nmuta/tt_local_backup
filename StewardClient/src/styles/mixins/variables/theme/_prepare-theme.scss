@@ -93,9 +93,9 @@
       map-get(fgbg.$forza-bg-dark, 'highlight')
     );
 
-  // dark theme above
+    // dark theme above
   } @else {
-  // light theme below
+    // light theme below
 
     @include colorToVars(
       makeLookupName('background', 'default'),

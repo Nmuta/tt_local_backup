@@ -7,20 +7,23 @@ import { Observable } from 'rxjs';
 
 /** The /v2/woodstock/players/gifting endpoints. */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WoodstockPlayersGiftService {
   public readonly basePath: string = 'title/woodstock/players/gift';
-  constructor(private readonly api: ApiV2Service) { }
+  constructor(private readonly api: ApiV2Service) {}
 
   /** Sends many livery gifts to a set of users. */
-  public giftLiveriesByXuids$(giftReason: string, liveryIds: string[], xuids: BigNumber[]): Observable<BackgroundJob<unknown>> {
+  public giftLiveriesByXuids$(
+    giftReason: string,
+    liveryIds: string[],
+    xuids: BigNumber[],
+  ): Observable<BackgroundJob<unknown>> {
     const model: BulkPlayerBulkLiveryGift = {
       liveryIds,
       target: { xuids, giftReason },
     };
 
-    debugger;
     return this.api.postRequest$(`${this.basePath}/livery/useBackgroundProcessing`, model);
   }
 }

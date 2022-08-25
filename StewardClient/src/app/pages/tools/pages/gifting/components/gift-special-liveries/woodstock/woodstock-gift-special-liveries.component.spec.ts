@@ -8,9 +8,8 @@ describe('WoodstockGiftSpecialLiveryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WoodstockGiftSpecialLiveriesComponent ]
-    })
-    .compileComponents();
+      declarations: [WoodstockGiftSpecialLiveriesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

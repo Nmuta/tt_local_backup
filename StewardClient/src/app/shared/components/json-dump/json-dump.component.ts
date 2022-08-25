@@ -13,7 +13,9 @@ export class JsonDumpComponent implements OnChanges {
   @Input() public input: unknown;
 
   /** The input as an array, if it is one. */
-  public get inputArray(): unknown[] { return isArray(this.input) ? this.input : null }
+  public get inputArray(): unknown[] {
+    return isArray(this.input) ? this.input : null;
+  }
 
   public template: TemplateName = 'unknown';
 

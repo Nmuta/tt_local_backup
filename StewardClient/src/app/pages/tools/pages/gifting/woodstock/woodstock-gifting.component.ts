@@ -14,7 +14,10 @@ import {
 } from './state/woodstock-gifting.state.actions';
 import BigNumber from 'bignumber.js';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
-import { GiftSpecialLiveriesContract, SpecialLiveryData } from '../components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
+import {
+  GiftSpecialLiveriesContract,
+  SpecialLiveryData,
+} from '../components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
 import { WoodstockService } from '@services/woodstock';
 import { UgcType } from '@models/ugc-filters';
 import { GiftResponse } from '@models/gift-response';
@@ -71,15 +74,14 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
     this.specialLiveriesContract = {
       liveries: chain(SPECIAL_LIVERY_TABLE)
-        .map(v => <SpecialLiveryData>{ date: DateTime.fromFormat(v[0], 'M/d/yy'), label: v[1], id: v[2] })
+        .map(
+          v =>
+            <SpecialLiveryData>{ date: DateTime.fromFormat(v[0], 'M/d/yy'), label: v[1], id: v[2] },
+        )
         .filter(v => !!v.id && !!v.label)
         .value(),
       getLivery$: id => this.service.getPlayerUgcItem$(id, UgcType.Livery),
-      giftLiveryToPlayers$: (
-        giftReason: string,
-        liveryIds: string[],
-        xuids: BigNumber[],
-      ) => {
+      giftLiveryToPlayers$: (giftReason: string, liveryIds: string[], xuids: BigNumber[]) => {
         if (!xuids || xuids.length <= 0) {
           return throwError(
             new Error('Failed to gift livery: playerIdentities is invalid or empty array'),
