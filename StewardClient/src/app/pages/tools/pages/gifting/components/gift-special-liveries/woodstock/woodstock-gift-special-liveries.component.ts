@@ -40,7 +40,7 @@ interface SpecialLiveryModel {
 }
 
 /**
- *
+ * Component for gifting of special liveries.
  */
 @Component({
   selector: 'woodstock-gift-special-liveries',
