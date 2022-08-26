@@ -27,3 +27,12 @@ export function tryParseBigNumbers(value: string): BigNumber[] {
 
   return uniqGoodBigNumbers;
 }
+
+/** Compares bignumbers without knowing that you even have an object. */
+export function bigNumbersEqual(a: BigNumber | null, b: BigNumber | null): boolean {
+  if (BigNumber.isBigNumber(a)) {
+    return a.isEqualTo(b);
+  }
+
+  return a === b;
+}
