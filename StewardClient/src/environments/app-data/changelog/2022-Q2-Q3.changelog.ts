@@ -110,7 +110,6 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
       tag: ChangelogTag.Internal,
       uuid: 'e833e389-43a9-41f2-ba3f-19f1a0cacfe3',
       shortText: 'Restructuring standard gaps file',
->>>>>>> main:StewardClient/src/environments/app-data/changelog/2022-Q2-Q3.changelog.ts
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },

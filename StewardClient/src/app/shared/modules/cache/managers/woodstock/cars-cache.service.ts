@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DetailedCar } from '@models/detailed-car';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import BigNumber from 'bignumber.js';
 import { Observable, of, ReplaySubject, switchMap } from 'rxjs';
 
 /** Caches car lookups for quick display. */
@@ -14,7 +15,8 @@ export class WoodstockCarsCacheService {
   constructor(private readonly woodstock: WoodstockService) { }
 
   /** Produces the details of a car, if we have it. */
-  public getDetails(carId: string): DetailedCar | null {
+  public getDetails(carId: string | BigNumber): DetailedCar | null {
+    carId = carId.toString();
     if (this.lookup.has(carId)) {
       return this.lookup.get(carId);
     }
@@ -23,7 +25,8 @@ export class WoodstockCarsCacheService {
   }
 
   /** Produces the details of a car immediately, if we have it. Or when we get it, if we do not. */
-  public getDetails$(carId: string): Observable<DetailedCar> {
+  public getDetails$(carId: string | BigNumber): Observable<DetailedCar> {
+    carId = carId.toString();
     if (this.lookup.has(carId)) {
       return of(this.lookup.get(carId));
     }

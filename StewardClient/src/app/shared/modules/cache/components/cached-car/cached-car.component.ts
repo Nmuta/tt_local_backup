@@ -3,10 +3,10 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { bigNumbersEqual } from '@helpers/bignumbers';
 import { pairwiseSkip } from '@helpers/rxjs/pairwise-skip';
 import { DetailedCar } from '@models/detailed-car';
-import { GameTitleAbbreviation } from '@models/enums';
+import { GameTitle, GameTitleAbbreviation } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
-import { Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { WoodstockCarsCacheService } from '../../managers/woodstock/cars-cache.service';
 
 /** Displays a chip for a cached car. */
@@ -47,8 +47,12 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
     this.carId$.next(this.carId);
   }
 
-  public getCarData$(v: BigNumber): Observable<DetailedCar> {
+  private getCarData$(carId: BigNumber): Observable<DetailedCar> {
     switch (this.title) {
+      case GameTitleAbbreviation.FH5:
+        return this.woodstock.getDetails$(carId);
+      default:
+        return EMPTY;
     }
   }
 }
