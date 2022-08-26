@@ -23,6 +23,7 @@ import { StandardFlagModule } from '@components/standard-flag/standard-flag.modu
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { CacheModule } from '@shared/modules/cache/cache.module';
 
 /**
  *  Routed module for interacting with auctions.
@@ -56,6 +57,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
     MatTableModule,
     MatSortModule,
     HelpModule,
+    CacheModule,
   ],
 })
 export class AuctionModule {}
