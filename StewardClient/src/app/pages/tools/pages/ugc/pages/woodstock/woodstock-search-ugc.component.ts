@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GameTitle, PegasusProjectionSlot } from '@models/enums';
 import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerUgcItem } from '@models/player-ugc-item';
@@ -7,13 +7,19 @@ import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/woodst
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UgcSearchFiltersServiceContract } from '@views/ugc-search-filters/ugc-search-filters.component';
+import {
+  UgcSearchFiltersFormValue,
+  UgcSearchFiltersServiceContract,
+} from '@views/ugc-search-filters/ugc-search-filters.component';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { DetailedCar } from '@models/detailed-car';
 import { WoodstockService } from '@services/woodstock';
 import BigNumber from 'bignumber.js';
-import { Params } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon/help-popover-icon.component';
+import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
+import { renderGuard } from '@helpers/rxjs';
 
 /** Retreives and displays Woodstock ugc by search filters. */
 @Component({
@@ -22,6 +28,7 @@ import { Params } from '@angular/router';
   styleUrls: ['./woodstock-search-ugc.component.scss'],
 })
 export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit {
+  @ViewChild(HelpPopoverIconComponent) helpPopoverIcon: HelpPopoverIconComponent;
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
   public gameTitle = GameTitle.FH5;
   public searchUgc$ = new Subject<UgcSearchFilters>();
@@ -29,8 +36,6 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   public getMonitor = new ActionMonitor('GET UGC Content');
   public ugcType: UgcType = UgcType.Unknown;
   public filterXuid: BigNumber = undefined;
-  public routerLink: string = '/app/tools/user-details/woodstock';
-  public routerParams: Params = undefined;
 
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
@@ -50,6 +55,8 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   constructor(
     private readonly searchService: WoodstockUgcSearchService,
     private readonly woodstockService: WoodstockService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {
     super();
   }
@@ -60,17 +67,9 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
       .pipe(
         tap(() => {
           this.ugcContent = [];
-          this.filterXuid = undefined;
-          this.routerParams = undefined;
         }),
         switchMap(filters => {
           this.ugcType = filters.ugcType;
-
-          if (filters.xuid) {
-            this.filterXuid = filters.xuid;
-            this.routerParams = { lookupType: 'xuid', lookupName: filters.xuid };
-          }
-
           this.getMonitor = this.getMonitor.repeat();
 
           return this.getSystemUgc$(filters).pipe(
@@ -83,6 +82,12 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
       .subscribe(results => {
         this.ugcContent = results;
       });
+
+    this.formControls.ugcFilters.valueChanges
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((filters: UgcSearchFiltersFormValue) => {
+        this.filterXuid = filters.xuid || undefined;
+      });
   }
 
   /** Searches player UGC content. */
@@ -92,7 +97,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   /** Searches player UGC content. */
   public getSystemUgc$(searchParameters: UgcSearchFilters): Observable<PlayerUgcItem[]> {
-    return this.searchService.SearchUgc$(searchParameters);
+    return this.searchService.searchUgc$(searchParameters);
   }
 
   /** Gets master inventory list */
@@ -100,9 +105,21 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
     return this.woodstockService.getDetailedCars$(this.pegasusSlotId);
   }
 
-  /** Logic when UGC filters have changed. */
-  public changeUgcSearchParameters($event: UgcSearchFilters): void {
-    this.searchUgc$.next($event);
+  /** Logic when player details tool button is clicked. */
+  public playerDetailsClick(): void {
+    // TODO: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1293600
+    this.helpPopoverIcon.closePopup();
+
+    renderGuard(() => {
+      const toolsRoute = getToolsActivatedRoute(this.route);
+      const queryParams = {};
+      queryParams['xuid'] = this.filterXuid;
+      this.router.navigate([`user-details/${this.gameTitle}`], {
+        relativeTo: toolsRoute,
+        queryParams: queryParams,
+        replaceUrl: false,
+      });
+    });
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

@@ -24,6 +24,7 @@ export class HelpPopoverIconComponent extends BaseComponent implements OnInit {
   /** Life-cycle hook. */
   public ngOnInit(): void {
     // https://stackoverflow.com/questions/51821766/angular-material-dialog-not-closing-after-navigation
+    // TODO: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1293600
     this.router.events
       .pipe(
         filter(x => x instanceof NavigationStart),
@@ -44,5 +45,10 @@ export class HelpPopoverIconComponent extends BaseComponent implements OnInit {
     return this.confluenceName
       ? 'Click to view help card and confluence link'
       : 'Click to view help card';
+  }
+
+  /** Closes the help popover. */
+  public closePopup(): void {
+    this.isOpen = false;
   }
 }
