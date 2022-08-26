@@ -7,16 +7,8 @@ export class MockSteelheadUgcLookupService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getUgcLivery$ = jasmine
-    .createSpy('getUgcLivery$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
-
-  public getUgcPhoto$ = jasmine
-    .createSpy('getUgcPhoto$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
-
-  public getUgcTune$ = jasmine
-    .createSpy('getUgcTune$')
+  public getPlayerUgcItem$ = jasmine
+    .createSpy('getPlayerUgcItem$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
 
   public getUgcBySharecode$ = jasmine

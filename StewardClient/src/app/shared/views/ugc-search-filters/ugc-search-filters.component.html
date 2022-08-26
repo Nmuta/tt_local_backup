@@ -10,7 +10,7 @@
   <mat-form-field appearance="fill">
     <mat-label>UGC Type</mat-label>
     <mat-select matInput [formControl]="formControls.ugcType">
-      <mat-option *ngFor="let type of ugcType" [value]="type">{{ type }}</mat-option>
+      <mat-option *ngFor="let type of ugcTypes" [value]="type">{{ type }}</mat-option>
     </mat-select>
   </mat-form-field>
 

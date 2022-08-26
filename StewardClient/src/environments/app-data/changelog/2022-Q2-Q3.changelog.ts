@@ -8,9 +8,44 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
   id: '8d8286fe-2fd7-421a-bae8-607212cac0e2',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
+      uuid: '99f6c4ad-4cfd-4f8c-9ed0-7109138a616d',
+      shortText: 'Fix user group queries',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
+      uuid: '37bbb4a0-c49a-4638-bd35-c347b901265a',
+      shortText: 'Complete implementation of User Group UI for FH5',
+    },
+    {
       tag: ChangelogTag.Internal,
-      uuid: '19bedbe0-dbc5-4e10-afa6-bd34784c1e95',
-      shortText: 'Fix luxon interceptor to read in dates as UTC',
+      uuid: '6ade09bc-c4e2-4473-9a16-34e054491fa6',
+      shortText: 'Refactor User Group controller for FH5',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
+      uuid: 'cd971220-28b2-4606-b3ea-a24f5491e68f',
+      shortText: 'Fix leaderboard talent lookup in stats card',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
+      uuid: '37bbb4a0-c49a-4638-bd35-c347b901265a',
+      shortText: 'Complete implementation of User Group UI for FH5',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '57043b34-05be-4f1e-8c85-1459908323a9',
+      shortText: 'Add Steelhead to UGC details',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'dce806b3-c476-463e-b3e1-1c770714daba',
+      shortText: 'Add public searching of UGC to Steelhead',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a1ea6167-794c-4e57-8daa-66155cc26f1c',
+      shortText: 'Add more form standardization tools',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
@@ -105,6 +140,11 @@ export const CHANGELOG_2022_Q2_Q3: ChangelogGroup = {
       tag: { title: 'all', tool: NavbarTool.Gifting },
       uuid: '6e1b24d6-3549-4ae9-9255-231bf8da191b',
       shortText: 'Standardizing form layout',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
+      uuid: '37bbb4a0-c49a-4638-bd35-c347b901265a',
+      shortText: 'Complete implementation of User Group UI for FH5',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },

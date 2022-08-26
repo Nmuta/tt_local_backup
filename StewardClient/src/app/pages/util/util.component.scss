@@ -1,10 +1,11 @@
 @import '/src/styles/mixins';
 
-mat-card {
+:host ::ng-deep mat-card {
   margin-top: 20px;
 
+  width: 500px;
   max-width: 500px;
-  width: 100%;
+  max-height: unset;
 
   h1,
   h2 {
@@ -22,4 +23,8 @@ ul {
       padding: 10px;
     }
   }
+}
+
+center-contents {
+  padding-bottom: 5em;
 }

@@ -19,8 +19,8 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using static System.FormattableString;
-using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 {
@@ -57,10 +57,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         }
 
         /// <summary>
-        ///    Get a user group users.
+        ///    Get a user group users. User list index starts at 1.
         /// </summary>
         [HttpGet("{userGroupId}")]
-        [SwaggerResponse(200, type: typeof(IList<BasicPlayer>))]
+        [SwaggerResponse(200, type: typeof(GetUserGroupUsersResponse))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.UserGroup)]
@@ -88,8 +88,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                     });
                 }
                 // End of temporary code //
+                var response = new GetUserGroupUsersResponse()
+                {
+                    PlayerList = userList,
+                    PlayerCount = users.available
+                };
 
-                return this.Ok(userList);
+                return this.Ok(response);
             }
             catch (Exception ex)
             {
@@ -138,43 +143,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             // Greater than 0 blocks adding users to the "All" group
             userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
-            if (userList.Xuids != null && userList.Xuids.Length > 0)
+            this.ValidateUserList(userList);
+
+            if (useBackgroundProcessing)
             {
-                userList.Xuids.EnsureValidXuids();
-
-                if (useBackgroundProcessing)
-                {
-                    var response = await this.AddUsersToGroupUseBackgroundProcessing(userGroupId, userList.Xuids).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
-                else
-                {
-                    var response = await this.AddUsersToUserGroupAsync(userGroupId, userList.Xuids).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
+                var response = await this.AddUsersToGroupUseBackgroundProcessing(userGroupId, userList).ConfigureAwait(false);
+                return response;
             }
-
-            if (userList.Gamertags != null && userList.Gamertags.Length > 0)
+            else
             {
-                userList.Gamertags.ShouldNotBeNull(nameof(userList.Gamertags));
-                foreach (var gamertag in userList.Gamertags)
-                {
-                    gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
-                }
-
-                if (useBackgroundProcessing)
-                {
-                    var response = await this.AddUsersToGroupUseBackgroundProcessing(userGroupId, userList.Gamertags).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
-                else
-                {
-                    var response = await this.AddUsersToUserGroupAsync(userGroupId, userList.Gamertags).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
+                var response = await this.AddUsersToUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
+                return this.Ok(response);
             }
-
-            return this.Ok();
         }
 
         /// <summary>
@@ -190,43 +170,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             // Greater than 0 blocks removing users from the "All" group
             userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
-            if (userList.Xuids != null && userList.Xuids.Length > 0)
+            this.ValidateUserList(userList);
+
+            if (useBackgroundProcessing)
             {
-                userList.Xuids.EnsureValidXuids();
-
-                if (useBackgroundProcessing)
-                {
-                    var response = await this.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, userList.Xuids).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
-                else
-                {
-                    var response = await this.RemoveUsersFromUserGroupAsync(userGroupId, userList.Xuids).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
+                var response = await this.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, userList).ConfigureAwait(false);
+                return response;
             }
-
-            if (userList.Gamertags != null && userList.Gamertags.Length > 0)
+            else
             {
-                userList.Gamertags.ShouldNotBeNull(nameof(userList.Gamertags));
-                foreach (var gamertag in userList.Gamertags)
-                {
-                    gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
-                }
-
-                if (useBackgroundProcessing)
-                {
-                    var response = await this.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, userList.Gamertags).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
-                else
-                {
-                    var response = await this.RemoveUsersFromUserGroupAsync(userGroupId, userList.Gamertags).ConfigureAwait(false);
-                    return this.Ok(response);
-                }
+                var response = await this.RemoveUsersFromUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
+                return this.Ok(response);
             }
-
-            return this.Ok();
         }
 
         /// <summary>
@@ -239,60 +194,122 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.DeleteAll, StewardSubject.UserGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
-            // Greater than 0 blocks removing users from the "All" group
-            userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
+            try
+            {
+                // Greater than 0 blocks removing users from the "All" group
+                userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
-            await this.Services.UserManagementService.ClearUserGroup(userGroupId).ConfigureAwait(false);
+                await this.Services.UserManagementService.ClearUserGroup(userGroupId).ConfigureAwait(false);
 
-            return this.Ok();
+                return this.Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Remove all users from user group failed.", ex);
+            }
         }
 
-        // Add users to a user group using xuids
-        private async Task<IList<BasicPlayer>> AddUsersToUserGroupAsync(int groupId, IList<ulong> xuids)
+        // Validate that at least one list or either Xuids or Gamertags was provided and that the lists are valid.
+        private void ValidateUserList(BasicPlayerList userList)
+        {
+            if ((userList.Xuids == null || userList.Xuids.Length == 0) &&
+                (userList.Gamertags == null || userList.Gamertags.Length == 0))
+            {
+                throw new InvalidArgumentsStewardException($"No player gamertags or xuids provided.");
+            }
+
+            if (userList.Xuids != null && userList.Xuids.Length > 0)
+            {
+                userList.Xuids.EnsureValidXuids();
+            }
+
+            if (userList.Gamertags != null && userList.Gamertags.Length > 0)
+            {
+                foreach (var gamertag in userList.Gamertags)
+                {
+                    gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+                }
+            }
+        }
+
+        // Create a BasicPlayer list from the BasicPlayerList received in add/remove request body
+        private IList<BasicPlayer> CreateBasicPlayerList(BasicPlayerList userList)
         {
             var response = new List<BasicPlayer>();
+
+            if (userList.Xuids != null)
+            {
+                foreach (var xuid in userList.Xuids)
+                {
+                    var basicPlayer = new BasicPlayer() { Xuid = xuid };
+                    response.Add(basicPlayer);
+                }
+            }
+
+            if (userList.Gamertags != null)
+            {
+                foreach (var gamertag in userList.Gamertags)
+                {
+                    var basicPlayer = new BasicPlayer() { Gamertag = gamertag };
+                    response.Add(basicPlayer);
+                }
+            }
+
+            return response;
+        }
+
+        // Add users to a user group using xuids and/or gamertags
+        private async Task<IList<BasicPlayer>> AddUsersToUserGroupAsync(int groupId, BasicPlayerList userList)
+        {
             var groups = new int[] { groupId };
-            var failedXuids = new List<string>();
+            var failedUsers = new List<string>();
             var correlationId = Guid.NewGuid().ToString();
             Exception lastException = null;
 
-            foreach (var xuid in xuids)
-            {
-                var userGroupManagementResponse = new BasicPlayer() { Xuid = xuid };
+            // Parse userList into response object
+            var response = this.CreateBasicPlayerList(userList);
 
+            foreach (var user in response)
+            {
                 try
                 {
-                    await this.Services.UserManagementService.AddToUserGroups(xuid, groups).ConfigureAwait(false);
+                    if (user.Xuid != null)
+                    {
+                        await this.Services.UserManagementService.AddToUserGroups(user.Xuid.Value, groups).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await this.Services.UserManagementService.AddToUserGroupsByGamertag(user.Gamertag, groups).ConfigureAwait(false);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    failedXuids.Add(xuid.ToString());
-                    var errorMessage = $"Failed to add user {xuid} to group {groupId} (cid:{correlationId})";
+                    failedUsers.Add(user.Gamertag ?? user.Xuid.ToString());
+                    var errorMessage = $"Failed to add user to user group. (Gamertag/Xuid: {user.Gamertag ?? user.Xuid.ToString()}) (groupId: {groupId}) (correlationId: {correlationId})";
                     var error = new StewardError(errorMessage, ex);
-                    userGroupManagementResponse.Error = error;
+                    user.Error = error;
                     lastException = ex;
                 }
-
-                response.Add(userGroupManagementResponse);
             }
 
-            if (failedXuids.Any() && lastException != null)
+            if (failedUsers.Any())
             {
-                var appInsightErrorMessage = $"Failed to remove user(s) {string.Join(", ", failedXuids.ToArray())} from group {groupId} (cid:{correlationId})";
+                var appInsightErrorMessage = $"Failed to add user(s) to user group. (Users: {string.Join(", ", failedUsers.ToArray())}) (groupId: {groupId}) (correlationId:{correlationId})";
                 this.loggingService.LogException(new UserGroupManagementAppInsightsException(appInsightErrorMessage, lastException));
             }
 
             return response;
         }
 
-        // Add users to a user group using xuids and a background job.
-        private async Task<CreatedResult> AddUsersToGroupUseBackgroundProcessing(int userGroupId, IList<ulong> xuids)
+        // Add users to a user group using xuids and/or gamertags as a background job.
+        private async Task<CreatedResult> AddUsersToGroupUseBackgroundProcessing(int userGroupId, BasicPlayerList userList)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var jobId = await this.AddJobIdToHeaderAsync(xuids.ToJson(), requesterObjectId, $"Woodstock Add Users to User Group: {xuids.Count} recipients.").ConfigureAwait(true);
+            var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
+            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Woodstock Add Users to User Group: {userCount} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -300,7 +317,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                 // Do not throw.
                 try
                 {
-                    var response = await this.AddUsersToUserGroupAsync(userGroupId, xuids).ConfigureAwait(false);
+                    var response = await this.AddUsersToUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
@@ -316,56 +333,58 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
         }
 
-        // Remove users from a user group using xuids.
-        private async Task<IList<BasicPlayer>> RemoveUsersFromUserGroupAsync(int groupId, IList<ulong> xuids)
+        // Remove users from a user group using xuids and/or gamertags.
+        private async Task<IList<BasicPlayer>> RemoveUsersFromUserGroupAsync(int groupId, BasicPlayerList userList)
         {
-            var response = new List<BasicPlayer>();
             var groups = new int[] { groupId };
-            var failedXuids = new List<string>();
+            var failedUsers = new List<string>();
             var correlationId = Guid.NewGuid().ToString();
             Exception lastException = null;
 
-            foreach (var xuid in xuids)
-            {
-                var userGroupManagementResponse = new BasicPlayer() { Xuid = xuid };
+            // Parse userList into response object
+            var response = this.CreateBasicPlayerList(userList);
 
+            foreach (var user in response)
+            {
                 try
                 {
-                    await this.Services.UserManagementService.RemoveFromUserGroups(xuid, groups).ConfigureAwait(false);
+                    if (user.Xuid != null)
+                    {
+                        await this.Services.UserManagementService.RemoveFromUserGroups(user.Xuid.Value, groups).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await this.Services.UserManagementService.RemoveFromUserGroupsByGamertag(user.Gamertag, groups).ConfigureAwait(false);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    failedXuids.Add(xuid.ToString());
-                    var errorMessage = $"Failed to remove user {xuid} from group {groupId} (cid:{correlationId})";
+                    failedUsers.Add(user.Gamertag ?? user.Xuid.ToString());
+                    var errorMessage = $"Failed to remove user from user group. (Gamertag/Xuid: {user.Gamertag ?? user.Xuid.ToString()}) (groupId: {groupId}) (correlationId: {correlationId})";
                     var error = new StewardError(errorMessage, ex);
-                    userGroupManagementResponse.Error = error;
+                    user.Error = error;
                     lastException = ex;
                 }
-
-                response.Add(userGroupManagementResponse);
             }
 
-            if (failedXuids.Any() && lastException != null)
+            if (failedUsers.Any())
             {
-                var appInsightErrorMessage = $"Failed to remove user(s) {string.Join(", ", failedXuids.ToArray())} from group {groupId} (cid:{correlationId})";
+                var appInsightErrorMessage = $"Failed to remove user(s) from user group. (Users: {string.Join(", ", failedUsers.ToArray())}) (groupId: {groupId}) (correlationId:{correlationId})";
                 this.loggingService.LogException(new UserGroupManagementAppInsightsException(appInsightErrorMessage, lastException));
             }
 
             return response;
         }
 
-        // Remove users from a user group using xuids and a background job.
-        private async Task<CreatedResult> RemoveUsersFromGroupUseBackgroundProcessing(int userGroupId, IList<ulong> xuids)
+        // Remove users from a user group using xuids and/or gamertags as a background job.
+        private async Task<CreatedResult> RemoveUsersFromGroupUseBackgroundProcessing(int userGroupId, BasicPlayerList userList)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            // Greater than 0 blocks removing users from the "All" group
-            userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
-            xuids.EnsureValidXuids();
-
-            var jobId = await this.AddJobIdToHeaderAsync(xuids.ToJson(), requesterObjectId, $"Woodstock Remove Users from User Group: {xuids.Count} recipients.").ConfigureAwait(true);
+            var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
+            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Woodstock Remove Users from User Group: {userCount} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -373,161 +392,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                 // Do not throw.
                 try
                 {
-                    var response = await this.RemoveUsersFromUserGroupAsync(userGroupId, xuids).ConfigureAwait(false);
-
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                }
-            }
-
-            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
-        // Remove users from a user group using gamertags.
-        private async Task<IList<BasicPlayer>> RemoveUsersFromUserGroupAsync(int groupId, IList<string> gamertags)
-        {
-            var response = new List<BasicPlayer>();
-            var groups = new int[] { groupId };
-            var failedGamertags = new List<string>();
-            var correlationId = Guid.NewGuid().ToString();
-            Exception lastException = null;
-
-            foreach (var gamertag in gamertags)
-            {
-                var userGroupManagementResponse = new BasicPlayer() { Gamertag = gamertag };
-
-                try
-                {
-                    await this.Services.UserManagementService.RemoveFromUserGroupsByGamertag(gamertag, groups).ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    failedGamertags.Add(gamertag);
-                    var errorMessage = $"Failed to remove user {gamertag} from group {groupId} (cid:{correlationId})";
-                    var error = new StewardError(errorMessage, ex);
-                    userGroupManagementResponse.Error = error;
-                    lastException = ex;
-                }
-
-                response.Add(userGroupManagementResponse);
-            }
-
-            if (failedGamertags.Any() && lastException != null)
-            {
-                var appInsightErrorMessage = $"Failed to remove user(s) {string.Join(", ", failedGamertags.ToArray())} from group {groupId} (cid:{correlationId})";
-                this.loggingService.LogException(new UserGroupManagementAppInsightsException(appInsightErrorMessage, lastException));
-            }
-
-            return response;
-        }
-
-        // Add users to a user group using gamertags.
-        private async Task<IList<BasicPlayer>> AddUsersToUserGroupAsync(int groupId, IList<string> gamertags)
-        {
-            var response = new List<BasicPlayer>();
-            var groups = new int[] { groupId };
-            var failedGamertags = new List<string>();
-            var correlationId = Guid.NewGuid().ToString();
-            Exception lastException = null;
-
-            foreach (var gamertag in gamertags)
-            {
-                var userGroupManagementResponse = new BasicPlayer() { Gamertag = gamertag };
-
-                try
-                {
-                    await this.Services.UserManagementService.AddToUserGroupsByGamertag(gamertag, groups).ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    failedGamertags.Add(gamertag);
-                    var errorMessage = $"Failed to add user {gamertag} to group {groupId} (cid:{correlationId})";
-                    var error = new StewardError(errorMessage);
-                    userGroupManagementResponse.Error = error;
-                    lastException = ex;
-                }
-
-                response.Add(userGroupManagementResponse);
-            }
-
-            if (failedGamertags.Any() && lastException != null)
-            {
-                var appInsightErrorMessage = $"Failed to remove user(s) {string.Join(", ", failedGamertags.ToArray())} from group {groupId} (cid:{correlationId})";
-                this.loggingService.LogException(new UserGroupManagementAppInsightsException(appInsightErrorMessage, lastException));
-            }
-
-            return response;
-        }
-
-        // Add users to a user group using gamertags and a background job.
-        private async Task<CreatedResult> AddUsersToGroupUseBackgroundProcessing(int userGroupId, IList<string> gamertags)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            // Greater than 0 blocks adding users to the "All" group
-            userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
-            gamertags.ShouldNotBeNull(nameof(gamertags));
-            foreach (var gamertag in gamertags)
-            {
-                gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
-            }
-
-            var jobId = await this.AddJobIdToHeaderAsync(gamertags.ToJson(), requesterObjectId, $"Woodstock Add Users to User Group: {gamertags.Count} recipients.").ConfigureAwait(true);
-
-            async Task BackgroundProcessing(CancellationToken cancellationToken)
-            {
-                // Throwing within the hosting environment background worker seems to have significant consequences.
-                // Do not throw.
-                try
-                {
-                    var response = await this.AddUsersToUserGroupAsync(userGroupId, gamertags).ConfigureAwait(false);
-
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                }
-            }
-
-            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
-        // Remove users from a user group using gamertags and a background job.
-        private async Task<CreatedResult> RemoveUsersFromGroupUseBackgroundProcessing(int userGroupId, IList<string> gamertags)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            // Greater than 0 blocks removing users from the "All" group
-            userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
-            gamertags.ShouldNotBeNull(nameof(gamertags));
-            foreach (var gamertag in gamertags)
-            {
-                gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
-            }
-
-            var jobId = await this.AddJobIdToHeaderAsync(gamertags.ToJson(), requesterObjectId, $"Woodstock Remove Users from User Group: {gamertags.Count} recipients.").ConfigureAwait(true);
-
-            async Task BackgroundProcessing(CancellationToken cancellationToken)
-            {
-                // Throwing within the hosting environment background worker seems to have significant consequences.
-                // Do not throw.
-                try
-                {
-                    var response = await this.RemoveUsersFromUserGroupAsync(userGroupId, gamertags).ConfigureAwait(false);
+                    var response = await this.RemoveUsersFromUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);

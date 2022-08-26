@@ -26,11 +26,25 @@ import { PlayerUgcModule } from '@views/player-ugc/player-ugc.module';
 import { MatIconModule } from '@angular/material/icon';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { PastableSingleInputModule } from '@views/pastable-single-input/pastable-single-input.module';
-import { SearchUgcModule } from '@views/search-ugc/search-ugc.module';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { HelpModule } from '@shared/modules/help/help.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
+import { UgcFiltersModule } from '@views/ugc-filters/ugc-filters.module';
+import { UgcSearchFiltersModule } from '@views/ugc-search-filters/ugc-search-filters.module';
+import { UgcTableModule } from '@views/ugc-table/ugc-table.module';
+import { LuxonModule } from 'luxon-angular';
+import { WoodstockSearchUgcComponent } from './pages/woodstock/woodstock-search-ugc.component';
+import { SteelheadSearchUgcComponent } from './pages/steelhead/steelhead-search-ugc.component';
 
 /** Routed module for ugc users. */
 @NgModule({
-  declarations: [UgcComponent],
+  declarations: [UgcComponent, WoodstockSearchUgcComponent, SteelheadSearchUgcComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
@@ -59,7 +73,19 @@ import { SearchUgcModule } from '@views/search-ugc/search-ugc.module';
     MatIconModule,
     PastableSingleInputModule,
     EndpointSelectionModule,
-    SearchUgcModule,
+    MatTooltipModule,
+    ErrorSpinnerModule,
+    MatPaginatorModule,
+    LuxonModule,
+    UgcFiltersModule,
+    FeatureUgcModalModule,
+    MatDividerModule,
+    UgcTableModule,
+    UgcSearchFiltersModule,
+    MonitorActionModule,
+    RouterModule,
+    HelpModule,
+    StateManagersModule,
   ],
 })
 export class UgcModule {}

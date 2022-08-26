@@ -1,0 +1,42 @@
+<mat-card>
+  <a
+    mat-stroked-button
+    color="primary"
+    class="private-ugc-search-link"
+    matTooltip="Private UGC is not searchable, must be looked up by creator."
+    [routerLink]="routerLink"
+    [queryParams]="routerParams"
+    >{{ !!filterXuid ? 'Search Private UGC for ' + filterXuid : 'Search Private UGC' }}</a
+  >
+
+  <mat-card-header>
+    <mat-card-title>Search Public UGC</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <ugc-search-filters
+        [formControl]="formControls.ugcFilters"
+        [serviceContract]="serviceContract"
+      ></ugc-search-filters>
+
+      <button
+        class="filter-search"
+        mat-raised-button
+        color="primary"
+        matTooltip="Search Public UGC"
+        [disabled]="!formGroup.valid"
+        (click)="searchUgc()"
+        [monitor]="getMonitor"
+        stateManager
+        monitorDisable
+        monitorWarnSnackbar
+      >
+        Search
+        <button-spinner defaultIcon="search" [monitor]="getMonitor"></button-spinner>
+      </button>
+    </form>
+
+    <steelhead-ugc-table [content]="ugcContent" [contentType]="ugcType"></steelhead-ugc-table>
+  </mat-card-content>
+</mat-card>

@@ -3,9 +3,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
+import { BasicPlayerList } from '@models/basic-player-list';
 import { LspGroup } from '@models/lsp-group';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
-import BigNumber from 'bignumber.js';
 import { of } from 'rxjs';
 import {
   ListUsersInGroupComponent,
@@ -17,19 +17,25 @@ describe('ListUsersInGroupComponent', () => {
   let fixture: ComponentFixture<ListUsersInGroupComponent>;
 
   const mockService: ListUsersInGroupServiceContract = {
-    getPlayersInUserGroup$: (_userGroup: LspGroup) => {
-      return of([]);
+    getPlayersInUserGroup$: (_userGroup: LspGroup, _startIndex: number, _maxResults: number) => {
+      return of(undefined);
     },
-    deletePlayerFromUserGroup$: (_xuid: BigNumber, _userGroup: LspGroup) => {
+    deletePlayerFromUserGroup$: (_playerList: BasicPlayerList, _userGroup: LspGroup) => {
       return of([]);
     },
     deleteAllPlayersFromUserGroup$: (_userGroup: LspGroup) => {
-      return of([]);
-    },
-    deletePlayersFromUserGroupUsingBackgroundTask$: (_xuids: BigNumber[], _userGroup: LspGroup) => {
       return of(undefined);
     },
-    addPlayersToUserGroupUsingBackgroundTask$: (_xuids: BigNumber[], _userGroup: LspGroup) => {
+    deletePlayersFromUserGroupUsingBackgroundTask$: (
+      _playerList: BasicPlayerList,
+      _userGroup: LspGroup,
+    ) => {
+      return of(undefined);
+    },
+    addPlayersToUserGroupUsingBackgroundTask$: (
+      _playerList: BasicPlayerList,
+      _userGroup: LspGroup,
+    ) => {
       return of(undefined);
     },
   };

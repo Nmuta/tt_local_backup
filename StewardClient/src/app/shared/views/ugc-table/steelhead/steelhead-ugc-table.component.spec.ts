@@ -180,10 +180,13 @@ describe('SteelheadUgcTableComponent', () => {
   });
 
   describe('Method: getUgcItem', () => {
-    it('should call SteelheadService.getUgcLivery$', () => {
-      component.getUgcItem(faker.datatype.uuid(), UgcType.Livery);
+    const ugcId = faker.datatype.uuid();
+    const ugcType = UgcType.Livery;
 
-      expect(mockSteelheadUgcLookupService.getUgcLivery$).toHaveBeenCalled();
+    it('should call SteelheadService.getPlayerUgcItem$', () => {
+      component.getUgcItem(ugcId, ugcType);
+
+      expect(mockSteelheadUgcLookupService.getPlayerUgcItem$).toHaveBeenCalledWith(ugcId, ugcType);
     });
   });
 });

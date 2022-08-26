@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ListUsersInGroupComponent } from './list-users-in-user-group.component';
 import { WoodstockListUsersInGroupComponent } from './woodstock/woodstock-list-users-in-user-group.component';
 import { SunriseListUsersInGroupComponent } from './sunrise/sunrise-list-users-in-user-group.component';
@@ -43,6 +43,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     MonitorActionModule,
     StateManagersModule,
+    MatButtonToggleModule,
   ],
   exports: [
     WoodstockListUsersInGroupComponent,

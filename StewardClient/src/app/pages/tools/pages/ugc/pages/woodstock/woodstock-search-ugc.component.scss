@@ -1,0 +1,19 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  margin: $gap-medium;
+  flex-grow: unset;
+  max-height: unset;
+}
+
+private-ugc-search-link {
+  color: app-color-default($app-primary);
+  cursor: pointer;
+}
+
+.private-ugc-search-link {
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
