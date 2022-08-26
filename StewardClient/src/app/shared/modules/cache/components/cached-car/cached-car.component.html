@@ -1,1 +1,11 @@
-<p>cached-car works!</p>
+<ng-container *ngIf="carData">
+  <mat-chip-list>
+    <mat-chip>
+      <standard-copy [text]="copyText">
+        <span class="make">{{ carData.make }}</span> <span class="model">{{ carData.model }}</span>
+        <mat-icon [matTooltip]="carData.id.toString()">tag</mat-icon>
+      </standard-copy>
+    </mat-chip>
+  </mat-chip-list>
+</ng-container>
+<ng-container *ngIf="!carData">{{ carId }}</ng-container>

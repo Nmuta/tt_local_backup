@@ -12,7 +12,9 @@ export class WoodstockCarsCacheService {
   public monitor = new ActionMonitor('Get Woodstock Cars');
   public lookupHasChanged$ = new ReplaySubject<void>(1); // this has the effect of EMPTY until we have retrieved values at least once
 
-  constructor(private readonly woodstock: WoodstockService) { }
+  constructor(private readonly woodstock: WoodstockService) {
+    this.updateLookup();
+  }
 
   /** Produces the details of a car, if we have it. */
   public getDetails(carId: string | BigNumber): DetailedCar | null {
@@ -26,12 +28,12 @@ export class WoodstockCarsCacheService {
 
   /** Produces the details of a car immediately, if we have it. Or when we get it, if we do not. */
   public getDetails$(carId: string | BigNumber): Observable<DetailedCar> {
-    carId = carId.toString();
-    if (this.lookup.has(carId)) {
-      return of(this.lookup.get(carId));
+    const carIdString = carId.toString();
+    if (this.lookup.has(carIdString)) {
+      return of(this.lookup.get(carIdString));
     }
 
-    return this.lookupHasChanged$.pipe(switchMap(() => of(this.lookup.get(carId))));
+    return this.lookupHasChanged$.pipe(switchMap(() => of(this.lookup.get(carIdString))));
   }
 
   /** Updates the lookup, eventually. */

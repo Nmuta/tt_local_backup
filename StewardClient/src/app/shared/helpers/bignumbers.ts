@@ -30,8 +30,15 @@ export function tryParseBigNumbers(value: string): BigNumber[] {
 
 /** Compares bignumbers without knowing that you even have an object. */
 export function bigNumbersEqual(a: BigNumber | null, b: BigNumber | null): boolean {
-  if (BigNumber.isBigNumber(a)) {
+  const aIsBigNumber = BigNumber.isBigNumber(a);
+  if (aIsBigNumber) {
     return a.isEqualTo(b);
+  }
+
+  const bIsBigNumber = BigNumber.isBigNumber(b);
+
+  if (!aIsBigNumber && !bIsBigNumber) {
+    return true;
   }
 
   return a === b;

@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { bigNumbersEqual } from '@helpers/bignumbers';
-import { pairwiseSkip } from '@helpers/rxjs/pairwise-skip';
+import { pairwiseSkip } from '@helpers/rxjs';
 import { DetailedCar } from '@models/detailed-car';
-import { GameTitle, GameTitleAbbreviation } from '@models/enums';
+import { GameTitleAbbreviation } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
 import { EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
@@ -17,12 +17,21 @@ import { WoodstockCarsCacheService } from '../../managers/woodstock/cars-cache.s
 })
 export class CachedCarComponent extends BaseComponent implements OnInit, OnChanges {
   @Input() public title: GameTitleAbbreviation = null;
-  public carId: BigNumber;
+  @Input() public carId: BigNumber;
 
   public monitor = new ActionMonitor('Get Car Data');
   public carData: DetailedCar = null;
 
   private carId$ = new Subject<BigNumber>();
+
+  public get copyText(): string {
+    const carData = this.carData;
+    if (!!carData) {
+      return `${carData.make} | ${carData.model} | ${carData.id}`;
+    }
+
+    return null;
+  }
 
   constructor(private readonly woodstock: WoodstockCarsCacheService) {
     super();
@@ -40,6 +49,7 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
         takeUntil(this.onDestroy$),
       )
       .subscribe(carData => (this.carData = carData));
+    this.carId$.next(this.carId);
   }
 
   /** Angular lifecycle hook. */
