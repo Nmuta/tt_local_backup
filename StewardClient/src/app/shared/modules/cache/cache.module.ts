@@ -5,7 +5,7 @@ import { CachedCarComponent } from './components/cached-car/cached-car.component
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 
 /** Module containing various cache-based lookup components. */
 @NgModule({

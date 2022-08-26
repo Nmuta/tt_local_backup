@@ -15,7 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuctionDataModule } from '@views/auction-data/auction-data.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { MatCardModule } from '@angular/material/card';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';

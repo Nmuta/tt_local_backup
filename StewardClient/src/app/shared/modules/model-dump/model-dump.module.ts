@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModelDumpComponent } from './model-dump.component';
 import { MatCardModule } from '@angular/material/card';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ModelDumpFlagsComponent } from './model-dump-flags/model-dump-flags.component';
 import { MatIconModule } from '@angular/material/icon';
