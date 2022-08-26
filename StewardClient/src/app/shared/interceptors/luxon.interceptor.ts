@@ -74,7 +74,7 @@ export class UtcInterceptor implements HttpInterceptor {
       rxMap((event: HttpResponse<Record<string, unknown>>) => {
         const newBody = deepMapPairs(event.body, ([key, value]) => {
           if (key.endsWith('Utc') && typeof value === 'string') {
-            return [key, toDateTime(value)];
+            return [key, toDateTime(value).toUTC()];
           }
 
           if (key.toUpperCase().endsWith('DURATION') && typeof value === 'string') {
