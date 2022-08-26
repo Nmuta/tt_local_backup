@@ -25,8 +25,8 @@ import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-histor
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -58,7 +58,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
     PlayerInventoryModule,
     PlayerInventoryProfilesModule,
     EndpointSelectionModule,
-    DatetimeRangePickerModule,
+    DateTimePickersModule,
     FormsModule,
     ReactiveFormsModule,
     HelpModule,

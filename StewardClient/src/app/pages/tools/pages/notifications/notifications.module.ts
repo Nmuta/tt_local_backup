@@ -34,6 +34,7 @@ import { WoodstockNotificationsComponent } from './woodstock/woodstock-notificat
 import { CommunityMessagingModule } from './components/community-messaging/community-messaging.module';
 import { GroupNotificationManagementModule } from './components/notification-management/group-notification-management/group-notification-management.module';
 import { IndividualNotificationManagementModule } from './components/notification-management/individual-notification-management/individual-notification-management.module';
+import { SteelheadNotificationsComponent } from './steelhead/steelhead-notifications.component';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -41,6 +42,7 @@ import { IndividualNotificationManagementModule } from './components/notificatio
     NotificationsComponent,
     SunriseNotificationsComponent,
     WoodstockNotificationsComponent,
+    SteelheadNotificationsComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,

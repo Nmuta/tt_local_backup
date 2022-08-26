@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
-        public async Task<IActionResult> EditGroupmessage(
+        public async Task<IActionResult> EditGroupMessage(
             int groupId,
             string messageId,
             [FromBody] LspGroupCommunityMessage editParameters)

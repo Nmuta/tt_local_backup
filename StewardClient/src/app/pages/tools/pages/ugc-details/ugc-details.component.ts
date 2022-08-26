@@ -25,6 +25,7 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
 
   public GameTitleCodeName = GameTitleCodeName;
 
+  public steelheadRouterLink = ['.', 'steelhead'];
   public woodstockRouterLink = ['.', 'woodstock'];
   public sunriseRouterLink = ['.', 'sunrise'];
 
@@ -49,6 +50,7 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
         map(([_prev, cur]) => cur),
       )
       .subscribe(id => {
+        this.steelheadRouterLink = ['.', 'steelhead', id];
         this.woodstockRouterLink = ['.', 'woodstock', id];
         this.sunriseRouterLink = ['.', 'sunrise', id];
         this.controls.sharecode.setValue(id);
@@ -64,11 +66,13 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
       .pipe(debounceTime(HCI.TypingToAutoSearchDebounceMillis), takeUntil(this.onDestroy$))
       .subscribe(id => {
         if (!id) {
+          this.steelheadRouterLink = ['.', 'steelhead'];
           this.woodstockRouterLink = ['.', 'woodstock'];
           this.sunriseRouterLink = ['.', 'sunrise'];
           return; // do not redirect when there is a missing ID (this breaks things)
         }
 
+        this.steelheadRouterLink = ['.', 'steelhead', id];
         this.woodstockRouterLink = ['.', 'woodstock', id];
         this.sunriseRouterLink = ['.', 'sunrise', id];
         this.sharedLookupService.doLookup(id);
@@ -94,6 +98,8 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
       this.router.navigate(this.sunriseRouterLink, { relativeTo: this.route });
     } else if (onlyTrueKey(titleLookup, 'fh5')) {
       this.router.navigate(this.woodstockRouterLink, { relativeTo: this.route });
+    } else if (onlyTrueKey(titleLookup, 'fm8')) {
+      this.router.navigate(this.steelheadRouterLink, { relativeTo: this.route });
     }
   }
 }

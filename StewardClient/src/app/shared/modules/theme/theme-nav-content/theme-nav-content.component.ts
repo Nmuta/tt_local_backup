@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CustomTileComponent } from '@environments/environment';
+import { CustomTileComponent, HomeTileInfo } from '@environments/environment';
 import { ThemeOverrideOptions } from '@shared/state/user-settings/user-settings.actions';
 import { ThemeService } from '../theme.service';
 
@@ -10,6 +10,7 @@ import { ThemeService } from '../theme.service';
 })
 export class ThemeNavContentComponent implements CustomTileComponent {
   @Input() public disabled: boolean;
+  @Input() public item: HomeTileInfo;
 
   /** The theme override setting. */
   public get themeOverride(): ThemeOverrideOptions {

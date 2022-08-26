@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CustomTileComponent } from '@environments/environment';
+import { CustomTileComponent, HomeTileInfo } from '@environments/environment';
 
 /** Renders the tile content for the theme-app tile. */
 @Component({
@@ -8,4 +8,5 @@ import { CustomTileComponent } from '@environments/environment';
 })
 export class ThemeTileContentComponent implements CustomTileComponent {
   @Input() public disabled: boolean;
+  @Input() public item: HomeTileInfo;
 }

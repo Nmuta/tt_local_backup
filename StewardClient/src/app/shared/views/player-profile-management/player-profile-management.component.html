@@ -1,0 +1,135 @@
+<ng-container *ngIf="hasAccessToTool; else toolRestrictedTemplate">
+  <mat-tab-group>
+    <mat-tab [disabled]="!hasAccessToTool">
+      <ng-template matTabLabel>Load Template To Profile</ng-template>
+      <ng-template matTabContent>
+        <div class="tab-container load-template-container" *waitForMonitor="getTemplatesMonitor">
+          <form [formGroup]="loadFormGroup">
+            <mat-form-field appearance="fill">
+              <mat-label>Select Profile Template</mat-label>
+              <mat-select [formControl]="loadFormControls.template">
+                <mat-option *ngFor="let template of profileTemplates" [value]="template">
+                  {{ template }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-checkbox [formControl]="loadFormControls.continueOnBreakingChanges"
+              >Continue On Breaking Changes</mat-checkbox
+            >
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="!loadFormGroup.valid"
+              (click)="loadTemplateToProfile()"
+              clickStop
+              [monitor]="loadTemplateMonitor"
+              stateManager
+              monitorDisable
+              monitorWarnSnackbar
+              monitorCompleteSnackbar
+            >
+              Load Template
+              <button-spinner [monitor]="loadTemplateMonitor" defaultIcon="upload"></button-spinner>
+            </button>
+            <mat-checkbox class="inline" [formControl]="loadFormControls.verifyAction"
+              >Verify action</mat-checkbox
+            >
+          </form>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab [disabled]="!hasAccessToTool">
+      <ng-template matTabLabel>Save Profile To Template</ng-template>
+      <ng-template matTabContent>
+        <div class="tab-container save-template-container">
+          <form [formGroup]="saveFormGroup">
+            <mat-form-field appearance="fill">
+              <mat-label>Template Name</mat-label>
+              <input matInput [formControl]="saveFormControls.template" />
+            </mat-form-field>
+            <mat-checkbox [formControl]="saveFormControls.overwriteIfExists"
+              >Overwrite If Template Name Exists</mat-checkbox
+            >
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="!saveFormGroup.valid"
+              (click)="saveProfileToTemplate()"
+              clickStop
+              [monitor]="saveTemplateMonitor"
+              stateManager
+              monitorDisable
+              monitorWarnSnackbar
+              monitorCompleteSnackbar
+            >
+              Save Profile
+              <button-spinner [monitor]="loadTemplateMonitor" defaultIcon="save"></button-spinner>
+            </button>
+            <mat-checkbox class="inline" [formControl]="saveFormControls.verifyAction"
+              >Verify action</mat-checkbox
+            >
+          </form>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab [disabled]="!hasAccessToTool">
+      <ng-template matTabLabel>Reset Profile</ng-template>
+      <ng-template matTabContent>
+        <div class="tab-container save-template-container">
+          <button mat-stroked-button (click)="setAllResetOptionsToTrue()">Select All</button>
+          <form [formGroup]="resetFormGroup">
+            <mat-checkbox [formControl]="resetFormControls.resetCarProgressData"
+              >Reset Car Progress Data</mat-checkbox
+            >
+            <mat-checkbox [formControl]="resetFormControls.resetLeaderboardsData"
+              >Reset Leaderboards Data</mat-checkbox
+            >
+            <mat-checkbox [formControl]="resetFormControls.resetRaceRankingData"
+              >Reset Race Ranking Data</mat-checkbox
+            >
+            <mat-checkbox [formControl]="resetFormControls.resetStatsData"
+              >Reset Stats Data</mat-checkbox
+            >
+            <mat-checkbox [formControl]="resetFormControls.resetTrueSkillData"
+              >Reset True Skill Data</mat-checkbox
+            >
+            <mat-checkbox [formControl]="resetFormControls.resetUserInventoryData"
+              >Reset User Inventory Data</mat-checkbox
+            >
+            <mat-checkbox [formControl]="resetFormControls.resetUserSafetyRatingData"
+              >Reset User Safety Rating Data</mat-checkbox
+            >
+            <mat-checkbox [formControl]="resetFormControls.softDeleteInventory"
+              >Soft Delete Inventory</mat-checkbox
+            >
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="!resetFormGroup.valid"
+              (click)="resetProfile()"
+              clickStop
+              [monitor]="resetTemplateMonitor"
+              stateManager
+              monitorDisable
+              monitorWarnSnackbar
+              monitorCompleteSnackbar
+            >
+              Reset Profile
+              <button-spinner
+                [monitor]="loadTemplateMonitor"
+                defaultIcon="restart_alt"
+              ></button-spinner>
+            </button>
+            <mat-checkbox class="inline" [formControl]="resetFormControls.verifyAction"
+              >Verify action</mat-checkbox
+            >
+          </form>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>
+
+<ng-template #toolRestrictedTemplate>
+  Loading, saving, and resetting profiles is disabled for your user role.
+</ng-template>

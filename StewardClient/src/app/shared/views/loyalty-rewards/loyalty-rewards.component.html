@@ -51,7 +51,7 @@
                 <button
                   mat-raised-button
                   color="primary"
-                  [matTooltip]="'Send Loyalty Reward to: ' + gameColumn"
+                  [matTooltip]="'Send Loyalty Reward for: ' + gameColumn"
                   [disabled]="disableSingleActions || disableSendActions"
                   (click)="sendReward(gameColumn)"
                   [monitor]="singlePostMonitors[gameColumn]"
@@ -74,7 +74,7 @@
           <button
             mat-raised-button
             color="primary"
-            [matTooltip]="'Send Loyalty Rewards to: ' + titlesToSendRewardsTo.toString()"
+            [matTooltip]="'Send Loyalty Rewards for: ' + titlesToSendRewardsTo.toString()"
             [verifyWith]="verifyAction"
             (click)="resendRewards()"
             [monitor]="postMonitor"

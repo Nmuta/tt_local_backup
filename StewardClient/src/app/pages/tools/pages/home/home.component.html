@@ -23,8 +23,8 @@
           <p *ngFor="let paragraph of item.shortDescription">{{ paragraph }}</p>
           <div
             *ngIf="item.tileContentComponent"
-            [anchor]="item.tileContentComponent"
-            [anchorDisabled]="!hasAccess[item.tool]"
+            [navAnchor]="item.tileContentComponent"
+            [navAnchorDisabled]="!hasAccess[item.tool]"
           ></div>
           <div *ngIf="!hasAccess[item.tool]" class="no-access-warning">
             <ng-container *ngIf="isLiveOpsAdmin; else noAccessTemplate">
@@ -46,7 +46,7 @@
           </mat-checkbox>
           <div class="spacer"></div>
           <a
-            *ngIf="hasAccess[item.tool] && !item.hideLink"
+            *ngIf="!item.tileActionComponent && hasAccess[item.tool] && !item.hideLink"
             mat-button
             [routerLink]="parentRoute + item.tool"
             [target]="item.target"
@@ -54,6 +54,13 @@
             <mat-icon inline="true" *ngIf="!!item.extraIcon">{{ item.extraIcon }}</mat-icon>
             Open
           </a>
+          <span *ngIf="!!item.tileActionComponent">
+            <span
+              [navAnchor]="item.tileActionComponent"
+              [navItem]="item"
+              [navAnchorDisabled]="!hasAccess[item.tool]"
+            ></span>
+          </span>
         </mat-card-actions>
       </mat-card>
     </div>

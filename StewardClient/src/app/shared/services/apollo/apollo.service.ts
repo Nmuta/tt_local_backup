@@ -35,6 +35,7 @@ import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { DetailedCar } from '@models/detailed-car';
+import { UnbanResult } from '@models/unban-result';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -86,6 +87,22 @@ export class ApolloService {
   public getBanHistoryByXuid$(xuid: BigNumber): Observable<ApolloBanHistoryEntry[]> {
     return this.apiService.getRequest$<ApolloBanHistoryEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/banHistory`,
+    );
+  }
+
+  /** Expire bans by ban entry IDs. */
+  public expireBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apiService.postRequest$<UnbanResult>(
+      `${this.basePath}/ban/${banEntryId}/expire`,
+      null,
+    );
+  }
+
+  /** Delete bans by ban entry IDs. */
+  public deleteBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apiService.postRequest$<UnbanResult>(
+      `${this.basePath}/ban/${banEntryId}/delete`,
+      null,
     );
   }
 

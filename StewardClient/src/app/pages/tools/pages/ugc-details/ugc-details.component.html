@@ -1,5 +1,13 @@
 <mat-toolbar>
   <a
+    [routerLink]="steelheadRouterLink"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    [class.mat-button-disabled]="!sharedLookupService.hasAnyFM8"
+    >FM8
+    <endpoint-selection [titleCodeName]="GameTitleCodeName.FM8"> </endpoint-selection>
+  </a>
+  <a
     [routerLink]="woodstockRouterLink"
     mat-button
     routerLinkActive="mat-stroked-button"

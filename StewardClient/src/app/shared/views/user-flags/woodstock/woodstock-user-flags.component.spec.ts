@@ -9,6 +9,7 @@ import { of, throwError } from 'rxjs';
 
 import { WoodstockUserFlagsComponent } from './woodstock-user-flags.component';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockUserFlagsComponent', () => {
   let component: WoodstockUserFlagsComponent;
@@ -20,6 +21,7 @@ describe('WoodstockUserFlagsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockUserFlagsComponent],
+      imports: [PipesModule],
       providers: [createMockWoodstockService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

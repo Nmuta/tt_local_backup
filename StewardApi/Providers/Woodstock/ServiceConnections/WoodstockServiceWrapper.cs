@@ -401,7 +401,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGiftV2(xuid, itemType.ToString(), itemValue).ConfigureAwait(false);
+            await giftingService.AdminSendItemGiftV2(xuid, itemType.ToString(), itemValue, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -419,7 +419,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGroupGiftV2(groupId, itemType.ToString(), itemValue).ConfigureAwait(false);
+            await giftingService.AdminSendItemGroupGiftV2(groupId, itemType.ToString(), itemValue, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -427,7 +427,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId).ConfigureAwait(false);
+            return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -441,7 +441,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId).ConfigureAwait(false);
+            return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

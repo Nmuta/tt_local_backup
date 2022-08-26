@@ -101,7 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await service.GiftingManagementService.AdminSendItemGiftV2(xuid, inventoryItemType.ToString(), itemId)
+                    await service.GiftingManagementService.AdminSendItemGiftV2(xuid, inventoryItemType.ToString(), itemId, false, 0)
                         .ConfigureAwait(false);
                 }
 
@@ -182,7 +182,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     await service.GiftingManagementService.AdminSendItemGroupGiftV2(
                         groupId,
                         inventoryItemType.ToString(),
-                        itemId).ConfigureAwait(false);
+                        itemId,
+                        false,
+                        0).ConfigureAwait(false);
                 }
 
                 giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -211,7 +213,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
             // TODO: Log gift to gift history
             var xuids = groupGift.Xuids.ToArray();
-            var result = await service.GiftingManagementService.AdminSendLiveryGift(xuids, xuids.Length, livery.Id).ConfigureAwait(false);
+            var result = await service.GiftingManagementService.AdminSendLiveryGift(xuids, xuids.Length, livery.Id, false, 0).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -273,7 +275,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             try
             {
                 // TODO: Log gift to gift history
-                var response = await service.GiftingManagementService.AdminSendGroupLiveryGift(groupId, livery.Id).ConfigureAwait(false);
+                var response = await service.GiftingManagementService.AdminSendGroupLiveryGift(groupId, livery.Id, false, 0).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)

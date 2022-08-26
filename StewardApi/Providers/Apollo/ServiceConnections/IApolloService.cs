@@ -26,14 +26,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         /// <summary>
         ///     Bans users.
         /// </summary>
-        Task<UserService.BanUsersOutput> BanUsersAsync(
-            ForzaUserBanParameters[] banParameters,
+        Task<UserService.BanUsersV2Output> BanUsersAsync(
+            ForzaUserBanParametersV2[] banParameters,
+            int xuidCount,
+            string endpoint);
+
+        /// <summary>
+        ///     Expires bans.
+        /// </summary>
+        Task<UserService.ExpireBanEntriesOutput> ExpireBanEntriesAsync(
+            ForzaUserExpireBanParameters[] banParameters,
+            int entryCount,
+            string endpoint);
+
+        /// <summary>
+        ///     Deletes bans.
+        /// </summary>
+        Task<UserService.DeleteBanEntriesOutput> DeleteBanEntriesAsync(
+            int[] banParameters,
             string endpoint);
 
         /// <summary>
         ///     Gets user ban history.
         /// </summary>
-        Task<UserService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
+        Task<UserService.GetUserBanHistoryV2Output> GetUserBanHistoryAsync(
             ulong xuid,
             int startIndex,
             int maxResults,
@@ -42,9 +58,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         /// <summary>
         ///     Gets user ban summaries.
         /// </summary>
-        Task<UserService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
+        Task<UserService.GetUserBanSummariesV2Output> GetUserBanSummariesAsync(
             ulong[] xuids,
-            int xuidCount,
             string endpoint);
 
         /// <summary>

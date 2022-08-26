@@ -150,7 +150,7 @@ export class GroupNotificationManagementComponent
     };
     entry.postMonitor = this.updateMonitors(entry.postMonitor);
     this.service
-      .postEditLspGroupCommunityMessage$(notificationId, entryMessage)
+      .postEditLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId, entryMessage)
       .pipe(
         entry.postMonitor.monitorSingleFire(),
         delay(0), // 1 frame delay to allow action monitors to update.
@@ -166,7 +166,7 @@ export class GroupNotificationManagementComponent
     const notificationId = entry.notification.notificationId as GuidLikeString;
     entry.deleteMonitor = this.updateMonitors(entry.deleteMonitor);
     this.service
-      .deleteLspGroupCommunityMessage$(notificationId)
+      .deleteLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId)
       .pipe(
         entry.deleteMonitor.monitorSingleFire(),
         delay(0), // 1 frame delay to allow action monitors to update.

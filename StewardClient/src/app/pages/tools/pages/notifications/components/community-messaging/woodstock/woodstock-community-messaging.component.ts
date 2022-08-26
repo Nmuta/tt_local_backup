@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { WoodstockService } from '@services/woodstock';
 import { CommunityMessagingComponent } from '../community-messaging.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 
 /**
  *  Woodstock community messaging component.
@@ -16,7 +16,7 @@ import { GameTitleCodeName } from '@models/enums';
   styleUrls: ['../community-messaging.component.scss'],
 })
 export class WoodstockCommunityMessagingComponent extends CommunityMessagingComponent {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 
   constructor(private readonly woodstockService: WoodstockService) {
     super();

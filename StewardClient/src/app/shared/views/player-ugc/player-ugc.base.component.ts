@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export abstract class PlayerUgcBaseComponent
   public getMonitor = new ActionMonitor('GET UGC Content');
   public ugcFilters = DefaultUgcFilters;
 
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
 
   constructor() {
     super();

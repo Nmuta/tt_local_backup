@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
 
 /** Component for Woodstock UGC filters. */
@@ -9,5 +9,5 @@ import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
   styleUrls: ['./woodstock-ugc-filters.component.scss'],
 })
 export class WoodstockUgcFiltersComponent extends UgcFiltersBaseComponent {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 }

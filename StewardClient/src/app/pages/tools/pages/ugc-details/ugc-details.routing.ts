@@ -10,6 +10,9 @@ import { WoodstockLookupComponent } from './pages/woodstock-lookup/woodstock-loo
 import { SunriseLookupComponent } from './pages/sunrise-lookup/sunrise-lookup.component';
 import { WoodstockRedirectComponent } from './pages/woodstock-redirect/woodstock-redirect.component';
 import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redirect.component';
+import { SteelheadLookupComponent } from './pages/steelhead-lookup/steelhead-lookup.component';
+import { SteelheadRedirectComponent } from './pages/steelhead-redirect/steelhead-redirect.component';
+import { SteelheadUgcDetailsComponent } from './pages/steelhead/steelhead-ugc-details.component';
 
 const routes: Routes = [
   {
@@ -74,6 +77,35 @@ const routes: Routes = [
                 path: ':type',
                 canActivate: [RouteMemorySetGuard],
                 component: WoodstockLookupComponent,
+                pathMatch: 'full',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: 'steelhead',
+        canActivate: [RouteMemorySetGuard],
+        children: [
+          {
+            path: '',
+            component: WaitingForInputComponent,
+            pathMatch: 'full',
+          },
+          {
+            path: ':id',
+            canActivate: [RouteMemorySetGuard],
+            component: SteelheadUgcDetailsComponent,
+            children: [
+              {
+                path: '',
+                component: SteelheadRedirectComponent,
+                pathMatch: 'full',
+              },
+              {
+                path: ':type',
+                canActivate: [RouteMemorySetGuard],
+                component: SteelheadLookupComponent,
                 pathMatch: 'full',
               },
             ],

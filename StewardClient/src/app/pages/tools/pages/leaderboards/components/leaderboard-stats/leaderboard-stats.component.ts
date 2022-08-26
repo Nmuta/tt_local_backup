@@ -74,6 +74,8 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
   @Output() selectedScore = new EventEmitter<LeaderboardScore>();
 
   public getLeaderboardScoresMonitor = new ActionMonitor('GET leaderboard scores');
+  public getLeaderboardTalentMonitor = new ActionMonitor('GET leaderboard talent');
+
   public expanded: boolean = true;
   public maxNumberOfScores: number = 5_000;
   public viewOptions: number[] = [100, 250, 500, 1000, 2_500, 5000];
@@ -129,13 +131,18 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
       throw new Error('No service is defined for leaderboard stats.');
     }
 
-    this.service.getLeaderboardTalentIdentities$().subscribe(identities => {
-      this.talentIdentities = identities;
-    });
+    this.service
+      .getLeaderboardTalentIdentities$()
+      .pipe(this.getLeaderboardTalentMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(identities => {
+        this.talentIdentities = identities;
+      });
 
-    this.talentFormControls.numberToShow.valueChanges.subscribe(() => {
-      this.updateDisplayedTalentCount();
-    });
+    this.talentFormControls.numberToShow.valueChanges
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.updateDisplayedTalentCount();
+      });
   }
 
   /** Lifecycle hook. */
