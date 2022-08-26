@@ -8,7 +8,7 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '5415ade4-074b-443d-8323-105ec29e90e6',
-      shortText: 'Start of Q4',
+      shortText: 'Flipping changelog to Q4',
     },
   ],
 };
