@@ -1,9 +1,16 @@
 
 mat-chip > :host ::ng-deep {
-  .mat-icon.mat-icon {
+  .mat-icon.mat-icon.mat-icon {
     font-size: 18px;
   }
 }
+
+mat-chip > :host:not(:last-child) ::ng-deep {
+  .mat-button-base {
+    width: 24px;
+  }
+}
+
 
 mat-chip > :host:last-child ::ng-deep {
   button {

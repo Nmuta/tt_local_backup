@@ -19,7 +19,7 @@ mat-icon {
 
 // Default sizing to match the matChipRemove directive
 mat-chip {
-  .mat-icon.mat-icon.mat-icon {
+  .mat-icon.mat-icon.mat-icon:not(.mat-chip-remove) {
     width: $mat-icon-width;
     height: $mat-icon-height;
     text-align: center;
