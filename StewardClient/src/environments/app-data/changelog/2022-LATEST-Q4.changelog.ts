@@ -7,6 +7,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '852e7967-4915-488a-9e94-c2c1b34c0848',
+      shortText: 'Adjust code linting rules',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '312b70bd-8fab-4d38-8cd8-6415a5bba3ea',
       shortText: 'Fix help popover overlay not dissapearing after route change',
