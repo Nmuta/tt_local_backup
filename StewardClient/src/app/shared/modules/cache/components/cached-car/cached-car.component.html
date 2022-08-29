@@ -1,10 +1,9 @@
 <ng-container *ngIf="carData">
   <mat-chip-list>
     <mat-chip>
-      <standard-copy [text]="copyText">
-        <span class="make">{{ carData.make }}</span> <span class="model">{{ carData.model }}</span>
-        <mat-icon [matTooltip]="carData.id.toString()">tag</mat-icon>
-      </standard-copy>
+      <span class="make">{{ carData.make }}</span> <span class="model">{{ carData.model }}</span>
+      <mat-icon [matTooltip]="carData.id.toString()">tag</mat-icon>
+      <standard-copy-icon [text]="copyText"></standard-copy-icon>
     </mat-chip>
   </mat-chip-list>
 </ng-container>
