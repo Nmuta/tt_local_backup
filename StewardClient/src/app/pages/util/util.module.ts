@@ -34,6 +34,9 @@ import { StandardFormsComponent } from './standard-forms/standard-forms.componen
 import { HelpModule } from '@shared/modules/help/help.module';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { ChipsComponent } from './chips/chips.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 
 /** Demonstration and style testing pages. */
 @NgModule({
@@ -49,6 +52,7 @@ import { MatSelectModule } from '@angular/material/select';
     LoggingComponent,
     DateTimePickerDemoComponent,
     StandardFormsComponent,
+    ChipsComponent,
   ],
   imports: [
     DemoRouterModule,
@@ -78,6 +82,8 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatFormFieldModule,
     HelpModule,
+    MatChipsModule,
+    StandardCopyModule,
   ],
 })
 export class UtilModule {}

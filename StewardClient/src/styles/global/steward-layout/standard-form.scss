@@ -124,3 +124,15 @@
 .sf-spacer {
   flex-grow: 1;
 }
+
+.sf-chip-separate-left {
+  margin-left: $gap-micro;
+  padding-left: $gap-micro;
+  border-left: 1px solid $border-faded;
+}
+
+.sf-chip-separate-right {
+  margin-right: $gap-micro;
+  padding-right: $gap-micro;
+  border-right: 1px solid $border-faded;
+}
