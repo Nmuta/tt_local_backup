@@ -13,7 +13,7 @@ export class WoodstockUgcSearchService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Search UGC. */
-  public SearchUgc$(parameters: UgcSearchFilters): Observable<PlayerUgcItem[]> {
+  public searchUgc$(parameters: UgcSearchFilters): Observable<PlayerUgcItem[]> {
     return this.api.postRequest$<PlayerUgcItem[]>(
       `${this.basePath}/${parameters.ugcType}`,
       parameters,
