@@ -7,6 +7,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '312b70bd-8fab-4d38-8cd8-6415a5bba3ea',
+      shortText: 'Fix help popover overlay not dissapearing after route change',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.SearchUGC },
       uuid: '45bc12fc-5a04-4e7f-9720-b76be5cc9243',
       shortText: 'Add help popover for searching private UGC',

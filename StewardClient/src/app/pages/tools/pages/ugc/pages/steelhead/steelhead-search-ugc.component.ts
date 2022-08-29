@@ -19,7 +19,6 @@ import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup
 import { SteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon/help-popover-icon.component';
-import { renderGuard } from '@helpers/rxjs';
 
 /** Retreives and displays Steelhead ugc by search filters. */
 @Component({
@@ -107,17 +106,13 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
   /** Logic when player details tool button is clicked. */
   public playerDetailsClick(): void {
     // TODO: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1293600
-    this.helpPopoverIcon.closePopup();
-
-    renderGuard(() => {
-      const toolsRoute = getToolsActivatedRoute(this.route);
-      const queryParams = {};
-      queryParams['xuid'] = this.filterXuid;
-      this.router.navigate([`user-details/${this.gameTitle}`], {
-        relativeTo: toolsRoute,
-        queryParams: queryParams,
-        replaceUrl: false,
-      });
+    const toolsRoute = getToolsActivatedRoute(this.route);
+    const queryParams = {};
+    queryParams['xuid'] = this.filterXuid;
+    this.router.navigate([`user-details/${this.gameTitle}`], {
+      relativeTo: toolsRoute,
+      queryParams: queryParams,
+      replaceUrl: false,
     });
   }
 
