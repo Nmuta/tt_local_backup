@@ -18,7 +18,9 @@ import { WoodstockCarsCacheService } from '../../managers/woodstock/cars-cache.s
 export class CachedCarComponent extends BaseComponent implements OnInit, OnChanges {
   @Input() public title: GameTitleAbbreviation = null;
   @Input() public carId: BigNumber;
+  @Input() public hideIfUnavailable = false;
 
+  public shouldHide = false;
   public monitor = new ActionMonitor('Get Car Data');
   public carData: DetailedCar = null;
 
@@ -39,8 +41,12 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+    this.shouldHide = this.hideIfUnavailable && !this.isAvailable()
     this.carId$
       .pipe(
+        tap(_ => {
+          this.shouldHide = this.hideIfUnavailable && !this.isAvailable()
+        }),
         pairwiseSkip((prev, cur) => bigNumbersEqual(prev, cur)),
         this.monitor.monitorStart(),
         tap(() => this.carData = null),
@@ -55,6 +61,10 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
   /** Angular lifecycle hook. */
   public ngOnChanges(_: SimpleChanges): void {
     this.carId$.next(this.carId);
+  }
+
+  private isAvailable(): boolean {
+    return this.getCarData$(new BigNumber(NaN)) !== EMPTY;
   }
 
   private getCarData$(carId: BigNumber): Observable<DetailedCar> {

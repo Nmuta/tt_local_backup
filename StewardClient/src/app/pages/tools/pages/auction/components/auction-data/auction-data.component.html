@@ -65,7 +65,7 @@
       <mat-card-title>Car Summary</mat-card-title>
       <mat-card-subtitle>IDs and flags</mat-card-subtitle>
     </mat-card-header>
-    <cached-car [carId]="auctionData.car.carId" [title]="title"></cached-car>
+    <cached-car [carId]="auctionData.car.carId" [title]="title" [hideIfUnavailable]="true"></cached-car>
     <model-dump-xuids></model-dump-xuids>
     <model-dump-simple-table
       [values]="carSource.processedModel.extractedNumbers.ids"
