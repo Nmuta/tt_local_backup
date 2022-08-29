@@ -12,7 +12,7 @@
  * critical because our .ts files require a different parser and different rules to our
  * .html (and our inline Component) templates.
  */
- module.exports = {
+module.exports = {
   root: true,
   overrides: [
     /**
