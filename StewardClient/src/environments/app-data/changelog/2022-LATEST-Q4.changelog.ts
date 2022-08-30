@@ -1,3 +1,4 @@
+import { GameTitle } from '@models/enums';
 import { NavbarTool } from '../tool-list';
 import { ChangelogGroup, ChangelogTag } from './types';
 
@@ -6,6 +7,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   title: '2022 Q4',
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
+    {
+      tag: { title: GameTitle.FM7, tool: NavbarTool.UserGroupManagement },
+      uuid: 'acb15139-69ba-4a53-a86a-b6c5ec5e7ed5',
+      shortText: 'Complete implementation of User Group UI for FM7',
+    },
     {
       tag: ChangelogTag.Internal,
       uuid: '852e7967-4915-488a-9e94-c2c1b34c0848',

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
 import { GameTitleCodeName, GameTitleAbbreviation } from '@models/enums';
 
-/** The gift history page for the Navbar app. */
+/** The user group management page for the Navbar app. */
 @Component({
   templateUrl: './user-group-management.component.html',
   styleUrls: ['./user-group-management.component.scss'],

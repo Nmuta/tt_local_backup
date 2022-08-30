@@ -25,7 +25,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
 import { CreateUserGroupModule } from './components/create-user-group/create-user-group.module';
 import { ListUsersInUserGroupModule } from './components/list-users-in-user-group/list-users-in-user-group.module';
 
-/** The feature module for the User Details route. */
+/** The feature module for the User Group Management route. */
 @NgModule({
   declarations: [
     UserGroupManagementComponent,

@@ -9,12 +9,12 @@ import { BasicPlayerList } from '@models/basic-player-list';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { HttpParams } from '@angular/common/http';
 
-/** The /v2/woodstock/usergroup endpoints. */
+/** The /v2/apollo/usergroup endpoints. */
 @Injectable({
   providedIn: 'root',
 })
-export class WoodstockUserGroupService {
-  private basePath: string = 'title/woodstock/usergroup';
+export class ApolloUserGroupService {
+  private basePath: string = 'title/apollo/usergroup';
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets users for a user group. Index starts at 1. */
