@@ -12,7 +12,6 @@ class TestHarnessComponent {}
 describe('StandardCopyIconComponent', () => {
   let component: StandardCopyIconComponent;
   let fixture: ComponentFixture<StandardCopyIconComponent>;
-  // let harnessComponent: TestHarnessComponent;
   let harness: ComponentFixture<TestHarnessComponent>;
 
   beforeEach(async () => {
@@ -27,7 +26,6 @@ describe('StandardCopyIconComponent', () => {
     fixture = TestBed.createComponent(StandardCopyIconComponent);
     component = fixture.componentInstance;
     harness = TestBed.createComponent(TestHarnessComponent);
-    // harnessComponent = harness.componentInstance;
     harness.detectChanges();
   });
 

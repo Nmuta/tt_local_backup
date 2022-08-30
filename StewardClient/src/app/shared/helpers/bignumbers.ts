@@ -28,8 +28,15 @@ export function tryParseBigNumbers(value: string): BigNumber[] {
   return uniqGoodBigNumbers;
 }
 
-/** Compares bignumbers without knowing that you even have an object. */
-export function bigNumbersEqual(a: BigNumber | null, b: BigNumber | null): boolean {
+/**
+ * Compares bignumbers without knowing that you even have an object.
+ * 
+ * Bignumbers match: true
+ * Bignumbers don't match: false
+ * Neither are bignumbers: true
+ * Only B is bignumber: false
+ */
+export function receivedNewBigNumber(a: BigNumber | null, b: BigNumber | null): boolean {
   const aIsBigNumber = BigNumber.isBigNumber(a);
   if (aIsBigNumber) {
     return a.isEqualTo(b);

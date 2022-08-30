@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { bigNumbersEqual } from '@helpers/bignumbers';
+import { receivedNewBigNumber } from '@helpers/bignumbers';
 import { pairwiseSkip } from '@helpers/rxjs';
 import { DetailedCar } from '@models/detailed-car';
-import { GameTitleAbbreviation } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
 import { EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
@@ -16,7 +16,7 @@ import { WoodstockCarsCacheService } from '../../managers/woodstock/cars-cache.s
   styleUrls: ['./cached-car.component.scss'],
 })
 export class CachedCarComponent extends BaseComponent implements OnInit, OnChanges {
-  @Input() public title: GameTitleAbbreviation = null;
+  @Input() public title: GameTitle = null;
   @Input() public carId: BigNumber;
   @Input() public hideIfUnavailable = false;
 
@@ -47,7 +47,7 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
         tap(_ => {
           this.shouldHide = this.hideIfUnavailable && !this.isAvailable()
         }),
-        pairwiseSkip((prev, cur) => bigNumbersEqual(prev, cur)),
+        pairwiseSkip((prev, cur) => receivedNewBigNumber(prev, cur)),
         this.monitor.monitorStart(),
         tap(() => this.carData = null),
         switchMap(v => this.getCarData$(v).pipe(this.monitor.monitorCatch())),
@@ -69,7 +69,7 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
 
   private getCarData$(carId: BigNumber): Observable<DetailedCar> {
     switch (this.title) {
-      case GameTitleAbbreviation.FH5:
+      case GameTitle.FH5:
         return this.woodstock.getDetails$(carId);
       default:
         return EMPTY;

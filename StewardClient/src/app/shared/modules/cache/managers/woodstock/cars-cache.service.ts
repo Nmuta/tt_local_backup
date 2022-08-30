@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DetailedCar } from '@models/detailed-car';
+import { PegasusProjectionSlot } from '@models/enums';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
@@ -39,7 +40,7 @@ export class WoodstockCarsCacheService {
   /** Updates the lookup, eventually. */
   public updateLookup(): void {
     this.monitor = this.monitor.repeat();
-    this.woodstock.getDetailedCars$()
+    this.woodstock.getDetailedCars$(PegasusProjectionSlot.LiveSteward)
       .pipe(this.monitor.monitorSingleFire())
       .subscribe(r => {
         this.produceLookups(r);
