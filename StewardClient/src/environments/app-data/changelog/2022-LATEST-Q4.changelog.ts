@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
+      uuid: 'f1346f2f-52c0-4bc5-81f2-dffd98a2eb42',
+      shortText: 'Fix bug with ban history displaying duplicate entries',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: '943b2a39-8d00-430a-aa36-c1dbb2c7e57e',
       shortText: 'Add help popover for linking to talented user group management',
