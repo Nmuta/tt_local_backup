@@ -18,7 +18,9 @@
   <div class="actions-group">
     <div class="action">
       <button
-        [disabled]="!verifyBulkAdd.checked || !formControls.userIdentifications.value"
+        [disabled]="
+          !verifyBulkAdd.checked || !formControls.userIdentifications.value || !userHasWritePerms
+        "
         mat-raised-button
         color="primary"
         (click)="addUsersInGroup()"
@@ -28,8 +30,10 @@
         monitorWarn
         monitorWarnSnackbar
       >
-        Add Users
-        <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
+        <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+          Add Users
+          <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
+        </span>
       </button>
       <mat-checkbox #verifyBulkAdd matTooltip="Verify Bulk Add" aria-label="Verify Bulk Add"
         >Verify</mat-checkbox
@@ -37,7 +41,9 @@
     </div>
     <div class="action">
       <button
-        [disabled]="!verifyBulkDelete.checked || !formControls.userIdentifications.value"
+        [disabled]="
+          !verifyBulkDelete.checked || !formControls.userIdentifications.value || !userHasWritePerms
+        "
         mat-raised-button
         color="warn"
         (click)="deleteUsersInGroup()"
@@ -47,8 +53,10 @@
         monitorWarn
         monitorWarnSnackbar
       >
-        Delete Users
-        <button-spinner [monitor]="deletePlayersMonitor" defaultIcon="delete"></button-spinner>
+        <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+          Delete Users
+          <button-spinner [monitor]="deletePlayersMonitor" defaultIcon="delete"></button-spinner>
+        </span>
       </button>
       <mat-checkbox
         #verifyBulkDelete
@@ -96,7 +104,7 @@
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">
           <button
-            [disabled]="!verifyDelete.checked"
+            [disabled]="!verifyDelete.checked || !userHasWritePerms"
             mat-raised-button
             color="warn"
             (click)="deletePlayerFromUserGroup(element)"
@@ -106,8 +114,13 @@
             monitorWarn
             monitorWarnSnackbar
           >
-            Remove
-            <button-spinner [monitor]="element.deleteMonitor" defaultIcon="delete"></button-spinner>
+            <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+              Remove
+              <button-spinner
+                [monitor]="element.deleteMonitor"
+                defaultIcon="delete"
+              ></button-spinner>
+            </span>
           </button>
           <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
             >Verify</mat-checkbox
@@ -121,7 +134,7 @@
     <ng-container>
       <button
         class="delete-all-button"
-        [disabled]="!verifyDelete.checked"
+        [disabled]="!verifyDelete.checked || !userHasRemoveAllPerms"
         mat-raised-button
         color="warn"
         (click)="deleteAllUsersInGroup()"
@@ -131,8 +144,10 @@
         monitorWarn
         monitorWarnSnackbar
       >
-        Delete All Users
-        <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
+        <span [matTooltip]="!userHasRemoveAllPerms ? incorrectPermsTooltip : null">
+          Delete All Users
+          <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
+        </span>
       </button>
       <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
         >Verify</mat-checkbox

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { ApolloUserGroupService } from '@services/api-v2/apollo/user-group/apollo-user-group.service';
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ export class ApolloCreateUserGroupComponent extends BaseComponent {
     super();
 
     this.service = {
+      gameTitle: GameTitle.FM7,
       createUserGroup$(groupName: string): Observable<LspGroup> {
         return userGroupService.createUserGroup$(groupName);
       },

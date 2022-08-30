@@ -8,14 +8,16 @@
       mat-raised-button
       color="primary"
       (click)="createUserGroup()"
-      [disabled]="!formGroup.valid"
+      [disabled]="!formGroup.valid || !userHasWritePerms"
       stateManager
       [monitor]="monitor"
       monitorDisable
       monitorWarn
       monitorWarnSnackbar
     >
-      Create <button-spinner [monitor]="monitor" defaultIcon="trash"></button-spinner>
+      <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+        Create <button-spinner [monitor]="monitor" defaultIcon="trash"></button-spinner>
+      </span>
     </button>
   </form>
 </div>

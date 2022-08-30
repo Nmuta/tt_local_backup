@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
+      uuid: '943b2a39-8d00-430a-aa36-c1dbb2c7e57e',
+      shortText: 'Add help popover for linking to talented user group management',
+    },
+    {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserGroupManagement },
       uuid: 'acb15139-69ba-4a53-a86a-b6c5ec5e7ed5',
       shortText: 'Complete implementation of User Group UI for FM7',

@@ -20,6 +20,7 @@ export class WoodstockLeaderboardStatsComponent {
   public readonly gameTitle = GameTitle.FH5;
 
   public serviceContract: LeaderboardStatsContract = {
+    talentUserGroupId: 14,
     getLeaderboardScores$: (
       scoreboardTypeId,
       scoreTypeId,
