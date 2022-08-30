@@ -40,7 +40,8 @@ export class WoodstockCarsCacheService {
   /** Updates the lookup, eventually. */
   public updateLookup(): void {
     this.monitor = this.monitor.repeat();
-    this.woodstock.getDetailedCars$(PegasusProjectionSlot.LiveSteward)
+    this.woodstock
+      .getDetailedCars$(PegasusProjectionSlot.LiveSteward)
       .pipe(this.monitor.monitorSingleFire())
       .subscribe(r => {
         this.produceLookups(r);

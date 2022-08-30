@@ -9,21 +9,9 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
 
 /** Module containing various cache-based lookup components. */
 @NgModule({
-  declarations: [
-    CachedCarComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatChipsModule,
-    MatIconModule,
-    MatTooltipModule,
-    StandardCopyModule,
-  ],
-  providers: [
-    WoodstockCarsCacheService,
-  ],
-  exports: [
-    CachedCarComponent,
-  ],
+  declarations: [CachedCarComponent],
+  imports: [CommonModule, MatChipsModule, MatIconModule, MatTooltipModule, StandardCopyModule],
+  providers: [WoodstockCarsCacheService],
+  exports: [CachedCarComponent],
 })
-export class CacheModule { }
+export class CacheModule {}

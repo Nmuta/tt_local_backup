@@ -1,7 +1,8 @@
 <ng-container *ngIf="carData && !shouldHide">
   <mat-chip-list>
     <mat-chip>
-      <span>{{ carData.make }}</span><span class="sf-chip-separate-left">{{ carData.model }}</span>
+      <span>{{ carData.make }}</span
+      ><span class="sf-chip-separate-left">{{ carData.model }}</span>
       <mat-icon [matTooltip]="carData.id.toString()">tag</mat-icon>
       <standard-copy-icon [text]="copyText"></standard-copy-icon>
     </mat-chip>

@@ -10,10 +10,7 @@ import { StandardCopyIconComponent } from './standard-copy-icon/standard-copy-ic
 
 /** Module containing standard copy-enabling components. */
 @NgModule({
-  declarations: [
-    StandardCopyComponent,
-    StandardCopyIconComponent,
-  ],
+  declarations: [StandardCopyComponent, StandardCopyIconComponent],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -22,9 +19,6 @@ import { StandardCopyIconComponent } from './standard-copy-icon/standard-copy-ic
     ClipboardModule,
     MatTooltipModule,
   ],
-  exports: [
-    StandardCopyComponent,
-    StandardCopyIconComponent,
-  ],
+  exports: [StandardCopyComponent, StandardCopyIconComponent],
 })
-export class StandardCopyModule { }
+export class StandardCopyModule {}

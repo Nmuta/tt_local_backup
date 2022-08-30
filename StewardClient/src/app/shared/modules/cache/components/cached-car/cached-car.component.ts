@@ -41,15 +41,15 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.shouldHide = this.hideIfUnavailable && !this.isAvailable()
+    this.shouldHide = this.hideIfUnavailable && !this.isAvailable();
     this.carId$
       .pipe(
         tap(_ => {
-          this.shouldHide = this.hideIfUnavailable && !this.isAvailable()
+          this.shouldHide = this.hideIfUnavailable && !this.isAvailable();
         }),
         pairwiseSkip((prev, cur) => receivedNewBigNumber(prev, cur)),
         this.monitor.monitorStart(),
-        tap(() => this.carData = null),
+        tap(() => (this.carData = null)),
         switchMap(v => this.getCarData$(v).pipe(this.monitor.monitorCatch())),
         this.monitor.monitorEnd(),
         takeUntil(this.onDestroy$),

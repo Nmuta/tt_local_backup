@@ -30,7 +30,7 @@ export function tryParseBigNumbers(value: string): BigNumber[] {
 
 /**
  * Compares bignumbers without knowing that you even have an object.
- * 
+ *
  * Bignumbers match: true
  * Bignumbers don't match: false
  * Neither are bignumbers: true
