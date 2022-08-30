@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJob } from '@models/background-job';
 import { BasicPlayerList } from '@models/basic-player-list';
+import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
 import { UserGroupManagementResponse } from '@models/user-group-management-response';
@@ -24,6 +25,7 @@ export class WoodstockListUsersInGroupComponent extends BaseComponent {
     super();
 
     this.service = {
+      gameTitle: GameTitle.FH5,
       getPlayersInUserGroup$(
         userGroup: LspGroup,
         startIndex: number,

@@ -25,6 +25,7 @@ describe('LeaderboardStatsComponent', () => {
   let fixture: ComponentFixture<LeaderboardStatsComponent>;
 
   const mockService: LeaderboardStatsContract = {
+    talentUserGroupId: -1000000,
     getLeaderboardScores$: () => {
       return of([]);
     },
@@ -107,39 +108,6 @@ describe('LeaderboardStatsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('Method: ngOnInit', () => {
-    describe('When service is null', () => {
-      beforeEach(() => {
-        component.service = null;
-      });
-
-      it('should throw error', () => {
-        try {
-          fixture.detectChanges();
-
-          expect(false).toBeTruthy();
-        } catch (e) {
-          expect(true).toBeTruthy();
-          expect(e.message).toEqual('No service is defined for leaderboard stats.');
-        }
-      });
-    });
-
-    describe('When service is provided', () => {
-      // Provided by default in the test component
-      it('should not throw error', () => {
-        try {
-          fixture.detectChanges();
-
-          expect(true).toBeTruthy();
-        } catch (e) {
-          expect(e).toEqual(null);
-          expect(false).toBeTruthy();
-        }
-      });
-    });
   });
 
   describe('Method: ngOnChanges', () => {

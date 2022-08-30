@@ -14,6 +14,10 @@
   }
 }
 
+.user-group-management-link {
+  margin-top: $gap-medium;
+}
+
 .text-with-icon {
   display: flex;
   align-items: center;
@@ -22,4 +26,8 @@
 .graph-container {
   display: grid;
   height: $ngx-chart-height;
+}
+
+h3 {
+  display: inline;
 }

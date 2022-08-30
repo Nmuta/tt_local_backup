@@ -83,7 +83,16 @@ export const CommonAccessLevels = {
     UserRole.CommunityManager,
   ],
   RacersCup: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
-  UserGroupManagement: [UserRole.LiveOpsAdmin],
+  UserGroupManagement: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.SupportAgent,
+    UserRole.SupportAgentNew,
+    UserRole.CommunityManager,
+    UserRole.MediaTeam,
+    UserRole.HorizonDesigner,
+    UserRole.MotorsportDesigner,
+  ],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
 };
 

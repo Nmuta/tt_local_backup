@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             var liveOpsBanHistory = new LiveOpsBanHistory(
                 (long)banDescription.Xuid,
-                TitleConstants.SunriseCodeName,
+                TitleConstants.ApolloCodeName,
                 ServicesRequesterObjectId,
                 banDescription.StartTime,
                 banDescription.ExpireTime,

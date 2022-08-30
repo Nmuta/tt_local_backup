@@ -4,6 +4,7 @@ import { LspGroup } from '@models/lsp-group';
 import { Observable } from 'rxjs';
 import { CreateUserGroupServiceContract } from '../create-user-group.component';
 import { WoodstockUserGroupService } from '@services/api-v2/woodstock/user-group/woodstock-user-group.service';
+import { GameTitle } from '@models/enums';
 
 /** Tool that creates new user groups. */
 @Component({
@@ -21,6 +22,7 @@ export class WoodstockCreateUserGroupComponent extends BaseComponent {
     super();
 
     this.service = {
+      gameTitle: GameTitle.FH5,
       createUserGroup$(groupName: string): Observable<LspGroup> {
         return userGroupService.createUserGroup$(groupName);
       },

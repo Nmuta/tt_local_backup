@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import BigNumber from 'bignumber.js';
 import { Observable, of } from 'rxjs';
@@ -16,6 +17,7 @@ export class SunriseCreateUserGroupComponent extends BaseComponent {
   @Output() newUserGroup = new EventEmitter<LspGroup>();
 
   public service: CreateUserGroupServiceContract = {
+    gameTitle: GameTitle.FH4,
     createUserGroup$(groupName: string): Observable<LspGroup> {
       return of({ name: groupName, id: new BigNumber(1) });
     },

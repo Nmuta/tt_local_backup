@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -17,24 +16,23 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
 {
     /// <summary>
-    ///     Handles requests for Woodstock user groups.
+    ///     Handles requests for Apollo user groups.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/usergroup")]
-    [Authorize]
-    [LogTagTitle(TitleLogTags.Woodstock)]
+    [Route("api/v{version:apiVersion}/title/apollo/usergroup")]
+    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [LogTagTitle(TitleLogTags.Apollo)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.LspGroup, Target.Details, Dev.ReviseTags)]
-    public class UserGroupController : V2WoodstockControllerBase
+    [Tags(Title.Apollo, Target.LspGroup, Target.Details, Dev.ReviseTags)]
+    public class UserGroupController : V2ApolloControllerBase
     {
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
@@ -45,16 +43,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         /// </summary>
         public UserGroupController(
             IJobTracker jobTracker,
-            IScheduler scheduler,
-            ILoggingService loggingService)
+            ILoggingService loggingService,
+            IScheduler scheduler)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
-            scheduler.ShouldNotBeNull(nameof(scheduler));
             loggingService.ShouldNotBeNull(nameof(loggingService));
+            scheduler.ShouldNotBeNull(nameof(scheduler));
 
             this.jobTracker = jobTracker;
-            this.scheduler = scheduler;
             this.loggingService = loggingService;
+            this.scheduler = scheduler;
         }
 
         /// <summary>
@@ -72,20 +70,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
                 var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
 
                 // Temporary code until the service call returns gamertags //
-                var playerLookupParameters = users.xuids
-                                                .Select(xuid => new ServicesLiveOps.ForzaPlayerLookupParameters
-                                                {
-                                                    UserID = xuid.ToString(),
-                                                }).ToArray();
-                var getUserIdsOutput = await this.Services.UserManagementService.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
-
                 var userList = new List<BasicPlayer>();
-                foreach (var playerLookupResult in getUserIdsOutput.playerLookupResult)
+                foreach (var xuid in users.xuids)
                 {
+                    var userData = await this.Services.UserService.LiveOpsGetUserDataByXuid(xuid).ConfigureAwait(false);
                     userList.Add(new BasicPlayer()
                     {
-                        Gamertag = playerLookupResult.Gamertag,
-                        Xuid = playerLookupResult.Xuid,
+                        Gamertag = userData.returnData.wzGamerTag,
+                        Xuid = xuid,
                     });
                 }
                 // End of temporary code //
@@ -107,11 +99,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         ///    Create user group.
         /// </summary>
         [HttpPost("{userGroupName}")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(LspGroup))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create)]
-        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.UserGroup)]
+        [AutoActionLogging(TitleCodeName.Apollo, StewardAction.Add, StewardSubject.UserGroup)]
         public async Task<IActionResult> CreateUserGroup(string userGroupName)
         {
             userGroupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userGroupName));
@@ -136,11 +127,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         ///    Add users to a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
         /// </summary>
         [HttpPost("{userGroupId}/add")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
-        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.UserGroup)]
+        [AutoActionLogging(TitleCodeName.Apollo, StewardAction.Update, StewardSubject.UserGroup)]
         public async Task<IActionResult> AddUsersToGroup(int userGroupId, [FromQuery] bool useBackgroundProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks adding users to the "All" group
@@ -164,11 +154,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         ///    Remove users from a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
         /// </summary>
         [HttpPost("{userGroupId}/remove")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
-        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.UserGroup)]
+        [AutoActionLogging(TitleCodeName.Apollo, StewardAction.Delete, StewardSubject.UserGroup)]
         public async Task<IActionResult> RemoveUsersFromGroup(int userGroupId, [FromQuery] bool useBackgroundProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks removing users from the "All" group
@@ -192,11 +181,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         ///    Remove every users from a user group.
         /// </summary>
         [HttpPost("{userGroupId}/removeAllUsers")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]
-        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.DeleteAll, StewardSubject.UserGroup)]
+        [AutoActionLogging(TitleCodeName.Apollo, StewardAction.DeleteAll, StewardSubject.UserGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
             try
@@ -265,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
-            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Woodstock Add Users to User Group: {userCount} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Apollo Add Users to User Group: {userCount} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -340,7 +328,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
-            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Woodstock Remove Users from User Group: {userCount} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Apollo Remove Users from User Group: {userCount} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {

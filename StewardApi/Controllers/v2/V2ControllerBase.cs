@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using ApolloContracts = Turn10.LiveOps.StewardApi.Contracts.Apollo;
@@ -35,6 +36,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         /// <summary>Gets (lazily) the Woodstock services.</summary>
         protected Lazy<WoodstockProxyBundle> WoodstockServices { get; }
 
+        /// <summary>Gets (lazily) the Woodstock services.</summary>
+        protected Lazy<ApolloProxyBundle> ApolloServices { get; }
+
         protected V2ControllerBase()
         {
             this.SteelheadEndpoint = new Lazy<string>(() => this.GetSteelheadEndpoint());
@@ -54,6 +58,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 var woodstockProxyBundle = this.HttpContext.RequestServices.GetService<WoodstockProxyBundle>();
                 woodstockProxyBundle.Endpoint = this.WoodstockEndpoint.Value;
                 return woodstockProxyBundle;
+            });
+
+            this.ApolloServices = new Lazy<ApolloProxyBundle>(() =>
+            {
+                var apolloProxyBundle = this.HttpContext.RequestServices.GetService<ApolloProxyBundle>();
+                apolloProxyBundle.Endpoint = this.ApolloEndpoint.Value;
+                return apolloProxyBundle;
             });
         }
 

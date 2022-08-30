@@ -4,8 +4,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { BasicPlayerList } from '@models/basic-player-list';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
+import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { UserState } from '@shared/state/user/user.state';
 import { of } from 'rxjs';
 import {
   ListUsersInGroupComponent,
@@ -15,8 +18,10 @@ import {
 describe('ListUsersInGroupComponent', () => {
   let component: ListUsersInGroupComponent;
   let fixture: ComponentFixture<ListUsersInGroupComponent>;
+  let mockStore: Store;
 
   const mockService: ListUsersInGroupServiceContract = {
+    gameTitle: GameTitle.FH5,
     getPlayersInUserGroup$: (_userGroup: LspGroup, _startIndex: number, _maxResults: number) => {
       return of(undefined);
     },
@@ -42,7 +47,11 @@ describe('ListUsersInGroupComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
       declarations: [ListUsersInGroupComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
@@ -51,6 +60,9 @@ describe('ListUsersInGroupComponent', () => {
     fixture = TestBed.createComponent(ListUsersInGroupComponent);
     component = fixture.debugElement.componentInstance;
     component.service = mockService;
+
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch');
   }));
 
   it('should create', () => {

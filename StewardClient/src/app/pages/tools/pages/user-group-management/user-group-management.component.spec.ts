@@ -48,7 +48,7 @@ describe('UserGroupManagementComponent', () => {
       it('should set navbar tool list correct', () => {
         fixture.detectChanges();
 
-        expect(component.navbarRouterLinks.length).toEqual(3);
+        expect(component.navbarRouterLinks.length).toEqual(1);
       });
     });
 

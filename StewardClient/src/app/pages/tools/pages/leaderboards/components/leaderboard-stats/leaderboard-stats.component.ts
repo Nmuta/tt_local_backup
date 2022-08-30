@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -25,6 +24,7 @@ import {
   LeaderboardScore,
   getDeviceTypesFromQuery,
   getLspEndpointFromLeaderboardEnvironment,
+  LeaderboardEnvironment,
 } from '@models/leaderboards';
 import {
   LINE_CHART_SD_THRESHOLD_COLORS,
@@ -39,7 +39,7 @@ import { compact, find, orderBy } from 'lodash';
 import { catchError, EMPTY, Observable, takeUntil } from 'rxjs';
 
 export interface LeaderboardStatsContract {
-  /** Gets leaderboard scores from top of leaderboard. */
+  talentUserGroupId: number;
   getLeaderboardScores$(
     scoreboardTypeId: BigNumber,
     scoreTypeId: BigNumber,
@@ -65,7 +65,7 @@ export type LeaderboardTopTalentOption = {
   templateUrl: './leaderboard-stats.component.html',
   styleUrls: ['./leaderboard-stats.component.scss'],
 })
-export class LeaderboardStatsComponent extends BaseComponent implements OnInit, OnChanges {
+export class LeaderboardStatsComponent extends BaseComponent implements OnChanges {
   @ViewChildren(MatMenuTrigger) childMenuTriggers: QueryList<MatMenuTrigger>;
   @Input() public gameTitle: GameTitle;
   @Input() service: LeaderboardStatsContract;
@@ -80,6 +80,7 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
   public maxNumberOfScores: number = 5_000;
   public viewOptions: number[] = [100, 250, 500, 1000, 2_500, 5000];
   public selectedViewOption = this.viewOptions.find(x => x == 1000);
+  public displayTalentUsers: boolean = true;
 
   public talentIdentities: IdentityResultAlpha[] = [];
   public topTalentScores: LeaderboardScore[] = [];
@@ -126,26 +127,6 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
   }
 
   /** Lifecycle hook. */
-  public ngOnInit(): void {
-    if (!this.service) {
-      throw new Error('No service is defined for leaderboard stats.');
-    }
-
-    this.service
-      .getLeaderboardTalentIdentities$()
-      .pipe(this.getLeaderboardTalentMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(identities => {
-        this.talentIdentities = identities;
-      });
-
-    this.talentFormControls.numberToShow.valueChanges
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.updateDisplayedTalentCount();
-      });
-  }
-
-  /** Lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {
     const foundQueryChange = !!changes.leaderboard && !!this.leaderboard?.query;
     const foundScoresDeleted = !!changes.scoresDeleted && this.scoresDeleted?.length > 0;
@@ -180,6 +161,23 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnInit, 
       this.matCardSubtitle = !!this.leaderboard?.metadata
         ? generateLeaderboardMetadataString(this.leaderboard.metadata)
         : 'Could not find leaderboard metadata';
+
+      this.displayTalentUsers =
+        this.leaderboard.query.leaderboardEnvironment.toLowerCase() == LeaderboardEnvironment.Prod;
+      if (this.displayTalentUsers) {
+        this.service
+          .getLeaderboardTalentIdentities$()
+          .pipe(this.getLeaderboardTalentMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+          .subscribe(identities => {
+            this.talentIdentities = identities;
+          });
+
+        this.talentFormControls.numberToShow.valueChanges
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(() => {
+            this.updateDisplayedTalentCount();
+          });
+      }
     }
   }
 
