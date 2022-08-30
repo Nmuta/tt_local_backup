@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.

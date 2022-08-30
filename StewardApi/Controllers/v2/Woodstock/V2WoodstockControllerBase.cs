@@ -10,10 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
-using Turn10.Services.LiveOps.FM8.Generated;
-using ApolloContracts = Turn10.LiveOps.StewardApi.Contracts.Apollo;
-using SteelheadContracts = Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using SunriseContracts = Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
