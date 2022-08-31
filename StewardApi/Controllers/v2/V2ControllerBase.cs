@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using ApolloContracts = Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using SteelheadContracts = Turn10.LiveOps.StewardApi.Contracts.Steelhead;
@@ -39,6 +40,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         /// <summary>Gets (lazily) the Woodstock services.</summary>
         protected Lazy<ApolloProxyBundle> ApolloServices { get; }
 
+        /// <summary>Gets (lazily) the Sunrise services.</summary>
+        protected Lazy<SunriseProxyBundle> SunriseServices { get; }
+
         protected V2ControllerBase()
         {
             this.SteelheadEndpoint = new Lazy<string>(() => this.GetSteelheadEndpoint());
@@ -65,6 +69,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 var apolloProxyBundle = this.HttpContext.RequestServices.GetService<ApolloProxyBundle>();
                 apolloProxyBundle.Endpoint = this.ApolloEndpoint.Value;
                 return apolloProxyBundle;
+            });
+
+            this.SunriseServices = new Lazy<SunriseProxyBundle>(() =>
+            {
+                var sunriseProxyBundle = this.HttpContext.RequestServices.GetService<SunriseProxyBundle>();
+                sunriseProxyBundle.Endpoint = this.SunriseEndpoint.Value;
+                return sunriseProxyBundle;
             });
         }
 
