@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'f06a890a-f745-4591-8084-ab40a1307d9f',
+      shortText: 'Fix text centering on home page and other misc centered-content pates',
+    },
+    {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
       uuid: 'f1346f2f-52c0-4bc5-81f2-dffd98a2eb42',
       shortText: 'Fix bug with ban history displaying duplicate entries',
