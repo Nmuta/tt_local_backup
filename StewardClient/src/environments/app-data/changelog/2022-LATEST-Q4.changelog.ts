@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH4, tool: NavbarTool.UserGroupManagement },
+      uuid: '087e36ae-f823-430d-b4db-93e4d696b666',
+      shortText: 'Complete implementation of User Group UI for FH4',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'f06a890a-f745-4591-8084-ab40a1307d9f',
       shortText: 'Fix text centering on home page and other misc centered-content pates',
