@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: 'a3cc9f01-7672-4bcf-ba1b-ef99f378b618',
+      shortText: 'Move is under review flag to bottom of user flags',
+    },
+    {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
       uuid: 'f1346f2f-52c0-4bc5-81f2-dffd98a2eb42',
       shortText: 'Fix bug with ban history displaying duplicate entries',
