@@ -83,7 +83,7 @@ export class AuctionBlocklistNewEntryComponent extends BaseComponent implements 
       .postAuctionBlocklistEntries$(entryArray)
       .pipe(
         this.postMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),

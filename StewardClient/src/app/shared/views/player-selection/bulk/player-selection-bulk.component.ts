@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatChipList, MatChipListChange } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import { renderGuard } from '@helpers/rxjs';
+import { renderDelay, renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { delay, takeUntil } from 'rxjs/operators';
 import {
@@ -41,7 +41,7 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
     route: ActivatedRoute,
   ) {
     super(multi, route, router);
-    this.foundIdentities$.pipe(delay(0), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
+    this.foundIdentities$.pipe(renderDelay(), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       this.found.emit(foundIdentities);
       const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
       if (!selectedItemInFoundIdentities) {

@@ -13,6 +13,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { replace } from '@helpers/replace';
 import { flatten } from 'lodash';
 import { AuctionBlocklistService } from './auction-blocklist.base.service';
+import { renderDelay } from '@helpers/rxjs';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupBlocklistEntry {
@@ -139,7 +140,7 @@ export class AuctionBlocklistBaseComponent extends BaseComponent implements OnIn
       .postAuctionBlocklistEntries$(entryArray)
       .pipe(
         entry.postMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),
@@ -155,7 +156,7 @@ export class AuctionBlocklistBaseComponent extends BaseComponent implements OnIn
       .deleteAuctionBlocklistEntry$(carId)
       .pipe(
         entry.deleteMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),

@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { BasePipe } from '@components/base-component/base.pipe';
+import { renderDelay } from '@helpers/rxjs';
 import { Observable, timer } from 'rxjs';
 import { delay, distinct, map, takeUntil } from 'rxjs/operators';
 import { BigJsonPipe } from './big-json.pipe';
@@ -14,7 +15,7 @@ export class AsyncBigJsonPipe extends BasePipe implements PipeTransform {
     return timer(0, interval).pipe(
       map(() => new BigJsonPipe().transform(value)),
       distinct(),
-      delay(0),
+      renderDelay(),
       takeUntil(this.onDestroy$),
     );
   }

@@ -10,6 +10,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { renderDelay } from '@helpers/rxjs';
 import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from 'ngx-material-luxon';
@@ -78,7 +79,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, Validator,
           this.currentDates = value;
           this.onChangeFn(value);
         }),
-        delay(0), // must happen *after* the view updates. this gets it in the queue
+        renderDelay(),
       )
       .subscribe(value => {
         const valueStringified = value?.toString();

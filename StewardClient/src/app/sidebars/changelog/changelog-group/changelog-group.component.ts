@@ -3,6 +3,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ChangelogEntry, ChangelogGroup } from '@environments/app-data/changelog';
+import { renderDelay } from '@helpers/rxjs';
 import { Select } from '@ngxs/store';
 import { ChangelogService } from '@services/changelog/changelog.service';
 import { ChangelogModel } from '@shared/state/changelog/changelog.model';
@@ -31,7 +32,7 @@ export class ChangelogGroupComponent extends BaseComponent implements AfterViewI
   /** Angular lifecycle hook. */
   public ngAfterViewInit(): void {
     this.changelogService.changed$
-      .pipe(delay(0), takeUntil(this.onDestroy$))
+      .pipe(renderDelay(), takeUntil(this.onDestroy$))
       .subscribe(() => this.syncGroupState());
   }
 

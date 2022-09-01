@@ -17,6 +17,7 @@ import { PlayerNotification } from '@models/notifications.model';
 import { toDateTime } from '@helpers/luxon';
 import { MatPaginator } from '@angular/material/paginator';
 import BigNumber from 'bignumber.js';
+import { renderDelay } from '@helpers/rxjs';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
@@ -151,7 +152,7 @@ export class IndividualNotificationManagementComponent
       .postEditPlayerCommunityMessage$(this.selectedXuid, notificationId, entryMessage)
       .pipe(
         entry.postMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),
@@ -167,7 +168,7 @@ export class IndividualNotificationManagementComponent
       .deletePlayerCommunityMessage$(this.selectedXuid, notificationId)
       .pipe(
         entry.deleteMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),

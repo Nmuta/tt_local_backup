@@ -10,6 +10,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { renderDelay } from '@helpers/rxjs';
 import { DateTimeRange, stringifyDateTimeRange } from '@models/datetime-range';
 import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
@@ -106,7 +107,7 @@ export class DatetimeRangePickerComponent
           this.currentDates = value;
           this.onChangeFn(value);
         }),
-        delay(0), // must happen *after* the view updates. this gets it in the queue
+        renderDelay(),
       )
       .subscribe(value => {
         const valueStringified = stringifyDateTimeRange(value);

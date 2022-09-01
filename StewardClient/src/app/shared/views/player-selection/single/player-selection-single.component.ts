@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatChipList, MatChipListChange } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import { renderGuard } from '@helpers/rxjs';
+import { renderDelay, renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { first } from 'lodash';
 import { delay, takeUntil } from 'rxjs/operators';
@@ -38,7 +38,7 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
 
   constructor(multi: MultiEnvironmentService, route: ActivatedRoute, router: Router) {
     super(multi, route, router);
-    this.foundIdentities$.pipe(delay(0), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
+    this.foundIdentities$.pipe(renderDelay(), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       if (foundIdentities.length > 1) {
         throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);
       }

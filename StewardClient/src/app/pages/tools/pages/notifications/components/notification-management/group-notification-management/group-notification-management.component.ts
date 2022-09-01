@@ -153,7 +153,7 @@ export class GroupNotificationManagementComponent
       .postEditLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId, entryMessage)
       .pipe(
         entry.postMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),
@@ -169,7 +169,7 @@ export class GroupNotificationManagementComponent
       .deleteLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId)
       .pipe(
         entry.deleteMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),

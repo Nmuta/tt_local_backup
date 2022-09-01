@@ -8,6 +8,7 @@ import { Store } from '@ngxs/store';
 import { first } from 'lodash';
 import { delay, filter, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
+import { renderDelay } from '@helpers/rxjs';
 
 /** User Details page. */
 @Component({
@@ -109,7 +110,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
     router.events
       .pipe(
-        delay(0),
+        renderDelay(),
         filter(event => event instanceof NavigationEnd),
         takeUntil(this.onDestroy$),
       )

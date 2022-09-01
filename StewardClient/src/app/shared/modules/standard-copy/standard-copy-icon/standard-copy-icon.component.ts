@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { BaseComponent } from '@components/base-component/base.component';
-import { renderGuard } from '@helpers/rxjs';
-import { Subject } from 'rxjs';
+import { renderDelay, renderGuard } from '@helpers/rxjs';
+import { Subject, timer } from 'rxjs';
 import { debounceTime, delay, takeUntil, tap } from 'rxjs/operators';
 
 const CopyTooltipHangTime = 1_000; /*ms*/
@@ -67,13 +67,13 @@ export class StandardCopyIconComponent extends BaseComponent implements AfterVie
 
     this.onCopy$
       .pipe(
-        delay(1), // updates have to happen between render phases
+        renderDelay(),
         tap(successful => {
           this.tooltipText = successful ? AfterCopyTooltip : AfterCopyFailedTooltip;
           this.tooltip.show();
         }),
         debounceTime(CopyTooltipHangTime),
-        delay(1), // updates have to happen between render phases
+        renderDelay(),
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
