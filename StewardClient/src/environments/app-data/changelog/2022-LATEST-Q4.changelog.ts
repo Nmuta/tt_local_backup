@@ -8,6 +8,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'f0e7c22d-b662-447a-8c2f-dba92ab21981',
+      shortText: 'Reduce breakage frequency of player picker chip when navigating between pages',
+      longText: [
+        'When navigating to a URL you were previously viewing a user on, pages will now repopulate the URL with appropriate query parameters instead of entering an unusable state.'
+      ]
+    },
+    {
       tag: { title: GameTitle.FH4, tool: NavbarTool.UserGroupManagement },
       uuid: '087e36ae-f823-430d-b4db-93e4d696b666',
       shortText: 'Complete implementation of User Group UI for FH4',
