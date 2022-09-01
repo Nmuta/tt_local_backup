@@ -68,3 +68,12 @@
   padding-right: 0.2em;
   border-radius: 500px;
 }
+
+:host ::ng-deep .cdk-drag {
+  background-color: app-color-default-contrast($app-primary);
+  border-radius: $border-radius-button;
+  &,
+  * {
+    color: app-color-default-contrast($app-background);
+  }
+}

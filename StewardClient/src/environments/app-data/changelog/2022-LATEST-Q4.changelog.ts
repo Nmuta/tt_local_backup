@@ -18,6 +18,29 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Display Car Name in addition to Car ID',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: 'f0e7c22d-b662-447a-8c2f-dba92ab21981',
+      shortText: 'Reduce breakage frequency of player picker chip when navigating between pages',
+      longText: [
+        'When navigating to a URL you were previously viewing a user on, pages will now repopulate the URL with appropriate query parameters instead of entering an unusable state.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '17a5b991-0f11-419f-8c35-1e45ef5d6624',
+      shortText: 'Fix issues with navbar re-ordering',
+    },
+    {
+      tag: { title: GameTitle.FH4, tool: NavbarTool.UserGroupManagement },
+      uuid: '087e36ae-f823-430d-b4db-93e4d696b666',
+      shortText: 'Complete implementation of User Group UI for FH4',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'f06a890a-f745-4591-8084-ab40a1307d9f',
+      shortText: 'Fix text centering on home page and other misc centered-content pates',
+    },
+    {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },
       uuid: 'f1346f2f-52c0-4bc5-81f2-dffd98a2eb42',
       shortText: 'Fix bug with ban history displaying duplicate entries',

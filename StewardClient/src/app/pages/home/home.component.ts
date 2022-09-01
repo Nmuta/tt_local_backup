@@ -12,6 +12,6 @@ export class HomeComponent {
     const dayOfWeek = DateTime.local().weekday - 1;
     const weekOfYear = DateTime.local().weekNumber;
     const whichBackground = ((weekOfYear + dayOfWeek) % 7) + 1;
-    this.centerContentsClasses = { [`bg${whichBackground}`]: true };
+    this.centerContentsClasses = { 'text-center': true, [`bg${whichBackground}`]: true };
   }
 }
