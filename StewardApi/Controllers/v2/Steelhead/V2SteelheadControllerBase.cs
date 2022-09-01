@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Gets the Steelhead prooxy service.
+        ///     Gets the Steelhead proxy service.
         /// </summary>
         protected SteelheadProxyBundle Services
         {

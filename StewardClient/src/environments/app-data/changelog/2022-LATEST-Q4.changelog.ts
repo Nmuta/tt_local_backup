@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '2dd8d695-2544-4408-b872-13ed1178f59b',
+      shortText: 'Implement steelhead user group API',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'f0e7c22d-b662-447a-8c2f-dba92ab21981',
       shortText: 'Reduce breakage frequency of player picker chip when navigating between pages',

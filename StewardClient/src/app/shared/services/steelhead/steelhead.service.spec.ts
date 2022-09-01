@@ -149,15 +149,6 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: getLspGroups$', () => {
-    it('should call API service getRequest', done => {
-      service.getLspGroups$().subscribe(() => {
-        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/groups`);
-        done();
-      });
-    });
-  });
-
   describe('Method: getGiftHistoryByXuid$', () => {
     const expectedXuid = new BigNumber(123456789);
     const params = new HttpParams();
