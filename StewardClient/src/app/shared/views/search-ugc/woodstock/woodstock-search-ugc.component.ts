@@ -93,7 +93,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   /** Searches player UGC content. */
   public getSystemUgc$(searchParameters: UgcSearchFilters): Observable<PlayerUgcItem[]> {
-    return this.searchService.SearchUgc$(searchParameters);
+    return this.searchService.searchUgc$(searchParameters);
   }
 
   /** Gets master inventory list */
