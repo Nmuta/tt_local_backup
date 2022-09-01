@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { BaseComponent } from '@components/base-component/base.component';
+import { renderGuard } from '@helpers/rxjs';
 import { Subject, timer } from 'rxjs';
 import { debounceTime, delay, takeUntil, tap } from 'rxjs/operators';
 
@@ -62,10 +63,7 @@ export class StandardCopyComponent extends BaseComponent implements AfterViewIni
       throw new Error('Tooltip component not found. Something is wrong.');
     }
 
-    // has to happen after render phase
-    timer(1)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => this.updateCopyText());
+    renderGuard(() => this.updateCopyText());
 
     this.onCopy$
       .pipe(

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
+import { renderGuard } from '@helpers/rxjs';
 import { timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -34,12 +35,7 @@ export class PastableSingleInputComponent extends BaseComponent implements OnIni
 
   /** Sets input to the paste event and emits the change. */
   public pastedInput(): void {
-    // 1ms delay is required so emit can be processed AFTER the input value is changed.
-    timer(1)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.emitInput();
-      });
+    renderGuard(() => this.emitInput());
   }
 
   /** Clears input and emits the change. */
