@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
 import { EMPTY } from 'rxjs';
-import { catchError, delay } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
 import BigNumber from 'bignumber.js';

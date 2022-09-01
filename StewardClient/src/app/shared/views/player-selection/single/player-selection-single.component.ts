@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { renderDelay, renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { first } from 'lodash';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import {
   AugmentedCompositeIdentity,
   PlayerSelectionBaseComponent,
@@ -38,21 +38,23 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
 
   constructor(multi: MultiEnvironmentService, route: ActivatedRoute, router: Router) {
     super(multi, route, router);
-    this.foundIdentities$.pipe(renderDelay(), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
-      if (foundIdentities.length > 1) {
-        throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);
-      }
+    this.foundIdentities$
+      .pipe(renderDelay(), takeUntil(this.onDestroy$))
+      .subscribe(foundIdentities => {
+        if (foundIdentities.length > 1) {
+          throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);
+        }
 
-      const foundIdentity = first(foundIdentities);
-      this.found.emit(foundIdentity);
+        const foundIdentity = first(foundIdentities);
+        this.found.emit(foundIdentity);
 
-      const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
-      if (!selectedItemInFoundIdentities) {
-        this.selected.next(null);
-      } else {
-        this.selected.next(this.selectedValue);
-      }
-    });
+        const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
+        if (!selectedItemInFoundIdentities) {
+          this.selected.next(null);
+        } else {
+          this.selected.next(this.selectedValue);
+        }
+      });
   }
 
   /** Called when a new set of results is selected. */

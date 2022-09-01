@@ -16,7 +16,7 @@ import { DetailedCar } from '@models/detailed-car';
 import BigNumber from 'bignumber.js';
 import { isEqual } from 'lodash';
 import { Subject } from 'rxjs';
-import { delay, startWith, tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { collectErrors } from '@helpers/form-group-collect-errors';

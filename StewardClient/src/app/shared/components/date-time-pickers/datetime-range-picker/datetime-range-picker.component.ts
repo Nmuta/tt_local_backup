@@ -16,7 +16,7 @@ import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from 'ngx-material-luxon';
 import { Subject } from 'rxjs';
-import { delay, map, retry, startWith, tap } from 'rxjs/operators';
+import { map, retry, startWith, tap } from 'rxjs/operators';
 
 /** Outputted form value of the datetime range picker. */
 export type DatetimeRangePickerFormValue = DateTimeRange;

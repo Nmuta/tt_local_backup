@@ -10,7 +10,7 @@ import { MatChipList, MatChipListChange } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { renderDelay, renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import {
   AugmentedCompositeIdentity,
   PlayerSelectionBaseComponent,
@@ -41,15 +41,17 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
     route: ActivatedRoute,
   ) {
     super(multi, route, router);
-    this.foundIdentities$.pipe(renderDelay(), takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
-      this.found.emit(foundIdentities);
-      const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
-      if (!selectedItemInFoundIdentities) {
-        this.selected.next(null);
-      } else {
-        this.selected.next(this.selectedValue);
-      }
-    });
+    this.foundIdentities$
+      .pipe(renderDelay(), takeUntil(this.onDestroy$))
+      .subscribe(foundIdentities => {
+        this.found.emit(foundIdentities);
+        const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
+        if (!selectedItemInFoundIdentities) {
+          this.selected.next(null);
+        } else {
+          this.selected.next(this.selectedValue);
+        }
+      });
   }
 
   /** Called when a new set of results is selected. */

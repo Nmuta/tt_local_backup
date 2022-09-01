@@ -15,7 +15,6 @@ import { CustomTileComponent } from '@environments/environment';
 import { HomeTileInfoForNav } from '@helpers/external-links';
 import { renderDelay } from '@helpers/rxjs';
 import { from } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 /** Provides an attachment point to render a dynamic tool-tile element. */
 @Directive({

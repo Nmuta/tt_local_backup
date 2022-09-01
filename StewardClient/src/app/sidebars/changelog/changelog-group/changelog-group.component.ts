@@ -8,7 +8,7 @@ import { Select } from '@ngxs/store';
 import { ChangelogService } from '@services/changelog/changelog.service';
 import { ChangelogModel } from '@shared/state/changelog/changelog.model';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
-import { delay, Observable, takeUntil } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 
 /** Displays a single changelog group. */
 @Component({

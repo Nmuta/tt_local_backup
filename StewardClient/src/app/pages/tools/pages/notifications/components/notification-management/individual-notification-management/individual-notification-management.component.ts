@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { EMPTY, Subject } from 'rxjs';
-import { catchError, delay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';

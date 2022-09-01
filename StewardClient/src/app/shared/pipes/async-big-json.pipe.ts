@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { BasePipe } from '@components/base-component/base.pipe';
 import { renderDelay } from '@helpers/rxjs';
 import { Observable, timer } from 'rxjs';
-import { delay, distinct, map, takeUntil } from 'rxjs/operators';
+import { distinct, map, takeUntil } from 'rxjs/operators';
 import { BigJsonPipe } from './big-json.pipe';
 
 /** An asynchronous version of the json pipe which recalculates the stringified value constantly. */

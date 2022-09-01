@@ -13,8 +13,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Unify render delay. Further standardizing handling of common code scenarios',
       longText: [
         'All delay(0) and delay(1) instances have been replaced with renderDelay().',
-        'This makes their purpose as "delay until between frames" operations clearer.'
-      ]
+        'This makes their purpose as "delay until between frames" operations clearer.',
+      ],
     },
     {
       tag: ChangelogTag.Internal,

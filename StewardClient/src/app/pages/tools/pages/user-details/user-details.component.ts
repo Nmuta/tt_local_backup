@@ -6,7 +6,7 @@ import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';
-import { delay, filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
 import { renderDelay } from '@helpers/rxjs';
 

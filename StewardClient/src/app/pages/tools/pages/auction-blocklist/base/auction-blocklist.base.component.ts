@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, delay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
