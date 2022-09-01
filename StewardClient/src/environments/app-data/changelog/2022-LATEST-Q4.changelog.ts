@@ -16,6 +16,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: ChangelogTag.General,
+      uuid: '17a5b991-0f11-419f-8c35-1e45ef5d6624',
+      shortText: 'Fix issues with navbar re-ordering',
+    },
+    {
       tag: { title: GameTitle.FH4, tool: NavbarTool.UserGroupManagement },
       uuid: '087e36ae-f823-430d-b4db-93e4d696b666',
       shortText: 'Complete implementation of User Group UI for FH4',
