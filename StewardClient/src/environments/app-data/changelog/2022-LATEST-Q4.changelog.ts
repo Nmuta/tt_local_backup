@@ -10,7 +10,7 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: 'bd7d85cf-f67c-4801-ae72-437ff09421d3',
-      shortText: 'New inline copy-to-clipboard-icon. Further standardizing layout of chips.',
+      shortText: 'New inline copy-to-clipboard-icon. Further standardizing layout of chips',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionDetails },
