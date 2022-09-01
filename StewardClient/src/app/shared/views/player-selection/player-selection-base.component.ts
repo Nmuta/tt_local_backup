@@ -108,6 +108,7 @@ export abstract class PlayerSelectionBaseComponent
     } else {
       this.foundIdentities = [];
       this.foundIdentities$.next(this.foundIdentities);
+      this.knownIdentities.clear();
     }
   }
 
@@ -191,7 +192,17 @@ export abstract class PlayerSelectionBaseComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe((param: PlayerSelectionQueryParam) => {
-        this.lookupList = param[this.lookupType];
+        const newList = param[this.lookupType];
+        if (newList?.length > 0 ?? false) {
+          // if we have entries, all is well. we were given a direct link and should show the new users
+          this.lookupList = param[this.lookupType];
+        } else {
+          // if we were not given new entries, we need to handle the case where we are returning to a prior path
+          if (this.lookupList?.length > 0 ?? false) {
+            // if we already have entries, we have them "cached" via angular routing memory, and need to repopulate the query params
+            this.updateRouteFromType(this.lookupType);
+          }
+        }
       });
   }
 
@@ -204,22 +215,7 @@ export abstract class PlayerSelectionBaseComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe(currentType => {
-        const updatedQueryParams = this.foundIdentities
-          .map(identity => identity.general) // Map to general identity
-          .filter(identity => !identity.error) // Filter our bad identities
-          .map(identity => identity[currentType])
-          .filter(currentTypeIdentity => !!currentTypeIdentity)
-          .map(currentTypeIdentity => currentTypeIdentity.toString()); // Handle XUIDs
-
-        this.foundIdentities = [];
-        this.foundIdentities$.next([]);
-        this.knownIdentities.clear();
-
-        routeToUpdatedPlayerSelectionQueryParams(
-          currentType,
-          updatedQueryParams.join(','),
-          this.router,
-        );
+        this.updateRouteFromType(currentType);
       });
   }
 
@@ -458,5 +454,20 @@ export abstract class PlayerSelectionBaseComponent
     }
 
     return generalIdentity;
+  }
+
+  private updateRouteFromType(currentType: string): void {
+    const updatedQueryParams = this.foundIdentities
+      .map(identity => identity.general) // Map to general identity
+      .filter(identity => !identity.error) // Filter our bad identities
+      .map(identity => identity[currentType])
+      .filter(currentTypeIdentity => !!currentTypeIdentity)
+      .map(currentTypeIdentity => currentTypeIdentity.toString()); // Handle XUIDs
+
+    routeToUpdatedPlayerSelectionQueryParams(
+      currentType,
+      updatedQueryParams.join(','),
+      this.router,
+    );
   }
 }

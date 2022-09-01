@@ -9,6 +9,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: 'f0e7c22d-b662-447a-8c2f-dba92ab21981',
+      shortText: 'Reduce breakage frequency of player picker chip when navigating between pages',
+      longText: [
+        'When navigating to a URL you were previously viewing a user on, pages will now repopulate the URL with appropriate query parameters instead of entering an unusable state.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: '17a5b991-0f11-419f-8c35-1e45ef5d6624',
       shortText: 'Fix issues with navbar re-ordering',
     },
