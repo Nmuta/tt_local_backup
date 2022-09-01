@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserGroupManagement },
+      uuid: 'af6409e4-f04f-49e2-8069-c0842c2eb97d',
+      shortText: 'Complete implementation of User Group UI for Steelhead',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '2dd8d695-2544-4408-b872-13ed1178f59b',
       shortText: 'Implement steelhead user group API',
