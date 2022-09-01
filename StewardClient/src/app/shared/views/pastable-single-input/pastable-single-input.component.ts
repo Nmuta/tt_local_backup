@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { renderGuard } from '@helpers/rxjs';
-import { timer } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 /** A component that allows for a pastable single input and outputs its changes. */
 @Component({

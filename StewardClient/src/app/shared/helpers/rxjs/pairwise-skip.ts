@@ -36,12 +36,12 @@ export class PairwiseSkipPredicates {
     if (aIsBigNumber && bIsBigNumber) {
       return a.isEqualTo(b);
     }
-  
+
     // if neither are big numbers, we do not care if the value changed. they are equally not big numbers
     if (!aIsBigNumber && !bIsBigNumber) {
       return true;
     }
-    
+
     // one is a BigNumber and the other is not, so we care about the change
     return false;
   }

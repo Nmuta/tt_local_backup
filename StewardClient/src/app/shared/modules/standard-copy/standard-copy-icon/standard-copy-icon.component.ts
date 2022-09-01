@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular
 import { MatTooltip } from '@angular/material/tooltip';
 import { BaseComponent } from '@components/base-component/base.component';
 import { renderGuard } from '@helpers/rxjs';
-import { Subject, timer } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, delay, takeUntil, tap } from 'rxjs/operators';
 
 const CopyTooltipHangTime = 1_000; /*ms*/

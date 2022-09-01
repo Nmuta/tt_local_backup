@@ -27,4 +27,3 @@ export function tryParseBigNumbers(value: string): BigNumber[] {
 
   return uniqGoodBigNumbers;
 }
-
