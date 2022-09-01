@@ -7,5 +7,4 @@ import { StandardCopyIconComponent } from '../standard-copy-icon/standard-copy-i
   templateUrl: './standard-copy.component.html',
   styleUrls: ['./standard-copy.component.scss'],
 })
-export class StandardCopyComponent extends StandardCopyIconComponent {
-}
+export class StandardCopyComponent extends StandardCopyIconComponent {}
