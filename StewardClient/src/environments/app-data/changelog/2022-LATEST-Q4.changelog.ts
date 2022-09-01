@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'c0e47696-63fa-450f-aec3-3d4b8055ea01',
+      shortText: 'Add link to FH5 Ban History PowerBi',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserGroupManagement },
       uuid: 'af6409e4-f04f-49e2-8069-c0842c2eb97d',
       shortText: 'Complete implementation of User Group UI for Steelhead',
