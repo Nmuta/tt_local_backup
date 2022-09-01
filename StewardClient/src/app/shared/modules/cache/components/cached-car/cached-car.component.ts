@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { receivedNewBigNumber } from '@helpers/bignumbers';
-import { pairwiseSkip } from '@helpers/rxjs';
+import { pairwiseSkip, PairwiseSkipPredicates } from '@helpers/rxjs';
 import { DetailedCar } from '@models/detailed-car';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -47,7 +46,7 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
         tap(_ => {
           this.shouldHide = this.hideIfUnavailable && !this.isAvailable();
         }),
-        pairwiseSkip((prev, cur) => receivedNewBigNumber(prev, cur)),
+        pairwiseSkip(PairwiseSkipPredicates.bigNumber),
         this.monitor.monitorStart(),
         tap(() => (this.carData = null)),
         switchMap(v => this.getCarData$(v).pipe(this.monitor.monitorCatch())),
