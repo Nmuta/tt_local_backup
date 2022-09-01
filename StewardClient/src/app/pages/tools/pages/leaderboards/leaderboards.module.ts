@@ -47,7 +47,7 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { LuxonModule } from 'luxon-angular';
 import { LeaderboardValidationsComponent } from './components/leaderboard-validations/leaderboard-validations.component';
 import { HelpModule } from '@shared/modules/help/help.module';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PlayerSelectionModule } from '@views/player-selection/player-selection.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';

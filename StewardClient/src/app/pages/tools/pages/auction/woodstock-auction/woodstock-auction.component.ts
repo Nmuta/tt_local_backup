@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionData } from '@models/auction-data';
-import { GameTitleAbbreviation } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { map, tap, switchMap, takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { map, tap, switchMap, takeUntil } from 'rxjs/operators';
 export class WoodstockAuctionComponent extends BaseComponent implements OnInit {
   public auctionId: string;
   public auctionData: AuctionData;
-  public GameTitleAbbreviation = GameTitleAbbreviation;
+  public GameTitle = GameTitle;
 
   public getMonitor: ActionMonitor = new ActionMonitor('GET FH5 Auction Data');
   public postCancelMonitor: ActionMonitor = new ActionMonitor('POST Cancel FH5 Auction Data');

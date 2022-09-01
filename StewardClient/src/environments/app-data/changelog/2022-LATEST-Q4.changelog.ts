@@ -8,6 +8,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'bd7d85cf-f67c-4801-ae72-437ff09421d3',
+      shortText: 'New inline copy-to-clipboard-icon. Further standardizing layout of chips',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionDetails },
+      uuid: 'bd822683-a00f-429d-ac1f-48ecd1ef21f7',
+      shortText: 'Display Car Name in addition to Car ID',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'c0e47696-63fa-450f-aec3-3d4b8055ea01',
       shortText: 'Add link to FH5 Ban History PowerBi',

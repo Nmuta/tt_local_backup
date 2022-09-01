@@ -12,7 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 import { HelpModule } from '@shared/modules/help/help.module';
