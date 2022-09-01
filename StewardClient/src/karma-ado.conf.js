@@ -45,6 +45,7 @@ module.exports = function (config) {
           functions: 60,
           excludes: [
             '**/*.spec.ts',
+            '**/*.debug.ts',
             '**/app/shared/interceptors/fake-api/**/*.ts',
             '**/app/pages/util/**/*',
             '**/helpers/types.ts',
@@ -57,6 +58,7 @@ module.exports = function (config) {
           functions: 20,
           excludes: [
             '**/*.spec.ts',
+            '**/*.debug.ts',
             '**/app/shared/interceptors/fake-api/**/*.ts',
             '**/app/pages/tools/pages/kusto-management/**/*.ts', // Kusto management is a Live Ops Admin only tool that is a MVP
             '**/app/pages/tools/pages/obligation/**/*.ts', // Data piplelines has intensive form controls, use e2e test

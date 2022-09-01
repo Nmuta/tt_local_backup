@@ -45,6 +45,7 @@ module.exports = function (config) {
           functions: 60,
           excludes: [
             '**/*.spec.ts',
+            '**/*.debug.ts',
             'src/shared/interceptors/fake-api/**/*',
             '**/app/pages/util/**/*',
           ],
