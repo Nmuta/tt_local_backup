@@ -16,12 +16,13 @@ import { DetailedCar } from '@models/detailed-car';
 import BigNumber from 'bignumber.js';
 import { isEqual } from 'lodash';
 import { Subject } from 'rxjs';
-import { delay, startWith, tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { MakeModelAutocompleteServiceContract } from '@views/make-model-autocomplete/make-model-autocomplete/make-model-autocomplete.component';
 import { OnChanges } from '@angular/core';
+import { renderDelay } from '@helpers/rxjs';
 
 /** Outputted form value of the UGC search filters. */
 export type UgcSearchFiltersFormValue = UgcSearchFilters;
@@ -102,7 +103,7 @@ export class UgcSearchFiltersComponent
           // update our values before waiting for the view to update
           this.onChangeFn(value);
         }),
-        delay(0), // must happen *after* the view updates. this gets it in the queue
+        renderDelay(),
       )
       .subscribe(value => {
         const valueStringified = this.stringifyFormValue(value);

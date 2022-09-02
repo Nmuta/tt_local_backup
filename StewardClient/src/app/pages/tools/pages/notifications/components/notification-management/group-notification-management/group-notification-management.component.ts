@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { DeviceType, GameTitle } from '@models/enums';
 import { EMPTY, Subject } from 'rxjs';
-import { catchError, delay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
@@ -17,6 +17,7 @@ import { GroupNotificationManagementContract } from './group-notification-manage
 import { GroupNotification } from '@models/notifications.model';
 import { toDateTime } from '@helpers/luxon';
 import { MatPaginator } from '@angular/material/paginator';
+import { renderDelay } from '@helpers/rxjs';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
@@ -153,7 +154,7 @@ export class GroupNotificationManagementComponent
       .postEditLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId, entryMessage)
       .pipe(
         entry.postMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),
@@ -169,7 +170,7 @@ export class GroupNotificationManagementComponent
       .deleteLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId)
       .pipe(
         entry.deleteMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),

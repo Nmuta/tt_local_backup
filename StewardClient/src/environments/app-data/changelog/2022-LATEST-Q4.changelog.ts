@@ -14,6 +14,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '6bd5c0bf-b728-485c-821b-196da94fd6b7',
+      shortText: 'Unify render delay. Further standardizing handling of common code scenarios',
+      longText: [
+        'All delay(0) and delay(1) instances have been replaced with renderDelay().',
+        'This makes their purpose as "delay until between frames" operations clearer.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'bd7d85cf-f67c-4801-ae72-437ff09421d3',
       shortText: 'New inline copy-to-clipboard-icon. Further standardizing layout of chips',
     },

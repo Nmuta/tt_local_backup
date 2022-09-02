@@ -15,9 +15,10 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
-import { delay, map, retry, startWith, tap } from 'rxjs/operators';
+import { map, retry, startWith, tap } from 'rxjs/operators';
 import { DateTimeRange, stringifyDateTimeRange } from '@models/datetime-range';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from 'ngx-material-luxon';
+import { renderDelay } from '@helpers/rxjs';
 
 /** Outputted form value of the date range picker. */
 export type DateRangePickerFormValue = DateTimeRange;
@@ -103,7 +104,7 @@ export class DateRangePickerComponent
           this.currentDates = value;
           this.onChangeFn(value);
         }),
-        delay(0), // must happen *after* the view updates. this gets it in the queue
+        renderDelay(),
       )
       .subscribe(value => {
         const valueStringified = stringifyDateTimeRange(value);
