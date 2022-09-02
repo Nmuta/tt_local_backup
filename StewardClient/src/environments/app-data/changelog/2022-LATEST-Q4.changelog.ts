@@ -19,6 +19,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: 'eff26cfc-a21e-4df2-88f5-ace70b1a3251',
+      shortText: 'Change navbar Steelhead references to FM',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'c0e47696-63fa-450f-aec3-3d4b8055ea01',
       shortText: 'Add link to FH5 Ban History PowerBi',
     },

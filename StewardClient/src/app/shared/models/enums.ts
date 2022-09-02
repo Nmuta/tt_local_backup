@@ -24,7 +24,7 @@ export enum GameTitleName {
  */
 export enum GameTitleAbbreviation {
   FH5 = 'FH5',
-  FM8 = 'Steelhead', // Left as steelhead until official name announced.
+  FM8 = 'FM', // Left as steelhead until official name announced.
   Street = 'Street',
   FH4 = 'FH4',
   FM7 = 'FM7',
