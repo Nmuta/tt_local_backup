@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: 'a3cc9f01-7672-4bcf-ba1b-ef99f378b618',
+      shortText: 'Move is under review flag to bottom of user flags',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'bd7d85cf-f67c-4801-ae72-437ff09421d3',
       shortText: 'New inline copy-to-clipboard-icon. Further standardizing layout of chips',

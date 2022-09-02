@@ -22,9 +22,9 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
     isUltimateVip: new FormControl(false),
     isTurn10Employee: new FormControl(false),
     isEarlyAccess: new FormControl(false),
-    isUnderReview: new FormControl(false),
     isRaceMarshall: new FormControl(false),
     isContentCreator: new FormControl(false),
+    isUnderReview: new FormControl(false), // Keep as last form control
   };
 
   public formGroup = new FormGroup(this.formControls);
