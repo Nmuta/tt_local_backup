@@ -26,7 +26,7 @@ import { PlayerAccountInventoryModule } from '@views/player-account-inventory/pl
 import { GiftLiveryModule } from './components/gift-livery/gift-livery.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { WoodstockGiftSpecialLiveriesComponent } from './components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
+import { GiftSpecialLiveriesComponent } from './components/gift-special-liveries/gift-special-liveries.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { LuxonModule } from 'luxon-angular';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -47,7 +47,7 @@ import { MatSelectModule } from '@angular/material/select';
     ApolloGiftingComponent,
     SteelheadGiftingComponent,
     WoodstockGiftingComponent,
-    WoodstockGiftSpecialLiveriesComponent,
+    GiftSpecialLiveriesComponent,
   ],
   imports: [
     CommonModule,

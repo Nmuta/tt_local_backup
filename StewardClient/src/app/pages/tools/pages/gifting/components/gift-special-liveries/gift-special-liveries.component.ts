@@ -10,7 +10,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { Observable, takeUntil } from 'rxjs';
-import { GiftReason } from '../../gift-basket/gift-basket.base.component';
+import { GiftReason } from '../gift-basket/gift-basket.base.component';
 
 export interface SpecialLiveryData {
   date: DateTime;
@@ -43,11 +43,11 @@ interface SpecialLiveryModel {
  * Component for gifting of special liveries.
  */
 @Component({
-  selector: 'woodstock-gift-special-liveries',
-  templateUrl: './woodstock-gift-special-liveries.component.html',
-  styleUrls: ['./woodstock-gift-special-liveries.component.scss'],
+  selector: 'gift-special-liveries',
+  templateUrl: './gift-special-liveries.component.html',
+  styleUrls: ['./gift-special-liveries.component.scss'],
 })
-export class WoodstockGiftSpecialLiveriesComponent extends BaseComponent implements OnInit {
+export class GiftSpecialLiveriesComponent extends BaseComponent implements OnInit {
   @Input() public playerIdentities: IdentityResultAlpha[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;

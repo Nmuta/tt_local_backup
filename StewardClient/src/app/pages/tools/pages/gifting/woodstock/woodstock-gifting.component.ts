@@ -17,7 +17,7 @@ import { GiftingBaseComponent } from '../base/gifting.base.component';
 import {
   GiftSpecialLiveriesContract,
   SpecialLiveryData,
-} from '../components/gift-special-liveries/woodstock/woodstock-gift-special-liveries.component';
+} from '../components/gift-special-liveries/gift-special-liveries.component';
 import { WoodstockService } from '@services/woodstock';
 import { UgcType } from '@models/ugc-filters';
 import { GiftResponse } from '@models/gift-response';

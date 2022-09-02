@@ -3,20 +3,20 @@ import { LspGroup } from '@models/lsp-group';
 import { BigNumber } from 'bignumber.js';
 import { EMPTY } from 'rxjs';
 
-import { WoodstockGiftSpecialLiveriesComponent } from './woodstock-gift-special-liveries.component';
+import { GiftSpecialLiveriesComponent } from './gift-special-liveries.component';
 
-describe('WoodstockGiftSpecialLiveryComponent', () => {
-  let component: WoodstockGiftSpecialLiveriesComponent;
-  let fixture: ComponentFixture<WoodstockGiftSpecialLiveriesComponent>;
+describe('GiftSpecialLiveryComponent', () => {
+  let component: GiftSpecialLiveriesComponent;
+  let fixture: ComponentFixture<GiftSpecialLiveriesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WoodstockGiftSpecialLiveriesComponent],
+      declarations: [GiftSpecialLiveriesComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WoodstockGiftSpecialLiveriesComponent);
+    fixture = TestBed.createComponent(GiftSpecialLiveriesComponent);
     component = fixture.componentInstance;
     component.contract = {
       getLivery$: (_giftReason: string) => EMPTY,
