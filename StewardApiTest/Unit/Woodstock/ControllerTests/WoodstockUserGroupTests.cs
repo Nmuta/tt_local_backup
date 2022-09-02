@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
-            var playerList = new BasicPlayerList() { Xuids = xuids.ToArray() };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
@@ -124,36 +124,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public Dependencies()
             {
-                var httpContext = new DefaultHttpContext();
-                httpContext.Request.Path = TestConstants.TestRequestPath;
-                httpContext.Request.Host = new HostString(TestConstants.TestRequestHost);
-                httpContext.Request.Scheme = TestConstants.TestRequestScheme;
-
-                var configuration = Substitute.For<IConfiguration>();
-                configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
-                configuration[Arg.Is<string>(x => x.Contains("Xuid") || x.Contains("TitleId"))].Returns(Fixture.Create<int>().ToString());          
-
-                var mockUserManagementService = Substitute.For<IUserManagementService>();
-                mockUserManagementService.RemoveFromUserGroups(Arg.Any<ulong>(), Arg.Any<int[]>()).Returns(Fixture.Create<Task>());
-                mockUserManagementService.AddToUserGroups(Arg.Any<ulong>(), Arg.Any<int[]>()).Returns(Fixture.Create<Task>());
-                mockUserManagementService.CreateUserGroup(Arg.Any<string>()).Returns(Fixture.Create<CreateUserGroupOutput>());
-
-                var proxyFactory = Substitute.For<IWoodstockProxyFactory>();
-                proxyFactory.PrepareUserManagementService(Arg.Any<string>()).Returns(mockUserManagementService);
-
-                var mockProxyBundle = new WoodstockProxyBundle(proxyFactory);
-                mockProxyBundle.Endpoint = "fake";
-
-                var mockRequestServices = Substitute.For<IServiceProvider>();
-                mockRequestServices.GetService<WoodstockProxyBundle>().Returns(mockProxyBundle);
-
-                httpContext.HttpContext.RequestServices = mockRequestServices;
-
-                var claims = new List<Claim> { new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", "unit-test-azure-object-id") };
-                var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
-                httpContext.User = new ClaimsPrincipal(claimsIdentities);
-
-                this.ControllerContext = new ControllerContext { HttpContext = httpContext };
+                this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
             }
 
             public UserGroupController Build() => new UserGroupController(

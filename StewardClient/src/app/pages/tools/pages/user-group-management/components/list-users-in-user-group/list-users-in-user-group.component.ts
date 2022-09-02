@@ -3,26 +3,33 @@ import {
   Component,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
+import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
 import { BackgroundJob } from '@models/background-job';
 import { BasicPlayerList } from '@models/basic-player-list';
+import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
 import { UserGroupManagementResponse } from '@models/user-group-management-response';
+import { UserModel } from '@models/user.model';
+import { Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
 import { chain, remove } from 'lodash';
 import { Observable, takeUntil, switchMap } from 'rxjs';
 
 export interface ListUsersInGroupServiceContract {
+  gameTitle: GameTitle;
   getPlayersInUserGroup$(
     userGroup: LspGroup,
     startIndex: number,
@@ -57,7 +64,10 @@ export interface PlayerInUserGroup {
   templateUrl: './list-users-in-user-group.component.html',
   styleUrls: ['./list-users-in-user-group.component.scss'],
 })
-export class ListUsersInGroupComponent extends BaseComponent implements OnChanges, AfterViewInit {
+export class ListUsersInGroupComponent
+  extends BaseComponent
+  implements OnChanges, OnInit, AfterViewInit
+{
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   /** Service contract for create user groups component. */
@@ -80,11 +90,32 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
   public allPlayers: PlayerInUserGroup[] = [];
   public userGamertags: boolean = false;
 
+  public userHasWritePerms: boolean = false;
+  public userHasRemoveAllPerms: boolean = false;
+  public readonly incorrectPermsTooltip = 'This action is restricted for your user role';
   public displayedColumns = ['xuid', 'gamertag', 'actions'];
   public playersDataSource = new BetterMatTableDataSource<PlayerInUserGroup>();
 
-  constructor(private readonly backgroundJobService: BackgroundJobService) {
+  constructor(
+    private readonly backgroundJobService: BackgroundJobService,
+    private readonly store: Store,
+  ) {
     super();
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.userHasWritePerms = hasAccessToRestrictedFeature(
+      RestrictedFeature.UserGroupWrite,
+      this.service.gameTitle,
+      user.role,
+    );
+    this.userHasRemoveAllPerms = hasAccessToRestrictedFeature(
+      RestrictedFeature.UserGroupRemoveAll,
+      this.service.gameTitle,
+      user.role,
+    );
   }
 
   /** Lifecycle hook */
@@ -142,6 +173,7 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
         });
         this.allPlayers = [];
         this.playersDataSource.data = this.allPlayers;
+        this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
       });
   }
@@ -172,6 +204,7 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
         });
         this.allPlayers = [];
         this.playersDataSource.data = this.allPlayers;
+        this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
       });
   }
@@ -191,7 +224,7 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
       .subscribe(result => {
         if (result[0].error === null) {
           remove(this.allPlayers, player => {
-            return player.xuid.isEqualTo(playerToDelete.xuid);
+            return player?.xuid.isEqualTo(playerToDelete.xuid);
           });
           this.playersDataSource.data = this.allPlayers;
         } else {
@@ -207,7 +240,8 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
       .deleteAllPlayersFromUserGroup$(this.userGroup)
       .pipe(this.deleteAllMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.playersDataSource.data = [];
+        this.allPlayers = [];
+        this.playersDataSource.data = this.allPlayers;
       });
   }
 

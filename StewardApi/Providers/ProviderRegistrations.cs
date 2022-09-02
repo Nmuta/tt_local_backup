@@ -13,6 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             services.AddSingleton<SteelheadSettings>();
             services.AddSingleton<WoodstockSettings>();
             services.AddSingleton<SunriseSettings>();
+            services.AddSingleton<ApolloSettings>();
             services.AddSingleton<ForgedCredentialProvider>();
         }
     }

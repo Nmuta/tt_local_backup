@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Proxies
@@ -20,6 +22,12 @@ namespace Turn10.LiveOps.StewardApi.Proxies
 
             services.AddSingleton<IWoodstockProxyFactory, WoodstockProxyFactory>();
             services.AddScoped<WoodstockProxyBundle>();
+
+            services.AddSingleton<IApolloProxyFactory, ApolloProxyFactory>();
+            services.AddScoped<ApolloProxyBundle>();
+
+            services.AddSingleton<ISunriseProxyFactory, SunriseProxyFactory>();
+            services.AddScoped<SunriseProxyBundle>();
         }
     }
 }

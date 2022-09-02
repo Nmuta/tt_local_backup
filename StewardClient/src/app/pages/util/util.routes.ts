@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ActionMonitorMultifireComponent } from './action-monitor-multifire/action-monitor-multifire.component';
 import { ActionMonitorSinglefireComponent } from './action-monitor-singlefire/action-monitor-singlefire.component';
+import { ChipsComponent } from './chips/chips.component';
 import { ColorsComponent } from './colors/colors.component';
 import { DateTimePickerDemoComponent } from './datetime-picker-demo/datetime-picker-demo.component';
 import { IconsComponent } from './icons/icons.component';
@@ -42,6 +43,10 @@ export const demoRoutes: Routes = [
   {
     path: 'standard-forms',
     component: StandardFormsComponent,
+  },
+  {
+    path: 'chips',
+    component: ChipsComponent,
   },
   {
     path: 'action-monitor-singlefire',

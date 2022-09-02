@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/
 import { MatSort } from '@angular/material/sort';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { AuctionData, AuctionDataBid } from '@models/auction-data';
-import { GameTitleAbbreviation } from '@models/enums';
+import { GameTitle } from '@models/enums';
 
 /** Renders auction data. */
 @Component({
@@ -12,7 +12,7 @@ import { GameTitleAbbreviation } from '@models/enums';
 })
 export class AuctionDataComponent implements OnChanges, AfterViewInit {
   @Input() public auctionData: AuctionData = null;
-  @Input() public title: GameTitleAbbreviation = null;
+  @Input() public title: GameTitle = null;
 
   @ViewChild(MatSort) sort: MatSort;
   public bidsDisplayedColumns = ['top', 'dateUtc', 'xuid', 'amount', 'status'];

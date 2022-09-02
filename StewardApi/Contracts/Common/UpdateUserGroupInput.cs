@@ -4,9 +4,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a basic list of players.
+    ///     Represents a list of xuids and a list of gamertags to add/remove from a User Group.
     /// </summary>
-    public sealed class BasicPlayerList
+    public sealed class UpdateUserGroupInput
     {
         /// <summary>
         ///     Gets or sets the Xuid of the player.
