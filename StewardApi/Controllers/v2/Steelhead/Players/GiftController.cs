@@ -33,7 +33,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 {
     /// <summary>
-    ///     Test controller for testing service proxies.
+    ///     Controller for steelhead multiple-player gifting.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/players/gift")]
     [LogTagTitle(TitleLogTags.Steelhead)]

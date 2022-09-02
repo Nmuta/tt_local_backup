@@ -19,12 +19,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the XUID of the player the gift was sent to.
         /// </summary>
-        public ulong? PlayerXuid { get; set; }
+        public ulong? TargetXuid { get; set; }
 
         /// <summary>
         ///     Gets or sets the LSP Group the gift was sent to.
         /// </summary>
-        public int? LspGroup { get; set; }
+        public int? TargetLspGroupId { get; set; }
 
         /// <summary>
         ///     Gets or sets the gift identifier antecedent.

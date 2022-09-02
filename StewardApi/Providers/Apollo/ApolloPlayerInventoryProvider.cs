@@ -118,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var giftResponse = new GiftResponse<ulong>()
             {
-                PlayerXuid = xuid,
+                TargetXuid = xuid,
                 PlayerOrLspGroup = xuid,
                 IdentityAntecedent = GiftIdentityAntecedent.Xuid,
             };
@@ -200,7 +200,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var giftResponse = new GiftResponse<int>
             {
-                LspGroup = groupId,
+                TargetLspGroupId = groupId,
                 PlayerOrLspGroup = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
@@ -297,7 +297,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
                 PlayerOrLspGroup = groupId,
-                LspGroup = groupId,
+                TargetLspGroupId = groupId,
             };
 
             long? notificationId = null;

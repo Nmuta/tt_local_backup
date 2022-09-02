@@ -14,17 +14,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class BackgroundJobHelpers
     {
         /// <summary>
-        ///     Generates a background job status based on a multi-list of gift responses.
-        /// </summary>
-        /// <typeparam name="T">Type of the value in the <see cref="GiftResponse{T}"/> to be returned.</typeparam>
-        public static BackgroundJobStatus GetBackgroundJobStatus<T>(
-            IList<IList<GiftResponse<T>>> results)
-        {
-            var foundErrors = results.SelectMany(g => g).Any(gift => gift.Errors.Count > 0);
-            return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
-        }
-
-        /// <summary>
         ///     Merges a set of gift responses.
         /// </summary>
         /// <typeparam name="T">Type of the value in the <see cref="GiftResponse{T}"/> to be returned.</typeparam>
@@ -32,12 +21,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             IList<IList<GiftResponse<T>>> results)
         {
             var flatResults = results.SelectMany(v => v);
-            var userFlatResults = flatResults.Where(r => r.PlayerXuid.HasValue && !r.LspGroup.HasValue);
-            var lspFlatResults = flatResults.Where(r => r.LspGroup.HasValue && !r.PlayerXuid.HasValue);
+            var userFlatResults = flatResults.Where(r => r.TargetXuid.HasValue && !r.TargetLspGroupId.HasValue);
+            var lspFlatResults = flatResults.Where(r => r.TargetLspGroupId.HasValue && !r.TargetXuid.HasValue);
             var badFlatResults = flatResults.Where(r =>
             {
-                var neitherValue = !r.PlayerXuid.HasValue && !r.LspGroup.HasValue;
-                var bothValues = r.PlayerXuid.HasValue && r.LspGroup.HasValue;
+                var neitherValue = !r.TargetXuid.HasValue && !r.TargetLspGroupId.HasValue;
+                var bothValues = r.TargetXuid.HasValue && r.TargetLspGroupId.HasValue;
                 return neitherValue || bothValues;
             });
 
@@ -47,15 +36,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 return new GiftResponse<T>
                 {
                     PlayerOrLspGroup = first.PlayerOrLspGroup,
-                    PlayerXuid = first.PlayerXuid,
-                    LspGroup = first.LspGroup,
+                    TargetXuid = first.TargetXuid,
+                    TargetLspGroupId = first.TargetLspGroupId,
                     IdentityAntecedent = first.IdentityAntecedent,
                     Errors = list.SelectMany(r => r.Errors).ToList(),
                 };
             }
 
-            var groupedUsers = userFlatResults.GroupBy(r => r.PlayerXuid.Value).Select(g => DoAggregate(g)).ToList();
-            var groupedLspGroups = userFlatResults.GroupBy(r => r.LspGroup.Value).Select(g => DoAggregate(g)).ToList();
+            var groupedUsers = userFlatResults.GroupBy(r => r.TargetXuid.Value).Select(g => DoAggregate(g)).ToList();
+            var groupedLspGroups = userFlatResults.GroupBy(r => r.TargetLspGroupId.Value).Select(g => DoAggregate(g)).ToList();
             return groupedUsers.Concat(groupedLspGroups).Concat(badFlatResults).ToList();
         }
 

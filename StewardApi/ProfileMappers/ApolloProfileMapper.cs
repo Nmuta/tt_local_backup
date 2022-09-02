@@ -155,7 +155,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<ForzaLiveryGiftResult, GiftResponse<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
-                .ForMember(dest => dest.PlayerXuid, opt => opt.MapFrom(source => source.xuid))
+                .ForMember(dest => dest.TargetXuid, opt => opt.MapFrom(source => source.xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid))
                 .ForMember(dest => dest.Errors, opt => opt.MapFrom(source =>
                     source.Success

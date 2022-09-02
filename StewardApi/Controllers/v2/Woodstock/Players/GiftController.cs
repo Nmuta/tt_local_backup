@@ -33,7 +33,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 {
     /// <summary>
-    ///     Test controller for testing service proxies.
+    ///     Controller for woodstock multiple-player gifting.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/players/gift")]
     [LogTagTitle(TitleLogTags.Woodstock)]

@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var giftResponse = new GiftResponse<ulong>
             {
                 PlayerOrLspGroup = xuid,
-                PlayerXuid = xuid,
+                TargetXuid = xuid,
                 IdentityAntecedent = GiftIdentityAntecedent.Xuid
             };
 
@@ -233,7 +233,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var giftResponse = new GiftResponse<int>
             {
                 PlayerOrLspGroup = groupId,
-                LspGroup = groupId,
+                TargetLspGroupId = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
             };
 
@@ -334,7 +334,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
                 PlayerOrLspGroup = groupId,
-                LspGroup = groupId,
+                TargetLspGroupId = groupId,
             };
 
             Guid? notificationId = null;
