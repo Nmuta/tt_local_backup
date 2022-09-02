@@ -10,6 +10,7 @@ import { DateTime } from 'luxon';
 import BigNumber from 'bignumber.js';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { AuctionBlocklistNewEntryService } from './auction-blocklist-new-entry.service';
+import { renderDelay } from '@helpers/rxjs';
 
 /**
  *  Auction blocklist new entry component.
