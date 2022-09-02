@@ -641,6 +641,12 @@ export const unprocessedToolList: HomeTileInfo[] = [
         tooltip: 'Power BI Dashboard showing data on notifications read by users',
         url: 'https://msit.powerbi.com/groups/me/apps/7478402a-b842-459b-8fb6-1b38a2d9a1eb/reports/b94cbd3f-c349-4f1c-91b8-118c7082fb42/ReportSection297d5da0c075521c0999',
       },
+      {
+        text: 'FH5 Ban History',
+        icon: 'work_history',
+        tooltip: 'Power BI Dashboard showing all ban history within FH5',
+        url: 'https://msit.powerbi.com/groups/me/apps/7478402a-b842-459b-8fb6-1b38a2d9a1eb/reports/8384c110-fb3f-49e7-8996-0e0d7be7abd3/ReportSection297d5da0c075521c0999',
+      },
     ],
     hideFromUnauthorized: true,
     navComponent: LOAD_EXTERNAL_DROPDOWN_MENU,

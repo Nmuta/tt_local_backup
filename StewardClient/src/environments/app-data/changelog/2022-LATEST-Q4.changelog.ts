@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: 'a3cc9f01-7672-4bcf-ba1b-ef99f378b618',
+      shortText: 'Move is under review flag to bottom of user flags',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '6bd5c0bf-b728-485c-821b-196da94fd6b7',
       shortText: 'Unify render delay. Further standardizing handling of common code scenarios',
@@ -25,6 +30,49 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionDetails },
       uuid: 'bd822683-a00f-429d-ac1f-48ecd1ef21f7',
       shortText: 'Display Car Name in addition to Car ID',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'eff26cfc-a21e-4df2-88f5-ace70b1a3251',
+      shortText: 'Change navbar Steelhead references to FM',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c0e47696-63fa-450f-aec3-3d4b8055ea01',
+      shortText: 'Add link to FH5 Ban History PowerBi',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserGroupManagement },
+      uuid: 'af6409e4-f04f-49e2-8069-c0842c2eb97d',
+      shortText: 'Complete implementation of User Group UI for Steelhead',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '2dd8d695-2544-4408-b872-13ed1178f59b',
+      shortText: 'Implement steelhead user group API',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'f0e7c22d-b662-447a-8c2f-dba92ab21981',
+      shortText: 'Reduce breakage frequency of player picker chip when navigating between pages',
+      longText: [
+        'When navigating to a URL you were previously viewing a user on, pages will now repopulate the URL with appropriate query parameters instead of entering an unusable state.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '17a5b991-0f11-419f-8c35-1e45ef5d6624',
+      shortText: 'Fix issues with navbar re-ordering',
+    },
+    {
+      tag: { title: GameTitle.FH4, tool: NavbarTool.UserGroupManagement },
+      uuid: '087e36ae-f823-430d-b4db-93e4d696b666',
+      shortText: 'Complete implementation of User Group UI for FH4',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'f06a890a-f745-4591-8084-ab40a1307d9f',
+      shortText: 'Fix text centering on home page and other misc centered-content pates',
     },
     {
       tag: { title: GameTitle.FM7, tool: NavbarTool.UserDetails },

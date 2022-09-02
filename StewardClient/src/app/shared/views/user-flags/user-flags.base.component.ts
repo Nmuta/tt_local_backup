@@ -19,6 +19,11 @@ export type UserFlagsUnion =
   | SunriseUserFlags
   | ApolloUserFlags;
 
+export type UserFlagsIntersection = WoodstockUserFlags &
+  SteelheadUserFlags &
+  SunriseUserFlags &
+  ApolloUserFlags;
+
 /** Retreives and displays User Flags by XUID. */
 @Component({
   template: '',
@@ -50,10 +55,11 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public submitError: unknown;
 
   /** Alternate text per key. */
-  public readonly alteredLabels: { [key in keyof UserFlagsUnion]?: string } = {
+  public readonly alteredLabels: { [key in keyof UserFlagsIntersection]?: string } = {
     isEarlyAccess: 'Is Early Access (Unbannable)',
     isTurn10Employee: 'Is Employee (User Badge + Unbannable)',
     isUnderReview: 'Is Under Review (Console Banned)',
+    isContentCreator: 'Is Content Creator (Unbannable)',
   };
 
   public abstract gameTitle: GameTitle;

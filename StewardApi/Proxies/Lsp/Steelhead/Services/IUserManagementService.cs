@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FM8.Generated;
+using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 
 #pragma warning disable VSTHRD200 // Use  Suffix
@@ -70,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             int[] groupIds);
 
         /// <summary>
-        ///     Removes uplayerser from specified user groups.
+        ///     Removes player from specified user groups.
         /// </summary>
         Task RemoveFromUserGroups(
             ulong xuid,
@@ -177,5 +178,30 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Gets player CMS override.
         /// </summary>
         Task<UserManagementService.GetCMSOverrideOutput> GetCMSOverride(ulong xuid);
+
+        /// <summary>
+        ///     Gets users for a user group. Index starts at 1 (Investigation ongoing to check if it being 1-based index is expected behavior #1292616).
+        /// </summary>
+        Task<GetUserGroupUsersOutput> GetUserGroupUsers(int userGroupId, int startAt, int maxResults);
+
+        /// <summary>
+        ///     Removes every users from a user group.
+        /// </summary>
+        Task ClearUserGroup(int groupId);
+
+        /// <summary>
+        ///     Removes user from user groups by gamertag.
+        /// </summary>
+        Task RemoveFromUserGroupsByGamertag(string gamertag, int[] groupIds);
+
+        /// <summary>
+        ///     Adds user to user groups by gamertag.
+        /// </summary>
+        Task AddToUserGroupsByGamertag(string gamertag, int[] groupIds);
+
+        /// <summary>
+        ///     Creates a LSP user group.
+        /// </summary>
+        Task<CreateUserGroupOutput> CreateUserGroup(string groupName);
     }
 }
