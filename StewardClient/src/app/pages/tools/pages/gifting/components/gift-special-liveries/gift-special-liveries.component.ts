@@ -12,19 +12,32 @@ import { DateTime } from 'luxon';
 import { Observable, takeUntil } from 'rxjs';
 import { GiftReason } from '../gift-basket/gift-basket.base.component';
 
+/** Data for special liveries. */
 export interface SpecialLiveryData {
+  /** The date at which the livery was sent. Displayed. */
   date: DateTime;
+  /** The livery ID. */
   id: string;
+  /** Special label for this livery. Displayed. */
   label: string;
 }
+
+/** Upstream contract for special liveries UI. */
 export interface GiftSpecialLiveriesContract {
+  /** The special liveries to provide as options. */
   liveries: SpecialLiveryData[];
+
+  /** API for retrieving livery information. */
   getLivery$(liveryId: string): Observable<PlayerUgcItem>;
+
+  /** API for gifting the livery to specific players. */
   giftLiveryToPlayers$(
     giftReason: string,
     liveryIds: string[],
     xuids: BigNumber[],
   ): Observable<BackgroundJob<unknown>>;
+
+  /** API for gifting hte livery to an LSP group. */
   giftLiveriesToLspGroup$(
     giftReason: string,
     liveryIds: string[],
