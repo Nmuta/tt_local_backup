@@ -78,7 +78,7 @@
       mat-raised-button
       color="primary"
       stateManager
-      [monitor]="null"
+      [monitor]="sendGiftMonitor"
       [waitOnMonitors]="allMonitors"
       monitorDisable
       monitorWarn
@@ -86,9 +86,10 @@
       [disabled]="!verifyGift.checked || !isGiftLiveryReady()"
       (click)="sendGiftLiveries()"
     >
-      Send Liveries
-      <span *ngIf="usingPlayerIdentities">To Player(s)</span>
-      <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
+      <span>Send Liveries</span>
+      <span *ngIf="usingPlayerIdentities"> To Player(s)</span>
+      <span *ngIf="!usingPlayerIdentities"> To LSP Groups</span>
+      <button-spinner [monitor]="sendGiftMonitor" defaultIcon="outgoing_mail"></button-spinner>
     </button>
     <mat-checkbox #verifyGift matTooltip="Verify Gift">Verify Gift</mat-checkbox>
   </mat-card-actions>
