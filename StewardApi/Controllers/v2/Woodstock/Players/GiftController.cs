@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            //groupGift.Xuids.EnsureValidXuids();
+            groupGift.Xuids.EnsureValidXuids();
 
             await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
 
@@ -193,7 +193,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             groupGift.Xuids.EnsureValidXuids();
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            //groupGift.Xuids.EnsureValidXuids();
+            groupGift.Xuids.EnsureValidXuids();
 
             await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
 
@@ -211,11 +211,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                     await Task.WhenAll(jobs).ConfigureAwait(false);
 
                     var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();
+                    var collapsedResponses = BackgroundJobHelpers.MergeResponses(responses);
 
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(responses);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(collapsedResponses);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, responses).ConfigureAwait(true);
 
-                    var giftedXuids = responses.SelectMany(r => r).Where(giftResponse => giftResponse.Errors.Count == 0)
+                    var giftedXuids = collapsedResponses.Where(giftResponse => giftResponse.Errors.Count == 0)
                         .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)

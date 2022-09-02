@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.Services.Orm.SqlGen;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
@@ -21,6 +22,41 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             var foundErrors = results.SelectMany(g => g).Any(gift => gift.Errors.Count > 0);
             return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
+        }
+
+        /// <summary>
+        ///     Merges a set of gift responses.
+        /// </summary>
+        /// <typeparam name="T">Type of the value in the <see cref="GiftResponse{T}"/> to be returned.</typeparam>
+        public static IList<GiftResponse<T>> MergeResponses<T>(
+            IList<IList<GiftResponse<T>>> results)
+        {
+            var flatResults = results.SelectMany(v => v);
+            var userFlatResults = flatResults.Where(r => r.PlayerXuid.HasValue && !r.LspGroup.HasValue);
+            var lspFlatResults = flatResults.Where(r => r.LspGroup.HasValue && !r.PlayerXuid.HasValue);
+            var badFlatResults = flatResults.Where(r =>
+            {
+                var neitherValue = !r.PlayerXuid.HasValue && !r.LspGroup.HasValue;
+                var bothValues = r.PlayerXuid.HasValue && r.LspGroup.HasValue;
+                return neitherValue || bothValues;
+            });
+
+            GiftResponse<T> DoAggregate<T2>(IGrouping<T2, GiftResponse<T>> g) {
+                var list = g.ToList();
+                var first = list.First();
+                return new GiftResponse<T>
+                {
+                    PlayerOrLspGroup = first.PlayerOrLspGroup,
+                    PlayerXuid = first.PlayerXuid,
+                    LspGroup = first.LspGroup,
+                    IdentityAntecedent = first.IdentityAntecedent,
+                    Errors = list.SelectMany(r => r.Errors).ToList(),
+                };
+            }
+
+            var groupedUsers = userFlatResults.GroupBy(r => r.PlayerXuid.Value).Select(g => DoAggregate(g)).ToList();
+            var groupedLspGroups = userFlatResults.GroupBy(r => r.LspGroup.Value).Select(g => DoAggregate(g)).ToList();
+            return groupedUsers.Concat(groupedLspGroups).Concat(badFlatResults).ToList();
         }
 
         /// <summary>
