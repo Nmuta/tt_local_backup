@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
 
             var groupedUsers = userFlatResults.GroupBy(r => r.TargetXuid.Value).Select(g => DoAggregate(g)).ToList();
-            var groupedLspGroups = userFlatResults.GroupBy(r => r.TargetLspGroupId.Value).Select(g => DoAggregate(g)).ToList();
+            var groupedLspGroups = lspFlatResults.GroupBy(r => r.TargetLspGroupId.Value).Select(g => DoAggregate(g)).ToList();
             return groupedUsers.Concat(groupedLspGroups).Concat(badFlatResults).ToList();
         }
 

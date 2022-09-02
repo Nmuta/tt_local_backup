@@ -214,7 +214,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                     var collapsedResponses = BackgroundJobHelpers.MergeResponses(responses);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(collapsedResponses);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, responses).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, collapsedResponses).ConfigureAwait(true);
 
                     var giftedXuids = collapsedResponses.Where(giftResponse => giftResponse.Errors.Count == 0)
                         .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
