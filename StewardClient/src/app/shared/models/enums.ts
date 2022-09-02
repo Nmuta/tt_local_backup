@@ -5,7 +5,10 @@ export enum InventoryOption {
   GroupGiftByGamertag = 'Group Gift [Gamertag]',
 }
 
-/** Enum for game title names. */
+/**
+ * Enum for game title names.
+ * @deprecated Use GameTitle + angular pipe
+ */
 export enum GameTitleName {
   FH5 = 'Forza Horizon 5',
   FM8 = 'Forza Motorsport 8',
@@ -15,10 +18,13 @@ export enum GameTitleName {
   FH3 = 'Forza Horizon 3',
 }
 
-/** Enum for game title abbreviation. */
+/**
+ * Enum for game title abbreviation.
+ * @deprecated Use GameTitle + angular pipe
+ */
 export enum GameTitleAbbreviation {
   FH5 = 'FH5',
-  FM8 = 'Steelhead', // Left as steelhead until official name announced.
+  FM8 = 'FM', // Left as steelhead until official name announced.
   Street = 'Street',
   FH4 = 'FH4',
   FM7 = 'FM7',

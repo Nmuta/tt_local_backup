@@ -76,7 +76,7 @@
         <span *ngIf="!item.extraIcon">{{ item.title }}</span>
       </a>
       <span *ngIf="item.navComponent" cdkDrag
-        ><span [navAnchor]="item.navComponent" [navAnchorDisabled]="true"></span
+        ><span [navAnchor]="item.navComponent" [navItem]="item" [navAnchorDisabled]="true"></span
       ></span>
     </ng-container>
     <mat-icon

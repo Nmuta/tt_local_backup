@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         {
             { SteelheadEndpoint.Flight, new NonStandardUserGroups()
                 {
-                    ContentCreatorId = 23,
+                    ContentCreatorId = 24,
                 }
             },
             { SteelheadEndpoint.Studio, new NonStandardUserGroups()
@@ -25,12 +25,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             },
             { WoodstockEndpoint.Retail, new NonStandardUserGroups()
                 {
-                    ContentCreatorId = 15,
+                    ContentCreatorId = 24,
                 }
             },
             { WoodstockEndpoint.Studio, new NonStandardUserGroups()
                 {
-                    ContentCreatorId = 19,
+                    ContentCreatorId = 24,
                 }
             },
         };

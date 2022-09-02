@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionData } from '@models/auction-data';
-import { GameTitleAbbreviation } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { SunriseService } from '@services/sunrise';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 export class SunriseAuctionComponent extends BaseComponent implements OnInit {
   public auctionId: string;
   public auctionData: AuctionData;
-  public GameTitleAbbreviation = GameTitleAbbreviation;
+  public GameTitle = GameTitle;
 
   public getMonitor: ActionMonitor = new ActionMonitor('GET FH4 Auction Data');
 

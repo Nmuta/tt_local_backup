@@ -1,0 +1,14 @@
+<div #content>
+  <ng-content></ng-content>
+</div>
+<!-- TODO: Convert tooltip to popover. -->
+<button
+  mat-icon-button
+  clickStop
+  [cdkCopyToClipboard]="textToCopy"
+  (cdkCopyToClipboardCopied)="onCopy($event)"
+  [class.always-show]="alwaysShowIcon"
+  aria-label="Copy"
+>
+  <mat-icon inline="true" [matTooltip]="tooltipText" #tooltip="matTooltip"> content_copy </mat-icon>
+</button>

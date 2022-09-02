@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime } from 'luxon';
 import { LuxonModule } from 'luxon-angular';
