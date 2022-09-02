@@ -25,14 +25,25 @@ import { chain } from 'lodash';
 import { DateTime } from 'luxon';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
 
+/**
+ * List of special liveries from Community team.
+ * Order matches the order they were provided in.
+ */
 const SPECIAL_LIVERY_TABLE = [
+  // ID is presently unknown
   ['2/1/2022', 'Forza OPI Livery', ''],
-  ['11/15/2021', 'Xbox 20th Anniversary Livery', ''],
+  
+  // ID was not provided in source data. selected as latest from 2 possibilities off Little Vixen's UGC list; based on guidance from Sabrina
+  ['11/15/2021', 'Xbox 20th Anniversary Livery', '2db3eb58-cee6-4ac2-aa08-dfcd087ab751'],
+
   ['12/17/2021', 'Forza Ugly Sweater Livery', '7a49af23-00bf-45f5-8a1b-624ae849d6cf'],
   ['1/3/2022', 'New Year\'s 2022 Livery', '5d2def45-d902-4f83-8c49-2872da00284c'],
   ['1/31/2022', 'Lunar New Year Livery', '5c10a6b1-21ec-433b-97c8-15e0abb21e80'],
   ['4/22/2022', 'Earth Day Livery', '64b55169-b229-4a40-96b7-a5118f455f2e'],
-  ['', 'Day of the Dead Livery', 'd9355079-48f2-40c2-bb78-10e765428f82'],
+
+  // date was not provided in source data. date is creation date of the livery
+  ['11/17/2021', 'Day of the Dead Livery', 'd9355079-48f2-40c2-bb78-10e765428f82'],
+
   ['6/16/2022', 'Forza Rainbow Livery 2022', 'a2638d38-dfe6-4ab0-bdcd-9de29dcb2805'],
   ['6/3/2022', 'FH5 Peel P50 Livery', 'a388636f-5697-4943-ae1b-f9ba4fc9b0ad'],
   ['1/21/2022', 'Master Chief is Back Livery', '11a279ed-1e6a-4a78-bce4-a71bc1fcd478'],
