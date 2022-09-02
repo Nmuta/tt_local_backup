@@ -30,7 +30,7 @@ import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/
  * Order matches the order they were provided in.
  */
 const SPECIAL_LIVERY_TABLE = [
-  // ID is presently unknown
+  // ID is presently unknown. Waiting on answer from Sabrina
   ['2/1/2022', 'Forza OPI Livery', ''],
   
   // ID was not provided in source data. selected as latest from 2 possibilities off Little Vixen's UGC list; based on guidance from Sabrina
