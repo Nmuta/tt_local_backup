@@ -19,5 +19,13 @@
         ///     A 'preview' of what will be in the game soon.
         /// </remarks>
         public const string LiveSteward = "live-steward";
+
+        /// <summary>
+        ///     Gets Steelhead 'daily' Pegasus slot.
+        /// </summary>
+        /// <remarks>
+        ///     This should only be used in for testing and development purposes.
+        /// </remarks>
+        public const string Daily = "daily";
     }
 }

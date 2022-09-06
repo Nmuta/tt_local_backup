@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory data for each item type.
         /// </summary>
-        [HttpGet("")]
+        [HttpGet]
         [SwaggerResponse(200, type: typeof(SteelheadMasterInventory))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
