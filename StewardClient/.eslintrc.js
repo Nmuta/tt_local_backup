@@ -54,7 +54,7 @@ module.exports = {
           'error',
           { type: 'element', prefix: 'app', style: 'kebab-case' },
         ],
-        quotes: ['error', 'single', { allowTemplateLiterals: true }],
+        quotes: ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
         '@angular-eslint/component-selector': [
           'error',
           { type: 'element', prefix: [], style: 'kebab-case' },
