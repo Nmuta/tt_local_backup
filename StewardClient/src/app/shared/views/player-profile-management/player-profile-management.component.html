@@ -31,9 +31,9 @@
               Load Template
               <button-spinner [monitor]="loadTemplateMonitor" defaultIcon="upload"></button-spinner>
             </button>
-            <mat-checkbox class="inline" [formControl]="loadFormControls.verifyAction"
-              >Verify action</mat-checkbox
-            >
+            <mat-checkbox class="inline" [formControl]="loadFormControls.verifyAction">{{
+              playerConsentText
+            }}</mat-checkbox>
           </form>
         </div>
       </ng-template>
@@ -120,9 +120,9 @@
                 defaultIcon="restart_alt"
               ></button-spinner>
             </button>
-            <mat-checkbox class="inline" [formControl]="resetFormControls.verifyAction"
-              >Verify action</mat-checkbox
-            >
+            <mat-checkbox class="inline" [formControl]="resetFormControls.verifyAction">{{
+              playerConsentText
+            }}</mat-checkbox>
           </form>
         </div>
       </ng-template>

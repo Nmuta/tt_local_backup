@@ -9,7 +9,6 @@ import {
   SteelheadGift,
   SteelheadGiftHistory,
   SteelheadGroupGift,
-  SteelheadMasterInventory,
   SteelheadPlayerDetails,
   SteelheadPlayerInventory,
   SteelheadPlayerInventoryProfile,
@@ -183,13 +182,6 @@ export class SteelheadService {
     return this.apiService.getRequest$<SteelheadGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
       params,
-    );
-  }
-
-  /** Gets the Steelhead master inventory. */
-  public getMasterInventory$(): Observable<SteelheadMasterInventory> {
-    return this.apiService.getRequest$<SteelheadMasterInventory>(
-      `${this.basePath}/masterInventory`,
     );
   }
 

@@ -16,7 +16,7 @@ export class SteelheadItemsService {
 
   /** Gets the Steelhead master inventory. */
   public getMasterInventory$(): Observable<SteelheadMasterInventory> {
-    return this.api.getRequest$<SteelheadMasterInventory>(`${this.basePath}/items`);
+    return this.api.getRequest$<SteelheadMasterInventory>(this.basePath);
   }
 
   /** Gets the Steelhead detailed car list. */

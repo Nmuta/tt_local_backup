@@ -31,42 +31,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<CarClass>> GetCarClassesAsync();
 
         /// <summary>
-        ///     Gets leaderboards.
-        /// </summary>
-        //Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment);
-
-        /// <summary>
         ///     Gets cars.
         /// </summary>
-        Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Live);
+        Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
         ///     Gets car makes.
         /// </summary>
         /// <remarks>Only exists in LiveOps version of the nuget. Steelhead needs an exact copy of this.</remarks>
-        //Task<IEnumerable<ListCarMake>> GetCarMakesAsync();
-
-        /// <summary>
-        ///     Gets car horns.
-        /// </summary>
-        /// <remarks>Only exists in LiveOps version of the nuget. Steelhead needs an exact copy of this.</remarks>
-        //Task<IEnumerable<CarHorn>> GetCarHornsAsync();
+        Task<IEnumerable<ListCarMake>> GetCarMakesAsync();
 
         /// <summary>
         ///     Gets vanity items.
         /// </summary>
-        Task<IEnumerable<VanityItem>> GetVanityItemsAsync();
-
-        /// <summary>
-        ///     Gets emotes.
-        /// </summary>
-        /// <remarks>Only exists in LiveOps version of the nuget. Steelhead needs an exact copy of this.</remarks>
-        //Task<IEnumerable<EmoteData>> GetEmotesAsync();
-
-        /// <summary>
-        ///     Gets quick chat lines.
-        /// </summary>
-        /// <remarks>Only exists in LiveOps version of the nuget. Steelhead needs an exact copy of this.</remarks>
-        //Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync();
+        Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
     }
 }

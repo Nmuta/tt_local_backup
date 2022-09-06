@@ -13,9 +13,33 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Allow gifting certain time-limited liveries as part of inventory restoration',
     },
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'd210cafb-3cba-4576-b68a-50459d1458d2',
+      shortText: 'Move FM nav link to the left of FH5 nav link',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '61f988c3-a46e-42b4-ae01-8ad3d3f52251',
+      shortText: 'Verify player consent for loading and resetting profiles',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '15966959-5aaf-46e5-9f2b-ff8f82a59964',
+      shortText: 'Move Steelhead master inventory to read from Pegasus data',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserDetails },
       uuid: 'a3cc9f01-7672-4bcf-ba1b-ef99f378b618',
       shortText: 'Move is under review flag to bottom of user flags',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6bd5c0bf-b728-485c-821b-196da94fd6b7',
+      shortText: 'Unify render delay. Further standardizing handling of common code scenarios',
+      longText: [
+        'All delay(0) and delay(1) instances have been replaced with renderDelay().',
+        'This makes their purpose as "delay until between frames" operations clearer.',
+      ],
     },
     {
       tag: ChangelogTag.Internal,

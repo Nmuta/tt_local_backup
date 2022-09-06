@@ -15,9 +15,9 @@ import { ApolloService } from '@services/apollo';
 import { clone } from 'lodash';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { SteelheadMasterInventory } from '@models/steelhead';
-import { SteelheadService } from '@services/steelhead';
 import { WoodstockMasterInventory } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock';
+import { SteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service';
 
 /**
  * Defines the master inventory list memory model.
@@ -30,7 +30,7 @@ export class MasterInventoryListMemoryModel {
 }
 
 /**
- *
+ * Master inventory Ngxs model state.
  */
 @State<MasterInventoryListMemoryModel>({
   name: 'giftingMasterListMemory',
@@ -47,7 +47,7 @@ export class MasterInventoryListMemoryState {
   constructor(
     private readonly sunriseService: SunriseService,
     private readonly apolloService: ApolloService,
-    private readonly steelheadService: SteelheadService,
+    private readonly steelheadItemsService: SteelheadItemsService,
     private readonly woodstockService: WoodstockService,
   ) {}
 
@@ -85,7 +85,7 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.steelheadService.getMasterInventory$();
+    const request$ = this.steelheadItemsService.getMasterInventory$();
     return request$.pipe(
       tap(data => {
         ctx.patchState({ [GameTitleCodeName.FM8]: clone(data) });

@@ -303,12 +303,15 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"Update Projection to include MakeDisplayName {src.DisplayName} {src.Year}"));
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.DisplayName} {src.Year} - TODO Update Projection to include MakeDisplayName"));
             this.CreateMap<DataCar, DetailedCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
-                .ForMember(dest => dest.Make, opt => opt.MapFrom(src => "Update Projection to include MakeDisplayName"));
+                .ForMember(dest => dest.Make, opt => opt.MapFrom(src => "TODO Update Projection to include MakeDisplayName"));
+            this.CreateMap<VanityItem, MasterInventoryItem>()
+                            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
+                            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
             this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
             this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))

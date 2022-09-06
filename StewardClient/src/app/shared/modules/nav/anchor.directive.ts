@@ -13,8 +13,8 @@ import {
 } from '@angular/core';
 import { CustomTileComponent } from '@environments/environment';
 import { HomeTileInfoForNav } from '@helpers/external-links';
+import { renderDelay } from '@helpers/rxjs';
 import { from } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 /** Provides an attachment point to render a dynamic tool-tile element. */
 @Directive({
@@ -45,7 +45,7 @@ export class AnchorDirective implements OnChanges, AfterViewInit, OnDestroy {
     const viewContainerRef = this.viewContainerRef;
     viewContainerRef.clear();
     from(this.componentToResolve())
-      .pipe(delay(1))
+      .pipe(renderDelay())
       .subscribe(componentToResolve => {
         const componentFactory = this.resolver.resolveComponentFactory(componentToResolve);
         this.componentRef = viewContainerRef.createComponent<CustomTileComponent>(componentFactory);

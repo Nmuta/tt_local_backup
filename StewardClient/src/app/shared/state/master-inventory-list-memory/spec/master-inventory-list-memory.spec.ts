@@ -14,8 +14,9 @@ import {
 } from '../master-inventory-list-memory.actions';
 import { EMPTY } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
-import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
+import { SteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service';
+import { createMockSteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service.mock';
 
 describe('State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
@@ -23,7 +24,7 @@ describe('State: MasterInventoryListMemoryState', () => {
 
   let mockSunriseService: SunriseService;
   let mockApolloService: ApolloService;
-  let mockSteelheadService: SteelheadService;
+  let mockSteelheadItemsService: SteelheadItemsService;
   let mockWoodstockService: WoodstockService;
 
   beforeEach(waitForAsync(() => {
@@ -32,7 +33,7 @@ describe('State: MasterInventoryListMemoryState', () => {
       providers: [
         createMockSunriseService(),
         createMockApolloService(),
-        createMockSteelheadService(),
+        createMockSteelheadItemsService(),
         createMockWoodstockService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -43,7 +44,7 @@ describe('State: MasterInventoryListMemoryState', () => {
 
     mockSunriseService = TestBed.inject(SunriseService);
     mockApolloService = TestBed.inject(ApolloService);
-    mockSteelheadService = TestBed.inject(SteelheadService);
+    mockSteelheadItemsService = TestBed.inject(SteelheadItemsService);
     mockWoodstockService = TestBed.inject(WoodstockService);
 
     store.reset({
@@ -165,7 +166,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return EMPTY;
             }),
             tap(() => {
-              expect(mockSteelheadService.getMasterInventory$).not.toHaveBeenCalled();
+              expect(mockSteelheadItemsService.getMasterInventory$).not.toHaveBeenCalled();
             }),
           )
           .subscribe();
@@ -182,7 +183,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return EMPTY;
             }),
             tap(() => {
-              expect(mockSteelheadService.getMasterInventory$).toHaveBeenCalled();
+              expect(mockSteelheadItemsService.getMasterInventory$).toHaveBeenCalled();
             }),
           )
           .subscribe();

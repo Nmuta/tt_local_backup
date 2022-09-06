@@ -4,12 +4,13 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
 import { EMPTY } from 'rxjs';
-import { catchError, delay } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
 import BigNumber from 'bignumber.js';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { AuctionBlocklistNewEntryService } from './auction-blocklist-new-entry.service';
+import { renderDelay } from '@helpers/rxjs';
 
 /**
  *  Auction blocklist new entry component.
@@ -83,7 +84,7 @@ export class AuctionBlocklistNewEntryComponent extends BaseComponent implements 
       .postAuctionBlocklistEntries$(entryArray)
       .pipe(
         this.postMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),

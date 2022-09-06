@@ -56,6 +56,8 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   public profileTemplates: string[] = [];
 
+  public playerConsentText: string = 'I have received player consent for this action';
+
   public saveFormDefaults = {
     verifyAction: false,
     template: '',
