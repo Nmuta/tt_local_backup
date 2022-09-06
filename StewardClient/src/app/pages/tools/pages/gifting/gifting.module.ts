@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -26,6 +26,18 @@ import { PlayerAccountInventoryModule } from '@views/player-account-inventory/pl
 import { GiftLiveryModule } from './components/gift-livery/gift-livery.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { GiftSpecialLiveriesComponent } from './components/gift-special-liveries/gift-special-liveries.component';
+import { PipesModule } from '@shared/pipes/pipes.module';
+import { LuxonModule } from 'luxon-angular';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { HelpModule } from '@shared/modules/help/help.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -35,6 +47,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ApolloGiftingComponent,
     SteelheadGiftingComponent,
     WoodstockGiftingComponent,
+    GiftSpecialLiveriesComponent,
   ],
   imports: [
     CommonModule,
@@ -58,6 +71,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PlayerInventoryModule,
     PlayerAccountInventoryModule,
     EndpointSelectionModule,
+    PipesModule,
+    LuxonModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    DirectivesModule,
+    MonitorActionModule,
+    StateManagersModule,
+    HelpModule,
+    ReactiveFormsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatFormFieldModule,
   ],
 })
 export class GiftingsModule {}

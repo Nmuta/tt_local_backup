@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '2b7a9b68-9150-4604-ba16-c4b175d40320',
+      shortText: 'Allow gifting certain time-limited liveries as part of inventory restoration',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: 'd210cafb-3cba-4576-b68a-50459d1458d2',
       shortText: 'Move FM nav link to the left of FH5 nav link',

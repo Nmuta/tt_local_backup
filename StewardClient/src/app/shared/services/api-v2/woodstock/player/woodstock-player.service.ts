@@ -7,7 +7,7 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
-/** The /v2/woodstock/ugc/search endpoints. */
+/** The /v2/woodstock/player endpoints. */
 @Injectable({
   providedIn: 'root',
 })

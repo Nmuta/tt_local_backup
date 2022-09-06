@@ -1,9 +1,15 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { JsonTableResult } from '@models/json-table-result';
+import { jsonBigIntSafeSerialize } from '@helpers/json-bigint';
+import { DateTime } from 'luxon';
+import BigNumber from 'bignumber.js';
+import { isNull, isUndefined } from 'lodash';
 
 type TemplateNames =
   | 'unknown'
+  | 'unknown-object'
+  | 'empty'
   | 'xuid'
   | 'gamertag'
   | 'xuid-direct'
@@ -41,7 +47,17 @@ export class JsonTableResultsComponent implements OnChanges {
       for (const result of this.results) {
         const resultRow = [];
         for (const key of this.resultKeys) {
-          resultRow.push(result[key]);
+          const template = this.determineTemplate(result, key);
+          switch (template) {
+            case 'unknown-object':
+              const serialized = jsonBigIntSafeSerialize(result[key]);
+              const serializedDoubleQuote = serialized.replace(/"/g, '""');
+              resultRow.push(`"${serializedDoubleQuote}"`);
+              break;
+            default:
+              resultRow.push(result[key]);
+              break;
+          }
         }
 
         this.downloadResults[this.downloadResults.length] = resultRow;
@@ -72,7 +88,12 @@ export class JsonTableResultsComponent implements OnChanges {
   }
 
   private determineTemplateInternal(row: JsonTableResult<unknown>, column: string): TemplateNames {
+    // name-based typings
     if (column.toLowerCase().endsWith('timestamp')) {
+      return 'datetime';
+    }
+
+    if (column.toLowerCase().endsWith('utc')) {
       return 'datetime';
     }
 
@@ -99,6 +120,25 @@ export class JsonTableResultsComponent implements OnChanges {
       }
     }
 
-    return 'unknown';
+    // advanced types
+    if (row[column] instanceof DateTime) {
+      return 'datetime';
+    }
+
+    if (row[column] instanceof BigNumber) {
+      return 'unknown';
+    }
+
+    if (isNull(row[column]) || isUndefined(row[column])) {
+      return 'empty';
+    }
+
+    // primitives
+    switch (typeof row[column]) {
+      case 'object':
+        return 'unknown-object';
+      default:
+        return 'unknown';
+    }
   }
 }

@@ -79,6 +79,10 @@
     <ng-container *ngSwitchCase="'datetime'">
       <standard-absolute-time [timeUtc]="row[column] | toDateTime"></standard-absolute-time>
     </ng-container>
+    <ng-container *ngSwitchCase="'empty'"></ng-container>
+    <ng-container *ngSwitchCase="'unknown-object'">
+      <json-dump [input]="row[column]"></json-dump>
+    </ng-container>
     <ng-container *ngSwitchDefault>{{ row[column] }}</ng-container>
   </ng-container>
 </ng-template>

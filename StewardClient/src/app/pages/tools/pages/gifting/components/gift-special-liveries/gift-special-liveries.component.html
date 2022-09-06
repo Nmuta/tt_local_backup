@@ -1,0 +1,96 @@
+<mat-card class="steward-layout-sticky-scroll">
+  <mat-card-header class="sf-header">
+    <mat-card-title>Gift Special Livery + Car</mat-card-title>
+    <mat-card-subtitle> Woodstock special liveries </mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <help-popover-icon
+      clickStop
+      cardTitle="Gift Special Livery + Car"
+      cardSubtitle="Button help"
+      confluenceName="gift-special-livery"
+    >
+      <p>
+        These are special liveries that have been given out as rewards to active players on certain
+        dates.
+      </p>
+      <p>LSP Group Gifting is not currently supported.</p>
+      <p>
+        Two known Special Liveries are missing from this list, Xbox 20th Anniversary and Forza OPI.
+      </p>
+    </help-popover-icon>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-accordion multi displayMode="flat">
+      <mat-expansion-panel *ngFor="let livery of liveries">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-checkbox
+              clickStop
+              [(ngModel)]="livery.checked"
+              matTooltip="Check to send this livery"
+              >{{ livery.data.label }} on {{ livery.data.date | dateTimeToJsDate | date: 'short' }}
+            </mat-checkbox>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <ul *waitForMonitor="livery.monitor">
+          <li><b>Car:</b> {{ livery.ugcData.carDescription }}</li>
+          <li><b>Title:</b> {{ livery.ugcData.title }}</li>
+          <li><b>Description:</b> {{ livery.ugcData.description }}</li>
+          <li><b>Created:</b> {{ livery.ugcData.createdDateUtc | utcDate: 'shortDate' }}</li>
+          <li><b>Share Code:</b> {{ livery.ugcData.shareCode || 'N/A' }}</li>
+          <li><b>Id:</b> {{ livery.ugcData.id }}</li>
+          <li>
+            <img
+              type="button"
+              matTooltip="Click to enlarge image"
+              [src]="livery.ugcData.thumbnailOneImageBase64"
+              [enlargeImage]="livery.ugcData.thumbnailOneImageBase64"
+              title="Thumbnail One"
+            />
+          </li>
+          <li>
+            <img
+              type="button"
+              matTooltip="Click to enlarge image"
+              *ngIf="!!livery.ugcData.thumbnailTwoImageBase64"
+              [src]="livery.ugcData.thumbnailTwoImageBase64"
+              [enlargeImage]="livery.ugcData.thumbnailTwoImageBase64"
+              title="Thumbnail Two"
+            />
+          </li>
+        </ul>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+
+  <mat-card-actions class="sf-actions">
+    <mat-form-field appearance="fill">
+      <mat-label>Gift Reason</mat-label>
+      <mat-select [formControl]="formControls.giftReason">
+        <mat-option *ngFor="let reason of giftReasons" [value]="reason">
+          {{ reason }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      stateManager
+      [monitor]="sendGiftMonitor"
+      [waitOnMonitors]="allMonitors"
+      monitorDisable
+      monitorWarn
+      monitorWarnSnackbar
+      [disabled]="!verifyGift.checked || !isGiftLiveryReady()"
+      (click)="sendGiftLiveries()"
+    >
+      <span>Send Liveries</span>
+      <span *ngIf="usingPlayerIdentities"> To Player(s)</span>
+      <span *ngIf="!usingPlayerIdentities"> To LSP Groups</span>
+      <button-spinner [monitor]="sendGiftMonitor" defaultIcon="outgoing_mail"></button-spinner>
+    </button>
+    <mat-checkbox #verifyGift matTooltip="Verify Gift">Verify Gift</mat-checkbox>
+  </mat-card-actions>
+</mat-card>

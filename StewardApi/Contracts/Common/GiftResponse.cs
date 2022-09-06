@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
@@ -12,7 +13,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the player or LspGroup the gift was sent to.
         /// </summary>
+        [Obsolete("TODO: This should be split out into separate XUID + LSP Group columns in a V2 Object, to aid the UI")]
         public T PlayerOrLspGroup { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the XUID of the player the gift was sent to.
+        /// </summary>
+        public ulong? TargetXuid { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the LSP Group the gift was sent to.
+        /// </summary>
+        public int? TargetLspGroupId { get; set; }
 
         /// <summary>
         ///     Gets or sets the gift identifier antecedent.

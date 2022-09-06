@@ -8,6 +8,7 @@ mat-panel-description {
 pre {
   white-space: pre-wrap;
   overflow: hidden;
+  overflow-wrap: anywhere;
 }
 
 button.reset-state {

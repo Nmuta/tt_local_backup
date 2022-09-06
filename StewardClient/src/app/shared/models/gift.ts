@@ -9,3 +9,12 @@ export interface Gift {
 export interface GroupGift extends Gift {
   xuids: BigNumber[];
 }
+
+/** Model for a multi-livery gift. */
+export interface BulkLiveryGift<TTarget> {
+  liveryIds: string[];
+  target: TTarget;
+}
+
+/** Model for multi-player multi-livery gift. */
+export type BulkPlayerBulkLiveryGift = BulkLiveryGift<GroupGift>;

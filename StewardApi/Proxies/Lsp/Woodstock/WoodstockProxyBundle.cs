@@ -58,6 +58,16 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         /// </summary>
         public IPermissionsManagementService PermissionsManagementService => this.WoodstockFactory.PreparePermissionsManagementService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets a <see cref="IStorefrontManagementService" />.
+        /// </summary>
+        public IStorefrontManagementService StorefrontManagement => this.WoodstockFactory.PrepareStorefrontManagementService(this.Endpoint);
+
+        /// <summary>
+        ///     Gets a <see cref="IUserManagementService" />.
+        /// </summary>
+        public IUserManagementService UserManagement => this.WoodstockFactory.PrepareUserManagementService(this.Endpoint);
+
         private IWoodstockProxyFactory WoodstockFactory { get; }
     }
 }

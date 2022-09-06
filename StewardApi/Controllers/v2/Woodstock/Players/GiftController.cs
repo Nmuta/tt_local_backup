@@ -18,56 +18,56 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 {
     /// <summary>
-    ///     Controller for steelhead multiple-player gifting.
+    ///     Controller for woodstock multiple-player gifting.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/players/gift")]
-    [LogTagTitle(TitleLogTags.Steelhead)]
+    [Route("api/v{version:apiVersion}/title/woodstock/players/gift")]
+    [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.Players, Topic.Gifting)]
-    public class GiftController : V2SteelheadControllerBase
+    [Tags(Title.Woodstock, Target.Players, Topic.Gifting)]
+    public class GiftController : V2WoodstockControllerBase
     {
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
+        private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
-        private readonly ISteelheadItemsProvider itemsProvider;
+        private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IActionLogger actionLogger;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
         private readonly IMapper mapper;
-        private readonly ISteelheadPlayerInventoryProvider playerInventoryProvider;
-        private readonly IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator;
-        private readonly IRequestValidator<SteelheadGift> giftRequestValidator;
-        private readonly IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator;
+        private readonly IWoodstockPlayerInventoryProvider playerInventoryProvider;
+        private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
+        private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
+        private readonly IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GiftController"/> class.
         /// </summary>
         public GiftController(
-            ISteelheadItemsProvider itemsProvider,
+            IWoodstockItemsProvider itemsProvider,
             IActionLogger actionLogger,
             IJobTracker jobTracker,
             IScheduler scheduler,
             IMapper mapper,
-            ISteelheadPlayerInventoryProvider playerInventoryProvider,
-            IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator,
-            IRequestValidator<SteelheadGift> giftRequestValidator,
-            IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator)
+            IWoodstockPlayerInventoryProvider playerInventoryProvider,
+            IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
+            IRequestValidator<WoodstockGift> giftRequestValidator,
+            IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator)
         {
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
@@ -99,17 +99,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
-            [FromBody] SteelheadGroupGift groupGift)
+            [FromBody] WoodstockGroupGift groupGift)
         {
             var services = this.Services;
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
+            var endpoint = this.WoodstockEndpoint.Value;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            //groupGift.Xuids.EnsureValidXuids();
+            groupGift.Xuids.EnsureValidXuids();
 
             await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
 
@@ -132,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             var jobId = await this.AddJobIdToHeaderAsync(
                 groupGift.ToJson(),
                 requesterObjectId,
-                $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+                $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -143,10 +144,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     var allowedToExceedCreditLimit =
                         userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.playerInventoryProvider.UpdatePlayerInventoriesAsync(
-                        services,
                         groupGift,
                         requesterObjectId,
-                        allowedToExceedCreditLimit).ConfigureAwait(true);
+                        allowedToExceedCreditLimit,
+                        endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
@@ -175,33 +176,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         /// <summary>
         ///     Gifts livery to players using background job processing.
         /// </summary>
-        [HttpPost("livery/{liveryId}/useBackgroundProcessing")]
+        [HttpPost("livery/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing([FromBody] BulkLiveryGift<GroupGift> gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
+            var endpoint = this.WoodstockEndpoint.Value;
 
+            var groupGift = gift.Target;
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Xuids.EnsureValidXuids();
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            //groupGift.Xuids.EnsureValidXuids();
+            groupGift.Xuids.EnsureValidXuids();
 
             await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
 
-            var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryId).ConfigureAwait(true);
-            var mappedLivery = this.mapper.Map<UgcItem>(livery);
-            if (livery == null)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
-            }
+            var liveries = await this.LookupLiveries(gift.LiveryIds).ConfigureAwait(true);
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Steelhead Gifting Livery: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Woodstock Gifting Liveries: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -209,12 +207,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 // Do not throw.
                 try
                 {
-                    var response = await this.playerInventoryProvider.SendCarLiveryAsync(this.Services, groupGift, mappedLivery, requesterObjectId).ConfigureAwait(true);
+                    var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint)).ToList();
+                    await Task.WhenAll(jobs).ConfigureAwait(false);
 
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+                    var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();
+                    var collapsedResponses = BackgroundJobHelpers.MergeResponses(responses);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(collapsedResponses);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, collapsedResponses).ConfigureAwait(true);
+
+                    var giftedXuids = collapsedResponses.Where(giftResponse => giftResponse.Errors.Count == 0)
                         .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
@@ -233,6 +235,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
         }
 
+        private async Task<IEnumerable<UgcItem>> LookupLiveries(IEnumerable<string> liveryIds)
+        {
+            var lookups = liveryIds.Select(this.LookupLivery).ToList();
+            await Task.WhenAll(lookups).ConfigureAwait(false);
+            var results = lookups.Select(v => v.GetAwaiter().GetResult());
+            return results;
+        }
+
+        private async Task<UgcItem> LookupLivery(string liveryId)
+        {
+            if (!Guid.TryParse(liveryId, out var liveryGuid))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
+            }
+
+            var livery = await this.Services.StorefrontManagement.GetUGCLivery(liveryGuid).ConfigureAwait(true);
+            if (livery == null)
+            {
+                throw new InvalidArgumentsStewardException($"Livery not found: {liveryId}");
+            }
+
+            var mappedLivery = this.mapper.Map<UgcLiveryItem>(livery.result);
+            return mappedLivery;
+        }
+
         /// <summary>
         ///     Creates a job and puts the job ID in the response header.
         /// </summary>
@@ -249,7 +276,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        private async Task<string> VerifyGiftAgainstMasterInventoryAsync(SteelheadMasterInventory gift)
+        private async Task<string> VerifyGiftAgainstMasterInventoryAsync(WoodstockMasterInventory gift)
         {
             var masterInventoryItem = await this.itemsProvider.GetMasterInventoryAsync().ConfigureAwait(true);
             var error = string.Empty;

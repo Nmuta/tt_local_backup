@@ -80,6 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             var giftResponse = new GiftResponse<ulong>
             {
                 PlayerOrLspGroup = xuid,
+                TargetXuid = xuid,
                 IdentityAntecedent = GiftIdentityAntecedent.Xuid
             };
 
@@ -158,6 +159,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             var giftResponse = new GiftResponse<int>
             {
                 PlayerOrLspGroup = groupId,
+                TargetLspGroupId = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
             };
 
