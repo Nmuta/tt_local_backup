@@ -8,6 +8,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'd210cafb-3cba-4576-b68a-50459d1458d2',
+      shortText: 'Move FM nav link to the left of FH5 nav link',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '61f988c3-a46e-42b4-ae01-8ad3d3f52251',
+      shortText: 'Verify player consent for loading and resetting profiles',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '15966959-5aaf-46e5-9f2b-ff8f82a59964',
       shortText: 'Move Steelhead master inventory to read from Pegasus data',

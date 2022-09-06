@@ -1,5 +1,14 @@
 <mat-toolbar>
   <a
+    matTooltip="Title-agnostic user details"
+    [class.mat-button-disabled]="!identity?.general"
+    [routerLink]="generalRouterLink"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    queryParamsHandling="preserve"
+    >General
+  </a>
+  <a
     *ngIf="!isProduction"
     [class.mat-button-disabled]="!identity?.extra?.hasSteelhead"
     [matTooltip]="steelheadTooltip"
@@ -9,15 +18,6 @@
     queryParamsHandling="preserve"
     >FM
     <endpoint-selection [titleCodeName]="gameTitleCodeName.FM8"> </endpoint-selection>
-  </a>
-  <a
-    matTooltip="Title-agnostic user details"
-    [class.mat-button-disabled]="!identity?.general"
-    [routerLink]="generalRouterLink"
-    mat-button
-    routerLinkActive="mat-stroked-button"
-    queryParamsHandling="preserve"
-    >General
   </a>
   <a
     [class.mat-button-disabled]="!identity?.extra?.hasWoodstock"
