@@ -97,10 +97,7 @@ export class GiftSpecialLiveriesComponent extends BaseComponent implements OnIni
     for (const livery of this.liveries) {
       this.contract
         .getLivery$(livery.data.id)
-        .pipe(
-          livery.monitor.monitorSingleFire(),
-          takeUntil(this.onDestroy$),
-        )
+        .pipe(livery.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
         .subscribe(r => (livery.ugcData = r));
     }
   }

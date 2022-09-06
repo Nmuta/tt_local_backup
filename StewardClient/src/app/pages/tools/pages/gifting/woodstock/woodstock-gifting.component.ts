@@ -33,7 +33,7 @@ const SPECIAL_LIVERY_TABLE = [
   // This livery is really a car with a special livery. 3699 FOR_GTOPI_17
   // As such, it cannot be gifted thru the livery-gifting tool; but it will be restored automatically thru normal procedures.
   // ['2/1/2022', 'Forza OPI Livery', ''],
-  
+
   // ID was not provided in source data. selected as latest from 2 possibilities off Little Vixen's UGC list; based on guidance from Sabrina
   ['11/15/2021', 'Xbox 20th Anniversary Livery', '2db3eb58-cee6-4ac2-aa08-dfcd087ab751'],
 
