@@ -1,4 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
+import { ForceStartDateToUtcNowSelectionStrategy } from '@components/date-time-pickers/datetime-range-picker/date-range-selection-strategies';
 import BigNumber from 'bignumber.js';
 import { IndividualNotificationManagementComponent } from '../individual-notification-management.component';
 import { SunriseIndividualNotificationManagementContract } from './sunrise-individual-notification-management.contract';
@@ -10,7 +12,13 @@ import { SunriseIndividualNotificationManagementContract } from './sunrise-indiv
   selector: 'sunrise-individual-notification-management',
   templateUrl: './sunrise-individual-notification-management.component.html',
   styleUrls: [],
-  providers: [SunriseIndividualNotificationManagementContract],
+  providers: [
+    SunriseIndividualNotificationManagementContract,
+    {
+      provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+      useClass: ForceStartDateToUtcNowSelectionStrategy,
+    },
+  ],
 })
 export class SunriseIndividualNotificationManagementComponent {
   /** The selected xuid. */

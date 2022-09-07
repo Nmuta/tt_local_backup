@@ -1470,7 +1470,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             {
                 Xuids = new List<ulong> { xuid },
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
             };
             var result = await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
 
@@ -1487,7 +1488,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             {
                 Xuids = new List<ulong> { TestConstants.InvalidXuid },
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
             };
 
             try
@@ -1509,7 +1511,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             {
                 Xuids = new List<ulong> { xuid },
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1)
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
             };
 
             try
@@ -1525,13 +1528,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task SendNotificationsMessageDurationTooShort()
+        public async Task SendNotificationsMessageExpirationBeforeSend()
         {
             var message = new BulkCommunityMessage
             {
                 Xuids = new List<ulong> { xuid },
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromMinutes(5)
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(5),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(1),
             };
 
             try
@@ -1553,7 +1557,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             {
                 Xuids = new List<ulong> { xuid },
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
             };
 
             try
@@ -1575,7 +1580,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1),
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
                 DeviceType = DeviceType.All,
             };
 
@@ -1589,7 +1595,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1),
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
                 DeviceType = DeviceType.All,
             };
 
@@ -1611,7 +1618,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             var message = new LspGroupCommunityMessage
             {
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1),
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
                 DeviceType = DeviceType.All,
             };
 
@@ -1628,12 +1636,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task SendGroupNotificationsDurationTooShort()
+        public async Task SendGroupNotificationsExpirationBeforeSend()
         {
             var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromMinutes(5),
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(5),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(1),
                 DeviceType = DeviceType.All,
             };
 
@@ -1655,7 +1664,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             var message = new LspGroupCommunityMessage
             {
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1),
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5),
                 DeviceType = DeviceType.All,
             };
 

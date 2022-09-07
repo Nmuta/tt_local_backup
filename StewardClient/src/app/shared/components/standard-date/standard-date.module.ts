@@ -10,6 +10,8 @@ import { StandardAbsoluteTimeRangeComponent } from './standard-absolute-time-ran
 import { StandardRelativeTimeRangeComponent } from './standard-relative-time-range/standard-relative-time-range.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { StandardAbsoluteTimeUtcComponent } from './standard-absolute-time-utc/standard-absolute-time-utc.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 /** Standard date controls. */
 @NgModule({
@@ -17,6 +19,7 @@ import { MatLuxonDateModule } from 'ngx-material-luxon';
     StandardRelativeTimeComponent,
     StandardRelativeTimeRangeComponent,
     StandardAbsoluteTimeComponent,
+    StandardAbsoluteTimeUtcComponent,
     StandardAbsoluteTimeRangeComponent,
   ],
   /** Reasoning for MatDatepickerModule, MatLuxonDateModule:  https://github.com/matheo/angular/discussions/21#discussioncomment-1466056 */
@@ -28,11 +31,13 @@ import { MatLuxonDateModule } from 'ngx-material-luxon';
     PipesModule,
     MatDatepickerModule,
     MatLuxonDateModule,
+    MatBadgeModule,
   ],
   exports: [
     StandardRelativeTimeComponent,
     StandardRelativeTimeRangeComponent,
     StandardAbsoluteTimeComponent,
+    StandardAbsoluteTimeUtcComponent,
     StandardAbsoluteTimeRangeComponent,
   ],
 })

@@ -22,3 +22,7 @@ button {
   width: 100%;
   position: relative;
 }
+
+.lockStartTimeWarning {
+  color: app-color-default($app-warn);
+}

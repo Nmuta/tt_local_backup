@@ -1262,7 +1262,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var communityMessage = Fixture.Create<BulkCommunityMessage>();
-            communityMessage.Duration = TimeSpan.FromDays(1);
+            communityMessage.StartTimeUtc = DateTime.UtcNow.AddMinutes(1);
+            communityMessage.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5);
             communityMessage.Xuids = new List<ulong>() { ValidXuid };
 
 
@@ -1307,19 +1308,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var duration = TimeSpan.FromDays(1);
+            var sendDate = DateTime.UtcNow.AddMinutes(1);
+            var endDate = DateTime.UtcNow.AddMinutes(5);
             var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
                 async () =>
-                await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.Empty, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.Empty, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = null, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.Empty, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1337,14 +1339,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var tooLong = new string('*', 520);
-            var duration = TimeSpan.FromDays(1);
+            var sendDate = DateTime.UtcNow.AddMinutes(1);
+            var endDate = DateTime.UtcNow.AddMinutes(5);
             var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = tooLong, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = tooLong, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = tooLong, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = tooLong, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1356,26 +1359,27 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SendPlayerNotifications_WithTooShortDuration_Throws()
+        public void SendPlayerNotifications_WithExpireTimeBeforeNow_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var message = Fixture.Create<string>();
-            var duration = TimeSpan.FromHours(3);
+            var sendDate = DateTime.UtcNow.AddMinutes(1);
+            var endDate = DateTime.UtcNow.AddMinutes(-5);
             var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = message, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = message, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = message, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = message, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage(string.Format(TestConstants.ArgumentDurationTooShortMessagePartial, "Duration", TimeSpan.FromDays(1)));
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"ExpireTimeUtc: {endDate} must come after StartTimeUtc: {sendDate}.");
             }
         }
 
@@ -1387,7 +1391,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var groupId = TestConstants.InvalidProfileId;
             var communityMessage = Fixture.Create<LspGroupCommunityMessage>();
-            communityMessage.Duration = TimeSpan.FromDays(1);
+            communityMessage.StartTimeUtc = DateTime.UtcNow.AddMinutes(1);
+            communityMessage.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5);
             communityMessage.DeviceType = DeviceType.All;
 
             // Act.
@@ -1411,7 +1416,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var notificationId = Fixture.Create<Guid>();
             var xuid = ValidXuid;
             var communityMessageEdit = Fixture.Create<CommunityMessage>();
-            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+            communityMessageEdit.StartTimeUtc = DateTime.UtcNow.AddMinutes(1);
+            communityMessageEdit.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5);
 
             // Act.
             async Task<IActionResult> Action() => await controller.EditPlayerNotification(notificationId, xuid, communityMessageEdit).ConfigureAwait(false);
@@ -1431,7 +1437,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
             var communityMessageEdit = Fixture.Create<LspGroupCommunityMessage>();
-            communityMessageEdit.Duration = TimeSpan.FromDays(3);
+            communityMessageEdit.StartTimeUtc = DateTime.UtcNow.AddMinutes(1);
+            communityMessageEdit.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5);
             communityMessageEdit.DeviceType = DeviceType.All;
 
             // Act.
@@ -1475,18 +1482,19 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var notificationId = Fixture.Create<Guid>();
             var xuid = ValidXuid;
-            var duration = TimeSpan.FromDays(3);
+            var sendDate = DateTime.UtcNow.AddMinutes(1);
+            var endDate = DateTime.UtcNow.AddMinutes(5);
             var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = null, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
-                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.Empty, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
-                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = null, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.Empty, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = TestConstants.WhiteSpace, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = null, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.Empty, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1505,14 +1513,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var notificationId = Fixture.Create<Guid>();
             var xuid = ValidXuid;
             var tooLong = new string('*', 520);
-            var duration = TimeSpan.FromDays(3);
+            var sendDate = DateTime.UtcNow.AddMinutes(1);
+            var endDate = DateTime.UtcNow.AddMinutes(5);
             var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = tooLong, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = tooLong, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.EditPlayerNotification(notificationId, xuid, new CommunityMessage{Message = tooLong, StartTimeUtc = sendDate, ExpireTimeUtc = endDate}).ConfigureAwait(false),
+                async () => await controller.EditGroupNotification(notificationId, new LspGroupCommunityMessage{Message = tooLong, StartTimeUtc = sendDate, ExpireTimeUtc = endDate, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.

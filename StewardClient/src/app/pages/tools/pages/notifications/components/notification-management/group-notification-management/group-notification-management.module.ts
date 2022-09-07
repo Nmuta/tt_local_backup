@@ -32,6 +32,9 @@ import { WoodstockGroupNotificationManagementContract } from './woodstock/woodst
 import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-group-notification-management.contract';
 import { SteelheadGroupNotificationManagementComponent } from './steelhead/steelhead-group-notification-management.component';
 import { SteelheadGroupNotificationManagementContract } from './steelhead/steelhead-group-notification-management.contract';
+import { LuxonDateModule } from 'ngx-material-luxon';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -70,6 +73,9 @@ import { SteelheadGroupNotificationManagementContract } from './steelhead/steelh
     MatSelectModule,
     MatTooltipModule,
     MatPaginatorModule,
+    DateTimePickersModule,
+    LuxonDateModule,
+    StandardDateModule,
   ],
   exports: [
     GroupNotificationManagementComponent,

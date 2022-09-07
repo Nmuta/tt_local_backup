@@ -313,6 +313,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             SendMessageNotificationToMultipleUsersAsync(
             IList<ulong> xuids,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             string endpoint);
 
@@ -322,6 +323,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public Task<ServicesLiveOps.NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
             int groupId,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             ServicesLiveOps.ForzaLiveDeviceType deviceType,
             string endpoint);

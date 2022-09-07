@@ -78,15 +78,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             //communityMessage.Xuids.EnsureValidXuids();
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
             await this.EnsurePlayersExist(this.Services, communityMessage.Xuids).ConfigureAwait(true);
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
-            var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
             var notifications = new List<MessageSendResult<ulong>>();
 
             try
@@ -95,9 +92,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     communityMessage.Xuids.ToArray(),
                     communityMessage.Xuids.Count,
                     communityMessage.Message,
-                    expireTime,
+                    communityMessage.ExpireTimeUtc,
                     string.Empty, // Image Url is unused in Steward
-                    DateTime.Now).ConfigureAwait(true);
+                    communityMessage.StartTimeUtc).ConfigureAwait(true);
 
                 notifications.AddRange(this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults));
             }

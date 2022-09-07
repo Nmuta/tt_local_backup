@@ -36,6 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<MessageSendResult<ulong>>> SendNotificationsAsync(
             IList<ulong> xuids,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             string requesterObjectId,
             string endpoint);
@@ -46,6 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<MessageSendResult<int>> SendGroupNotificationAsync(
             int groupId,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             DeviceType deviceType,
             string requesterObjectId,

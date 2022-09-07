@@ -16,23 +16,15 @@
     ></textarea>
   </mat-form-field>
 
-  <mat-form-field appearance="fill" class="expiry-date">
-    <mat-label>Expiry Time (mm/dd/yyyy)</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      formControlName="expireTime"
-      [matDatepickerFilter]="dateTimeFutureFilter"
-    />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="newCommunityMessageForm.controls['expireTime'].hasError('is-after')"
-      >Expiry time must be in the future.</mat-error
-    >
-    <mat-error *ngIf="newCommunityMessageForm.controls['expireTime'].hasError('invalid-format')"
-      >Invalid format, please use mm/dd/yyyy.</mat-error
-    >
-  </mat-form-field>
+  <datetime-range-picker
+    [formControl]="formControls.dateRange"
+    [min]="min"
+    [disableStartTime]="lockStartTime"
+  ></datetime-range-picker>
+
+  <div *ngIf="lockStartTime" class="lockStartTimeWarning">
+    Start time selection disabled for this title.
+  </div>
 
   <mat-form-field *ngIf="allowDeviceTypeFilter" appearance="fill" class="device-type">
     <mat-label>Device Type</mat-label>

@@ -42,6 +42,7 @@ export abstract class CommunityMessagingComponent extends BaseComponent {
   public loadError: unknown;
 
   public abstract gameTitle: GameTitle;
+  public abstract lockStartTime: boolean;
   public abstract submitCommunityMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
 
   /** New community message created. */

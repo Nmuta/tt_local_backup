@@ -2,7 +2,12 @@
   <section formGroupName="date" class="vertical">
     <mat-form-field appearance="fill">
       <mat-label>Date</mat-label>
-      <input matInput [formControl]="formControls.date" [matDatepicker]="picker" />
+      <input
+        matInput
+        [formControl]="formControls.date"
+        [matDatepicker]="picker"
+        [matDatepickerFilter]="this.dateTimeMinDateFilter"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="formControls.date.hasError('matDateInvalid')">Invalid date</mat-error>
@@ -11,7 +16,11 @@
   <section formGroupName="time">
     <mat-form-field>
       <mat-label>Time</mat-label>
-      <timepicker [formControl]="formControls.time" #timePicker></timepicker>
+      <timepicker
+        [formControl]="formControls.time"
+        [min]="calculatedMinTime"
+        #timePicker
+      ></timepicker>
       <button
         mat-button
         matSuffix

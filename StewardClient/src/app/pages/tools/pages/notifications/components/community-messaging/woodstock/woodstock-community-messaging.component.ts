@@ -17,6 +17,7 @@ import { GameTitle } from '@models/enums';
 })
 export class WoodstockCommunityMessagingComponent extends CommunityMessagingComponent {
   public gameTitle = GameTitle.FH5;
+  public lockStartTime = false;
 
   constructor(private readonly woodstockService: WoodstockService) {
     super();

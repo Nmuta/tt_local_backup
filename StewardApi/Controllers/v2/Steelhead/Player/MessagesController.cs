@@ -171,6 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
             {
@@ -183,12 +184,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
             // Tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903790
             */
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
                 Message = editParameters.Message,
-                ExpirationDate = expireTime,
+                ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = false,
                 DeviceType = ForzaLiveDeviceType.Invalid
             };

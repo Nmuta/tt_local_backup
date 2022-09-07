@@ -18,6 +18,7 @@ import { SteelheadPlayersMessagesService } from '@services/api-v2/steelhead/play
 })
 export class SteelheadCommunityMessagingComponent extends CommunityMessagingComponent {
   public gameTitle = GameTitle.FM8;
+  public lockStartTime = false;
 
   constructor(
     private readonly steelheadPlayersMessagesService: SteelheadPlayersMessagesService,

@@ -10,6 +10,7 @@
           <new-community-message
             [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
             [pendingCommunityMessage]="newCommunityMessage"
+            [lockStartTime]="lockStartTime"
             (emitNewCommunityMessage)="setNewCommunityMessage($event)"
           ></new-community-message>
         </ng-container>
@@ -50,17 +51,34 @@
       Pending Community Message
     </h3>
     <section class="new-community-message">
-      <div class="new-message-content">
-        <span
-          ><b>Expires on:</b>
-          {{ newCommunityMessage.expiryDate | dateTimeToJsDate | date: 'short' }}</span
-        >
-        <span *ngIf="!!newCommunityMessage.deviceType"
-          ><b>Device Type:</b> {{ newCommunityMessage.deviceType | deppoh }}</span
-        >
-        <span><b>Message:</b></span>
-        <span>{{ newCommunityMessage.message }}</span>
-      </div>
+      <table class="info-table">
+        <tr>
+          <th>Sent Date:</th>
+          <td>
+            <standard-absolute-time-utc [timeUtc]="newCommunityMessage.startTimeUtc">
+            </standard-absolute-time-utc>
+          </td>
+        </tr>
+        <tr>
+          <th>Expire Date:</th>
+          <td>
+            <standard-absolute-time-utc [timeUtc]="newCommunityMessage.expireTimeUtc">
+            </standard-absolute-time-utc>
+          </td>
+        </tr>
+        <tr *ngIf="!!newCommunityMessage.deviceType">
+          <th>Device Type:</th>
+          <td>
+            {{ newCommunityMessage.deviceType | deppoh }}
+          </td>
+        </tr>
+        <tr>
+          <th>Message:</th>
+          <td>
+            {{ newCommunityMessage.message }}
+          </td>
+        </tr>
+      </table>
       <section class="action-buttons">
         <button
           [disabled]="!isCommunityMessageReady()"

@@ -1,0 +1,15 @@
+<span *ngIf="timeUtc" [matTooltip]="timeUtc | dateTimeToRelativePure">
+  <standard-copy>
+    {{
+      formats[format]?.dateFormat
+        ? (timeUtc | dateTimeToJsDate | date: formats[format]?.dateFormat:'utc')
+        : ''
+    }}
+    {{
+      formats[format]?.timeFormat
+        ? (timeUtc | dateTimeToJsDate | date: formats[format]?.timeFormat:'utc')
+        : ''
+    }}
+    UTC
+  </standard-copy>
+</span>

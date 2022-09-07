@@ -14,7 +14,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -45,7 +44,6 @@ import { SteelheadNotificationsComponent } from './steelhead/steelhead-notificat
     SteelheadNotificationsComponent,
   ],
   imports: [
-    ...STANDARD_DATE_IMPORTS,
     CommonModule,
     DirectivesModule,
     FontAwesomeModule,

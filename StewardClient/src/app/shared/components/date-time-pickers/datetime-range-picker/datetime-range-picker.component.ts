@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, Input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -52,6 +52,16 @@ export class DatetimeRangePickerComponent
   implements ControlValueAccessor, Validator, AfterViewInit
 {
   private static readonly UTC_NOW = DateTime.utc();
+
+  @Input()
+  public min: DateTime = DateTime.fromObject({ year: 2000, month: 1, day: 1 });
+
+  @Input()
+  public disableStartTime: boolean = false;
+
+  public calculatedMinStartTime: DateTime;
+  public calculatedMinEndTime: DateTime;
+
   public defaults: DatetimeRangePickerFormValueInternal = {
     dateRange: {
       start: DatetimeRangePickerComponent.UTC_NOW,
@@ -119,6 +129,11 @@ export class DatetimeRangePickerComponent
           this.formControls.dateRange.end.updateValueAndValidity();
           this.formControls.timeRange.start.updateValueAndValidity();
           this.formControls.timeRange.end.updateValueAndValidity();
+
+          this.calculatedMinStartTime = this.calculateMinTime(
+            this.formControls.dateRange.start.value,
+          );
+          this.calculatedMinEndTime = this.calculateMinTime(this.formControls.dateRange.end.value);
         }
 
         // prep for next iteration
@@ -144,12 +159,12 @@ export class DatetimeRangePickerComponent
     if (data) {
       const dataInternal: DatetimeRangePickerFormValueInternal = {
         dateRange: {
-          start: data.start,
-          end: data.end,
+          start: data.start.toUTC(),
+          end: data.end.toUTC(),
         },
         timeRange: {
-          start: data.start,
-          end: data.end,
+          start: data.start.toUTC(),
+          end: data.end.toUTC(),
         },
       };
 
@@ -185,6 +200,19 @@ export class DatetimeRangePickerComponent
 
     return null;
   }
+
+  /**
+   * Blocks selection of dates prior to defined minimum.
+   * @param {DateTime} comparisonTime should either be dateRange.start or dateRange.end
+   */
+  public calculateMinTime = (comparisonTime: DateTime): DateTime => {
+    const shouldFilterTime = comparisonTime.day == this.min.day;
+    if (shouldFilterTime) {
+      return this.min; //Restrict selection to minimum.
+    }
+
+    return DateTime.utc().startOf('day'); //Allow selection of any time.
+  };
 
   private mergeDates(data: DatetimeRangePickerFormValueInternal): DatetimeRangePickerFormValue {
     return {

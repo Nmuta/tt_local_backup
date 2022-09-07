@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DateTime } from 'luxon';
 
 import { DatetimePickerComponent } from './datetime-picker.component';
 
@@ -15,6 +16,7 @@ describe('DatetimePickerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DatetimePickerComponent);
     component = fixture.componentInstance;
+    component.min = DateTime.utc();
     fixture.detectChanges();
   });
 

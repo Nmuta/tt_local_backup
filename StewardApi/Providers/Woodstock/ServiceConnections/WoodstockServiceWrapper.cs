@@ -492,6 +492,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             SendMessageNotificationToMultipleUsersAsync(
                 IList<ulong> xuids,
                 string message,
+                DateTime sendTimeUtc,
                 DateTime expireTimeUtc,
                 string endpoint)
         {
@@ -504,7 +505,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 message,
                 expireTimeUtc,
                 string.Empty,
-                DateTime.UtcNow).ConfigureAwait(false);
+                sendTimeUtc).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -512,6 +513,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             SendGroupMessageNotificationAsync(
                 int groupId,
                 string message,
+                DateTime sendTimeUtc,
                 DateTime expireTimeUtc,
                 ServicesLiveOps.ForzaLiveDeviceType deviceType,
                 string endpoint)
@@ -531,7 +533,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 expireTimeUtc,
                 deviceType != ServicesLiveOps.ForzaLiveDeviceType.Invalid,
                 deviceType,
-                DateTime.UtcNow).ConfigureAwait(false);
+                sendTimeUtc).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

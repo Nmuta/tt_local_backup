@@ -1699,9 +1699,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.Xuids.EnsureValidXuids();
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
+
 
             var stringBuilder = new StringBuilder();
             var userClaims = this.User.UserClaims();
@@ -1723,11 +1722,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
             var notifications = await this.sunriseNotificationProvider.SendNotificationsAsync(
                 communityMessage.Xuids,
                 communityMessage.Message,
-                expireTime,
+                communityMessage.ExpireTimeUtc,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
@@ -1757,9 +1755,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1772,11 +1768,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
-            var expireTime = DateTime.Now.Add(communityMessage.Duration);
             var result = await this.sunriseNotificationProvider.SendGroupNotificationAsync(
                 groupId,
                 communityMessage.Message,
-                expireTime,
+                communityMessage.ExpireTimeUtc,
                 communityMessage.DeviceType,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
@@ -1803,6 +1798,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1814,12 +1810,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             await this.sunriseNotificationProvider.EditNotificationAsync(
                 notificationId,
                 xuid,
                 editParameters.Message,
-                expireTime,
+                editParameters.ExpireTimeUtc,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
@@ -1843,6 +1838,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1857,11 +1853,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"Cannot edit notification of type: {notification.NotificationType}.");
             }
 
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             await this.sunriseNotificationProvider.EditGroupNotificationAsync(
                 notificationId,
                 editParameters.Message,
-                expireTime,
+                editParameters.ExpireTimeUtc,
                 editParameters.DeviceType,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);

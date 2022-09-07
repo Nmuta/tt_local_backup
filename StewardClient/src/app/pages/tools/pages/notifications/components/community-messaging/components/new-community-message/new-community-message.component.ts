@@ -2,10 +2,9 @@ import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommunityMessage } from '@models/community-message';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
-import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
-import { toDateTime } from '@helpers/luxon';
 import { DeviceType } from '@models/enums';
+import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
 
 /** Outputs a new community message. */
 @Component({
@@ -14,24 +13,31 @@ import { DeviceType } from '@models/enums';
   styleUrls: ['./new-community-message.component.scss'],
 })
 export class NewCommunityMessageComponent implements OnInit {
+  private static readonly UTC_NOW = DateTime.utc();
   @Input() public pendingCommunityMessage: CommunityMessage;
   @Input() public allowDeviceTypeFilter: boolean;
+  @Input() public lockStartTime: boolean = false;
   @Output() public emitNewCommunityMessage = new EventEmitter<CommunityMessage>();
+
+  private dateRange: DatetimeRangePickerFormValue = {
+    start: NewCommunityMessageComponent.UTC_NOW.toUTC(),
+    end: NewCommunityMessageComponent.UTC_NOW.plus({ hour: 1 }).toUTC(),
+  };
+
+  public min = DateTime.utc().minus({ days: 1 });
+
   public readonly messageMaxLength: number = 512;
 
   public arrowIcon = faArrowCircleRight;
 
   public deviceTypes: string[] = Object.values(DeviceType);
-  /** New community message form. */
+
   public formControls = {
     message: new FormControl('', [
       Validators.required,
       Validators.maxLength(this.messageMaxLength),
     ]),
-    expireTime: new FormControl('', [
-      Validators.required,
-      DateValidators.isAfter(DateTime.local()),
-    ]),
+    dateRange: new FormControl(this.dateRange, [Validators.required]),
     deviceType: new FormControl(DeviceType.All, [Validators.required]),
   };
 
@@ -43,7 +49,10 @@ export class NewCommunityMessageComponent implements OnInit {
   public ngOnInit(): void {
     if (!!this.pendingCommunityMessage) {
       this.formControls.message.setValue(this.pendingCommunityMessage.message);
-      this.formControls.expireTime.setValue(this.pendingCommunityMessage.expiryDate.toISO());
+      this.formControls.dateRange.setValue({
+        start: this.pendingCommunityMessage.startTimeUtc,
+        end: this.pendingCommunityMessage.expireTimeUtc,
+      });
       this.formControls.deviceType.setValue(
         this.pendingCommunityMessage.deviceType ?? DeviceType.All,
       );
@@ -53,23 +62,16 @@ export class NewCommunityMessageComponent implements OnInit {
   /** Create message */
   public createMessage(): void {
     const message = this.formControls.message.value;
-    const expireTime = toDateTime(this.formControls.expireTime.value);
-    const expireTimeDuration = expireTime.diff(DateTime.local().startOf('day'));
+    const range = this.formControls.dateRange.value as DatetimeRangePickerFormValue;
+    const startTime = range?.start;
+    const endTime = range?.end;
     const deviceType = this.allowDeviceTypeFilter ? this.formControls.deviceType.value : null;
 
     this.emitNewCommunityMessage.emit({
       message: message,
-      expiryDate: expireTime,
-      duration: expireTimeDuration,
+      startTimeUtc: startTime,
+      expireTimeUtc: endTime,
       deviceType: deviceType,
     } as CommunityMessage);
   }
-
-  public dateTimeFutureFilter = (input: DateTime | null): boolean => {
-    if (!input) {
-      return false;
-    }
-    const day = input || DateTime.local().startOf('day');
-    return day > DateTime.local().startOf('day');
-  };
 }

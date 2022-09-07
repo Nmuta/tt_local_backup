@@ -116,9 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -130,7 +128,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
-            var expireTimeUtc = DateTime.Now.Add(communityMessage.Duration);
             var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(communityMessage.DeviceType);
             Guid notificationId = Guid.Empty;
             var messageResponse = new MessageSendResult<int>
@@ -144,10 +141,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 var response = await this.Services.NotificationManagementService.SendGroupMessageNotification(
                     groupId,
                     communityMessage.Message,
-                    expireTimeUtc,
+                    communityMessage.ExpireTimeUtc,
                     forzaDeviceType != ForzaLiveDeviceType.Invalid,
                     forzaDeviceType,
-                    DateTime.Now).ConfigureAwait(true);
+                    communityMessage.StartTimeUtc).ConfigureAwait(true);
 
                 notificationId = response.notificationId;
                 messageResponse.NotificationId = response.notificationId;
@@ -178,8 +175,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                     BatchReferenceId = string.Empty,
                     Action = NotificationAction.Send.ToString(),
                     Endpoint = this.Services.Endpoint,
-                    CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = expireTimeUtc
+                    CreatedDateUtc = communityMessage.StartTimeUtc,
+                    ExpireDateUtc = communityMessage.ExpireTimeUtc,
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(notificationHistory)
@@ -213,6 +210,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
             {
@@ -230,13 +228,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                     $"Cannot edit notification of type: {message.NotificationType}.");
             }
 
-            var expireTimeUtc = DateTime.UtcNow.Add(editParameters.Duration);
             var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(editParameters.DeviceType);
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
                 Message = editParameters.Message,
-                ExpirationDate = expireTimeUtc,
+                ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = forzaDeviceType != ForzaLiveDeviceType.Invalid,
                 DeviceType = forzaDeviceType
             };
@@ -269,8 +266,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                     BatchReferenceId = string.Empty,
                     Action = NotificationAction.Edit.ToString(),
                     Endpoint = this.Services.Endpoint,
-                    CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = expireTimeUtc
+                    CreatedDateUtc = editParameters.StartTimeUtc,
+                    ExpireDateUtc = editParameters.ExpireTimeUtc
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(

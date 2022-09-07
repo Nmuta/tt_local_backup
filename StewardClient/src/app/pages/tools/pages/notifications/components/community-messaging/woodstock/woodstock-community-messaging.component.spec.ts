@@ -73,8 +73,8 @@ describe('WoodstockCommunityMessagingComponent', () => {
   describe('Method: setNewCommunityMessage', () => {
     const message: CommunityMessage = {
       message: faker.random.words(10),
-      expiryDate: null,
-      duration: null,
+      expireTimeUtc: null,
+      startTimeUtc: null,
     };
 
     it('should set appropriate component variables', () => {
@@ -129,8 +129,8 @@ describe('WoodstockCommunityMessagingComponent', () => {
       component.loadError = {};
       component.newCommunityMessage = {
         message: faker.random.words(10),
-        expiryDate: null,
-        duration: null,
+        expireTimeUtc: null,
+        startTimeUtc: null,
       };
     });
 

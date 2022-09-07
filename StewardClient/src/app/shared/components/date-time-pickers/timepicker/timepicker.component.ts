@@ -6,6 +6,7 @@ import {
   ElementRef,
   HostBinding,
   Input,
+  OnChanges,
   OnDestroy,
   Optional,
   Self,
@@ -44,7 +45,8 @@ export class TimepickerComponent
     OnDestroy,
     ControlValueAccessor,
     Validator,
-    AfterViewInit
+    AfterViewInit,
+    OnChanges
 {
   private static nextId = 0;
 
@@ -59,6 +61,10 @@ export class TimepickerComponent
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('aria-describedby')
   public userAriaDescribedBy: string;
+
+  @Input()
+  public min: DateTime;
+  public minFormatted: string;
 
   public _value: DateTime = DateTime.utc().startOf('day');
   public _valueInternal: string = this._value.toFormat('HH:mm');
@@ -189,6 +195,15 @@ export class TimepickerComponent
     }
 
     this.stateChanges.next();
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnChanges(): void {
+    if (!this.min) {
+      this.minFormatted = null;
+    }
+
+    this.minFormatted = this.min.toLocaleString(DateTime.TIME_SIMPLE);
   }
 
   /** MatFormFieldControl hook. */

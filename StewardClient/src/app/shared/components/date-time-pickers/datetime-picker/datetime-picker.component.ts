@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, Input, OnChanges } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -47,8 +47,13 @@ interface DatetimePickerFormValueInternal {
     },
   ],
 })
-export class DatetimePickerComponent implements ControlValueAccessor, Validator, AfterViewInit {
+export class DatetimePickerComponent
+  implements ControlValueAccessor, Validator, AfterViewInit, OnChanges
+{
   private static readonly UTC_NOW = DateTime.utc();
+  @Input() public min: DateTime | null = null;
+  public calculatedMinTime: DateTime;
+
   public defaults: DatetimePickerFormValueInternal = {
     date: DatetimePickerComponent.UTC_NOW,
     time: DatetimePickerComponent.UTC_NOW,
@@ -89,6 +94,8 @@ export class DatetimePickerComponent implements ControlValueAccessor, Validator,
         if (hasChanges) {
           this.formControls.date.updateValueAndValidity();
           this.formControls.time.updateValueAndValidity();
+
+          this.calculatedMinTime = this.calculateMinTime();
         }
 
         // prep for next iteration
@@ -103,20 +110,44 @@ export class DatetimePickerComponent implements ControlValueAccessor, Validator,
       .subscribe(this.onChanges$);
   }
 
+  /** Blocks selection of dates prior to defined minimum. */
+  public dateTimeMinDateFilter = (input: DateTime | null): boolean => {
+    if (!input || !this.min) {
+      return false;
+    }
+
+    return input.startOf('day') >= this.min.startOf('day');
+  };
+
+  /** Blocks selection of dates prior to defined minimum. */
+  public calculateMinTime = (): DateTime => {
+    const shouldFilterTime = this.formControls.date.value.day == this.min.day;
+    if (shouldFilterTime) {
+      return this.min; //Restrict selection to minimum.
+    }
+
+    return DateTime.utc().startOf('day'); //Allow selection of any time.
+  };
+
   /** Angular lifecycle hook. */
   public ngAfterViewInit(): void {
     this.onChanges$.next(this.formGroup.value);
     this.formGroup.updateValueAndValidity();
   }
 
+  /** Angular lifecycle hook. */
+  public ngOnChanges(): void {
+    this.calculatedMinTime = this.calculateMinTime();
+  }
+
   /** Form control hook. */
   public writeValue(data: DatetimePickerFormValue): void {
     if (data) {
+      data = data.toUTC();
       const dataInternal: DatetimePickerFormValueInternal = {
         date: data,
         time: data,
       };
-
       this.formGroup.patchValue(dataInternal, { emitEvent: false });
     }
   }
@@ -162,6 +193,7 @@ export class DatetimePickerComponent implements ControlValueAccessor, Validator,
       if (!time) {
         return null;
       }
+
       day = day?.toUTC();
       time = time?.toUTC();
       const startOfTargetDay = day.startOf('day');
