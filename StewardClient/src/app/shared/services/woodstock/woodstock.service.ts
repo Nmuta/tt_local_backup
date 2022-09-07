@@ -113,20 +113,19 @@ export class WoodstockService {
     );
   }
 
-  // TODO: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1285965
   /** Deletes a player's community message. */
-  public deletePlayerCommunityMessage$(
-    _lspGroupId: BigNumber,
-    xuid: BigNumber,
-    notificationId: string,
-  ): Observable<void> {
+  public deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
     return this.apiService.deleteRequest$<void>(
       `${this.basePath}/player/xuid(${xuid})/notifications/notificationId(${notificationId})`,
     );
   }
 
+  // TODO: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1285965
   /** Deletes a group community message. */
-  public deleteLspGroupCommunityMessage$(notificationId: string): Observable<void> {
+  public deleteLspGroupCommunityMessage$(
+    _lspGroupId: BigNumber,
+    notificationId: string,
+  ): Observable<void> {
     return this.apiService.deleteRequest$<void>(
       `${this.basePath}/notifications/notificationId(${notificationId})`,
     );

@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },
+      uuid: '8a120147-e5bc-4003-981a-dbf723a2f399',
+      shortText: 'Fix bug preventing message deletion',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
       uuid: '2b7a9b68-9150-4604-ba16-c4b175d40320',
       shortText: 'Allow gifting certain time-limited liveries as part of inventory restoration',
