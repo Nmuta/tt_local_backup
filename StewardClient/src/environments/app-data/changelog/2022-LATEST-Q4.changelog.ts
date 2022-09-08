@@ -10,7 +10,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '459b4469-89ee-4e9d-8358-e4063e3141c1',
-      shortText: 'Refactor messaging component contracts to make them validate at build time instead of runtime',
+      shortText:
+        'Refactor messaging component contracts to make them validate at build time instead of runtime',
     },
     {
       tag: { title: 'all', tool: NavbarTool.Gifting },
