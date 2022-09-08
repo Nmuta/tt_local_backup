@@ -22,7 +22,7 @@ export class WoodstockIndividualNotificationManagementComponent {
   @ViewChild(IndividualNotificationManagementComponent)
   private managementComponent: IndividualNotificationManagementComponent;
   public service: IndividualNotificationManagementContract;
-  constructor(private readonly woodstockService: WoodstockService) {
+  constructor(woodstockService: WoodstockService) {
     this.service = {
       gameTitle: GameTitle.FH5,
       getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {

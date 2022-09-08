@@ -30,7 +30,7 @@ export class SunriseIndividualNotificationManagementComponent {
   @ViewChild(IndividualNotificationManagementComponent)
   private managementComponent: IndividualNotificationManagementComponent;
   public service: IndividualNotificationManagementContract;
-  constructor(private readonly sunriseService: SunriseService) {
+  constructor(sunriseService: SunriseService) {
     this.service = {
       gameTitle: GameTitle.FH4,
       getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {

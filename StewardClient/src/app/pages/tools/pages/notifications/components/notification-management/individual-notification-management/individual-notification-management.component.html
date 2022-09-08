@@ -7,6 +7,8 @@
     <ng-container *ngIf="!selectedXuid">
       Select a player to the left to see their notifications.
     </ng-container>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
+    </mat-paginator>
     <form *waitForMonitor="getMonitor">
       <table mat-table [dataSource]="notifications">
         <ng-container matColumnDef="message">
@@ -159,6 +161,4 @@
       </table>
     </form>
   </mat-card-content>
-  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
-  </mat-paginator>
 </mat-card>

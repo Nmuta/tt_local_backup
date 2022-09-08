@@ -23,18 +23,18 @@ export class SteelheadGroupNotificationManagementComponent {
   @ViewChild(GroupNotificationManagementComponent)
   private managementComponent: GroupNotificationManagementComponent;
   public service: GroupNotificationManagementContract;
-  constructor(private readonly steelheadGroupMessagesService: SteelheadGroupMessagesService) {
+  constructor(steelheadGroupMessagesService: SteelheadGroupMessagesService) {
     this.service = {
       gameTitle: GameTitle.FM8,
       getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
-        return this.steelheadGroupMessagesService.getGroupNotifications$(lspGroupId);
+        return steelheadGroupMessagesService.getGroupNotifications$(lspGroupId);
       },
       postEditLspGroupCommunityMessage$(
         lspGroupId: BigNumber,
         notificationId: string,
         communityMessage: CommunityMessage,
       ): Observable<void> {
-        return this.steelheadGroupMessagesService.postEditLspGroupCommunityMessage$(
+        return steelheadGroupMessagesService.postEditLspGroupCommunityMessage$(
           lspGroupId,
           notificationId,
           communityMessage,
@@ -44,7 +44,7 @@ export class SteelheadGroupNotificationManagementComponent {
         lspGroupId: BigNumber,
         notificationId: string,
       ): Observable<void> {
-        return this.steelheadGroupMessagesService.deleteLspGroupCommunityMessage$(
+        return steelheadGroupMessagesService.deleteLspGroupCommunityMessage$(
           lspGroupId,
           notificationId,
         );

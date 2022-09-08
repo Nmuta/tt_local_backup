@@ -22,7 +22,7 @@ export class SteelheadIndividualNotificationManagementComponent {
   @ViewChild(IndividualNotificationManagementComponent)
   private managementComponent: IndividualNotificationManagementComponent;
   public service: IndividualNotificationManagementContract;
-  constructor(private readonly steelheadPlayerMessagesService: SteelheadPlayerMessagesService) {
+  constructor(steelheadPlayerMessagesService: SteelheadPlayerMessagesService) {
     this.service = {
       gameTitle: GameTitle.FM8,
       getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {

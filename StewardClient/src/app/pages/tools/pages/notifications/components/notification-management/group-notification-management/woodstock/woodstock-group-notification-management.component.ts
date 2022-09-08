@@ -24,18 +24,18 @@ export class WoodstockGroupNotificationManagementComponent {
   @ViewChild(GroupNotificationManagementComponent)
   private managementComponent: GroupNotificationManagementComponent;
   public service: GroupNotificationManagementContract;
-  constructor(private readonly woodstockService: WoodstockService) {
+  constructor(woodstockService: WoodstockService) {
     this.service = {
       gameTitle: GameTitle.FH5,
       getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
-        return this.woodstockService.getGroupNotifications$(lspGroupId);
+        return woodstockService.getGroupNotifications$(lspGroupId);
       },
       postEditLspGroupCommunityMessage$(
         lspGroupId: BigNumber,
         notificationId: string,
         communityMessage: CommunityMessage,
       ): Observable<void> {
-        return this.woodstockService.postEditLspGroupCommunityMessage$(
+        return woodstockService.postEditLspGroupCommunityMessage$(
           lspGroupId,
           notificationId,
           communityMessage,
@@ -45,7 +45,7 @@ export class WoodstockGroupNotificationManagementComponent {
         lspGroupId: BigNumber,
         notificationId: string,
       ): Observable<void> {
-        return this.woodstockService.deleteLspGroupCommunityMessage$(lspGroupId, notificationId);
+        return woodstockService.deleteLspGroupCommunityMessage$(lspGroupId, notificationId);
       },
     };
   }

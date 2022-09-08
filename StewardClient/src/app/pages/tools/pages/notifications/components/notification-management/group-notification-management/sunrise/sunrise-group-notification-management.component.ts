@@ -32,18 +32,18 @@ export class SunriseGroupNotificationManagementComponent {
   @ViewChild(GroupNotificationManagementComponent)
   private managementComponent: GroupNotificationManagementComponent;
   public service: GroupNotificationManagementContract;
-  constructor(private readonly sunriseService: SunriseService) {
+  constructor(sunriseService: SunriseService) {
     this.service = {
       gameTitle: GameTitle.FH4,
       getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
-        return this.sunriseService.getGroupNotifications$(lspGroupId);
+        return sunriseService.getGroupNotifications$(lspGroupId);
       },
       postEditLspGroupCommunityMessage$(
         lspGroupId: BigNumber,
         notificationId: string,
         communityMessage: CommunityMessage,
       ): Observable<void> {
-        return this.sunriseService.postEditLspGroupCommunityMessage$(
+        return sunriseService.postEditLspGroupCommunityMessage$(
           lspGroupId,
           notificationId,
           communityMessage,
@@ -53,7 +53,7 @@ export class SunriseGroupNotificationManagementComponent {
         lspGroupId: BigNumber,
         notificationId: string,
       ): Observable<void> {
-        return this.sunriseService.deleteLspGroupCommunityMessage$(lspGroupId, notificationId);
+        return sunriseService.deleteLspGroupCommunityMessage$(lspGroupId, notificationId);
       },
     };
   }
