@@ -1,7 +1,12 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { CommunityMessage } from '@models/community-message';
+import { GameTitle } from '@models/enums';
+import { PlayerNotification } from '@models/notifications.model';
+import { WoodstockService } from '@services/woodstock';
 import BigNumber from 'bignumber.js';
+import { Observable } from 'rxjs';
 import { IndividualNotificationManagementComponent } from '../individual-notification-management.component';
-import { WoodstockIndividualNotificationManagementContract } from './woodstock-individual-notification-management.contract';
+import { IndividualNotificationManagementContract } from '../individual-notification-management.contract';
 
 /**
  *  Woodstock individual notification management component.
@@ -10,14 +15,35 @@ import { WoodstockIndividualNotificationManagementContract } from './woodstock-i
   selector: 'woodstock-individual-notification-management',
   templateUrl: './woodstock-individual-notification-management.component.html',
   styleUrls: [],
-  providers: [WoodstockIndividualNotificationManagementContract],
 })
 export class WoodstockIndividualNotificationManagementComponent {
   /** The selected xuid. */
   @Input() public selectedXuid: BigNumber;
   @ViewChild(IndividualNotificationManagementComponent)
   private managementComponent: IndividualNotificationManagementComponent;
-  constructor(public service: WoodstockIndividualNotificationManagementContract) {}
+  public service: IndividualNotificationManagementContract;
+  constructor(private readonly woodstockService: WoodstockService) {
+    this.service = {
+      gameTitle: GameTitle.FH5,
+      getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {
+        return woodstockService.getPlayerNotifications$(xuid);
+      },
+      postEditPlayerCommunityMessage$(
+        xuid: BigNumber,
+        notificationId: string,
+        communityMessage: CommunityMessage,
+      ): Observable<void> {
+        return woodstockService.postEditPlayerCommunityMessage$(
+          xuid,
+          notificationId,
+          communityMessage,
+        );
+      },
+      deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
+        return woodstockService.deletePlayerCommunityMessage$(xuid, notificationId);
+      },
+    };
+  }
 
   /** Refresh notification list.  */
   public refreshNotificationList(): void {

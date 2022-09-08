@@ -3,7 +3,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { WoodstockGroupNotificationManagementComponent } from './woodstock-group-notification-management.component';
-import { WoodstockGroupNotificationManagementContract } from './woodstock-group-notification-management.contract';
 
 describe('SunriseAuctionBlocklistComponent', () => {
   let component: WoodstockGroupNotificationManagementComponent;
@@ -14,7 +13,6 @@ describe('SunriseAuctionBlocklistComponent', () => {
       imports: [HttpClientTestingModule, NgxsModule.forRoot()],
       declarations: [WoodstockGroupNotificationManagementComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [WoodstockGroupNotificationManagementContract],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockGroupNotificationManagementComponent);

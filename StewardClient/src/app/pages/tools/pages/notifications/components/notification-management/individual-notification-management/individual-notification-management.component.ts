@@ -63,7 +63,7 @@ export class IndividualNotificationManagementComponent
 
   /** Gets the game title */
   public get gameTitle(): GameTitle {
-    return this.service.getGameTitle();
+    return this.service.gameTitle;
   }
 
   /** Lifecycle hook */

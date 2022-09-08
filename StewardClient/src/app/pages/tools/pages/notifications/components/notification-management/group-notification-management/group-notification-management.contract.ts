@@ -7,7 +7,7 @@ import { GroupNotification } from '@models/notifications.model';
 /** Group notification management contract. */
 export interface GroupNotificationManagementContract {
   /** Get game title. */
-  getGameTitle(): GameTitle;
+  gameTitle: GameTitle;
 
   /** Get group notifications. */
   getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]>;

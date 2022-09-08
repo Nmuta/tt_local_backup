@@ -3,7 +3,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { SteelheadGroupNotificationManagementComponent } from './steelhead-group-notification-management.component';
-import { SteelheadGroupNotificationManagementContract } from './steelhead-group-notification-management.contract';
 
 describe('SteelheadGroupNotificationManagementComponent', () => {
   let component: SteelheadGroupNotificationManagementComponent;
@@ -14,7 +13,6 @@ describe('SteelheadGroupNotificationManagementComponent', () => {
       imports: [HttpClientTestingModule, NgxsModule.forRoot()],
       declarations: [SteelheadGroupNotificationManagementComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [SteelheadGroupNotificationManagementContract],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadGroupNotificationManagementComponent);

@@ -28,12 +28,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { IndividualNotificationManagementComponent } from './individual-notification-management.component';
-import { WoodstockIndividualNotificationManagementContract } from './woodstock/woodstock-individual-notification-management.contract';
-import { SunriseIndividualNotificationManagementContract } from './sunrise/sunrise-individual-notification-management.contract';
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { SteelheadIndividualNotificationManagementComponent } from './steelhead/steelhead-individual-notification-management.component';
-import { SteelheadIndividualNotificationManagementContract } from './steelhead/steelhead-individual-notification-management.contract';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** Routed module for viewing steward user history. */
@@ -82,11 +79,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     SunriseIndividualNotificationManagementComponent,
     WoodstockIndividualNotificationManagementComponent,
     SteelheadIndividualNotificationManagementComponent,
-  ],
-  providers: [
-    SteelheadIndividualNotificationManagementContract,
-    WoodstockIndividualNotificationManagementContract,
-    SunriseIndividualNotificationManagementContract,
   ],
 })
 export class IndividualNotificationManagementModule {}
