@@ -43,7 +43,7 @@ export const RestrictedToolAccessLookup = {
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
   },
   [RestrictedFeature.PlayerProfileManagement]: {
-    [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
     [GameTitle.FH5]: [], // Unused
     [GameTitle.FH4]: [], // Unused
     [GameTitle.FM7]: [], // Unused

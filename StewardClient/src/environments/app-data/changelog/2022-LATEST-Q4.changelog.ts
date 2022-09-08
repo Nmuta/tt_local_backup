@@ -14,6 +14,12 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
         'Refactor messaging component contracts to make them validate at build time instead of runtime',
     },
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '39b09b8c-79fd-4439-af6c-947d8e8523c3',
+      shortText: 'Allow Motorsport Designers to load, save, and reset player profiles',
+      longText: ['FM navbar link is still hidden in production until full feature set is ready'],
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.Gifting },
       uuid: '6d30fe62-505c-43c7-b660-86fd2db51ab0',
       shortText: 'Fix gifting results view to only show errors on players that failed',
