@@ -153,8 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
@@ -216,8 +215,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(collapsedResponses);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, collapsedResponses).ConfigureAwait(true);
 
-                    var giftedXuids = collapsedResponses.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = collapsedResponses.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);

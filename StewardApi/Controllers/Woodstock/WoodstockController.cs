@@ -1447,8 +1447,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
@@ -1525,8 +1524,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
 
-            var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+            var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
             await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                 .ConfigureAwait(true);
@@ -1641,8 +1639,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);

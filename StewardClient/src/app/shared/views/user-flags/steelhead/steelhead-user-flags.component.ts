@@ -23,7 +23,7 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
     isTurn10Employee: new FormControl(false),
     isEarlyAccess: new FormControl(false),
     isRaceMarshall: new FormControl(false),
-    isContentCreator: new FormControl(false),
+    // isContentCreator: new FormControl(false), tmp disable until 9/12 (lugeiken)
     isUnderReview: new FormControl(false), // Keep as last form control
   };
 
@@ -50,7 +50,7 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
       isEarlyAccess: this.formControls.isEarlyAccess.value,
       isUnderReview: this.formControls.isUnderReview.value,
       isRaceMarshall: this.formControls.isRaceMarshall.value,
-      isContentCreator: this.formControls.isContentCreator.value,
+      isContentCreator: false, // this.formControls.isContentCreator.value,
     } as SteelheadUserFlags);
   }
 }
