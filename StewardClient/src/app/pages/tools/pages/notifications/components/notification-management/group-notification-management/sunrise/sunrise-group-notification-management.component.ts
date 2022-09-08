@@ -1,9 +1,15 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { ForceStartDateToUtcNowSelectionStrategy } from '@components/date-time-pickers/datetime-range-picker/date-range-selection-strategies';
+import { CommunityMessage } from '@models/community-message';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
+import { GroupNotification } from '@models/notifications.model';
+import { SunriseService } from '@services/sunrise';
+import BigNumber from 'bignumber.js';
+import { Observable } from 'rxjs';
 import { GroupNotificationManagementComponent } from '../group-notification-management.component';
-import { SunriseGroupNotificationManagementContract } from './sunrise-group-notification-management.contract';
+import { GroupNotificationManagementContract } from '../group-notification-management.contract';
 
 /**
  *  Sunrise group notification management component.
@@ -25,7 +31,32 @@ export class SunriseGroupNotificationManagementComponent {
   @Input() public selectedLspGroup: LspGroup;
   @ViewChild(GroupNotificationManagementComponent)
   private managementComponent: GroupNotificationManagementComponent;
-  constructor(public service: SunriseGroupNotificationManagementContract) {}
+  public service: GroupNotificationManagementContract;
+  constructor(sunriseService: SunriseService) {
+    this.service = {
+      gameTitle: GameTitle.FH4,
+      getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
+        return sunriseService.getGroupNotifications$(lspGroupId);
+      },
+      postEditLspGroupCommunityMessage$(
+        lspGroupId: BigNumber,
+        notificationId: string,
+        communityMessage: CommunityMessage,
+      ): Observable<void> {
+        return sunriseService.postEditLspGroupCommunityMessage$(
+          lspGroupId,
+          notificationId,
+          communityMessage,
+        );
+      },
+      deleteLspGroupCommunityMessage$(
+        lspGroupId: BigNumber,
+        notificationId: string,
+      ): Observable<void> {
+        return sunriseService.deleteLspGroupCommunityMessage$(lspGroupId, notificationId);
+      },
+    };
+  }
 
   /** Refresh notification list.  */
   public refreshNotificationList(): void {

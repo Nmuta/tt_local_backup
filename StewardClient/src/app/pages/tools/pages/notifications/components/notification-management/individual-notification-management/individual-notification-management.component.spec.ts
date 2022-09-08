@@ -16,9 +16,7 @@ import { GroupNotification, PlayerNotification } from '@models/notifications.mod
 import BigNumber from 'bignumber.js';
 
 class TestNotificationManagementService implements IndividualNotificationManagementContract {
-  public getGameTitle(): GameTitle {
-    return null;
-  }
+  public gameTitle: GameTitle.Street;
   public getPlayerNotifications$(): Observable<PlayerNotification[]> {
     return null;
   }

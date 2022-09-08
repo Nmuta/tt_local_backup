@@ -28,10 +28,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { GroupNotificationManagementComponent } from './group-notification-management.component';
-import { WoodstockGroupNotificationManagementContract } from './woodstock/woodstock-group-notification-management.contract';
-import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-group-notification-management.contract';
 import { SteelheadGroupNotificationManagementComponent } from './steelhead/steelhead-group-notification-management.component';
-import { SteelheadGroupNotificationManagementContract } from './steelhead/steelhead-group-notification-management.contract';
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
@@ -82,11 +79,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     SunriseGroupNotificationManagementComponent,
     WoodstockGroupNotificationManagementComponent,
     SteelheadGroupNotificationManagementComponent,
-  ],
-  providers: [
-    SteelheadGroupNotificationManagementContract,
-    WoodstockGroupNotificationManagementContract,
-    SunriseGroupNotificationManagementContract,
   ],
 })
 export class GroupNotificationManagementModule {}

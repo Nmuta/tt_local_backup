@@ -7,7 +7,7 @@ import { PlayerNotification } from '@models/notifications.model';
 /** Individual notification management contract. */
 export interface IndividualNotificationManagementContract {
   /** Get game title. */
-  getGameTitle(): GameTitle;
+  gameTitle: GameTitle;
 
   /** Get player notifications. */
   getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]>;
