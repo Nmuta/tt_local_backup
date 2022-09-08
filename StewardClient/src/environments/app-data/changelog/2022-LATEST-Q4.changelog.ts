@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '459b4469-89ee-4e9d-8358-e4063e3141c1',
+      shortText: 'Refactor messaging component contracts to make them validate at build time instead of runtime',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },
       uuid: 'c17418be-38f2-4f73-812e-f04ced9e8eab',
       shortText:
