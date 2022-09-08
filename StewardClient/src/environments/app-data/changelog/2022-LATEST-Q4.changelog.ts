@@ -8,6 +8,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.Gifting },
+      uuid: '6d30fe62-505c-43c7-b660-86fd2db51ab0',
+      shortText: 'Fix gifting results view to only show errors on players that failed',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '0b85cf8d-a9e9-40c1-a791-6499e9e95dcd',
+      shortText: 'Temporarily disable content creator user flag until Services is ready',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },
       uuid: 'c17418be-38f2-4f73-812e-f04ced9e8eab',
       shortText:

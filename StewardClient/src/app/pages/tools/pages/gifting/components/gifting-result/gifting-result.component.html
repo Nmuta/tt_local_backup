@@ -1,17 +1,18 @@
-<div>
-  <h4 *ngIf="giftingErrorCount <= 0">All Gifts Sent Successfully</h4>
-  <h4 *ngIf="giftingErrorCount > 0">{{ giftingErrorCount }} Gifting Errors</h4>
+<div class="gift-results-container">
+  <h4 *ngIf="playersWithErrorsCount > 0" class="players-with-errors-text">
+    {{ playersWithErrorsCount }} player(s) had gifting errors
+  </h4>
   <mat-expansion-panel
     *ngFor="let result of giftingResult"
-    [disabled]="giftingErrorCount <= 0"
-    [ngClass]="{ 'gift-result-error': giftingErrorCount > 0 }"
+    [disabled]="result?.errors?.length <= 0"
+    [ngClass]="{ 'gift-result-error': result?.errors?.length > 0 }"
   >
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{ result.playerOrLspGroup }} ({{ result.identityAntecedent }})
       </mat-panel-title>
       <mat-panel-description>
-        {{ giftingErrorCount > 0 ? 'Click to see error' : 'Gift sent successfully' }}
+        {{ result?.errors?.length > 0 ? 'Click to see error(s)' : 'All items sent successfully' }}
       </mat-panel-description>
     </mat-expansion-panel-header>
 
