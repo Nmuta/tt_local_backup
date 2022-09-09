@@ -28,9 +28,11 @@ import {
 export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: PlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
+  public hideMonitor = new ActionMonitor('Post Hide UGC');
 
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
+  public canHideUgc: boolean = false;
   public featureMatToolip: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
@@ -94,6 +96,15 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
 
   /** Features a UGC item in Steelhead */
   public featureUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+
+    throw new Error(`Steelhead does not support featuring UGC.`);
+  }
+
+  /** Hide a UGC item in Steelhead */
+  public hideUgcItem(): void {
     if (!this.ugcItem) {
       return;
     }
