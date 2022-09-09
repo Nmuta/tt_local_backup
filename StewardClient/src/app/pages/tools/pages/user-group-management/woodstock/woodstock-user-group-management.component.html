@@ -22,16 +22,9 @@
 
   <div class="steward-layout-pane steward-layout-fill reference-inventory">
     <div>
-      <mat-card class="manage-user-group-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>manage_accounts</mat-icon>
-          <mat-card-title>User Group Management</mat-card-title>
-          <mat-card-subtitle>Woodstock</mat-card-subtitle>
-        </mat-card-header>
-        <woodstock-list-users-in-user-group
-          [userGroup]="selectedUserGroup"
-        ></woodstock-list-users-in-user-group>
-      </mat-card>
+      <woodstock-list-users-in-user-group
+        [userGroup]="selectedUserGroup"
+      ></woodstock-list-users-in-user-group>
     </div>
   </div>
 </div>

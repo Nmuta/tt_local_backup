@@ -8,6 +8,7 @@ import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { UserState } from '@shared/state/user/user.state';
 import { of } from 'rxjs';
 import {
@@ -52,7 +53,7 @@ describe('ListUsersInGroupComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [ListUsersInGroupComponent],
+      declarations: [ListUsersInGroupComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
