@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockChangelogService } from '@services/changelog/changelog.service.mock';
 
-import { ChangelogTitleDetailsComponent } from './changelog-title-details.component';
+import { ChangelogTagDetailsComponent } from './changelog-tag-details.component';
 
-describe('ChangelogTitleDetailsComponent', () => {
-  let component: ChangelogTitleDetailsComponent;
-  let fixture: ComponentFixture<ChangelogTitleDetailsComponent>;
+describe('ChangelogTagDetailsComponent', () => {
+  let component: ChangelogTagDetailsComponent;
+  let fixture: ComponentFixture<ChangelogTagDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChangelogTitleDetailsComponent],
+      declarations: [ChangelogTagDetailsComponent],
       providers: [createMockChangelogService()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ChangelogTitleDetailsComponent);
+    fixture = TestBed.createComponent(ChangelogTagDetailsComponent);
     component = fixture.debugElement.componentInstance;
   });
 

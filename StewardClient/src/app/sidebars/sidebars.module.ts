@@ -26,7 +26,7 @@ import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { ChangelogComponent } from './changelog/changelog.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { ChangelogGroupComponent } from './changelog/changelog-group/changelog-group.component';
-import { ChangelogTitleDetailsComponent } from './changelog/changelog-title-details/changelog-title-details.component';
+import { ChangelogTagDetailsComponent } from './changelog/changelog-tag-details/changelog-tag-details.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
@@ -62,7 +62,7 @@ export const sidebarRoutes = [
     NotificationsComponent,
     ChangelogComponent,
     ChangelogGroupComponent,
-    ChangelogTitleDetailsComponent,
+    ChangelogTagDetailsComponent,
   ],
   imports: [
     ChangelogModule,

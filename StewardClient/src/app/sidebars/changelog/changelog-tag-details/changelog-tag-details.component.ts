@@ -14,12 +14,12 @@ interface ChanglogEntryChip {
 
 /** Displays a single changelog group. */
 @Component({
-  selector: 'changelog-title-details',
-  templateUrl: './changelog-title-details.component.html',
-  styleUrls: ['./changelog-title-details.component.scss'],
+  selector: 'changelog-tag-details',
+  templateUrl: './changelog-tag-details.component.html',
+  styleUrls: ['./changelog-tag-details.component.scss'],
   providers: [GameTitleAbbreviationPipe, GameTitleFullNamePipe, HumanizePipe],
 })
-export class ChangelogTitleDetailsComponent extends BaseComponent implements OnChanges {
+export class ChangelogTagDetailsComponent extends BaseComponent implements OnChanges {
   @Input() public entry: ChangelogEntry;
 
   public tagOrToolChips: ChanglogEntryChip[] = [];
