@@ -7,7 +7,7 @@
 }
 
 .title-bar {
-  margin-bottom: 0;
+  margin-bottom: $gap-small;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -23,6 +23,6 @@
   overflow: hidden;
 }
 
-changelog-title-details {
+changelog-tag-details {
   margin-bottom: $gap-small;
 }
