@@ -1,3 +1,5 @@
+@import '/src/styles/mixins';
+
 :host ::ng-deep .no-expand {
   .mat-expansion-panel-content {
     display: none;
@@ -12,4 +14,15 @@
   .spacer {
     flex-grow: 1;
   }
+}
+
+.short-text {
+  text-overflow: ellipsis;
+  max-width: 500px;
+  display: block;
+  overflow: hidden;
+}
+
+changelog-title-details {
+  margin-bottom: $gap-small;
 }

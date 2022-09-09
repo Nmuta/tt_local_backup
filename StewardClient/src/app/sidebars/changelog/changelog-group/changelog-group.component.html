@@ -8,12 +8,6 @@
       >{{ group.title }}</mat-checkbox
     >
     <span class="spacer"></span>
-    <button *ngIf="anyOpened" mat-icon-button (click)="closeAll()" matTooltip="Collapse All">
-      <mat-icon>expand_less</mat-icon>
-    </button>
-    <button *ngIf="!anyOpened" mat-icon-button (click)="openAll()" matTooltip="Expand All">
-      <mat-icon>expand_more</mat-icon>
-    </button>
   </h3>
   <mat-accordion multi displayMode="flat">
     <mat-expansion-panel
@@ -21,14 +15,18 @@
       [class.no-expand]="!(entry.longText?.length ?? false)"
       [hideToggle]="!(entry.longText?.length ?? false)"
       [expanded]="entry.longText?.length ?? false"
+      class="top-border header-two-rows"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
+          <changelog-title-details [entry]="entry"></changelog-title-details>
           <mat-checkbox
             clickStop
             [ngModel]="isAcknowledgedEntry(entry)"
             (change)="updateEntry(entry, $event)"
-            >{{ entry.shortText }}
+          >
+            <span></span>
+            {{ entry.shortText }}
           </mat-checkbox>
         </mat-panel-title>
       </mat-expansion-panel-header>
