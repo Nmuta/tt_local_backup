@@ -12,6 +12,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       uuid: 'd0db08a7-b27b-489f-8e6f-86323c8c27f4',
       shortText: 'Add tag and tool details to each changelog entry',
     },
+    {      
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '65b068ce-13a9-42cb-ac73-1ef72dd7a10d',
+      shortText: 'Implement bulk livery gifting UI',
+    },
     {
       tag: ChangelogTag.Internal,
       uuid: '459b4469-89ee-4e9d-8358-e4063e3141c1',
