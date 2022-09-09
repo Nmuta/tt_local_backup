@@ -35,9 +35,12 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
 
   /** Lifecycle hook */
   public ngOnChanges(): void {
+    this.tagOrToolChips = this.buildTagOrToolDetailChips();
+    this.titleChips = this.buildTitleDetailChips();
+  }
+
+  private buildTagOrToolDetailChips(): ChanglogEntryChip[] {
     const entryAsArea = this.entry.tag as ChangelogArea;
-    this.titleChips = [];
-    this.tagOrToolChips = [];
 
     const hasToolDetails = !!entryAsArea?.tool;
     if (hasToolDetails) {
@@ -46,7 +49,7 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
         ? (entryAsArea.tool as NavbarTool[])
         : [entryAsArea.tool as NavbarTool];
 
-      this.tagOrToolChips = tools.map(
+      return tools.map(
         tool =>
           ({
             title: this.humanizePipe.transform(tool.split('-').join(' ')), // Navtool is a hyphen separate string
@@ -54,13 +57,17 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
           } as ChanglogEntryChip),
       );
     } else {
-      this.tagOrToolChips = [
+      return [
         {
           title: this.humanizePipe.transform(this.entry.tag as ChangelogTag),
           tooltip: null,
         } as ChanglogEntryChip,
       ];
     }
+  }
+
+  private buildTitleDetailChips(): ChanglogEntryChip[] {
+    const entryAsArea = this.entry.tag as ChangelogArea;
 
     const hasTitleDetails = !!entryAsArea?.title;
     if (hasTitleDetails) {
@@ -77,7 +84,7 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
         titles = [entryAsArea?.title as GameTitle];
       }
 
-      this.titleChips = titles
+      return titles
         .filter(title => title !== GameTitle.Street)
         .map(
           title =>
