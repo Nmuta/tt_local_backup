@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
+      uuid: '9470551b-e557-4004-9bf2-edf4a40d7752',
+      shortText: 'Moved the Delete All Users button to top of table',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
       uuid: '65b068ce-13a9-42cb-ac73-1ef72dd7a10d',
       shortText: 'Implement bulk livery gifting UI',

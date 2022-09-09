@@ -1,137 +1,10 @@
-<form [formGroup]="formGroup" *ngIf="!!userGroup">
-  <div class="player-type-toggle">
-    <mat-button-toggle-group [formControl]="formControls.useGamertags">
-      <mat-button-toggle [value]="false"> XUID </mat-button-toggle>
-      <mat-button-toggle [value]="true"> GTAG </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-  <mat-form-field class="useridentifications" appearance="fill">
-    <mat-label>{{
-      !formControls.useGamertags.value ? 'Player XUIDs' : 'Player Gamertags'
-    }}</mat-label>
-    <textarea
-      matInput
-      [formControl]="formControls.userIdentifications"
-      cdkTextareaAutosize
-    ></textarea>
-  </mat-form-field>
-  <div class="actions-group">
-    <div class="action">
-      <button
-        [disabled]="
-          !verifyBulkAdd.checked || !formControls.userIdentifications.value || !userHasWritePerms
-        "
-        mat-raised-button
-        color="primary"
-        (click)="addUsersInGroup()"
-        stateManager
-        [monitor]="addPlayersMonitor"
-        monitorDisable
-        monitorWarn
-        monitorWarnSnackbar
-      >
-        <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
-          Add Users
-          <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
-        </span>
-      </button>
-      <mat-checkbox #verifyBulkAdd matTooltip="Verify Bulk Add" aria-label="Verify Bulk Add"
-        >Verify</mat-checkbox
-      >
-    </div>
-    <div class="action">
-      <button
-        [disabled]="
-          !verifyBulkDelete.checked || !formControls.userIdentifications.value || !userHasWritePerms
-        "
-        mat-raised-button
-        color="warn"
-        (click)="deleteUsersInGroup()"
-        stateManager
-        [monitor]="deletePlayersMonitor"
-        monitorDisable
-        monitorWarn
-        monitorWarnSnackbar
-      >
-        <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
-          Delete Users
-          <button-spinner [monitor]="deletePlayersMonitor" defaultIcon="delete"></button-spinner>
-        </span>
-      </button>
-      <mat-checkbox
-        #verifyBulkDelete
-        matTooltip="Verify Bulk Deletion"
-        aria-label="Verify Bulk Deletion"
-        >Verify</mat-checkbox
-      >
-    </div>
-  </div>
-</form>
-
-<table *ngIf="!!userGroup && getMonitor.isSuccess" class="info-table">
-  <tr>
-    <th>Group Name</th>
-    <td>
-      {{ userGroup.name }}
-    </td>
-  </tr>
-  <tr>
-    <th>Player Count</th>
-    <td>{{ allPlayers.length }}</td>
-  </tr>
-</table>
-
-<mat-paginator
-  (page)="paginatorPageChange()"
-  [pageSize]="10"
-  [pageSizeOptions]="[10, 25, 50, 100]"
-  showFirstLastButtons
-></mat-paginator>
-<ng-container *ngIf="!!userGroup; else noProvidedUserGroupTemplate">
-  <ng-container *waitForMonitor="getMonitor">
-    <table mat-table [dataSource]="playersDataSource">
-      <ng-container matColumnDef="xuid">
-        <th mat-header-cell *matHeaderCellDef>XUID</th>
-        <td mat-cell *matCellDef="let element">{{ element.xuid }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="gamertag">
-        <th mat-header-cell *matHeaderCellDef>Gamertag</th>
-        <td mat-cell *matCellDef="let element">{{ element.gamertag }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element">
-          <button
-            [disabled]="!verifyDelete.checked || !userHasWritePerms"
-            mat-raised-button
-            color="warn"
-            (click)="deletePlayerFromUserGroup(element)"
-            stateManager
-            [monitor]="element.monitor"
-            monitorDisable
-            monitorWarn
-            monitorWarnSnackbar
-          >
-            <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
-              Remove
-              <button-spinner
-                [monitor]="element.deleteMonitor"
-                defaultIcon="delete"
-              ></button-spinner>
-            </span>
-          </button>
-          <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
-            >Verify</mat-checkbox
-          >
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-    <ng-container>
+<mat-card class="manage-user-group-card">
+  <mat-card-header class="sf-header">
+    <mat-icon mat-card-avatar>manage_accounts</mat-icon>
+    <mat-card-title>User Group Management</mat-card-title>
+    <mat-card-subtitle>{{ service.gameTitle | humanize }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <div *ngIf="!!userGroup">
       <button
         class="delete-all-button"
         [disabled]="!verifyDelete.checked || !userHasRemoveAllPerms"
@@ -152,9 +25,146 @@
       <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
         >Verify</mat-checkbox
       >
+    </div>
+  </mat-card-header>
+  <form [formGroup]="formGroup" *ngIf="!!userGroup">
+    <div class="player-type-toggle">
+      <mat-button-toggle-group [formControl]="formControls.useGamertags">
+        <mat-button-toggle [value]="false"> XUID </mat-button-toggle>
+        <mat-button-toggle [value]="true"> GTAG </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <mat-form-field class="useridentifications" appearance="fill">
+      <mat-label>{{
+        !formControls.useGamertags.value ? 'Player XUIDs' : 'Player Gamertags'
+      }}</mat-label>
+      <textarea
+        matInput
+        [formControl]="formControls.userIdentifications"
+        cdkTextareaAutosize
+      ></textarea>
+    </mat-form-field>
+    <div class="actions-group">
+      <div class="action">
+        <button
+          [disabled]="
+            !verifyBulkAdd.checked || !formControls.userIdentifications.value || !userHasWritePerms
+          "
+          mat-raised-button
+          color="primary"
+          (click)="addUsersInGroup()"
+          stateManager
+          [monitor]="addPlayersMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+        >
+          <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+            Add Users
+            <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
+          </span>
+        </button>
+        <mat-checkbox #verifyBulkAdd matTooltip="Verify Bulk Add" aria-label="Verify Bulk Add"
+          >Verify</mat-checkbox
+        >
+      </div>
+      <div class="action">
+        <button
+          [disabled]="
+            !verifyBulkDelete.checked ||
+            !formControls.userIdentifications.value ||
+            !userHasWritePerms
+          "
+          mat-raised-button
+          color="warn"
+          (click)="deleteUsersInGroup()"
+          stateManager
+          [monitor]="deletePlayersMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+        >
+          <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+            Delete Users
+            <button-spinner [monitor]="deletePlayersMonitor" defaultIcon="delete"></button-spinner>
+          </span>
+        </button>
+        <mat-checkbox
+          #verifyBulkDelete
+          matTooltip="Verify Bulk Deletion"
+          aria-label="Verify Bulk Deletion"
+          >Verify</mat-checkbox
+        >
+      </div>
+    </div>
+  </form>
+
+  <table *ngIf="!!userGroup && getMonitor.isSuccess" class="info-table">
+    <tr>
+      <th>Group Name</th>
+      <td>
+        {{ userGroup.name }}
+      </td>
+    </tr>
+    <tr>
+      <th>Player Count</th>
+      <td>{{ allPlayers.length }}</td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    (page)="paginatorPageChange()"
+    [pageSize]="10"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    showFirstLastButtons
+  ></mat-paginator>
+  <ng-container *ngIf="!!userGroup; else noProvidedUserGroupTemplate">
+    <ng-container *waitForMonitor="getMonitor">
+      <table mat-table [dataSource]="playersDataSource">
+        <ng-container matColumnDef="xuid">
+          <th mat-header-cell *matHeaderCellDef>XUID</th>
+          <td mat-cell *matCellDef="let element">{{ element.xuid }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="gamertag">
+          <th mat-header-cell *matHeaderCellDef>Gamertag</th>
+          <td mat-cell *matCellDef="let element">{{ element.gamertag }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              [disabled]="!verifyDelete.checked || !userHasWritePerms"
+              mat-raised-button
+              color="warn"
+              (click)="deletePlayerFromUserGroup(element)"
+              stateManager
+              [monitor]="element.monitor"
+              monitorDisable
+              monitorWarn
+              monitorWarnSnackbar
+            >
+              <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+                Remove
+                <button-spinner
+                  [monitor]="element.deleteMonitor"
+                  defaultIcon="delete"
+                ></button-spinner>
+              </span>
+            </button>
+            <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
+              >Verify</mat-checkbox
+            >
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
     </ng-container>
   </ng-container>
-</ng-container>
+</mat-card>
 
 <ng-template #noProvidedUserGroupTemplate>
   <span>Select a user group to view players</span>

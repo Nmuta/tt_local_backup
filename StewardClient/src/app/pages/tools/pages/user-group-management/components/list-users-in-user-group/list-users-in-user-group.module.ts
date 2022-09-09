@@ -18,6 +18,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 /** The create user group module. */
 @NgModule({
@@ -44,6 +46,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MonitorActionModule,
     StateManagersModule,
     MatButtonToggleModule,
+    MatCardModule,
+    PipesModule,
   ],
   exports: [
     WoodstockListUsersInGroupComponent,
