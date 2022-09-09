@@ -44,6 +44,13 @@ export class WaitForMonitorDirective extends BaseDirective implements OnChanges,
   }
 
   private showSpinnerOrContent(): void {
+    // Check null for when the monitor was not initialized
+    if (this.waitForMonitor.mode == null) {
+      this.viewContainer.clear();
+      this.viewContainer.createEmbeddedView(this.templateRef);
+      return;
+    }
+
     switch (this.waitForMonitor.mode) {
       case 'single-fire':
         if (!this.waitForMonitor.isSuccess) {

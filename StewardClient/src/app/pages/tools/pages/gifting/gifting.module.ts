@@ -24,6 +24,7 @@ import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.compone
 import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
 import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
 import { GiftLiveryModule } from './components/gift-livery/gift-livery.module';
+import { BulkGiftLiveryModule } from './components/bulk-gift-livery/bulk-gift-livery.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { GiftSpecialLiveriesComponent } from './components/gift-special-liveries/gift-special-liveries.component';
@@ -65,6 +66,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatTabsModule,
     GiftBasketModule,
     GiftLiveryModule,
+    BulkGiftLiveryModule,
     ItemSelectionModule,
     PlayerSelectionModule,
     PlayerInventoryProfilesModule,

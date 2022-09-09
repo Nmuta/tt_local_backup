@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '65b068ce-13a9-42cb-ac73-1ef72dd7a10d',
+      shortText: 'Implement bulk livery gifting UI',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '459b4469-89ee-4e9d-8358-e4063e3141c1',
       shortText:
