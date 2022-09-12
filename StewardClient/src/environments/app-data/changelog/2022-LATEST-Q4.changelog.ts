@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'd0db08a7-b27b-489f-8e6f-86323c8c27f4',
+      shortText: 'Add tag and tool details to each changelog entry',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: '279c7f32-2de6-442b-909a-abc4b48aa8ab',
       shortText: 'Add Hide UGC button to UGC details',

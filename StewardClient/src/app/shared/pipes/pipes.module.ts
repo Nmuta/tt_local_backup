@@ -16,6 +16,8 @@ import { AsyncBigJsonPipe } from './async-big-json.pipe';
 import { RenderGuardAsyncPipe } from './render-guard-async.pipe';
 import { RenderGuardSyncPipe } from './render-guard-sync.pipe';
 import { ToDateTimePipe } from './to-date-time.pipe';
+import { GameTitleAbbreviationPipe } from './game-title-abbreviation.pipe';
+import { GameTitleFullNamePipe } from './game-title-full-name.pipe';
 
 /** Module for various shared pipes. */
 @NgModule({
@@ -35,6 +37,8 @@ import { ToDateTimePipe } from './to-date-time.pipe';
     RenderGuardAsyncPipe,
     RenderGuardSyncPipe,
     ToDateTimePipe,
+    GameTitleAbbreviationPipe,
+    GameTitleFullNamePipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -53,6 +57,8 @@ import { ToDateTimePipe } from './to-date-time.pipe';
     RenderGuardAsyncPipe,
     RenderGuardSyncPipe,
     ToDateTimePipe,
+    GameTitleAbbreviationPipe,
+    GameTitleFullNamePipe,
   ],
 })
 export class PipesModule {}

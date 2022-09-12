@@ -1,3 +1,5 @@
+@import '/src/styles/mixins';
+
 :host ::ng-deep .no-expand {
   .mat-expansion-panel-content {
     display: none;
@@ -5,11 +7,15 @@
 }
 
 .title-bar {
-  margin-bottom: 0;
+  margin-bottom: $gap-small;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   .spacer {
     flex-grow: 1;
   }
+}
+
+changelog-tag-details {
+  margin-bottom: $gap-small;
 }
