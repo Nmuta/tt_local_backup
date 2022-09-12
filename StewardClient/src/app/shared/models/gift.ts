@@ -18,3 +18,6 @@ export interface BulkLiveryGift<TTarget> {
 
 /** Model for multi-player multi-livery gift. */
 export type BulkPlayerBulkLiveryGift = BulkLiveryGift<GroupGift>;
+
+/** Model for user group multi-livery gift. */
+export type UserGroupBulkLiveryGift = BulkLiveryGift<Gift>;

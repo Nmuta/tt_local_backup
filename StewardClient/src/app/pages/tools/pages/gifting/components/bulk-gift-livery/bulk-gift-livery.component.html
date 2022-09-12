@@ -23,7 +23,7 @@
           <mat-expansion-panel *ngFor="let livery of liveries" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title> {{ livery.carDescription }} | {{ livery.id }} </mat-panel-title>
-              <mat-panel-description> Click to view full details </mat-panel-description>.
+              <mat-panel-description> Click to view full details </mat-panel-description>
               <button mat-icon-button matTooltip="Remove Livery" (click)="removeLivery(livery)">
                 <mat-icon>close</mat-icon>
               </button>

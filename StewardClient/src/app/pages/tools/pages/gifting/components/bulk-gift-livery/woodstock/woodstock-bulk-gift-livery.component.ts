@@ -7,6 +7,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
+import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { WoodstockService } from '@services/woodstock';
@@ -33,7 +34,8 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
   constructor(
     private readonly woodstockService: WoodstockService,
     backgroundJobService: BackgroundJobService,
-    private readonly giftService: WoodstockPlayersGiftService,
+    private readonly playersGiftService: WoodstockPlayersGiftService,
+    private readonly groupGiftService: WoodstockGroupGiftService,
   ) {
     super(backgroundJobService);
   }
@@ -55,15 +57,19 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
       );
     }
 
-    return this.giftService.giftLiveriesByXuids$(giftReason, liveryIds, xuids);
+    return this.playersGiftService.giftLiveriesByXuids$(giftReason, liveryIds, xuids);
   }
 
   /** Gifts liveries to a LSP user group. */
   public giftLiveriesToLspGroup$(
-    _liveryIds: string[],
-    _lspGroup: LspGroup,
-    _giftReason: string,
+    liveryIds: string[],
+    lspGroup: LspGroup,
+    giftReason: string,
   ): Observable<GiftResponse<BigNumber>> {
-    return throwError(new Error('Unsupported'));
+    if (!lspGroup) {
+      return throwError(new Error('Failed to gift livery: user group was not provided'));
+    }
+
+    return this.groupGiftService.giftLiveriesByUserGroup$(giftReason, liveryIds, lspGroup.id);
   }
 }

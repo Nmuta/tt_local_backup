@@ -19,6 +19,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '96eaa5d4-2b10-4466-94fb-b185f2fcdf29',
+      shortText: 'Enable new bulk livery gifting UI for FH5',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
       uuid: '65b068ce-13a9-42cb-ac73-1ef72dd7a10d',
       shortText: 'Implement bulk livery gifting UI',
     },
