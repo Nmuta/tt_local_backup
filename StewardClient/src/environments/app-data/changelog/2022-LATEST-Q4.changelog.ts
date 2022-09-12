@@ -13,9 +13,19 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Add tag and tool details to each changelog entry',
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: '279c7f32-2de6-442b-909a-abc4b48aa8ab',
+      shortText: 'Add Hide UGC button to UGC details',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
       uuid: '9470551b-e557-4004-9bf2-edf4a40d7752',
       shortText: 'Moved the Delete All Users button to top of table',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '96eaa5d4-2b10-4466-94fb-b185f2fcdf29',
+      shortText: 'Enable new bulk livery gifting UI for FH5',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },

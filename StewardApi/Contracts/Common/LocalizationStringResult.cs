@@ -1,4 +1,4 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents the results of localization requests.

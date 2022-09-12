@@ -5,11 +5,10 @@ using System.Globalization;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
-using SteelheadContent;
+using SteelheadLiveOpsContent;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
@@ -157,8 +156,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaWeatherCondition, RacersCupWeatherCondition>()
                 .ReverseMap();
             this.CreateMap<LocalizedStringData, ForzaLocalizedStringData>().ReverseMap();
-            this.CreateMap<Contracts.Steelhead.Pegasus.SupportedLocale, SteelheadContent.SupportedLocale>().ReverseMap();
-            this.CreateMap<LocalizationStringResult, SteelheadContent.LocalizedString>()
+            this.CreateMap<LocalizationStringResult, SteelheadLiveOpsContent.LocalizedString>()
                 .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
                 .ReverseMap();
             this.CreateMap<ForzaUserAdminComment, ProfileNote>()
@@ -301,15 +299,15 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ReverseMap();
-            this.CreateMap<DataCar, MasterInventoryItem>()
+            this.CreateMap<SteelheadLiveOpsContent.DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.DisplayName} {src.Year} - TODO Update Projection to include MakeDisplayName"));
-            this.CreateMap<DataCar, DetailedCar>()
+            this.CreateMap<SteelheadLiveOpsContent.DataCar, DetailedCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
                 .ForMember(dest => dest.Make, opt => opt.MapFrom(src => "TODO Update Projection to include MakeDisplayName"));
-            this.CreateMap<VanityItem, MasterInventoryItem>()
+            this.CreateMap<SteelheadLiveOpsContent.VanityItem, MasterInventoryItem>()
                             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
                             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
             this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using SteelheadContent;
+using SteelheadLiveOpsContent;
 using Turn10;
 using Turn10.Data.Common;
 using Turn10.LiveOps;
@@ -51,8 +51,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         public async Task<SteelheadMasterInventory> GetMasterInventoryAsync()
         {
 
-            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<DataCar>(), new List<Exception>());
-            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<VanityItem>(), new List<Exception>());
+            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.DataCar>(), new List<Exception>());
+            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.VanityItem>(), new List<Exception>());
 
             await Task.WhenAll(getCars, /*getCarHorns,*/ getVanityItems /*getEmotes,*/ /*getQuickChatLines*/).ConfigureAwait(false);
 

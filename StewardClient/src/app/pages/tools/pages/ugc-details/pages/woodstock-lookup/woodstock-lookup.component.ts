@@ -30,9 +30,11 @@ import {
 export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: PlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
+  public hideMonitor = new ActionMonitor('Post Hide UGC');
 
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
+  public canHideUgc: boolean = false;
   public featureMatToolip: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
@@ -84,6 +86,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .subscribe(([shareCodeItems, idItem]) => {
         this.ugcItem = idItem ?? first(shareCodeItems);
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
+        this.canHideUgc = this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
           this.featureMatToolip = this.incorrectPermsTooltip;
@@ -110,6 +113,22 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       )
       .subscribe((response: PlayerUgcItem) => {
         this.ugcItem = response;
+      });
+  }
+
+  /** Hide a UGC item in Woodstock */
+  public hideUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.hideMonitor = this.hideMonitor.repeat();
+
+    this.service
+      .hideUgc$(this.ugcItem.id)
+      .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = false;
+        this.canHideUgc = false;
       });
   }
 }
