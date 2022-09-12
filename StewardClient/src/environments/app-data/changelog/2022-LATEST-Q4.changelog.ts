@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '5de789a1-0a15-4054-a619-18a1ca3b672e',
+      shortText: 'Change bulk gift livery component to composition',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'd0db08a7-b27b-489f-8e6f-86323c8c27f4',
       shortText: 'Add tag and tool details to each changelog entry',

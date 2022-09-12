@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, map, retryWhen, switchMap, takeUntil } from 'rxjs/operators';
@@ -21,11 +21,35 @@ enum BackgroundJobRetryStatus {
   UnexpectedError = 'Background job failed unexpectedly.',
 }
 
+/** Upstream contract for bulk gift liveries UI. */
+export interface BulkGiftLiveryContract {
+  gameTitle: GameTitle;
+
+  /** API for retrieving livery information. */
+  getLivery$(liveryId: string): Observable<PlayerUgcItem>;
+
+  /** API for gifting liveries to specific players. */
+  giftLiveriesToPlayers$(
+    liveryIds: string[],
+    xuids: BigNumber[],
+    giftReason: string,
+  ): Observable<BackgroundJob<unknown>>;
+
+  /** API for gifting liveries to an LSP group. */
+  giftLiveriesToLspGroup$(
+    liveryIds: string[],
+    lspGroup: LspGroup,
+    giftReason: string,
+  ): Observable<GiftResponse<BigNumber>>;
+}
+
 /** The base gift-livery component. */
 @Component({
-  template: '',
+  selector: 'bulk-gift-livery',
+  templateUrl: './bulk-gift-livery.component.html',
+  styleUrls: ['./bulk-gift-livery.component.scss'],
 })
-export abstract class BulkGiftLiveryBaseComponent<
+export class BulkGiftLiveryBaseComponent<
   IdentityT extends IdentityResultUnion,
 > extends BaseComponent {
   @ViewChild(PastableSingleInputComponent) liveryInput: PastableSingleInputComponent;
@@ -33,6 +57,7 @@ export abstract class BulkGiftLiveryBaseComponent<
   @Input() public playerIdentities: IdentityT[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
+  @Input() public service: BulkGiftLiveryContract;
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
   public formControls = {
@@ -60,24 +85,9 @@ export abstract class BulkGiftLiveryBaseComponent<
     return this.formControls.livery.hasError('invalidId');
   }
 
-  /** Game title */
-  public abstract gameTitle: GameTitleCodeName;
-
   constructor(private readonly backgroundJobService: BackgroundJobService) {
     super();
   }
-
-  public abstract getLivery$(liveryId: string): Observable<PlayerUgcItem>;
-  public abstract giftLiveriesToPlayers$(
-    liveryIds: string[],
-    xuids: BigNumber[],
-    giftReason: string,
-  ): Observable<BackgroundJob<unknown>>;
-  public abstract giftLiveriesToLspGroup$(
-    liveryIds: string[],
-    lspGroup: LspGroup,
-    giftReason: string,
-  ): Observable<GiftResponse<BigNumber>>;
 
   /** Called when livery id input has changes. */
   public onLiveryIdChange(input: string): void {
@@ -86,7 +96,7 @@ export abstract class BulkGiftLiveryBaseComponent<
     this.formControls.livery.setErrors({});
     if (!input) return;
 
-    const getLivery$ = this.getLivery$(input);
+    const getLivery$ = this.service.getLivery$(input);
     getLivery$
       .pipe(
         this.getMonitor.monitorSingleFire(),
@@ -199,13 +209,13 @@ export abstract class BulkGiftLiveryBaseComponent<
 
   private sendLiveryRequest$(): Observable<BackgroundJob<unknown> | GiftResponse<BigNumber>> {
     if (this.usingPlayerIdentities) {
-      return this.giftLiveriesToPlayers$(
+      return this.service.giftLiveriesToPlayers$(
         this.liveries.map(x => x.id),
         this.playerIdentities.map(identity => identity.xuid),
         this.formControls.giftReason.value,
       );
     } else {
-      return this.giftLiveriesToLspGroup$(
+      return this.service.giftLiveriesToLspGroup$(
         this.liveries.map(x => x.id),
         this.lspGroup,
         this.formControls.giftReason.value,
