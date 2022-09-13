@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         }
 
         /// <summary>
-        ///     Deletes the player notification.
+        ///     Deletes all the player's notifications.
         /// </summary>
         [HttpDelete]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]

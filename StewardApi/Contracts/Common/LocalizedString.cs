@@ -1,0 +1,15 @@
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
+{
+#pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped directly from LSP)
+#pragma warning disable CS1591 // XML Comments (POCO mapped directly from LSP)
+    public sealed class LocalizedString
+    {
+        public string Message { get; set; }
+
+        public string Category { get; set; }
+
+        public string LanguageCode { get; set; }
+
+        public bool Translated { get; set; }
+    }
+}

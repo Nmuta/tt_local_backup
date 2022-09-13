@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
@@ -55,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets the localized string data.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(Dictionary<Guid, List<string>>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, LiveOpsContracts.LocalizedString>))]
         public async Task<IActionResult> GetLocalizedStrings()
         {
             var locStrings = await this.pegasusService.GetLocalizedStringsAsync().ConfigureAwait(true);

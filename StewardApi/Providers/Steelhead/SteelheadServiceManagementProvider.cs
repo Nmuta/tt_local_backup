@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 {
@@ -113,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, List<string>>> GetLocalizedStringsAsync()
+        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync()
         {
             return await this.steelheadPegasusService.GetLocalizedStringsAsync().ConfigureAwait(false);
         }
