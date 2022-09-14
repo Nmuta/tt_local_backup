@@ -1,0 +1,46 @@
+<form [formGroup]="newCommunityMessageForm">
+  <mat-form-field appearance="fill" class="localized-message">
+    <mat-label
+      >Localized Message {{ communityMessageTextarea.value.length }}/{{
+        messageMaxLength
+      }}</mat-label
+    >
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      placeholder="Community Message"
+      type="text"
+      formControlName="message"
+      #communityMessageTextarea
+      required
+    ></textarea>
+  </mat-form-field>
+
+  <datetime-range-picker
+    [formControl]="formControls.dateRange"
+    [min]="min"
+    [disableStartTime]="lockStartTime"
+  ></datetime-range-picker>
+
+  <div *ngIf="lockStartTime" class="lockStartTimeWarning">
+    Start time selection disabled for this title.
+  </div>
+
+  <mat-form-field *ngIf="allowDeviceTypeFilter" appearance="fill" class="device-type">
+    <mat-label>Device Type</mat-label>
+    <mat-select formControlName="deviceType">
+      <mat-option *ngFor="let type of deviceTypes" [value]="type">
+        {{ type | deppoh }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="createMessage()"
+    [disabled]="!newCommunityMessageForm.valid"
+  >
+    Review <mat-icon svgIcon="steward-arrow-right"></mat-icon>
+  </button>
+</form>

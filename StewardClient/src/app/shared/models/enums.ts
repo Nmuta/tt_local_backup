@@ -95,6 +95,12 @@ export enum DeviceType {
   XboxSeriesXS = 'XboxSeriesXS',
 }
 
+/** Enum for notification types. */
+export enum NotificationType {
+  CommunityMessage = 'CommunityMessage',
+  PatchNotes = 'PatchNotes',
+}
+
 /** Enum for Steward error codes. */
 export enum StewardErrorCode {
   BadRequest = 'BadRequest',
