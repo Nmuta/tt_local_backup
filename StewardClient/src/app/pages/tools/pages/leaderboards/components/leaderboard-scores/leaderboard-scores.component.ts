@@ -99,7 +99,7 @@ export class LeaderboardScoresComponent
   implements OnInit, OnChanges, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSlideToggle) dateSlideToggle: MatSlideToggle;
+  @ViewChild('dateSlideToggle') dateSlideToggle: MatSlideToggle;
   @Input() service: LeaderboardScoresContract;
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   @Input() externalSelectedScore: LeaderboardScore;
@@ -347,10 +347,9 @@ export class LeaderboardScoresComponent
       this.filterFormControls.dateRange.enable();
     } else {
       this.filterFormControls.dateRange.disable();
-      // this.setLeaderboardScoresData(this.allScores);
     }
 
-    // Make sure slide toggle matches the change event.
+    // Make sure slide toggle matches the change event
     if (!!this.dateSlideToggle && this.dateSlideToggle.checked != toggleEvent.checked) {
       this.dateSlideToggle.toggle();
     }

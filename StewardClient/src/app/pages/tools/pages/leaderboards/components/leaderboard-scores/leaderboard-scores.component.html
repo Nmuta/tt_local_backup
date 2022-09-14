@@ -49,7 +49,7 @@
               </mat-slide-toggle>
             </div>
             <div class="date-range">
-              <mat-slide-toggle (change)="toggleDatetimeFilter($event)">
+              <mat-slide-toggle #dateSlideToggle (change)="toggleDatetimeFilter($event)">
                 Filter by date range
                 <help-popover-icon cardTitle="Leaderboard Date Filter">
                   <span
