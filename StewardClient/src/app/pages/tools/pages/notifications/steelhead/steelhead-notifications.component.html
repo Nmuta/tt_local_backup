@@ -33,11 +33,11 @@
       (selectedTabChange)="viewSelectionTypeChange($event.index)"
     >
       <mat-tab label="Send">
-        <steelhead-community-messaging
+        <localized-messaging
           [playerIdentities]="playerIdentities"
           [selectedLspGroup]="selectedLspGroup"
           [isUsingPlayerIdentities]="isUsingPlayerIdentities"
-        ></steelhead-community-messaging>
+        ></localized-messaging>
       </mat-tab>
       <mat-tab label="Edit/Delete">
         <steelhead-individual-notification-management

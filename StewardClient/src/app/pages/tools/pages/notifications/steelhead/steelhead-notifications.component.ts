@@ -6,6 +6,9 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import BigNumber from 'bignumber.js';
 import { SteelheadGroupNotificationManagementComponent } from '../components/notification-management/group-notification-management/steelhead/steelhead-group-notification-management.component';
 import { SteelheadIndividualNotificationManagementComponent } from '../components/notification-management/individual-notification-management/steelhead/steelhead-individual-notification-management.component';
+import { LocalizedMessagingContract } from '../components/localized-messaging/localized-messaging.component';
+import { CommunityMessageResult, LocalizedMessage } from '@models/community-message';
+import { Observable } from 'rxjs';
 
 /**
  *  Steelhead notification component.
@@ -20,6 +23,8 @@ export class SteelheadNotificationsComponent {
   @ViewChild(SteelheadIndividualNotificationManagementComponent)
   private playerManagementComponent: SteelheadIndividualNotificationManagementComponent;
 
+  public service: LocalizedMessagingContract;
+
   public gameTitle = GameTitle.FM8;
   /** The selected player identities */
   public playerIdentities: IdentityResultAlpha[] = [];
@@ -31,6 +36,20 @@ export class SteelheadNotificationsComponent {
   public isUsingPlayerIdentities: boolean = true;
   /** True when Edit/Delete tab is selected. */
   public isInEditTab: boolean = false;
+
+  constructor(steelheadPlayersMessagesService: SteelheadPlayersMessagesService) {
+    this.service = {
+      gameTitle: this.gameTitle,
+      lockStartTime: false,
+      sendLocalizedMessage$(
+        xuids: BigNumber[],
+        localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>[]>
+      {
+        return steelheadPlayersMessagesService.postSendCommunityMessageToXuids$(xuids, localizedMessage);
+      }
+    }
+
+  }
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {

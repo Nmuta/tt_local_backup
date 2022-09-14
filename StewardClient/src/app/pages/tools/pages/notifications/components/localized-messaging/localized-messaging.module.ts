@@ -66,6 +66,8 @@ import { LocalizedMessagingComponent } from './localized-messaging.component';
     StandardDateModule,
   ],
   exports: [
+    NewLocalizedMessageComponent,
+    LocalizedMessagingComponent,
   ],
 })
 export class LocalizedMessagingModule {}

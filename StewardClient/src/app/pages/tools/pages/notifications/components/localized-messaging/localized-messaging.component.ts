@@ -12,11 +12,11 @@ import { GiftIdentityAntecedent } from '@shared/constants';
 import { GameTitle } from '@models/enums';
 
 /** Service contract for UGC search filters. */
-export interface LocalizedMessagingServiceContract {
+export interface LocalizedMessagingContract {
   gameTitle: GameTitle;
   lockStartTime: boolean;
   //getLocalizedMessages$():;
-  submitLocalizedMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
+  sendLocalizedMessage$(xuids: BigNumber[], localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>[]>;
 }
 
 /** Routed Component; Sunrise Community Messaging Tool. */
@@ -66,7 +66,7 @@ export class LocalizedMessagingComponent extends BaseComponent {
   public submitLocalizedMessage(): void {
     this.isLoading = true;
 
-    const submitCommunityMessage$ = this.service?.submitLocalizedMessage$();
+    const submitCommunityMessage$ = this.service?.sendLocalizedMessage$();
     submitCommunityMessage$
       .pipe(
         take(1),
