@@ -27,13 +27,13 @@ import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { NewLocalizedMessageComponent } from './components/new-localized-message/new-localized-message.component';
-import { SteelheadLocalizedMessagingComponent } from './steelhead/steelhead-community-messaging.component';
+import { LocalizedMessagingComponent } from './localized-messaging.component';
 
 /** Routed module for banning users. */
 @NgModule({
   declarations: [
     NewLocalizedMessageComponent,
-    SteelheadLocalizedMessagingComponent,
+    LocalizedMessagingComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,

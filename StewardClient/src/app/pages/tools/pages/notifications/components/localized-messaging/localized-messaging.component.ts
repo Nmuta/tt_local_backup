@@ -11,6 +11,14 @@ import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { GameTitle } from '@models/enums';
 
+/** Service contract for UGC search filters. */
+export interface LocalizedMessagingServiceContract {
+  gameTitle: GameTitle;
+  lockStartTime: boolean;
+  //getLocalizedMessages$():;
+  submitLocalizedMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
+}
+
 /** Routed Component; Sunrise Community Messaging Tool. */
 type MessageSendResultViewable = {
   identity: BigNumber;
@@ -19,12 +27,15 @@ type MessageSendResultViewable = {
 };
 
 /**
- *  Community messaging component
+ *  Localized messaging component
  */
-@Component({
-  template: '',
+ @Component({
+  selector: 'localized-messaging',
+  templateUrl: './localized-messaging.component.html',
+  styleUrls: ['./localized-messaging.component.scss'],
 })
-export abstract class LocalizedMessagingComponent extends BaseComponent {
+export class LocalizedMessagingComponent extends BaseComponent {
+  @Input() service: LocalizedMessagingServiceContract;
   @Input() playerIdentities: IdentityResultAlpha[] = [];
   @Input() selectedLspGroup: LspGroup;
   @Input() isUsingPlayerIdentities: boolean = true;
@@ -41,21 +52,21 @@ export abstract class LocalizedMessagingComponent extends BaseComponent {
   /** The error received while loading. */
   public loadError: unknown;
 
-  public abstract gameTitle: GameTitle;
-  public abstract lockStartTime: boolean;
-  public abstract submitCommunityMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
+  //public abstract gameTitle: GameTitle;
+  //public abstract lockStartTime: boolean;
+  //public abstract submitLocalizedMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
 
   /** New community message created. */
-  public setNewCommunityMessage($event: LocalizedMessage): void {
+  public setNewLocalizedMessage($event: LocalizedMessage): void {
     this.newLocalizedMessage = $event;
     this.waitingForVerification = true;
   }
 
   /** Submit community message */
-  public submitCommunityMessage(): void {
+  public submitLocalizedMessage(): void {
     this.isLoading = true;
 
-    const submitCommunityMessage$ = this.submitCommunityMessage$();
+    const submitCommunityMessage$ = this.service?.submitLocalizedMessage$();
     submitCommunityMessage$
       .pipe(
         take(1),
@@ -94,7 +105,7 @@ export abstract class LocalizedMessagingComponent extends BaseComponent {
   }
 
   /** Checks if community message is ready to send. */
-  public isCommunityMessageReady(): boolean {
+  public isLocalizedMessageReady(): boolean {
     return (
       !!this.newLocalizedMessage &&
       (this.isUsingPlayerIdentities ? this.playerIdentities?.length > 0 : !!this.selectedLspGroup)

@@ -17,7 +17,7 @@ export class NewLocalizedMessageComponent implements OnInit {
   @Input() public pendingLocalizedMessage: LocalizedMessage;
   @Input() public allowDeviceTypeFilter: boolean;
   @Input() public lockStartTime: boolean = false;
-  @Output() public emitNewCommunityMessage = new EventEmitter<LocalizedMessage>();
+  @Output() public emitNewLocalizedMessage = new EventEmitter<LocalizedMessage>();
 
   private dateRange: DatetimeRangePickerFormValue = {
     start: NewLocalizedMessageComponent.UTC_NOW.toUTC(),
@@ -74,7 +74,7 @@ export class NewLocalizedMessageComponent implements OnInit {
     const notificationType = this.formControls.notificationType.value ?? null;
     const deviceType = this.allowDeviceTypeFilter ? this.formControls.deviceType.value : null;
 
-    this.emitNewCommunityMessage.emit({
+    this.emitNewLocalizedMessage.emit({
       localizedMessageId: message,
       startTimeUtc: startTime,
       expireTimeUtc: endTime,

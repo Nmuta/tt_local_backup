@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Community Messaging</mat-card-title>
-    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ service?.gameTitle | humanize }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
@@ -10,8 +10,8 @@
           <new-localized-message
             [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
             [pendingLocalizedMessage]="newLocalizedMessage"
-            [lockStartTime]="lockStartTime"
-            (emitNewCommunityMessage)="setNewCommunityMessage($event)"
+            [lockStartTime]="service?.lockStartTime"
+            (emitNewLocalizedMessage)="setNewLocalizedMessage($event)"
           ></new-localized-message>
         </ng-container>
       </ng-container>
@@ -81,12 +81,12 @@
       </table>
       <section class="action-buttons">
         <button
-          [disabled]="!isCommunityMessageReady()"
+          [disabled]="!isLocalizedMessageReady()"
           mat-raised-button
           color="primary"
           class="send-action"
           matTooltip="Send the messsage"
-          (click)="submitCommunityMessage()"
+          (click)="submitLocalizedMessage()"
         >
           Send message to {{ isUsingPlayerIdentities ? 'players' : 'LSP group' }}
         </button>
