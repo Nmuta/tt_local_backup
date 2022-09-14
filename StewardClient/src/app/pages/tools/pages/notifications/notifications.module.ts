@@ -35,6 +35,7 @@ import { GroupNotificationManagementModule } from './components/notification-man
 import { IndividualNotificationManagementModule } from './components/notification-management/individual-notification-management/individual-notification-management.module';
 import { SteelheadNotificationsComponent } from './steelhead/steelhead-notifications.component';
 import { LocalizedMessagingModule } from './components/localized-messaging/localized-messaging.module';
+import { LocalizationModule } from '@components/localization/localization.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -79,6 +80,7 @@ import { LocalizedMessagingModule } from './components/localized-messaging/local
     LocalizedMessagingModule,
     GroupNotificationManagementModule,
     IndividualNotificationManagementModule,
+    LocalizationModule,
   ],
 })
 export class NotificationsModule {}

@@ -32,14 +32,18 @@
       class="steward-layout-vertical-fill"
       (selectedTabChange)="viewSelectionTypeChange($event.index)"
     >
+    <mat-tab label="Create">
+      <create-localized-string [service]="localizationService"></create-localized-string>
+    </mat-tab>
       <mat-tab label="Send">
         <localized-messaging
+          [service]="sendMessageService"
           [playerIdentities]="playerIdentities"
           [selectedLspGroup]="selectedLspGroup"
           [isUsingPlayerIdentities]="isUsingPlayerIdentities"
         ></localized-messaging>
       </mat-tab>
-      <mat-tab label="Edit/Delete">
+      <!-- <mat-tab label="Edit/Delete">
         <steelhead-individual-notification-management
           [hidden]="!isUsingPlayerIdentities"
           [selectedXuid]="selectedXuid"
@@ -48,7 +52,7 @@
           [hidden]="isUsingPlayerIdentities"
           [selectedLspGroup]="selectedLspGroup"
         ></steelhead-group-notification-management>
-      </mat-tab>
+      </mat-tab> -->
     </mat-tab-group>
   </div>
 </div>

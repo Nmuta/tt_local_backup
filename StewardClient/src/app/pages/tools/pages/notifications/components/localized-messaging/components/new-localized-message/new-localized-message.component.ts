@@ -41,10 +41,10 @@ export class NewLocalizedMessageComponent implements OnInit {
     ]),
     dateRange: new FormControl(this.dateRange, [Validators.required]),
     deviceType: new FormControl(DeviceType.All, [Validators.required]),
-    notificationType: new FormControl(NotificationType.CommunityMessage)
+    notificationType: new FormControl(NotificationType.CommunityMessage, [Validators.required])
   };
 
-  public newCommunityMessageForm: FormGroup = new FormGroup(this.formControls);
+  public newLocalizedMessageForm: FormGroup = new FormGroup(this.formControls);
 
   constructor(private readonly formBuilder: FormBuilder) {}
 

@@ -28,7 +28,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { GroupNotificationManagementComponent } from './group-notification-management.component';
-import { SteelheadGroupNotificationManagementComponent } from './steelhead/steelhead-group-notification-management.component';
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
@@ -39,7 +38,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     GroupNotificationManagementComponent,
     SunriseGroupNotificationManagementComponent,
     WoodstockGroupNotificationManagementComponent,
-    SteelheadGroupNotificationManagementComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
@@ -78,7 +76,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     GroupNotificationManagementComponent,
     SunriseGroupNotificationManagementComponent,
     WoodstockGroupNotificationManagementComponent,
-    SteelheadGroupNotificationManagementComponent,
   ],
 })
 export class GroupNotificationManagementModule {}

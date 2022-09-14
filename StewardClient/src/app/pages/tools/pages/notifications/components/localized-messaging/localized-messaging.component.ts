@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommunityMessageResult, LocalizedMessage } from '@models/community-message';
-import { EMPTY, Observable } from 'rxjs';
-import { catchError, map, take, takeUntil } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
@@ -17,6 +17,8 @@ export interface LocalizedMessagingContract {
   lockStartTime: boolean;
   //getLocalizedMessages$():;
   sendLocalizedMessage$(xuids: BigNumber[], localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>[]>;
+  sendLspLocalizedMessage$(lspGroupId: BigNumber, localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>>;
+  //Send localized messages to LSP group
 }
 
 /** Routed Component; Sunrise Community Messaging Tool. */
@@ -35,7 +37,7 @@ type MessageSendResultViewable = {
   styleUrls: ['./localized-messaging.component.scss'],
 })
 export class LocalizedMessagingComponent extends BaseComponent {
-  @Input() service: LocalizedMessagingServiceContract;
+  @Input() service: LocalizedMessagingContract;
   @Input() playerIdentities: IdentityResultAlpha[] = [];
   @Input() selectedLspGroup: LspGroup;
   @Input() isUsingPlayerIdentities: boolean = true;
@@ -66,8 +68,19 @@ export class LocalizedMessagingComponent extends BaseComponent {
   public submitLocalizedMessage(): void {
     this.isLoading = true;
 
-    const submitCommunityMessage$ = this.service?.sendLocalizedMessage$();
-    submitCommunityMessage$
+    let submitLocalizedMessage$: Observable<CommunityMessageResult<BigNumber>[]>;
+    if (this.isUsingPlayerIdentities)
+    {
+      submitLocalizedMessage$ = this.service?.sendLocalizedMessage$(this.playerIdentities.map(identity => identity.xuid),
+      this.newLocalizedMessage,);
+    }
+    else
+    {
+      submitLocalizedMessage$ = this.service?.sendLspLocalizedMessage$(this.selectedLspGroup.id, this.newLocalizedMessage).pipe(switchMap(data => of([data])));
+    }
+
+
+    submitLocalizedMessage$
       .pipe(
         take(1),
         catchError(error => {

@@ -1,0 +1,69 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Create Localized Message</mat-card-title>
+    <mat-card-subtitle>{{ service?.gameTitle | humanize }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill" class="localized-message">
+        <mat-label
+          >String To Localize {{ stringToLocalizeTextArea.value.length }}/{{
+            messageMaxLength
+          }}</mat-label
+        >
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          placeholder="Message to Localize"
+          type="text"
+          formControlName="stringToLocalize"
+          #stringToLocalizeTextArea
+          required
+        ></textarea>
+      </mat-form-field>
+
+      
+      <mat-form-field appearance="fill" class="description">
+        <mat-label
+          >Description</mat-label
+        >
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          placeholder="Description"
+          type="text"
+          formControlName="description"
+          required
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="device-type">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let type of categoryTypes" [value]="type">
+            {{ type | deppoh }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <span class="actions">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="createMessage()"
+          [disabled]="!formGroup.valid"
+          stateManager
+          [monitor]="postMonitor"
+          monitorDisable
+          monitorWarnSnackbar
+          [verifyWith]="verifySubmission"
+        >
+          <!-- Submit <mat-icon svgIcon="steward-arrow-right"></mat-icon> -->
+          Submit <button-spinner [monitor]="postMonitor" defaultIcon="arrow_circle_right"></button-spinner>
+        </button>
+        <mat-checkbox #verifySubmission matTooltip="Verify Submission" aria-label="Verify Submission"
+        >Verify</mat-checkbox>
+      </span>
+    </form>
+  </mat-card-content>
+</mat-card>

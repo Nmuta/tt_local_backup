@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CommunityMessage, CommunityMessageResult } from '@models/community-message';
+import { CommunityMessageResult, LocalizedMessage } from '@models/community-message';
 import { GroupNotification } from '@models/notifications.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
@@ -18,31 +18,31 @@ export class SteelheadGroupMessagesService {
     return this.api.getRequest$(`${this.basePath}/${lspGroupId}/messages`);
   }
 
-  /** Sends a community message. */
-  public postSendCommunityMessageToLspGroup$(
+  /** Sends a localized message. */
+  public postSendLocalizedMessageToLspGroup$(
     lspGroupId: BigNumber,
-    communityMessage: CommunityMessage,
+    localizedMessage: LocalizedMessage,
   ): Observable<CommunityMessageResult<BigNumber>> {
     return this.api.postRequest$<CommunityMessageResult<BigNumber>>(
       `${this.basePath}/${lspGroupId}/messages`,
-      communityMessage,
+      localizedMessage,
     );
   }
 
-  /** Edits a group community message. */
-  public postEditLspGroupCommunityMessage$(
+  /** Edits a group localized message. */
+  public postEditLspGroupLocalizedMessage$(
     lspGroupId: BigNumber,
     notificationId: string,
-    communityMessage: CommunityMessage,
+    localizedMessage: LocalizedMessage,
   ): Observable<void> {
     return this.api.postRequest$<void>(
       `${this.basePath}/${lspGroupId}/messages/${notificationId}`,
-      communityMessage,
+      localizedMessage,
     );
   }
 
-  /** Deletes a group community message. */
-  public deleteLspGroupCommunityMessage$(
+  /** Deletes a group localized message. */
+  public deleteLspGroupLocalizedMessage$(
     lspGroupId: BigNumber,
     notificationId: string,
   ): Observable<void> {

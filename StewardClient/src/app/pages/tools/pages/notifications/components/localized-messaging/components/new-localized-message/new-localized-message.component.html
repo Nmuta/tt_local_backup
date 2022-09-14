@@ -1,4 +1,4 @@
-<form [formGroup]="newCommunityMessageForm">
+<form [formGroup]="newLocalizedMessageForm">
   <mat-form-field appearance="fill" class="localized-message">
     <mat-label
       >Localized Message {{ communityMessageTextarea.value.length }}/{{
@@ -10,7 +10,7 @@
       cdkTextareaAutosize
       placeholder="Community Message"
       type="text"
-      formControlName="message"
+      formControlName="localizedMessageId"
       #communityMessageTextarea
       required
     ></textarea>
@@ -39,7 +39,7 @@
     mat-raised-button
     color="accent"
     (click)="createMessage()"
-    [disabled]="!newCommunityMessageForm.valid"
+    [disabled]="!newLocalizedMessageForm.valid"
   >
     Review <mat-icon svgIcon="steward-arrow-right"></mat-icon>
   </button>

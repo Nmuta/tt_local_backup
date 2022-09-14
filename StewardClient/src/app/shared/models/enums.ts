@@ -101,6 +101,15 @@ export enum NotificationType {
   PatchNotes = 'PatchNotes',
 }
 
+/** Enum for notification types. */
+export enum LocalizationCategory {
+        Unset = 'Unset',
+        MOTD = 'MOTD',
+        PatchNotes = 'PatchNotes',
+        Notifications = 'Notifications',
+        Gifts = 'Gifts',
+}
+
 /** Enum for Steward error codes. */
 export enum StewardErrorCode {
   BadRequest = 'BadRequest',
