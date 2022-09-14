@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '61b0d6c8-269e-49e3-b208-b4bcbfe746cf',
+      shortText: 'Display and filter assists on leaderboard scores',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
       uuid: '46a55e0d-8b53-4414-b65c-b16ba44bf3cd',
       shortText: 'Revert private UGC quick link button',

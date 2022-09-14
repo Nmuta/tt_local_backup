@@ -13,7 +13,7 @@
     <mat-card-subtitle>{{ matCardSubtitle | humanize }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content *waitForMonitor="getLeaderboardScoresMonitor">
-    <ng-container *ngIf="scores.length > 0; else noScoresTemplate">
+    <ng-container *ngIf="scores?.length > 0; else noScoresTemplate">
       <ng-container *ngIf="expanded">
         <div class="actions-container">
           <div class="info">

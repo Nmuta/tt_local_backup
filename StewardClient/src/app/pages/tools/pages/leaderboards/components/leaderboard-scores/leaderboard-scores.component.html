@@ -34,15 +34,29 @@
           <ng-container
             *ngIf="allScores.length > 0 && activeLeaderboardView !== LeaderboardView.Player"
           >
+            <div class="assist filters">
+              <mat-slide-toggle [formControl]="filterFormControls.stm">
+                Used STM Assist
+              </mat-slide-toggle>
+              <mat-slide-toggle [formControl]="filterFormControls.abs">
+                Used ABS Assist
+              </mat-slide-toggle>
+              <mat-slide-toggle [formControl]="filterFormControls.tcs">
+                Used TCS Assist
+              </mat-slide-toggle>
+              <mat-slide-toggle [formControl]="filterFormControls.auto">
+                Used Auto Assist
+              </mat-slide-toggle>
+            </div>
             <div class="date-range">
-              <help-popover-icon cardTitle="Leaderboard Date Filter">
-                <span
-                  >When enabled, the top 5000 scores will be filtered to those that are within the
-                  set date range.</span
-                >
-              </help-popover-icon>
               <mat-slide-toggle (change)="toggleDatetimeFilter($event)">
                 Filter by date range
+                <help-popover-icon cardTitle="Leaderboard Date Filter">
+                  <span
+                    >When enabled, the top 5000 scores will be filtered to those that are within the
+                    set date range.</span
+                  >
+                </help-popover-icon>
               </mat-slide-toggle>
               <date-range-picker
                 [toggleOptions]="dateRangeToggleOptions"
@@ -175,6 +189,35 @@
                   <td>{{ entry.deviceType | humanize }}</td>
                 </tr>
               </table>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="assists">
+            <th mat-header-cell *matHeaderCellDef>Assists</th>
+            <td mat-cell *matCellDef="let entry">
+              <div class="assists-container">
+                <standard-flag [value]="entry.stabilityManagement" matTooltip="Stability Management"
+                  >STM</standard-flag
+                >
+                <standard-flag
+                  [value]="entry.antiLockBrakingSystem"
+                  matTooltip="Anti-Lock Braking System"
+                  >ABS</standard-flag
+                >
+              </div>
+
+              <div class="assists-container">
+                <standard-flag
+                  [value]="entry.tractionControlSystem"
+                  matTooltip="Traction Control System"
+                  >TCS</standard-flag
+                >
+                <standard-flag
+                  [value]="entry.automaticTransmission"
+                  matTooltip="Automatic Transmission"
+                  >Auto</standard-flag
+                >
+              </div>
             </td>
           </ng-container>
 

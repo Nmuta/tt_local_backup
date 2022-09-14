@@ -91,3 +91,11 @@ td.mat-column-actions {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.assists-container > standard-flag {
+  margin: 0px $gap-small;
+}
+
+.mat-slide-toggle {
+  display: block;
+}
