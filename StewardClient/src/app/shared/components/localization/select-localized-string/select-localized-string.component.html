@@ -25,21 +25,10 @@
   </mat-chip-list>
 </p>
 
-<div *ngIf="selectedLanguageLocalizedString">
-  Translation Preview:
-  <blockquote class="translation-preview"
->{{selectedLanguageLocalizedString.message}}</blockquote>  
-</div>
-
-
-<!-- <mat-form-field appearance="fill" *ngIf="selectedLanguageLocalizedString" >
-  <mat-label
-    >Translation Preview:</mat-label
-  >
-  <textarea
-    matInput
-    readonly="true"
-    cdkTextareaAutosize
-    type="text"
-  >{{selectedLanguageLocalizedString.message}}</textarea>
-</mat-form-field> -->
+<mat-form-field
+  *ngIf="selectedLanguageLocalizedString"
+  class="translation-preview"
+  appearance="fill">
+  <mat-label>Translation Preview:</mat-label>
+  <textarea matInput disabled="true" cdkTextareaAutosize>{{selectedLanguageLocalizedString.message}}</textarea>
+</mat-form-field>
