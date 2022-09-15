@@ -398,8 +398,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             public Dependencies()
             {
-                this.WoodstockService.SendCarLiveryAsync(Arg.Any<ulong[]>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingManagementService.AdminSendLiveryGiftOutput>());
-                this.WoodstockService.SendCarLiveryAsync(Arg.Any<int>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingManagementService.AdminSendGroupLiveryGiftOutput>());
+                this.WoodstockService.SendCarLiveryAsync(Arg.Any<ulong[]>(), Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingManagementService.AdminSendLiveryGiftOutput>());
+                this.WoodstockService.SendCarLiveryAsync(Arg.Any<int>(), Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GiftingManagementService.AdminSendGroupLiveryGiftOutput>());
                 this.Mapper.Map<IList<GiftResponse<ulong>>>(Arg.Any<ForzaLiveryGiftResult[]>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
