@@ -1,5 +1,5 @@
 <form [formGroup]="newLocalizedMessageForm">
-  <mat-form-field appearance="fill" class="localized-message">
+  <!-- <mat-form-field appearance="fill" class="localized-message">
     <mat-label
       >Localized Message {{ communityMessageTextarea.value.length }}/{{
         messageMaxLength
@@ -14,6 +14,13 @@
       #communityMessageTextarea
       required
     ></textarea>
+  </mat-form-field> -->
+
+  <mat-form-field appearance="fill" class="localized-message">
+    <mat-label
+      >Localized Message</mat-label
+    >
+    <select-localized-string [service]="service" formControlName="localizedMessageId"></select-localized-string>
   </mat-form-field>
 
   <datetime-range-picker

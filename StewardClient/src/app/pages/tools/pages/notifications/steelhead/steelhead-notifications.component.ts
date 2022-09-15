@@ -59,12 +59,19 @@ export class SteelheadNotificationsComponent {
       sendLspLocalizedMessage$(lspGroupId: BigNumber, localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>>
       {
         return steelheadGroupMessagesService.postSendLocalizedMessageToLspGroup$(lspGroupId, localizedMessage);
+      },
+      selectLocalizedStringContract: {
+        gameTitle: this.gameTitle,
+        getLocalizedStrings$(): Observable<LocalizedStringCollection>
+        {
+          return steelheadLocalizationService.getLocalizedStrings$();
+        }
       }
     }
 
     this.localizationCreationService = {
       gameTitle: this.gameTitle,
-      postLocalizedString$(localizedStringData: LocalizedStringData): Observable<void>
+      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void>
       {
         return steelheadLocalizationService.postLocalizedString$(localizedStringData);
       }

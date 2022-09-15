@@ -10,15 +10,17 @@ import { sortBy } from 'lodash';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { GameTitle } from '@models/enums';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
 /** Service contract for UGC search filters. */
 export interface LocalizedMessagingContract {
   gameTitle: GameTitle;
   lockStartTime: boolean;
-  //getLocalizedMessages$():;
+
+  // Methods to send out localized messages
   sendLocalizedMessage$(xuids: BigNumber[], localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>[]>;
   sendLspLocalizedMessage$(lspGroupId: BigNumber, localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>>;
-  //Send localized messages to LSP group
+  selectLocalizedStringContract: SelectLocalizedStringContract,
 }
 
 /** Routed Component; Sunrise Community Messaging Tool. */

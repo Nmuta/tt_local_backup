@@ -5,6 +5,7 @@ import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { DateTime } from 'luxon';
 import { DeviceType, NotificationType } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
 /** Outputs a new localized message. */
 @Component({
@@ -16,6 +17,7 @@ export class NewLocalizedMessageComponent implements OnInit {
   private static readonly UTC_NOW = DateTime.utc();
   @Input() public pendingLocalizedMessage: LocalizedMessage;
   @Input() public allowDeviceTypeFilter: boolean;
+  @Input() public service: SelectLocalizedStringContract;
   @Input() public lockStartTime: boolean = false;
   @Output() public emitNewLocalizedMessage = new EventEmitter<LocalizedMessage>();
 
@@ -23,6 +25,8 @@ export class NewLocalizedMessageComponent implements OnInit {
     start: NewLocalizedMessageComponent.UTC_NOW.toUTC(),
     end: NewLocalizedMessageComponent.UTC_NOW.plus({ hour: 1 }).toUTC(),
   };
+
+  
 
   public min = DateTime.utc().minus({ days: 1 });
 

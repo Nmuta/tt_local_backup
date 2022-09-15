@@ -8,6 +8,7 @@
       <ng-container *ngIf="sentCommunityMessageResults?.length <= 0; else messageResultsTemplate">
         <ng-container *ngIf="!waitingForVerification; else pendingCommunityMessageTemplate">
           <new-localized-message
+            [service]="service?.selectLocalizedStringContract"
             [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
             [pendingLocalizedMessage]="newLocalizedMessage"
             [lockStartTime]="service?.lockStartTime"

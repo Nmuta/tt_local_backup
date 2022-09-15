@@ -7,7 +7,7 @@ import { catchError, EMPTY, Observable } from 'rxjs';
 
 export interface CreateLocalizedStringContract {
   gameTitle: GameTitle;
-  postLocalizedString$(localizedStringData: LocalizedStringData): Observable<void>;
+  postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void>;
 }
 
 /** Displays the value sent on `input` as a json blob. */
@@ -48,7 +48,7 @@ export class CreateLocalizedStringComponent {
 
     this.postMonitor = this.postMonitor.repeat();
 
-    this.service.postLocalizedString$(stringData)
+    this.service.postStringForLocalization$(stringData)
     .pipe(
       this.postMonitor.monitorSingleFire(),
       catchError(() => {
