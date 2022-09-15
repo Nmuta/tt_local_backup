@@ -1,0 +1,45 @@
+<mat-form-field class="localized-message-selector">
+  <mat-label>Select Localized Message</mat-label>
+  <mat-select (selectionChange)="onLocalizedStringSelect($event)">
+    <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails.id">
+      {{ stringDetails.text | deppoh }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<p>
+  Language Codes:
+  <mat-chip-list
+    selectable="true"
+    multiple="false"
+    (change)="onLanguageChipSelect($event)">
+    <mat-chip
+      #chipRef="matChip"
+      (click)="chipRef.toggleSelected(true)"
+      *ngFor="let stringInfo of selectedLocalizedStringCollection"
+      [value]="stringInfo"
+      [disabled]="!stringInfo.translated"
+      [matTooltip]="stringInfo.translated ? 'Select to see preview' : 'This language is not yet translated'">
+        {{stringInfo.languageCode}}
+    </mat-chip>
+  </mat-chip-list>
+</p>
+
+<div *ngIf="selectedLanguageLocalizedString">
+  Translation Preview:
+  <blockquote class="translation-preview"
+>{{selectedLanguageLocalizedString.message}}</blockquote>  
+</div>
+
+
+<!-- <mat-form-field appearance="fill" *ngIf="selectedLanguageLocalizedString" >
+  <mat-label
+    >Translation Preview:</mat-label
+  >
+  <textarea
+    matInput
+    readonly="true"
+    cdkTextareaAutosize
+    type="text"
+  >{{selectedLanguageLocalizedString.message}}</textarea>
+</mat-form-field> -->

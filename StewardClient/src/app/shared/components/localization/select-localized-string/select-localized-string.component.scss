@@ -1,0 +1,15 @@
+@import '/src/styles/mixins';
+$messageMaxWidth: 500px;
+
+.localized-message-selector {
+  width: 100%;
+}
+
+.translation-preview {
+  width: 100%;
+  max-width: $messageMaxWidth;
+}
+
+mat-chip {
+  cursor: pointer;
+}

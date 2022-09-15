@@ -1,13 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { GameTitle, LocalizationCategory } from '@models/enums';
-import { LocalizedStringCollection, LocalizedStringData } from '@models/localization';
+import { LocalizedStringData } from '@models/localization';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { catchError, EMPTY, Observable } from 'rxjs';
-
-export type CreateLocalizedStringFormValueInternal = LocalizedStringData;
-
-export type CreateLocalizedStringFormValue = LocalizedStringCollection;
 
 export interface CreateLocalizedStringContract {
   gameTitle: GameTitle;

@@ -33,7 +33,8 @@
       (selectedTabChange)="viewSelectionTypeChange($event.index)"
     >
     <mat-tab label="Create">
-      <create-localized-string [service]="localizationService"></create-localized-string>
+      <create-localized-string [service]="localizationCreationService"></create-localized-string>
+      <select-localized-string [service]="localizationSelectionService"></select-localized-string>
     </mat-tab>
       <mat-tab label="Send">
         <localized-messaging

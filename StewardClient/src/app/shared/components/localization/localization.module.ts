@@ -14,11 +14,17 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { SelectLocalizedStringComponent } from './select-localized-string/select-localized-string.component';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** A utility module that exports a datetime picker component for forms. */
 @NgModule({
   declarations: [
-    CreateLocalizedStringComponent
+    CreateLocalizedStringComponent,
+    SelectLocalizedStringComponent,
   ],
   imports: [
     CommonModule,
@@ -27,9 +33,9 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
     FormsModule,
     MatFormFieldModule,
     MatOptionModule,
+    MatSelectModule,
     PipesModule,
     MatIconModule,
-    MatSelectModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
@@ -37,9 +43,14 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
     StateManagersModule,
     MatCheckboxModule,
     VerifyCheckboxModule,
+    DirectivesModule,
+    MatButtonToggleModule,
+    MatChipsModule,
+    MatTooltipModule,
   ],
   exports: [
-    CreateLocalizedStringComponent
+    CreateLocalizedStringComponent,
+    SelectLocalizedStringComponent,
   ],
 })
 export class LocalizationModule {}

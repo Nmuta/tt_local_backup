@@ -11,7 +11,8 @@ import { SteelheadPlayersMessagesService } from '@shared/services/api-v2/steelhe
 import { SteelheadGroupMessagesService } from '@services/api-v2/steelhead/group/messages/steelhead-group-messages.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
-import { LocalizedStringData } from '@models/localization';
+import { LocalizedStringCollection, LocalizedStringData } from '@models/localization';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
 /**
  *  Steelhead notification component.
@@ -27,7 +28,8 @@ export class SteelheadNotificationsComponent {
   // private playerManagementComponent: SteelheadIndividualNotificationManagementComponent;
 
   public sendMessageService: LocalizedMessagingContract;
-  public localizationService: CreateLocalizedStringContract;
+  public localizationCreationService: CreateLocalizedStringContract;
+  public localizationSelectionService: SelectLocalizedStringContract;
 
   public gameTitle = GameTitle.FM8;
   /** The selected player identities */
@@ -60,11 +62,19 @@ export class SteelheadNotificationsComponent {
       }
     }
 
-    this.localizationService = {
+    this.localizationCreationService = {
       gameTitle: this.gameTitle,
       postLocalizedString$(localizedStringData: LocalizedStringData): Observable<void>
       {
         return steelheadLocalizationService.postLocalizedString$(localizedStringData);
+      }
+    }
+
+    this.localizationSelectionService = {
+      gameTitle: this.gameTitle,
+      getLocalizedStrings$(): Observable<LocalizedStringCollection>
+      {
+        return steelheadLocalizationService.getLocalizedStrings$();
       }
     }
   }
