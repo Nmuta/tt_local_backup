@@ -21,4 +21,4 @@ export interface LocalizedString {
   translated: boolean;
 }
 
-export type LocalizedStringCollection = Record<GuidLikeString, LocalizedString[]>[];
+export type LocalizedStringCollection = Record<GuidLikeString, LocalizedString[]>;
