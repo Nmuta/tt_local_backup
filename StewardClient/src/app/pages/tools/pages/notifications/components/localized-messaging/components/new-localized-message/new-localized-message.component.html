@@ -1,24 +1,5 @@
-{{formControls.localizedMessageId.errors | bigjson}}
 <form [formGroup]="newLocalizedMessageForm">
-  <!-- <mat-form-field appearance="fill" class="localized-message">
-    <mat-label
-      >Localized Message {{ communityMessageTextarea.value.length }}/{{
-        messageMaxLength
-      }}</mat-label
-    >
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      placeholder="Community Message"
-      type="text"
-      formControlName="localizedMessageId"
-      #communityMessageTextarea
-      required
-    ></textarea>
-  </mat-form-field> -->
-
-  <select-localized-string [service]="service" [formControl]="formControls.localizedMessageId"></select-localized-string>
-  
+  <select-localized-string [service]="service" [formControl]="formControls.localizedMessageId"></select-localized-string> 
 
   <datetime-range-picker
     [formControl]="formControls.dateRange"
