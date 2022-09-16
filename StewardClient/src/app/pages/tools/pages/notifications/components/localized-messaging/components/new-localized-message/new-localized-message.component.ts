@@ -62,10 +62,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
       this.formControls.notificationType.setValue(
         this.pendingLocalizedMessage.notificationType ?? NotificationType.CommunityMessage,
       );
-
-      console.log(this.formControls)
-    }
-    
+    }    
   }
 
   /** Create message */
@@ -76,9 +73,6 @@ export class NewLocalizedMessageComponent implements OnChanges {
     const endTime = range?.end;
     const notificationType = this.formControls.notificationType.value ?? null;
     const deviceType = this.allowDeviceTypeFilter ? this.formControls.deviceType.value : null;
-
-    //console.log('new-localized-message::createMessage')
-    //console.log(message)
 
     this.emitNewLocalizedMessage.emit({
       localizedMessageId: message,

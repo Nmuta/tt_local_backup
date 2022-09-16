@@ -7,7 +7,7 @@
   </mat-select>
 </mat-form-field>
 
-<p>
+<p *ngIf="selectedLocalizedStringCollection">
   Language Codes:
   <mat-chip-list
     selectable="true"
@@ -15,11 +15,12 @@
     (change)="onLanguageChipSelect($event)">
     <mat-chip
       #chipRef="matChip"
-      (click)="chipRef.toggleSelected(true)"
+      (click)="stringInfo.translated ? chipRef.toggleSelected(true) : null"
+      clickStop
       *ngFor="let stringInfo of selectedLocalizedStringCollection"
       [value]="stringInfo"
       [disabled]="!stringInfo.translated"
-      [selectable]="stringInfo.translated"
+      [selectable]="!stringInfo.translated"
       [matTooltip]="stringInfo.translated ? 'Select to see preview' : 'This language is not yet translated'">
         {{stringInfo.languageCode}}
     </mat-chip>
