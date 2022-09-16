@@ -30,7 +30,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/reportWeight")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.HorizonDesigner,
+        UserRole.MotorsportDesigner,
+        UserRole.MediaTeam)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Player, Topic.ReportWeight)]
     public class ReportWeightController : V2SteelheadControllerBase
@@ -77,6 +85,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///    Sets a player's report weight.
         /// </summary>
         [HttpPost]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(200, type: typeof(UserReportWeight))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]

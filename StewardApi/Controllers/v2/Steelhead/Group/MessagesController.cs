@@ -36,7 +36,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     [Route("api/v{version:apiVersion}/title/steelhead/group/{groupId}/messages")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [Authorize]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.LspGroup, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase

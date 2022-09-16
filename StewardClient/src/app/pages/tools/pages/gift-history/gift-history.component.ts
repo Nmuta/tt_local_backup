@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { environment } from '@environments/environment';
+import { Component } from '@angular/core';
 import { GameTitleCodeName, GameTitleAbbreviation } from '@models/enums';
 
 /** The gift history page for the Navbar app. */
@@ -7,8 +6,13 @@ import { GameTitleCodeName, GameTitleAbbreviation } from '@models/enums';
   templateUrl: './gift-history.component.html',
   styleUrls: ['./gift-history.component.scss'],
 })
-export class GiftHistoryComponent implements OnInit {
+export class GiftHistoryComponent {
   public navbarRouterLinks = [
+    {
+      name: GameTitleAbbreviation.FM8,
+      codename: GameTitleCodeName.FM8,
+      route: ['.', GameTitleCodeName.FM8.toLowerCase()],
+    },
     {
       name: GameTitleAbbreviation.FH5,
       codename: GameTitleCodeName.FH5,
@@ -25,16 +29,4 @@ export class GiftHistoryComponent implements OnInit {
       route: ['.', GameTitleCodeName.FM7.toLowerCase()],
     },
   ];
-
-  /** Lifecycle hook. */
-  public ngOnInit(): void {
-    // TODO: Make these permanent routes after respective titles are fully integrated.
-    if (!environment.production) {
-      this.navbarRouterLinks.unshift({
-        name: GameTitleAbbreviation.FM8,
-        codename: GameTitleCodeName.FM8,
-        route: ['.', GameTitleCodeName.FM8.toLowerCase()],
-      });
-    }
-  }
 }

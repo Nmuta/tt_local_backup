@@ -39,7 +39,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/ban")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Player, Topic.Banning)]
     public class BanController : V2ControllerBase
@@ -60,9 +62,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Expire ban.
         /// </summary>
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
         [HttpPost("{banEntryId}")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -101,9 +100,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Delete ban.
         /// </summary>
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
         [HttpDelete("{banEntryId}")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]

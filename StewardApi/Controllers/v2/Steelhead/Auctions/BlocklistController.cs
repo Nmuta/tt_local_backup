@@ -27,7 +27,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/auctions/blocklist")]
     [LogTagTitle(TitleLogTags.Steelhead)]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiController]
     [ApiVersion("2.0")]
     [Tags(Topic.Auctions, Title.Steelhead)]
@@ -94,6 +102,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         ///     Adds entries to auction house block list.
         /// </summary>
         [HttpPost]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
@@ -122,6 +134,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         ///     Removes an entry from auction house block list.
         /// </summary>
         [HttpDelete("car/{carId}")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]

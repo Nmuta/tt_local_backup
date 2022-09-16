@@ -29,7 +29,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/inventory/{profileId}")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Topic.Inventory, Target.Details, Dev.ReviseTags)]
     public class InventoryController : V2SteelheadControllerBase
@@ -82,24 +90,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 }
             }
 
-            // TODO uncomment below when Steelhead Pegasus item data is ready.
             var getPlayerInventory = GetInventory();
-            //var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
+            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
 
-            await Task.WhenAll(getPlayerInventory/*, getMasterInventory*/).ConfigureAwait(true);
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
             var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            //var masterInventory = await getMasterInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
 
             if (playerInventory == null)
             {
                 throw new NotFoundStewardException($"No inventory found for profileId: {profileId}.");
             }
 
-            //playerInventory.SetItemDescriptions(
-            //    masterInventory,
-            //    $"XUID: {xuid}",
-            //    this.loggingService);
+            playerInventory.SetItemDescriptions(
+                masterInventory,
+                $"Profile Id: {profileId}",
+                this.loggingService);
 
             return this.Ok(playerInventory);
         }

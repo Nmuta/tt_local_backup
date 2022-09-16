@@ -2,7 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { environment } from '@environments/environment';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
@@ -39,29 +38,9 @@ describe('GiftingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: ngOnInit', () => {
-    describe('When environment is PROD', () => {
-      beforeEach(() => {
-        environment.production = true;
-      });
+  it('should set production navbarRouterLinks', () => {
+    fixture.detectChanges();
 
-      it('should set production navbarRouterLinks', () => {
-        fixture.detectChanges();
-
-        expect(component.navbarRouterLinks?.length).toEqual(3);
-      });
-    });
-
-    describe('When environment is DEV', () => {
-      beforeEach(() => {
-        environment.production = false;
-      });
-
-      it('should set production navbarRouterLinks', () => {
-        fixture.detectChanges();
-
-        expect(component.navbarRouterLinks?.length).toEqual(4);
-      });
-    });
+    expect(component.navbarRouterLinks?.length).toEqual(4);
   });
 });
