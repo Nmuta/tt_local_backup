@@ -328,7 +328,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var gift = Fixture.Create<Gift>();
+            var gift = Fixture.Create<ExpirableGift>();
             var groupId = Fixture.Create<int>();
             var livery = Fixture.Create<UgcItem>();
             var requesterId = Fixture.Create<string>();
@@ -347,7 +347,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var gift = Fixture.Create<Gift>();
+            var gift = Fixture.Create<ExpirableGift>();
             var groupId = Fixture.Create<int>();
             var livery = Fixture.Create<UgcItem>();
             var endpoint = Fixture.Create<string>();
@@ -365,7 +365,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var groupGift = Fixture.Create<GroupGift>();
+            var groupGift = Fixture.Create<ExpirableGroupGift>();
             var livery = Fixture.Create<UgcItem>();
             var requesterId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
@@ -383,7 +383,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var groupGift = Fixture.Create<GroupGift>();
+            var groupGift = Fixture.Create<ExpirableGroupGift>();
             var livery = Fixture.Create<UgcItem>();
             var endpoint = Fixture.Create<string>();
 
