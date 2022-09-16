@@ -13,7 +13,7 @@ import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 /** Outputted form value of the datetime picker. */
-export type SelectLocalizedStringValue = string;
+export type SelectLocalizedStringFormValue = string;
 
 export interface SelectLocalizedStringContract {
   gameTitle: GameTitle;
@@ -102,7 +102,10 @@ export class SelectLocalizedStringComponent extends BaseComponent implements Aft
   /** Handles selection change event for localized string dropdown */
   public onLocalizedStringSelect(event: MatSelectChange){
     const oldValue = this.formControls.selectedLocalizedStringId.value;
+    console.log('select-localized-string::onLocalizedStringSelect')
+    //console.log(event);
     this.formControls.selectedLocalizedStringId.setValue(event.value);
+    console.log(this.formControls.selectedLocalizedStringId.value)
     
     if(oldValue !== this.formControls.selectedLocalizedStringId.value)
     {
@@ -110,8 +113,7 @@ export class SelectLocalizedStringComponent extends BaseComponent implements Aft
     }
     const chipList = this.localizedStrings[this.formControls.selectedLocalizedStringId.value];
 
-    this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated); //.sort(function(a,b){return b.translated-a.translated});
-    //this.selectedLocalizedStringCollection = this.localizedStrings[this.selectedLocalizedStringId].sort(function(a,b){return b.translated-a.translated});
+    this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
   }
 
   /** Handles selection change event for language chip list */
@@ -125,15 +127,15 @@ export class SelectLocalizedStringComponent extends BaseComponent implements Aft
   }
 
   /** Form control hook. */
-  public writeValue(data: SelectLocalizedStringValue): void {
-    
-    this.selectedLocalizedStringCollection = orderBy(this.localizedStrings[this.formControls.selectedLocalizedStringId.value], x => !x.translated)
+  public writeValue(data: SelectLocalizedStringFormValue): void {
+    console.log('select-localized-string::writeValue')
+    console.log(data)
     this.formControls.selectedLocalizedStringId.patchValue(data, { emitEvent: false });
+    this.selectedLocalizedStringCollection = orderBy(this.localizedStrings[this.formControls.selectedLocalizedStringId.value], x => !x.translated)    
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (value: SelectLocalizedStringValue) => void): void {
-    //this.onChangeFunction = fn;
+  public registerOnChange(fn: (value: SelectLocalizedStringFormValue) => void): void {
     this.formGroup.valueChanges.subscribe(fn);
   }
 
@@ -155,8 +157,4 @@ export class SelectLocalizedStringComponent extends BaseComponent implements Aft
   public setDisabledState?(_isDisabled: boolean): void {
     /** empty */
   }
-
-  // private onChangeFunction = (_value: SelectLocalizedStringValue) => {
-  //   /* empty */
-  // };
 }

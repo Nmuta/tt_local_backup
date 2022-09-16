@@ -56,12 +56,10 @@ export class LocalizedMessagingComponent extends BaseComponent {
   /** The error received while loading. */
   public loadError: unknown;
 
-  //public abstract gameTitle: GameTitle;
-  //public abstract lockStartTime: boolean;
-  //public abstract submitLocalizedMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
-
   /** New community message created. */
   public setNewLocalizedMessage($event: LocalizedMessage): void {
+    console.log('localized-messaging::setNewLocalizedMessage')
+    console.log($event)
     this.newLocalizedMessage = $event;
     this.waitingForVerification = true;
   }
@@ -80,7 +78,6 @@ export class LocalizedMessagingComponent extends BaseComponent {
     {
       submitLocalizedMessage$ = this.service?.sendLspLocalizedMessage$(this.selectedLspGroup.id, this.newLocalizedMessage).pipe(switchMap(data => of([data])));
     }
-
 
     submitLocalizedMessage$
       .pipe(

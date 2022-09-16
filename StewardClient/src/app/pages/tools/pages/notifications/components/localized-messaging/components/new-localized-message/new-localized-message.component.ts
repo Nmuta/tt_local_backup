@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalizedMessage } from '@models/community-message';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { DateTime } from 'luxon';
@@ -24,9 +24,7 @@ export class NewLocalizedMessageComponent implements OnInit {
   private dateRange: DatetimeRangePickerFormValue = {
     start: NewLocalizedMessageComponent.UTC_NOW.toUTC(),
     end: NewLocalizedMessageComponent.UTC_NOW.plus({ hour: 1 }).toUTC(),
-  };
-
-  
+  };  
 
   public min = DateTime.utc().minus({ days: 1 });
 
@@ -49,8 +47,6 @@ export class NewLocalizedMessageComponent implements OnInit {
   };
 
   public newLocalizedMessageForm: FormGroup = new FormGroup(this.formControls);
-
-  constructor(private readonly formBuilder: FormBuilder) {}
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
@@ -77,6 +73,9 @@ export class NewLocalizedMessageComponent implements OnInit {
     const endTime = range?.end;
     const notificationType = this.formControls.notificationType.value ?? null;
     const deviceType = this.allowDeviceTypeFilter ? this.formControls.deviceType.value : null;
+
+    console.log('new-localized-message::createMessage')
+    console.log(message)
 
     this.emitNewLocalizedMessage.emit({
       localizedMessageId: message,
