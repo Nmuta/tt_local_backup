@@ -13,8 +13,9 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Sunrise
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
 {
     /// <summary>
     ///     Handles requests for Sunrise players.
@@ -32,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Sunrise
     [LogTagTitle(TitleLogTags.Sunrise)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("Player", "Sunrise")]
+    [Tags(Title.Sunrise, Target.Player, Topic.Profile)]
     public class PlayerController : V2ControllerBase
     {
         private readonly IKustoProvider kustoProvider;

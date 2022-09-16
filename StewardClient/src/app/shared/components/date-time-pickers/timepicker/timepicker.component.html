@@ -1,0 +1,13 @@
+<input
+  [disabled]="disabled"
+  matInput
+  [safeNgxTimepicker]="picker"
+  [format]="24"
+  placeholder="24h UTC"
+  [value]="valueInternal"
+  [disableClick]="true"
+  [ngModel]="valueInternal"
+  (ngModelChange)="onValueChange($event)"
+  [min]="minFormatted"
+/>
+<ngx-material-timepicker #picker (timeSet)="onValueChange($event)"></ngx-material-timepicker>

@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { BaseComponent } from '@components/base-component/base.component';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { FormGroup } from '@angular/forms';
 import { WoodstockUserFlags } from '@models/woodstock';
@@ -19,7 +19,12 @@ export type UserFlagsUnion =
   | SunriseUserFlags
   | ApolloUserFlags;
 
-/** Retreives and displays Sunrise User Flags by XUID. */
+export type UserFlagsIntersection = WoodstockUserFlags &
+  SteelheadUserFlags &
+  SunriseUserFlags &
+  ApolloUserFlags;
+
+/** Retreives and displays User Flags by XUID. */
 @Component({
   template: '',
 })
@@ -50,13 +55,14 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public submitError: unknown;
 
   /** Alternate text per key. */
-  public readonly alteredLabels: { [key in keyof UserFlagsUnion]?: string } = {
+  public readonly alteredLabels: { [key in keyof UserFlagsIntersection]?: string } = {
     isEarlyAccess: 'Is Early Access (Unbannable)',
     isTurn10Employee: 'Is Employee (User Badge + Unbannable)',
     isUnderReview: 'Is Under Review (Console Banned)',
+    isContentCreator: 'Is Content Creator (Unbannable)',
   };
 
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
   public abstract formControls: unknown;
   public abstract formGroup: FormGroup;
 

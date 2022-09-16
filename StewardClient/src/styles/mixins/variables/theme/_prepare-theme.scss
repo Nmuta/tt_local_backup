@@ -81,6 +81,10 @@
       map-get(mat.$dark-theme-foreground-palette, 'base')
     );
     @include colorToVars(
+      makeLookupName('background', 'card'),
+      map-get(mat.$dark-theme-background-palette, 'card')
+    );
+    @include colorToVars(
       makeLookupName('foreground', 'disabled-text'),
       map-get(mat.$dark-theme-foreground-palette, 'disabled-text')
     );
@@ -88,7 +92,11 @@
       makeLookupName('highlight', 'default'),
       map-get(fgbg.$forza-bg-dark, 'highlight')
     );
+
+    // dark theme above
   } @else {
+    // light theme below
+
     @include colorToVars(
       makeLookupName('background', 'default'),
       map-get(mat.$light-theme-background-palette, 'background')
@@ -122,6 +130,10 @@
       map-get(mat.$light-theme-foreground-palette, 'base')
     );
     @include colorToVars(
+      makeLookupName('background', 'card'),
+      map-get(mat.$light-theme-background-palette, 'card')
+    );
+    @include colorToVars(
       makeLookupName('foreground', 'disabled-text'),
       map-get(mat.$light-theme-foreground-palette, 'disabled-text')
     );
@@ -130,6 +142,7 @@
       map-get(fgbg.$forza-bg-light, 'highlight')
     );
   }
+
   background-color: app-color-default($app-background);
   color: app-color-default-contrast($app-background);
 }

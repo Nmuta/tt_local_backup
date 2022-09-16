@@ -3,9 +3,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component } from '@angular/core';
 import { ApolloService } from '@services/apollo/apollo.service';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LiveOpsBanDescription } from '@models/sunrise';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { PermissionsService } from '@services/permissions';
 
@@ -23,7 +23,8 @@ import { PermissionsService } from '@services/permissions';
   ],
 })
 export class ApolloBanHistoryComponent extends BanHistoryBaseComponent {
-  public gameTitle = GameTitleCodeName.FM7;
+  public gameTitle = GameTitle.FM7;
+  public actionsEnabled = true;
 
   constructor(private readonly apollo: ApolloService, permissionsService: PermissionsService) {
     super(permissionsService);
@@ -35,12 +36,12 @@ export class ApolloBanHistoryComponent extends BanHistoryBaseComponent {
   }
 
   /** Expires the Apollo ban. */
-  public expireBan$(_banEntryId: BigNumber): Observable<UnbanResult> {
-    return throwError(new Error('Apollo does not support ban expiration.'));
+  public expireBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apollo.expireBan$(banEntryId);
   }
 
   /** Deletes the Apollo ban. */
-  public deleteBan$(_banEntryId: BigNumber): Observable<UnbanResult> {
-    return throwError(new Error('Apollo does not support ban deletion.'));
+  public deleteBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.apollo.deleteBan$(banEntryId);
   }
 }

@@ -1,15 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJob } from '@models/background-job';
+import { BasicPlayerList } from '@models/basic-player-list';
+import { GameTitle } from '@models/enums';
+import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
 import { UserGroupManagementResponse } from '@models/user-group-management-response';
 import { WoodstockUserGroupService } from '@services/api-v2/woodstock/user-group/woodstock-user-group.service';
-import BigNumber from 'bignumber.js';
-import { Observable, throwError } from 'rxjs';
-import {
-  ListUsersInGroupServiceContract,
-  PlayerInUserGroup,
-} from '../list-users-in-user-group.component';
+import { Observable } from 'rxjs';
+import { ListUsersInGroupServiceContract } from '../list-users-in-user-group.component';
 
 /** Tool that creates new user groups. */
 @Component({
@@ -26,36 +25,34 @@ export class WoodstockListUsersInGroupComponent extends BaseComponent {
     super();
 
     this.service = {
-      getPlayersInUserGroup$(_userGroup: LspGroup): Observable<PlayerInUserGroup[]> {
-        return throwError(
-          () => new Error('Getting players in user group is currently unsupported.'),
-        );
+      gameTitle: GameTitle.FH5,
+      getPlayersInUserGroup$(
+        userGroup: LspGroup,
+        startIndex: number,
+        maxResults: number,
+      ): Observable<GetUserGroupUsersResponse> {
+        return userGroupService.getUserGroupUsers$(userGroup.id, startIndex, maxResults);
       },
       deletePlayerFromUserGroup$(
-        _xuid: BigNumber,
-        _userGroup: LspGroup,
+        playerList: BasicPlayerList,
+        userGroup: LspGroup,
       ): Observable<UserGroupManagementResponse[]> {
-        return userGroupService.removeUsersFromGroup$(_userGroup.id, [_xuid]);
+        return userGroupService.removeUsersFromGroup$(userGroup.id, playerList);
       },
-      deleteAllPlayersFromUserGroup$(
-        _userGroup: LspGroup,
-      ): Observable<UserGroupManagementResponse[]> {
-        //Todo
-        return throwError(
-          () => new Error('Deleting all players in a user group is currently unsupported.'),
-        );
+      deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<void> {
+        return userGroupService.removeAllUsersFromGroup$(userGroup.id);
       },
       deletePlayersFromUserGroupUsingBackgroundTask$(
-        xuids: BigNumber[],
+        playerList: BasicPlayerList,
         userGroup: LspGroup,
       ): Observable<BackgroundJob<void>> {
-        return userGroupService.removeUsersFromGroupUsingBackgroundTask$(userGroup.id, xuids);
+        return userGroupService.removeUsersFromGroupUsingBackgroundTask$(userGroup.id, playerList);
       },
       addPlayersToUserGroupUsingBackgroundTask$(
-        xuids: BigNumber[],
+        playerList: BasicPlayerList,
         userGroup: LspGroup,
       ): Observable<BackgroundJob<void>> {
-        return userGroupService.addUsersToGroupUsingBackgroundTask$(userGroup.id, xuids);
+        return userGroupService.addUsersToGroupUsingBackgroundTask$(userGroup.id, playerList);
       },
     };
   }

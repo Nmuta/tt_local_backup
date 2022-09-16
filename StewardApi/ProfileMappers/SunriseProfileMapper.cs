@@ -55,27 +55,31 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaConsole, ConsoleDetails>().ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
-            this.CreateMap<LiveOpsContracts.ForzaUserBanResult, BanResult>()
+            this.CreateMap<WebServicesContracts.ForzaUserBanResult, BanResult>()
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
                     src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to ban player with XUID: {src.Xuid}")));
-            this.CreateMap<LiveOpsContracts.ForzaUserBanSummary, BanSummary>()
+            this.CreateMap<WebServicesContracts.ForzaUserBanSummary, BanSummary>()
                 .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src =>
                     src.BannedAreas.Select(banArea => Enum.GetName(typeof(FeatureAreas), banArea))))
                 .ReverseMap();
             this.CreateMap<SunriseBanParametersInput, SunriseBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
-            this.CreateMap<SunriseBanParameters, LiveOpsContracts.ForzaUserBanParameters>()
+            this.CreateMap<SunriseBanParameters, WebServicesContracts.ForzaUserBanParameters>()
                 .ForMember(dest => dest.xuids, opt => opt.MapFrom(src => new ulong[] { src.Xuid }))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => Enum.Parse(typeof(FeatureAreas), src.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
                 .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
-            this.CreateMap<LiveOpsContracts.ForzaUserBanDescription, BanDescription>()
+            this.CreateMap<WebServicesContracts.ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => Enum.GetName(typeof(FeatureAreas), src.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
+            this.CreateMap<WebServicesContracts.ForzaUserUnBanResult, UnbanResult>();
+            this.CreateMap<int, WebServicesContracts.ForzaUserExpireBanParameters>()
+                .ForMember(dest => dest.banEntryIds, opt => opt.MapFrom(src => new int[] { src }))
+                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => "Ban expired by Steward"));
             this.CreateMap<WebServicesContracts.ForzaProfileSummary, ProfileSummary>()
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
             this.CreateMap<WebServicesContracts.ForzaCreditUpdateEntry, CreditUpdate>().ReverseMap();
@@ -281,6 +285,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LiveOpsContracts.ForzaLiveryGiftResult, GiftResponse<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
+                .ForMember(dest => dest.TargetXuid, opt => opt.MapFrom(source => source.xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid))
                 .ForMember(dest => dest.Errors, opt => opt.MapFrom(source =>
                     source.Success

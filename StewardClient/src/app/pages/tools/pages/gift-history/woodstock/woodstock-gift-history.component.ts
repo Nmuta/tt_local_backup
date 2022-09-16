@@ -20,8 +20,8 @@ import { DateTime } from 'luxon';
 import { HCI } from '@environments/environment';
 import { DateTimeRange } from '@models/datetime-range';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { DateRangePickerFormValue } from '@components/datetime-range-picker/date-range-picker/date-range-picker.component';
-import { DATE_TIME_TOGGLE_OPTIONS } from '@components/datetime-range-picker/datetime-range-toggle-defaults';
+import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime-range-picker/datetime-range-toggle-defaults';
+import { DateRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/date-range-picker/date-range-picker.component';
 
 /** The gift history page for the Navbar app. */
 @Component({

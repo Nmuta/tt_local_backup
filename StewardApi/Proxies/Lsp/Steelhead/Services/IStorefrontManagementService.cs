@@ -47,5 +47,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             bool featured,
             DateTime featureEndDate,
             DateTime forceFeatureEndDate);
+
+        /// <summary>
+        ///     Sets UGC geo flag sttribute.
+        /// </summary>
+        Task SetUGCGeoFlag(Guid id, int[] geoFlags);
+
+        /// <summary>
+        ///     Gets player UGC.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCForUserOutput> GetUGCForUser(ulong xuid, ForzaUGCContentType contentType, bool includeThumbnails, int maxResults);
     }
 }

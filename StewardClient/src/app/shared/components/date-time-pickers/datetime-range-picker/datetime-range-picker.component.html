@@ -1,0 +1,83 @@
+<div class="wrapper" [formGroup]="formGroup">
+  <section class="vertical">
+    <mat-form-field appearance="fill">
+      <mat-label>Date Range</mat-label>
+      <mat-date-range-input formGroupName="dateRange" [min]="min" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date" />
+        <input matEndDate formControlName="end" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-error *ngIf="formControls.dateRange.start.hasError('matStartDateInvalid')"
+        >Invalid start date</mat-error
+      >
+      <mat-error *ngIf="formControls.dateRange.end.hasError('matEndDateInvalid')"
+        >Invalid end date</mat-error
+      >
+      <mat-error *ngIf="formControls.dateRange.start.hasError('matDatepickerMin')"
+        >Must start on or after {{ min | utcDate: 'short' }}</mat-error
+      >
+    </mat-form-field>
+
+    <section formGroupName="timeRange">
+      <mat-form-field>
+        <mat-label>Start Time</mat-label>
+        <timepicker
+          [min]="calculatedMinStartTime"
+          [disabled]="disableStartTime"
+          [formControl]="formControls.timeRange.start"
+          #startPicker
+          [beforeDate]="currentDates.end"
+          [actualDate]="currentDates.start"
+        ></timepicker>
+        <button
+          [disabled]="disableStartTime"
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          [disabled]="startPicker.disabled"
+          (click)="startPicker.openPicker($event)"
+        >
+          <mat-icon>schedule</mat-icon>
+        </button>
+        <mat-error *ngIf="formControls.timeRange.start.hasError('required')">Required</mat-error>
+        <mat-error *ngIf="formControls.timeRange.start.hasError('bad-time')"
+          >Unrecognized Time</mat-error
+        >
+        <mat-error *ngIf="formControls.timeRange.start.hasError('before-date')"
+          >Must be before End Time</mat-error
+        >
+        <mat-hint>UTC</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>End Time</mat-label>
+        <timepicker
+          [min]="calculatedMinEndTime"
+          [formControl]="formControls.timeRange.end"
+          #endPicker
+          [afterDate]="currentDates.start"
+          [actualDate]="currentDates.end"
+        ></timepicker>
+        <button
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          [disabled]="endPicker.disabled"
+          (click)="endPicker.openPicker($event)"
+        >
+          <mat-icon>schedule</mat-icon>
+        </button>
+        <mat-error *ngIf="formControls.timeRange.end.hasError('required')">Required</mat-error>
+        <mat-error *ngIf="formControls.timeRange.end.hasError('bad-time')"
+          >Unrecognized Time</mat-error
+        >
+        <mat-error *ngIf="formControls.timeRange.end.hasError('after-date')"
+          >Must be after Start Time</mat-error
+        >
+        <mat-hint>UTC</mat-hint>
+      </mat-form-field>
+    </section>
+  </section>
+</div>

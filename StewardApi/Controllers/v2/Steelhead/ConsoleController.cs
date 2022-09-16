@@ -16,18 +16,22 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Controller for steelhead consoles.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/console")]
+    [Route("api/v{version:apiVersion}/title/steelhead/console/{consoleId}")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
     [ApiVersion("2.0")]
-    [Tags("Console", "Steelhead", "InDev")]
+    [Tags(Title.Steelhead, Topic.Consoles, Target.Details, Dev.ReviseTags)]
     public class ConsoleController : V2SteelheadControllerBase
     {
         /// <summary>
@@ -37,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
-        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
+        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, [FromBody] bool isBanned)
         {
             try
             {
@@ -47,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No console found for Console ID: {consoleId}.", ex);
+                throw new UnknownFailureStewardException($"Failed to update console ban status. (consoleID: {consoleId}).", ex);
             }
         }
     }

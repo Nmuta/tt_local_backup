@@ -4,28 +4,28 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SteelheadPlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/ban-summaries';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import faker from '@faker-js/faker';
 import { keys } from 'lodash';
 import { of } from 'rxjs';
 import { defer } from 'rxjs';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
-
 import { SteelheadBanningComponent } from './steelhead-banning.component';
+import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
+import { createMockSteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service.mock';
 
 describe('SteelheadBanningComponent', () => {
   let component: SteelheadBanningComponent;
   let fixture: ComponentFixture<SteelheadBanningComponent>;
-  let steelhead: SteelheadService;
+  let steelhead: SteelheadPlayersService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadBanningComponent],
-      providers: [createMockSteelheadService(), createMockBackgroundJobService()],
+      providers: [createMockSteelheadPlayersService(), createMockBackgroundJobService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    steelhead = TestBed.inject(SteelheadService);
+    steelhead = TestBed.inject(SteelheadPlayersService);
   });
 
   beforeEach(() => {

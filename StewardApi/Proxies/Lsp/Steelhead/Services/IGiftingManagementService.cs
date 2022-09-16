@@ -32,14 +32,18 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task<GiftingManagementService.AdminSendLiveryGiftOutput> AdminSendLiveryGift(
             ulong[] recipientXuids,
             int xuidCount,
-            Guid liveryId);
+            Guid liveryId,
+            bool hasExpiration,
+            uint timeSpanInDays);
 
         /// <summary>
         ///     Sends car livery to an LSP user group.
         /// </summary>
         Task<GiftingManagementService.AdminSendGroupLiveryGiftOutput> AdminSendGroupLiveryGift(
             int groupId,
-            Guid liveryId);
+            Guid liveryId,
+            bool hasExpiration,
+            uint timeSpanInDays);
 
         /// <summary>
         ///     Sends a quantity of an item to a player.
@@ -47,7 +51,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task AdminSendItemGiftV2(
             ulong recipientXuid,
             string itemType,
-            int itemValue);
+            int itemValue,
+            bool hasExpiration,
+            uint timeSpanInDays);
 
         /// <summary>
         ///     Sends a quantity of an item to an LSP user group.
@@ -55,7 +61,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task AdminSendItemGroupGiftV2(
             int groupId,
             string itemType,
-            int itemValue);
+            int itemValue,
+            bool hasExpiration,
+            uint timeSpanInDays);
 
         /// <summary>
         ///     Gets all supported gift types.

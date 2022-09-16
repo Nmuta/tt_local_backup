@@ -9,7 +9,6 @@ import {
   SteelheadGift,
   SteelheadGiftHistory,
   SteelheadGroupGift,
-  SteelheadMasterInventory,
   SteelheadPlayerDetails,
   SteelheadPlayerInventory,
   SteelheadPlayerInventoryProfile,
@@ -23,7 +22,7 @@ import {
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
-import { LspGroup, LspGroups } from '@models/lsp-group';
+import { LspGroup } from '@models/lsp-group';
 import { SteelheadUserFlags } from '@models/steelhead';
 import { ApiService } from '@services/api';
 import { chain } from 'lodash';
@@ -183,18 +182,6 @@ export class SteelheadService {
     return this.apiService.getRequest$<SteelheadGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
       params,
-    );
-  }
-
-  /** Gets the Steelhead lsp groups. */
-  public getLspGroups$(): Observable<LspGroups> {
-    return this.apiService.getRequest$<LspGroups>(`${this.basePath}/groups`);
-  }
-
-  /** Gets the Steelhead master inventory. */
-  public getMasterInventory$(): Observable<SteelheadMasterInventory> {
-    return this.apiService.getRequest$<SteelheadMasterInventory>(
-      `${this.basePath}/masterInventory`,
     );
   }
 

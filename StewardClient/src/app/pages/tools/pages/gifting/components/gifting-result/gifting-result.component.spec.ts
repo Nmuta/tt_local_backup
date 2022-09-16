@@ -59,23 +59,21 @@ describe('GiftingResultComponent', () => {
     });
 
     it('should sort results with errors to the top of the list', () => {
-      component.ngOnInit();
+      component.ngOnChanges();
 
       expect(component.giftingResult).not.toBeNull();
       expect(component.giftingResult.length).toEqual(3);
       expect(component.giftingResult[0].playerOrLspGroup).toEqual(result2Id);
-      expect(component.giftingResult[1].playerOrLspGroup).toEqual(result1Id);
-      expect(component.giftingResult[2].playerOrLspGroup).toEqual(result3Id);
     });
 
     it('should set giftingErrorCount with number of error results', () => {
-      component.ngOnInit();
+      component.ngOnChanges();
 
-      expect(component.giftingErrorCount).toEqual(1);
+      expect(component.playersWithErrorsCount).toEqual(1);
     });
 
     it('should call buildCsvData', () => {
-      component.ngOnInit();
+      component.ngOnChanges();
 
       expect(component.buildCsvData).toHaveBeenCalled();
     });
@@ -83,7 +81,7 @@ describe('GiftingResultComponent', () => {
 
   describe('Method: buildCsvData', () => {
     it('should set giftingCsvData', () => {
-      component.ngOnInit();
+      component.ngOnChanges();
       component.buildCsvData();
 
       // Verify column headers
@@ -94,8 +92,6 @@ describe('GiftingResultComponent', () => {
 
       // Verify row ID
       expect(component.giftingCsvData[1][0]).toEqual(`'${result2Id}`);
-      expect(component.giftingCsvData[2][0]).toEqual(`'${result1Id}`);
-      expect(component.giftingCsvData[3][0]).toEqual(`'${result3Id}`);
     });
   });
 });

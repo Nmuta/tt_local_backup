@@ -7,17 +7,18 @@ import { GroupNotification } from '@models/notifications.model';
 /** Group notification management contract. */
 export interface GroupNotificationManagementContract {
   /** Get game title. */
-  getGameTitle(): GameTitle;
+  gameTitle: GameTitle;
 
   /** Get group notifications. */
   getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]>;
 
   /** Update group notification. */
   postEditLspGroupCommunityMessage$(
+    lspGroupId: BigNumber,
     notificationId: string,
     communityMessage: CommunityMessage,
   ): Observable<void>;
 
   /** Delete group notification. */
-  deleteLspGroupCommunityMessage$(notificationId: string): Observable<void>;
+  deleteLspGroupCommunityMessage$(lspGroupId: BigNumber, notificationId: string): Observable<void>;
 }

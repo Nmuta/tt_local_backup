@@ -1,14 +1,14 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
-import { DateTime, Duration } from 'luxon';
+import { DateTime } from 'luxon';
 import { MSError } from './error.model';
 import { Merge } from './extended-types';
 
 /** Interface for a community message. */
 export interface GenericCommunityMessage {
   message: string;
-  expiryDate: DateTime;
-  duration: Duration;
+  startTimeUtc: DateTime;
+  expireTimeUtc: DateTime;
 }
 
 /** Interface for a bulk community message. */

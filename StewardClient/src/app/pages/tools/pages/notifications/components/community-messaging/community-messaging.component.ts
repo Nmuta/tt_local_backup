@@ -9,7 +9,7 @@ import { JsonTableResult } from '@models/json-table-result';
 import { sortBy } from 'lodash';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 
 /** Routed Component; Sunrise Community Messaging Tool. */
 type MessageSendResultViewable = {
@@ -41,7 +41,8 @@ export abstract class CommunityMessagingComponent extends BaseComponent {
   /** The error received while loading. */
   public loadError: unknown;
 
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
+  public abstract lockStartTime: boolean;
   public abstract submitCommunityMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
 
   /** New community message created. */

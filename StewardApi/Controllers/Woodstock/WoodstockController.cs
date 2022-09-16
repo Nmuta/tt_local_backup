@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
+using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Caching.Memory;
@@ -1445,8 +1447,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
@@ -1523,8 +1524,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
 
-            var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+            var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
             await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                 .ConfigureAwait(true);
@@ -1593,7 +1593,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] ExpirableGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -1639,8 +1639,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
@@ -1668,7 +1667,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
+        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] ExpirableGift gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -1829,9 +1828,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.Xuids.EnsureValidXuids();
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1853,11 +1850,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
             var notifications = await this.woodstockNotificationProvider.SendNotificationsAsync(
                 communityMessage.Xuids,
                 communityMessage.Message,
-                expireTime,
+                communityMessage.StartTimeUtc,
+                communityMessage.ExpireTimeUtc,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
@@ -1889,9 +1886,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1904,11 +1899,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
-            var expireTime = DateTime.Now.Add(communityMessage.Duration);
             var result = await this.woodstockNotificationProvider.SendGroupNotificationAsync(
                 groupId,
                 communityMessage.Message,
-                expireTime,
+                communityMessage.StartTimeUtc,
+                communityMessage.ExpireTimeUtc,
                 communityMessage.DeviceType,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
@@ -1937,6 +1932,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
             xuid.EnsureValidXuid();
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1951,12 +1947,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
             // Tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903790
             */
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             await this.woodstockNotificationProvider.EditNotificationAsync(
                 notificationId,
                 xuid,
                 editParameters.Message,
-                expireTime,
+                editParameters.ExpireTimeUtc,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
 
@@ -1982,6 +1977,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1996,11 +1992,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"Cannot edit notification of type: {notification.NotificationType}.");
             }
 
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             await this.woodstockNotificationProvider.EditGroupNotificationAsync(
                 notificationId,
                 editParameters.Message,
-                expireTime,
+                editParameters.ExpireTimeUtc,
                 editParameters.DeviceType,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
@@ -2246,37 +2241,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
         {
-            LiveOpsBanHistory ConsolidateBanHistory(IGrouping<LiveOpsBanHistory, LiveOpsBanHistory> historyGroupings)
-            {
-                var serviceEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId == "From Services");
-                var liveOpsEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId != "From Services");
-
-                if (serviceEntry == null && liveOpsEntry == null)
-                {
-                    this.loggingService.LogException(new ConversionFailedAppInsightsException("BanHistory lookup consolidation for Woodstock has failed."));
-                    return null;
-                }
-
-                var resultEntry = new LiveOpsBanHistory(
-                    serviceEntry?.Xuid ?? liveOpsEntry.Xuid,
-                    serviceEntry?.BanEntryId ?? liveOpsEntry.BanEntryId,
-                    serviceEntry?.Title ?? liveOpsEntry?.Title,
-                    liveOpsEntry?.RequesterObjectId ?? serviceEntry?.RequesterObjectId,
-                    serviceEntry?.StartTimeUtc ?? liveOpsEntry.StartTimeUtc,
-                    serviceEntry?.ExpireTimeUtc ?? liveOpsEntry.ExpireTimeUtc,
-                    serviceEntry?.FeatureArea ?? liveOpsEntry?.FeatureArea,
-                    serviceEntry?.Reason ?? liveOpsEntry?.Reason,
-                    liveOpsEntry?.BanParameters ?? serviceEntry?.BanParameters,
-                    serviceEntry?.Endpoint ?? liveOpsEntry?.Endpoint);
-
-                resultEntry.IsActive = serviceEntry?.IsActive ?? false;
-                resultEntry.CountOfTimesExtended = serviceEntry?.CountOfTimesExtended ?? liveOpsEntry.CountOfTimesExtended;
-                resultEntry.LastExtendedTimeUtc = serviceEntry?.LastExtendedTimeUtc ?? liveOpsEntry.LastExtendedTimeUtc;
-                resultEntry.IsDeleted = serviceEntry == null;
-
-                return resultEntry;
-            }
-
             var getServicesBanHistory = this.woodstockPlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
                 xuid,
@@ -2288,12 +2252,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            // https://stackoverflow.com/questions/4873984/how-to-get-distinct-with-highest-value-using-linq
-            var banHistories = liveOpsBanHistory.Concat(servicesBanHistory)
-                                                .GroupBy(history => history, new LiveOpsBanHistoryComparer())
-                                                .Select(banGroups => ConsolidateBanHistory(banGroups))
-                                                .Where(entry => entry != null)
-                                                .ToList();
+            var banHistories = BanHistoryConsolidationHelper.ConsolidateBanHistory(liveOpsBanHistory, servicesBanHistory, this.loggingService, CodeName.ToString());
 
             banHistories.Sort((x, y) => y.ExpireTimeUtc.CompareTo(x.ExpireTimeUtc));
 

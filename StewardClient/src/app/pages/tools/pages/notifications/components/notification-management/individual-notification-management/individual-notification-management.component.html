@@ -7,6 +7,8 @@
     <ng-container *ngIf="!selectedXuid">
       Select a player to the left to see their notifications.
     </ng-container>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
+    </mat-paginator>
     <form *waitForMonitor="getMonitor">
       <table mat-table [dataSource]="notifications">
         <ng-container matColumnDef="message">
@@ -42,36 +44,49 @@
         <ng-container matColumnDef="metadata">
           <th mat-header-cell *matHeaderCellDef>Metadata</th>
           <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
-            <ul>
-              <li><b>ID:</b> {{ entry.notification.notificationId }}</li>
-              <li><b>Type:</b> {{ entry.notification.notificationType }}</li>
-              <li><b>Is Read:</b> {{ entry.notification.isRead }}</li>
-              <li>
-                <b>Sent Date:</b>
-                {{ entry.notification.sentDateUtc | date: 'fullDate' }}
-              </li>
-              <li *ngIf="!entry.edit">
-                <b>Expire Date:</b>
-                {{ entry.formGroup.controls.expireDateUtc.value | date: 'fullDate' }}
-              </li>
-            </ul>
-
+            <table class="info-table">
+              <tr>
+                <th>ID:</th>
+                <td>
+                  {{ entry.notification.notificationId }}
+                </td>
+              </tr>
+              <tr>
+                <th>Type:</th>
+                <td>
+                  {{ entry.notification.notificationType }}
+                </td>
+              </tr>
+              <tr>
+                <th>Is Read:</th>
+                <td>
+                  {{ entry.notification.isRead }}
+                </td>
+              </tr>
+              <tr>
+                <th>Sent Date:</th>
+                <td>
+                  <standard-absolute-time-utc [timeUtc]="entry.notification.sentDateUtc">
+                  </standard-absolute-time-utc>
+                </td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Expire Date:</th>
+                <td>
+                  <standard-absolute-time-utc
+                    *ngIf="!entry.edit"
+                    [timeUtc]="entry.formGroup.controls.expireDateUtc.value"
+                  >
+                  </standard-absolute-time-utc>
+                </td>
+              </tr>
+            </table>
             <ng-container *ngIf="entry.edit">
-              <mat-form-field appearance="fill" class="expiry-date">
-                <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  [formControl]="entry.formControls.expireDateUtc"
-                  [matDatepickerFilter]="dateTimeFutureFilter"
-                />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-hint>Expire time must be in the future</mat-hint>
-                <mat-error *ngIf="entry.formGroup.controls.expireDateUtc?.hasError('is-after')">
-                  Expiry time must be in the future.
-                </mat-error>
-              </mat-form-field>
+              <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
+              <datetime-picker
+                [min]="entry.min"
+                [formControl]="entry.formControls.expireDateUtc"
+              ></datetime-picker>
             </ng-container>
           </td>
         </ng-container>
@@ -146,6 +161,4 @@
       </table>
     </form>
   </mat-card-content>
-  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
-  </mat-paginator>
 </mat-card>

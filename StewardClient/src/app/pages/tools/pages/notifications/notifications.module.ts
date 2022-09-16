@@ -14,7 +14,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -34,6 +33,7 @@ import { WoodstockNotificationsComponent } from './woodstock/woodstock-notificat
 import { CommunityMessagingModule } from './components/community-messaging/community-messaging.module';
 import { GroupNotificationManagementModule } from './components/notification-management/group-notification-management/group-notification-management.module';
 import { IndividualNotificationManagementModule } from './components/notification-management/individual-notification-management/individual-notification-management.module';
+import { SteelheadNotificationsComponent } from './steelhead/steelhead-notifications.component';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -41,9 +41,9 @@ import { IndividualNotificationManagementModule } from './components/notificatio
     NotificationsComponent,
     SunriseNotificationsComponent,
     WoodstockNotificationsComponent,
+    SteelheadNotificationsComponent,
   ],
   imports: [
-    ...STANDARD_DATE_IMPORTS,
     CommonModule,
     DirectivesModule,
     FontAwesomeModule,

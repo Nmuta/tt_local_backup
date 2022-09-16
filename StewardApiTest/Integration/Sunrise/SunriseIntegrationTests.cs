@@ -1550,7 +1550,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 Xuids = new List<ulong> {notificationXuid},
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
             };
             var result = await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
 
@@ -1567,7 +1566,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 Xuids = new List<ulong> { TestConstants.InvalidXuid },
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
             };
 
             try
@@ -1589,7 +1587,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 Xuids = new List<ulong> { notificationXuid },
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1)
             };
 
             try
@@ -1605,13 +1602,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task SendNotificationsMessageDurationTooShort()
+        public async Task SendNotificationsMessageExpireBeforeNow()
         {
             var message = new BulkCommunityMessage
             {
                 Xuids = new List<ulong> { notificationXuid },
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromMinutes(5)
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-1),
             };
 
             try
@@ -1633,7 +1630,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 Xuids = new List<ulong> { notificationXuid },
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
             };
 
             try
@@ -1655,7 +1651,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1),
                 DeviceType = DeviceType.All,
             };
 
@@ -1669,7 +1664,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1),
                 DeviceType = DeviceType.All,
             };
 
@@ -1691,7 +1685,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var message = new LspGroupCommunityMessage
             {
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1),
                 DeviceType = DeviceType.All,
             };
 
@@ -1708,12 +1701,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task SendGroupNotificationsDurationTooShort()
+        public async Task SendGroupNotificationsExpireBeforeSend()
         {
             var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromMinutes(5),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-1),
                 DeviceType = DeviceType.All,
             };
 
@@ -1735,7 +1728,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var message = new LspGroupCommunityMessage
             {
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1),
                 DeviceType = DeviceType.All,
             };
 

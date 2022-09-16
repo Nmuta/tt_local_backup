@@ -9,11 +9,15 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.UserGroup;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Microsoft.Extensions.DependencyInjection;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
+using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
+using Microsoft.Extensions.Configuration;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
@@ -48,10 +52,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
-            Func<Task> action = async () => await controller.AddUsersToGroup(userGroupId, xuids).ConfigureAwait(false);
+            Func<Task> action = async () => await controller.AddUsersToGroup(userGroupId, false, playerList).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -64,10 +69,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
-            Func<Task> action = async () => await controller.RemoveUsersFromGroup(userGroupId, xuids).ConfigureAwait(false);
+            Func<Task> action = async () => await controller.RemoveUsersFromGroup(userGroupId, false, playerList).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -80,10 +86,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
-            Func<Task> action = async () => await controller.AddUsersToGroupUseBackgroundProcessing(userGroupId, xuids).ConfigureAwait(false);
+            Func<Task> action = async () => await controller.AddUsersToGroup(userGroupId, true, playerList).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -96,10 +103,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             // Arrange.
             var controller = new Dependencies().Build();
             var xuids = new List<ulong>() { ValidXuid };
+            var playerList = new UpdateUserGroupInput() { Xuids = xuids.ToArray() };
             var userGroupId = Fixture.Create<int>();
 
             // Act.
-            Func<Task> action = async () => await controller.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, xuids).ConfigureAwait(false);
+            Func<Task> action = async () => await controller.RemoveUsersFromGroup(userGroupId, true, playerList).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -109,37 +117,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             private readonly ControllerContext ControllerContext;
 
-            public IWoodstockServiceManagementProvider serviceManagementProvider { get; set; } = Substitute.For<IWoodstockServiceManagementProvider>();
             public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
             public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
-            public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
 
             public Dependencies()
             {
-                var httpContext = new DefaultHttpContext();
-                httpContext.Request.Path = TestConstants.TestRequestPath;
-                httpContext.Request.Host = new HostString(TestConstants.TestRequestHost);
-                httpContext.Request.Scheme = TestConstants.TestRequestScheme;
-
-                var claims = new List<Claim> { new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", "unit-test-azure-object-id") };
-                var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
-                httpContext.User = new ClaimsPrincipal(claimsIdentities);
-
-                this.ControllerContext = new ControllerContext { HttpContext = httpContext };
-
-                this.serviceManagementProvider.CreateLspGroupAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<LspGroup>());
-                this.serviceManagementProvider.AddUsersToLspGroupAsync(Arg.Any<List<ulong>>(), Arg.Any<int>(), Arg.Any<string>())
-                    .Returns(new List<UserGroupManagementResponse>());
-                this.serviceManagementProvider.RemoveUsersFromLspGroupAsync(Arg.Any<List<ulong>>(), Arg.Any<int>(), Arg.Any<string>())
-                    .Returns(new List<UserGroupManagementResponse>());
+                this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
             }
 
             public UserGroupController Build() => new UserGroupController(
-                this.serviceManagementProvider,
                 this.JobTracker,
-                this.ActionLogger,
-                this.Scheduler)
+                this.Scheduler,
+                this.LoggingService)
             { ControllerContext = this.ControllerContext };
         }
     } 

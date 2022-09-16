@@ -7,8 +7,8 @@ import { createMockWoodstockService, WoodstockService } from '@services/woodstoc
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { of, throwError } from 'rxjs';
-
 import { WoodstockCommunityMessagingComponent } from './woodstock-community-messaging.component';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockCommunityMessagingComponent', () => {
   let component: WoodstockCommunityMessagingComponent;
@@ -18,6 +18,7 @@ describe('WoodstockCommunityMessagingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockCommunityMessagingComponent],
+      imports: [PipesModule],
       providers: [createMockWoodstockService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -72,8 +73,8 @@ describe('WoodstockCommunityMessagingComponent', () => {
   describe('Method: setNewCommunityMessage', () => {
     const message: CommunityMessage = {
       message: faker.random.words(10),
-      expiryDate: null,
-      duration: null,
+      expireTimeUtc: null,
+      startTimeUtc: null,
     };
 
     it('should set appropriate component variables', () => {
@@ -128,8 +129,8 @@ describe('WoodstockCommunityMessagingComponent', () => {
       component.loadError = {};
       component.newCommunityMessage = {
         message: faker.random.words(10),
-        expiryDate: null,
-        duration: null,
+        expireTimeUtc: null,
+        startTimeUtc: null,
       };
     });
 

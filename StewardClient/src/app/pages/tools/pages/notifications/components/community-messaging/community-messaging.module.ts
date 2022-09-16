@@ -24,18 +24,23 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
 import { MatIconModule } from '@angular/material/icon';
-import { LuxonModule } from 'luxon-angular';
-import { LuxonDateModule, MatLuxonDateModule } from 'ngx-material-luxon';
+import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-community-messaging.component';
+import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
+import { SteelheadCommunityMessagingComponent } from './steelhead/steelhead-community-messaging.component';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
 
 /** Routed module for banning users. */
 @NgModule({
   declarations: [
     SunriseCommunityMessagingComponent,
     WoodstockCommunityMessagingComponent,
+    SteelheadCommunityMessagingComponent,
     NewCommunityMessageComponent,
   ],
   imports: [
+    ...STANDARD_DATE_IMPORTS,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -61,12 +66,13 @@ import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-comm
     MatIconModule,
     TextFieldModule,
     JsonTableResultsModule,
-    LuxonModule,
-    LuxonDateModule,
+    DateTimePickersModule,
+    StandardDateModule,
   ],
   exports: [
     SunriseCommunityMessagingComponent,
     WoodstockCommunityMessagingComponent,
+    SteelheadCommunityMessagingComponent,
     NewCommunityMessageComponent,
   ],
 })

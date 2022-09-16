@@ -1,0 +1,10 @@
+// for some reason angular wants to make these slightly bold
+* {
+  font-weight: normal;
+}
+
+// align the icon
+:host ::ng-deep > button > .mat-button-wrapper {
+  display: flex;
+  align-items: center;
+}

@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;

@@ -37,9 +37,11 @@ const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: WoodstockPlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
+  public hideMonitor = new ActionMonitor('Post Hide UGC');
 
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
+  public canHideUgc: boolean = false;
   public featureMatToolip: string = null;
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
@@ -115,6 +117,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         }
 
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
+        this.canHideUgc = this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
           this.featureMatToolip = this.incorrectPermsTooltip;
@@ -141,6 +144,22 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       )
       .subscribe((response: WoodstockPlayerUgcItem) => {
         this.ugcItem = response;
+      });
+  }
+
+  /** Hide a UGC item in Woodstock */
+  public hideUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.hideMonitor = this.hideMonitor.repeat();
+
+    this.service
+      .hideUgc$(this.ugcItem.id)
+      .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = false;
+        this.canHideUgc = false;
       });
   }
 }

@@ -12,8 +12,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
     /// <summary>
     ///     Handles requests for Woodstock.
@@ -31,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc
         UserRole.MediaTeam)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("UGC", "Woodstock")]
+    [Tags(Title.Woodstock, Target.Details, Topic.Ugc)]
     public class LookupController : V2ControllerBase
     {
         private readonly IWoodstockStorefrontProvider storefrontProvider;
@@ -55,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get([FromBody] List<Guid> ugcIds)
         {
-            var thumbnails = new List<ThumbnailLookupOutputModel>();
+            var thumbnails = new List<ThumbnailLookupOutput>();
             var thumbnailLookups = new List<Task<WoodstockUgcItem>>();
 
             foreach (var id in ugcIds)
@@ -68,19 +69,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Ugc
             foreach (var query in thumbnailLookups)
             {
                 var lookupResult = query.GetAwaiter().GetResult();
-                var thumbnailResult = new ThumbnailLookupOutputModel
-                        {Id = lookupResult.Id, Thumbnail = lookupResult.ThumbnailOneImageBase64};
+                var thumbnailResult = new ThumbnailLookupOutput
+                { Id = lookupResult.Id, Thumbnail = lookupResult.ThumbnailOneImageBase64};
 
                 thumbnails.Add(thumbnailResult);
             }
+
             return this.Ok(thumbnails);
-        }
-
-        private class ThumbnailLookupOutputModel
-        {
-            public Guid Id { get; set; }
-
-            public string Thumbnail { get; set; }
         }
     }
 }

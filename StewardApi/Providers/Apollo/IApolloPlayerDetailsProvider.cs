@@ -45,6 +45,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             string endpoint);
 
         /// <summary>
+        ///     Expire bans.
+        /// </summary>
+        Task<UnbanResult> ExpireBanAsync(
+            int banEntryId,
+            string endpoint);
+
+        /// <summary>
+        ///     Delete bans.
+        /// </summary>
+        Task<UnbanResult> DeleteBanAsync(
+            int banEntryId,
+            string endpoint);
+
+        /// <summary>
         ///     Gets user ban history.
         /// </summary>
         Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid, string endpoint);

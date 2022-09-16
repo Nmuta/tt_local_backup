@@ -15,5 +15,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         {
             return Invariant($"{TitleConstants.ApolloCodeName}|{endpoint}:(g:{gamertag},x:{xuid})");
         }
+
+        /// <summary>
+        ///     Generate key for LSP authorization token.
+        /// </summary>
+        public static string MakeAuthTokenKey()
+        {
+            return Invariant($"{TitleConstants.ApolloCodeName}ServiceAuthToken");
+        }
     }
 }

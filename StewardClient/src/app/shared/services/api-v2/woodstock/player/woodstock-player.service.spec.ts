@@ -2,8 +2,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import faker from '@faker-js/faker';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { ReportWeightType } from '@models/report-weight';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
+import BigNumber from 'bignumber.js';
 import { of } from 'rxjs';
 
 import { WoodstockPlayerService } from './woodstock-player.service';
@@ -30,7 +32,10 @@ describe('WoodstockPlayerService', () => {
 
   describe('Method: getUserReportWeight', () => {
     const xuid = fakeXuid();
-    const fakeResponse = faker.datatype.number();
+    const fakeResponse = {
+      weight: new BigNumber(faker.datatype.number({ min: 0, max: 100 })),
+      type: ReportWeightType.Default,
+    };
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine
@@ -51,7 +56,7 @@ describe('WoodstockPlayerService', () => {
 
   describe('Method: setUserReportWeight', () => {
     const xuid = fakeXuid();
-    const reportWeight = faker.datatype.number({ min: 0, max: 100 });
+    const reportWeight = ReportWeightType.Default;
 
     beforeEach(() => {
       apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of(null));

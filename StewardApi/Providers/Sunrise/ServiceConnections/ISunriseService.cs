@@ -6,7 +6,7 @@ using Forza.UserGeneratedContent.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
 using AuctionManagementService = Forza.LiveOps.FH4.Generated.AuctionManagementService;
-using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
+using ForzaUserBanParameters = Forza.WebServices.FH4.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
@@ -252,15 +252,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Bans users.
         /// </summary>
-        Task<UserManagementService.BanUsersOutput> BanUsersAsync(
+        Task<UserService.BanUsersOutput> BanUsersAsync(
             ForzaUserBanParameters[] banParameters,
-            int xuidCount,
+            string endpoint);
+
+        /// <summary>
+        ///     Expires bans.
+        /// </summary>
+        Task<UserService.ExpireBanEntriesOutput> ExpireBanEntriesAsync(
+            ForzaUserExpireBanParameters[] banParameters,
+            int entryCount,
+            string endpoint);
+
+        /// <summary>
+        ///     Deletes bans.
+        /// </summary>
+        Task<UserService.DeleteBanEntriesOutput> DeleteBanEntriesAsync(
+            int[] banParameters,
             string endpoint);
 
         /// <summary>
         ///     Gets user ban history.
         /// </summary>
-        Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
+        Task<UserService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
             ulong xuid,
             int startIndex,
             int maxResults,
@@ -269,7 +283,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Gets user ban summaries.
         /// </summary>
-        Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
+        Task<UserService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
             ulong[] xuids,
             int xuidCount,
             string endpoint);

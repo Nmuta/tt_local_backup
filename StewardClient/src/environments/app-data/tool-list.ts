@@ -23,14 +23,9 @@ export enum NavbarTool {
   Zendesk = 'zendesk',
   Sprinklr = 'sprinklr',
   Pegasus = 'pegasus',
-  AdminSteelheadDev = 'admin-steelhead-dev',
-  AdminSteelheadStudio = 'admin-steelhead-studio',
-  AdminFH5 = 'admin-fh5',
-  AdminFH5Studio = 'admin-fh5-studio',
-  AdminFH4 = 'admin-fh4',
-  AdminFH4Studio = 'admin-fh4-studio',
-  AdminFM7 = 'admin-fm7',
-  AdminFM7Studio = 'admin-fm7-studio',
+
+  AdminPagesSelector = 'admin-selector',
+
   BanReview = 'ban-review',
   Messaging = 'messaging',
   AuctionDetails = 'auction-details',
@@ -39,7 +34,7 @@ export enum NavbarTool {
   Theming = 'theming',
   RacersCup = 'racers-cup',
   UserGroupManagement = 'user-group-management',
-  ActionsDashboard = 'actions-dashboard',
+  PowerBiTools = 'power-bi-tools',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -88,7 +83,16 @@ export const CommonAccessLevels = {
     UserRole.CommunityManager,
   ],
   RacersCup: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
-  UserGroupManagement: [UserRole.LiveOpsAdmin],
+  UserGroupManagement: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.SupportAgent,
+    UserRole.SupportAgentNew,
+    UserRole.CommunityManager,
+    UserRole.MediaTeam,
+    UserRole.HorizonDesigner,
+    UserRole.MotorsportDesigner,
+  ],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
 };
 
@@ -116,7 +120,9 @@ export enum AppIcon {
   Leaderboards = 'leaderboard',
   RacersCup = 'calendar_today',
   UserGroupManagement = 'group',
-  ActionsDashboard = 'dashboard',
+  PowerBiTools = 'dashboard',
+  RetailEnvironment = 'face',
+  DevEnvironment = 'admin_panel_settings',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -127,7 +133,7 @@ export enum ExtraIcon {
 
 /** Static links to different admin pages. */
 export enum AdminPages {
-  SteelheadDev = 'https://steelheadadmin-flight-15.dev.services.forzamotorsport.net',
+  SteelheadFlight = 'https://steelheadadmin-flight-15.dev.services.forzamotorsport.net',
   SteelheadStudio = 'https://steelheadadmin-15.dev.services.forzamotorsport.net',
   FH5 = 'https://admin.fh5.forzamotorsport.net/',
   FH5Studio = 'https://woodstockadmin-final.dev.services.forzamotorsport.net/',
@@ -181,14 +187,17 @@ export interface HomeTileInfoBase {
 }
 
 /** Type for a custom tile. */
-export type CustomTileComponent = { disabled: boolean };
+export type CustomTileComponent = { disabled: boolean; item: HomeTileInfo };
 
 /** Model for Home Tiles that send the user to internal tools. */
 export interface HomeTileInfoCustomTile extends HomeTileInfoBase {
   /** Component to render below the tile summary. */
   readonly tileContentComponent?: () => Promise<Type<CustomTileComponent>>;
-  /** Component to render in the nav instead of the usual tile. */
+  /** Component to render in the nav instead of the usual link. */
   readonly navComponent?: () => Promise<Type<CustomTileComponent>>;
+  /** Component to render as the tile action instead of the usual button. */
+  readonly tileActionComponent?: () => Promise<Type<CustomTileComponent>>;
+
   /** When true, disables the "open" link. */
   readonly hideLink?: true;
 }
@@ -205,8 +214,26 @@ export interface HomeTileInfoExternal extends HomeTileInfoBase {
   externalUrl: string;
 }
 
+/** A single e ntry in an external URL dropdown entry. */
+export interface ExternalUrlDropdownEntry {
+  text: string;
+  tooltip?: string;
+  icon?: string;
+  url: string;
+}
+
+/** Model for Home Tiles that send the user to external tools. */
+export interface HomeTileInfoMultiExternal extends HomeTileInfoBase {
+  /** Target URLs for opening a link in a new tab. */
+  externalUrls: ExternalUrlDropdownEntry[];
+}
+
 /** Union type for home tiles. */
-export type HomeTileInfoCore = HomeTileInfoInternal | HomeTileInfoExternal | HomeTileInfoCustomTile;
+export type HomeTileInfoCore =
+  | HomeTileInfoInternal
+  | HomeTileInfoExternal
+  | HomeTileInfoCustomTile
+  | HomeTileInfoMultiExternal;
 
 /** Intersection type for all possible home-tile tweaks. */
 export type HomeTileModifiersIntersection = HomeTileInfoCustomTile;
@@ -224,6 +251,12 @@ export function isHomeTileInfoExternal(
 ): homeTileInfo is HomeTileInfoExternal {
   return !!(homeTileInfo as HomeTileInfoExternal).externalUrl;
 }
+/** True if the given tile handles multiple external tools. */
+export function isHomeTileInfoMultiExternal(
+  homeTileInfo: HomeTileInfo,
+): homeTileInfo is HomeTileInfoMultiExternal {
+  return !!(homeTileInfo as HomeTileInfoMultiExternal).externalUrls;
+}
 
 /** True if the given tile is an internal tool. */
 export function isHomeTileInfoInternal(
@@ -231,6 +264,12 @@ export function isHomeTileInfoInternal(
 ): homeTileInfo is HomeTileInfoInternal {
   return !!(homeTileInfo as HomeTileInfoInternal).loadChildren;
 }
+
+/** Use to produce a named dropdown menu for the given component. */
+const LOAD_EXTERNAL_DROPDOWN_MENU = () =>
+  import('../../app/shared/modules/nav/external-dropdown/external-dropdown.component').then(
+    m => m.ExternalDropdownComponent,
+  );
 
 /** The unprocessed tool list. Use @see environment.tools instead. */
 export const unprocessedToolList: HomeTileInfo[] = [
@@ -549,125 +588,69 @@ export const unprocessedToolList: HomeTileInfo[] = [
     shortDescription: [`Web Services for CMS authoring, snapshotting and publishing`],
     externalUrl: 'https://cms.services.forzamotorsport.net/',
   },
-  <HomeTileInfoExternal>{
+  <HomeTileInfoMultiExternal>{
     icon: AppIcon.DeveloperTool,
     extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminSteelheadDev,
+    tool: NavbarTool.AdminPagesSelector,
     accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'Steelhead (Dev)',
-    subtitle: 'Admin Pages',
+    title: 'Admin Pages',
+    subtitle: 'Production / Flight / Dev',
     imageUrl: undefined,
     imageAlt: undefined,
-    tooltipDescription: 'Steelhead Admin Pages',
-    shortDescription: [`Steelhead Admin Pages`],
-    externalUrl: AdminPages.SteelheadDev,
+    tooltipDescription: 'Various Admin Pages',
+    shortDescription: [`Various Admin Pages`],
+    externalUrls: [
+      {
+        icon: AppIcon.RetailEnvironment,
+        text: '(Flight) Steelhead',
+        url: AdminPages.SteelheadFlight,
+      },
+      { icon: AppIcon.RetailEnvironment, text: 'FH5', url: AdminPages.FH5 },
+      { icon: AppIcon.RetailEnvironment, text: 'FH4', url: AdminPages.FH4 },
+      { icon: AppIcon.RetailEnvironment, text: 'FM7', url: AdminPages.FM7 },
+      { icon: AppIcon.DevEnvironment, text: '(Dev) Steelhead', url: AdminPages.SteelheadStudio },
+      { icon: AppIcon.DevEnvironment, text: '(Dev) FH5', url: AdminPages.FH5Studio },
+      { icon: AppIcon.DevEnvironment, text: '(Dev) FH4', url: AdminPages.FH4Studio },
+      { icon: AppIcon.DevEnvironment, text: '(Dev) FM7', url: AdminPages.FM7Studio },
+    ],
+    navComponent: LOAD_EXTERNAL_DROPDOWN_MENU,
+    tileActionComponent: LOAD_EXTERNAL_DROPDOWN_MENU,
   },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.DeveloperTool,
+  <HomeTileInfoMultiExternal>{
+    icon: AppIcon.PowerBiTools,
     extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminSteelheadStudio,
-    accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'Steelhead (Studio)',
-    subtitle: 'Admin Pages',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'Steelhead Admin Pages for Studio environment',
-    shortDescription: [`Steelhead Admin Pages for Studio environment`],
-    externalUrl: AdminPages.SteelheadStudio,
-  },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.DeveloperTool,
-    extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminFH5,
-    accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'FH5',
-    subtitle: 'Admin Pages',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'FH5 Admin Pages',
-    shortDescription: [`FH5 Admin Pages`],
-    externalUrl: AdminPages.FH5,
-  },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.DeveloperTool,
-    extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminFH5Studio,
-    accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'FH5 (Studio)',
-    subtitle: 'Admin Pages',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'FH5 Admin Pages for Studio environment',
-    shortDescription: [`FH5 Admin Pages for Studio environment`],
-    externalUrl: AdminPages.FH5Studio,
-  },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.DeveloperTool,
-    extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminFH4,
-    accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'FH4',
-    subtitle: 'Admin Pages',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'FH4 Admin Pages',
-    shortDescription: [`FH4 Admin Pages`],
-    externalUrl: AdminPages.FH4,
-  },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.DeveloperTool,
-    extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminFH4Studio,
-    accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'FH4 (Studio)',
-    subtitle: 'Admin Pages',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'FH4 Admin Pages for Studio environment',
-    shortDescription: [`FH4 Admin Pages for Studio environment`],
-    externalUrl: AdminPages.FH4Studio,
-  },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.DeveloperTool,
-    extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminFM7,
-    accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'FM7',
-    subtitle: 'Admin Pages',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'FM7 Admin Pages',
-    shortDescription: [`FM7 Admin Pages`],
-    externalUrl: AdminPages.FM7,
-  },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.DeveloperTool,
-    extraIcon: ExtraIcon.External,
-    tool: NavbarTool.AdminFM7Studio,
-    accessList: CommonAccessLevels.AdminPageAccess,
-    title: 'FM7 (Studio)',
-    subtitle: 'Admin Pages',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'FM7 Admin Pages for Studio environment',
-    shortDescription: [`FM7 Admin Pages for Studio environment`],
-    externalUrl: AdminPages.FM7Studio,
-  },
-  <HomeTileInfoExternal>{
-    icon: AppIcon.ActionsDashboard,
-    extraIcon: ExtraIcon.External,
-    tool: NavbarTool.ActionsDashboard,
+    tool: NavbarTool.PowerBiTools,
     accessList: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
-    title: 'Actions Dashboard',
-    subtitle: 'PowerBi Dashboard',
+    title: 'Power BI',
+    subtitle: 'Various Dashboards',
     imageUrl: undefined,
     imageAlt: undefined,
-    tooltipDescription:
-      'Group of PowerBi dashboards showing actions done in Steward by type of action, application role and user',
-    shortDescription: [`Dashboard showing users actions in Steward`],
-    externalUrl:
-      'https://msit.powerbi.com/groups/me/apps/fd78489b-3fe6-4947-9df3-5c810f249b07/reports/b0e0b3d1-44b6-4f36-bc7b-cda5a3ea938a/ReportSection297d5da0c075521c0999',
+    tooltipDescription: 'Various Power BI Dashboards',
+    shortDescription: [`Various Power BI Dashboards, such as for Actions and Notifications`],
+    externalUrls: [
+      {
+        text: 'Steward Actions',
+        icon: 'work_history',
+        tooltip:
+          'Group of Power BI dashboards showing actions done in Steward by type of action, application role, and user',
+        url: 'https://msit.powerbi.com/groups/me/apps/fd78489b-3fe6-4947-9df3-5c810f249b07/reports/b0e0b3d1-44b6-4f36-bc7b-cda5a3ea938a/ReportSection297d5da0c075521c0999',
+      },
+      {
+        text: 'FH5 Notifications Read',
+        icon: 'campaign',
+        tooltip: 'Power BI Dashboard showing data on notifications read by users',
+        url: 'https://msit.powerbi.com/groups/me/apps/7478402a-b842-459b-8fb6-1b38a2d9a1eb/reports/b94cbd3f-c349-4f1c-91b8-118c7082fb42/ReportSection297d5da0c075521c0999',
+      },
+      {
+        text: 'FH5 Ban History',
+        icon: 'work_history',
+        tooltip: 'Power BI Dashboard showing all ban history within FH5',
+        url: 'https://msit.powerbi.com/groups/me/apps/7478402a-b842-459b-8fb6-1b38a2d9a1eb/reports/8384c110-fb3f-49e7-8996-0e0d7be7abd3/ReportSection297d5da0c075521c0999',
+      },
+    ],
     hideFromUnauthorized: true,
+    navComponent: LOAD_EXTERNAL_DROPDOWN_MENU,
+    tileActionComponent: LOAD_EXTERNAL_DROPDOWN_MENU,
   },
   <HomeTileInfoCustomTile>{
     icon: AppIcon.DeveloperTool,

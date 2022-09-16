@@ -3,9 +3,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component } from '@angular/core';
 import { LiveOpsBanDescription } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { PermissionsService } from '@services/permissions';
 
@@ -23,7 +23,8 @@ import { PermissionsService } from '@services/permissions';
   ],
 })
 export class SunriseBanHistoryComponent extends BanHistoryBaseComponent {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
+  public actionsEnabled = true;
 
   constructor(private readonly sunrise: SunriseService, permissionsService: PermissionsService) {
     super(permissionsService);
@@ -35,12 +36,12 @@ export class SunriseBanHistoryComponent extends BanHistoryBaseComponent {
   }
 
   /** Expires the Sunrise ban. */
-  public expireBan$(_banEntryId: BigNumber): Observable<UnbanResult> {
-    return throwError(new Error('Sunrise does not support ban expiration.'));
+  public expireBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.sunrise.expireBan$(banEntryId);
   }
 
   /** Deletes the Sunrise ban. */
-  public deleteBan$(_banEntryId: BigNumber): Observable<UnbanResult> {
-    return throwError(new Error('Sunrise does not support ban deletion.'));
+  public deleteBan$(banEntryId: BigNumber): Observable<UnbanResult> {
+    return this.sunrise.deleteBan$(banEntryId);
   }
 }

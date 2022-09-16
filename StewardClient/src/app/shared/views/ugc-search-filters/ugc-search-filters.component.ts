@@ -10,18 +10,19 @@ import {
   Validators,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { DetailedCar } from '@models/detailed-car';
 import BigNumber from 'bignumber.js';
-import { isEqual, keys } from 'lodash';
+import { isEqual } from 'lodash';
 import { Subject } from 'rxjs';
-import { delay, startWith, tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { MakeModelAutocompleteServiceContract } from '@views/make-model-autocomplete/make-model-autocomplete/make-model-autocomplete.component';
 import { OnChanges } from '@angular/core';
+import { renderDelay } from '@helpers/rxjs';
 
 /** Outputted form value of the UGC search filters. */
 export type UgcSearchFiltersFormValue = UgcSearchFilters;
@@ -33,8 +34,9 @@ interface UgcSearchFiltersFormValueInternal {
 
 /** Service contract for UGC search filters. */
 export interface UgcSearchFiltersServiceContract {
-  gameTitle: GameTitleCodeName;
+  gameTitle: GameTitle;
   makeModelAutocompleteServiceContract: MakeModelAutocompleteServiceContract;
+  supportedUgcTypes: UgcType[];
   foundFn: (identity: AugmentedCompositeIdentity) => IdentityResultAlpha | null;
   rejectionFn: (identity: AugmentedCompositeIdentity) => string | null;
 }
@@ -61,20 +63,10 @@ export class UgcSearchFiltersComponent
   extends BaseComponent
   implements OnInit, OnChanges, ControlValueAccessor
 {
-  public static defaults: UgcSearchFiltersFormValue = {
-    xuid: null,
-    ugcType: UgcType.Livery,
-    carId: null,
-    keywords: null,
-    isFeatured: false,
-  };
-
   @Input() public serviceContract: UgcSearchFiltersServiceContract;
 
-  public ugcType = keys(UgcType).filter(type => type !== UgcType.Unknown) as UgcType[];
-
   public formControls = {
-    ugcType: new FormControl(UgcType.Livery, Validators.required),
+    ugcType: new FormControl(null, Validators.required),
     makeModelInput: new FormControl(null),
     keywords: new FormControl(''),
     isFeatured: new FormControl(false, Validators.required),
@@ -85,21 +77,18 @@ export class UgcSearchFiltersComponent
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
   private readonly onChanges$ = new Subject<UgcSearchFiltersFormValue>();
+
+  /** Gets the supported ugc types */
+  public get ugcTypes(): UgcType[] {
+    return this.serviceContract.supportedUgcTypes;
+  }
+
   constructor() {
     super();
   }
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    if (
-      !this.serviceContract.foundFn ||
-      !this.serviceContract.rejectionFn ||
-      !this.serviceContract.makeModelAutocompleteServiceContract ||
-      !this.serviceContract.gameTitle
-    ) {
-      throw new Error('Invalid service contract.');
-    }
-
     let lastValueStringified: {
       xuid: string;
       ugcType: string;
@@ -114,7 +103,7 @@ export class UgcSearchFiltersComponent
           // update our values before waiting for the view to update
           this.onChangeFn(value);
         }),
-        delay(0), // must happen *after* the view updates. this gets it in the queue
+        renderDelay(),
       )
       .subscribe(value => {
         const valueStringified = this.stringifyFormValue(value);
@@ -160,14 +149,15 @@ export class UgcSearchFiltersComponent
 
   /** Angular lifecycle hook. */
   public ngOnChanges(): void {
-    if (
-      !this.serviceContract.foundFn ||
-      !this.serviceContract.rejectionFn ||
-      !this.serviceContract.makeModelAutocompleteServiceContract ||
-      !this.serviceContract.gameTitle
-    ) {
-      throw new Error('Invalid service contract.');
+    if (!this.serviceContract) {
+      throw new Error('No service is defined for UGC search filters component.');
     }
+
+    if (this.serviceContract.supportedUgcTypes.length <= 0) {
+      throw new Error('No supported UGC types given to UGC search filters service contract.');
+    }
+
+    this.formControls.ugcType.setValue(this.serviceContract.supportedUgcTypes[0]);
   }
 
   /** Form control hook. */

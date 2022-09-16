@@ -8,8 +8,8 @@ import { GetLspGroups } from './lsp-group-memory.actions';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { tap } from 'rxjs/operators';
 import { clone } from 'lodash';
-import { SteelheadService } from '@services/steelhead';
 import { WoodstockService } from '@services/woodstock';
+import { SteelheadUserGroupService } from '@services/api-v2/steelhead/user-group/steelhead-user-group.service';
 
 /**
  * Defines the lsp group memory model.
@@ -39,7 +39,7 @@ export class LspGroupMemoryState {
   constructor(
     private readonly sunriseService: SunriseService,
     private readonly apolloService: ApolloService,
-    private readonly steelheadService: SteelheadService,
+    private readonly steelheadUserGroupService: SteelheadUserGroupService,
     private readonly woodstockService: WoodstockService,
   ) {}
 
@@ -69,7 +69,7 @@ export class LspGroupMemoryState {
         request$ = this.apolloService.getLspGroups$();
         break;
       case GameTitleCodeName.FM8:
-        request$ = this.steelheadService.getLspGroups$();
+        request$ = this.steelheadUserGroupService.getLspGroups$();
         break;
       case GameTitleCodeName.FH5:
         request$ = this.woodstockService.getLspGroups$();

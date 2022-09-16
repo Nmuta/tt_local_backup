@@ -12,7 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 import { HelpModule } from '@shared/modules/help/help.module';
@@ -27,6 +27,14 @@ import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redir
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
+import { SteelheadUgcDetailsComponent } from './pages/steelhead/steelhead-ugc-details.component';
+import { SteelheadLookupComponent } from './pages/steelhead-lookup/steelhead-lookup.component';
+import { SteelheadRedirectComponent } from './pages/steelhead-redirect/steelhead-redirect.component';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
 
 /**
@@ -35,10 +43,13 @@ import { StandardFormModule } from '@shared/modules/standard-form/standard-form.
 @NgModule({
   declarations: [
     UgcDetailsComponent,
+    SteelheadUgcDetailsComponent,
     WoodstockUgcDetailsComponent,
     SunriseUgcDetailsComponent,
+    SteelheadLookupComponent,
     WoodstockLookupComponent,
     SunriseLookupComponent,
+    SteelheadRedirectComponent,
     WoodstockRedirectComponent,
     SunriseRedirectComponent,
   ],
@@ -65,6 +76,11 @@ import { StandardFormModule } from '@shared/modules/standard-form/standard-form.
     FeatureUgcModalModule,
     PipesModule,
     UgcDownloadButtonModule,
+    VerifyActionButtonModule,
+    VerifyCheckboxModule,
+    MatCheckboxModule,
+    DirectivesModule,
+    StateManagersModule,
     StandardFormModule,
   ],
 })

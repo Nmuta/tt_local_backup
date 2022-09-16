@@ -13,7 +13,7 @@
     <mat-card-subtitle>{{ matCardSubtitle | humanize }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content *waitForMonitor="getLeaderboardScoresMonitor">
-    <ng-container *ngIf="scores.length > 0; else noScoresTemplate">
+    <ng-container *ngIf="scores?.length > 0; else noScoresTemplate">
       <ng-container *ngIf="expanded">
         <div class="actions-container">
           <div class="info">
@@ -42,7 +42,6 @@
             </div>
           </div>
         </div>
-
         <div class="graph-container">
           <ngx-charts-line-chart
             [scheme]="colorScheme"
@@ -52,11 +51,89 @@
             [yAxis]="true"
             [xAxisLabel]="xAxisLabel"
             [yAxisLabel]="yAxisLabel"
+            [xAxisTicks]="
+              this.displayTalentTickMarks
+                ? [this.selectedIdentityPosition]
+                : this.sanitizedTopDisplayedPositions
+            "
+            [xAxisTickFormatting]="xAxisTickFormatting"
             [timeline]="true"
             [results]="graphData"
             (select)="onGraphClick($event)"
           >
           </ngx-charts-line-chart>
+        </div>
+
+        <h3>Talented Users</h3>
+        <span *ngIf="this.displayTalentUsers">
+          <help-popover-icon cardTitle="Manage Talented Users Group">
+            <div>Manage group membership for talented users group.</div>
+            <a
+              mat-raised-button
+              color="accent"
+              [queryParams]="{ userGroup: service.talentUserGroupId }"
+              [routerLink]="'/app/tools/user-group-management/' + gameTitle"
+              clickStop
+              >Manage Talented Users Group
+            </a>
+          </help-popover-icon>
+          <div>{{ talentFormControls.numberToShow.value }}/{{ sortedTalentScores?.length }}</div>
+          <ng-container *waitForMonitor="getLeaderboardTalentMonitor">
+            <form [formGroup]="talentForm">
+              <mat-form-field>
+                <mat-label># of top talent gridlines to chart</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  [max]="sortedTalentScores?.length"
+                  [formControl]="talentFormControls.numberToShow"
+                />
+              </mat-form-field>
+            </form>
+            <mat-chip-list
+              aria-label="Top Talent"
+              [selectable]="true"
+              [multiple]="false"
+              (change)="onSelect($event)"
+            >
+              <mat-chip
+                #chipRef="matChip"
+                (click)="chipRef.toggleSelected(true)"
+                *ngFor="let talent of topTalent"
+                [value]="talent.identity"
+              >
+                <span
+                  matTooltip="Out of View"
+                  *ngIf="talent?.position.toNumber() > selectedViewOption"
+                  ><mat-icon color="warn">visibility_off</mat-icon></span
+                >
+                {{ talent?.identity?.gamertag ?? talent?.identity?.xuid }} [{{ talent?.position }}]
+                <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" clickStop>
+                  <span
+                    [matTooltip]="
+                      'Options for ' + talent?.identity?.gamertag ??
+                      talent?.identity.xuid.toString()
+                    "
+                    ><mat-icon class="trailing-icon" color="accent">more_vert</mat-icon></span
+                  >
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button
+                    *ngFor="let option of topTalentOptions"
+                    mat-menu-item
+                    (click)="option.clickFn(talent?.identity.xuid)"
+                    clickStop
+                  >
+                    {{ option.label }}
+                  </button>
+                </mat-menu>
+              </mat-chip>
+            </mat-chip-list>
+          </ng-container>
+        </span>
+        <div *ngIf="!this.displayTalentUsers">
+          This feature is only supported in retail/prod environments.
         </div>
       </ng-container>
     </ng-container>

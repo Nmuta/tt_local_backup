@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockApolloService } from '@services/apollo/apollo.service.mock';
 import { ApolloBanHistoryComponent } from './apollo-ban-history.component';
 import { createMockPermissionsService } from '@services/permissions';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('ApolloBanHistoryComponent', () => {
   let component: ApolloBanHistoryComponent;
@@ -12,6 +13,7 @@ describe('ApolloBanHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloBanHistoryComponent],
+      imports: [PipesModule],
       providers: [createMockApolloService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

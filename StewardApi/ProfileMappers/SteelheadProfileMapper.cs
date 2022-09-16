@@ -5,11 +5,10 @@ using System.Globalization;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
-using SteelheadContent;
+using SteelheadLiveOpsContent;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
@@ -31,23 +30,22 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public SteelheadProfileMapper()
         {
-            // TODO Uncomment this once inventory lookup APIs exist for Steelhead.
-            //this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
-            //    .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-            //    .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
-            //    .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
-            //    .ReverseMap();
-            //this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
-            //    .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-            //    .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
-            //    .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
-            //    .ReverseMap();
-            //this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
-            //    .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
-            //    {
-            //        new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
-            //    }))
-            //    .ReverseMap();
+            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ReverseMap();
+            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ReverseMap();
+            this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
+                {
+                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
+                }))
+                .ReverseMap();
             this.CreateMap<AdminForzaProfile, SteelheadInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
@@ -158,8 +156,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaWeatherCondition, RacersCupWeatherCondition>()
                 .ReverseMap();
             this.CreateMap<LocalizedStringData, ForzaLocalizedStringData>().ReverseMap();
-            this.CreateMap<Contracts.Steelhead.Pegasus.SupportedLocale, SteelheadContent.SupportedLocale>().ReverseMap();
-            this.CreateMap<LocalizationStringResult, SteelheadContent.LocalizedString>()
+            this.CreateMap<LocalizationStringResult, SteelheadLiveOpsContent.LocalizedString>()
                 .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
                 .ReverseMap();
             this.CreateMap<ForzaUserAdminComment, ProfileNote>()
@@ -298,17 +295,21 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<UGCSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
                 .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
                 .ForMember(dest => dest.Featured, opt => opt.MapFrom(source => source.IsFeatured))
+                .ForMember(dest => dest.ShowBothUnfeaturedAndFeatured, opt => opt.MapFrom(source => !source.IsFeatured))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ReverseMap();
-            this.CreateMap<DataCar, MasterInventoryItem>()
+            this.CreateMap<SteelheadLiveOpsContent.DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"Update Projection to include MakeDisplayName {src.DisplayName} {src.Year}"));
-            this.CreateMap<DataCar, DetailedCar>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} {src.Year}"));
+            this.CreateMap<SteelheadLiveOpsContent.DataCar, DetailedCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
-                .ForMember(dest => dest.Make, opt => opt.MapFrom(src => "Update Projection to include MakeDisplayName"));
+                .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.MakeDisplayName));
+            this.CreateMap<SteelheadLiveOpsContent.VanityItem, MasterInventoryItem>()
+                            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
+                            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
             this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
             this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))

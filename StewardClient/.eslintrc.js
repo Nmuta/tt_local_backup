@@ -54,7 +54,7 @@ module.exports = {
           'error',
           { type: 'element', prefix: 'app', style: 'kebab-case' },
         ],
-        quotes: ['error', 'single', { allowTemplateLiterals: true }],
+        quotes: ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
         '@angular-eslint/component-selector': [
           'error',
           { type: 'element', prefix: [], style: 'kebab-case' },
@@ -125,19 +125,7 @@ module.exports = {
             checkConstructors: false,
             contexts: [
               // See for more info: https://github.com/gajus/eslint-plugin-jsdoc/issues/519#issuecomment-616007752
-              'MethodDefinition:not([accessibility="private"]) > ArrowFunctionExpression',
-              'MethodDefinition:not([accessibility="private"]) > ClassDeclaration',
-              'MethodDefinition:not([accessibility="private"]) > ClassExpression',
-              'MethodDefinition:not([accessibility="private"]) > ClassProperty',
-              'MethodDefinition:not([accessibility="private"]) > FunctionDeclaration', // function
-              'MethodDefinition:not([accessibility="private"]) > FunctionExpression',
-              'MethodDefinition:not([accessibility="private"]) > MethodDefinition',
-              'MethodDefinition:not([accessibility="private"]) > TSDeclareFunction', // function without body
-              'MethodDefinition:not([accessibility="private"]) > TSEnumDeclaration',
-              'MethodDefinition:not([accessibility="private"]) > TSInterfaceDeclaration',
-              'MethodDefinition:not([accessibility="private"]) > TSModuleDeclaration', // namespace
-              'MethodDefinition:not([accessibility="private"]) > TSTypeAliasDeclaration',
-              'MethodDefinition:not([accessibility="private"]) > VariableDeclaration',
+              'MethodDefinition:not([kind="get"],[kind="set"],[accessibility="private"]) > *',
             ],
             require: {
               ArrowFunctionExpression: false,

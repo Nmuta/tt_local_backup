@@ -15,7 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { WaitingForInputComponent } from './waiting-for-input/waiting-for-input.component';
 import { AuctionDataComponent } from './components/auction-data/auction-data.component';
 import { MatCardModule } from '@angular/material/card';
-import { StandardCopyModule } from '@components/standard-copy/standard-copy.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
 import { MatTableModule } from '@angular/material/table';
@@ -23,6 +23,7 @@ import { StandardFlagModule } from '@components/standard-flag/standard-flag.modu
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { CacheModule } from '@shared/modules/cache/cache.module';
 
 /**
  *  Routed module for interacting with auctions.
@@ -56,6 +57,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
     MatTableModule,
     MatSortModule,
     HelpModule,
+    CacheModule,
   ],
 })
 export class AuctionModule {}

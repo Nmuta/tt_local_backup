@@ -114,7 +114,10 @@
 </mat-card>
 
 <ng-template #noPreviewImage>
-  <span>No preview for this UGC file type.</span>
+  <div class="placeholder-image-wrapper">
+    <img src="/assets/placeholder/ugc.jpg" />
+    <span>No preview for this UGC file type.</span>
+  </div>
 </ng-template>
 
 <ng-template #unhideDisabledTemplate>

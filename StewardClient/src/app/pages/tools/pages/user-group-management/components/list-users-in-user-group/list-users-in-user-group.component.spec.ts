@@ -3,9 +3,13 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
+import { BasicPlayerList } from '@models/basic-player-list';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
+import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
-import BigNumber from 'bignumber.js';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { UserState } from '@shared/state/user/user.state';
 import { of } from 'rxjs';
 import {
   ListUsersInGroupComponent,
@@ -15,29 +19,41 @@ import {
 describe('ListUsersInGroupComponent', () => {
   let component: ListUsersInGroupComponent;
   let fixture: ComponentFixture<ListUsersInGroupComponent>;
+  let mockStore: Store;
 
   const mockService: ListUsersInGroupServiceContract = {
-    getPlayersInUserGroup$: (_userGroup: LspGroup) => {
-      return of([]);
+    gameTitle: GameTitle.FH5,
+    getPlayersInUserGroup$: (_userGroup: LspGroup, _startIndex: number, _maxResults: number) => {
+      return of(undefined);
     },
-    deletePlayerFromUserGroup$: (_xuid: BigNumber, _userGroup: LspGroup) => {
+    deletePlayerFromUserGroup$: (_playerList: BasicPlayerList, _userGroup: LspGroup) => {
       return of([]);
     },
     deleteAllPlayersFromUserGroup$: (_userGroup: LspGroup) => {
-      return of([]);
-    },
-    deletePlayersFromUserGroupUsingBackgroundTask$: (_xuids: BigNumber[], _userGroup: LspGroup) => {
       return of(undefined);
     },
-    addPlayersToUserGroupUsingBackgroundTask$: (_xuids: BigNumber[], _userGroup: LspGroup) => {
+    deletePlayersFromUserGroupUsingBackgroundTask$: (
+      _playerList: BasicPlayerList,
+      _userGroup: LspGroup,
+    ) => {
+      return of(undefined);
+    },
+    addPlayersToUserGroupUsingBackgroundTask$: (
+      _playerList: BasicPlayerList,
+      _userGroup: LspGroup,
+    ) => {
       return of(undefined);
     },
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      declarations: [ListUsersInGroupComponent],
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
+      declarations: [ListUsersInGroupComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
@@ -45,6 +61,9 @@ describe('ListUsersInGroupComponent', () => {
     fixture = TestBed.createComponent(ListUsersInGroupComponent);
     component = fixture.debugElement.componentInstance;
     component.service = mockService;
+
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch');
   }));
 
   it('should create', () => {

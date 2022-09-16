@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using SteelheadLiveOpsContent;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
@@ -20,7 +21,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -694,8 +694,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
@@ -773,8 +772,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 allowedToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
 
-            var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+            var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
             await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                 .ConfigureAwait(true);
@@ -957,9 +955,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
@@ -979,11 +975,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
             var notifications = await this.steelheadNotificationProvider.SendNotificationsAsync(
                 communityMessage.Xuids,
                 communityMessage.Message,
-                expireTime,
+                communityMessage.ExpireTimeUtc,
                 endpoint).ConfigureAwait(true);
 
             var recipientXuids = notifications.Where(result => result.Error == null)
@@ -1012,9 +1007,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
@@ -1027,11 +1020,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
-            var expireTime = DateTime.Now.Add(communityMessage.Duration);
             var result = await this.steelheadNotificationProvider.SendGroupNotificationAsync(
                 groupId,
                 communityMessage.Message,
-                expireTime,
+                communityMessage.ExpireTimeUtc,
                 communityMessage.DeviceType,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
@@ -1057,6 +1049,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
@@ -1066,12 +1059,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             await this.steelheadNotificationProvider.EditNotificationAsync(
                 notificationId,
                 xuid,
                 editParameters.Message,
-                expireTime,
+                editParameters.ExpireTimeUtc,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
@@ -1094,16 +1086,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             await this.steelheadNotificationProvider.EditGroupNotificationAsync(
                 notificationId,
                 editParameters.Message,
-                expireTime,
+                editParameters.ExpireTimeUtc,
                 editParameters.DeviceType,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);

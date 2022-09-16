@@ -3,22 +3,31 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import { CommunityMessage, CommunityMessageResult } from '@models/community-message';
-import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { of, throwError } from 'rxjs';
 
 import { SteelheadCommunityMessagingComponent } from './steelhead-community-messaging.component';
+import { SteelheadGroupMessagesService } from '@services/api-v2/steelhead/group/messages/steelhead-group-messages.service';
+import { SteelheadPlayersMessagesService } from '@services/api-v2/steelhead/players/messages/steelhead-players-messages.service';
+import { createMockSteelheadGroupMessagesService } from '@services/api-v2/steelhead/group/messages/steelhead-group-messages.service.mock';
+import { createMockSteelheadPlayersMessagesService } from '@services/api-v2/steelhead/players/messages/steelhead-players-messages.service.mock';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SteelheadCommunityMessagingComponent', () => {
   let component: SteelheadCommunityMessagingComponent;
   let fixture: ComponentFixture<SteelheadCommunityMessagingComponent>;
-  let mockSteelheadSerivce: SteelheadService;
+  let mockSteelheadPlayersMessagesSerivce: SteelheadPlayersMessagesService;
+  let mockSteelheadGroupMessagesService: SteelheadGroupMessagesService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadCommunityMessagingComponent],
-      providers: [createMockSteelheadService()],
+      imports: [PipesModule],
+      providers: [
+        createMockSteelheadPlayersMessagesService(),
+        createMockSteelheadGroupMessagesService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -26,12 +35,13 @@ describe('SteelheadCommunityMessagingComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SteelheadCommunityMessagingComponent);
     component = fixture.componentInstance;
-    mockSteelheadSerivce = TestBed.inject(SteelheadService);
+    mockSteelheadPlayersMessagesSerivce = TestBed.inject(SteelheadPlayersMessagesService);
+    mockSteelheadGroupMessagesService = TestBed.inject(SteelheadGroupMessagesService);
 
-    mockSteelheadSerivce.postSendCommunityMessageToXuids$ = jasmine
+    mockSteelheadPlayersMessagesSerivce.postSendCommunityMessageToXuids$ = jasmine
       .createSpy('postSendCommunityMessageToXuids$')
       .and.returnValue(of([]));
-    mockSteelheadSerivce.postSendCommunityMessageToLspGroup$ = jasmine
+    mockSteelheadGroupMessagesService.postSendCommunityMessageToLspGroup$ = jasmine
       .createSpy('postSendCommunityMessageToLspGroup$')
       .and.returnValue(of({}));
     component.selectedLspGroup = { id: fakeBigNumber(), name: faker.random.words(3) };
@@ -52,7 +62,9 @@ describe('SteelheadCommunityMessagingComponent', () => {
       it('should call steelheadService.postSendCommunityMessageToXuids$', () => {
         component.submitCommunityMessage();
 
-        expect(mockSteelheadSerivce.postSendCommunityMessageToXuids$).toHaveBeenCalled();
+        expect(
+          mockSteelheadPlayersMessagesSerivce.postSendCommunityMessageToXuids$,
+        ).toHaveBeenCalled();
       });
     });
 
@@ -64,7 +76,9 @@ describe('SteelheadCommunityMessagingComponent', () => {
       it('should call steelheadService.postSendCommunityMessageToLspGroup$', () => {
         component.submitCommunityMessage();
 
-        expect(mockSteelheadSerivce.postSendCommunityMessageToLspGroup$).toHaveBeenCalled();
+        expect(
+          mockSteelheadGroupMessagesService.postSendCommunityMessageToLspGroup$,
+        ).toHaveBeenCalled();
       });
     });
   });
@@ -72,8 +86,8 @@ describe('SteelheadCommunityMessagingComponent', () => {
   describe('Method: setNewCommunityMessage', () => {
     const message: CommunityMessage = {
       message: faker.random.words(10),
-      expiryDate: null,
-      duration: null,
+      expireTimeUtc: null,
+      startTimeUtc: null,
     };
 
     it('should set appropriate component variables', () => {
@@ -128,8 +142,8 @@ describe('SteelheadCommunityMessagingComponent', () => {
       component.loadError = {};
       component.newCommunityMessage = {
         message: faker.random.words(10),
-        expiryDate: null,
-        duration: null,
+        expireTimeUtc: null,
+        startTimeUtc: null,
       };
     });
 

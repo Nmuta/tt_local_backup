@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitle, GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
+import { GameTitle, GameTitleAbbreviation } from '@models/enums';
 
 /**
  * Routed component which displays the Notifications toolbar.
@@ -15,13 +15,18 @@ export class NotificationsComponent implements OnInit {
   public ngOnInit(): void {
     this.navbarRouterLinks = [
       {
+        name: GameTitleAbbreviation.FM8,
+        codename: GameTitle.FM8,
+        route: ['.', GameTitle.FM8],
+      },
+      {
         name: GameTitleAbbreviation.FH5,
-        codename: GameTitleCodeName.FH5,
+        codename: GameTitle.FH5,
         route: ['.', GameTitle.FH5],
       },
       {
         name: GameTitleAbbreviation.FH4,
-        codename: GameTitleCodeName.FH4,
+        codename: GameTitle.FH4,
         route: ['.', GameTitle.FH4],
       },
     ];

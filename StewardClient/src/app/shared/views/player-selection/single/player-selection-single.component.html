@@ -79,7 +79,9 @@
       (matChipInputTokenEnd)="add($event)"
     />
   </mat-chip-list>
-  <mat-hint>{{ foundIdentities?.length }}/{{ maxFoundIndentities }} Identities</mat-hint>
+  <mat-hint *ngIf="!displayInSingleLine"
+    >{{ foundIdentities?.length }}/{{ maxFoundIndentities }} Identities</mat-hint
+  >
 </mat-form-field>
 <div *ngIf="!displayInSingleLine && cutLookupList?.length > 0" class="cut-lookup-list-error">
   <span>{{ cutLookupList?.length }} identities were cut from the lookup.</span>

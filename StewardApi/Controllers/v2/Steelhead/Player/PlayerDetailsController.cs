@@ -14,15 +14,14 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
     ///     Test controller for testing Steelhead LSP APIs.
@@ -30,9 +29,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/player")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags("ProfileNotes", "Steelhead", "InDev")]
+    [Tags(Title.Steelhead, Target.Player, Target.Details)]
     public class PlayerDetailsController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;
@@ -52,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        [HttpGet("gamtertag/{gamertag}/details")]
+        [HttpGet("gamertag/{gamertag}/details")]
         [SwaggerResponse(200, type: typeof(SteelheadPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(
             string gamertag)
@@ -70,7 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
+                throw new FailedToSendStewardException($"No player found. (Gamertag: {gamertag})", ex);
             }
         }
 
@@ -93,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
+                throw new FailedToSendStewardException($"No player found. (XUID: {xuid})", ex);
             }
         }
     }

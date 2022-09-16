@@ -10,6 +10,7 @@ import { fakeXuid } from '@interceptors/fake-api/utility';
 import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { PlayerNotification } from '@models/notifications.model';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockPlayerNotificationsComponent', () => {
   let injector: TestBed;
@@ -20,6 +21,7 @@ describe('WoodstockPlayerNotificationsComponent', () => {
   beforeEach(waitForAsync(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockPlayerNotificationsComponent],
+      imports: [PipesModule],
       providers: [createMockWoodstockService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

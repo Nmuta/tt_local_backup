@@ -11,10 +11,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { SteelheadPlayerNotificationsComponent } from './steelhead/steelhead-player-notifications.component';
 
 /** A domain module for displaying player notifications. */
 @NgModule({
-  declarations: [SunrisePlayerNotificationsComponent, WoodstockPlayerNotificationsComponent],
+  declarations: [
+    SunrisePlayerNotificationsComponent,
+    WoodstockPlayerNotificationsComponent,
+    SteelheadPlayerNotificationsComponent,
+  ],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -27,6 +32,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatTooltipModule,
     MatIconModule,
   ],
-  exports: [SunrisePlayerNotificationsComponent, WoodstockPlayerNotificationsComponent],
+  exports: [
+    SunrisePlayerNotificationsComponent,
+    WoodstockPlayerNotificationsComponent,
+    SteelheadPlayerNotificationsComponent,
+  ],
 })
 export class PlayerNotificationsModule {}

@@ -91,6 +91,11 @@
         public const string ApolloAdminXuid = "ApolloEnvironment:AdminXuid";
 
         /// <summary>
+        ///     The Apollo sandbox.
+        /// </summary>
+        public const string ApolloSandbox = "ApolloEnvironment:Sandbox";
+
+        /// <summary>
         ///     The Apollo certificate key vault name.
         /// </summary>
         public const string ApolloCertificateKeyVaultName = "ApolloEnvironment:CertificateKeyVaultName";

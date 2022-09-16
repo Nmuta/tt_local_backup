@@ -43,7 +43,9 @@ import { GeneralUserDetailsComponent } from './general/general-user-details.comp
 import { PlayerHiddenUgcModule } from '@views/player-hidden-ugc/player-hidden-ugc.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PlayerUgcModule } from '@views/player-ugc/player-ugc.module';
+import { ReportWeightModule } from '@views/report-weight/report-weight.module';
 import { LoyaltyRewardsModule } from '@views/loyalty-rewards/loyalty-rewards.module';
+import { PlayerProfileManagementModule } from '@views/player-profile-management/player-profile-management.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -95,7 +97,9 @@ import { LoyaltyRewardsModule } from '@views/loyalty-rewards/loyalty-rewards.mod
     PlayerHiddenUgcModule,
     MonitorActionModule,
     PlayerUgcModule,
+    ReportWeightModule,
     LoyaltyRewardsModule,
+    PlayerProfileManagementModule,
   ],
 })
 export class UserDetailsModule {}

@@ -15,8 +15,8 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { DateRangePickerFormValue } from '@components/datetime-range-picker/date-range-picker/date-range-picker.component';
-import { DATE_TIME_TOGGLE_OPTIONS } from '@components/datetime-range-picker/datetime-range-toggle-defaults';
+import { DateRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/date-range-picker/date-range-picker.component';
+import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime-range-picker/datetime-range-toggle-defaults';
 import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
@@ -36,9 +36,9 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, first, last } from 'lodash';
 import { DateTime } from 'luxon';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, merge, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap, catchError, filter, debounceTime } from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
@@ -99,7 +99,7 @@ export class LeaderboardScoresComponent
   implements OnInit, OnChanges, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSlideToggle) dateSlideToggle: MatSlideToggle;
+  @ViewChild('dateSlideToggle') dateSlideToggle: MatSlideToggle;
   @Input() service: LeaderboardScoresContract;
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   @Input() externalSelectedScore: LeaderboardScore;
@@ -109,7 +109,13 @@ export class LeaderboardScoresComponent
   public leaderboardScores = new BetterMatTableDataSource<LeaderboardScore>([]);
   public getLeaderboardScoresMonitor = new ActionMonitor('GET Leaderboard Scores');
   public deleteLeaderboardScoresMonitor = new ActionMonitor('DELETE Leaderboard Score(s)');
-  public leaderboardDisplayColumns: string[] = ['position', 'score', 'metadata', 'actions'];
+  public leaderboardDisplayColumns: string[] = [
+    'position',
+    'score',
+    'metadata',
+    'assists',
+    'actions',
+  ];
 
   public isMultiDeleteActive: boolean = false;
   public scoreTypeQualifier: string = '';
@@ -124,6 +130,7 @@ export class LeaderboardScoresComponent
   public exportFileName: string;
   public disableExport: boolean = true;
   public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
+  private scoresAscendWithPosition: boolean;
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
   public matCardSubtitle = this.matCardSubtitleDefault;
@@ -143,6 +150,10 @@ export class LeaderboardScoresComponent
       } as DateRangePickerFormValue,
       disabled: true,
     }),
+    usedStmAssist: new FormControl(false),
+    usedAbsAssist: new FormControl(false),
+    usedTcsAssist: new FormControl(false),
+    usedAutoAssist: new FormControl(false),
   };
 
   constructor(
@@ -166,14 +177,18 @@ export class LeaderboardScoresComponent
       this.getLeaderboardScores$.next(this.leaderboard.query);
     }
 
-    this.filterFormControls.dateRange.valueChanges
+    const dateRangeChanges = this.filterFormControls.dateRange.valueChanges;
+    const stmChanges = this.filterFormControls.usedStmAssist.valueChanges;
+    const absChanges = this.filterFormControls.usedAbsAssist.valueChanges;
+    const tcsChanges = this.filterFormControls.usedTcsAssist.valueChanges;
+    const autoChanges = this.filterFormControls.usedAutoAssist.valueChanges;
+
+    merge(dateRangeChanges, stmChanges, absChanges, tcsChanges, autoChanges)
       .pipe(
         debounceTime(HCI.TypingToAutoSearchDebounceMillis),
         tap(() => {
           this.unsetHighlightForAllLeaderboardScores();
         }),
-        filter(() => this.filterFormControls.dateRange.enabled),
-        filter(data => !!data.start && !!data.end),
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
@@ -282,9 +297,15 @@ export class LeaderboardScoresComponent
     const pageSize = this.leaderboardScores.paginator.pageSize;
 
     // Determine page where searched score exists
-    const scoreIndex = this.leaderboardScores.data.findIndex(s =>
-      s.score.isGreaterThanOrEqualTo(new BigNumber(score)),
-    );
+    const scoreIndex = this.leaderboardScores.data.findIndex(s => {
+      // A high/low score is better depending on criteria.
+      if (this.scoresAscendWithPosition) {
+        return s.score.isGreaterThanOrEqualTo(new BigNumber(score));
+      } else {
+        return s.score.isLessThanOrEqualTo(new BigNumber(score));
+      }
+    });
+
     const foundPageIndex = Math.floor(scoreIndex / pageSize);
     const highestPageIndex = Math.floor(this.leaderboardScores.data.length / pageSize) - 1;
 
@@ -326,10 +347,9 @@ export class LeaderboardScoresComponent
       this.filterFormControls.dateRange.enable();
     } else {
       this.filterFormControls.dateRange.disable();
-      this.setLeaderboardScoresData(this.allScores);
     }
 
-    // Make sure slide toggle matches the change event.
+    // Make sure slide toggle matches the change event
     if (!!this.dateSlideToggle && this.dateSlideToggle.checked != toggleEvent.checked) {
       this.dateSlideToggle.toggle();
     }
@@ -423,18 +443,45 @@ export class LeaderboardScoresComponent
 
   private filterScores(_scores: LeaderboardScore[]): LeaderboardScore[] {
     const dateRange = this.filterFormControls.dateRange.value as DateRangePickerFormValue;
+    const dateRangeFilterActive =
+      !this.filterFormControls.dateRange.disabled && !!dateRange.start && !!dateRange.end;
     const startDate = dateRange.start.toLocal();
     const endDate = dateRange.end.toLocal();
 
     return _scores.filter(score => {
-      const scoreDate = score.submissionTimeUtc.toLocal();
-      return scoreDate >= startDate && scoreDate <= endDate;
+      let passesDateFilter = true;
+      if (dateRangeFilterActive) {
+        const scoreDate = score.submissionTimeUtc.toLocal();
+        passesDateFilter = scoreDate >= startDate && scoreDate <= endDate;
+      }
+
+      const passesStmFilter = this.filterFormControls.usedStmAssist.value
+        ? score.stabilityManagement
+        : true;
+      const passesAbsFilter = this.filterFormControls.usedAbsAssist.value
+        ? score.antiLockBrakingSystem
+        : true;
+      const passesTcsFilter = this.filterFormControls.usedTcsAssist.value
+        ? score.tractionControlSystem
+        : true;
+      const passesAutoFilter = this.filterFormControls.usedAutoAssist.value
+        ? score.automaticTransmission
+        : true;
+
+      return (
+        passesDateFilter &&
+        passesStmFilter &&
+        passesAbsFilter &&
+        passesTcsFilter &&
+        passesAutoFilter
+      );
     });
   }
 
   private setLeaderboardScoresData(scores: LeaderboardScore[]): void {
     this.leaderboardScores.data = scores;
     this.exportableScores = this.prepareExportableScores(scores);
+    this.scoresAscendWithPosition = first(scores)?.score.isLessThanOrEqualTo(last(scores)?.score);
   }
 
   private prepareExportableScores(scores: LeaderboardScore[]): string[][] {

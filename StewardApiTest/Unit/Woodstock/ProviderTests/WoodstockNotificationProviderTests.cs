@@ -120,12 +120,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var provider = new Dependencies().Build();
             var xuids = Fixture.Create<List<ulong>>();
             var message = Fixture.Create<string>();
+            var startTime = Fixture.Create<DateTime>();
             var expireTime = Fixture.Create<DateTime>();
             var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendNotificationsAsync(xuids, message, expireTime, requesterObjectId, endpoint).ConfigureAwait(false);
+            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendNotificationsAsync(xuids, message, startTime, expireTime, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -140,13 +141,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var provider = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var message = Fixture.Create<string>();
+            var startTime = Fixture.Create<DateTime>();
             var expireTime = Fixture.Create<DateTime>();
             var deviceType = Fixture.Create<DeviceType>();
             var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<MessageSendResult<int>> Action() => await provider.SendGroupNotificationAsync(groupId, message, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false);
+            async Task<MessageSendResult<int>> Action() => await provider.SendGroupNotificationAsync(groupId, message, startTime, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
@@ -160,12 +162,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             // Arrange.
             var provider = new Dependencies().Build();
             var message = Fixture.Create<string>();
+            var startTime = Fixture.Create<DateTime>();
             var expireTime = Fixture.Create<DateTime>();
             var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendNotificationsAsync(null, message, expireTime, requesterObjectId, endpoint).ConfigureAwait(false);
+            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendNotificationsAsync(null, message, startTime, expireTime, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
@@ -178,13 +181,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             // Arrange.
             var provider = new Dependencies().Build();
             var message = Fixture.Create<string>();
+            var startTime = Fixture.Create<DateTime>();
             var expireTime = Fixture.Create<DateTime>();
             var deviceType = Fixture.Create<DeviceType>();
             var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<MessageSendResult<int>>> action = async () => await provider.SendGroupNotificationAsync(TestConstants.NegativeValue, message, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false);
+            Func<Task<MessageSendResult<int>>> action = async () => await provider.SendGroupNotificationAsync(TestConstants.NegativeValue, message, startTime, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, "groupId", -1, TestConstants.NegativeValue));
@@ -198,6 +202,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var provider = new Dependencies().Build();
             var xuids = Fixture.Create<List<ulong>>();
             var groupId = Fixture.Create<int>();
+            var startTime = Fixture.Create<DateTime>();
             var expireTime = Fixture.Create<DateTime>();
             var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
@@ -206,12 +211,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SendNotificationsAsync(xuids, null, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
-                async () => await provider.SendNotificationsAsync(xuids, TestConstants.Empty, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
-                async () => await provider.SendNotificationsAsync(xuids, TestConstants.WhiteSpace, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
-                async () => await provider.SendGroupNotificationAsync(groupId, null, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
-                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.Empty, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
-                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.WhiteSpace, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendNotificationsAsync(xuids, null, startTime, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendNotificationsAsync(xuids, TestConstants.Empty, startTime, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendNotificationsAsync(xuids, TestConstants.WhiteSpace, startTime, expireTime, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendGroupNotificationAsync(groupId, null, startTime, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.Empty, startTime, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
+                async () => await provider.SendGroupNotificationAsync(groupId, TestConstants.WhiteSpace, startTime, expireTime, deviceType, requesterObjectId, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -230,6 +235,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var xuid = Fixture.Create<ulong>();
             var notificationId = Fixture.Create<Guid>();
             var message = Fixture.Create<string>();
+            var startTime = Fixture.Create<DateTime>();
             var expireTime = Fixture.Create<DateTime>();
             var deviceType = Fixture.Create<DeviceType>();
             var requesterObjectId = Fixture.Create<string>();
@@ -257,6 +263,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var notificationId = Fixture.Create<Guid>();
+            var startTime = Fixture.Create<DateTime>();
             var expireTime = Fixture.Create<DateTime>();
             var deviceType = Fixture.Create<DeviceType>();
             var requesterObjectId = Fixture.Create<string>();
@@ -313,7 +320,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetPlayerNotificationAsync(Arg.Any<ulong>(), Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.GetNotificationOutput>());
                 this.WoodstockService.GetUserGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.GetAllUserGroupMessagesOutput>());
                 this.WoodstockService.GetUserGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.GetUserGroupMessageOutput>());
-                this.WoodstockService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>());
+                this.WoodstockService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<IList<Notification>>(Arg.Any<ServicesLiveOps.ForzaLiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
                 this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ServicesLiveOps.ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ServicesLiveOps.ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());

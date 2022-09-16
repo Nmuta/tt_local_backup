@@ -102,3 +102,7 @@ mat-progress-spinner {
   margin: auto;
   margin-top: $gap-small;
 }
+
+img {
+  @include standard-image-border();
+}

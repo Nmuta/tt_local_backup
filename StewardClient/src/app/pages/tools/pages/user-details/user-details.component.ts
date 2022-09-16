@@ -1,22 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment } from '@environments/environment';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';
-import { delay, filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
+import { renderDelay } from '@helpers/rxjs';
 
 /** User Details page. */
 @Component({
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss'],
 })
-export class UserDetailsComponent extends BaseComponent implements OnInit {
-  public isProduction: boolean;
-
+export class UserDetailsComponent extends BaseComponent {
   public lookupType: keyof IdentityQueryBetaIntersection;
   public lookupList: string[] = [];
   public identity: AugmentedCompositeIdentity;
@@ -109,19 +107,13 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
     router.events
       .pipe(
-        delay(0),
+        renderDelay(),
         filter(event => event instanceof NavigationEnd),
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
         window.dispatchEvent(new Event('resize'));
       });
-  }
-
-  /** Initialization hook. */
-  public ngOnInit(): void {
-    // TODO: Remove variable when steelhead becomes a permanent route in the app.
-    this.isProduction = environment.production;
   }
 
   /** Handles the identity-found */

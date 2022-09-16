@@ -25,8 +25,9 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
     ///     Player messages steelhead controller.
@@ -34,9 +35,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/messages")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [Authorize]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags("Steelhead", "Player", "Messages")]
+    [Tags(Title.Steelhead, Target.Player, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
@@ -81,6 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
             }
             catch (Exception ex)
             {
+                throw new UnknownFailureStewardException($"User flags not updated. (XUID: {xuid})", ex);
                 throw new NotFoundStewardException(
                     $"Failed to retrieve messages for player. (xuid: {xuid})", ex);
             }
@@ -89,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
         }
 
         /// <summary>
-        ///     Deletes the player notification.
+        ///     Deletes all player notifications.
         /// </summary>
         [HttpDelete]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
@@ -118,10 +128,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
         ///     Gets a player notification.
         /// </summary>
         [HttpGet("{messageId}")]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(Notification))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Notification)]
@@ -143,7 +149,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException($"Failed to edit message. (messageId: {messageIdAsGuid})", ex);
+                throw new FailedToSendStewardException($"Failed to get message. (messageId: {messageIdAsGuid})", ex);
             }
 
             return this.Ok(message);
@@ -169,6 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
             editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
             {
@@ -181,12 +188,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
             /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
             // Tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903790
             */
-            var expireTime = DateTime.UtcNow.Add(editParameters.Duration);
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
                 Message = editParameters.Message,
-                ExpirationDate = expireTime,
+                ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = false,
                 DeviceType = ForzaLiveDeviceType.Invalid
             };

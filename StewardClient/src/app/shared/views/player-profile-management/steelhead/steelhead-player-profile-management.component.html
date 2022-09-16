@@ -1,0 +1,6 @@
+<player-profile-management
+  [xuid]="identity?.xuid"
+  [externalProfileId]="externalProfileId"
+  [service]="service"
+  (externalProfileIdUpdated)="externalProfileIdUpdated.emit($event)"
+></player-profile-management>

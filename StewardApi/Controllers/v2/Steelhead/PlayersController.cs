@@ -16,8 +16,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -28,18 +26,27 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
-    ///     Test controller for testing Steelhead LSP APIs.
+    ///     Handles requests for Steelhead players.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/players")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags("Players", "Steelhead", "InDev")]
+    [Tags(Title.Steelhead, Target.Players, Target.Details, Dev.ReviseTags)]
     public class PlayersController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
@@ -121,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets ban summaries.
         /// </summary>
-        [HttpPost("players/banSummaries")]
+        [HttpPost("banSummaries")]
         [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
         public async Task<IActionResult> GetBanSummaries(
             [FromBody] IList<ulong> xuids)
@@ -152,7 +159,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Bans players.
         /// </summary>
-        [HttpPost("players/ban")]
+        [HttpPost("ban")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
@@ -196,7 +207,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Bans players.
         /// </summary>
-        [HttpPost("players/ban/useBackgroundProcessing")]
+        [HttpPost("ban/useBackgroundProcessing")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
@@ -293,7 +308,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     }
                     catch (Exception ex)
                     {
-                        throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
+                        throw new NotFoundStewardException($"No profile found. (Gamertag: {param.Gamertag}).", ex);
                     }
                 }
             }

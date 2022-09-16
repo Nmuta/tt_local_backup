@@ -1,0 +1,11 @@
+<ng-container *ngIf="carData && !shouldHide">
+  <mat-chip-list>
+    <mat-chip>
+      <span>{{ carData.make }}</span
+      ><span class="sf-chip-separate-left">{{ carData.model }}</span>
+      <span class="sf-chip-separate-left">{{ carData.id }}</span>
+      <standard-copy-icon [text]="copyText"></standard-copy-icon>
+    </mat-chip>
+  </mat-chip-list>
+</ng-container>
+<ng-container *ngIf="!carData && !shouldHide">{{ carId }}</ng-container>

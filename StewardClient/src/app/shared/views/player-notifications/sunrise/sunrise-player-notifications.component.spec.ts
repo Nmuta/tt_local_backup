@@ -10,6 +10,7 @@ import { first } from 'lodash';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { PlayerNotification } from '@models/notifications.model';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SunrisePlayerNotificationsComponent', () => {
   let injector: TestBed;
@@ -20,6 +21,7 @@ describe('SunrisePlayerNotificationsComponent', () => {
   beforeEach(waitForAsync(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunrisePlayerNotificationsComponent],
+      imports: [PipesModule],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

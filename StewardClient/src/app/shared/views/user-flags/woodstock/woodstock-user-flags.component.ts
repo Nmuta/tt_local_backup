@@ -4,7 +4,7 @@ import { WoodstockUserFlags } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock/woodstock.service';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PermissionsService } from '@services/permissions';
 
@@ -15,14 +15,16 @@ import { PermissionsService } from '@services/permissions';
   styleUrls: ['../user-flags.component.scss'],
 })
 export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<WoodstockUserFlags> {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 
   public formControls = {
     isVip: new FormControl(false),
     isUltimateVip: new FormControl(false),
     isTurn10Employee: new FormControl(false),
     isEarlyAccess: new FormControl(false),
-    isUnderReview: new FormControl(false),
+    isRaceMarshall: new FormControl(false),
+    isContentCreator: new FormControl(false),
+    isUnderReview: new FormControl(false), // Keep as last form control
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -47,6 +49,8 @@ export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<Woodstoc
       isTurn10Employee: this.formControls.isTurn10Employee.value,
       isEarlyAccess: this.formControls.isEarlyAccess.value,
       isUnderReview: this.formControls.isUnderReview.value,
+      isRaceMarshall: this.formControls.isRaceMarshall.value,
+      isContentCreator: this.formControls.isContentCreator.value,
     } as WoodstockUserFlags);
   }
 }

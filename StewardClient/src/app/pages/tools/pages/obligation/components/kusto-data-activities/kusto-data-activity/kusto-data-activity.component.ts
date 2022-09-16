@@ -20,7 +20,7 @@ import {
   KustoFunctionComponent,
   KustoFunctionOptions,
 } from '../kusto-function/kusto-function.component';
-import { DatetimeRangePickerFormValue } from '@components/datetime-range-picker/datetime-range-picker.component';
+import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
 
 export interface KustoDataActivityOptions {
   name: string;

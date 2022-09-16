@@ -103,9 +103,11 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
       const jsonTableResult = this.selectedBackgroundJob.result as JsonTableResult<unknown>;
       this.selectedBackgroundJob.jsonTableResults = [jsonTableResult];
     } else {
-      this.selectedBackgroundJob.jsonTableResults = this.selectedBackgroundJob.result.map(job => {
-        return job as JsonTableResult<unknown>;
-      });
+      this.selectedBackgroundJob.jsonTableResults = this.selectedBackgroundJob.result
+        .flat(50)
+        .map(job => {
+          return job as JsonTableResult<unknown>;
+        });
     }
   }
 

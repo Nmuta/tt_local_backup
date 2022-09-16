@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
@@ -10,26 +11,34 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
-    ///     Test controller for testing Steelhead LSP APIs.
+    ///     Steelhead user flags controller
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/flags")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags("Flags", "Steelhead", "InDev")]
+    [Tags(Title.Steelhead, Target.Player, Topic.Flags)]
     public class FlagsController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;
@@ -37,6 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
+        private const int RaceMarshallUserGroupId = 9;
 
         private readonly IMapper mapper;
         private readonly IRequestValidator<SteelheadUserFlagsInput> userFlagsRequestValidator;
@@ -73,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"User flags not found for XUID: {xuid}.", ex);
+                throw new UnknownFailureStewardException($"User flags not found. (XUID: {xuid})", ex);
             }
         }
 
@@ -81,6 +91,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Sets flags for given steelhead user.
         /// </summary>
         [HttpPut]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
@@ -114,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException($"Update user flags failed for XUID: {xuid}.", ex);
+                throw new UnknownFailureStewardException($"User flags not updated. (XUID: {xuid})", ex);
             }
         }
 
@@ -126,13 +140,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
 
+            var nonStandardUserGroups = NonStandardUserGroupHelpers.GetUserGroups(this.Services.Endpoint);
+
             var flags = new SteelheadUserFlags
             {
                 IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
                 IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
                 IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
                 IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                IsUnderReview = suspiciousResults.isUnderReview
+                IsUnderReview = suspiciousResults.isUnderReview,
+                IsRaceMarshall = userGroupResults.userGroups.Any(r => r.Id == RaceMarshallUserGroupId),
+                IsContentCreator = userGroupResults.userGroups.Any(r => r.Id == nonStandardUserGroups.ContentCreatorId),
             };
 
             return flags;
@@ -140,11 +158,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
         private IList<int> PrepareGroupIds(SteelheadUserFlags userFlags, bool toggleState)
         {
+            var nonStandardUserGroups = NonStandardUserGroupHelpers.GetUserGroups(this.Services.Endpoint);
+
             var resultGroupIds = new List<int>();
             if (userFlags.IsVip == toggleState) { resultGroupIds.Add(VipUserGroupId); }
             if (userFlags.IsUltimateVip == toggleState) { resultGroupIds.Add(UltimateVipUserGroupId); }
             if (userFlags.IsTurn10Employee == toggleState) { resultGroupIds.Add(T10EmployeeUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleState) { resultGroupIds.Add(WhitelistUserGroupId); }
+            if (userFlags.IsRaceMarshall == toggleState) { resultGroupIds.Add(RaceMarshallUserGroupId); }
+            if (userFlags.IsContentCreator == toggleState) { resultGroupIds.Add(nonStandardUserGroups.ContentCreatorId); }
 
             return resultGroupIds;
         }

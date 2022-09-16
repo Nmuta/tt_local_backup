@@ -2,10 +2,12 @@ import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
 import { GameTitleCodeName } from '@models/enums';
-import { SteelheadService } from '@services/steelhead';
-import { Observable, throwError } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import _ from 'lodash';
 import { ConsolesBaseComponent } from '../consoles.base.component';
 import { PermissionsService } from '@services/permissions';
+import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
+import { SteelheadConsolesService } from '@services/api-v2/steelhead/consoles/steelhead-consoles.service';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({
@@ -15,10 +17,11 @@ import { PermissionsService } from '@services/permissions';
 })
 export class SteelheadConsolesComponent extends ConsolesBaseComponent<SteelheadConsoleDetailsEntry> {
   public gameTitle = GameTitleCodeName.FM8;
-  public supportsConsoleBanning = false;
+  public supportsConsoleBanning = true;
 
   constructor(
-    private readonly steelheadService: SteelheadService,
+    private readonly steelheadPlayerConsolesService: SteelheadPlayerConsolesService,
+    private readonly steelheadConsolesService: SteelheadConsolesService,
     permissionsService: PermissionsService,
   ) {
     super(permissionsService);
@@ -26,16 +29,30 @@ export class SteelheadConsolesComponent extends ConsolesBaseComponent<SteelheadC
 
   /** Gets the console details list from XUID. */
   public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<SteelheadConsoleDetailsEntry[]> {
-    return this.steelheadService.getConsoleDetailsByXuid$(xuid);
+    return this.steelheadPlayerConsolesService.getConsoleDetailsByXuid$(xuid);
   }
 
   /** Generates a function that will *ban* the user and update the data when complete. */
-  public makeBanAction$(_consoleId: string): () => Observable<void> {
-    return () => throwError(new Error('Steelhead does not support console banning.'));
+  public makeBanAction$(consoleId: string): () => Observable<void> {
+    return () =>
+      this.steelheadConsolesService.putBanStatusByConsoleId$(consoleId, true).pipe(
+        tap(() => {
+          _(this.consoleDetails)
+            .filter(d => d.consoleId === consoleId)
+            .first().isBanned = true;
+        }),
+      );
   }
 
   /** Generates a function that will *unban* the user and update data when complete. */
-  public makeUnbanAction$(_consoleId: string): () => Observable<void> {
-    return () => throwError(new Error('Steelhead does not support console banning.'));
+  public makeUnbanAction$(consoleId: string): () => Observable<void> {
+    return () =>
+      this.steelheadConsolesService.putBanStatusByConsoleId$(consoleId, false).pipe(
+        tap(() => {
+          _(this.consoleDetails)
+            .filter(d => d.consoleId === consoleId)
+            .first().isBanned = false;
+        }),
+      );
   }
 }

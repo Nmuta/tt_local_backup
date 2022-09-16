@@ -1,0 +1,106 @@
+<mat-card class="steward-layout-sticky-scroll">
+  <mat-card-header class="sf-header">
+    <mat-card-title>Gift Car + Livery</mat-card-title>
+    <mat-card-subtitle>
+      {{ service.gameTitle }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <ng-container *waitForMonitor="postMonitor">
+    <mat-card-content>
+      <div><span>Gifting car liveries is currently not tracked in gift history.</span></div>
+      <ng-container *ngIf="!giftResponse; else giftResponseState">
+        <pastable-single-input
+          label="Livery ID"
+          [presetValue]="formControls?.livery?.value?.id"
+          (changes)="onLiveryIdChange($event)"
+        ></pastable-single-input>
+        <mat-progress-spinner
+          *ngIf="getMonitor?.isActive"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+        <span *ngIf="liveryHasError">Could not find livery</span>
+        <mat-accordion multi displayMode="flat">
+          <mat-expansion-panel *ngFor="let livery of liveries" [expanded]="true" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title> {{ livery.carDescription }} | {{ livery.id }} </mat-panel-title>
+              <mat-panel-description> Click to view full details </mat-panel-description>
+              <button mat-icon-button matTooltip="Remove Livery" (click)="removeLivery(livery)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-expansion-panel-header>
+
+            <ul>
+              <li><b>Car:</b> {{ livery.carDescription }}</li>
+              <li><b>Title:</b> {{ livery.title }}</li>
+              <li><b>Description:</b> {{ livery.description }}</li>
+              <li><b>Created:</b> {{ livery.createdDateUtc | utcDate: 'short' }}</li>
+              <li><b>Share Code:</b> {{ livery.shareCode || 'N/A' }}</li>
+              <li><b>Id:</b> {{ livery.id }}</li>
+              <li>
+                <img
+                  type="button"
+                  matTooltip="Click to enlarge image"
+                  [src]="livery.thumbnailOneImageBase64"
+                  [enlargeImage]="livery.thumbnailOneImageBase64"
+                  title="Thumbnail One"
+                />
+              </li>
+              <li>
+                <img
+                  type="button"
+                  matTooltip="Click to enlarge image"
+                  [src]="livery.thumbnailTwoImageBase64"
+                  [enlargeImage]="livery.thumbnailTwoImageBase64"
+                  title="Thumbnail Two"
+                />
+              </li>
+            </ul>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-actions *ngIf="!giftResponse" class="sf-actions">
+      <mat-form-field appearance="fill">
+        <mat-label>Gift Reason</mat-label>
+        <mat-select [formControl]="formControls.giftReason">
+          <mat-option *ngFor="let reason of giftReasons" [value]="reason">
+            {{ reason }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!isGiftLiveryReady()"
+        (click)="sendGiftLivery()"
+      >
+        Gift Livery
+      </button>
+    </mat-card-actions>
+  </ng-container>
+  <button
+    *ngIf="postMonitor?.status?.error"
+    class="reset-state"
+    mat-raised-button
+    color="accent"
+    (click)="resetTool()"
+    clickStop
+  >
+    Clear error
+  </button>
+</mat-card>
+
+<ng-template #giftResponseState>
+  <div class="gift-response-template">
+    <gifting-result [giftingResult]="giftResponse"></gifting-result>
+    <button
+      class="reset-state"
+      mat-raised-button
+      color="accent"
+      (click)="resetTool(true)"
+      clickStop
+    >
+      Send other liveries
+    </button>
+  </div>
+</ng-template>

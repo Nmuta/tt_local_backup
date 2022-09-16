@@ -11,11 +11,11 @@ using Microsoft.Azure.Documents.SystemFunctions;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
     ///     Test controller for testing service proxies.
@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags("Steelhead Test")]
+    [Tags(Dev.SteelheadTest, Dev.ReviseTags)]
     public class TestProxiesController : V2ControllerBase
     {
         /// <summary>
@@ -75,6 +75,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             }
 
             if (!this.VerifyServiceProxy(() => services.NotificationManagementService, "NotificationManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
@@ -216,6 +221,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead
             var services = this.SteelheadServices.Value;
 
             if (!this.VerifyServiceProxy(() => services.NotificationManagementService, "NotificationManagementService", out var exception))
+            {
+                throw exception;
+            }
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Verifies permissions management service proxy.
+        /// </summary>
+        [HttpGet("PermissionsManagementService")]
+        [SwaggerResponse(200, type: typeof(bool))]
+        public IActionResult TestPermissionsManagementServiceProxy()
+        {
+            var services = this.SteelheadServices.Value;
+
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out var exception))
             {
                 throw exception;
             }

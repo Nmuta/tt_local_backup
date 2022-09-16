@@ -15,8 +15,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -26,8 +24,9 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
     ///     Test controller for testing Steelhead LSP APIs.
@@ -35,9 +34,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/banHistory")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
-    [Tags("BanHistory", "Steelhead", "InDev")]
+    [Tags(Title.Steelhead, Target.Player, Topic.BanHistory)]
     public class BanHistoryController : V2SteelheadControllerBase
     {
         private const int DefaultStartIndex = 0;
@@ -82,38 +85,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
         {
-            const string ServiceSource = "From Services";
-            LiveOpsBanHistory ConsolidateBanHistory(IGrouping<LiveOpsBanHistory, LiveOpsBanHistory> historyGroupings)
-            {
-                var serviceEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId == ServiceSource);
-                var liveOpsEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId != ServiceSource);
-
-                if (serviceEntry == null && liveOpsEntry == null)
-                {
-                    this.loggingService.LogException(new ConversionFailedAppInsightsException("BanHistory lookup consolidation for Steelhead has failed."));
-                    return null;
-                }
-
-                var resultEntry = new LiveOpsBanHistory(
-                    serviceEntry?.Xuid ?? liveOpsEntry.Xuid,
-                    serviceEntry?.BanEntryId ?? liveOpsEntry.BanEntryId,
-                    serviceEntry?.Title ?? liveOpsEntry?.Title,
-                    liveOpsEntry?.RequesterObjectId ?? serviceEntry?.RequesterObjectId,
-                    serviceEntry?.StartTimeUtc ?? liveOpsEntry.StartTimeUtc,
-                    serviceEntry?.ExpireTimeUtc ?? liveOpsEntry.ExpireTimeUtc,
-                    serviceEntry?.FeatureArea ?? liveOpsEntry?.FeatureArea,
-                    serviceEntry?.Reason ?? liveOpsEntry?.Reason,
-                    liveOpsEntry?.BanParameters ?? serviceEntry?.BanParameters,
-                    serviceEntry?.Endpoint ?? liveOpsEntry?.Endpoint);
-
-                resultEntry.IsActive = serviceEntry?.IsActive ?? false;
-                resultEntry.CountOfTimesExtended = serviceEntry?.CountOfTimesExtended ?? liveOpsEntry.CountOfTimesExtended;
-                resultEntry.LastExtendedTimeUtc = serviceEntry?.LastExtendedTimeUtc ?? liveOpsEntry.LastExtendedTimeUtc;
-                resultEntry.IsDeleted = serviceEntry == null;
-
-                return resultEntry;
-            }
-
             async Task<List<LiveOpsBanHistory>> GetLspBanHistoryAsync()
             {
                 var service = this.Services.UserManagementService;
@@ -136,7 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 }
                 catch (Exception ex)
                 {
-                    throw new NotFoundStewardException($"No ban history found for XUID: {xuid}.", ex);
+                    throw new UnknownFailureStewardException($"No ban history found. (XUID: {xuid})", ex);
                 }
             }
 
@@ -151,12 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            // https://stackoverflow.com/questions/4873984/how-to-get-distinct-with-highest-value-using-linq
-            var banHistories = liveOpsBanHistory.Concat(servicesBanHistory)
-                                                .GroupBy(history => history, new LiveOpsBanHistoryComparer())
-                                                .Select(banGroups => ConsolidateBanHistory(banGroups))
-                                                .Where(entry => entry != null)
-                                                .ToList();
+            var banHistories = BanHistoryConsolidationHelper.ConsolidateBanHistory(liveOpsBanHistory, servicesBanHistory, this.loggingService, CodeName.ToString());
 
             banHistories.Sort((x, y) => y.ExpireTimeUtc.CompareTo(x.ExpireTimeUtc));
 

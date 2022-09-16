@@ -369,6 +369,62 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Expire ban.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
+        [HttpPost("ban/{banEntryId}/expire")]
+        [SwaggerResponse(201, type: typeof(UnbanResult))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        public async Task<IActionResult> ExpireBan(int banEntryId)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+
+            var result = await this.apolloPlayerDetailsProvider.ExpireBanAsync(banEntryId, endpoint)
+                .ConfigureAwait(true);
+
+            if (!result.Success)
+            {
+                throw new BadRequestStewardException($"Failed to expire ban with ID: {banEntryId}");
+            }
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Delete ban.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
+        [HttpPost("ban/{banEntryId}/delete")]
+        [SwaggerResponse(201, type: typeof(UnbanResult))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        public async Task<IActionResult> DeleteBan(int banEntryId)
+        {
+            banEntryId.ShouldBeGreaterThanValue(-1);
+
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+
+            var result = await this.apolloPlayerDetailsProvider.DeleteBanAsync(banEntryId, endpoint)
+                .ConfigureAwait(true);
+
+            if (!result.Success && !result.Deleted)
+            {
+                throw new BadRequestStewardException($"Failed to delete ban with ID: {banEntryId}");
+            }
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///     Gets ban history.
         /// </summary>
         [HttpGet("player/xuid({xuid})/banHistory")]
@@ -717,8 +773,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
                         .ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
@@ -987,14 +1042,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            var banHistories = liveOpsBanHistory.Union(servicesBanHistory, new LiveOpsBanHistoryComparer()).ToList();
+            var banHistories = BanHistoryConsolidationHelper.ConsolidateBanHistory(liveOpsBanHistory, servicesBanHistory, this.loggingService, CodeName.ToString());
 
-            foreach (var banHistory in banHistories)
-            {
-                banHistory.IsActive = DateTime.UtcNow.CompareTo(banHistory.ExpireTimeUtc) < 0;
-            }
-
-            banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+            banHistories.Sort((x, y) => y.ExpireTimeUtc.CompareTo(x.ExpireTimeUtc));
 
             return banHistories;
         }

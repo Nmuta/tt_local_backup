@@ -404,8 +404,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 this.ApolloService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
                 this.ApolloService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
-                this.ApolloService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
-                this.ApolloService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
+                this.ApolloService.BanUsersAsync(Arg.Any<ForzaUserBanParametersV2[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
+                this.ApolloService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesV2Output>());
                 this.ApolloService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(this.GenerateGetUserBanHistoryOutput());
                 this.ApolloService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetConsolesOutput>());
                 this.ApolloService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
@@ -413,9 +413,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
                 this.ApolloService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupsOutput>());
                 this.Mapper.Map<ApolloPlayerDetails>(Arg.Any<CompositeUser>()).Returns(Fixture.Create<ApolloPlayerDetails>());
-                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
-                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
-                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
+                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResultV2[]>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummaryV2[]>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescriptionV2[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<Forza.WebServices.FM7.Generated.ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
@@ -430,28 +430,28 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             public ApolloPlayerDetailsProvider Build() => new ApolloPlayerDetailsProvider(this.ApolloService, this.Mapper, this.BanHistoryProvider);
 
-            private GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
+            private GetUserBanHistoryV2Output GenerateGetUserBanHistoryOutput()
             {
                 // Cannot use random uint value for feature area, we must build our own valid fake data
                 var rnd = new Random();
-                var fakeBanHistories = new List<ForzaUserBanDescription>();
+                var fakeBanHistories = new List<ForzaUserBanDescriptionV2>();
                 var numberOfFakeBanHistories = rnd.Next(1, 10);
                 for (var i = 0; i < numberOfFakeBanHistories; i++)
                 {
-                    fakeBanHistories.Add(Fixture.Build<ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
+                    fakeBanHistories.Add(Fixture.Build<ForzaUserBanDescriptionV2>().With(x => x.FeatureAreas, (uint)2).Create());
                 }
 
-                return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+                return Fixture.Build<GetUserBanHistoryV2Output>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
             }
 
-            private static BanUsersOutput GenerateBanUsersOutput()
+            private static BanUsersV2Output GenerateBanUsersOutput()
             {
-                var fakeBanResults = new List<ForzaUserBanResult>
+                var fakeBanResults = new List<ForzaUserBanResultV2>
                 {
-                    Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
+                    Fixture.Build<ForzaUserBanResultV2>().With(x => x.Xuid, (ulong) 111).Create()
                 };
 
-                return Fixture.Build<BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
+                return Fixture.Build<BanUsersV2Output>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
             }
         }
     }

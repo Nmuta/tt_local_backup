@@ -1,9 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { createMockSteelheadService } from '@services/steelhead/steelhead.service.mock';
 import { SteelheadBanHistoryComponent } from './steelhead-ban-history.component';
 import { createMockPermissionsService } from '@services/permissions';
+import { createMockSteelheadBanHistoryService } from '@services/api-v2/steelhead/player/ban-history/steelhead-ban-history.service.mock';
+import { createMockSteelheadBanService } from '@services/api-v2/steelhead/ban/steelhead-ban.service.mock';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SteelheadBanHistoryComponent', () => {
   let component: SteelheadBanHistoryComponent;
@@ -12,7 +14,12 @@ describe('SteelheadBanHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadBanHistoryComponent],
-      providers: [createMockSteelheadService(), createMockPermissionsService()],
+      imports: [PipesModule],
+      providers: [
+        createMockSteelheadBanHistoryService(),
+        createMockSteelheadBanService(),
+        createMockPermissionsService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

@@ -1,5 +1,9 @@
 @import '/src/styles/mixins';
 
+:host {
+  line-height: $mat-icon-line-height;
+}
+
 .multiline-tooltip {
   white-space: pre-line;
 }

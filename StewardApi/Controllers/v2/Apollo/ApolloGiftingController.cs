@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -17,18 +18,21 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static System.FormattableString;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Apollo
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
 {
     /// <summary>
     ///     Handles requests for Apollo gifting.
     /// </summary>
-    [Route("api/v2/title/Apollo/gifting")]
+    [Route("api/v{version:apiVersion}/title/Apollo/gifting")]
     [ApiController]
+    [ApiVersion("2.0")]
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
@@ -38,6 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Apollo
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
     [LogTagTitle(TitleLogTags.Apollo)]
+    [Tags(Title.Multiple)]
     public sealed class ApolloGiftingController : V2ControllerBase
     {
 
@@ -135,8 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Apollo
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
 
-                    var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
-                        .Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);

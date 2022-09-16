@@ -1,5 +1,7 @@
 ﻿// based on https://referbruv.com/blog/posts/integrating-aspnet-core-api-versions-with-swagger-ui
 using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
                     description.GroupName,
                     this.CreateVersionInfo(description));
             }
+
+            options.OperationFilter<IgnoreDefaultApiVersionParameter>();
+
+            // enables doc comments. based on https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-6.0&tabs=visual-studio
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         }
 
         public void Configure(string name, SwaggerGenOptions options)

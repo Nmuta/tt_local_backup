@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using SteelheadContent;
+using SteelheadLiveOpsContent;
 using Turn10;
 using Turn10.Data.Common;
 using Turn10.LiveOps;
@@ -51,8 +51,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         public async Task<SteelheadMasterInventory> GetMasterInventoryAsync()
         {
 
-            var getCars = pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<DataCar>(), new List<Exception>());
-            var getVanityItems = pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<VanityItem>(), new List<Exception>());
+            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.DataCar>(), new List<Exception>());
+            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.VanityItem>(), new List<Exception>());
 
             await Task.WhenAll(getCars, /*getCarHorns,*/ getVanityItems /*getEmotes,*/ /*getQuickChatLines*/).ConfigureAwait(false);
 
@@ -61,23 +61,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                 CreditRewards = new List<MasterInventoryItem>
                 {
                     new MasterInventoryItem { Id = -1, Description = "Credits" },
-                    new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
-                    new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
-                    new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
-                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
                 },
-                Cars = mapper.Map<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
-                VanityItems = mapper.Map<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
+                Cars = this.mapper.Map<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
+                VanityItems = this.mapper.Map<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
             };
 
             if (getCars.IsFaulted)
             {
-                loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus cars.", getCars.Exception));
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus cars.", getCars.Exception));
             }
 
             if (getVanityItems.IsFaulted)
             {
-                loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus vanity items.", getVanityItems.Exception));
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus vanity items.", getVanityItems.Exception));
             }
 
             return masterInventory;
@@ -88,8 +84,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         {
             try
             {
-                var cars = await pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
-                return mapper.Map<IEnumerable<DetailedCar>>(cars);
+                var cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
+                return this.mapper.Map<IEnumerable<DetailedCar>>(cars);
             }
             catch (Exception ex)
             {

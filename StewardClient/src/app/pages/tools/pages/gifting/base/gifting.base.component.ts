@@ -19,6 +19,9 @@ export abstract class GiftingBaseComponent<ProfileIdType extends BigNumber | str
   public disableLspGroupSelection: boolean = true;
   public disableGiftingLiveries: boolean = true;
   public selectedPlayerInventoryProfileId: ProfileIdType;
+  public get disableBulkGiftingLiveries(): boolean {
+    return !this.isUsingPlayerIdentities;
+  }
 
   public featureDisabledText = `Feature is not supported for your user role.`;
 

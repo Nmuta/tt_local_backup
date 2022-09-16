@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Turn10.Services.LiveOps.FH5_main.Generated;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
@@ -85,13 +87,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<ServicesLiveOps.UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
             int startIndex,
             int maxResults,
-            string endpoint);
-
-        /// <summary>
-        ///     Creates LSP group.
-        /// </summary>
-        Task<ServicesLiveOps.UserManagementService.CreateUserGroupOutput> CreateUserGroupAsync(
-            string groupName,
             string endpoint);
 
         /// <summary>
@@ -178,6 +173,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Sets a user's report weight type.
+        /// </summary>
+        Task SetUserReportWeightTypeAsync(
+            ulong xuid,
+            ForzaUserReportWeightType reportWeightType,
+            string endpoint);
+
+        /// <summary>
         ///     Gets record of what user has played.
         /// </summary>
         Task<ServicesLiveOps.UserManagementService.GetHasPlayedRecordOutput> GetHasPlayedRecordAsync(
@@ -239,22 +242,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Sends an item gift.
         /// </summary>
-        Task AdminSendItemGiftAsync(ulong xuid, InventoryItemType itemType, int itemValue, string endpoint);
+        Task AdminSendItemGiftAsync(ulong xuid, InventoryItemType itemType, int itemValue, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///     Sends a group item gift.
         /// </summary>
-        Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, string endpoint);
+        Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///    Sends car livery to a player xuid.
         /// </summary>
-        Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint);
+        Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///    Sends car livery to a user group.
         /// </summary>
-        Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint);
+        Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///     Gets token balance.
@@ -310,6 +313,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             SendMessageNotificationToMultipleUsersAsync(
             IList<ulong> xuids,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             string endpoint);
 
@@ -319,6 +323,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public Task<ServicesLiveOps.NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
             int groupId,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             ServicesLiveOps.ForzaLiveDeviceType deviceType,
             string endpoint);

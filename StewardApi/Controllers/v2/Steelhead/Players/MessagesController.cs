@@ -25,8 +25,9 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 {
     /// <summary>
     ///     Messaging players steelhead controller.
@@ -34,9 +35,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
     [Route("api/v{version:apiVersion}/title/steelhead/players/messages")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
-    [Tags("Steelhead", "Players", "Messages")]
+    [Tags(Title.Steelhead, Target.Players, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
@@ -62,10 +66,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
         ///     Sends players a message.
         /// </summary>
         [HttpPost]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
@@ -77,15 +77,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
             //communityMessage.Xuids.EnsureValidXuids();
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(
-                TimeSpan.FromDays(1),
-                nameof(communityMessage.Duration));
+            communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
             await this.EnsurePlayersExist(this.Services, communityMessage.Xuids).ConfigureAwait(true);
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
-            var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
             var notifications = new List<MessageSendResult<ulong>>();
 
             try
@@ -94,15 +91,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Players
                     communityMessage.Xuids.ToArray(),
                     communityMessage.Xuids.Count,
                     communityMessage.Message,
-                    expireTime,
-                    null,
-                    DateTime.Now).ConfigureAwait(true);
+                    communityMessage.ExpireTimeUtc,
+                    string.Empty, // Image Url is unused in Steward
+                    communityMessage.StartTimeUtc).ConfigureAwait(true);
 
                 notifications.AddRange(this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults));
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException("Failed to send messages to players.", ex);
+
+                throw new UnknownFailureStewardException("Failed to send messages to players.", ex);
             }
 
             // TODO: Add notification logging for individual users Task(948868)

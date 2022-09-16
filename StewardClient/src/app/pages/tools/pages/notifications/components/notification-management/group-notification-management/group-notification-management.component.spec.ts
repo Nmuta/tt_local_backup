@@ -14,21 +14,24 @@ import { GroupNotificationManagementContract } from './group-notification-manage
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import { GroupNotification } from '@models/notifications.model';
+import BigNumber from 'bignumber.js';
 
 class TestNotificationManagementService implements GroupNotificationManagementContract {
-  public getGameTitle(): GameTitle {
-    return null;
-  }
+  public gameTitle: GameTitle.Street;
   public getGroupNotifications$(): Observable<GroupNotification[]> {
     return null;
   }
   public postEditLspGroupCommunityMessage$(
+    _lspGroupId: BigNumber,
     _notificationId: string,
     _communityMessage: CommunityMessage,
   ): Observable<void> {
     return null;
   }
-  public deleteLspGroupCommunityMessage$(_notificationId: string): Observable<void> {
+  public deleteLspGroupCommunityMessage$(
+    _lspGroupId: BigNumber,
+    _notificationId: string,
+  ): Observable<void> {
     return null;
   }
 }

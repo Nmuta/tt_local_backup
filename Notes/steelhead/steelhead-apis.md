@@ -93,8 +93,11 @@ Task<AdminGetSupportedGiftTypesV2Output> AdminGetSupportedGiftTypesV2(int maxRes
 
 ### LocalizationManagementService
 
+Tested by lugeiken; FM8 nuget version 2.5.7
+
 
 ```c#
+// Successful test
 Task<AddStringToLocalizeOutput> AddStringToLocalize(ForzaLocalizedStringData localizedStringData) {}
 ```
 
@@ -104,27 +107,34 @@ Tested by lugeiken; FM8 nuget version 2.5.1-prerelease
 
 ```c#
 
-// Tested w/ XUID 1234
+// Successful test
 Task<LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUser(ulong xuid, int maxResults) { }
 
-// Failed w/ error {"Object reference not set to an instance of an object."}. XUIDS: [ 1234 ]. Expiration 1 day.
+// Successful test
 Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsers(ulong[] recipients, int xuidCount, string message, DateTime expirationTime, string imageUrl) { }
 
+// Successful test
 Task<SendGroupMessageNotificationOutput> SendGroupMessageNotification(int groupId, string message, DateTime expirationTime, bool hasDeviceType, ForzaLiveDeviceType deviceType) { }
 
+// Unused (SendGroupMessageNotification allows for device type)
 Task<SendNotificationByDeviceTypeOutput> SendNotificationByDeviceType(ForzaLiveDeviceType deviceType, string message, DateTime expirationTime) { }
 
-// Failed w/ error {"Response status code does not indicate success: 500 (Internal Server Error)."}. XUID: 1234; Notification ID: 999c6f35-f031-4155-9673-6e9216ba09d6
+// Successful test
 Task EditNotification(Guid notificationId, ulong xuid, ForzaCommunityMessageNotificationEditParameters editParameters) { }
 
+// Successful test
 Task EditGroupNotification(Guid notificationId, ForzaCommunityMessageNotificationEditParameters editParameters) { }
 
+// Successful test
 Task<GetAllUserGroupMessagesOutput> GetAllUserGroupMessages(int groupId, int maxResults) { }
 
+// Successful test
 Task<GetUserGroupMessageOutput> GetUserGroupMessage(Guid notificationId) { }
 
+// Successful test
 Task<GetNotificationOutput> GetNotification(ulong xuid, Guid notificationId) { }
 
+// Successful test
 Task<DeleteNotificationsForUserOutput> DeleteNotificationsForUser(ulong xuid) { }
 
 // This is unused in Woodstock. I don't think we will need this in Steelhead either.
@@ -141,6 +151,7 @@ No service for leaderboards in FM8 yet.
 
 Tested by v-jyates on Steelhead ForzaClient nuget: 2.5.1-prerelease
 Found issues tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1222065
+We are also missing the ability GET/SET hidden UGC items.
 
 ```c#
 /// Not working, returning 500 for all requests I've tried. Mostly I was looking for any Livery/Photo/Tune so I could test below APIs
@@ -160,6 +171,12 @@ Task SetFeatured(Guid id, bool featured, DateTime featureEndDate, DateTime force
 
 // Unused and untested.
 Task<GetUGCObjectOutput> GetUGCObject(Guid id) { }
+
+// Failed. Same thing occuring in Woodstock
+Task SetUGCGeoFlag(Guid id, int[] geoFlags);
+
+// Successful test
+Task<StorefrontManagementService.GetUGCForUserOutput> GetUGCForUser(ulong xuid, ForzaUGCContentType contentType, bool includeThumbnails, int maxResults);
 ```
 
 ### UserInventoryManagementService
@@ -182,6 +199,9 @@ Tested by v-jyates on Steelhead ForzaClient nuget: 2.5.1-prerelease
 We also need the user groups endpoints added to woodstock added to steelhead as well
 V2 report weight endpoints have been ported to Steelhead, but setting ReportWeightType appears to be bugged. Seems to be reading ReportWeightType enum as an integer and applying it to the weight. Feels like we need 'SetUserReportWeightType' and not 'SetUserReportWeight(type)'
 Found issues tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1222002
+
+
+Missing: Endpoint to delete CMS override entry in DB (lugeiken)
 
 ```c#
 // Works as expected
@@ -248,4 +268,25 @@ Task SetHasPlayedRecord(ulong xuid, int title, bool hasPlayed) { }
 
 // Cannot verify results without GetHasPlayedRecord
 Task ResendProfileHasPlayedNotification(ulong xuid, Guid externalProfileId, int[] titles) { }
+
+// Successfully test
+Task SetCMSOverride(ulong xuid, string snapshot, string environment, string slot);
+
+// Successfully test
+Task<UserManagementService.GetCMSOverrideOutput> GetCMSOverride(ulong xuid);
 ```
+
+<br />
+
+### UserManagementService
+
+Cannot test yet. Vinh is working on the bug blocking this.
+From Vinh, 8/4 "permissions API is having a forzaclient generator bug that i need to work around"
+
+```c#
+// Untested
+Task<GetApiPermissionsOutput> GetApiPermissions(int deviceRegion, int startAt, int maxResults);
+
+// Untested 
+Task<UpdateApiPermissionsOutput> UpdateApiPermissions(ILiveOpsPermissionsUpdateParameters[] parametersList);
+ ```

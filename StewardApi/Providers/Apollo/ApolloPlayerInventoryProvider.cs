@@ -116,9 +116,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             endpoint.ShouldNotBeNull(nameof(endpoint));
 
-            var giftResponse = new GiftResponse<ulong>();
-            giftResponse.PlayerOrLspGroup = xuid;
-            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.Xuid;
+            var giftResponse = new GiftResponse<ulong>()
+            {
+                TargetXuid = xuid,
+                PlayerOrLspGroup = xuid,
+                IdentityAntecedent = GiftIdentityAntecedent.Xuid,
+            };
 
             try
             {
@@ -195,9 +198,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
             endpoint.ShouldNotBeNull(nameof(endpoint));
 
-            var giftResponse = new GiftResponse<int>();
-            giftResponse.PlayerOrLspGroup = groupId;
-            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
+            var giftResponse = new GiftResponse<int>
+            {
+                TargetLspGroupId = groupId,
+                PlayerOrLspGroup = groupId,
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
+            };
 
             try
             {
@@ -291,6 +297,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
                 PlayerOrLspGroup = groupId,
+                TargetLspGroupId = groupId,
             };
 
             long? notificationId = null;

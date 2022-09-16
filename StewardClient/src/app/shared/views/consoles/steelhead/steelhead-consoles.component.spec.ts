@@ -9,20 +9,26 @@ import { Subject } from 'rxjs';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { SteelheadConsolesComponent } from './steelhead-consoles.component';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
-import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
+import { createMockSteelheadConsolesService } from '@services/api-v2/steelhead/consoles/steelhead-consoles.service.mock';
+import { createMockSteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service.mock';
 
 describe('SteelheadConsolesComponent', () => {
   let component: SteelheadConsolesComponent;
   let fixture: ComponentFixture<SteelheadConsolesComponent>;
 
-  let mockSteelheadService: SteelheadService;
+  let mockSteelheadPlayerConsolesService: SteelheadPlayerConsolesService;
   let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadConsolesComponent, BigJsonPipe],
-      providers: [createMockSteelheadService(), createMockPermissionsService()],
+      providers: [
+        createMockSteelheadPlayerConsolesService(),
+        createMockSteelheadConsolesService(),
+        createMockPermissionsService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -30,7 +36,7 @@ describe('SteelheadConsolesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SteelheadConsolesComponent);
     component = fixture.componentInstance;
-    mockSteelheadService = TestBed.inject(SteelheadService);
+    mockSteelheadPlayerConsolesService = TestBed.inject(SteelheadPlayerConsolesService);
     mockPermissionsService = TestBed.inject(PermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
@@ -52,7 +58,7 @@ describe('SteelheadConsolesComponent', () => {
       consoleDetails$ = new Subject<SteelheadConsoleDetailsEntry[]>();
       consoleDetailsValue =
         SunrisePlayerXuidConsolesFakeApi.makeMany() as SteelheadConsoleDetailsEntry[];
-      mockSteelheadService.getConsoleDetailsByXuid$ = jasmine
+      mockSteelheadPlayerConsolesService.getConsoleDetailsByXuid$ = jasmine
         .createSpy('getConsoleDetailsByXuid$')
         .and.returnValue(consoleDetails$);
 

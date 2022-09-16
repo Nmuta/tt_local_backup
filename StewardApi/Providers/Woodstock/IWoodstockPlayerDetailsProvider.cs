@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Gets a user's report weight.
         /// </summary>
-        Task<int> GetUserReportWeightAsync(
+        Task<UserReportWeight> GetUserReportWeightAsync(
             ulong xuid,
             string endpoint);
 
@@ -142,7 +142,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// </summary>
         Task SetUserReportWeightAsync(
             ulong xuid,
-            int reportWeight,
+            UserReportWeightType reportWeightType,
             string endpoint);
 
         /// <summary>

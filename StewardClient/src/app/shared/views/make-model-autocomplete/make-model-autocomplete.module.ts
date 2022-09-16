@@ -19,6 +19,7 @@ import { SunriseMakeModelAutocompleteComponent } from './sunrise-make-model-auto
 import { WoodstockMakeModelAutocompleteComponent } from './woodstock-make-model-autocomplete/woodstock-make-model-autocomplete.component';
 import { MakeModelAutocompleteComponent } from './make-model-autocomplete/make-model-autocomplete.component';
 import { ApolloMakeModelAutocompleteComponent } from './apollo-make-model-autocomplete/apollo-make-model-autocomplete.component';
+import { SteelheadMakeModelAutocompleteComponent } from './steelhead-make-model-autocomplete/steelhead-make-model-autocomplete.component';
 
 /** Module for autocomplete input of car make & models. */
 @NgModule({
@@ -26,6 +27,7 @@ import { ApolloMakeModelAutocompleteComponent } from './apollo-make-model-autoco
     SunriseMakeModelAutocompleteComponent,
     WoodstockMakeModelAutocompleteComponent,
     ApolloMakeModelAutocompleteComponent,
+    SteelheadMakeModelAutocompleteComponent,
     MakeModelAutocompleteComponent,
   ],
   imports: [
@@ -51,6 +53,7 @@ import { ApolloMakeModelAutocompleteComponent } from './apollo-make-model-autoco
     SunriseMakeModelAutocompleteComponent,
     WoodstockMakeModelAutocompleteComponent,
     ApolloMakeModelAutocompleteComponent,
+    SteelheadMakeModelAutocompleteComponent,
     MakeModelAutocompleteComponent,
   ],
 })

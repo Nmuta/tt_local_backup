@@ -13,14 +13,13 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
     ///     Test controller for testing Steelhead LSP APIs.
@@ -28,9 +27,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags("Consoles", "Steelhead", "InDev")]
+    [Tags(Title.Steelhead, Target.Player, Topic.Consoles)]
     public class ConsolesController : V2SteelheadControllerBase
     {
         private const int DefaultStartIndex = 0;
@@ -67,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No consoles found for Xuid: {xuid}.", ex);
+                throw new UnknownFailureStewardException($"No consoles found. (XUID: {xuid})", ex);
             }
         }
 
@@ -97,7 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No shared console users found for XUID: {xuid}.", ex);
+                throw new UnknownFailureStewardException($"No shared console users found. (XUID: {xuid})", ex);
             }
         }
     }

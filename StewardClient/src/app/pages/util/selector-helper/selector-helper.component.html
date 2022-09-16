@@ -1,22 +1,24 @@
-<h2>Selector Helper</h2>
-<p>
-  Helps generate complicated selectors for Directives and such. Useful for extending
-  angular-material functionality.
-</p>
-<p>Modify the <code>selector-helper.ts</code> file and recompile to view the results.</p>
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let key of customSelectors | keys | orderBy">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{ key | humanize }}
-      </mat-panel-title>
-      <mat-panel-description>
-        <mat-icon matTooltip="Copy selector" [cdkCopyToClipboard]="customSelectors[key]" clickStop
-          >content_copy</mat-icon
-        >
-      </mat-panel-description>
-    </mat-expansion-panel-header>
+<mat-card>
+  <h2>Selector Helper</h2>
+  <p>
+    Helps generate complicated selectors for Directives and such. Useful for extending
+    angular-material functionality.
+  </p>
+  <p>Modify the <code>selector-helper.ts</code> file and recompile to view the results.</p>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let key of customSelectors | keys | orderBy">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ key | humanize }}
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon matTooltip="Copy selector" [cdkCopyToClipboard]="customSelectors[key]" clickStop
+            >content_copy</mat-icon
+          >
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-    <pre>{{ customSelectors[key] }} </pre>
-  </mat-expansion-panel>
-</mat-accordion>
+      <pre>{{ customSelectors[key] }} </pre>
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-card>

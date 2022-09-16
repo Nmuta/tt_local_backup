@@ -17,18 +17,23 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.Services.LiveOps.FM8.Generated;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
     ///     Handles requests for Steelhead player auctions.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/auctions")]
     [LogTagTitle(TitleLogTags.Steelhead)]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.CommunityManager)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags("Auctions", "Steelhead")]
+    [Tags(Title.Steelhead, Target.Player, Topic.Auctions)]
     public class AuctionsController : V2SteelheadControllerBase
     {
         private readonly ISteelheadItemsProvider itemsProvider;

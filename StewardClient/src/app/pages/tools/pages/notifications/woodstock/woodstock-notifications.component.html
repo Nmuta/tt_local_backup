@@ -7,7 +7,7 @@
         (selectedTabChange)="playerSelectionTypeChange($event.index)"
       >
         <mat-tab label="Player Selection">
-          <mat-card class="player-selection">
+          <mat-card class="player-selection steward-layout-vertical-fill">
             <player-selection-bulk
               [disableLookupTypes]="['t10Id']"
               [allowSelection]="isInEditTab"

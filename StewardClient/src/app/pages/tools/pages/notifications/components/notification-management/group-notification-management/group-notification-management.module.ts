@@ -28,8 +28,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { GroupNotificationManagementComponent } from './group-notification-management.component';
-import { WoodstockGroupNotificationManagementContract } from './woodstock/woodstock-group-notification-management.contract';
-import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-group-notification-management.contract';
+import { SteelheadGroupNotificationManagementComponent } from './steelhead/steelhead-group-notification-management.component';
+import { LuxonDateModule } from 'ngx-material-luxon';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -37,6 +39,7 @@ import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-gr
     GroupNotificationManagementComponent,
     SunriseGroupNotificationManagementComponent,
     WoodstockGroupNotificationManagementComponent,
+    SteelheadGroupNotificationManagementComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
@@ -67,15 +70,15 @@ import { SunriseGroupNotificationManagementContract } from './sunrise/sunrise-gr
     MatSelectModule,
     MatTooltipModule,
     MatPaginatorModule,
+    DateTimePickersModule,
+    LuxonDateModule,
+    StandardDateModule,
   ],
   exports: [
     GroupNotificationManagementComponent,
     SunriseGroupNotificationManagementComponent,
     WoodstockGroupNotificationManagementComponent,
-  ],
-  providers: [
-    WoodstockGroupNotificationManagementContract,
-    SunriseGroupNotificationManagementContract,
+    SteelheadGroupNotificationManagementComponent,
   ],
 })
 export class GroupNotificationManagementModule {}

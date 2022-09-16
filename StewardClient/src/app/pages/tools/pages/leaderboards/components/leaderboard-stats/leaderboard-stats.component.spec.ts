@@ -16,15 +16,21 @@ import { LeaderboardStatsComponent, LeaderboardStatsContract } from './leaderboa
 import { toDateTime } from '@helpers/luxon';
 import { LeaderboardEnvironment, LeaderboardQuery, LeaderboardScore } from '@models/leaderboards';
 import { NgxLineChartClickEvent } from '@models/ngx-charts';
-import { SimpleChanges } from '@angular/core';
+import { QueryList, SimpleChanges } from '@angular/core';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 describe('LeaderboardStatsComponent', () => {
   let component: LeaderboardStatsComponent;
   let fixture: ComponentFixture<LeaderboardStatsComponent>;
 
   const mockService: LeaderboardStatsContract = {
+    talentUserGroupId: -1000000,
     getLeaderboardScores$: () => {
+      return of([]);
+    },
+
+    getLeaderboardTalentIdentities$: () => {
       return of([]);
     },
   };
@@ -91,6 +97,7 @@ describe('LeaderboardStatsComponent', () => {
     fixture = TestBed.createComponent(LeaderboardStatsComponent);
     component = fixture.componentInstance;
     component.service = mockService;
+    component.childMenuTriggers = new QueryList<MatMenuTrigger>();
     component.scores = testLeaderboardScores;
 
     component.selectedScore.emit = jasmine.createSpy('selectedScore.emit');
@@ -101,39 +108,6 @@ describe('LeaderboardStatsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('Method: ngOnInit', () => {
-    describe('When service is null', () => {
-      beforeEach(() => {
-        component.service = null;
-      });
-
-      it('should throw error', () => {
-        try {
-          fixture.detectChanges();
-
-          expect(false).toBeTruthy();
-        } catch (e) {
-          expect(true).toBeTruthy();
-          expect(e.message).toEqual('No service is defined for leaderboard stats.');
-        }
-      });
-    });
-
-    describe('When service is provided', () => {
-      // Provided by default in the test component
-      it('should not throw error', () => {
-        try {
-          fixture.detectChanges();
-
-          expect(true).toBeTruthy();
-        } catch (e) {
-          expect(e).toEqual(null);
-          expect(false).toBeTruthy();
-        }
-      });
-    });
   });
 
   describe('Method: ngOnChanges', () => {

@@ -3,23 +3,24 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { DeviceType, GameTitle } from '@models/enums';
 import { EMPTY, Subject } from 'rxjs';
-import { catchError, delay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
-import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { replace } from '@helpers/replace';
-import { flatten } from 'lodash';
+import { flatten, max } from 'lodash';
 import { LspGroup } from '@models/lsp-group';
 import { CommunityMessage } from '@models/community-message';
 import { GuidLikeString } from '@models/extended-types';
 import { GroupNotificationManagementContract } from './group-notification-management.contract';
 import { GroupNotification } from '@models/notifications.model';
-import { toDateTime } from '@helpers/luxon';
 import { MatPaginator } from '@angular/material/paginator';
+import { renderDelay } from '@helpers/rxjs';
+import { DateValidators } from '@shared/validators/date-validators';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
+  min: DateTime;
   formGroup: FormGroup;
   edit?: boolean;
   postMonitor: ActionMonitor;
@@ -59,18 +60,12 @@ export class GroupNotificationManagementComponent
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public allMonitors = [this.getMonitor];
 
+  public min = DateTime.utc();
+
   /** Gets the game title */
   public get gameTitle(): GameTitle {
-    return this.service.getGameTitle();
+    return this.service.gameTitle;
   }
-
-  public dateTimeFutureFilter = (input: DateTime | null): boolean => {
-    if (!input) {
-      return false;
-    }
-
-    return input > DateTime.local().startOf('day');
-  };
 
   /** Lifecycle hook */
   public ngAfterViewInit(): void {
@@ -140,20 +135,18 @@ export class GroupNotificationManagementComponent
   /** Update notification selected */
   public updateNotificationEntry(entry: FormGroupNotificationEntry): void {
     const notificationId = entry.notification.notificationId as string;
-    const expireTime = toDateTime(entry.formGroup.controls.expireDateUtc.value);
-    const expireTimeDuration = expireTime.diff(DateTime.local());
     const entryMessage: CommunityMessage = {
       message: entry.formGroup.controls.message.value as string,
       deviceType: entry.formGroup.controls.deviceType.value as string,
-      duration: expireTimeDuration,
-      expiryDate: expireTime,
+      startTimeUtc: entry.notification.sentDateUtc,
+      expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
     };
     entry.postMonitor = this.updateMonitors(entry.postMonitor);
     this.service
-      .postEditLspGroupCommunityMessage$(notificationId, entryMessage)
+      .postEditLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId, entryMessage)
       .pipe(
         entry.postMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),
@@ -166,10 +159,10 @@ export class GroupNotificationManagementComponent
     const notificationId = entry.notification.notificationId as GuidLikeString;
     entry.deleteMonitor = this.updateMonitors(entry.deleteMonitor);
     this.service
-      .deleteLspGroupCommunityMessage$(notificationId)
+      .deleteLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId)
       .pipe(
         entry.deleteMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
+        renderDelay(),
         catchError(() => {
           return EMPTY;
         }),
@@ -183,7 +176,7 @@ export class GroupNotificationManagementComponent
     const rawEntry = this.rawNotifications.find(
       v => v.notificationId == entry.notification.notificationId,
     );
-    entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expirationDateUtc.toISO());
+    entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expirationDateUtc);
     entry.formGroup.controls.message.setValue(rawEntry.message);
     entry.formGroup.controls.deviceType.setValue(rawEntry.deviceType);
     entry.postMonitor = new ActionMonitor('Edit Notification');
@@ -196,18 +189,20 @@ export class GroupNotificationManagementComponent
   }
 
   private prepareNotifications(groupNotification: GroupNotification): FormGroupNotificationEntry {
+    const min = max([DateTime.utc(), groupNotification.sentDateUtc]);
     const formControls = {
       message: new FormControl(groupNotification.message, [
         Validators.required,
         Validators.maxLength(this.messageMaxLength),
       ]),
       deviceType: new FormControl(groupNotification.deviceType),
-      expireDateUtc: new FormControl(groupNotification.expirationDateUtc.toISO(), [
+      expireDateUtc: new FormControl(groupNotification.expirationDateUtc, [
         Validators.required,
-        DateValidators.isAfter(DateTime.local().startOf('day')),
+        DateValidators.isAfter(min),
       ]),
     };
     const newControls = <FormGroupNotificationEntry>{
+      min: min,
       formGroup: new FormGroup(formControls),
       formControls: formControls,
       postMonitor: new ActionMonitor('Edit Notification'),

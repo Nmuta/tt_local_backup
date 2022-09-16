@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GiftResponse } from '@models/gift-response';
 import { sortBy } from 'lodash';
@@ -10,16 +10,16 @@ import { sortBy } from 'lodash';
   templateUrl: './gifting-result.component.html',
   styleUrls: ['./gifting-result.component.scss'],
 })
-export class GiftingResultComponent extends BaseComponent implements OnInit {
+export class GiftingResultComponent extends BaseComponent implements OnChanges {
   @Input() public giftingResult: GiftResponse<BigNumber | string>[];
 
   public giftingCsvData: string[][];
-  public giftingErrorCount: number = 0;
+  public playersWithErrorsCount: number = 0;
 
-  /** Test */
-  public ngOnInit(): void {
-    this.giftingResult = sortBy(this.giftingResult, result => !result.errors);
-    this.giftingErrorCount = this.giftingResult.filter(data => data.errors?.length > 0).length;
+  /** Lifecycle hook. */
+  public ngOnChanges(): void {
+    this.giftingResult = sortBy(this.giftingResult, result => result?.errors?.length > 0).reverse();
+    this.playersWithErrorsCount = this.giftingResult.filter(data => data.errors?.length > 0).length;
 
     this.buildCsvData();
   }

@@ -113,6 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         public async Task<IList<MessageSendResult<ulong>>> SendNotificationsAsync(
             IList<ulong> xuids,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             string requesterObjectId,
             string endpoint)
@@ -129,6 +130,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var results = await this.woodstockService.SendMessageNotificationToMultipleUsersAsync(
                     xuids,
                     message,
+                    sendTimeUtc,
                     expireTimeUtc,
                     endpoint).ConfigureAwait(false);
 
@@ -181,6 +183,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         public async Task<MessageSendResult<int>> SendGroupNotificationAsync(
             int groupId,
             string message,
+            DateTime sendTimeUtc,
             DateTime expireTimeUtc,
             DeviceType deviceType,
             string requesterObjectId,
@@ -204,6 +207,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var response = await this.woodstockService.SendGroupMessageNotificationAsync(
                     groupId,
                     message,
+                    sendTimeUtc,
                     expireTimeUtc,
                     forzaDeviceType,
                     endpoint).ConfigureAwait(false);

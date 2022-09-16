@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { ApolloService } from '@services/apollo/apollo.service';
 import { Observable, throwError } from 'rxjs';
 import { PlayerUgcBaseComponent } from '../player-ugc.base.component';
@@ -13,7 +13,7 @@ import { UgcType } from '@models/ugc-filters';
   styleUrls: ['../player-ugc.component.scss'],
 })
 export class ApolloPlayerUgcComponent extends PlayerUgcBaseComponent implements OnChanges {
-  public gameTitle = GameTitleCodeName.FM7;
+  public gameTitle = GameTitle.FM7;
 
   constructor(private readonly apolloSerice: ApolloService) {
     super();

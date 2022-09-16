@@ -1,6 +1,7 @@
 ﻿using System;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {
@@ -40,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         /// <summary>
         ///     Gets user inventory service.
         /// </summary>
-        public IUserInventoryManagementService UserInventory => this.WoodstockFactory.PrepareUserInventoryManagementService(this.Endpoint);
+        public IUserInventoryManagementService UserInventoryManagementService => this.WoodstockFactory.PrepareUserInventoryManagementService(this.Endpoint);
 
         /// <summary>
         ///     Gets storefront service.
@@ -50,7 +51,27 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         /// <summary>
         ///     Gets live ops service.
         /// </summary>
-        public ILiveOpsService LiveOps => this.WoodstockFactory.PrepareLiveOpsService(this.Endpoint);
+        public ILiveOpsService LiveOpsService => this.WoodstockFactory.PrepareLiveOpsService(this.Endpoint);
+
+        /// <summary>
+        ///     Gets user management service.
+        /// </summary>
+        public IUserManagementService UserManagementService => this.WoodstockFactory.PrepareUserManagementService(this.Endpoint);
+
+        /// <summary>
+        ///     Gets permissions management service.
+        /// </summary>
+        public IPermissionsManagementService PermissionsManagementService => this.WoodstockFactory.PreparePermissionsManagementService(this.Endpoint);
+
+        /// <summary>
+        ///     Gets a <see cref="IStorefrontManagementService" />.
+        /// </summary>
+        public IStorefrontManagementService StorefrontManagement => this.WoodstockFactory.PrepareStorefrontManagementService(this.Endpoint);
+
+        /// <summary>
+        ///     Gets a <see cref="IUserManagementService" />.
+        /// </summary>
+        public IUserManagementService UserManagement => this.WoodstockFactory.PrepareUserManagementService(this.Endpoint);
 
         private IWoodstockProxyFactory WoodstockFactory { get; }
     }

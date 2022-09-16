@@ -1,0 +1,14 @@
+@import '/src/styles/mixins';
+
+.div-container {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-left: $gap-medium;
+  }
+}
+
+mat-form-field {
+  min-width: $container-width-small;
+}

@@ -32,6 +32,24 @@
             ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
           }}</span>
         </button>
+        <button
+          mat-raised-button
+          color="warn"
+          [verifyWith]="verifyHide"
+          (click)="hideUgcItem()"
+          stateManager
+          [monitor]="hideMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
+          [disabled]="!canHideUgc"
+        >
+          Hide UGC
+        </button>
+        <mat-checkbox #verifyHide matTooltip="Verify Deletion" aria-label="Verify Deletion"
+          >Verify</mat-checkbox
+        >
       </mat-card-actions>
     </mat-card>
 

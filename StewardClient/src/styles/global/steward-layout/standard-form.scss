@@ -1,0 +1,145 @@
+@import '/src/styles/mixins/';
+
+.sf-wrapper {
+  $mat-form-field-bottom-spacing: 2em; // chosen to support 2 lines of text w/o conflict
+
+  @mixin _mat-form-field-horizontal-sizing($name: 'unknown', $basis: 5em) {
+    > mat-form-field.sf-#{$name} {
+      flex-basis: $basis;
+      flex-grow: 0;
+      .mat-form-field-infix {
+        width: unset;
+      }
+    }
+  }
+
+  .sf-horizontal {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+
+    // get the spacing right
+    margin: -1em;
+    > * {
+      margin: 1em;
+    }
+
+    // fill items; override later per-control
+    > * {
+      flex-grow: 1;
+    }
+
+    /** This gives a bit more clearance for hints/names that are near each other. */
+    > mat-form-field {
+      margin-bottom: $mat-form-field-bottom-spacing;
+    }
+
+    // things that shouldn't grow to fill space
+    > mat-checkbox,
+    > button,
+    > help-popover-icon {
+      flex-grow: 0;
+    }
+
+    // align the button
+    > button {
+      margin-top: 1.5em;
+      margin-bottom: $mat-form-field-bottom-spacing;
+    }
+
+    // alignment for help popovers
+    > help-popover-icon {
+      margin-top: 1.25em;
+      margin-left: 0; // this makes them look "more associated" to the nearby controls
+      &:not(:last-child) {
+        margin-right: 0; // mirror margins if it's in the middle of the block
+      }
+      margin-bottom: $mat-form-field-bottom-spacing;
+    }
+
+    // support for up to 5 characters
+    @include _mat-form-field-horizontal-sizing('1-char', 5em);
+    @include _mat-form-field-horizontal-sizing('2-char', 5em);
+    @include _mat-form-field-horizontal-sizing('3-char', 5em);
+    @include _mat-form-field-horizontal-sizing('4-char', 5em);
+    @include _mat-form-field-horizontal-sizing('5-char', 5em);
+
+    // support for up to 8 characters
+    @include _mat-form-field-horizontal-sizing('6-char', 6em);
+    @include _mat-form-field-horizontal-sizing('7-char', 6em);
+    @include _mat-form-field-horizontal-sizing('8-char', 6em);
+
+    // support for up to 10 characters
+    @include _mat-form-field-horizontal-sizing('9-char', 7em);
+    @include _mat-form-field-horizontal-sizing('10-char', 7em);
+  }
+
+  .sf-vertical {
+    display: flex;
+    flex-flow: column nowrap;
+
+    /** This gives a bit more clearance for hints/names that are near each other. */
+    mat-form-field {
+      margin-bottom: 2em;
+    }
+  }
+
+  .shrinkwrap {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+}
+
+.sf-header.sf-header.sf-header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+
+  > button {
+    margin: 0 0.5em;
+  }
+}
+
+.mat-card-actions.sf-actions {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  margin-left: -0.5em;
+  margin-right: -0.5em;
+  > * {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  .mat-button-base {
+    &:last-child {
+      margin-right: 0;
+    }
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.sf-spacer {
+  flex-grow: 1;
+}
+
+.sf-chip-separate-left {
+  margin-left: $gap-micro;
+  padding-left: $gap-micro;
+  border-left: 1px solid $border-faded;
+}
+
+.sf-chip-separate-right {
+  margin-right: $gap-micro;
+  padding-right: $gap-micro;
+  border-right: 1px solid $border-faded;
+}
+
+.mat-card-actions.sf-actions,
+.sf-header {
+  background-color: app-color($app-background, 'card');
+}

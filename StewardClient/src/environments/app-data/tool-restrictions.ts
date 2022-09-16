@@ -5,6 +5,10 @@ export enum RestrictedFeature {
   GroupGifting = 'Group Gifting',
   GiftLivery = 'Gift Livery',
   SendLoyaltyRewards = 'Send Loyalty Rewards',
+  SetReportWeight = 'Set Report Weight',
+  PlayerProfileManagement = 'Manage Player Profiles',
+  UserGroupWrite = 'Add and remove users from User Group',
+  UserGroupRemoveAll = 'Remove all users from User Group',
 }
 
 /** The role restrictions for tooling features. */
@@ -30,6 +34,50 @@ export const RestrictedToolAccessLookup = {
     ],
     [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
+  },
+  [RestrictedFeature.SetReportWeight]: {
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+  },
+  [RestrictedFeature.PlayerProfileManagement]: {
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
+    [GameTitle.FH5]: [], // Unused
+    [GameTitle.FH4]: [], // Unused
+    [GameTitle.FM7]: [], // Unused
+  },
+  [RestrictedFeature.UserGroupWrite]: {
+    [GameTitle.FM8]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.CommunityManager,
+      UserRole.MediaTeam,
+      UserRole.HorizonDesigner,
+    ],
+    [GameTitle.FH5]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.CommunityManager,
+      UserRole.MediaTeam,
+      UserRole.HorizonDesigner,
+    ],
+    [GameTitle.FH4]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.CommunityManager,
+      UserRole.MediaTeam,
+      UserRole.HorizonDesigner,
+    ],
+    [GameTitle.FM7]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.CommunityManager,
+      UserRole.MediaTeam,
+      UserRole.HorizonDesigner,
+    ],
+  },
+  [RestrictedFeature.UserGroupRemoveAll]: {
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
 };
