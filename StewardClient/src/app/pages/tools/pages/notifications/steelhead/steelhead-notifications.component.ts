@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js';
 import { LocalizedMessagingContract } from '../components/localized-messaging/localized-messaging.component';
 import { CommunityMessageResult, LocalizedMessage } from '@models/community-message';
 import { Observable } from 'rxjs';
-import { SteelheadPlayersMessagesService } from '@shared/services/api-v2/steelhead/players/messages/steelhead-players-messages.service'
+import { SteelheadPlayersMessagesService } from '@shared/services/api-v2/steelhead/players/messages/steelhead-players-messages.service';
 import { SteelheadGroupMessagesService } from '@services/api-v2/steelhead/group/messages/steelhead-group-messages.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
@@ -46,44 +46,50 @@ export class SteelheadNotificationsComponent {
   constructor(
     steelheadPlayersMessagesService: SteelheadPlayersMessagesService,
     steelheadGroupMessagesService: SteelheadGroupMessagesService,
-    steelheadLocalizationService: SteelheadLocalizationService) {
+    steelheadLocalizationService: SteelheadLocalizationService,
+  ) {
     this.sendMessageService = {
       gameTitle: this.gameTitle,
       lockStartTime: false,
       sendLocalizedMessage$(
         xuids: BigNumber[],
-        localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>[]>
-      {
-        return steelheadPlayersMessagesService.postSendLocalizedMessageToXuids$(xuids, localizedMessage);
+        localizedMessage: LocalizedMessage,
+      ): Observable<CommunityMessageResult<BigNumber>[]> {
+        return steelheadPlayersMessagesService.postSendLocalizedMessageToXuids$(
+          xuids,
+          localizedMessage,
+        );
       },
-      sendLspLocalizedMessage$(lspGroupId: BigNumber, localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>>
-      {
-        return steelheadGroupMessagesService.postSendLocalizedMessageToLspGroup$(lspGroupId, localizedMessage);
+      sendLspLocalizedMessage$(
+        lspGroupId: BigNumber,
+        localizedMessage: LocalizedMessage,
+      ): Observable<CommunityMessageResult<BigNumber>> {
+        return steelheadGroupMessagesService.postSendLocalizedMessageToLspGroup$(
+          lspGroupId,
+          localizedMessage,
+        );
       },
       selectLocalizedStringContract: {
         gameTitle: this.gameTitle,
-        getLocalizedStrings$(): Observable<LocalizedStringCollection>
-        {
+        getLocalizedStrings$(): Observable<LocalizedStringCollection> {
           return steelheadLocalizationService.getLocalizedStrings$();
-        }
-      }
-    }
+        },
+      },
+    };
 
     this.localizationCreationService = {
       gameTitle: this.gameTitle,
-      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void>
-      {
+      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void> {
         return steelheadLocalizationService.postLocalizedString$(localizedStringData);
-      }
-    }
+      },
+    };
 
     this.localizationSelectionService = {
       gameTitle: this.gameTitle,
-      getLocalizedStrings$(): Observable<LocalizedStringCollection>
-      {
+      getLocalizedStrings$(): Observable<LocalizedStringCollection> {
         return steelheadLocalizationService.getLocalizedStrings$();
-      }
-    }
+      },
+    };
   }
 
   /** Logic when player selection outputs identities. */

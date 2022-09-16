@@ -22,11 +22,8 @@
         ></textarea>
       </mat-form-field>
 
-      
       <mat-form-field appearance="fill" class="description">
-        <mat-label
-          >Description</mat-label
-        >
+        <mat-label>Description</mat-label>
         <textarea
           matInput
           cdkTextareaAutosize
@@ -59,10 +56,15 @@
           [verifyWith]="verifySubmission"
         >
           <!-- Submit <mat-icon svgIcon="steward-arrow-right"></mat-icon> -->
-          Submit <button-spinner [monitor]="postMonitor" defaultIcon="arrow_circle_right"></button-spinner>
+          Submit
+          <button-spinner [monitor]="postMonitor" defaultIcon="arrow_circle_right"></button-spinner>
         </button>
-        <mat-checkbox #verifySubmission matTooltip="Verify Submission" aria-label="Verify Submission"
-        >Verify</mat-checkbox>
+        <mat-checkbox
+          #verifySubmission
+          matTooltip="Verify Submission"
+          aria-label="Verify Submission"
+          >Verify</mat-checkbox
+        >
       </span>
     </form>
   </mat-card-content>

@@ -22,10 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** A utility module that exports a datetime picker component for forms. */
 @NgModule({
-  declarations: [
-    CreateLocalizedStringComponent,
-    SelectLocalizedStringComponent,
-  ],
+  declarations: [CreateLocalizedStringComponent, SelectLocalizedStringComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -48,9 +45,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatChipsModule,
     MatTooltipModule,
   ],
-  exports: [
-    CreateLocalizedStringComponent,
-    SelectLocalizedStringComponent,
-  ],
+  exports: [CreateLocalizedStringComponent, SelectLocalizedStringComponent],
 })
 export class LocalizationModule {}

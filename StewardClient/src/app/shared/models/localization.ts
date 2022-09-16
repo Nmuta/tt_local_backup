@@ -4,11 +4,11 @@ import { GuidLikeString } from './extended-types';
 /**
  * Interface that represents data used to localize a string.
  */
- export interface LocalizedStringData {
+export interface LocalizedStringData {
   stringToLocalize: string;
-  description: string
+  description: string;
   category: LocalizationCategory;
-  //maxLength: - Probably use a hardcoded value internally in the API. Let's start with 512 and go from there. 
+  //maxLength: - Probably use a hardcoded value internally in the API. Let's start with 512 and go from there.
 }
 
 /**

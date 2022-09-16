@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '@environments/environment';
 import { GameTitle, GameTitleAbbreviation } from '@models/enums';
 
 /**
@@ -15,11 +16,6 @@ export class NotificationsComponent implements OnInit {
   public ngOnInit(): void {
     this.navbarRouterLinks = [
       {
-        name: GameTitleAbbreviation.FM8,
-        codename: GameTitle.FM8,
-        route: ['.', GameTitle.FM8],
-      },
-      {
         name: GameTitleAbbreviation.FH5,
         codename: GameTitle.FH5,
         route: ['.', GameTitle.FH5],
@@ -30,5 +26,13 @@ export class NotificationsComponent implements OnInit {
         route: ['.', GameTitle.FH4],
       },
     ];
+
+    if (!environment.production) {
+      this.navbarRouterLinks.unshift({
+        name: GameTitleAbbreviation.FM8,
+        codename: GameTitle.FM8,
+        route: ['.', GameTitle.FM8.toLowerCase()],
+      });
+    };
   }
 }

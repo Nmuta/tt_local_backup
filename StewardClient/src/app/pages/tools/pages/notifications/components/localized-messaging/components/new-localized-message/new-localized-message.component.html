@@ -1,5 +1,8 @@
 <form [formGroup]="formGroup">
-  <select-localized-string [service]="service" [formControl]="formControls.localizedMessageId"></select-localized-string> 
+  <select-localized-string
+    [service]="service"
+    [formControl]="formControls.localizedMessageId"
+  ></select-localized-string>
 
   <datetime-range-picker
     [formControl]="formControls.dateRange"
@@ -20,12 +23,7 @@
     </mat-select>
   </mat-form-field>
 
-  <button
-    mat-raised-button
-    color="accent"
-    (click)="createMessage()"
-    [disabled]="!formGroup.valid"
-  >
+  <button mat-raised-button color="accent" (click)="createMessage()" [disabled]="!formGroup.valid">
     Review <mat-icon svgIcon="steward-arrow-right"></mat-icon>
   </button>
 </form>

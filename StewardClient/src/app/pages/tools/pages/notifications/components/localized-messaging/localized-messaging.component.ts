@@ -18,9 +18,15 @@ export interface LocalizedMessagingContract {
   lockStartTime: boolean;
 
   // Methods to send out localized messages
-  sendLocalizedMessage$(xuids: BigNumber[], localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>[]>;
-  sendLspLocalizedMessage$(lspGroupId: BigNumber, localizedMessage: LocalizedMessage): Observable<CommunityMessageResult<BigNumber>>;
-  selectLocalizedStringContract: SelectLocalizedStringContract,
+  sendLocalizedMessage$(
+    xuids: BigNumber[],
+    localizedMessage: LocalizedMessage,
+  ): Observable<CommunityMessageResult<BigNumber>[]>;
+  sendLspLocalizedMessage$(
+    lspGroupId: BigNumber,
+    localizedMessage: LocalizedMessage,
+  ): Observable<CommunityMessageResult<BigNumber>>;
+  selectLocalizedStringContract: SelectLocalizedStringContract;
 }
 
 /** Routed Component; Sunrise Community Messaging Tool. */
@@ -33,7 +39,7 @@ type MessageSendResultViewable = {
 /**
  *  Localized messaging component
  */
- @Component({
+@Component({
   selector: 'localized-messaging',
   templateUrl: './localized-messaging.component.html',
   styleUrls: ['./localized-messaging.component.scss'],
@@ -69,14 +75,15 @@ export class LocalizedMessagingComponent extends BaseComponent {
     this.isLoading = true;
 
     let submitLocalizedMessage$: Observable<CommunityMessageResult<BigNumber>[]>;
-    if (this.isUsingPlayerIdentities)
-    {
-      submitLocalizedMessage$ = this.service?.sendLocalizedMessage$(this.playerIdentities.map(identity => identity.xuid),
-      this.newLocalizedMessage,);
-    }
-    else
-    {
-      submitLocalizedMessage$ = this.service?.sendLspLocalizedMessage$(this.selectedLspGroup.id, this.newLocalizedMessage).pipe(switchMap(data => of([data])));
+    if (this.isUsingPlayerIdentities) {
+      submitLocalizedMessage$ = this.service?.sendLocalizedMessage$(
+        this.playerIdentities.map(identity => identity.xuid),
+        this.newLocalizedMessage,
+      );
+    } else {
+      submitLocalizedMessage$ = this.service
+        ?.sendLspLocalizedMessage$(this.selectedLspGroup.id, this.newLocalizedMessage)
+        .pipe(switchMap(data => of([data])));
     }
 
     submitLocalizedMessage$

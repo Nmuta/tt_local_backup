@@ -32,10 +32,7 @@ import { LocalizationModule } from '@components/localization/localization.module
 
 /** Routed module for banning users. */
 @NgModule({
-  declarations: [
-    NewLocalizedMessageComponent,
-    LocalizedMessagingComponent,
-  ],
+  declarations: [NewLocalizedMessageComponent, LocalizedMessagingComponent],
   imports: [
     ...STANDARD_DATE_IMPORTS,
     CommonModule,
@@ -67,9 +64,6 @@ import { LocalizationModule } from '@components/localization/localization.module
     StandardDateModule,
     LocalizationModule,
   ],
-  exports: [
-    NewLocalizedMessageComponent,
-    LocalizedMessagingComponent,
-  ],
+  exports: [NewLocalizedMessageComponent, LocalizedMessagingComponent],
 })
 export class LocalizedMessagingModule {}

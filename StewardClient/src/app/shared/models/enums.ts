@@ -103,11 +103,11 @@ export enum NotificationType {
 
 /** Enum for notification types. */
 export enum LocalizationCategory {
-        Unset = 'Unset',
-        MOTD = 'MOTD',
-        PatchNotes = 'PatchNotes',
-        Notifications = 'Notifications',
-        Gifts = 'Gifts',
+  Unset = 'Unset',
+  MOTD = 'MOTD',
+  PatchNotes = 'PatchNotes',
+  Notifications = 'Notifications',
+  Gifts = 'Gifts',
 }
 
 /** Enum for Steward error codes. */

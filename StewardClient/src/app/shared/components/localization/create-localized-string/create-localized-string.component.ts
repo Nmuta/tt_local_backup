@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GameTitle, LocalizationCategory } from '@models/enums';
 import { LocalizedStringData } from '@models/localization';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -17,7 +17,7 @@ export interface CreateLocalizedStringContract {
   styleUrls: ['./create-localized-string.component.scss'],
 })
 export class CreateLocalizedStringComponent {
-  @Input() service: CreateLocalizedStringContract
+  @Input() service: CreateLocalizedStringContract;
 
   public postMonitor = new ActionMonitor('POST string for localization');
   public readonly messageMaxLength: number = 512;
@@ -36,29 +36,29 @@ export class CreateLocalizedStringComponent {
 
   /** Create message */
   public createMessage(): void {
-    if (!this.service)
-    {
+    if (!this.service) {
       throw new Error('No service provided for CreateLocalizedStringComponent');
     }
-    const stringData : LocalizedStringData = {
+    const stringData: LocalizedStringData = {
       stringToLocalize: this.formControls.stringToLocalize.value,
       description: this.formControls.description.value,
       category: this.formControls.category.value,
-    }
+    };
 
     this.postMonitor = this.postMonitor.repeat();
 
-    this.service.postStringForLocalization$(stringData)
-    .pipe(
-      this.postMonitor.monitorSingleFire(),
-      catchError(() => {
-        return EMPTY;
-      }),
-    )
-    .subscribe(() => {
-      this.formControls.stringToLocalize.setValue('');
-      this.formControls.description.setValue('');
-      this.formControls.category.setValue(LocalizationCategory.Unset)
-    });
+    this.service
+      .postStringForLocalization$(stringData)
+      .pipe(
+        this.postMonitor.monitorSingleFire(),
+        catchError(() => {
+          return EMPTY;
+        }),
+      )
+      .subscribe(() => {
+        this.formControls.stringToLocalize.setValue('');
+        this.formControls.description.setValue('');
+        this.formControls.category.setValue(LocalizationCategory.Unset);
+      });
   }
 }

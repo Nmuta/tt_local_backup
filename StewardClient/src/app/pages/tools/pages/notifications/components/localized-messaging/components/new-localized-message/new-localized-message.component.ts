@@ -24,7 +24,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
   private dateRange: DatetimeRangePickerFormValue = {
     start: NewLocalizedMessageComponent.UTC_NOW.toUTC(),
     end: NewLocalizedMessageComponent.UTC_NOW.plus({ hour: 1 }).toUTC(),
-  };  
+  };
 
   public min = DateTime.utc().minus({ days: 1 });
 
@@ -43,7 +43,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
     ]),
     dateRange: new FormControl(this.dateRange, [Validators.required]),
     deviceType: new FormControl(DeviceType.All, [Validators.required]),
-    notificationType: new FormControl(NotificationType.CommunityMessage, [Validators.required])
+    notificationType: new FormControl(NotificationType.CommunityMessage, [Validators.required]),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
@@ -51,7 +51,9 @@ export class NewLocalizedMessageComponent implements OnChanges {
   /** Lifecycle hook. */
   public ngOnChanges(): void {
     if (!!this.pendingLocalizedMessage) {
-      this.formControls.localizedMessageId.setValue(this.pendingLocalizedMessage.localizedMessageId);
+      this.formControls.localizedMessageId.setValue(
+        this.pendingLocalizedMessage.localizedMessageId,
+      );
       this.formControls.dateRange.setValue({
         start: this.pendingLocalizedMessage.startTimeUtc,
         end: this.pendingLocalizedMessage.expireTimeUtc,
@@ -62,7 +64,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
       this.formControls.notificationType.setValue(
         this.pendingLocalizedMessage.notificationType ?? NotificationType.CommunityMessage,
       );
-    }    
+    }
   }
 
   /** Create message */
