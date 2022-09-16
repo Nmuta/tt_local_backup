@@ -29,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 {
@@ -180,7 +181,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing([FromBody] BulkLiveryGift<GroupGift> gift)
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing([FromBody] BulkLiveryGift<ExpirableGroupGift> gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -192,7 +193,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             groupGift.Xuids.EnsureValidXuids();
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            groupGift.Xuids.EnsureValidXuids();
 
             await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
 
@@ -248,13 +248,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
             }
 
-            var livery = await this.Services.StorefrontManagement.GetUGCLivery(liveryGuid).ConfigureAwait(true);
+            GetUGCLiveryOutput livery;
+
+            try
+            {
+                livery = await this.Services.StorefrontManagement.GetUGCLivery(liveryGuid).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get livery. (liveryId: {liveryId})", ex);
+            }
+
             if (livery == null)
             {
                 throw new InvalidArgumentsStewardException($"Livery not found: {liveryId}");
             }
 
-            var mappedLivery = this.mapper.Map<UgcLiveryItem>(livery.result);
+            var mappedLivery = this.mapper.SafeMap<UgcLiveryItem>(livery.result);
             return mappedLivery;
         }
 
@@ -286,11 +296,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                     ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
+            foreach (var carHorn in gift.CarHorns)
+            {
+                var validItem = masterInventoryItem.CarHorns.Any(data => data.Id == carHorn.Id);
+                error += validItem
+                    ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
             foreach (var vanityItem in gift.VanityItems)
             {
                 var validItem = masterInventoryItem.VanityItems.Any(data => data.Id == vanityItem.Id);
                 error += validItem
                     ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var emote in gift.Emotes)
+            {
+                var validItem = masterInventoryItem.Emotes.Any(data => data.Id == emote.Id);
+                error += validItem ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var quickChatLine in gift.QuickChatLines)
+            {
+                var validItem = masterInventoryItem.QuickChatLines.Any(data => data.Id == quickChatLine.Id);
+                error += validItem
+                    ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             return error;

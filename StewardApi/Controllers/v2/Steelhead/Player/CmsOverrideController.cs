@@ -32,7 +32,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/cmsOverride")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin, 
+        UserRole.MotorsportDesigner)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Player, Topic.CmsOverride)]
 

@@ -30,7 +30,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/loyalty")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.HorizonDesigner,
+        UserRole.MotorsportDesigner,
+        UserRole.MediaTeam)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Player, Topic.LoyaltyRewards)]
     public class LoyaltyRewardsController : V2SteelheadControllerBase

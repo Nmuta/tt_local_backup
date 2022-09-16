@@ -35,16 +35,16 @@
             *ngIf="allScores.length > 0 && activeLeaderboardView !== LeaderboardView.Player"
           >
             <div class="assist filters">
-              <mat-slide-toggle [formControl]="filterFormControls.stm">
+              <mat-slide-toggle [formControl]="filterFormControls.usedStmAssist">
                 Used STM Assist
               </mat-slide-toggle>
-              <mat-slide-toggle [formControl]="filterFormControls.abs">
+              <mat-slide-toggle [formControl]="filterFormControls.usedAbsAssist">
                 Used ABS Assist
               </mat-slide-toggle>
-              <mat-slide-toggle [formControl]="filterFormControls.tcs">
+              <mat-slide-toggle [formControl]="filterFormControls.usedTcsAssist">
                 Used TCS Assist
               </mat-slide-toggle>
-              <mat-slide-toggle [formControl]="filterFormControls.auto">
+              <mat-slide-toggle [formControl]="filterFormControls.usedAutoAssist">
                 Used Auto Assist
               </mat-slide-toggle>
             </div>

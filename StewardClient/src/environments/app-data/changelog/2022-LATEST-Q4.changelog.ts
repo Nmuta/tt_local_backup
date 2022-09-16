@@ -13,6 +13,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Display and filter assists on leaderboard scores',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: '4070e253-05fc-4758-a39a-37521e5fb103',
+      shortText: 'Unlock FM tooling in production',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
       uuid: '46a55e0d-8b53-4414-b65c-b16ba44bf3cd',
       shortText: 'Revert private UGC quick link button',

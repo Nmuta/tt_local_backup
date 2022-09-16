@@ -150,10 +150,10 @@ export class LeaderboardScoresComponent
       } as DateRangePickerFormValue,
       disabled: true,
     }),
-    stm: new FormControl(false),
-    abs: new FormControl(false),
-    tcs: new FormControl(false),
-    auto: new FormControl(false),
+    usedStmAssist: new FormControl(false),
+    usedAbsAssist: new FormControl(false),
+    usedTcsAssist: new FormControl(false),
+    usedAutoAssist: new FormControl(false),
   };
 
   constructor(
@@ -178,10 +178,10 @@ export class LeaderboardScoresComponent
     }
 
     const dateRangeChanges = this.filterFormControls.dateRange.valueChanges;
-    const stmChanges = this.filterFormControls.stm.valueChanges;
-    const absChanges = this.filterFormControls.abs.valueChanges;
-    const tcsChanges = this.filterFormControls.tcs.valueChanges;
-    const autoChanges = this.filterFormControls.auto.valueChanges;
+    const stmChanges = this.filterFormControls.usedStmAssist.valueChanges;
+    const absChanges = this.filterFormControls.usedAbsAssist.valueChanges;
+    const tcsChanges = this.filterFormControls.usedTcsAssist.valueChanges;
+    const autoChanges = this.filterFormControls.usedAutoAssist.valueChanges;
 
     merge(dateRangeChanges, stmChanges, absChanges, tcsChanges, autoChanges)
       .pipe(
@@ -455,14 +455,16 @@ export class LeaderboardScoresComponent
         passesDateFilter = scoreDate >= startDate && scoreDate <= endDate;
       }
 
-      const passesStmFilter = this.filterFormControls.stm.value ? score.stabilityManagement : true;
-      const passesAbsFilter = this.filterFormControls.abs.value
+      const passesStmFilter = this.filterFormControls.usedStmAssist.value
+        ? score.stabilityManagement
+        : true;
+      const passesAbsFilter = this.filterFormControls.usedAbsAssist.value
         ? score.antiLockBrakingSystem
         : true;
-      const passesTcsFilter = this.filterFormControls.tcs.value
+      const passesTcsFilter = this.filterFormControls.usedTcsAssist.value
         ? score.tractionControlSystem
         : true;
-      const passesAutoFilter = this.filterFormControls.auto.value
+      const passesAutoFilter = this.filterFormControls.usedAutoAssist.value
         ? score.automaticTransmission
         : true;
 
