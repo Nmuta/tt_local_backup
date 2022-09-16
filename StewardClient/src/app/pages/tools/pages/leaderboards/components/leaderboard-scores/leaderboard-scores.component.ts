@@ -38,7 +38,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
 import { cloneDeep, first, last } from 'lodash';
 import { DateTime } from 'luxon';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, merge, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap, catchError, filter, debounceTime } from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
@@ -99,7 +99,7 @@ export class LeaderboardScoresComponent
   implements OnInit, OnChanges, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSlideToggle) dateSlideToggle: MatSlideToggle;
+  @ViewChild('dateSlideToggle') dateSlideToggle: MatSlideToggle;
   @Input() service: LeaderboardScoresContract;
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   @Input() externalSelectedScore: LeaderboardScore;
@@ -109,7 +109,13 @@ export class LeaderboardScoresComponent
   public leaderboardScores = new BetterMatTableDataSource<LeaderboardScore>([]);
   public getLeaderboardScoresMonitor = new ActionMonitor('GET Leaderboard Scores');
   public deleteLeaderboardScoresMonitor = new ActionMonitor('DELETE Leaderboard Score(s)');
-  public leaderboardDisplayColumns: string[] = ['position', 'score', 'metadata', 'actions'];
+  public leaderboardDisplayColumns: string[] = [
+    'position',
+    'score',
+    'metadata',
+    'assists',
+    'actions',
+  ];
 
   public isMultiDeleteActive: boolean = false;
   public scoreTypeQualifier: string = '';
@@ -144,6 +150,10 @@ export class LeaderboardScoresComponent
       } as DateRangePickerFormValue,
       disabled: true,
     }),
+    usedStmAssist: new FormControl(false),
+    usedAbsAssist: new FormControl(false),
+    usedTcsAssist: new FormControl(false),
+    usedAutoAssist: new FormControl(false),
   };
 
   constructor(
@@ -167,14 +177,18 @@ export class LeaderboardScoresComponent
       this.getLeaderboardScores$.next(this.leaderboard.query);
     }
 
-    this.filterFormControls.dateRange.valueChanges
+    const dateRangeChanges = this.filterFormControls.dateRange.valueChanges;
+    const stmChanges = this.filterFormControls.usedStmAssist.valueChanges;
+    const absChanges = this.filterFormControls.usedAbsAssist.valueChanges;
+    const tcsChanges = this.filterFormControls.usedTcsAssist.valueChanges;
+    const autoChanges = this.filterFormControls.usedAutoAssist.valueChanges;
+
+    merge(dateRangeChanges, stmChanges, absChanges, tcsChanges, autoChanges)
       .pipe(
         debounceTime(HCI.TypingToAutoSearchDebounceMillis),
         tap(() => {
           this.unsetHighlightForAllLeaderboardScores();
         }),
-        filter(() => this.filterFormControls.dateRange.enabled),
-        filter(data => !!data.start && !!data.end),
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
@@ -333,10 +347,9 @@ export class LeaderboardScoresComponent
       this.filterFormControls.dateRange.enable();
     } else {
       this.filterFormControls.dateRange.disable();
-      this.setLeaderboardScoresData(this.allScores);
     }
 
-    // Make sure slide toggle matches the change event.
+    // Make sure slide toggle matches the change event
     if (!!this.dateSlideToggle && this.dateSlideToggle.checked != toggleEvent.checked) {
       this.dateSlideToggle.toggle();
     }
@@ -430,12 +443,38 @@ export class LeaderboardScoresComponent
 
   private filterScores(_scores: LeaderboardScore[]): LeaderboardScore[] {
     const dateRange = this.filterFormControls.dateRange.value as DateRangePickerFormValue;
+    const dateRangeFilterActive =
+      !this.filterFormControls.dateRange.disabled && !!dateRange.start && !!dateRange.end;
     const startDate = dateRange.start.toLocal();
     const endDate = dateRange.end.toLocal();
 
     return _scores.filter(score => {
-      const scoreDate = score.submissionTimeUtc.toLocal();
-      return scoreDate >= startDate && scoreDate <= endDate;
+      let passesDateFilter = true;
+      if (dateRangeFilterActive) {
+        const scoreDate = score.submissionTimeUtc.toLocal();
+        passesDateFilter = scoreDate >= startDate && scoreDate <= endDate;
+      }
+
+      const passesStmFilter = this.filterFormControls.usedStmAssist.value
+        ? score.stabilityManagement
+        : true;
+      const passesAbsFilter = this.filterFormControls.usedAbsAssist.value
+        ? score.antiLockBrakingSystem
+        : true;
+      const passesTcsFilter = this.filterFormControls.usedTcsAssist.value
+        ? score.tractionControlSystem
+        : true;
+      const passesAutoFilter = this.filterFormControls.usedAutoAssist.value
+        ? score.automaticTransmission
+        : true;
+
+      return (
+        passesDateFilter &&
+        passesStmFilter &&
+        passesAbsFilter &&
+        passesTcsFilter &&
+        passesAutoFilter
+      );
     });
   }
 
