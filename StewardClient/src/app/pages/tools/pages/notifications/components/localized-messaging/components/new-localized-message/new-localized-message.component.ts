@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalizedMessage } from '@models/community-message';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +13,7 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
   templateUrl: './new-localized-message.component.html',
   styleUrls: ['./new-localized-message.component.scss'],
 })
-export class NewLocalizedMessageComponent implements OnInit {
+export class NewLocalizedMessageComponent implements OnChanges {
   private static readonly UTC_NOW = DateTime.utc();
   @Input() public pendingLocalizedMessage: LocalizedMessage;
   @Input() public allowDeviceTypeFilter: boolean;
@@ -46,10 +46,10 @@ export class NewLocalizedMessageComponent implements OnInit {
     notificationType: new FormControl(NotificationType.CommunityMessage, [Validators.required])
   };
 
-  public newLocalizedMessageForm: FormGroup = new FormGroup(this.formControls);
+  public formGroup: FormGroup = new FormGroup(this.formControls);
 
   /** Lifecycle hook. */
-  public ngOnInit(): void {
+  public ngOnChanges(): void {
     if (!!this.pendingLocalizedMessage) {
       this.formControls.localizedMessageId.setValue(this.pendingLocalizedMessage.localizedMessageId);
       this.formControls.dateRange.setValue({
@@ -62,7 +62,10 @@ export class NewLocalizedMessageComponent implements OnInit {
       this.formControls.notificationType.setValue(
         this.pendingLocalizedMessage.notificationType ?? NotificationType.CommunityMessage,
       );
+
+      console.log(this.formControls)
     }
+    
   }
 
   /** Create message */
@@ -74,8 +77,8 @@ export class NewLocalizedMessageComponent implements OnInit {
     const notificationType = this.formControls.notificationType.value ?? null;
     const deviceType = this.allowDeviceTypeFilter ? this.formControls.deviceType.value : null;
 
-    console.log('new-localized-message::createMessage')
-    console.log(message)
+    //console.log('new-localized-message::createMessage')
+    //console.log(message)
 
     this.emitNewLocalizedMessage.emit({
       localizedMessageId: message,

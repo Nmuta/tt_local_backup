@@ -201,6 +201,7 @@ export class TimepickerComponent
   public ngOnChanges(): void {
     if (!this.min) {
       this.minFormatted = null;
+      return;
     }
 
     this.minFormatted = this.min.toLocaleString(DateTime.TIME_SIMPLE);

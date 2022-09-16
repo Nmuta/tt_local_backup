@@ -58,8 +58,8 @@ export class LocalizedMessagingComponent extends BaseComponent {
 
   /** New community message created. */
   public setNewLocalizedMessage($event: LocalizedMessage): void {
-    console.log('localized-messaging::setNewLocalizedMessage')
-    console.log($event)
+    //console.log('localized-messaging::setNewLocalizedMessage')
+    //console.log($event)
     this.newLocalizedMessage = $event;
     this.waitingForVerification = true;
   }

@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { MatChipListChange } from '@angular/material/chips';
-import { MatSelectChange } from '@angular/material/select';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { GameTitle } from '@models/enums';
@@ -10,7 +9,7 @@ import { LocalizedString, LocalizedStringCollection } from '@models/localization
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { orderBy } from 'lodash';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, takeUntil, tap, pairwise, startWith, } from 'rxjs/operators';
 
 /** Outputted form value of the datetime picker. */
 export type SelectLocalizedStringFormValue = string;
@@ -43,7 +42,7 @@ export interface LocalizationOptions {
     },
   ],
 })
-export class SelectLocalizedStringComponent extends BaseComponent implements AfterViewInit, ControlValueAccessor, Validator{
+export class SelectLocalizedStringComponent extends BaseComponent implements OnInit, ControlValueAccessor, Validator{
   @Input() service: SelectLocalizedStringContract
 
   public localizedStrings: LocalizedStringCollection = {};
@@ -64,7 +63,7 @@ export class SelectLocalizedStringComponent extends BaseComponent implements Aft
   private readonly getLocalizedStrings$ = new Subject<void>();
 
   /** Lifecycle hook */
-  public ngAfterViewInit(): void {
+  public ngOnInit(): void {
     this.getLocalizedStrings$
     .pipe(
       tap(() => (this.getMonitor = this.getMonitor.repeat())),
@@ -93,28 +92,18 @@ export class SelectLocalizedStringComponent extends BaseComponent implements Aft
           id: x,
           text: record.message,
         }
-      })
+      });
+      this.formControls.selectedLocalizedStringId.updateValueAndValidity();
     });
 
     this.getLocalizedStrings$.next();
+
+    this.formControls.selectedLocalizedStringId.valueChanges.subscribe(() => {
+      const chipList = this.localizedStrings[this.formControls.selectedLocalizedStringId.value];
+      this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
+    })
   }
 
-  /** Handles selection change event for localized string dropdown */
-  public onLocalizedStringSelect(event: MatSelectChange){
-    const oldValue = this.formControls.selectedLocalizedStringId.value;
-    console.log('select-localized-string::onLocalizedStringSelect')
-    //console.log(event);
-    this.formControls.selectedLocalizedStringId.setValue(event.value);
-    console.log(this.formControls.selectedLocalizedStringId.value)
-    
-    if(oldValue !== this.formControls.selectedLocalizedStringId.value)
-    {
-      this.selectedLanguageLocalizedString = null
-    }
-    const chipList = this.localizedStrings[this.formControls.selectedLocalizedStringId.value];
-
-    this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
-  }
 
   /** Handles selection change event for language chip list */
   public onLanguageChipSelect(change: MatChipListChange): void {
@@ -128,15 +117,21 @@ export class SelectLocalizedStringComponent extends BaseComponent implements Aft
 
   /** Form control hook. */
   public writeValue(data: SelectLocalizedStringFormValue): void {
-    console.log('select-localized-string::writeValue')
-    console.log(data)
     this.formControls.selectedLocalizedStringId.patchValue(data, { emitEvent: false });
     this.selectedLocalizedStringCollection = orderBy(this.localizedStrings[this.formControls.selectedLocalizedStringId.value], x => !x.translated)    
   }
 
   /** Form control hook. */
   public registerOnChange(fn: (value: SelectLocalizedStringFormValue) => void): void {
-    this.formGroup.valueChanges.subscribe(fn);
+    this.formGroup.valueChanges.pipe(
+      map(x => x.selectedLocalizedStringId),
+      startWith(null),
+      pairwise(),
+      filter(([prev, cur]) => {
+        return prev !== cur;
+      }),
+      map(([_prev, cur]) => cur),
+    ).subscribe(fn);
   }
 
   /** Form control hook. */

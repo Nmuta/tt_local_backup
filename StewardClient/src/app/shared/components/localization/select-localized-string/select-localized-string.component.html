@@ -1,6 +1,6 @@
 <mat-form-field class="localized-message-selector" [formGroup]="formGroup">
   <mat-label>Select Localized Message</mat-label>
-  <mat-select (selectionChange)="onLocalizedStringSelect($event)" [formControl]="formControls.selectedLocalizedStringId">
+  <mat-select [formControl]="formControls.selectedLocalizedStringId">
     <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails.id">
       {{ stringDetails.text | deppoh }}
     </mat-option>
@@ -19,6 +19,7 @@
       *ngFor="let stringInfo of selectedLocalizedStringCollection"
       [value]="stringInfo"
       [disabled]="!stringInfo.translated"
+      [selectable]="stringInfo.translated"
       [matTooltip]="stringInfo.translated ? 'Select to see preview' : 'This language is not yet translated'">
         {{stringInfo.languageCode}}
     </mat-chip>
