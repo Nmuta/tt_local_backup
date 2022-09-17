@@ -21,7 +21,7 @@ namespace StewardGitClient
         /// <exception cref="ProjectNotFoundException"></exception>
         public static async Task<TeamProjectReference> FindProjectByNameOrGuid(AzureContext context, string projectId)
         {
-            if (context.TryGetValue(projectId, out TeamProjectReference project))
+            if (context.ConnectionSettings.TryGetValue(projectId, out TeamProjectReference project))
             {
                 return project;
             }
@@ -35,7 +35,7 @@ namespace StewardGitClient
 
             if (project != null)
             {
-                context.SetValue(projectId, project);
+                context.ConnectionSettings.SetValue(projectId, project);
             }
             else
             {

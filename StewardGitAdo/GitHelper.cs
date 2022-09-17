@@ -12,7 +12,7 @@ namespace StewardGitClient
 {
     internal class GitHelper
     {
-        public static async Task<GitItem> GetItemAsync(AzureContext context, string path, string repoId, string projectId, Action<bool> callback = null)
+        public static async Task<GitItem> GetItemAsync(AzureContext context, string path, string repoId, string projectId, Action<bool> OnSuccess = null)
         {
             VssConnection connection = context.Connection;
             GitHttpClient gitClient = connection.GetClient<GitHttpClient>();
@@ -29,33 +29,33 @@ namespace StewardGitClient
 
             Console.WriteLine("File {0} at commit {1} is of length {2}", filename, item.CommitId, item.Content.Length);
 
-            callback?.Invoke(item != null);
+            OnSuccess?.Invoke(item != null);
 
             return item;
         }
 
-        public static async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(AzureContext context, string projectId, Action<bool> callback = null)
+        public static async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(AzureContext context, string projectId, Action<bool> OnSuccess = null)
         {
             GitHttpClient gitHttpClient = context.Connection.GetClient<GitHttpClient>();
 
             var repos = await gitHttpClient.GetRepositoriesAsync(projectId);
 
-            callback?.Invoke(repos != null && repos.Any());
+            OnSuccess?.Invoke(repos != null && repos.Any());
 
             return repos;
         }
 
-        public static async Task<GitRepository> GetRepositoryAsync(AzureContext context, string repoId, string projectId = null, Action<bool> callback = null)
+        public static async Task<GitRepository> GetRepositoryAsync(AzureContext context, string repoId, string projectId = null, Action<bool> OnSuccess = null)
         {
             var repo = await InternalGetRepositoryAsync(context, repoId, projectId);
-            callback?.Invoke(repo != null);
+            OnSuccess?.Invoke(repo != null);
 
             return repo;
         }
 
         private static async Task<GitRepository> InternalGetRepositoryAsync(AzureContext context, string repoId, string projectId)
         {
-            if (context.TryGetValue(repoId, out GitRepository repo))
+            if (context.ConnectionSettings.TryGetValue(repoId, out GitRepository repo))
             {
                 return repo;
             }
@@ -71,7 +71,7 @@ namespace StewardGitClient
 
             if (repo != null)
             {
-                context.SetValue(repoId, repo);
+                context.ConnectionSettings.SetValue(repoId, repo);
             }
             else
             {

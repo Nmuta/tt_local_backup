@@ -10,37 +10,6 @@ using Microsoft.VisualStudio.Services.WebApi;
 
 namespace StewardGitClient
 {
-    public class ConnectionSettings
-    {
-        public Guid ProjectId { get; private set; }
-        public Guid RepoId { get; private set; }
-
-        internal static ConnectionSettings Default
-            => new(Guid.Empty, Guid.Empty);
-
-        public ConnectionSettings(Guid projectId, Guid repoId)
-        {
-            // TODO sanity checks
-            ProjectId = projectId;
-            RepoId = repoId;
-        }
-
-        internal void SetIfUnset(string projectId = null, string repoId = null)
-        {
-            if (ProjectId == Guid.Empty 
-                && Guid.TryParseExact(projectId, "D", out Guid result1))
-            {
-                ProjectId = result1;
-            }
-
-            if (RepoId == Guid.Empty 
-                && Guid.TryParseExact(repoId, "D", out Guid result2))
-            {
-                RepoId = result2;
-            }
-        }
-    }
-
     public class AzureContext : IDisposable
     {
         private VssConnection _connection;
@@ -50,9 +19,6 @@ namespace StewardGitClient
         protected VssCredentials Credentials { get; private set; }
 
         internal ConnectionSettings ConnectionSettings { get; }
-
-        protected Dictionary<string, object> Properties { get; set; } 
-            = new Dictionary<string, object>();
 
         public VssConnection Connection
         {
@@ -84,26 +50,6 @@ namespace StewardGitClient
 
             // test connection, blocking
             Connection.ConnectAsync().SyncResult();
-        }
-
-        public bool TryGetValue<T>(string key, out T value)
-        {
-            return Properties.TryGetValue<T>(key, out value);
-        }
-
-        public T GetValue<T>(string key)
-        {
-            return (T)Properties[key];
-        }
-
-        public void SetValue<T>(string key, T value)
-        {
-            Properties[key] = value;
-        }
-
-        public void RemoveValue(string name)
-        {
-            Properties.Remove(name);
         }
 
         public void Dispose()
