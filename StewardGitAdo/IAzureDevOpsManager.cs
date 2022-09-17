@@ -20,7 +20,7 @@ namespace StewardGitClient
 
         public Task<IEnumerable<GitRepository>> GetRepositoriesAsync(string projectId);
 
-        public Task<GitItem> GetItemAsync(AzureContext context, string path, string repoId, string projectId);
+        public Task<GitItem> GetItemAsync(string path, string repoId, string projectId);
 
         public Guid GetCurrentUserId();
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,16 +15,14 @@ namespace StewardGitClient
     {
         public AzureContext AzureContext { get; }
 
-        public AzureDevOpsManager(Uri organizationUrl, VssCredentials credentials)
+        public AzureDevOpsManager(Uri organizationUrl, VssCredentials credentials, ConnectionSettings connectionSettings)
         {
-            AzureContext = new AzureContext(organizationUrl, credentials);
+            AzureContext = new AzureContext(organizationUrl, credentials, connectionSettings);
         }
 
         public async Task<TeamProjectReference> FindProjectByNameOrGuidAsync(string projectId)
         {
-            await AzureContext.Connection.ConnectAsync();
-
-            return await ClientHelper.FindProjectByNameOrGuid(AzureContext, projectId);
+            return await ClientHelper.FindProjectByNameOrGuid(AzureContext, projectId).ConfigureAwait(false);
         }
 
         public Guid GetCurrentUserId()
@@ -40,21 +39,35 @@ namespace StewardGitClient
         {
             await AzureContext.Connection.ConnectAsync();
 
-            return await GitHelper.GetRepositoryAsync(AzureContext, repoId, projectId);
+            return await GitHelper.GetRepositoryAsync(AzureContext, repoId, projectId, (success) =>
+            {
+                if (success) AzureContext.ConnectionSettings?.SetIfUnset(projectId, repoId);
+
+            }).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(string projectId)
         {
             await AzureContext.Connection.ConnectAsync();
 
-            return await GitHelper.GetRepositoriesAsync(AzureContext, projectId);
+            return await GitHelper.GetRepositoriesAsync(AzureContext, projectId, (success) =>
+            {
+                if (success) AzureContext.ConnectionSettings?.SetIfUnset(projectId);
+
+            }).ConfigureAwait(false);
         }
 
-        public async Task<GitItem> GetItemAsync(AzureContext context, string path, string repoId, string projectId)
+        public async Task<GitItem> GetItemAsync(string path, string repoId, string projectId)
         {
+            // Ensure connection because Connection.Disconnect()
+            // could have been called during disposal.
             await AzureContext.Connection.ConnectAsync();
 
-            return await GitHelper.GetItemAsync(AzureContext, path, repoId, projectId);
+            return await GitHelper.GetItemAsync(AzureContext, path, repoId, projectId, (success) =>
+            {
+                if (success) AzureContext.ConnectionSettings?.SetIfUnset(projectId, repoId);
+
+            }).ConfigureAwait(false);
         }
     }
 }
