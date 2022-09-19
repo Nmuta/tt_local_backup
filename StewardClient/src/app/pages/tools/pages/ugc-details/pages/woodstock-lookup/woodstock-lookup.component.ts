@@ -10,6 +10,7 @@ import { PermissionServiceTool, PermissionsService } from '@services/permissions
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
+import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
 import { WoodstockFeatureUgcModalComponent } from '@views/feature-ugc-modal/woodstock/woodstock-feature-ugc-modal.component';
 import { chain, cloneDeep, first, keys } from 'lodash';
 import {
@@ -161,5 +162,11 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         this.canFeatureUgc = false;
         this.canHideUgc = false;
       });
+  }
+
+  /** Updates the geoflags contract after submit. */
+  public updateGeoFlagsModel(geoFlags: ToggleListOptions): void {
+    this.geoFlagsToggleListEzContract = cloneDeep(this.geoFlagsToggleListEzContract);
+    this.geoFlagsToggleListEzContract.initialModel = geoFlags;
   }
 }

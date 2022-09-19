@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MonitorActionModule } from '../monitor-action/monitor-action.module';
 import { StateManagersModule } from '../state-managers/state-managers.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { VerifyCheckboxModule } from '../verify/verify-checkbox.module';
 
 
 
@@ -33,6 +34,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MonitorActionModule,
     StateManagersModule,
     MatTooltipModule,
+    VerifyCheckboxModule,
   ],
   exports: [
     ToggleListComponent,

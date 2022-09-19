@@ -3,15 +3,20 @@
     <mat-card-title>{{contract.title}}</mat-card-title>
     <mat-card-subtitle>
       <ng-container *ngIf="!!contract.error"><mat-icon color="warn">warn</mat-icon>{{contract.error}}</ng-container>
-      <ng-container *ngIf="!contract.error">Toggle and submit flags</ng-container>
+      <ng-container *ngIf="!contract.error">Toggle and submit flags {{ formControl.dirty }} {{ formControl.pristine }}</ng-container>
     </mat-card-subtitle>
+    <ng-content select="help-popover-icon"></ng-content>
     <div class="action-wrapper">
       <button
         mat-mini-fab
         color="warn"
         class="reset-button"
         (click)="resetToInitial()"
-        [disabled]="!(formControl.dirty && !submitMonitor.isActive)"
+        clickStop
+        stateManager
+        [monitor]="submitMonitor"
+        monitorDisable
+        [disabled]="!formControl.dirty"
         matTooltip="Clear Changes"
       >
         <mat-icon>undo</mat-icon>
@@ -28,7 +33,9 @@
         monitorDisable
         monitorWarn
         monitorWarnSnackbar
-        [disabled]="!verifyDelete.checked || !!contract.error"
+        monitorCompleteSnackbar
+        [verifyWith]="verifyDelete"
+        [disabled]="!!contract.error"
       >
         <mat-icon>done</mat-icon>
       </button>

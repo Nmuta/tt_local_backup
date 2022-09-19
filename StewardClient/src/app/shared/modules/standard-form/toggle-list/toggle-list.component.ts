@@ -45,7 +45,7 @@ export class ToggleListComponent implements OnChanges, ControlValueAccessor, Val
 
     this.current = clone(this.initial);
     this.formControls = chain(initialKeys).map(k => ([k, new FormControl(this.initial[k])])).fromPairs().value();
-    this.formGroup = new FormGroup(this.formControls)
+    this.formGroup = new FormGroup(this.formControls);
 
     this.formGroup.valueChanges.subscribe(_ => this.changeFn(this.formGroup.value));
   }

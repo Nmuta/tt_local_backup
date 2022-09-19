@@ -88,7 +88,17 @@
         ></model-dump-number-table>
       </mat-card>
       
-      <toggle-list-ez [contract]="geoFlagsToggleListEzContract"></toggle-list-ez>
+      <toggle-list-ez [contract]="geoFlagsToggleListEzContract" (afterSubmitted)="updateGeoFlagsModel($event)">
+        <help-popover-icon cardTitle="Geo Flags" confluenceName="Geo Flags Card">
+          <h3>This data is cached</h3>
+          <p>The flags displayed in this card are the same as the ones that the client receives.</p>
+          <p>
+            This means they are on a rolling 5 minute cache per-machine.
+            The flags displayed here will not update until the UGC is not viewed for around 5 minutes,
+            and so the checkboxes will not update immediately.
+          </p>
+        </help-popover-icon>
+      </toggle-list-ez>
     </div>
 
     <div class="images">
@@ -98,5 +108,5 @@
 </ng-container>
 
 <ng-template #noItem>
-  <p>No Item Found.</p>
+  <p class="padded">No Item Found.</p>
 </ng-template>

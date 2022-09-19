@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
@@ -37,8 +37,8 @@ export class ToggleListEzComponent extends BaseComponent implements OnChanges {
 
   /** Resets the form control. */
   public resetToInitial(): void {
-    this.formControl = new FormControl(this.contract.initialModel);
-    this.formControl.markAsUntouched();
+    this.formControl.setValue(this.contract.initialModel);
+    this.formControl.reset();
   }
 
   /** Triggers submit */
