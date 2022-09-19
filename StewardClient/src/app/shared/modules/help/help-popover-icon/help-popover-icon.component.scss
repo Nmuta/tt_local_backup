@@ -14,6 +14,16 @@ mat-card-content {
   overflow: hidden;
 }
 
+// Default help popover icon size
+$help-popover-icon-size: 36px;
+::ng-deep .mat-button-wrapper > help-popover-icon {
+  position: absolute;
+  overflow: hidden;
+
+  top: -#{$help-popover-icon-size / 2};
+  right: -#{$help-popover-icon-size / 2};
+}
+
 ::ng-deep .mat-badge-icon .mat-badge-content {
   font-family: 'Material Icons';
   background-color: transparent;

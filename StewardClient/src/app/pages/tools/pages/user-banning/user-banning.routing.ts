@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserRole } from '@models/enums';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
-import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
 import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
@@ -29,10 +27,7 @@ const routes: Routes = [
       },
       {
         path: 'steelhead',
-        canActivate: [
-          TitleMemorySetGuard,
-          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
-        ],
+        canActivate: [TitleMemorySetGuard],
         component: SteelheadBanningComponent,
         pathMatch: 'full',
       },

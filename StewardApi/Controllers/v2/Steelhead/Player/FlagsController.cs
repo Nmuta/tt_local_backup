@@ -23,12 +23,20 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
-    ///     Test controller for testing Steelhead LSP APIs.
+    ///     Steelhead user flags controller
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/flags")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Player, Topic.Flags)]
     public class FlagsController : V2SteelheadControllerBase
@@ -83,6 +91,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Sets flags for given steelhead user.
         /// </summary>
         [HttpPut]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]

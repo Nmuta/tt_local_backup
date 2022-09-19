@@ -35,7 +35,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     [Route("api/v{version:apiVersion}/title/steelhead/players/messages")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Players, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase
@@ -63,10 +66,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         ///     Sends players a message.
         /// </summary>
         [HttpPost]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]

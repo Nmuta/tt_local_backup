@@ -9,7 +9,6 @@
     >General
   </a>
   <a
-    *ngIf="!isProduction"
     [class.mat-button-disabled]="!identity?.extra?.hasSteelhead"
     [matTooltip]="steelheadTooltip"
     [routerLink]="steelheadRouterLink"

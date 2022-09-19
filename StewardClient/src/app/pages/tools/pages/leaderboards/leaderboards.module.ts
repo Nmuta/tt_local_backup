@@ -51,6 +51,7 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
 import { PlayerSelectionModule } from '@views/player-selection/player-selection.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
+import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -116,6 +117,7 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     HelpModule,
     PlayerSelectionModule,
     MatMenuModule,
+    StandardFlagModule,
   ],
   exports: [],
 })

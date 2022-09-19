@@ -162,10 +162,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var backstagePassDelta = backstagePasses != default(MasterInventoryItem)
                     ? backstagePasses.Quantity
                     : 0;
+                var hasExpiration = gift.ExpireTimeSpanInDays > 0;
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.woodstockService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId, endpoint)
+                    await this.woodstockService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId, hasExpiration, gift.ExpireTimeSpanInDays, endpoint)
                         .ConfigureAwait(false);
                 }
 
@@ -242,6 +243,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
                 this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
+                var hasExpiration = gift.ExpireTimeSpanInDays > 0;
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
@@ -249,6 +251,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         groupId,
                         inventoryItemType,
                         itemId,
+                        hasExpiration,
+                        gift.ExpireTimeSpanInDays,
                         endpoint).ConfigureAwait(false);
                 }
 
@@ -271,14 +275,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc/>
-        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(GroupGift groupGift, UgcItem livery, string requesterObjectId, string endpoint)
+        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(ExpirableGroupGift groupGift, UgcItem livery, string requesterObjectId, string endpoint)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             // TODO: Log gift to gift history
             var xuids = groupGift.Xuids.ToArray();
-            var result = await this.woodstockService.SendCarLiveryAsync(xuids, livery.Id, endpoint).ConfigureAwait(false);
+            var hasExpiration = groupGift.ExpireTimeSpanInDays > 0;
+            var result = await this.woodstockService.SendCarLiveryAsync(xuids, livery.Id, hasExpiration, groupGift.ExpireTimeSpanInDays, endpoint).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -324,7 +329,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> SendCarLiveryAsync(Gift gift, int groupId, UgcItem livery, string requesterObjectId, string endpoint)
+        public async Task<GiftResponse<int>> SendCarLiveryAsync(ExpirableGift gift, int groupId, UgcItem livery, string requesterObjectId, string endpoint)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -338,10 +343,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             };
 
             Guid? notificationId = null;
+            var hasExpiration = gift.ExpireTimeSpanInDays > 0;
             try
             {
                 // TODO: Log gift to gift history
-                var response = await this.woodstockService.SendCarLiveryAsync(groupId, livery.Id, endpoint).ConfigureAwait(false);
+                var response = await this.woodstockService.SendCarLiveryAsync(groupId, livery.Id, hasExpiration, gift.ExpireTimeSpanInDays, endpoint).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)

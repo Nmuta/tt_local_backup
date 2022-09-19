@@ -48,28 +48,93 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
 
         private readonly IMapper mapper;
         private readonly IWoodstockPlayerInventoryProvider playerInventoryProvider;
+        private readonly IWoodstockItemsProvider itemsProvider;
+        private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
+        private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
+        private readonly IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GiftController"/> class.
         /// </summary>
-        public GiftController(IMapper mapper, IWoodstockPlayerInventoryProvider playerInventoryProvider)
+        public GiftController(
+            IMapper mapper,
+            IWoodstockPlayerInventoryProvider playerInventoryProvider,
+            IWoodstockItemsProvider itemsProvider,
+            IRequestValidator<WoodstockGift> giftRequestValidator,
+            IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
+            IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
+            itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
+            giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
+            masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
+            woodstockPlayerInventoryProvider.ShouldNotBeNull(nameof(woodstockPlayerInventoryProvider));
 
             this.mapper = mapper;
             this.playerInventoryProvider = playerInventoryProvider;
+            this.itemsProvider = itemsProvider;
+            this.giftRequestValidator = giftRequestValidator;
+            this.masterInventoryRequestValidator = masterInventoryRequestValidator;
+            this.woodstockPlayerInventoryProvider = woodstockPlayerInventoryProvider;
+        }
+
+        /// <summary>
+        ///     Gifts items to a user group.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [HttpPost]
+        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
+        public async Task<IActionResult> GiftItemsToUserGroup(int groupId, [FromBody] WoodstockGift gift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            gift.ShouldNotBeNull(nameof(gift));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var endpoint = this.WoodstockEndpoint.Value;
+            this.giftRequestValidator.Validate(gift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
+
+                throw new InvalidArgumentsStewardException(result);
+            }
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
+            }
+
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.woodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(
+                groupId,
+                gift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
+            return this.Ok(response);
         }
 
         /// <summary>
         ///     Gifts liveries to user group.
         /// </summary>
         [HttpPost("livery")]
-        [SwaggerResponse(202, type: typeof(GiftResponse<int>))]
+        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        public async Task<IActionResult> GiftLiveryToUserGroup(int groupId, [FromBody] BulkLiveryGift<Gift> gift)
+        public async Task<IActionResult> GiftLiveryToUserGroup(int groupId, [FromBody] BulkLiveryGift<ExpirableGift> gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -125,6 +190,51 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
 
             var mappedLivery = this.mapper.SafeMap<UgcLiveryItem>(livery.result);
             return mappedLivery;
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        private async Task<string> VerifyGiftAgainstMasterInventoryAsync(WoodstockMasterInventory gift)
+        {
+            var masterInventoryItem = await this.itemsProvider.GetMasterInventoryAsync().ConfigureAwait(true);
+            var error = string.Empty;
+
+            foreach (var car in gift.Cars)
+            {
+                var validItem = masterInventoryItem.Cars.Any(data => data.Id == car.Id);
+                error += validItem
+                    ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var carHorn in gift.CarHorns)
+            {
+                var validItem = masterInventoryItem.CarHorns.Any(data => data.Id == carHorn.Id);
+                error += validItem
+                    ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var vanityItem in gift.VanityItems)
+            {
+                var validItem = masterInventoryItem.VanityItems.Any(data => data.Id == vanityItem.Id);
+                error += validItem
+                    ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var emote in gift.Emotes)
+            {
+                var validItem = masterInventoryItem.Emotes.Any(data => data.Id == emote.Id);
+                error += validItem ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var quickChatLine in gift.QuickChatLines)
+            {
+                var validItem = masterInventoryItem.QuickChatLines.Any(data => data.Id == quickChatLine.Id);
+                error += validItem
+                    ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            return error;
         }
     }
 }

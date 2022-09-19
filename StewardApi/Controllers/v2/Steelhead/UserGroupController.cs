@@ -31,7 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/usergroup")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Topic.LspGroups, Target.Details, Dev.ReviseTags)]
     public class UserGroupController : V2SteelheadControllerBase
@@ -125,6 +133,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Create user group.
         /// </summary>
         [HttpPost("{userGroupName}")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager,
+            UserRole.MediaTeam,
+            UserRole.MotorsportDesigner)]
         [SwaggerResponse(200, type: typeof(LspGroup))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create)]
@@ -153,6 +166,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Add users to a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
         /// </summary>
         [HttpPost("{userGroupId}/add")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager,
+            UserRole.MediaTeam,
+            UserRole.MotorsportDesigner)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
@@ -180,6 +198,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Remove users from a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
         /// </summary>
         [HttpPost("{userGroupId}/remove")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager,
+            UserRole.MediaTeam,
+            UserRole.MotorsportDesigner)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
@@ -207,6 +230,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Remove every users from a user group.
         /// </summary>
         [HttpPost("{userGroupId}/removeAllUsers")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]

@@ -34,7 +34,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     [Route("api/v{version:apiVersion}/title/steelhead/group/{groupId}/gift")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.LspGroup, Topic.Gifting)]
     public class GiftController : V2SteelheadControllerBase

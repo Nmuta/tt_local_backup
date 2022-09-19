@@ -13,6 +13,21 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Implemented localized message creation and sending',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '61b0d6c8-269e-49e3-b208-b4bcbfe746cf',
+      shortText: 'Display and filter assists on leaderboard scores',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '4070e253-05fc-4758-a39a-37521e5fb103',
+      shortText: 'Unlock FM tooling in production',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
+      uuid: '46a55e0d-8b53-4414-b65c-b16ba44bf3cd',
+      shortText: 'Revert private UGC quick link button',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: 'feb2c9f8-0bf4-486a-9c9a-e29d5a070da0',
       shortText: 'Unlock Content Creator user flag',

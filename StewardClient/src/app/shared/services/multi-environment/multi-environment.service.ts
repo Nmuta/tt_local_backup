@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment';
 import { GameTitle } from '@models/enums';
 import {
   IdentityQueryBeta,
@@ -227,15 +226,12 @@ export class MultiEnvironmentService {
         LspDefaultEndpoints.woodstock,
       );
 
-      // TODO: Remove once steelhead is available for production
-      if (!environment.production) {
-        makeQueryAndPopulate(
-          GameTitle.FM8,
-          this.steelhead.getPlayerIdentities$.bind(this.steelhead),
-          userSettings.steelheadEndpointKey,
-          LspDefaultEndpoints.steelhead,
-        );
-      }
+      makeQueryAndPopulate(
+        GameTitle.FM8,
+        this.steelhead.getPlayerIdentities$.bind(this.steelhead),
+        userSettings.steelheadEndpointKey,
+        LspDefaultEndpoints.steelhead,
+      );
     }
 
     // Leaving as example for any future beta compatible queries

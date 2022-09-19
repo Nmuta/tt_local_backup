@@ -35,7 +35,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/messages")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [Authorize]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Player, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase
@@ -91,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         }
 
         /// <summary>
-        ///     Deletes all the player's notifications.
+        ///     Deletes all player notifications.
         /// </summary>
         [HttpDelete]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
@@ -120,10 +128,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Gets a player notification.
         /// </summary>
         [HttpGet("{messageId}")]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(Notification))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Notification)]

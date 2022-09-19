@@ -242,22 +242,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Sends an item gift.
         /// </summary>
-        Task AdminSendItemGiftAsync(ulong xuid, InventoryItemType itemType, int itemValue, string endpoint);
+        Task AdminSendItemGiftAsync(ulong xuid, InventoryItemType itemType, int itemValue, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///     Sends a group item gift.
         /// </summary>
-        Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, string endpoint);
+        Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///    Sends car livery to a player xuid.
         /// </summary>
-        Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint);
+        Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///    Sends car livery to a user group.
         /// </summary>
-        Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint);
+        Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, bool hasExpiration, uint expireTimeSpanInDays, string endpoint);
 
         /// <summary>
         ///     Gets token balance.

@@ -36,7 +36,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/players")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Target.Players, Target.Details, Dev.ReviseTags)]
     public class PlayersController : V2SteelheadControllerBase
@@ -152,6 +160,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Bans players.
         /// </summary>
         [HttpPost("ban")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
@@ -196,6 +208,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Bans players.
         /// </summary>
         [HttpPost("ban/useBackgroundProcessing")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
