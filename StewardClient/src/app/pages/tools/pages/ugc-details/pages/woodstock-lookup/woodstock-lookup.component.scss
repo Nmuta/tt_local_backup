@@ -20,7 +20,8 @@ model-dump {
   }
 }
 
-mat-card, toggle-list-ez {
+mat-card,
+toggle-list-ez {
   display: block;
   margin: 1em;
   & > *:not(table) {

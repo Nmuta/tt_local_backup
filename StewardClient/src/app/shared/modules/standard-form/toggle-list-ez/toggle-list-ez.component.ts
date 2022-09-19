@@ -5,6 +5,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
 import { ToggleListOptions } from '../toggle-list/toggle-list.component';
 
+/** Contract for using Toggle List EZ. */
 export interface ToggleListEzContract {
   order: string[];
   initialModel: ToggleListOptions;
@@ -13,6 +14,7 @@ export interface ToggleListEzContract {
   error?: string;
 }
 
+/** Component for easier integration with toggle-list form component in common scenarios. */
 @Component({
   selector: 'toggle-list-ez',
   templateUrl: './toggle-list-ez.component.html',

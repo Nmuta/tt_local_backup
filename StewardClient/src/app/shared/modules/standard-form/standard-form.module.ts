@@ -14,13 +14,11 @@ import { StateManagersModule } from '../state-managers/state-managers.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { VerifyCheckboxModule } from '../verify/verify-checkbox.module';
 
-
-
+/**
+ * Module for standardized form components.
+ */
 @NgModule({
-  declarations: [
-    ToggleListComponent,
-    ToggleListEzComponent,
-  ],
+  declarations: [ToggleListComponent, ToggleListEzComponent],
   imports: [
     CommonModule,
     StandardFlagModule,
@@ -36,9 +34,6 @@ import { VerifyCheckboxModule } from '../verify/verify-checkbox.module';
     MatTooltipModule,
     VerifyCheckboxModule,
   ],
-  exports: [
-    ToggleListComponent,
-    ToggleListEzComponent,
-  ]
+  exports: [ToggleListComponent, ToggleListEzComponent],
 })
-export class StandardFormModule { }
+export class StandardFormModule {}

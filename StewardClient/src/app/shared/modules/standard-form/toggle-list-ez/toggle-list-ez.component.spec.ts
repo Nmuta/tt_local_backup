@@ -8,9 +8,8 @@ describe('ToggleListEzComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToggleListEzComponent ]
-    })
-    .compileComponents();
+      declarations: [ToggleListEzComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

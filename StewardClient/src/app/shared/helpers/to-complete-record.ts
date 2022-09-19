@@ -12,6 +12,9 @@ export function toCompleteLookup(allKeys: string[], setKeys: string[]): Record<s
   }
 
   const setKeysLookup = new Set(uniq(setKeys));
-  const record = chain(allKeys).map(k => ([k, setKeysLookup.has(k)])).fromPairs().value();
+  const record = chain(allKeys)
+    .map(k => [k, setKeysLookup.has(k)])
+    .fromPairs()
+    .value();
   return record;
 }

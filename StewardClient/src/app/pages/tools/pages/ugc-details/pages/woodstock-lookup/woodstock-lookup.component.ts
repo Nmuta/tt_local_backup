@@ -104,10 +104,17 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
         if (!!this.ugcItem?.geoFlags) {
           const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);
-          newGeoFlagsContract.initialModel = toCompleteRecord(GEO_FLAGS_ORDER, this.ugcItem.geoFlags ?? []);
+          newGeoFlagsContract.initialModel = toCompleteRecord(
+            GEO_FLAGS_ORDER,
+            this.ugcItem.geoFlags ?? [],
+          );
           newGeoFlagsContract.submitModel$ = model => {
-            const trueKeys =chain(model).toPairs().filter(([_k, v]) => !!v).map(([k, _v]) => k).value();
-            return this.service.setUgcGeoFlag$(this.ugcItem.id, trueKeys)
+            const trueKeys = chain(model)
+              .toPairs()
+              .filter(([_k, v]) => !!v)
+              .map(([k, _v]) => k)
+              .value();
+            return this.service.setUgcGeoFlag$(this.ugcItem.id, trueKeys);
           };
           this.geoFlagsToggleListEzContract = newGeoFlagsContract;
         } else {

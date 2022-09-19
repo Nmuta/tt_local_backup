@@ -1,9 +1,13 @@
 <mat-card>
   <mat-card-title-group>
-    <mat-card-title>{{contract.title}}</mat-card-title>
+    <mat-card-title>{{ contract.title }}</mat-card-title>
     <mat-card-subtitle>
-      <ng-container *ngIf="!!contract.error"><mat-icon color="warn">warn</mat-icon>{{contract.error}}</ng-container>
-      <ng-container *ngIf="!contract.error">Toggle and submit flags {{ formControl.dirty }} {{ formControl.pristine }}</ng-container>
+      <ng-container *ngIf="!!contract.error"
+        ><mat-icon color="warn">warn</mat-icon>{{ contract.error }}</ng-container
+      >
+      <ng-container *ngIf="!contract.error"
+        >Toggle and submit flags {{ formControl.dirty }} {{ formControl.pristine }}</ng-container
+      >
     </mat-card-subtitle>
     <ng-content select="help-popover-icon"></ng-content>
     <div class="action-wrapper">
@@ -43,15 +47,15 @@
         #verifyDelete
         matTooltip="Verify Submit"
         [disabled]="!!contract.error"
-        ></mat-checkbox
-      >
+      ></mat-checkbox>
     </div>
   </mat-card-title-group>
 
-  <toggle-list 
+  <toggle-list
     [disabled]="!!contract.error"
     [formControl]="formControl"
     [order]="contract.order"
-    [initial]="contract.initialModel"></toggle-list>
+    [initial]="contract.initialModel"
+  ></toggle-list>
   <pre>{{ contract.error | json }}</pre>
 </mat-card>

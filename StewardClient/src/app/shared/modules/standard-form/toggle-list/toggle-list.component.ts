@@ -1,5 +1,14 @@
 import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
+} from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { chain, clone, isEqual, keys } from 'lodash';
 
@@ -44,12 +53,14 @@ export class ToggleListComponent implements OnChanges, ControlValueAccessor, Val
     }
 
     this.current = clone(this.initial);
-    this.formControls = chain(initialKeys).map(k => ([k, new FormControl(this.initial[k])])).fromPairs().value();
+    this.formControls = chain(initialKeys)
+      .map(k => [k, new FormControl(this.initial[k])])
+      .fromPairs()
+      .value();
     this.formGroup = new FormGroup(this.formControls);
 
     this.formGroup.valueChanges.subscribe(_ => this.changeFn(this.formGroup.value));
   }
-
 
   /** Form control hook. */
   public writeValue(data: ToggleListOptions): void {

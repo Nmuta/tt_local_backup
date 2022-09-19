@@ -521,10 +521,7 @@ export class WoodstockService {
   }
   /** Sets a UGC item's GeoFlags*/
   public setUgcGeoFlag$(ugcId: string, geoFlags: string[]): Observable<void> {
-    return this.apiService.postRequest$(
-      `${this.basePathV2}/ugc/${ugcId}/geoFlags`,
-      geoFlags
-    );
+    return this.apiService.postRequest$(`${this.basePathV2}/ugc/${ugcId}/geoFlags`, geoFlags);
   }
 
   /** Gets a player's hidden UGC item. */
