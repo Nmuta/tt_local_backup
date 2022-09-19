@@ -12,48 +12,36 @@ namespace StewardGitClient
 {
     internal class GitHelper
     {
-        public static async Task<GitItem> GetItemAsync(AzureContext context, string path, string repoId, string projectId, Action<bool> OnSuccess = null)
+        internal static async Task<GitItem> GetItemAsync(AzureContext context, string path, string repoId, string projectId, GitObjectType gitObjectType)
         {
             VssConnection connection = context.Connection;
             GitHttpClient gitClient = connection.GetClient<GitHttpClient>();
 
-            TeamProjectReference project = await ClientHelper.FindProjectByNameOrGuid(context, projectId);
-            GitRepository repo = await GetRepositoryAsync(context, repoId);
+            TeamProjectReference project = await ClientHelper.GetProjectAsync(context, projectId);
+            GitRepository repo = await GetRepositoryAsync(context, repoId, projectId);
 
             // get a filename we know exists
             List<GitItem> gitItems = await gitClient.GetItemsAsync(repo.Id, scopePath: path, recursionLevel: VersionControlRecursionType.OneLevel);
-            string filename = gitItems.Where(o => o.GitObjectType == GitObjectType.Blob).FirstOrDefault().Path;
+            string filename = gitItems.Where(o => o.GitObjectType == gitObjectType).FirstOrDefault().Path;
 
             // retrieve the contents of the file
             GitItem item = await gitClient.GetItemAsync(repo.Id, filename, includeContent: true);
 
             Console.WriteLine("File {0} at commit {1} is of length {2}", filename, item.CommitId, item.Content.Length);
 
-            OnSuccess?.Invoke(item != null);
-
             return item;
         }
 
-        public static async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(AzureContext context, string projectId, Action<bool> OnSuccess = null)
+        internal static async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(AzureContext context, string projectId)
         {
             GitHttpClient gitHttpClient = context.Connection.GetClient<GitHttpClient>();
 
             var repos = await gitHttpClient.GetRepositoriesAsync(projectId);
 
-            OnSuccess?.Invoke(repos != null && repos.Any());
-
             return repos;
         }
 
-        public static async Task<GitRepository> GetRepositoryAsync(AzureContext context, string repoId, string projectId = null, Action<bool> OnSuccess = null)
-        {
-            var repo = await InternalGetRepositoryAsync(context, repoId, projectId);
-            OnSuccess?.Invoke(repo != null);
-
-            return repo;
-        }
-
-        private static async Task<GitRepository> InternalGetRepositoryAsync(AzureContext context, string repoId, string projectId)
+        internal static async Task<GitRepository> GetRepositoryAsync(AzureContext context, string repoId, string projectId)
         {
             if (context.ConnectionSettings.TryGetValue(repoId, out GitRepository repo))
             {
@@ -75,7 +63,7 @@ namespace StewardGitClient
             }
             else
             {
-                // create a project here?
+                // TODO ret null or create a project here?
                 throw new NoRepositoryFoundException($"No repos found with Id: {repoId}");
             }
 

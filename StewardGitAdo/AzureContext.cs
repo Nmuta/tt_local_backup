@@ -35,6 +35,10 @@ namespace StewardGitClient
             }
         }
 
+        private AzureContext()
+        {
+        }
+
         public AzureContext(Uri organizationUrl, VssCredentials credentials) 
             : this(organizationUrl, credentials, null)
         {
@@ -44,8 +48,8 @@ namespace StewardGitClient
         {
             Url = Check.ForNull(organizationUrl, nameof(organizationUrl));
             Credentials = Check.ForNull(credentials, nameof(credentials));
-            ConnectionSettings = connectionSettings ?? ConnectionSettings.Default;
 
+            ConnectionSettings = connectionSettings ?? ConnectionSettings.Default;
             Connection = new VssConnection(organizationUrl, Credentials);
 
             // test connection, blocking
