@@ -31,7 +31,7 @@ import {
 } from 'rxjs/operators';
 
 /** Outputted form value of the datetime picker. */
-export type SelectLocalizedStringFormValue = string;
+export type SelectLocalizedStringFormValue = LocalizationOptions;
 
 export interface SelectLocalizedStringContract {
   gameTitle: GameTitle;
@@ -39,7 +39,7 @@ export interface SelectLocalizedStringContract {
 }
 
 export interface LocalizationOptions {
-  text: string;
+  englishText: string;
   id: GuidLikeString;
 }
 
@@ -74,7 +74,7 @@ export class SelectLocalizedStringComponent
   public selectedLanguageLocalizedString: LocalizedString = null;
 
   public formControls = {
-    selectedLocalizedStringId: new FormControl('', [Validators.required]),
+    selectedLocalizedStringInfo: new FormControl({}, [Validators.required]),
   };
 
   public formGroup = new FormGroup(this.formControls); //todo: validate not empty
@@ -91,13 +91,13 @@ export class SelectLocalizedStringComponent
         tap(() => (this.getMonitor = this.getMonitor.repeat())),
         switchMap(() => {
           this.localizedStrings = {};
-          this.formControls.selectedLocalizedStringId.setValue(null);
+          this.formControls.selectedLocalizedStringInfo.setValue(null);
           this.selectedLocalizedStringCollection = [];
           return this.service.getLocalizedStrings$().pipe(
             this.getMonitor.monitorSingleFire(),
             catchError(() => {
               this.localizedStrings = {};
-              this.formControls.selectedLocalizedStringId.setValue(null);
+              this.formControls.selectedLocalizedStringInfo.setValue(null);
               this.selectedLocalizedStringCollection = [];
               return EMPTY;
             }),
@@ -114,36 +114,27 @@ export class SelectLocalizedStringComponent
           ); //TODO invariant comparsion
           return {
             id: x,
-            text: record.message,
+            englishText: record.message,
           };
         });
-        this.formControls.selectedLocalizedStringId.updateValueAndValidity();
+        this.formControls.selectedLocalizedStringInfo.updateValueAndValidity();
       });
 
     this.getLocalizedStrings$.next();
 
-    this.formControls.selectedLocalizedStringId.valueChanges.subscribe(() => {
-      const chipList = this.localizedStrings[this.formControls.selectedLocalizedStringId.value];
+    this.formControls.selectedLocalizedStringInfo.valueChanges.subscribe(x => {
+      const chipList = this.localizedStrings[this.formControls.selectedLocalizedStringInfo.value.id];
       this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
-    });
-  }
-
-  /** Handles selection change event for language chip list */
-  public onLanguageChipSelect(change: MatChipListChange): void {
-    if (change.value) {
-      this.selectedLanguageLocalizedString = this.selectedLocalizedStringCollection.find(
-        localizedString => localizedString.languageCode == change.value.languageCode,
-      );
-    } else {
       this.selectedLanguageLocalizedString = null;
-    }
+    });
   }
 
   /** Form control hook. */
   public writeValue(data: SelectLocalizedStringFormValue): void {
-    this.formControls.selectedLocalizedStringId.patchValue(data, { emitEvent: false });
+    console.log(data)
+    this.formControls.selectedLocalizedStringInfo.patchValue(data, { emitEvent: false });
     this.selectedLocalizedStringCollection = orderBy(
-      this.localizedStrings[this.formControls.selectedLocalizedStringId.value],
+      this.localizedStrings[this.formControls.selectedLocalizedStringInfo.value.id],
       x => !x.translated,
     );
   }
@@ -152,7 +143,7 @@ export class SelectLocalizedStringComponent
   public registerOnChange(fn: (value: SelectLocalizedStringFormValue) => void): void {
     this.formGroup.valueChanges
       .pipe(
-        map(x => x.selectedLocalizedStringId),
+        map(x => x.selectedLocalizedStringInfo),
         startWith(null),
         pairwise(),
         filter(([prev, cur]) => {
@@ -180,5 +171,16 @@ export class SelectLocalizedStringComponent
   /** Form control hook. */
   public setDisabledState?(_isDisabled: boolean): void {
     /** empty */
+  }
+
+  /** Handles selection change event for language chip list */
+  public onLanguageChipSelect(change: MatChipListChange): void {
+    if (change.value) {
+      this.selectedLanguageLocalizedString = this.selectedLocalizedStringCollection.find(
+        localizedString => localizedString.languageCode == change.value.languageCode,
+      );
+    } else {
+      this.selectedLanguageLocalizedString = null;
+    }
   }
 }

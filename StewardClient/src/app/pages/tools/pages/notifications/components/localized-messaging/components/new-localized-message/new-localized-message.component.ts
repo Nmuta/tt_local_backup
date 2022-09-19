@@ -37,9 +37,8 @@ export class NewLocalizedMessageComponent implements OnChanges {
   public notificationTypes: string[] = Object.values(NotificationType);
 
   public formControls = {
-    localizedMessageId: new FormControl('', [
+    localizedMessageInfo: new FormControl('', [
       Validators.required,
-      Validators.maxLength(this.messageMaxLength),
     ]),
     dateRange: new FormControl(this.dateRange, [Validators.required]),
     deviceType: new FormControl(DeviceType.All, [Validators.required]),
@@ -51,8 +50,12 @@ export class NewLocalizedMessageComponent implements OnChanges {
   /** Lifecycle hook. */
   public ngOnChanges(): void {
     if (!!this.pendingLocalizedMessage) {
-      this.formControls.localizedMessageId.setValue(
-        this.pendingLocalizedMessage.localizedMessageId,
+      this.formControls.localizedMessageInfo.setValue(
+        {
+          id: this.pendingLocalizedMessage.localizedMessageId,
+          englishText: '',
+        }
+        
       );
       this.formControls.dateRange.setValue({
         start: this.pendingLocalizedMessage.startTimeUtc,
@@ -65,11 +68,18 @@ export class NewLocalizedMessageComponent implements OnChanges {
         this.pendingLocalizedMessage.notificationType ?? NotificationType.CommunityMessage,
       );
     }
+
+    //this.formGroup.valueChanges.subscribe(x => {console.log('new-localized-message::formGroup.valueChanges'); console.log(x);})
+  }
+
+  /** debug form */
+  public debugForm(): void {
+    console.log(this.formGroup)
   }
 
   /** Create message */
   public createMessage(): void {
-    const message = this.formControls.localizedMessageId.value;
+    const message = this.formControls.localizedMessageInfo.value.id;
     const range = this.formControls.dateRange.value as DatetimeRangePickerFormValue;
     const startTime = range?.start;
     const endTime = range?.end;

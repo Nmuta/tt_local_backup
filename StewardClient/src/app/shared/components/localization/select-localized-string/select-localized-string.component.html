@@ -1,8 +1,8 @@
 <mat-form-field class="localized-message-selector" [formGroup]="formGroup">
   <mat-label>Select Localized Message</mat-label>
-  <mat-select [formControl]="formControls.selectedLocalizedStringId">
-    <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails.id">
-      {{ stringDetails.text | deppoh }}
+  <mat-select [formControl]="formControls.selectedLocalizedStringInfo">
+    <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails">
+      {{ stringDetails.englishText | deppoh }}
     </mat-option>
   </mat-select>
 </mat-form-field>
