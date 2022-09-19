@@ -9,7 +9,7 @@ import { ToggleListOptions } from '../toggle-list/toggle-list.component';
 export interface ToggleListEzContract {
   order: string[];
   initialModel: ToggleListOptions;
-  submitModel$(alteredModel: ToggleListOptions):  Observable<void>;
+  submitModel$(alteredModel: ToggleListOptions): Observable<void>;
   title: string;
   error?: string;
 }
@@ -18,7 +18,7 @@ export interface ToggleListEzContract {
 @Component({
   selector: 'toggle-list-ez',
   templateUrl: './toggle-list-ez.component.html',
-  styleUrls: ['./toggle-list-ez.component.scss']
+  styleUrls: ['./toggle-list-ez.component.scss'],
 })
 export class ToggleListEzComponent extends BaseComponent implements OnChanges {
   @Output() public afterSubmitted = new EventEmitter<ToggleListOptions>();
@@ -46,24 +46,24 @@ export class ToggleListEzComponent extends BaseComponent implements OnChanges {
   /** Triggers submit */
   public submit(): void {
     if (this.submitMonitor.isActive) {
-      throw new Error('Double submit')
+      throw new Error('Double submit');
     }
 
     this.submitMonitor = this.submitMonitor.repeat();
-    this.contract.submitModel$(this.formControl.value).pipe(
-      this.submitMonitor.monitorSingleFire(),
-      takeUntil(this.onDestroy$)
-    ).subscribe(() => {
-      this.afterSubmitted.next(this.formControl.value);
-    });
+    this.contract
+      .submitModel$(this.formControl.value)
+      .pipe(this.submitMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.afterSubmitted.next(this.formControl.value);
+      });
   }
 
   private syncContract(contract: ToggleListEzContract) {
     if (this.submitMonitor.isActive) {
-      throw new Error('Cannot sync contract mid-submission')
+      throw new Error('Cannot sync contract mid-submission');
     }
 
-    this.submitMonitor = new ActionMonitor(`Submit ${contract.title}`)
+    this.submitMonitor = new ActionMonitor(`Submit ${contract.title}`);
     this.resetToInitial();
   }
 
@@ -71,18 +71,17 @@ export class ToggleListEzComponent extends BaseComponent implements OnChanges {
     if (!contract?.initialModel) {
       throw new Error('No initial model on contract');
     }
-    
+
     if (!contract?.submitModel$) {
       throw new Error('No submit function on contract');
     }
-    
+
     if (!contract?.order) {
       throw new Error('No order on contract');
     }
-    
+
     if (!contract?.title) {
       throw new Error('No title on contract');
     }
   }
-
 }
