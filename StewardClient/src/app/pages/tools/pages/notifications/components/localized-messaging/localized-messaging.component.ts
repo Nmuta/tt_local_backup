@@ -11,6 +11,7 @@ import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { GameTitle } from '@models/enums';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { LocalizedMessageWithEnglishPreview } from './components/new-localized-message/new-localized-message.component';
 
 /** Service contract for UGC search filters. */
 export interface LocalizedMessagingContract {
@@ -53,7 +54,7 @@ export class LocalizedMessagingComponent extends BaseComponent {
   /** True while waiting for community message verification. */
   public waitingForVerification: boolean = false;
   /** The pending community message. */
-  public newLocalizedMessage: LocalizedMessage;
+  public newLocalizedMessage: LocalizedMessageWithEnglishPreview;
   /** The community message results */
   public sentCommunityMessageResults: JsonTableResult<MessageSendResultViewable>[] = [];
 
@@ -63,7 +64,7 @@ export class LocalizedMessagingComponent extends BaseComponent {
   public loadError: unknown;
 
   /** New community message created. */
-  public setNewLocalizedMessage($event: LocalizedMessage): void {
+  public setNewLocalizedMessage($event: LocalizedMessageWithEnglishPreview): void {
     //console.log('localized-messaging::setNewLocalizedMessage')
     //console.log($event)
     this.newLocalizedMessage = $event;

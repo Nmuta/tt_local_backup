@@ -7,6 +7,8 @@ import { DeviceType, NotificationType } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
+export type LocalizedMessageWithEnglishPreview = LocalizedMessage & {englishText:string}
+
 /** Outputs a new localized message. */
 @Component({
   selector: 'new-localized-message',
@@ -15,11 +17,11 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
 })
 export class NewLocalizedMessageComponent implements OnChanges {
   private static readonly UTC_NOW = DateTime.utc();
-  @Input() public pendingLocalizedMessage: LocalizedMessage;
+  @Input() public pendingLocalizedMessage: LocalizedMessageWithEnglishPreview;
   @Input() public allowDeviceTypeFilter: boolean;
   @Input() public service: SelectLocalizedStringContract;
   @Input() public lockStartTime: boolean = false;
-  @Output() public emitNewLocalizedMessage = new EventEmitter<LocalizedMessage>();
+  @Output() public emitNewLocalizedMessage = new EventEmitter<LocalizedMessageWithEnglishPreview>();
 
   private dateRange: DatetimeRangePickerFormValue = {
     start: NewLocalizedMessageComponent.UTC_NOW.toUTC(),
@@ -37,7 +39,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
   public notificationTypes: string[] = Object.values(NotificationType);
 
   public formControls = {
-    localizedMessageInfo: new FormControl('', [
+    localizedMessageInfo: new FormControl({}, [
       Validators.required,
     ]),
     dateRange: new FormControl(this.dateRange, [Validators.required]),
@@ -53,7 +55,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
       this.formControls.localizedMessageInfo.setValue(
         {
           id: this.pendingLocalizedMessage.localizedMessageId,
-          englishText: '',
+          englishText: this.pendingLocalizedMessage.englishText,
         }
         
       );
@@ -80,6 +82,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
   /** Create message */
   public createMessage(): void {
     const message = this.formControls.localizedMessageInfo.value.id;
+    const englishText = this.formControls.localizedMessageInfo.value.englishText;
     const range = this.formControls.dateRange.value as DatetimeRangePickerFormValue;
     const startTime = range?.start;
     const endTime = range?.end;
@@ -92,6 +95,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
       expireTimeUtc: endTime,
       deviceType: deviceType,
       notificationType: notificationType,
-    } as LocalizedMessage);
+      englishText: englishText,
+    } as LocalizedMessageWithEnglishPreview);
   }
 }
