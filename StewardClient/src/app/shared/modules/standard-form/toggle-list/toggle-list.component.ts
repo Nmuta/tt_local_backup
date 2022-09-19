@@ -75,6 +75,7 @@ export class ToggleListComponent implements OnChanges, ControlValueAccessor, Val
   /** Form control hook. */
   public registerOnChange(fn: (data: ToggleListOptions) => void): void {
     this.changeFn = fn;
+    this.changeFn(this.formGroup.value);
   }
 
   /** Form control hook. */

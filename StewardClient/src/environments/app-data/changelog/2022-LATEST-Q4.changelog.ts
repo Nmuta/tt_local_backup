@@ -14,8 +14,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       longText: [
         'Note that Geo Flags are cached for 5 minutes on a rolling basis. The cache time resets every time the UGC is viewed.',
         "As such, the Geo Flag configuration won't update immediately in the UI, and instead you may need to wait to view it.",
-        'We have a request in with Services to make an uncached, Steward-only version of the data source.'
-      ]
+        'We have a request in with Services to make an uncached, Steward-only version of the data source.',
+      ],
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
