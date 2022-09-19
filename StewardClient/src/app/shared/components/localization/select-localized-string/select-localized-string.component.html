@@ -1,6 +1,9 @@
 <mat-form-field class="localized-message-selector" [formGroup]="formGroup">
   <mat-label>Select Localized Message</mat-label>
-  <mat-select [formControl]="formControls.selectedLocalizedStringInfo" [compareWith]="comparisonFunction">
+  <mat-select
+    [formControl]="formControls.selectedLocalizedStringInfo"
+    [compareWith]="comparisonFunction"
+  >
     <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails">
       {{ stringDetails.englishText | deppoh }}
     </mat-option>

@@ -33,6 +33,6 @@ export class NotificationsComponent implements OnInit {
         codename: GameTitle.FM8,
         route: ['.', GameTitle.FM8.toLowerCase()],
       });
-    };
+    }
   }
 }

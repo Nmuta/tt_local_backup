@@ -7,7 +7,7 @@ import { DeviceType, NotificationType } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
-export type LocalizedMessageWithEnglishPreview = LocalizedMessage & {englishText:string}
+export type LocalizedMessageWithEnglishPreview = LocalizedMessage & { englishText: string };
 
 /** Outputs a new localized message. */
 @Component({
@@ -39,9 +39,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
   public notificationTypes: string[] = Object.values(NotificationType);
 
   public formControls = {
-    localizedMessageInfo: new FormControl({}, [
-      Validators.required,
-    ]),
+    localizedMessageInfo: new FormControl({}, [Validators.required]),
     dateRange: new FormControl(this.dateRange, [Validators.required]),
     deviceType: new FormControl(DeviceType.All, [Validators.required]),
     notificationType: new FormControl(NotificationType.CommunityMessage, [Validators.required]),
@@ -52,13 +50,10 @@ export class NewLocalizedMessageComponent implements OnChanges {
   /** Lifecycle hook. */
   public ngOnChanges(): void {
     if (!!this.pendingLocalizedMessage) {
-      this.formControls.localizedMessageInfo.setValue(
-        {
-          id: this.pendingLocalizedMessage.localizedMessageId,
-          englishText: this.pendingLocalizedMessage.englishText,
-        }
-        
-      );
+      this.formControls.localizedMessageInfo.setValue({
+        id: this.pendingLocalizedMessage.localizedMessageId,
+        englishText: this.pendingLocalizedMessage.englishText,
+      });
       this.formControls.dateRange.setValue({
         start: this.pendingLocalizedMessage.startTimeUtc,
         end: this.pendingLocalizedMessage.expireTimeUtc,
@@ -70,13 +65,6 @@ export class NewLocalizedMessageComponent implements OnChanges {
         this.pendingLocalizedMessage.notificationType ?? NotificationType.CommunityMessage,
       );
     }
-
-    //this.formGroup.valueChanges.subscribe(x => {console.log('new-localized-message::formGroup.valueChanges'); console.log(x);})
-  }
-
-  /** debug form */
-  public debugForm(): void {
-    console.log(this.formGroup)
   }
 
   /** Create message */

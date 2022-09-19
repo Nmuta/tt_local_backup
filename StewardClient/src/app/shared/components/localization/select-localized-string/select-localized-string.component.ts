@@ -122,25 +122,27 @@ export class SelectLocalizedStringComponent
 
     this.getLocalizedStrings$.next();
 
-    this.formControls.selectedLocalizedStringInfo.valueChanges.pipe(
-      filter(() => !!this.formControls.selectedLocalizedStringInfo.value?.id),
-    ).subscribe(() => {
-      const chipList = this.localizedStrings[this.formControls.selectedLocalizedStringInfo.value?.id];
-      this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
-      this.selectedLanguageLocalizedString = null;
-    });
+    this.formControls.selectedLocalizedStringInfo.valueChanges
+      .pipe(
+        filter(() => !!this.formControls.selectedLocalizedStringInfo.value?.id),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        const chipList =
+          this.localizedStrings[this.formControls.selectedLocalizedStringInfo.value?.id];
+        this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
+        this.selectedLanguageLocalizedString = null;
+      });
   }
 
   /** Used by selector to display correct option by ID. */
-  public comparisonFunction(x, y) : boolean {
+  public comparisonFunction(x, y): boolean {
     return x?.id === y?.id;
   }
 
   /** Form control hook. */
   public writeValue(data: SelectLocalizedStringFormValue): void {
-    if(!!data?.id)
-    {
-  
+    if (!!data?.id) {
       this.formControls.selectedLocalizedStringInfo.patchValue(data, { emitEvent: false });
       this.selectedLocalizedStringCollection = orderBy(
         this.localizedStrings[this.formControls.selectedLocalizedStringInfo.value.id],
@@ -160,6 +162,7 @@ export class SelectLocalizedStringComponent
           return prev !== cur;
         }),
         map(([_prev, cur]) => cur),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(fn);
   }
