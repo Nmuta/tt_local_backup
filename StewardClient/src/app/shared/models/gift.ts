@@ -10,14 +10,18 @@ export interface GroupGift extends Gift {
   xuids: BigNumber[];
 }
 
+/** Model for a single player gift that can expire. */
+export interface ExpirableGift extends Gift {
+  expireTimeSpanInDays: BigNumber;
+}
+
+/** Model for a multi-player gift that can expire. */
+export interface ExpirableGroupGift extends ExpirableGift {
+  xuids: BigNumber[];
+}
+
 /** Model for a multi-livery gift. */
 export interface BulkLiveryGift<TTarget> {
   liveryIds: string[];
   target: TTarget;
 }
-
-/** Model for multi-player multi-livery gift. */
-export type BulkPlayerBulkLiveryGift = BulkLiveryGift<GroupGift>;
-
-/** Model for user group multi-livery gift. */
-export type UserGroupBulkLiveryGift = BulkLiveryGift<Gift>;

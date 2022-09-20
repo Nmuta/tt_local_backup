@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
-import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -43,15 +43,15 @@ export class SunriseGiftBasketComponent
 {
   @Select(SunriseGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FH4;
+  public allowSettingExpireDate = false;
 
   constructor(
     private readonly sunriseService: SunriseService,
     private readonly snackBar: MatSnackBar,
     backgroundJobService: BackgroundJobService,
     store: Store,
-    formBuilder: FormBuilder,
   ) {
-    super(backgroundJobService, formBuilder, store);
+    super(backgroundJobService, store);
   }
 
   /** Angular lifecycle hook. */
