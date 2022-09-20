@@ -21,4 +21,7 @@ export interface LocalizedString {
   translated: boolean;
 }
 
-export type LocalizedStringCollection = Record<GuidLikeString, LocalizedString[]>;
+/**
+ * Interface that represents a mapping of guid IDs to localized string info.
+ */
+export type LocalizedStringsRecord = Record<GuidLikeString, LocalizedString[]>;

@@ -101,7 +101,7 @@ export enum NotificationType {
   PatchNotes = 'PatchNotes',
 }
 
-/** Enum for notification types. */
+/** Enum for localization categories. */
 export enum LocalizationCategory {
   Unset = 'Unset',
   MOTD = 'MOTD',

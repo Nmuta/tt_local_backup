@@ -15,7 +15,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
-import { LocalizedString, LocalizedStringCollection } from '@models/localization';
+import { LocalizedString, LocalizedStringsRecord } from '@models/localization';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { orderBy } from 'lodash';
 import { EMPTY, Observable, Subject } from 'rxjs';
@@ -35,7 +35,7 @@ export type SelectLocalizedStringFormValue = LocalizationOptions;
 
 export interface SelectLocalizedStringContract {
   gameTitle: GameTitle;
-  getLocalizedStrings$(): Observable<LocalizedStringCollection>;
+  getLocalizedStrings$(): Observable<LocalizedStringsRecord>;
 }
 
 export interface LocalizationOptions {
@@ -67,7 +67,7 @@ export class SelectLocalizedStringComponent
 {
   @Input() service: SelectLocalizedStringContract;
 
-  public localizedStrings: LocalizedStringCollection = {};
+  public localizedStringLookup: LocalizedStringsRecord = {};
   public localizedStringDetails: LocalizationOptions[] = [];
 
   public selectedLocalizedStringCollection: LocalizedString[] = [];
@@ -90,13 +90,13 @@ export class SelectLocalizedStringComponent
       .pipe(
         tap(() => (this.getMonitor = this.getMonitor.repeat())),
         switchMap(() => {
-          this.localizedStrings = {};
+          this.localizedStringLookup = {};
           this.formControls.selectedLocalizedStringInfo.setValue(null);
           this.selectedLocalizedStringCollection = [];
           return this.service.getLocalizedStrings$().pipe(
             this.getMonitor.monitorSingleFire(),
             catchError(() => {
-              this.localizedStrings = {};
+              this.localizedStringLookup = {};
               this.formControls.selectedLocalizedStringInfo.setValue(null);
               this.selectedLocalizedStringCollection = [];
               return EMPTY;
@@ -106,10 +106,10 @@ export class SelectLocalizedStringComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe(returnedLocalizedStrings => {
-        this.localizedStrings = returnedLocalizedStrings;
-        const keys = Object.keys(this.localizedStrings);
+        this.localizedStringLookup = returnedLocalizedStrings;
+        const keys = Object.keys(this.localizedStringLookup);
         this.localizedStringDetails = keys.map(x => {
-          const record = this.localizedStrings[x].find(
+          const record = this.localizedStringLookup[x].find(
             (record: LocalizedString) => record.languageCode === 'en-US',
           ); //TODO invariant comparsion
           return {
@@ -129,7 +129,7 @@ export class SelectLocalizedStringComponent
       )
       .subscribe(() => {
         const chipList =
-          this.localizedStrings[this.formControls.selectedLocalizedStringInfo.value?.id];
+          this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value?.id];
         this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
         this.selectedLanguageLocalizedString = null;
       });
@@ -145,7 +145,7 @@ export class SelectLocalizedStringComponent
     if (!!data?.id) {
       this.formControls.selectedLocalizedStringInfo.patchValue(data, { emitEvent: false });
       this.selectedLocalizedStringCollection = orderBy(
-        this.localizedStrings[this.formControls.selectedLocalizedStringInfo.value.id],
+        this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value.id],
         x => !x.translated,
       );
     }
