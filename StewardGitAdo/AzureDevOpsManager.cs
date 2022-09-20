@@ -12,13 +12,21 @@ using Microsoft.VisualStudio.Services.Organization.Client;
 
 namespace StewardGitClient
 {
-    internal class AzureDevOpsManager : IAzureDevOpsManager
+    public class AzureDevOpsManager : IAzureDevOpsManager
     {
-        public AzureContext AzureContext { get; }
+        internal AzureContext AzureContext { get; }
 
-        public AzureDevOpsManager(Uri organizationUrl, VssCredentials credentials, ConnectionSettings connectionSettings)
+        internal Stack<GitChange> GitChanges { get; }
+
+        public AzureDevOpsManager(Uri organizationUrl, VssBasicCredential credential, Settings connectionSettings)
         {
-            AzureContext = new AzureContext(organizationUrl, credentials, connectionSettings);
+            AzureContext = new AzureContext(organizationUrl, credential, connectionSettings);
+            GitChanges = new Stack<GitChange>();
+        }
+
+        public int GetNumberOfUncommitChanges()
+        {
+            return GitChanges.Count;
         }
 
         public Guid GetCurrentUserId()
@@ -33,58 +41,36 @@ namespace StewardGitClient
 
         public async Task<Organization> GetOrganizationAsync(string organizationId)
         {
+            await AzureContext.Connection.ConnectAsync();
             return await ClientHelper.GetOrganizationAsync(AzureContext, organizationId).ConfigureAwait(false);
         }
 
-        public async Task<TeamProjectReference> GetProjectAsync(string projectId)
+        public async Task<TeamProjectReference> GetProjectAsync()
         {
-            return await ClientHelper.GetProjectAsync(AzureContext, projectId).ConfigureAwait(false);
+            await AzureContext.Connection.ConnectAsync();
+            return await ClientHelper.GetProjectAsync(AzureContext).ConfigureAwait(false);
         }
 
         public async Task<GitRepository> GetRepositoryAsync()
         {
-            if (AzureContext.ConnectionSettings == ConnectionSettings.Default)
-                throw new InvalidOperationException($"No connection settings provided in {nameof(AzureContext)}");
-            var settings = AzureContext.ConnectionSettings;
-            return await GitHelper.GetRepositoryAsync(AzureContext, settings.RepoId.ToString(), settings.ProjectId.ToString()).ConfigureAwait(false);
-        }
-
-        public async Task<GitRepository> GetRepositoryAsync(string repoId, string projectId = null)
-        {
             await AzureContext.Connection.ConnectAsync();
-            return await GitHelper.GetRepositoryAsync(AzureContext, repoId, projectId).ConfigureAwait(false);
+            return await GitHelper.GetRepositoryAsync(AzureContext).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(Action<bool> OnSuccess = null)
         {
-            if (AzureContext.ConnectionSettings == ConnectionSettings.Default)
-                throw new InvalidOperationException($"No connection settings provided in {nameof(AzureContext)}");
-            var settings = AzureContext.ConnectionSettings;
-            return await GetRepositoriesAsync(settings.ProjectId.ToString(), OnSuccess).ConfigureAwait(false);
-        }
-
-        public async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(string projectId, Action<bool> OnSuccess = null)
-        {
             await AzureContext.Connection.ConnectAsync();
-            var repos = await GitHelper.GetRepositoriesAsync(AzureContext, projectId).ConfigureAwait(false);
+            IEnumerable<GitRepository> repos = await GitHelper.GetRepositoriesAsync(AzureContext).ConfigureAwait(false);
             OnSuccess?.Invoke(repos != null && repos.Any());
             return repos;
         }
 
         public async Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType, Action<bool> OnSuccess = null)
         {
-            if (AzureContext.ConnectionSettings == ConnectionSettings.Default)
-                throw new InvalidOperationException($"No connection settings provided in {nameof(AzureContext)}");
-            var settings = AzureContext.ConnectionSettings;
-            return await GetItemAsync(path, settings.RepoId.ToString(), settings.ProjectId.ToString(), gitObjectType, OnSuccess).ConfigureAwait(false);
-        }
-
-        public async Task<GitItem> GetItemAsync(string path, string repoId, string projectId, GitObjectType gitObjectType, Action<bool> OnSuccess = null)
-        {
             // Ensure connection because AzureContext.Dispose()
             // possibly called, resulting in Connection.Disconnect()
             await AzureContext.Connection.ConnectAsync();
-            GitItem item = await GitHelper.GetItemAsync(AzureContext, path, repoId, projectId, gitObjectType).ConfigureAwait(false);
+            GitItem item = await GitHelper.GetItemAsync(AzureContext, path, gitObjectType).ConfigureAwait(false);
             OnSuccess?.Invoke(item != null);
             return item;
         }

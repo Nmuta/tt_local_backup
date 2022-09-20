@@ -20,31 +20,32 @@ namespace StewardGitClient
         /// <param name="projectId">The project name or id.</param>
         /// <returns></returns>
         /// <exception cref="ProjectNotFoundException"></exception>
-        internal static async Task<TeamProjectReference> GetProjectAsync(AzureContext context, string projectId)
+        internal static async Task<TeamProjectReference> GetProjectAsync(AzureContext context)
         {
-            if (context.ConnectionSettings.TryGetValue(projectId, out TeamProjectReference project))
+            var pId = context.Settings.ProjectId.ToString();
+
+            if (context.Settings.TryGetValue(pId, out TeamProjectReference projectRef))
             {
-                return project;
+                return projectRef;
             }
             else
             {
-                VssConnection connection = context.Connection;
-                ProjectHttpClient projectClient = connection.GetClient<ProjectHttpClient>();
+                ProjectHttpClient projectClient = context.Connection.GetClient<ProjectHttpClient>();
 
-                project = await projectClient.GetProject(projectId).ConfigureAwait(false);
+                projectRef = await projectClient.GetProject(pId).ConfigureAwait(false);
             }
 
-            if (project != null)
+            if (projectRef != null)
             {
-                context.ConnectionSettings.SetValue(projectId, project);
+                context.Settings.SetValue(pId, projectRef);
             }
             else
             {
                 // TODO ret null?
-                throw new ProjectNotFoundException($"No project found with name: {projectId}");
+                throw new ProjectNotFoundException($"No project found with id: {pId}");
             }
 
-            return project;
+            return projectRef;
         }
 
         internal static async Task<Organization> GetOrganizationAsync(AzureContext context, string organizationId)

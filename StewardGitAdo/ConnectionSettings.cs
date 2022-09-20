@@ -9,41 +9,28 @@ using Microsoft.VisualStudio.Services.Common;
 
 namespace StewardGitClient
 {
-    public class ConnectionSettings
+    public class Settings
     {
         private readonly Dictionary<string, object> _cache = new();
 
-        internal static ConnectionSettings Default => new(Guid.Empty, Guid.Empty);
+        internal static Settings Default => new(Guid.Empty, Guid.Empty);
+
+        internal (Guid projectId, Guid repoId) Ids => (ProjectId, RepoId);
 
         public Guid ProjectId { get; set; }
         public Guid RepoId { get; set; }
 
-        private ConnectionSettings() 
+        private Settings() 
         { 
         }
 
-        public ConnectionSettings(Guid projectId, Guid repoId)
+        public Settings(Guid projectId, Guid repoId)
         {
             ProjectId = Guid.TryParseExact(projectId.ToString(), "D", out Guid pid) 
                 ? pid : throw new ArgumentException("Malformed Guid", nameof(projectId));
 
             RepoId = Guid.TryParseExact(repoId.ToString(), "D", out Guid rid)
                 ? rid : throw new ArgumentException("Malformed Guid", nameof(repoId));
-        }
-
-        internal void SetIfUnset(string projectId = "", string repoId = "")
-        {
-            if (GetValue<Guid>(projectId) == Guid.Empty
-                && Guid.TryParseExact(projectId, "D", out Guid result1))
-            {
-                _cache[projectId] = result1;
-            }
-
-            if (GetValue<Guid>(repoId) == Guid.Empty
-                && Guid.TryParseExact(repoId, "D", out Guid result2))
-            {
-                _cache[repoId] = result2;
-            }
         }
 
         public bool TryGetValue<T>(string key, out T value)
@@ -68,20 +55,20 @@ namespace StewardGitClient
 
         public override bool Equals([NotNullWhen(true)] object? obj)
         {
-            return obj is ConnectionSettings other && this.Equals(other);
+            return obj is Settings other && this.Equals(other);
         }
 
-        public bool Equals(ConnectionSettings other)
+        public bool Equals(Settings other)
         {
             return other.ProjectId == ProjectId && other.RepoId == RepoId;
         }
 
-        public static bool operator==(ConnectionSettings lhs, ConnectionSettings rhs)
+        public static bool operator==(Settings lhs, Settings rhs)
         {
             return lhs.Equals(rhs);
         }
 
-        public static bool operator!=(ConnectionSettings lhs, ConnectionSettings rhs)
+        public static bool operator!=(Settings lhs, Settings rhs)
         {
             return !(lhs == rhs);
         }
