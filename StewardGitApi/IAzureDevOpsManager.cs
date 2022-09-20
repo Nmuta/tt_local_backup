@@ -23,15 +23,13 @@ namespace StewardGitApi
 
         Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType, Action<bool> OnSuccess);
 
-        Task<GitPush> CreateNewFilePushAsync(string commitComment, string pathToFile, string newFileContent, Action<bool> OnSuccess);
+        Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy proxyChange, Action<bool> OnSuccess);
 
-        Task<IEnumerable<GitPush>> CommitAndPushAsync(IEnumerable<StewardGitChange> changes, Action<bool> OnSuccess);
+        Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> proxyChanges, Action<bool> OnSuccess);
 
         public Guid GetCurrentUserId();
 
         public string GetCurrentUserDisplayName();
-
-        // create commit / push
 
         // create pr
 

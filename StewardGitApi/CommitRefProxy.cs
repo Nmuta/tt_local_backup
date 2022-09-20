@@ -8,14 +8,14 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 
 namespace StewardGitApi
 {
-    public class StewardGitChange
+    public class CommitRefProxy
     {
         public string CommitComment { get; }
         public string PathToFile { get; }
         public string NewFileContent { get; }
-        public VersionControlChangeType VersionControlChangeType { get; }
+        public VersionControlChangeType VersionControlChangeType { get; internal set; }
 
-        public StewardGitChange(
+        public CommitRefProxy(
             string commitComment, 
             string pathToFile, 
             string newFileContent, 

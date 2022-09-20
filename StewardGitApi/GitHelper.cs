@@ -123,16 +123,7 @@ namespace StewardGitApi
             return repo;
         }
 
-        internal static async Task<IEnumerable<GitPush>> CommitAndPushAsync(AzureContext context, IEnumerable<StewardGitChange> changes)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static async Task<GitPush> CreateNewFilePushAsync(
-            AzureContext context, 
-            string commitComment, 
-            string filePathOnRepo, 
-            string newFileContent)
+        internal static async Task<GitPush> CommitAndPushAsync(AzureContext context, IEnumerable<CommitRefProxy> proxyChanges)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
 
@@ -150,35 +141,13 @@ namespace StewardGitApi
                 OldObjectId = defaultBranch.ObjectId,
             };
 
-            //string newFileName = filePathOnRepo.Split('/').Last();
-
-            GitCommitRef newCommit = new()
-            {
-                Comment = $"{commitComment}",
-                Changes = new GitChange[]
-                {
-                    new GitChange()
-                    {
-                        
-                        ChangeType = VersionControlChangeType.Add,
-                        Item = new GitItem() 
-                        { 
-                            Path = $"/{_autogenBranchNameRoot}-{GetUniqueRefId()}/{filePathOnRepo}" 
-                        },
-                        NewContent = new ItemContent()
-                        {
-                            Content = $"{newFileContent}",
-                            ContentType = ItemContentType.RawText,
-                        },
-                    }
-                },
-            };
-
             // Create the push with the new branch and commit
+            IEnumerable<GitCommitRef> gitChanges = ToGitCommitRef(proxyChanges);
+
             GitPush push = await gitClient.CreatePushAsync(new GitPush()
             {
                 RefUpdates = new GitRefUpdate[] { newBranch },
-                Commits = new GitCommitRef[] { newCommit },
+                Commits = gitChanges, // GitCommitRef[]
             }, repo.Id);
 
             Console.WriteLine("project {0}, repo {1}", project.Name, repo.Name);
@@ -215,6 +184,37 @@ namespace StewardGitApi
         private static string GetUniqueRefId()
         {
             return Guid.NewGuid().ToString("D")[..6];
+        }
+
+        private static IEnumerable<GitCommitRef> ToGitCommitRef(IEnumerable<CommitRefProxy> proxyCommits)
+        {
+            List<GitCommitRef> commitRefs = new();
+
+            foreach (var c in proxyCommits)
+            {
+                commitRefs.Add( new GitCommitRef
+                {
+                    Comment = $"{c.CommitComment}",
+                    Changes = new GitChange[]
+                    {
+                        new GitChange()
+                        {
+                            ChangeType = c.VersionControlChangeType,
+                            Item = new GitItem()
+                            {
+                                Path = $"/{_autogenBranchNameRoot}-{GetUniqueRefId()}/{c.PathToFile}"
+                            },
+                            NewContent = new ItemContent()
+                            {
+                                Content = $"{c.NewFileContent}",
+                                ContentType = ItemContentType.RawText,
+                            },
+                        }
+                    },
+                });
+            }
+
+            return commitRefs;
         }
     }
 }

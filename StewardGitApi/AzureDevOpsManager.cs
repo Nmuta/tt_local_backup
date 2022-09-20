@@ -75,22 +75,23 @@ namespace StewardGitApi
             return item;
         }
 
-        public async Task<GitPush> CreateNewFilePushAsync(string commitComment, string filePathOnRepo, string newFileContent, Action<bool> OnSuccess = null)
+        public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy proxyChange, Action<bool> OnSuccess = null)
         {
-            _ = Check.ForNullEmptyOrWhiteSpace(new string[] { commitComment, filePathOnRepo, newFileContent });
+            _ = Check.ForNull(proxyChange, nameof(proxyChange));
+            proxyChange.VersionControlChangeType = VersionControlChangeType.Add; // override user
             await AzureContext.Connection.ConnectAsync();
-            GitPush pushResult = await GitHelper.CreateNewFilePushAsync(AzureContext, commitComment, filePathOnRepo, newFileContent).ConfigureAwait(false);
+            GitPush pushResult = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { proxyChange }).ConfigureAwait(false);
             OnSuccess?.Invoke(pushResult != null && pushResult.Commits.First().ChangeCounts.Count > 0);
             return pushResult;
         }
 
-        public async Task<IEnumerable<GitPush>> CommitAndPushAsync(IEnumerable<StewardGitChange> changes, Action<bool> OnSuccess)
+        public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> proxyChanges, Action<bool> OnSuccess)
         {
-            _ = Check.ForNullOrEmpty(changes, nameof(changes));
+            _ = Check.ForNullOrEmpty(proxyChanges, nameof(proxyChanges));
             await AzureContext.Connection.ConnectAsync();
-            IEnumerable <GitPush> pushResults = await GitHelper.CommitAndPushAsync(AzureContext, changes).ConfigureAwait(false);
-            OnSuccess?.Invoke(pushResults != null && pushResults.Any());
-            return pushResults;
+            GitPush pushResult = await GitHelper.CommitAndPushAsync(AzureContext, proxyChanges).ConfigureAwait(false);
+            OnSuccess?.Invoke(pushResult != null && pushResult.Commits.First().ChangeCounts.Count > 0);
+            return pushResult;
         }
     }
 }
