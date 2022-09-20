@@ -14,6 +14,15 @@
     Start time selection disabled for this title.
   </div>
 
+  <mat-form-field appearance="fill" class="device-type">
+    <mat-label>Notification Type</mat-label>
+    <mat-select formControlName="notificationType">
+      <mat-option *ngFor="let type of notificationTypes" [value]="type">
+        {{ type | deppoh }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <mat-form-field *ngIf="allowDeviceTypeFilter" appearance="fill" class="device-type">
     <mat-label>Device Type</mat-label>
     <mat-select formControlName="deviceType">

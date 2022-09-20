@@ -34,6 +34,8 @@ export class NewLocalizedMessageComponent implements OnChanges {
 
   public deviceTypes: string[] = values(DeviceType);
 
+  public notificationTypes: string[] = values(NotificationType);
+
   public formControls = {
     localizedMessageInfo: new FormControl({}, [Validators.required]),
     dateRange: new FormControl(this.dateRange, [Validators.required]),

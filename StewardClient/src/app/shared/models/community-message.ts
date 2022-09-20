@@ -1,6 +1,7 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
+import { NotificationType } from './enums';
 import { MSError } from './error.model';
 import { GuidLikeString, Merge } from './extended-types';
 
@@ -28,7 +29,7 @@ export interface GenericLocalizedMessage {
   localizedMessageId: GuidLikeString;
   startTimeUtc: DateTime;
   expireTimeUtc: DateTime;
-  notificationType: string;
+  notificationType: NotificationType;
 }
 
 /** Interface for a bulk community message. */
