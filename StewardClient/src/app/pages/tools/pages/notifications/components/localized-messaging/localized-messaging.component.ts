@@ -63,13 +63,13 @@ export class LocalizedMessagingComponent extends BaseComponent {
   /** The error received while loading. */
   public loadError: unknown;
 
-  /** New community message created. */
+  /** New localized message created. */
   public setNewLocalizedMessage($event: LocalizedMessageWithEnglishPreview): void {
     this.newLocalizedMessage = $event;
     this.waitingForVerification = true;
   }
 
-  /** Submit community message */
+  /** Submit localized message. */
   public submitLocalizedMessage(): void {
     this.isLoading = true;
 
