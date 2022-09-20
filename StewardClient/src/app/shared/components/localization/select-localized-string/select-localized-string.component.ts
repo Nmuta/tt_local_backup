@@ -132,7 +132,7 @@ export class SelectLocalizedStringComponent
         const chipList =
           this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value?.id];
         this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
-        this.displayLanguageChips = true;
+        this.displayLanguageChips = true;   
         this.selectedLanguageLocalizedString = null;
       });
   }
@@ -195,7 +195,7 @@ export class SelectLocalizedStringComponent
       this.selectedLanguageLocalizedString = this.selectedLocalizedStringCollection.find(
         localizedString => localizedString.languageCode == change.value.languageCode,
       );
-      this.displayLanguageChips = true;
+      this.displayLanguageChips = true;   
     } else {
       this.selectedLanguageLocalizedString = null;
     }

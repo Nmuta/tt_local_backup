@@ -129,4 +129,9 @@ export class LocalizedMessagingComponent extends BaseComponent {
       (this.isUsingPlayerIdentities ? this.playerIdentities?.length > 0 : !!this.selectedLspGroup)
     );
   }
+
+  /** Sets the waiting for verification boolean. */
+  public setWaitingForVerification(input: boolean) {
+    this.waitingForVerification = input;
+  }
 }

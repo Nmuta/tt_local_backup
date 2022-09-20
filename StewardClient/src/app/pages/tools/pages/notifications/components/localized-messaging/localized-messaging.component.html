@@ -6,7 +6,7 @@
   <mat-card-content>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
       <ng-container *ngIf="sentCommunityMessageResults?.length <= 0; else messageResultsTemplate">
-        <ng-container *ngIf="!waitingForVerification; else pendingCommunityMessageTemplate">
+        <ng-container *ngIf="!waitingForVerification; else pendingLocalizedMessageTemplate">
           <new-localized-message
             [service]="service?.selectLocalizedStringContract"
             [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
@@ -38,49 +38,51 @@
   </section>
 </ng-template>
 
-<ng-template #pendingCommunityMessageTemplate>
+<ng-template #pendingLocalizedMessageTemplate>
   <mat-card>
-    <h3>
+    <mat-card-header class="sf-header">
+      <mat-card-title>Pending Localized Messaging</mat-card-title>
+      <mat-card-subtitle>{{ service?.gameTitle | humanize }}</mat-card-subtitle>
+      <div class="sf-spacer"></div>
       <button
         mat-mini-fab
         color="accent"
-        (click)="waitingForVerification = false"
+        (click)="setWaitingForVerification(false)"
         matTooltip="Edit community message"
       >
         <mat-icon svgIcon="steward-edit"></mat-icon>
       </button>
-      Pending Community Message
-    </h3>
+    </mat-card-header>
     <section class="new-community-message">
       <table class="info-table">
         <tr>
-          <th>Sent Date:</th>
+          <th>Sent Date</th>
           <td>
             <standard-absolute-time-utc [timeUtc]="newLocalizedMessage.startTimeUtc">
             </standard-absolute-time-utc>
           </td>
         </tr>
         <tr>
-          <th>Expire Date:</th>
+          <th>Expire Date</th>
           <td>
             <standard-absolute-time-utc [timeUtc]="newLocalizedMessage.expireTimeUtc">
             </standard-absolute-time-utc>
           </td>
         </tr>
         <tr *ngIf="!!newLocalizedMessage.deviceType">
-          <th>Device Type:</th>
+          <th>Device Type</th>
           <td>
             {{ newLocalizedMessage.deviceType | deppoh }}
           </td>
         </tr>
         <tr>
-          <th>Localized Message ID:</th>
+          <th>Localized Message ID</th>
           <td>
             {{ newLocalizedMessage.localizedMessageId }}
           </td>
         </tr>
         <tr>
-          <th>English Text Preview:</th>
+          <th>English Text Preview</th>
           <td>
             {{ newLocalizedMessage.englishText }}
           </td>

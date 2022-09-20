@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalizedMessage } from '@models/community-message';
-import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { DateTime } from 'luxon';
 import { DeviceType, NotificationType } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
@@ -31,8 +30,6 @@ export class NewLocalizedMessageComponent implements OnChanges {
   public min = DateTime.utc().minus({ days: 1 });
 
   public readonly messageMaxLength: number = 512;
-
-  public arrowIcon = faArrowCircleRight;
 
   public deviceTypes: string[] = Object.values(DeviceType);
 
