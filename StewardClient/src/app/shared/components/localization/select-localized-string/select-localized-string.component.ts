@@ -111,7 +111,9 @@ export class SelectLocalizedStringComponent
         const keys = Object.keys(this.localizedStringLookup);
         this.localizedStringDetails = keys.map(x => {
           const record = this.localizedStringLookup[x].find(
-            (record: LocalizedString) => record.languageCode.toLowerCase() === SupportedLocalizationLanguageCodes.en_US.toLowerCase(),
+            (record: LocalizedString) =>
+              record.languageCode.toLowerCase() ===
+              SupportedLocalizationLanguageCodes.en_US.toLowerCase(),
           );
           return {
             id: x,
@@ -132,7 +134,7 @@ export class SelectLocalizedStringComponent
         const chipList =
           this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value?.id];
         this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.isTranslated);
-        this.displayLanguageChips = true;   
+        this.displayLanguageChips = true;
         this.selectedLanguageLocalizedString = null;
       });
   }
@@ -195,7 +197,7 @@ export class SelectLocalizedStringComponent
       this.selectedLanguageLocalizedString = this.selectedLocalizedStringCollection.find(
         localizedString => localizedString.languageCode == change.value.languageCode,
       );
-      this.displayLanguageChips = true;   
+      this.displayLanguageChips = true;
     } else {
       this.selectedLanguageLocalizedString = null;
     }

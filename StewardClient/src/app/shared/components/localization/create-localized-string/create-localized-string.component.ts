@@ -55,7 +55,7 @@ export class CreateLocalizedStringComponent extends BaseComponent {
         catchError(() => {
           return EMPTY;
         }),
-        takeUntil(this.onDestroy$)
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
         this.formControls.stringToLocalize.setValue('');
