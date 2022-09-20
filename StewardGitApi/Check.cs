@@ -27,7 +27,7 @@ namespace StewardGitApi
         }
 
         /// <summary>
-        /// Checks the string for null or empty.
+        /// Checks the string for null, empty, or whitespace.
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="parameterName">Name of the parameter.</param>
@@ -40,6 +40,24 @@ namespace StewardGitApi
                 throw new ArgumentNullException(parameterName, message ?? string.Empty);
             }
             return target;
+        }
+
+        /// <summary>
+        /// Checks array of strings for null, empty, or whitespace.
+        /// </summary>
+        /// <param name="targets">The targets.</param>
+        /// <param name="message">The message.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public static bool ForNullEmptyOrWhiteSpace(string[] targets, string message = null)
+        {
+            foreach (string target in targets)
+            {
+                if (string.IsNullOrEmpty(target) || string.IsNullOrWhiteSpace(target))
+                {
+                    throw new ArgumentNullException(target, message ?? string.Empty);
+                }
+            }
+            return true;
         }
 
         /// <summary>

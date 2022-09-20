@@ -23,6 +23,10 @@ namespace StewardGitApi
 
         Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType, Action<bool> OnSuccess);
 
+        Task<GitPush> CreateNewFilePushAsync(string commitComment, string pathToFile, string newFileContent, Action<bool> OnSuccess);
+
+        Task<IEnumerable<GitPush>> CommitAndPushAsync(IEnumerable<StewardGitChange> changes, Action<bool> OnSuccess);
+
         public Guid GetCurrentUserId();
 
         public string GetCurrentUserDisplayName();
@@ -32,6 +36,5 @@ namespace StewardGitApi
         // create pr
 
         // get pr iteration status
-
     }
 }

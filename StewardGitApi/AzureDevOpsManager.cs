@@ -74,5 +74,23 @@ namespace StewardGitApi
             OnSuccess?.Invoke(item != null);
             return item;
         }
+
+        public async Task<GitPush> CreateNewFilePushAsync(string commitComment, string filePathOnRepo, string newFileContent, Action<bool> OnSuccess = null)
+        {
+            _ = Check.ForNullEmptyOrWhiteSpace(new string[] { commitComment, filePathOnRepo, newFileContent });
+            await AzureContext.Connection.ConnectAsync();
+            GitPush pushResult = await GitHelper.CreateNewFilePushAsync(AzureContext, commitComment, filePathOnRepo, newFileContent).ConfigureAwait(false);
+            OnSuccess?.Invoke(pushResult != null && pushResult.Commits.First().ChangeCounts.Count > 0);
+            return pushResult;
+        }
+
+        public async Task<IEnumerable<GitPush>> CommitAndPushAsync(IEnumerable<StewardGitChange> changes, Action<bool> OnSuccess)
+        {
+            _ = Check.ForNullOrEmpty(changes, nameof(changes));
+            await AzureContext.Connection.ConnectAsync();
+            IEnumerable <GitPush> pushResults = await GitHelper.CommitAndPushAsync(AzureContext, changes).ConfigureAwait(false);
+            OnSuccess?.Invoke(pushResults != null && pushResults.Any());
+            return pushResults;
+        }
     }
 }

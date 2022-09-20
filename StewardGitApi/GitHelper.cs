@@ -13,6 +13,9 @@ namespace StewardGitApi
 {
     internal class GitHelper
     {
+        //TODO simplify branch naming scheme, use commitId SHA-1
+        private const string _autogenBranchNameRoot = "steward-api-autogen/vusername-383jgi";
+
         internal static async Task<TeamProjectReference> GetProjectAsync(AzureContext context)
         {
             var pId = context.Settings.ProjectId.ToString();
@@ -56,6 +59,13 @@ namespace StewardGitApi
         internal static string GetCurrentUserDisplayName(AzureContext context)
         {
             return context.Connection.AuthorizedIdentity.ProviderDisplayName;
+        }
+
+        internal static string GetCurrentUserUniqueName(AzureContext context)
+        {
+            // TODO get unique name (v-cactopus)
+            //return context.Connection.AuthorizedIdentity.??
+            throw new NotImplementedException();
         }
 
         internal static async Task<GitItem> GetItemAsync(AzureContext context, string path, GitObjectType gitObjectType)
@@ -113,72 +123,81 @@ namespace StewardGitApi
             return repo;
         }
 
-        public static async Task<GitPush> CreateNewFilePush(AzureContext context, string commitComment, string filePathOnRepo, string content)
+        internal static async Task<IEnumerable<GitPush>> CommitAndPushAsync(AzureContext context, IEnumerable<StewardGitChange> changes)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static async Task<GitPush> CreateNewFilePushAsync(
+            AzureContext context, 
+            string commitComment, 
+            string filePathOnRepo, 
+            string newFileContent)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
-            var (pId, rId) = context.Settings.Ids;
 
-            TeamProjectReference project = await GitHelper.GetProjectAsync(context);
+            TeamProjectReference project = await GetProjectAsync(context);
             GitRepository repo = await GetRepositoryAsync(context);
 
-            // we will create a new push by making a small change to the default branch
-            // first, find the default branch
+            // Find the default branch
             string defaultBranchName = WithoutRefsPrefix(repo.DefaultBranch);
             GitRef defaultBranch = (await gitClient.GetRefsAsync(repo.Id, filter: defaultBranchName)).First();
 
-            // next, craft the branch and commit that we'll push
-            GitRefUpdate newBranch = new GitRefUpdate()
+            // Craft the branch and commit that we'll push
+            GitRefUpdate newBranch = new()
             {
-                Name = $"refs/heads/steward-git-api", // TODO determine pattern later
+                Name = $"refs/heads/{_autogenBranchNameRoot}",
                 OldObjectId = defaultBranch.ObjectId,
             };
-            //string newFileName = $"{filename}"; // get filename from filePathOnRepo
-            GitCommitRef newCommit = new GitCommitRef()
+
+            //string newFileName = filePathOnRepo.Split('/').Last();
+
+            GitCommitRef newCommit = new()
             {
                 Comment = $"{commitComment}",
                 Changes = new GitChange[]
                 {
                     new GitChange()
                     {
+                        
                         ChangeType = VersionControlChangeType.Add,
-                        Item = new GitItem() { Path = $"/steward-git-api/{filePathOnRepo}" }, // this path should match repo, get from filename after push
+                        Item = new GitItem() 
+                        { 
+                            Path = $"/{_autogenBranchNameRoot}-{GetUniqueRefId()}/{filePathOnRepo}" 
+                        },
                         NewContent = new ItemContent()
                         {
-                            Content = $"{content}# Thank you for using VSTS!",
+                            Content = $"{newFileContent}",
                             ContentType = ItemContentType.RawText,
                         },
                     }
                 },
             };
 
-            // create the push with the new branch and commit
-            GitPush push = gitClient.CreatePushAsync(new GitPush()
+            // Create the push with the new branch and commit
+            GitPush push = await gitClient.CreatePushAsync(new GitPush()
             {
                 RefUpdates = new GitRefUpdate[] { newBranch },
                 Commits = new GitCommitRef[] { newCommit },
-            }, repo.Id).Result;
+            }, repo.Id);
 
             Console.WriteLine("project {0}, repo {1}", project.Name, repo.Name);
-            Console.WriteLine("push {0} updated {1} to {2}",
-                push.PushId, push.RefUpdates.First().Name, push.Commits.First().CommitId);
+            Console.WriteLine("push {0} updated {1} to {2}", push.PushId, push.RefUpdates.First().Name, push.Commits.First().CommitId);
 
-            // now clean up after ourselves (and in case logging is on, don't log these calls)
-            //ClientSampleHttpLogger.SetSuppressOutput(this.Context, true);
-
-            // delete the branch
-            GitRefUpdateResult refDeleteResult = gitClient.UpdateRefsAsync(
-                new GitRefUpdate[]
-                {
+            // Now clean up, delete the branch
+            _ = (await gitClient.UpdateRefsAsync(
+               new GitRefUpdate[]
+               {
                     new GitRefUpdate()
                     {
                         OldObjectId = push.RefUpdates.First().NewObjectId,
                         NewObjectId = new string('0', 40),
                         Name = push.RefUpdates.First().Name,
                     }
-                },
-                repositoryId: repo.Id).Result.First();
+               },
+               repositoryId: repo.Id).ConfigureAwait(false)).First();
 
-            // pushes and commits are immutable, so no way to clean them up
+            // Pushes and commits are immutable, so no way to clean them up
             // but the commit will be unreachable after this
 
             return push;
@@ -191,6 +210,11 @@ namespace StewardGitApi
                 throw new ArgumentException("The ref name did not start with 'refs/'", nameof(refName));
             }
             return refName.Remove(0, "refs/".Length);
+        }
+
+        private static string GetUniqueRefId()
+        {
+            return Guid.NewGuid().ToString("D")[..6];
         }
     }
 }
