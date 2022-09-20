@@ -75,7 +75,7 @@ export class SelectLocalizedStringComponent
     selectedLocalizedStringInfo: new FormControl({}, [Validators.required]),
   };
 
-  public formGroup = new FormGroup(this.formControls); //todo: validate not empty
+  public formGroup = new FormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('GET localized strings');
   public readonly messageMaxLength: number = 512;

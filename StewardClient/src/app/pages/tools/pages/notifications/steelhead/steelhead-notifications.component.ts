@@ -11,7 +11,7 @@ import { SteelheadPlayersMessagesService } from '@shared/services/api-v2/steelhe
 import { SteelheadGroupMessagesService } from '@services/api-v2/steelhead/group/messages/steelhead-group-messages.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
-import { LocalizedStringCollection, LocalizedStringData } from '@models/localization';
+import { LocalizedStringsRecord, LocalizedStringData } from '@models/localization';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
 /**
@@ -22,11 +22,6 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
   styleUrls: ['./steelhead-notifications.component.scss'],
 })
 export class SteelheadNotificationsComponent {
-  // @ViewChild(SteelheadGroupNotificationManagementComponent)
-  // private groupManagementComponent: SteelheadGroupNotificationManagementComponent;
-  // @ViewChild(SteelheadIndividualNotificationManagementComponent)
-  // private playerManagementComponent: SteelheadIndividualNotificationManagementComponent;
-
   public sendMessageService: LocalizedMessagingContract;
   public localizationCreationService: CreateLocalizedStringContract;
   public localizationSelectionService: SelectLocalizedStringContract;
@@ -71,7 +66,7 @@ export class SteelheadNotificationsComponent {
       },
       selectLocalizedStringContract: {
         gameTitle: this.gameTitle,
-        getLocalizedStrings$(): Observable<LocalizedStringCollection> {
+        getLocalizedStrings$(): Observable<LocalizedStringsRecord> {
           return steelheadLocalizationService.getLocalizedStrings$();
         },
       },
@@ -86,7 +81,7 @@ export class SteelheadNotificationsComponent {
 
     this.localizationSelectionService = {
       gameTitle: this.gameTitle,
-      getLocalizedStrings$(): Observable<LocalizedStringCollection> {
+      getLocalizedStrings$(): Observable<LocalizedStringsRecord> {
         return steelheadLocalizationService.getLocalizedStrings$();
       },
     };
@@ -126,10 +121,8 @@ export class SteelheadNotificationsComponent {
 
   /** Reloads if group selection has changed.; */
   public viewSelectionTypeChange(tabIndex: number): void {
-    if (tabIndex === 1) {
+    if (tabIndex === 2) {
       this.isInEditTab = true;
-      //this.playerManagementComponent.refreshNotificationList();
-      //this.groupManagementComponent.refreshNotificationList();
     } else {
       this.isInEditTab = false;
     }
