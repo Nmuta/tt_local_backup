@@ -40,3 +40,7 @@ form {
     margin-bottom: $gap-small;
   }
 }
+
+.failed-action-for-users {
+  color: app-color-default($app-warn);
+}

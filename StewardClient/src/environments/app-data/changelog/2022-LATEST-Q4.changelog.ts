@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: '0db8d052-9ff4-435d-8e3c-5a0c6990eeec',
+      shortText: 'Show error for players that failed to be added or removed',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '61b0d6c8-269e-49e3-b208-b4bcbfe746cf',
       shortText: 'Display and filter assists on leaderboard scores',

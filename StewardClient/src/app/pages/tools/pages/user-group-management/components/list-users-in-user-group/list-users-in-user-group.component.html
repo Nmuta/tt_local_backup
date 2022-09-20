@@ -99,6 +99,13 @@
     </div>
   </form>
 
+  <div class="failed-action-for-users" *ngIf="failedActionForUsers?.players?.length > 0">
+    <standard-copy [text]="failedActionForUsers.copyToClipboard" [alwaysShowIcon]="true">
+      Failed to {{ failedActionForUsers?.action }}
+      {{ failedActionForUsers?.players?.length }} player(s)
+    </standard-copy>
+  </div>
+
   <table *ngIf="!!userGroup && getMonitor.isSuccess" class="info-table">
     <tr>
       <th>Group Name</th>
@@ -140,7 +147,7 @@
               color="warn"
               (click)="deletePlayerFromUserGroup(element)"
               stateManager
-              [monitor]="element.monitor"
+              [monitor]="element.deleteMonitor"
               monitorDisable
               monitorWarn
               monitorWarnSnackbar
