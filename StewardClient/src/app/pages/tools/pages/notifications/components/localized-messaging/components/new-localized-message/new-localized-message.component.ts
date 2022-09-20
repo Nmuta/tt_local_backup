@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { DeviceType, NotificationType } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { values } from 'lodash';
 
 export type LocalizedMessageWithEnglishPreview = LocalizedMessage & { englishText: string };
 
@@ -31,9 +32,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
 
   public readonly messageMaxLength: number = 512;
 
-  public deviceTypes: string[] = Object.values(DeviceType);
-
-  public notificationTypes: string[] = Object.values(NotificationType);
+  public deviceTypes: string[] = values(DeviceType);
 
   public formControls = {
     localizedMessageInfo: new FormControl({}, [Validators.required]),
