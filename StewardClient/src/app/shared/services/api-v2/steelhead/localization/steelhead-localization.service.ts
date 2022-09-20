@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalizedStringCollection, LocalizedStringData } from '@models/localization';
+import { LocalizedStringsMap, LocalizedStringData } from '@models/localization';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
@@ -12,8 +12,8 @@ export class SteelheadLocalizationService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets localized strings for Steelhead. */
-  public getLocalizedStrings$(): Observable<LocalizedStringCollection> {
-    return this.api.getRequest$<LocalizedStringCollection>(this.basePath);
+  public getLocalizedStrings$(): Observable<LocalizedStringsMap> {
+    return this.api.getRequest$<LocalizedStringsMap>(this.basePath);
   }
 
   /** Submits string to Steelhead for localization. */

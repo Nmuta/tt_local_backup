@@ -13,9 +13,9 @@ import {
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { GameTitle } from '@models/enums';
+import { GameTitle, SupportedLocalizationLanguageCodes } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
-import { LocalizedString, LocalizedStringsRecord } from '@models/localization';
+import { LocalizedString, LocalizedStringsMap } from '@models/localization';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { orderBy } from 'lodash';
 import { EMPTY, Observable, Subject } from 'rxjs';
@@ -32,7 +32,7 @@ import {
 
 export interface SelectLocalizedStringContract {
   gameTitle: GameTitle;
-  getLocalizedStrings$(): Observable<LocalizedStringsRecord>;
+  getLocalizedStrings$(): Observable<LocalizedStringsMap>;
 }
 
 /** Outputted form value of the select-localized-string component. */
@@ -65,7 +65,7 @@ export class SelectLocalizedStringComponent
 {
   @Input() service: SelectLocalizedStringContract;
 
-  public localizedStringLookup: LocalizedStringsRecord = {};
+  public localizedStringLookup: LocalizedStringsMap = new Map();
   public localizedStringDetails: LocalizationOptions[] = [];
 
   public selectedLocalizedStringCollection: LocalizedString[] = [];
@@ -88,13 +88,13 @@ export class SelectLocalizedStringComponent
       .pipe(
         tap(() => (this.getMonitor = this.getMonitor.repeat())),
         switchMap(() => {
-          this.localizedStringLookup = {};
+          this.localizedStringLookup = new Map();
           this.formControls.selectedLocalizedStringInfo.setValue(null);
           this.selectedLocalizedStringCollection = [];
           return this.service.getLocalizedStrings$().pipe(
             this.getMonitor.monitorSingleFire(),
             catchError(() => {
-              this.localizedStringLookup = {};
+              this.localizedStringLookup = new Map();
               this.formControls.selectedLocalizedStringInfo.setValue(null);
               this.selectedLocalizedStringCollection = [];
               return EMPTY;
@@ -108,8 +108,8 @@ export class SelectLocalizedStringComponent
         const keys = Object.keys(this.localizedStringLookup);
         this.localizedStringDetails = keys.map(x => {
           const record = this.localizedStringLookup[x].find(
-            (record: LocalizedString) => record.languageCode === 'en-US',
-          ); //TODO invariant comparsion
+            (record: LocalizedString) => record.languageCode.toLowerCase() === SupportedLocalizationLanguageCodes.en_US.toLowerCase(),
+          );
           return {
             id: x,
             englishText: record.message,

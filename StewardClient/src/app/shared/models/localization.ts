@@ -1,4 +1,4 @@
-import { LocalizationCategory } from './enums';
+import { LocalizationCategory, SupportedLocalizationLanguageCodes } from './enums';
 import { GuidLikeString } from './extended-types';
 
 /**
@@ -17,11 +17,11 @@ export interface LocalizedStringData {
 export interface LocalizedString {
   message: string;
   category: LocalizationCategory;
-  languageCode: string;
+  languageCode: SupportedLocalizationLanguageCodes;
   translated: boolean;
 }
 
 /**
  * Interface that represents a mapping of guid IDs to localized string info.
  */
-export type LocalizedStringsRecord = Record<GuidLikeString, LocalizedString[]>;
+export type LocalizedStringsMap = Map<GuidLikeString, LocalizedString[]>;
