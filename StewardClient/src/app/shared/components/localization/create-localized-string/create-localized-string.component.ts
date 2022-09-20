@@ -30,7 +30,7 @@ export class CreateLocalizedStringComponent extends BaseComponent {
       Validators.maxLength(this.messageMaxLength),
     ]),
     description: new FormControl('', [Validators.required]),
-    category: new FormControl(LocalizationCategory.Unset, [Validators.required]),
+    category: new FormControl(null, [Validators.required]),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -60,7 +60,7 @@ export class CreateLocalizedStringComponent extends BaseComponent {
       .subscribe(() => {
         this.formControls.stringToLocalize.setValue('');
         this.formControls.description.setValue('');
-        this.formControls.category.setValue(LocalizationCategory.Unset);
+        this.formControls.category.setValue(null);
         this.formGroup.reset();
       });
   }

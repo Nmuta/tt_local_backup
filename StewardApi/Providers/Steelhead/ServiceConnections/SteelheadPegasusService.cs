@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using SteelheadLiveOpsContent;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
@@ -102,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     var localizedResult = new LiveOpsContracts.LocalizedString()
                     {
                         Message = localizedStrings[locStringKey].LocString,
-                        Category = localizedStrings[locStringKey].Category.ToString(),
+                        Category = localizedStrings[locStringKey].Category,
                         LanguageCode = supportedLocale.Locale,
                         IsTranslated = isTranslated,
                     };

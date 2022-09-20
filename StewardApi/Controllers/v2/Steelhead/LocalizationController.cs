@@ -72,9 +72,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Guid))]
         public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)
         {
-            if (!Enum.IsDefined(typeof(LocalizationCategory), data.Category))
+            if (!Enum.IsDefined(typeof(LocCategory), data.Category))
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocalizationCategory)} provided: {data.Category}");
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocCategory)} provided: {data.Category}");
             }
 
             try
