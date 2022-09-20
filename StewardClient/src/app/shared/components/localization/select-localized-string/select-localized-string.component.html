@@ -1,4 +1,4 @@
-<mat-form-field class="localized-message-selector" [formGroup]="formGroup">
+<mat-form-field [formGroup]="formGroup">
   <mat-label>Select Localized Message</mat-label>
   <mat-select
     [formControl]="formControls.selectedLocalizedStringInfo"
@@ -10,8 +10,8 @@
   </mat-select>
 </mat-form-field>
 
-<p *ngIf="selectedLocalizedStringCollection">
-  Language Codes:
+<mat-form-field *ngIf="displayLanguageChips">
+  <mat-label>Language Codes:</mat-label> 
   <mat-chip-list selectable="true" multiple="false" (change)="onLanguageChipSelect($event)">
     <mat-chip
       #chipRef="matChip"
@@ -28,11 +28,10 @@
       {{ stringInfo.languageCode }}
     </mat-chip>
   </mat-chip-list>
-</p>
+</mat-form-field>
 
 <mat-form-field
   *ngIf="selectedLanguageLocalizedString"
-  class="translation-preview"
   appearance="fill"
 >
   <mat-label>Translation Preview</mat-label>

@@ -20,7 +20,7 @@ export interface CreateLocalizedStringContract {
 export class CreateLocalizedStringComponent extends BaseComponent {
   @Input() service: CreateLocalizedStringContract;
 
-  public postMonitor = new ActionMonitor('POST string for localization');
+  public postMonitor = new ActionMonitor('POST String Localization');
   public readonly messageMaxLength: number = 512;
   public categoryTypes: string[] = Object.values(LocalizationCategory);
 
@@ -61,6 +61,7 @@ export class CreateLocalizedStringComponent extends BaseComponent {
         this.formControls.stringToLocalize.setValue('');
         this.formControls.description.setValue('');
         this.formControls.category.setValue(LocalizationCategory.Unset);
+        this.formGroup.reset();
       });
   }
 }

@@ -104,7 +104,7 @@ export enum NotificationType {
 /** Enum for localization categories. */
 export enum LocalizationCategory {
   Unset = 'Unset',
-  MOTD = 'Motd',
+  MOTD = 'MOTD', //Casing matches that of Service Enum 'LocalizationCategory'. Do not change.
   PatchNotes = 'PatchNotes',
   Notifications = 'Notifications',
   Gifts = 'Gifts',
