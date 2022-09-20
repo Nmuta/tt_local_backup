@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new DataProfileMapper());
                 mc.AllowNullCollections = true;
             });
-
+            mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();
             services.AddSingleton(mapper);
 
