@@ -21,7 +21,7 @@ describe('ToggleListEzComponent', () => {
       order: [],
       title: 'test',
       submitModel$: () => NEVER,
-    }
+    };
     fixture.detectChanges();
   });
 
