@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StewardGitClient
+namespace StewardGitApi
 {
     [DebuggerStepThrough, DebuggerNonUserCode]
     public static class Check

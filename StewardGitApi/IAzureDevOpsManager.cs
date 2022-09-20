@@ -9,7 +9,7 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Organization.Client;
 using Microsoft.VisualStudio.Services.WebApi;
 
-namespace StewardGitClient
+namespace StewardGitApi
 {
     public interface IAzureDevOpsManager
     {

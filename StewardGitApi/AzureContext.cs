@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 
-namespace StewardGitClient
+namespace StewardGitApi
 {
     public class AzureContext : IDisposable
     {
@@ -48,7 +48,8 @@ namespace StewardGitClient
 
             Connection = new VssConnection(organizationUrl, credential);
 
-            // test connection, blocking
+            // Test connection, blocking call
+            // will throw remote exception if raised.
             Connection.ConnectAsync().SyncResult();
         }
 

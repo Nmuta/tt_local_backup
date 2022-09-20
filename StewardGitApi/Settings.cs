@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Services.Common;
 
-namespace StewardGitClient
+namespace StewardGitApi
 {
     public class Settings
     {

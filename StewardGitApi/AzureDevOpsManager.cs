@@ -10,7 +10,7 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Organization.Client;
 
-namespace StewardGitClient
+namespace StewardGitApi
 {
     public class AzureDevOpsManager : IAzureDevOpsManager
     {
@@ -31,24 +31,24 @@ namespace StewardGitClient
 
         public Guid GetCurrentUserId()
         {
-            return ClientHelper.GetCurrentUserId(AzureContext);
+            return GitHelper.GetCurrentUserId(AzureContext);
         }
 
         public string GetCurrentUserDisplayName()
         {
-            return ClientHelper.GetCurrentUserDisplayName(AzureContext);
+            return GitHelper.GetCurrentUserDisplayName(AzureContext);
         }
 
         public async Task<Organization> GetOrganizationAsync(string organizationId)
         {
             await AzureContext.Connection.ConnectAsync();
-            return await ClientHelper.GetOrganizationAsync(AzureContext, organizationId).ConfigureAwait(false);
+            return await GitHelper.GetOrganizationAsync(AzureContext, organizationId).ConfigureAwait(false);
         }
 
         public async Task<TeamProjectReference> GetProjectAsync()
         {
             await AzureContext.Connection.ConnectAsync();
-            return await ClientHelper.GetProjectAsync(AzureContext).ConfigureAwait(false);
+            return await GitHelper.GetProjectAsync(AzureContext).ConfigureAwait(false);
         }
 
         public async Task<GitRepository> GetRepositoryAsync()
