@@ -24,6 +24,7 @@ import { GiftResponse } from '@models/gift-response';
 import { chain } from 'lodash';
 import { DateTime } from 'luxon';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
+import { DefaultGiftExpireTimeSpanInDays } from '@helpers/bignumbers';
 
 /**
  * List of special liveries from Community team.
@@ -100,7 +101,12 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
           );
         }
 
-        return this.giftService.giftLiveriesByXuids$(giftReason, liveryIds, xuids);
+        return this.giftService.giftLiveriesByXuids$(
+          giftReason,
+          liveryIds,
+          xuids,
+          DefaultGiftExpireTimeSpanInDays, // Default expire timespan
+        );
       },
 
       giftLiveriesToLspGroup$(

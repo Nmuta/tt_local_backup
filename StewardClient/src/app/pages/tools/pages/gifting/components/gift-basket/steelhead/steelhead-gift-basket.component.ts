@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
-import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SteelheadGift, SteelheadGroupGift, SteelheadMasterInventory } from '@models/steelhead';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
@@ -39,14 +39,14 @@ export class SteelheadGiftBasketComponent
 {
   @Select(SteelheadGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FM8;
+  public allowSettingExpireDate = true;
 
   constructor(
     private readonly steelheadService: SteelheadService,
     backgroundJobService: BackgroundJobService,
     store: Store,
-    formBuilder: FormBuilder,
   ) {
-    super(backgroundJobService, formBuilder, store);
+    super(backgroundJobService, store);
   }
 
   /** Angular lifecycle hook. */
