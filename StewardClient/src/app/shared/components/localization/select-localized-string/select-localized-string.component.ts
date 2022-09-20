@@ -30,14 +30,12 @@ import {
   startWith,
 } from 'rxjs/operators';
 
-/** Outputted form value of the datetime picker. */
-export type SelectLocalizedStringFormValue = LocalizationOptions;
-
 export interface SelectLocalizedStringContract {
   gameTitle: GameTitle;
   getLocalizedStrings$(): Observable<LocalizedStringsRecord>;
 }
 
+/** Outputted form value of the select-localized-string component. */
 export interface LocalizationOptions {
   englishText: string;
   id: GuidLikeString;
@@ -141,7 +139,7 @@ export class SelectLocalizedStringComponent
   }
 
   /** Form control hook. */
-  public writeValue(data: SelectLocalizedStringFormValue): void {
+  public writeValue(data: LocalizationOptions): void {
     if (!!data?.id) {
       this.formControls.selectedLocalizedStringInfo.patchValue(data, { emitEvent: false });
       this.selectedLocalizedStringCollection = orderBy(
@@ -152,7 +150,7 @@ export class SelectLocalizedStringComponent
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (value: SelectLocalizedStringFormValue) => void): void {
+  public registerOnChange(fn: (value: LocalizationOptions) => void): void {
     this.formGroup.valueChanges
       .pipe(
         map(x => x.selectedLocalizedStringInfo),
@@ -177,7 +175,7 @@ export class SelectLocalizedStringComponent
   }
 
   /** Form control hook. */
-  public registerOnTouched(_fn: SelectLocalizedStringFormValue): void {
+  public registerOnTouched(_fn: LocalizationOptions): void {
     /** empty */
   }
 
