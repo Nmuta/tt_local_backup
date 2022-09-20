@@ -131,7 +131,7 @@ export class SelectLocalizedStringComponent
       .subscribe(() => {
         const chipList =
           this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value?.id];
-        this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.translated);
+        this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.isTranslated);
         this.displayLanguageChips = true;   
         this.selectedLanguageLocalizedString = null;
       });
@@ -148,7 +148,7 @@ export class SelectLocalizedStringComponent
       this.formControls.selectedLocalizedStringInfo.patchValue(data, { emitEvent: false });
       this.selectedLocalizedStringCollection = orderBy(
         this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value.id],
-        x => !x.translated,
+        x => !x.isTranslated,
       );
       this.displayLanguageChips = true;
     }

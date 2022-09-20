@@ -15,14 +15,14 @@
   <mat-chip-list selectable="true" multiple="false" (change)="onLanguageChipSelect($event)">
     <mat-chip
       #chipRef="matChip"
-      (click)="stringInfo.translated ? chipRef.toggleSelected(true) : null"
+      (click)="stringInfo.isTranslated ? chipRef.toggleSelected(true) : null"
       clickStop
       *ngFor="let stringInfo of selectedLocalizedStringCollection"
       [value]="stringInfo"
-      [disabled]="!stringInfo.translated"
-      [selectable]="!stringInfo.translated"
+      [disabled]="!stringInfo.isTranslated"
+      [selectable]="!stringInfo.isTranslated"
       [matTooltip]="
-        stringInfo.translated ? 'Select to see preview' : 'This language is not yet translated'
+        stringInfo.isTranslated ? 'Select to see preview' : 'This language is not yet translated'
       "
     >
       {{ stringInfo.languageCode }}

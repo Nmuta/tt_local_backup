@@ -104,7 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         Message = localizedStrings[locStringKey].LocString,
                         Category = localizedStrings[locStringKey].Category.ToString(),
                         LanguageCode = supportedLocale.Locale,
-                        Translated = isTranslated,
+                        IsTranslated = isTranslated,
                     };
 
 

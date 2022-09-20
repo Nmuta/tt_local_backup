@@ -13,6 +13,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public string LanguageCode { get; set; }
 
-        public bool Translated { get; set; }
+        public bool IsTranslated { get; set; }
     }
 }

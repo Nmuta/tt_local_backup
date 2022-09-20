@@ -18,7 +18,7 @@ export interface LocalizedString {
   message: string;
   category: LocalizationCategory;
   languageCode: SupportedLocalizationLanguageCodes;
-  translated: boolean;
+  isTranslated: boolean;
 }
 
 /**
