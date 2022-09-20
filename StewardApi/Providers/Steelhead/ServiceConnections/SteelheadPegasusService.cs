@@ -121,7 +121,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return results;
         }
 
-
         /// <inheritdoc />
         public async Task<IEnumerable<CarClass>> GetCarClassesAsync()
         {

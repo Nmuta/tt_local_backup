@@ -4,6 +4,9 @@
 #pragma warning disable CS1591 // XML Comments (POCO mapped directly from LSP)
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
+    /// <summary>
+    ///     Represents a localized message to send.
+    /// </summary>
     public class LocalizedMessage
     {
         public string LocalizedMessageID { get; set; }
