@@ -85,6 +85,10 @@ export class SelectLocalizedStringComponent
 
   /** Lifecycle hook */
   public ngOnInit(): void {
+    if (!this.service) {
+      throw new Error('No service defined for Select Localized String component.');
+    }
+
     this.getLocalizedStrings$
       .pipe(
         tap(() => (this.getMonitor = this.getMonitor.repeat())),
