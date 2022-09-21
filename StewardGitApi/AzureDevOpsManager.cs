@@ -85,13 +85,52 @@ namespace StewardGitApi
             return pushResult;
         }
 
-        public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> proxyChanges, Action<bool> OnSuccess)
+        public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> proxyChanges, Action<bool> OnSuccess = null)
         {
             _ = Check.ForNullOrEmpty(proxyChanges, nameof(proxyChanges));
             await AzureContext.Connection.ConnectAsync();
             GitPush pushResult = await GitHelper.CommitAndPushAsync(AzureContext, proxyChanges).ConfigureAwait(false);
             OnSuccess?.Invoke(pushResult != null && pushResult.Commits.First().ChangeCounts.Count > 0);
             return pushResult;
+        }
+
+        public async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(int? mostRecentPullRequests = null, Action<bool> OnSuccess = null)
+        {
+            // TODO add nullable case to Check.cs
+            if (mostRecentPullRequests <= 0)
+                throw new ArgumentOutOfRangeException(nameof(mostRecentPullRequests));
+            await AzureContext.Connection.ConnectAsync();
+            IEnumerable<PullRequestStatus> prStatuses = await GitHelper.GetPullRequestStatusAsync(AzureContext, mostRecentPullRequests);
+            OnSuccess?.Invoke(prStatuses.Any());
+            return prStatuses;
+        }
+
+        public async Task<GitPullRequest> GetPullRequestAsync(int pullRequestId, Action<bool> OnSuccess = null)
+        {
+            await AzureContext.Connection.ConnectAsync();
+            GitPullRequest pullRequest = await GitHelper.GetPullRequestAsync(AzureContext, pullRequestId).ConfigureAwait(false);
+            OnSuccess?.Invoke(pullRequest != null);
+            return pullRequest;
+        }
+
+        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecentPullRequests = null, Action<bool> OnSuccess = null)
+        {
+            // TODO add nullable case to Check.cs
+            if (mostRecentPullRequests <= 0)
+                throw new ArgumentOutOfRangeException(nameof(mostRecentPullRequests));
+            await AzureContext.Connection.ConnectAsync();
+            IEnumerable<GitPullRequest> pullRequests = await GitHelper.GetPullRequestsIntoDefaultBranchAsync(AzureContext, status, mostRecentPullRequests); // expose top,status?
+            OnSuccess?.Invoke(OnSuccess != null && pullRequests.Any());
+            return pullRequests;
+        }
+
+        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush push, string title, string description, Action<bool> OnSuccess = null)
+        {
+            _ = Check.ForNullEmptyOrWhiteSpace(new string[] { title, description });
+            await AzureContext.Connection.ConnectAsync();
+            GitPullRequest pullRequest = await GitHelper.CreatePullRequestAsync(AzureContext, push, title, description).ConfigureAwait(false);
+            OnSuccess?.Invoke(pullRequest != null);
+            return pullRequest;
         }
     }
 }

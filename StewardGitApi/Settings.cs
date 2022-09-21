@@ -17,6 +17,8 @@ namespace StewardGitApi
 
         internal (Guid projectId, Guid repoId) Ids => (ProjectId, RepoId);
 
+        // TODO consider making private if
+        // the connection is never set to a new org
         public Guid ProjectId { get; set; }
         public Guid RepoId { get; set; }
 

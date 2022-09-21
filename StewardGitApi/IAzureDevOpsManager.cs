@@ -27,12 +27,16 @@ namespace StewardGitApi
 
         Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> proxyChanges, Action<bool> OnSuccess);
 
+        Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(int? mostRecentPullRequests, Action<bool> OnSuccess);
+
+        Task<GitPullRequest> GetPullRequestAsync(int pullRequestId, Action<bool> OnSuccess);
+
+        Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecentPullRequests, Action<bool> OnSuccess);
+
+        Task<GitPullRequest> CreatePullRequestAsync(GitPush push, string title, string description, Action<bool> OnSuccess);
+
         public Guid GetCurrentUserId();
 
         public string GetCurrentUserDisplayName();
-
-        // create pr
-
-        // get pr iteration status
     }
 }

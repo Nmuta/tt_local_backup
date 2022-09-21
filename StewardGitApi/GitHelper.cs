@@ -123,6 +123,83 @@ namespace StewardGitApi
             return repo;
         }
 
+        public static async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(AzureContext context, int? mostRecentPullRequests = null)
+        {
+            IEnumerable<GitPullRequest> gitPullRequests = await GetPullRequestsIntoDefaultBranchAsync(context, topPRs: mostRecentPullRequests).ConfigureAwait(false);
+            return gitPullRequests.Select(pr => pr.Status);
+        }
+
+        public static async Task<GitPullRequest> GetPullRequestAsync(AzureContext context, int pullRequestId)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+            (Guid projectId, _) = context.Settings.Ids;
+            GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
+            GitPullRequest pr = await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
+            return pr;
+        }
+
+        public static async Task<GitPullRequest> CreatePullRequestAsync(AzureContext context, GitPush push, string title, string description)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+            (Guid projectId, _) = context.Settings.Ids;
+
+            var repo = await GetRepositoryAsync(context).ConfigureAwait(false);
+
+            var pr = await gitClient.CreatePullRequestAsync(new GitPullRequest()
+            {
+                SourceRefName = push.RefUpdates.First().Name,
+                TargetRefName = repo.DefaultBranch,
+                Title = $"{title}",
+                Description = $"{description}",
+            },
+            projectId,
+            repo.Id).ConfigureAwait(false);
+
+            Console.WriteLine("repo {0}", repo.Name);
+            Console.WriteLine("{0} (#{1}) {2} -> {3}",
+                pr.Title.Substring(0, Math.Min(40, pr.Title.Length)),
+                pr.PullRequestId,
+                pr.SourceRefName,
+                pr.TargetRefName);
+
+            return pr;
+        }
+
+        // TODO consider making optional parameter non-optional or set a const default for topPrs
+        public static async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(AzureContext context, PullRequestStatus status = PullRequestStatus.NotSet, int? topPRs = null)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+
+            TeamProjectReference project = await GetProjectAsync(context).ConfigureAwait(false);
+            GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
+
+            string branchName = repo.DefaultBranch;
+
+            List<GitPullRequest> prs = await gitClient.GetPullRequestsAsync(
+                project.Id,
+                repo.Id,
+                new GitPullRequestSearchCriteria()
+                {
+                    TargetRefName = branchName, 
+                    Status = status,
+                    // various other search criteria
+                }, 
+                top: topPRs).ConfigureAwait(false);
+
+            Console.WriteLine("project {0}, repo {1}", project.Name, repo.Name);
+            foreach (GitPullRequest pr in prs)
+            {
+                Console.WriteLine("{0} #{1} {2} -> {3}",
+                    pr.Title[..Math.Min(40, pr.Title.Length)], //substring(0, math.min(40, pr.Title.Length))
+                    pr.PullRequestId,
+                    pr.SourceRefName,
+                    pr.TargetRefName);
+            }
+
+            return prs;
+        }
+
+        // TODO consider returning the GitRefUpdateResult object
         internal static async Task<GitPush> CommitAndPushAsync(AzureContext context, IEnumerable<CommitRefProxy> proxyChanges)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
@@ -148,7 +225,7 @@ namespace StewardGitApi
             {
                 RefUpdates = new GitRefUpdate[] { newBranch },
                 Commits = gitChanges, // GitCommitRef[]
-            }, repo.Id);
+            }, repo.Id).ConfigureAwait(false);
 
             Console.WriteLine("project {0}, repo {1}", project.Name, repo.Name);
             Console.WriteLine("push {0} updated {1} to {2}", push.PushId, push.RefUpdates.First().Name, push.Commits.First().CommitId);
