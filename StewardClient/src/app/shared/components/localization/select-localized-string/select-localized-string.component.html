@@ -1,0 +1,48 @@
+<div class="sf-wrapper">
+  <div class="sf-vertical">
+    <mat-form-field [formGroup]="formGroup" class="sf-full-width sf-default-hint">
+      <mat-label>Select Localized Message</mat-label>
+      <mat-select
+        [formControl]="formControls.selectedLocalizedStringInfo"
+        [compareWith]="comparisonFunction"
+      >
+        <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails">
+          {{ stringDetails.englishText | deppoh }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="displayLanguageChips" class="sf-default-hint">
+      <mat-label>Language Codes</mat-label>
+      <mat-chip-list selectable="true" multiple="false" (change)="onLanguageChipSelect($event)">
+        <mat-chip
+          #chipRef="matChip"
+          (click)="stringInfo.isTranslated ? chipRef.toggleSelected(true) : null"
+          clickStop
+          *ngFor="let stringInfo of selectedLocalizedStringCollection"
+          [value]="stringInfo"
+          [disabled]="!stringInfo.isTranslated"
+          [selectable]="!stringInfo.isTranslated"
+          [matTooltip]="
+            stringInfo.isTranslated
+              ? 'Select to see preview'
+              : 'This language is not yet translated'
+          "
+        >
+          {{ stringInfo.languageCode }}
+        </mat-chip>
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field
+      class="sf-default-hint"
+      *ngIf="selectedLanguageLocalizedString"
+      appearance="fill"
+    >
+      <mat-label>Translation Preview</mat-label>
+      <textarea matInput disabled="true" cdkTextareaAutosize>{{
+        selectedLanguageLocalizedString.message
+      }}</textarea>
+    </mat-form-field>
+  </div>
+</div>

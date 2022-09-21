@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
+      uuid: '5d7bad3d-5f99-4f6f-a77f-c08d579c75d3',
+      shortText: 'Add localized message creation and sending',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
       uuid: '47a3b05e-8d58-4f6d-a757-c8ea481612ac',
       shortText: 'Add expiration date field for gifting',

@@ -92,5 +92,21 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <remarks>To be used for E2E testing only.</remarks>
         Task<NotificationManagementService.DeleteNotificationsForUserOutput> DeleteNotificationsForUser(
             ulong xuid);
+
+        Task<NotificationManagementService.SendMessageOutput> SendMessage(
+            ulong[] recipients,
+            Guid messageId,
+            DateTime sentDate,
+            DateTime expirationTime,
+            string messageType);
+
+        Task<NotificationManagementService.SendGroupMessageOutput> SendGroupMessage(
+            int userGroupId,
+            Guid messageId,
+            bool hasDeviceType,
+            ForzaLiveDeviceType deviceType,
+            DateTime sentTime,
+            DateTime expirationTime,
+            string messageType);
     }
 }

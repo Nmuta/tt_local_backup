@@ -1,0 +1,127 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Localized Messaging</mat-card-title>
+    <mat-card-subtitle>{{ service?.gameTitle | humanize }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!isLoading && !loadError; else failState">
+      <ng-container *ngIf="sentCommunityMessageResults?.length <= 0; else messageResultsTemplate">
+        <ng-container *ngIf="!waitingForVerification; else pendingLocalizedMessageTemplate">
+          <new-localized-message
+            [service]="service?.selectLocalizedStringContract"
+            [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
+            [pendingLocalizedMessage]="newLocalizedMessage"
+            [lockStartTime]="service?.lockStartTime"
+            (emitNewLocalizedMessage)="setNewLocalizedMessage($event)"
+          ></new-localized-message>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #messageResultsTemplate>
+  <section class="message-results">
+    <json-table-results
+      [results]="sentCommunityMessageResults"
+      downloadFilename="SentCommunityMessage"
+    ></json-table-results>
+    <button
+      mat-raised-button
+      color="accent"
+      matTooltip="Send another message"
+      (click)="clearMessageUI()"
+      clickStop
+    >
+      Send another message
+    </button>
+  </section>
+</ng-template>
+
+<ng-template #pendingLocalizedMessageTemplate>
+  <mat-card>
+    <mat-card-header class="sf-header">
+      <mat-card-title>Pending Localized Messaging</mat-card-title>
+      <mat-card-subtitle>{{ service?.gameTitle | humanize }}</mat-card-subtitle>
+      <div class="sf-spacer"></div>
+      <button
+        mat-mini-fab
+        color="accent"
+        (click)="setWaitingForVerification(false)"
+        matTooltip="Edit community message"
+      >
+        <mat-icon svgIcon="steward-edit"></mat-icon>
+      </button>
+    </mat-card-header>
+    <section class="new-community-message">
+      <table class="info-table">
+        <tr>
+          <th>Sent Date</th>
+          <td>
+            <standard-absolute-time-utc [timeUtc]="newLocalizedMessage.startTimeUtc">
+            </standard-absolute-time-utc>
+          </td>
+        </tr>
+        <tr>
+          <th>Expire Date</th>
+          <td>
+            <standard-absolute-time-utc [timeUtc]="newLocalizedMessage.expireTimeUtc">
+            </standard-absolute-time-utc>
+          </td>
+        </tr>
+        <tr *ngIf="!!newLocalizedMessage.deviceType">
+          <th>Device Type</th>
+          <td>
+            {{ newLocalizedMessage.deviceType | deppoh }}
+          </td>
+        </tr>
+        <tr>
+          <th>Notification Type</th>
+          <td>
+            {{ newLocalizedMessage.notificationType | deppoh }}
+          </td>
+        </tr>
+        <tr>
+          <th>Localized Message ID</th>
+          <td>
+            {{ newLocalizedMessage.localizedMessageId }}
+          </td>
+        </tr>
+        <tr>
+          <th>English Text Preview</th>
+          <td>
+            {{ newLocalizedMessage.englishText }}
+          </td>
+        </tr>
+      </table>
+      <section class="action-buttons">
+        <button
+          [disabled]="!isLocalizedMessageReady()"
+          mat-raised-button
+          color="primary"
+          class="send-action"
+          matTooltip="Send the messsage"
+          (click)="submitLocalizedMessage()"
+        >
+          Send message to {{ isUsingPlayerIdentities ? 'players' : 'LSP group' }}
+        </button>
+      </section>
+    </section>
+  </mat-card>
+</ng-template>
+
+<ng-template #failState>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+  <button
+    *ngIf="loadError"
+    class="reset-state"
+    mat-raised-button
+    color="accent"
+    matTooltip="Reset the failed tool."
+    (click)="clearMessageUI()"
+    clickStop
+  >
+    Reset Tool
+  </button>
+</ng-template>

@@ -1248,9 +1248,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)
         {
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            if (!Enum.IsDefined(typeof(LocalizationCategory), data.Category))
+            if (!Enum.IsDefined(typeof(LocCategory), data.Category))
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocalizationCategory)} provided: {data.Category}");
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocCategory)} provided: {data.Category}");
             }
 
             var result = await this.steelheadServiceManagementProvider.AddStringToLocalizeAsync(
