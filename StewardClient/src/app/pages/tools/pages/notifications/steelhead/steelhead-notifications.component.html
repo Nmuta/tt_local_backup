@@ -46,15 +46,17 @@
       <mat-tab label="Edit/Delete">
         
         <!-- *ngIf="isUsingPlayerIdentities" -->
+        <!-- [hidden]="!isUsingPlayerIdentities" -->
         <localized-individual-notification-management
-          [hidden]="!isUsingPlayerIdentities"
+        *ngIf="isUsingPlayerIdentities"
           [service]="localizedIndividualMessagingManagementService"
           [selectedXuid]="selectedXuid"
         ></localized-individual-notification-management>
         
         <!-- *ngIf="!isUsingPlayerIdentities" -->
+        <!-- [hidden]="isUsingPlayerIdentities" -->
         <localized-group-notification-management
-          [hidden]="isUsingPlayerIdentities"
+          *ngIf="!isUsingPlayerIdentities"
           [service]="localizedGroupMessagingManagementService"
           [selectedLspGroup]="selectedLspGroup"
       ></localized-group-notification-management>

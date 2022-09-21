@@ -17,6 +17,7 @@ import { LocalizedIndividualMessagingManagementContract, LocalizedIndividualNoti
 import { SteelheadPlayerMessagesService } from '@services/api-v2/steelhead/player/messages/steelhead-player-messages.service';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
 import { LocalizedGroupMessagingManagementContract, LocalizedGroupNotificationManagementComponent } from '../components/notification-management/localized-group-notification-management/localized-group-notification-management.component';
+import { renderGuard } from '@helpers/rxjs';
 
 /**
  *  Steelhead notification component.
@@ -155,14 +156,19 @@ export class SteelheadNotificationsComponent {
   /** Sets if tool is using player identities as selection type; */
   public playerSelectionTypeChange(tabIndex: number): void {
     this.isUsingPlayerIdentities = tabIndex === 0;
+    
+    renderGuard(() => {
+      this.playerManagementComponent?.refreshNotificationList();
+      this.groupManagementComponent?.refreshNotificationList();
+    });
   }
 
   /** Reloads if group selection has changed.; */
   public viewSelectionTypeChange(tabIndex: number): void {
     if (tabIndex === 2) {
       this.isInEditTab = true;
-      this.playerManagementComponent.refreshNotificationList();
-      this.groupManagementComponent.refreshNotificationList();
+      this.playerManagementComponent?.refreshNotificationList();
+      this.groupManagementComponent?.refreshNotificationList();
     } else {
       this.isInEditTab = false;
     }
