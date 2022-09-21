@@ -13,7 +13,7 @@
     </mat-form-field>
 
     <mat-form-field *ngIf="displayLanguageChips" class="sf-default-hint">
-      <mat-label>Language Codes:</mat-label>
+      <mat-label>Language Codes</mat-label>
       <mat-chip-list selectable="true" multiple="false" (change)="onLanguageChipSelect($event)">
         <mat-chip
           #chipRef="matChip"

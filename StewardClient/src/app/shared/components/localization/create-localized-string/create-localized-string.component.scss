@@ -1,12 +1,1 @@
 @import '/src/styles/mixins';
-
-textarea {
-  min-height: $text-area-medium-height;
-  max-height: $text-area-max-height;
-}
-
-button {
-  max-width: $button-min-size;
-  width: 100%;
-  position: relative;
-}

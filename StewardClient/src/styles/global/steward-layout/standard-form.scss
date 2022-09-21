@@ -150,3 +150,13 @@
 .sf-text-warn {
   color: app-color-default($app-warn);
 }
+
+button.sf-standard-width {
+  min-width: $button-min-size;
+  position: relative;
+}
+
+textarea.sf-standard-height {
+  min-height: $text-area-medium-height;
+  max-height: $text-area-max-height;
+}

@@ -7,8 +7,9 @@
     <form [formGroup]="formGroup" class="sf-wrapper">
       <div class="sf-vertical">
         <mat-form-field appearance="fill" class="localized-message">
-          <mat-label>String To Localize </mat-label>
+          <mat-label>String To Localize</mat-label>
           <textarea
+            class="sf-standard-height"
             matInput
             cdkTextareaAutosize
             placeholder="Message to Localize"
@@ -23,6 +24,7 @@
         <mat-form-field appearance="fill" class="description">
           <mat-label>Description</mat-label>
           <textarea
+            class="sf-standard-height"
             matInput
             cdkTextareaAutosize
             placeholder="Description"
@@ -43,6 +45,7 @@
 
         <div class="sf-horizontal">
           <button
+            class="sf-standard-width"
             mat-raised-button
             color="accent"
             (click)="createMessage()"
