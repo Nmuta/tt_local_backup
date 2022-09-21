@@ -90,7 +90,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"User flags not updated. (XUID: {xuid})", ex);
                 throw new NotFoundStewardException(
                     $"Failed to retrieve messages for player. (xuid: {xuid})", ex);
             }

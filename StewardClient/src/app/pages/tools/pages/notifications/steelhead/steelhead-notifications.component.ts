@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { LspGroup } from '@models/lsp-group';
@@ -13,6 +13,10 @@ import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localiz
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { LocalizedStringsMap, LocalizedStringData } from '@models/localization';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { LocalizedIndividualMessagingManagementContract, LocalizedIndividualNotificationManagementComponent } from '../components/notification-management/localized-individual-notification-management/localized-individual-notification-management.component';
+import { SteelheadPlayerMessagesService } from '@services/api-v2/steelhead/player/messages/steelhead-player-messages.service';
+import { GroupNotification, PlayerNotification } from '@models/notifications.model';
+import { LocalizedGroupMessagingManagementContract, LocalizedGroupNotificationManagementComponent } from '../components/notification-management/localized-group-notification-management/localized-group-notification-management.component';
 
 /**
  *  Steelhead notification component.
@@ -22,9 +26,16 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
   styleUrls: ['./steelhead-notifications.component.scss'],
 })
 export class SteelheadNotificationsComponent {
+  @ViewChild(LocalizedIndividualNotificationManagementComponent)
+  private playerManagementComponent: LocalizedIndividualNotificationManagementComponent;
+  @ViewChild(LocalizedGroupNotificationManagementComponent)
+  private groupManagementComponent: LocalizedGroupNotificationManagementComponent;
+
   public sendMessageService: LocalizedMessagingContract;
   public localizationCreationService: CreateLocalizedStringContract;
   public localizationSelectionService: SelectLocalizedStringContract;
+  public localizedIndividualMessagingManagementService: LocalizedIndividualMessagingManagementContract;
+  public localizedGroupMessagingManagementService: LocalizedGroupMessagingManagementContract;
 
   public gameTitle = GameTitle.FM8;
   /** The selected player identities */
@@ -42,7 +53,22 @@ export class SteelheadNotificationsComponent {
     steelheadPlayersMessagesService: SteelheadPlayersMessagesService,
     steelheadGroupMessagesService: SteelheadGroupMessagesService,
     steelheadLocalizationService: SteelheadLocalizationService,
+    steelheadPlayerMessagesService: SteelheadPlayerMessagesService,
   ) {
+    this.localizationCreationService = {
+      gameTitle: this.gameTitle,
+      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void> {
+        return steelheadLocalizationService.postLocalizedString$(localizedStringData);
+      },
+    };
+
+    this.localizationSelectionService = {
+      gameTitle: this.gameTitle,
+      getLocalizedStrings$(): Observable<LocalizedStringsMap> {
+        return steelheadLocalizationService.getLocalizedStrings$();
+      },
+    };
+
     this.sendMessageService = {
       gameTitle: this.gameTitle,
       lockStartTime: false,
@@ -72,17 +98,29 @@ export class SteelheadNotificationsComponent {
       },
     };
 
-    this.localizationCreationService = {
+    this.localizedIndividualMessagingManagementService = {
       gameTitle: this.gameTitle,
-      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void> {
-        return steelheadLocalizationService.postLocalizedString$(localizedStringData);
+      getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {
+        return steelheadPlayerMessagesService.getPlayerNotifications$(xuid);
       },
-    };
+      deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
+        return steelheadPlayerMessagesService.deletePlayerLocalizedMessage$(xuid, notificationId);
+      },
+    }
 
-    this.localizationSelectionService = {
+    this.localizedGroupMessagingManagementService = {
       gameTitle: this.gameTitle,
-      getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+      getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
+        return steelheadGroupMessagesService.getGroupNotifications$(lspGroupId);
+      },
+      deleteLspGroupCommunityMessage$(
+        lspGroupId: BigNumber,
+        notificationId: string,
+      ): Observable<void> {
+        return steelheadGroupMessagesService.deleteLspGroupLocalizedMessage$(
+          lspGroupId,
+          notificationId,
+        );
       },
     };
   }
@@ -123,6 +161,8 @@ export class SteelheadNotificationsComponent {
   public viewSelectionTypeChange(tabIndex: number): void {
     if (tabIndex === 2) {
       this.isInEditTab = true;
+      this.playerManagementComponent.refreshNotificationList();
+      this.groupManagementComponent.refreshNotificationList();
     } else {
       this.isInEditTab = false;
     }

@@ -1,0 +1,158 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Localized Group Notification Management</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!selectedLspGroup?.id">
+      Select an LSP group to the left to see their notifications.
+    </ng-container>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
+    </mat-paginator>
+    <form *waitForMonitor="getMonitor">
+      <table mat-table [dataSource]="notifications">
+        <ng-container matColumnDef="message">
+          <th mat-header-cell *matHeaderCellDef>Message</th>
+          <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
+            <div class="message" *ngIf="!entry.edit">
+              <span *ngIf="entry.isCommunityMessage"
+                >{{ entry.formGroup.controls.message.value }}
+              </span>
+              <span class="warn" *ngIf="!entry.isCommunityMessage">
+                No message for notifications of type:
+                {{ entry.notification.notificationType }}
+              </span>
+            </div>
+            <mat-form-field *ngIf="entry.edit" appearance="fill" class="message">
+              <mat-label
+                >Message {{ entry.formGroup.controls.message.value.length }}/{{
+                  messageMaxLength
+                }}</mat-label
+              >
+              <textarea
+                matInput
+                [formControl]="entry.formControls.message"
+                cdkTextareaAutosize
+                placeholder="Community Message"
+                type="text"
+                required
+              ></textarea>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="metadata">
+          <th mat-header-cell *matHeaderCellDef>Metadata</th>
+          <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
+            <table class="info-table">
+              <tr>
+                <th>ID:</th>
+                <td>
+                  {{ entry.notification.notificationId }}
+                </td>
+              </tr>
+              <tr>
+                <th>Type:</th>
+                <td>
+                  {{ entry.notification.notificationType }}
+                </td>
+              </tr>
+              <tr>
+                <th>Sent Date:</th>
+                <td>
+                  <standard-absolute-time-utc [timeUtc]="entry.notification.sentDateUtc">
+                  </standard-absolute-time-utc>
+                </td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Expire Date:</th>
+                <td>
+                  <standard-absolute-time-utc
+                    *ngIf="!entry.edit"
+                    [timeUtc]="entry.formGroup.controls.expireDateUtc.value"
+                  >
+                  </standard-absolute-time-utc>
+                </td>
+              </tr>
+            </table>
+            <ng-container *ngIf="entry.edit">
+              <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
+              <datetime-picker
+                [min]="entry.min"
+                [formControl]="entry.formControls.expireDateUtc"
+              ></datetime-picker>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
+            <span class="editable" *ngIf="!entry.edit">
+              <button
+                class="edit"
+                mat-raised-button
+                color="primary"
+                [disabled]="!entry.isCommunityMessage"
+                (click)="editEntry(entry)"
+              >
+                <span [matTooltip]="entry.tooltip">Edit</span>
+              </button>
+              <button
+                mat-raised-button
+                color="warn"
+                matTooltip="Remove notification"
+                (click)="removeNotificationEntry(entry)"
+                clickStop
+                stateManager
+                [monitor]="entry.deleteMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                [disabled]="!verifyDelete.checked"
+              >
+                Delete
+              </button>
+              <mat-checkbox #verifyDelete matTooltip="Check to enable deletion"
+                >Verify Deletion</mat-checkbox
+              >
+            </span>
+            <span class="edit" *ngIf="entry.edit">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="updateNotificationEntry(entry)"
+                [disabled]="!entry.formGroup.valid"
+                matTooltip="Update notification"
+                clickStop
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+              >
+                Submit
+              </button>
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="revertEntryEdit(entry)"
+                matTooltip="Cancel entry edit"
+              >
+                Undo
+              </button>
+            </span>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: columnsToDisplay; let entry"
+          [class.nonEditable]="!entry.isCommunityMessage"
+        ></tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>
