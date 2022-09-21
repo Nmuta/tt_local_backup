@@ -4,7 +4,10 @@ import { GameTitle, LocalizationCategory, SupportedLocalizationLanguageCodes } f
 import { LocalizedString, LocalizedStringsMap } from '@models/localization';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { Observable } from 'rxjs';
-import { SelectLocalizedStringComponent, SelectLocalizedStringContract } from './select-localized-string.component';
+import {
+  SelectLocalizedStringComponent,
+  SelectLocalizedStringContract,
+} from './select-localized-string.component';
 
 class TestSelectLocalizedStringContract implements SelectLocalizedStringContract {
   gameTitle: GameTitle.FM8;
@@ -70,26 +73,27 @@ describe('SelectLocalizedStringComponent', () => {
   });
 
   describe('onLanguageChipSelect', () => {
-    const testMessage: string = 'This is a test message.'
+    const testMessage: string = 'This is a test message.';
     const testLocalizedString: LocalizedString = {
       message: testMessage,
       category: LocalizationCategory.Notifications,
       languageCode: SupportedLocalizationLanguageCodes.en_US,
       isTranslated: true,
-    }
+    };
     beforeEach(() => {
-      component.selectedLocalizedStringCollection = [testLocalizedString]
+      component.selectedLocalizedStringCollection = [testLocalizedString];
     });
 
     describe('with MatChipListChange value', () => {
       it('should set selectedLanguageLocalizedString and displayLanguageChips', () => {
         //Run the method with valid value
-        component.onLanguageChipSelect({value: {languageCode: SupportedLocalizationLanguageCodes.en_US}, source: null})
+        component.onLanguageChipSelect({
+          value: { languageCode: SupportedLocalizationLanguageCodes.en_US },
+          source: null,
+        });
         expect(component.selectedLanguageLocalizedString).toEqual(testLocalizedString);
         expect(component.displayLanguageChips).toEqual(true);
       });
     });
-    
   });
-  
 });
