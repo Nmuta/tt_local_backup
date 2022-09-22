@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
+using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Organization.Client;
 using Microsoft.VisualStudio.Services.WebApi;
 
@@ -13,8 +14,7 @@ namespace StewardGitApi
 {
     internal class GitHelper
     {
-        //TODO simplify branch naming scheme, use commitId SHA-1
-        private const string _autogenBranchNameRoot = "steward-api-autogen/vusername-383jgi";
+        private const string _autogenBranchNameRoot = "steward-api-autogen";
 
         internal static async Task<TeamProjectReference> GetProjectAsync(AzureContext context)
         {
@@ -28,17 +28,16 @@ namespace StewardGitApi
             {
                 ProjectHttpClient projectClient = context.Connection.GetClient<ProjectHttpClient>();
 
-                projectRef = await projectClient.GetProject(pId).ConfigureAwait(false);
+                try
+                {
+                    projectRef = await projectClient.GetProject(pId).ConfigureAwait(false);
+                }
+                catch (ProjectDoesNotExistException) { projectRef = null; }
             }
 
             if (projectRef != null)
             {
                 context.Settings.SetValue(pId, projectRef);
-            }
-            else
-            {
-                // TODO ret null?
-                throw new ProjectNotFoundException($"No project found with id: {pId}");
             }
 
             return projectRef;
@@ -61,17 +60,10 @@ namespace StewardGitApi
             return context.Connection.AuthorizedIdentity.ProviderDisplayName;
         }
 
-        internal static string GetCurrentUserUniqueName(AzureContext context)
-        {
-            // TODO get unique name (v-cactopus)
-            //return context.Connection.AuthorizedIdentity.??
-            throw new NotImplementedException();
-        }
-
         internal static async Task<GitItem> GetItemAsync(AzureContext context, string path, GitObjectType gitObjectType)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
-            TeamProjectReference project = await GitHelper.GetProjectAsync(context);
+            TeamProjectReference project = await GetProjectAsync(context);
             GitRepository repo = await GetRepositoryAsync(context);
 
             // get a filename we know exists
@@ -89,8 +81,11 @@ namespace StewardGitApi
         internal static async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(AzureContext context)
         {
             GitHttpClient gitHttpClient = context.Connection.GetClient<GitHttpClient>();
-            var repos = await gitHttpClient.GetRepositoriesAsync(context.Settings.ProjectId).ConfigureAwait(false);
-            return repos;
+            try
+            {
+                return await gitHttpClient.GetRepositoriesAsync(context.Settings.ProjectId).ConfigureAwait(false);
+            }
+            catch (ProjectDoesNotExistException) { return new List<GitRepository>(); }
         }
 
         internal static async Task<GitRepository> GetRepositoryAsync(AzureContext context)
@@ -105,27 +100,26 @@ namespace StewardGitApi
             {
                 GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
 
-                repo = Guid.Empty == projectId
-                    ? await gitClient.GetRepositoryAsync(repoId)
-                    : await gitClient.GetRepositoryAsync(projectId, repoId);
+                try
+                {
+                    repo = Guid.Empty == projectId
+                        ? await gitClient.GetRepositoryAsync(repoId)
+                        : await gitClient.GetRepositoryAsync(projectId, repoId);
+                }
+                catch (VssServiceException) { repo = null; }
             }
 
             if (repo != null)
             {
                 context.Settings.SetValue(repoId.ToString(), repo);
             }
-            else
-            {
-                // TODO ret null or create a project here?
-                throw new NoRepositoryFoundException($"No repos found with Id: {repoId}");
-            }
 
             return repo;
         }
 
-        public static async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(AzureContext context, int? mostRecentPullRequests = null)
+        public static async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(AzureContext context, int? mostRecent = null)
         {
-            IEnumerable<GitPullRequest> gitPullRequests = await GetPullRequestsIntoDefaultBranchAsync(context, topPRs: mostRecentPullRequests).ConfigureAwait(false);
+            IEnumerable<GitPullRequest> gitPullRequests = await GetPullRequestsIntoDefaultBranchAsync(context, mostRecent: mostRecent).ConfigureAwait(false);
             return gitPullRequests.Select(pr => pr.Status);
         }
 
@@ -157,7 +151,7 @@ namespace StewardGitApi
 
             Console.WriteLine("repo {0}", repo.Name);
             Console.WriteLine("{0} (#{1}) {2} -> {3}",
-                pr.Title.Substring(0, Math.Min(40, pr.Title.Length)),
+                pr.Title[..Math.Min(40, pr.Title.Length)],
                 pr.PullRequestId,
                 pr.SourceRefName,
                 pr.TargetRefName);
@@ -166,7 +160,7 @@ namespace StewardGitApi
         }
 
         // TODO consider making optional parameter non-optional or set a const default for topPrs
-        public static async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(AzureContext context, PullRequestStatus status = PullRequestStatus.NotSet, int? topPRs = null)
+        public static async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(AzureContext context, PullRequestStatus status = PullRequestStatus.NotSet, int? mostRecent = null)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
 
@@ -182,15 +176,15 @@ namespace StewardGitApi
                 {
                     TargetRefName = branchName, 
                     Status = status,
-                    // various other search criteria
+                    // other search criteria
                 }, 
-                top: topPRs).ConfigureAwait(false);
+                top: mostRecent).ConfigureAwait(false);
 
             Console.WriteLine("project {0}, repo {1}", project.Name, repo.Name);
             foreach (GitPullRequest pr in prs)
             {
                 Console.WriteLine("{0} #{1} {2} -> {3}",
-                    pr.Title[..Math.Min(40, pr.Title.Length)], //substring(0, math.min(40, pr.Title.Length))
+                    pr.Title[..Math.Min(40, pr.Title.Length)],
                     pr.PullRequestId,
                     pr.SourceRefName,
                     pr.TargetRefName);
@@ -199,8 +193,7 @@ namespace StewardGitApi
             return prs;
         }
 
-        // TODO consider returning the GitRefUpdateResult object
-        internal static async Task<GitPush> CommitAndPushAsync(AzureContext context, IEnumerable<CommitRefProxy> proxyChanges)
+        internal static async Task<(GitPush gitPush, GitRefUpdateResult result)> CommitAndPushAsync(AzureContext context, IEnumerable<CommitRefProxy> proxyChanges)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
 
@@ -212,9 +205,10 @@ namespace StewardGitApi
             GitRef defaultBranch = (await gitClient.GetRefsAsync(repo.Id, filter: defaultBranchName)).First();
 
             // Craft the branch and commit that we'll push
+            string refId = GetUniqueRefId();
             GitRefUpdate newBranch = new()
             {
-                Name = $"refs/heads/{_autogenBranchNameRoot}",
+                Name = $"refs/heads/{BuildBranchName(context, refId)}",
                 OldObjectId = defaultBranch.ObjectId,
             };
 
@@ -230,8 +224,8 @@ namespace StewardGitApi
             Console.WriteLine("project {0}, repo {1}", project.Name, repo.Name);
             Console.WriteLine("push {0} updated {1} to {2}", push.PushId, push.RefUpdates.First().Name, push.Commits.First().CommitId);
 
-            // Now clean up, delete the branch
-            _ = (await gitClient.UpdateRefsAsync(
+            // Clean up, delete the branch
+            GitRefUpdateResult result = (await gitClient.UpdateRefsAsync(
                new GitRefUpdate[]
                {
                     new GitRefUpdate()
@@ -246,7 +240,7 @@ namespace StewardGitApi
             // Pushes and commits are immutable, so no way to clean them up
             // but the commit will be unreachable after this
 
-            return push;
+            return (push, result);
         }
 
         private static string WithoutRefsPrefix(string refName)
@@ -261,6 +255,18 @@ namespace StewardGitApi
         private static string GetUniqueRefId()
         {
             return Guid.NewGuid().ToString("D")[..6];
+        }
+
+        private static string BuildBranchName(AzureContext context, string refId)
+        {
+            StringBuilder sb = new();
+            sb.Append(_autogenBranchNameRoot);
+            sb.Append('/');
+            var name = string.Concat(GetCurrentUserDisplayName(context).Split()); // remove whitespace
+            sb.Append(name);
+            sb.Append('-');
+            sb.Append(refId);
+            return sb.ToString();
         }
 
         private static IEnumerable<GitCommitRef> ToGitCommitRef(IEnumerable<CommitRefProxy> proxyCommits)
@@ -279,7 +285,7 @@ namespace StewardGitApi
                             ChangeType = c.VersionControlChangeType,
                             Item = new GitItem()
                             {
-                                Path = $"/{_autogenBranchNameRoot}-{GetUniqueRefId()}/{c.PathToFile}"
+                                Path = $"/{c.PathToFile}"
                             },
                             NewContent = new ItemContent()
                             {

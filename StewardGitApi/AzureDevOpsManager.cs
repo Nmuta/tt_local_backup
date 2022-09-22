@@ -12,6 +12,14 @@ using Microsoft.VisualStudio.Services.Organization.Client;
 
 namespace StewardGitApi
 {
+    /// <summary>
+    /// Manages Azure Dev Ops git operations within Steward.
+    /// </summary>
+    /// <remarks>
+    /// <c> await AzureContext.Connection.ConnectAsync()</c>
+    /// verifies a connection because AzureContext.Dispose()
+    /// possibly called resulting in Connection.Disconnect()
+    /// </remarks>
     public class AzureDevOpsManager : IAzureDevOpsManager
     {
         internal AzureContext AzureContext { get; }
@@ -61,14 +69,12 @@ namespace StewardGitApi
         {
             await AzureContext.Connection.ConnectAsync();
             IEnumerable<GitRepository> repos = await GitHelper.GetRepositoriesAsync(AzureContext).ConfigureAwait(false);
-            OnSuccess?.Invoke(repos != null && repos.Any());
+            OnSuccess?.Invoke(repos.Any());
             return repos;
         }
 
         public async Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType, Action<bool> OnSuccess = null)
         {
-            // Ensure connection because AzureContext.Dispose()
-            // possibly called, resulting in Connection.Disconnect()
             await AzureContext.Connection.ConnectAsync();
             GitItem item = await GitHelper.GetItemAsync(AzureContext, path, gitObjectType).ConfigureAwait(false);
             OnSuccess?.Invoke(item != null);
@@ -78,29 +84,27 @@ namespace StewardGitApi
         public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy proxyChange, Action<bool> OnSuccess = null)
         {
             _ = Check.ForNull(proxyChange, nameof(proxyChange));
-            proxyChange.VersionControlChangeType = VersionControlChangeType.Add; // override user
+            proxyChange.VersionControlChangeType = VersionControlChangeType.Add;
             await AzureContext.Connection.ConnectAsync();
-            GitPush pushResult = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { proxyChange }).ConfigureAwait(false);
-            OnSuccess?.Invoke(pushResult != null && pushResult.Commits.First().ChangeCounts.Count > 0);
-            return pushResult;
+            (GitPush gitPush, GitRefUpdateResult result) = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { proxyChange }).ConfigureAwait(false);
+            OnSuccess?.Invoke(result.Success);
+            return gitPush;
         }
 
         public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> proxyChanges, Action<bool> OnSuccess = null)
         {
             _ = Check.ForNullOrEmpty(proxyChanges, nameof(proxyChanges));
             await AzureContext.Connection.ConnectAsync();
-            GitPush pushResult = await GitHelper.CommitAndPushAsync(AzureContext, proxyChanges).ConfigureAwait(false);
-            OnSuccess?.Invoke(pushResult != null && pushResult.Commits.First().ChangeCounts.Count > 0);
-            return pushResult;
+            (GitPush gitPush, GitRefUpdateResult result) = await GitHelper.CommitAndPushAsync(AzureContext, proxyChanges).ConfigureAwait(false);
+            OnSuccess?.Invoke(result.Success);
+            return gitPush;
         }
 
-        public async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(int? mostRecentPullRequests = null, Action<bool> OnSuccess = null)
+        public async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(int? mostRecent = null, Action<bool> OnSuccess = null)
         {
-            // TODO add nullable case to Check.cs
-            if (mostRecentPullRequests <= 0)
-                throw new ArgumentOutOfRangeException(nameof(mostRecentPullRequests));
+            _ = Check.ForGreaterThanZero(mostRecent, nameof(mostRecent));
             await AzureContext.Connection.ConnectAsync();
-            IEnumerable<PullRequestStatus> prStatuses = await GitHelper.GetPullRequestStatusAsync(AzureContext, mostRecentPullRequests);
+            IEnumerable<PullRequestStatus> prStatuses = await GitHelper.GetPullRequestStatusAsync(AzureContext, mostRecent);
             OnSuccess?.Invoke(prStatuses.Any());
             return prStatuses;
         }
@@ -113,14 +117,12 @@ namespace StewardGitApi
             return pullRequest;
         }
 
-        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecentPullRequests = null, Action<bool> OnSuccess = null)
+        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecent = null, Action<bool> OnSuccess = null)
         {
-            // TODO add nullable case to Check.cs
-            if (mostRecentPullRequests <= 0)
-                throw new ArgumentOutOfRangeException(nameof(mostRecentPullRequests));
+            _ = Check.ForGreaterThanZero(mostRecent, nameof(mostRecent));
             await AzureContext.Connection.ConnectAsync();
-            IEnumerable<GitPullRequest> pullRequests = await GitHelper.GetPullRequestsIntoDefaultBranchAsync(AzureContext, status, mostRecentPullRequests); // expose top,status?
-            OnSuccess?.Invoke(OnSuccess != null && pullRequests.Any());
+            IEnumerable<GitPullRequest> pullRequests = await GitHelper.GetPullRequestsIntoDefaultBranchAsync(AzureContext, status, mostRecent);
+            OnSuccess?.Invoke(true);
             return pullRequests;
         }
 

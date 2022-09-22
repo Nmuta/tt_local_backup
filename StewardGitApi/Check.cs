@@ -76,6 +76,21 @@ namespace StewardGitApi
         }
 
         /// <summary>
+        /// Checks if the nullable integer is greater than zero.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="message">The message.</param>
+        public static int? ForGreaterThanZero(int? target, string parameterName, string message = null)
+        {
+            if (target <= 0)
+            {
+                throw new ArgumentOutOfRangeException(parameterName, message ?? $"{parameterName} must be greater than zero.");
+            }
+            return target;
+        }
+
+        /// <summary>
         /// Checks if the integer is greater than or equal to zero.
         /// </summary>
         /// <param name="target">The target.</param>
