@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { LspGroup } from '@models/lsp-group';
