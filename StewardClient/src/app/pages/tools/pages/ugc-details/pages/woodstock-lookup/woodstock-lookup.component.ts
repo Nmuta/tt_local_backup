@@ -39,6 +39,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public hideMonitor = new ActionMonitor('Post Hide UGC');
 
   public userHasWritePerms: boolean = false;
+  public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
   public featureMatToolip: string = null;
@@ -64,6 +65,10 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     this.userHasWritePerms = this.permissionsService.currentUserHasWritePermission(
       PermissionServiceTool.FeatureUgc,
+    );
+
+    this.canChangeGeoFlags = !this.permissionsService.currentUserHasWritePermission(
+      PermissionServiceTool.SetUgcGeoFlags,
     );
 
     mergedParamMap$(this.route)
@@ -171,8 +176,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
   /** Updates the geoflags contract after submit. */
   public updateGeoFlagsModel(geoFlags: ToggleListOptions): void {
-    const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);;
+    const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);
     newGeoFlagsContract.initialModel = geoFlags;
-    this.geoFlagsToggleListEzContract = newGeoFlagsContract
+    this.geoFlagsToggleListEzContract = newGeoFlagsContract;
   }
 }

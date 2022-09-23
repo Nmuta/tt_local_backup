@@ -5,9 +5,7 @@
       <ng-container *ngIf="!!contract.error"
         ><mat-icon color="warn">warn</mat-icon>{{ contract.error }}</ng-container
       >
-      <ng-container *ngIf="!contract.error"
-        >Toggle and submit flags</ng-container
-      >
+      <ng-container *ngIf="!contract.error">Toggle and submit flags</ng-container>
     </mat-card-subtitle>
     <ng-content select="help-popover-icon"></ng-content>
     <div class="action-wrapper">
@@ -20,7 +18,7 @@
         stateManager
         [monitor]="submitMonitor"
         monitorDisable
-        [disabled]="!formControl.dirty"
+        [disabled]="!formControl.dirty || formControl.disabled"
         matTooltip="Clear Changes"
       >
         <mat-icon>undo</mat-icon>
@@ -39,21 +37,21 @@
         monitorWarnSnackbar
         monitorCompleteSnackbar
         [verifyWith]="verifyDelete"
-        [disabled]="!!contract.error"
+        [disabled]="!!contract.error || formControl.disabled"
       >
         <mat-icon>done</mat-icon>
       </button>
       <mat-checkbox
         #verifyDelete
         matTooltip="Verify Submit"
-        [disabled]="!!contract.error"
+        [disabled]="!!contract.error || formControl.disabled"
       ></mat-checkbox>
       <inline-spinner [monitor]="submitMonitor"></inline-spinner>
     </div>
   </mat-card-title-group>
 
   <toggle-list
-    [disabled]="!!contract.error"
+    [disabled]="!!contract.error || formControl.disabled"
     [formControl]="formControl"
     [order]="contract.order"
     [initial]="contract.initialModel"

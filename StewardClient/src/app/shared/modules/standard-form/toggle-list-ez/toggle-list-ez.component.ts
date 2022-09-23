@@ -26,6 +26,9 @@ export class ToggleListEzComponent extends BaseComponent implements OnChanges {
   @Output() public afterSubmitted = new EventEmitter<ToggleListOptions>();
   /** The service contract for this component. */
   @Input() public contract: ToggleListEzContract;
+  @Input() public set disabled(value: boolean) {
+    value ? this.formControl.disable() : this.formControl.enable();
+  };
 
   public submitMonitor = new ActionMonitor('Submit Toggle List');
   public formControl = new FormControl();
