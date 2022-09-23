@@ -95,6 +95,44 @@ export enum DeviceType {
   XboxSeriesXS = 'XboxSeriesXS',
 }
 
+/** Enum for notification types. */
+export enum NotificationType {
+  CommunityMessage = 'CommunityMessage',
+  PatchNotes = 'PatchNotes',
+}
+
+/** Enum for localization categories. */
+export enum LocalizationCategory {
+  MOTD = 'MOTD', //Casing matches that of Service Enum 'LocalizationCategory'. Do not change.
+  PatchNotes = 'PatchNotes',
+  Notifications = 'Notifications',
+  Gifts = 'Gifts',
+}
+
+/** Enum for localization categories language + locales. */
+export enum SupportedLocalizationLanguageCodes {
+  cs_CZ = 'cs-CZ',
+  de_DE = 'de-DE',
+  en_US = 'en-US',
+  es_ES = 'es-ES',
+  es_MX = 'es-MX',
+  fi_FI = 'fi-FI',
+  fr_FR = 'fr-FR',
+  hu_HU = 'hu-HU',
+  it_IT = 'it-IT',
+  ja_JP = 'ja-JP',
+  ko_KR = 'ko-KR',
+  nb_NO = 'nb-NO',
+  nl_NL = 'nl-NL',
+  pl_PL = 'pl-PL',
+  pt_BR = 'bt-BR',
+  ru_RU = 'ru-RU',
+  sv_SE = 'sv-SE',
+  tr_TR = 'tr-TR',
+  zh_CN = 'zh-CN',
+  zh_TW = 'zh-TW',
+}
+
 /** Enum for Steward error codes. */
 export enum StewardErrorCode {
   BadRequest = 'BadRequest',

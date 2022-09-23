@@ -4,6 +4,7 @@ import { chain } from 'lodash';
 export const NEGATIVE_ONE = new BigNumber(-1);
 export const ZERO = new BigNumber(0);
 export const ONE = new BigNumber(1);
+export const DefaultGiftExpireTimeSpanInDays = ZERO;
 
 /** Tries to parse value into BigNumber, returns null if NaN. */
 export function tryParseBigNumber(value: BigNumber | number | string): BigNumber {

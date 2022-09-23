@@ -1,11 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { LspGroup } from '@models/lsp-group';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import BigNumber from 'bignumber.js';
-import { SteelheadGroupNotificationManagementComponent } from '../components/notification-management/group-notification-management/steelhead/steelhead-group-notification-management.component';
-import { SteelheadIndividualNotificationManagementComponent } from '../components/notification-management/individual-notification-management/steelhead/steelhead-individual-notification-management.component';
+import { LocalizedMessagingContract } from '../components/localized-messaging/localized-messaging.component';
+import { CommunityMessageResult, LocalizedMessage } from '@models/community-message';
+import { Observable } from 'rxjs';
+import { SteelheadPlayersMessagesService } from '@shared/services/api-v2/steelhead/players/messages/steelhead-players-messages.service';
+import { SteelheadGroupMessagesService } from '@services/api-v2/steelhead/group/messages/steelhead-group-messages.service';
+import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
+import { LocalizedStringsMap, LocalizedStringData } from '@models/localization';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
 /**
  *  Steelhead notification component.
@@ -15,10 +22,9 @@ import { SteelheadIndividualNotificationManagementComponent } from '../component
   styleUrls: ['./steelhead-notifications.component.scss'],
 })
 export class SteelheadNotificationsComponent {
-  @ViewChild(SteelheadGroupNotificationManagementComponent)
-  private groupManagementComponent: SteelheadGroupNotificationManagementComponent;
-  @ViewChild(SteelheadIndividualNotificationManagementComponent)
-  private playerManagementComponent: SteelheadIndividualNotificationManagementComponent;
+  public sendMessageService: LocalizedMessagingContract;
+  public localizationCreationService: CreateLocalizedStringContract;
+  public localizationSelectionService: SelectLocalizedStringContract;
 
   public gameTitle = GameTitle.FM8;
   /** The selected player identities */
@@ -31,6 +37,55 @@ export class SteelheadNotificationsComponent {
   public isUsingPlayerIdentities: boolean = true;
   /** True when Edit/Delete tab is selected. */
   public isInEditTab: boolean = false;
+
+  constructor(
+    steelheadPlayersMessagesService: SteelheadPlayersMessagesService,
+    steelheadGroupMessagesService: SteelheadGroupMessagesService,
+    steelheadLocalizationService: SteelheadLocalizationService,
+  ) {
+    this.sendMessageService = {
+      gameTitle: this.gameTitle,
+      lockStartTime: false,
+      sendLocalizedMessage$(
+        xuids: BigNumber[],
+        localizedMessage: LocalizedMessage,
+      ): Observable<CommunityMessageResult<BigNumber>[]> {
+        return steelheadPlayersMessagesService.postSendLocalizedMessageToXuids$(
+          xuids,
+          localizedMessage,
+        );
+      },
+      sendLspLocalizedMessage$(
+        lspGroupId: BigNumber,
+        localizedMessage: LocalizedMessage,
+      ): Observable<CommunityMessageResult<BigNumber>> {
+        return steelheadGroupMessagesService.postSendLocalizedMessageToLspGroup$(
+          lspGroupId,
+          localizedMessage,
+        );
+      },
+      selectLocalizedStringContract: {
+        gameTitle: this.gameTitle,
+        getLocalizedStrings$(): Observable<LocalizedStringsMap> {
+          return steelheadLocalizationService.getLocalizedStrings$();
+        },
+      },
+    };
+
+    this.localizationCreationService = {
+      gameTitle: this.gameTitle,
+      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void> {
+        return steelheadLocalizationService.postLocalizedString$(localizedStringData);
+      },
+    };
+
+    this.localizationSelectionService = {
+      gameTitle: this.gameTitle,
+      getLocalizedStrings$(): Observable<LocalizedStringsMap> {
+        return steelheadLocalizationService.getLocalizedStrings$();
+      },
+    };
+  }
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {
@@ -66,10 +121,8 @@ export class SteelheadNotificationsComponent {
 
   /** Reloads if group selection has changed.; */
   public viewSelectionTypeChange(tabIndex: number): void {
-    if (tabIndex === 1) {
+    if (tabIndex === 2) {
       this.isInEditTab = true;
-      this.playerManagementComponent.refreshNotificationList();
-      this.groupManagementComponent.refreshNotificationList();
     } else {
       this.isInEditTab = false;
     }

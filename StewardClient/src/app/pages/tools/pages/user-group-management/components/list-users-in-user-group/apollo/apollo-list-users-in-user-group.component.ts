@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJob } from '@models/background-job';
+import { BasicPlayerAction } from '@models/basic-player';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
-import { UserGroupManagementResponse } from '@models/user-group-management-response';
 import { ApolloUserGroupService } from '@services/api-v2/apollo/user-group/apollo-user-group.service';
-import { Observable } from 'rxjs';
+import { first } from 'lodash';
+import { map, Observable } from 'rxjs';
 import { ListUsersInGroupServiceContract } from '../list-users-in-user-group.component';
 
 /** Tool that creates new user groups. */
@@ -36,8 +37,10 @@ export class ApolloListUsersInGroupComponent extends BaseComponent {
       deletePlayerFromUserGroup$(
         playerList: BasicPlayerList,
         userGroup: LspGroup,
-      ): Observable<UserGroupManagementResponse[]> {
-        return userGroupService.removeUsersFromGroup$(userGroup.id, playerList);
+      ): Observable<BasicPlayerAction> {
+        return userGroupService
+          .removeUsersFromGroup$(userGroup.id, playerList)
+          .pipe(map(response => first(response)));
       },
       deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<void> {
         return userGroupService.removeAllUsersFromGroup$(userGroup.id);

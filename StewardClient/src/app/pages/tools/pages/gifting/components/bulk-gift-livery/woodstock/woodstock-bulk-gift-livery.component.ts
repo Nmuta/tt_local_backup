@@ -44,6 +44,7 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
 
     this.service = {
       gameTitle: GameTitle.FH5,
+      allowSettingExpireDate: true,
       /** Gets a player's livery. */
       getLivery$(liveryId: string): Observable<PlayerUgcItem> {
         return woodstockService.getPlayerUgcItem$(liveryId, UgcType.Livery);
@@ -53,6 +54,7 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
         liveryIds: string[],
         xuids: BigNumber[],
         giftReason: string,
+        expireTimeSpanInDays: BigNumber,
       ): Observable<BackgroundJob<unknown>> {
         if (!xuids || xuids.length <= 0) {
           return throwError(
@@ -60,19 +62,30 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
           );
         }
 
-        return playersGiftService.giftLiveriesByXuids$(giftReason, liveryIds, xuids);
+        return playersGiftService.giftLiveriesByXuids$(
+          giftReason,
+          liveryIds,
+          xuids,
+          expireTimeSpanInDays,
+        );
       },
       /** Gifts liveries to a LSP user group. */
       giftLiveriesToLspGroup$(
         liveryIds: string[],
         lspGroup: LspGroup,
         giftReason: string,
+        expireTimeSpanInDays: BigNumber,
       ): Observable<GiftResponse<BigNumber>> {
         if (!lspGroup) {
           return throwError(new Error('Failed to gift livery: user group was not provided'));
         }
 
-        return groupGiftService.giftLiveriesByUserGroup$(giftReason, liveryIds, lspGroup.id);
+        return groupGiftService.giftLiveriesByUserGroup$(
+          giftReason,
+          liveryIds,
+          lspGroup.id,
+          expireTimeSpanInDays,
+        );
       },
     };
   }

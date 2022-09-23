@@ -20,6 +20,8 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 
 /** The create user group module. */
 @NgModule({
@@ -47,7 +49,9 @@ import { PipesModule } from '@shared/pipes/pipes.module';
     StateManagersModule,
     MatButtonToggleModule,
     MatCardModule,
+    ClipboardModule,
     PipesModule,
+    StandardCopyModule,
   ],
   exports: [
     WoodstockListUsersInGroupComponent,

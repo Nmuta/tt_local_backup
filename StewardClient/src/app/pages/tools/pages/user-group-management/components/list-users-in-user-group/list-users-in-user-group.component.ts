@@ -4,21 +4,24 @@ import {
   Input,
   OnChanges,
   OnInit,
+  QueryList,
   SimpleChanges,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
 import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
 import { BackgroundJob } from '@models/background-job';
+import { BasicPlayer, BasicPlayerAction } from '@models/basic-player';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
-import { UserGroupManagementResponse } from '@models/user-group-management-response';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
@@ -26,7 +29,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
 import { chain, remove } from 'lodash';
-import { Observable, takeUntil, switchMap } from 'rxjs';
+import { Observable, takeUntil, switchMap, tap } from 'rxjs';
 
 export interface ListUsersInGroupServiceContract {
   gameTitle: GameTitle;
@@ -38,7 +41,7 @@ export interface ListUsersInGroupServiceContract {
   deletePlayerFromUserGroup$(
     playerList: BasicPlayerList,
     userGroup: LspGroup,
-  ): Observable<UserGroupManagementResponse[]>;
+  ): Observable<BasicPlayerAction>;
   deletePlayersFromUserGroupUsingBackgroundTask$(
     playerList: BasicPlayerList,
     userGroup: LspGroup,
@@ -48,6 +51,17 @@ export interface ListUsersInGroupServiceContract {
     userGroup: LspGroup,
   ): Observable<BackgroundJob<void>>;
   deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<void>;
+}
+
+enum UserGroupManagementAction {
+  Add = 'add',
+  Remove = 'remove',
+}
+
+interface UserGroupManagementFailures {
+  players: BasicPlayerAction[];
+  action: UserGroupManagementAction;
+  copyToClipboard?: string;
 }
 
 /** A player object within a user group. */
@@ -69,6 +83,7 @@ export class ListUsersInGroupComponent
   implements OnChanges, OnInit, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChildren(MatCheckbox) checkboxes: QueryList<MatCheckbox>;
 
   /** Service contract for create user groups component. */
   @Input() service: ListUsersInGroupServiceContract;
@@ -83,10 +98,10 @@ export class ListUsersInGroupComponent
 
   public formGroup = new FormGroup(this.formControls);
 
-  public getMonitor = new ActionMonitor('Get players in user group.');
-  public deleteAllMonitor = new ActionMonitor('Delete all players in user group.');
-  public deletePlayersMonitor = new ActionMonitor('Delete specified players in user group.');
-  public addPlayersMonitor = new ActionMonitor('Add specified players in user group.');
+  public getMonitor = new ActionMonitor('Get players in user group');
+  public deleteAllMonitor = new ActionMonitor('Delete all players in user group');
+  public deletePlayersMonitor = new ActionMonitor('Delete specified players in user group');
+  public addPlayersMonitor = new ActionMonitor('Add specified players in user group');
   public allPlayers: PlayerInUserGroup[] = [];
   public userGamertags: boolean = false;
 
@@ -95,6 +110,7 @@ export class ListUsersInGroupComponent
   public readonly incorrectPermsTooltip = 'This action is restricted for your user role';
   public displayedColumns = ['xuid', 'gamertag', 'actions'];
   public playersDataSource = new BetterMatTableDataSource<PlayerInUserGroup>();
+  public failedActionForUsers: UserGroupManagementFailures;
 
   constructor(
     private readonly backgroundJobService: BackgroundJobService,
@@ -150,6 +166,10 @@ export class ListUsersInGroupComponent
   /** Deletes specified users from a user group. */
   public deleteUsersInGroup(): void {
     this.deletePlayersMonitor = this.deletePlayersMonitor.repeat();
+    this.failedActionForUsers = {
+      players: [],
+      action: UserGroupManagementAction.Remove,
+    };
 
     const playerList = this.getBasicPlayerList(
       this.formControls.userIdentifications.value,
@@ -160,14 +180,14 @@ export class ListUsersInGroupComponent
       .deletePlayersFromUserGroupUsingBackgroundTask$(playerList, this.userGroup)
       .pipe(
         switchMap(response => {
-          return this.backgroundJobService.waitForBackgroundJobToComplete<UserGroupManagementResponse>(
+          return this.backgroundJobService.waitForBackgroundJobToComplete<BasicPlayer>(
             response as BackgroundJob<void>,
           );
         }),
         this.deletePlayersMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(() => {
+      .subscribe((response: BasicPlayerAction[]) => {
         this.formGroup.reset({
           useGamertags: this.formControls.useGamertags.value,
         });
@@ -175,12 +195,23 @@ export class ListUsersInGroupComponent
         this.playersDataSource.data = this.allPlayers;
         this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
+
+        const failedUsers = response.filter(data => !!data.error);
+        this.failedActionForUsers.players = failedUsers;
+        this.failedActionForUsers.copyToClipboard = failedUsers
+          .map(player => player.gamertag ?? player.xuid)
+          .join('\n');
+        this.clearCheckboxes();
       });
   }
 
   /** Adds specified users to a user group. */
   public addUsersInGroup(): void {
     this.addPlayersMonitor = this.addPlayersMonitor.repeat();
+    this.failedActionForUsers = {
+      players: [],
+      action: UserGroupManagementAction.Add,
+    };
 
     const playerList = this.getBasicPlayerList(
       this.formControls.userIdentifications.value,
@@ -191,14 +222,14 @@ export class ListUsersInGroupComponent
       .addPlayersToUserGroupUsingBackgroundTask$(playerList, this.userGroup)
       .pipe(
         switchMap(response => {
-          return this.backgroundJobService.waitForBackgroundJobToComplete<UserGroupManagementResponse>(
+          return this.backgroundJobService.waitForBackgroundJobToComplete<BasicPlayer>(
             response as BackgroundJob<void>,
           );
         }),
         this.addPlayersMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(() => {
+      .subscribe((response: BasicPlayerAction[]) => {
         this.formGroup.reset({
           useGamertags: this.formControls.useGamertags.value,
         });
@@ -206,6 +237,13 @@ export class ListUsersInGroupComponent
         this.playersDataSource.data = this.allPlayers;
         this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
+
+        const failedUsers = response.filter(data => !!data.error);
+        this.failedActionForUsers.players = failedUsers;
+        this.failedActionForUsers.copyToClipboard = failedUsers
+          .map(player => player.gamertag ?? player.xuid)
+          .join('\n');
+        this.clearCheckboxes();
       });
   }
 
@@ -220,16 +258,21 @@ export class ListUsersInGroupComponent
 
     this.service
       .deletePlayerFromUserGroup$(playerList, this.userGroup)
-      .pipe(playerToDelete.deleteMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(result => {
-        if (result[0].error === null) {
-          remove(this.allPlayers, player => {
-            return player?.xuid.isEqualTo(playerToDelete.xuid);
-          });
-          this.playersDataSource.data = this.allPlayers;
-        } else {
-          throw new Error(result[0].error.message);
-        }
+      .pipe(
+        // Utilize the action monitor error logic
+        tap((result: BasicPlayerAction) => {
+          if (!!result?.error) {
+            throw new Error('Failed to remove player from user group');
+          }
+        }),
+        playerToDelete.deleteMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        remove(this.allPlayers, player => {
+          return player?.xuid.isEqualTo(playerToDelete.xuid);
+        });
+        this.playersDataSource.data = this.allPlayers;
       });
   }
 
@@ -308,6 +351,12 @@ export class ListUsersInGroupComponent
         xuids: xuids,
         gamertags: null,
       };
+    }
+  }
+
+  private clearCheckboxes(): void {
+    for (const checkbox of this.checkboxes) {
+      checkbox.checked = false;
     }
   }
 }

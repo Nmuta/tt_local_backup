@@ -20,10 +20,5 @@
         /// </summary>
         /// <remarks><see cref="LocalizationCategory" />.</remarks>
         public string Category { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the max length.
-        /// </summary>
-        public int MaxLength { get; set; }
     }
 }

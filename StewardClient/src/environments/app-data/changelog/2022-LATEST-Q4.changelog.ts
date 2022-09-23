@@ -18,6 +18,21 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
+      uuid: '5d7bad3d-5f99-4f6f-a77f-c08d579c75d3',
+      shortText: 'Add localized message creation and sending',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '47a3b05e-8d58-4f6d-a757-c8ea481612ac',
+      shortText: 'Add expiration date field for gifting',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: '0db8d052-9ff4-435d-8e3c-5a0c6990eeec',
+      shortText: 'Show error for players that failed to be added or removed',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '61b0d6c8-269e-49e3-b208-b4bcbfe746cf',
       shortText: 'Display and filter assists on leaderboard scores',

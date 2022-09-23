@@ -2,10 +2,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import faker from '@faker-js/faker';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { BasicPlayerList } from '@models/basic-player-list';
-import { GameTitle } from '@models/enums';
+import { GameTitle, UserRole } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
+import { UserModel } from '@models/user.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
@@ -21,13 +23,20 @@ describe('ListUsersInGroupComponent', () => {
   let fixture: ComponentFixture<ListUsersInGroupComponent>;
   let mockStore: Store;
 
+  const baseUserModel = {
+    emailAddress: faker.datatype.string(),
+    role: UserRole.LiveOpsAdmin,
+    name: faker.datatype.string(),
+    objectId: faker.datatype.uuid(),
+  } as UserModel;
+
   const mockService: ListUsersInGroupServiceContract = {
     gameTitle: GameTitle.FH5,
     getPlayersInUserGroup$: (_userGroup: LspGroup, _startIndex: number, _maxResults: number) => {
       return of(undefined);
     },
     deletePlayerFromUserGroup$: (_playerList: BasicPlayerList, _userGroup: LspGroup) => {
-      return of([]);
+      return of(undefined);
     },
     deleteAllPlayersFromUserGroup$: (_userGroup: LspGroup) => {
       return of(undefined);
@@ -68,6 +77,69 @@ describe('ListUsersInGroupComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: ngOnInit', () => {
+    // Test good/bad user roles for each perm variable
+    describe('When user has write perms', () => {
+      beforeEach(() => {
+        baseUserModel.role = UserRole.LiveOpsAdmin;
+        mockStore.selectSnapshot = jasmine
+          .createSpy('selectSnapshot')
+          .and.returnValue(baseUserModel);
+      });
+
+      it('should set userHasWritePerms to true', () => {
+        component.ngOnInit();
+
+        expect(component.userHasWritePerms).toBeTruthy();
+      });
+    });
+
+    describe('When user does not have write perms', () => {
+      beforeEach(() => {
+        baseUserModel.role = UserRole.SupportAgentNew;
+        mockStore.selectSnapshot = jasmine
+          .createSpy('selectSnapshot')
+          .and.returnValue(baseUserModel);
+      });
+
+      it('should set userHasWritePerms to false', () => {
+        component.ngOnInit();
+
+        expect(component.userHasWritePerms).toBeFalsy();
+      });
+    });
+
+    describe('When user has remove all perms', () => {
+      beforeEach(() => {
+        baseUserModel.role = UserRole.LiveOpsAdmin;
+        mockStore.selectSnapshot = jasmine
+          .createSpy('selectSnapshot')
+          .and.returnValue(baseUserModel);
+      });
+
+      it('should set userHasRemoveAllPerms to true', () => {
+        component.ngOnInit();
+
+        expect(component.userHasRemoveAllPerms).toBeTruthy();
+      });
+    });
+
+    describe('When user does not have remove all perms', () => {
+      beforeEach(() => {
+        baseUserModel.role = UserRole.SupportAgentNew;
+        mockStore.selectSnapshot = jasmine
+          .createSpy('selectSnapshot')
+          .and.returnValue(baseUserModel);
+      });
+
+      it('should set userHasRemoveAllPerms to false', () => {
+        component.ngOnInit();
+
+        expect(component.userHasRemoveAllPerms).toBeFalsy();
+      });
+    });
   });
 
   describe('Method: ngOnChanges', () => {

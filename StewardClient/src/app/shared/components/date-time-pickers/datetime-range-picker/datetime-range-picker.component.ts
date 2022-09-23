@@ -206,7 +206,7 @@ export class DatetimeRangePickerComponent
    * @param {DateTime} comparisonTime should either be dateRange.start or dateRange.end
    */
   public calculateMinTime = (comparisonTime: DateTime): DateTime => {
-    const shouldFilterTime = comparisonTime.day == this.min.day;
+    const shouldFilterTime = comparisonTime?.day == this.min.day;
     if (shouldFilterTime) {
       return this.min; //Restrict selection to minimum.
     }

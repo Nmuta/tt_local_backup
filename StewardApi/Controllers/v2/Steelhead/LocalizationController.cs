@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
@@ -20,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
@@ -55,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets the localized string data.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(Dictionary<Guid, List<string>>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, LiveOpsContracts.LocalizedString>))]
         public async Task<IActionResult> GetLocalizedStrings()
         {
             var locStrings = await this.pegasusService.GetLocalizedStringsAsync().ConfigureAwait(true);
@@ -70,9 +72,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Guid))]
         public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)
         {
-            if (!Enum.IsDefined(typeof(LocalizationCategory), data.Category))
+            if (!Enum.IsDefined(typeof(LocCategory), data.Category))
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocalizationCategory)} provided: {data.Category}");
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocCategory)} provided: {data.Category}");
             }
 
             try

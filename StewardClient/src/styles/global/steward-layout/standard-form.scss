@@ -16,7 +16,7 @@
   .sf-horizontal {
     display: flex;
     flex-flow: row wrap;
-    align-items: flex-start;
+    align-items: center;
 
     // get the spacing right
     margin: -1em;
@@ -30,7 +30,7 @@
     }
 
     /** This gives a bit more clearance for hints/names that are near each other. */
-    > mat-form-field {
+    > mat-form-field:not(.sf-default-hint) {
       margin-bottom: $mat-form-field-bottom-spacing;
     }
 
@@ -72,6 +72,9 @@
     // support for up to 10 characters
     @include _mat-form-field-horizontal-sizing('9-char', 7em);
     @include _mat-form-field-horizontal-sizing('10-char', 7em);
+
+    //Full width
+    @include _mat-form-field-horizontal-sizing('full-width', 100%);
   }
 
   .sf-vertical {
@@ -142,4 +145,18 @@
 .mat-card-actions.sf-actions,
 .sf-header {
   background-color: app-color($app-background, 'card');
+}
+
+.sf-text-warn {
+  color: app-color-default($app-warn);
+}
+
+button.sf-standard-width {
+  min-width: $button-min-size;
+  position: relative;
+}
+
+textarea.sf-standard-height {
+  min-height: $text-area-medium-height;
+  max-height: $text-area-max-height;
 }

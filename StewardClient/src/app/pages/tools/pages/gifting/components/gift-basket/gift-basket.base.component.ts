@@ -5,7 +5,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName, UserRole } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 import { GiftResponse } from '@models/gift-response';
@@ -20,6 +20,10 @@ import { Store } from '@ngxs/store';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { MatSelectChange } from '@angular/material/select';
+import { DateTime } from 'luxon';
+import { DateValidators } from '@shared/validators/date-validators';
+import { tryParseBigNumber } from '@helpers/bignumbers';
+import _ from 'lodash';
 
 export type InventoryItemGroup = {
   category: string;
@@ -73,10 +77,14 @@ export abstract class GiftBasketBaseComponent<
     GiftReason.GameError,
     GiftReason.SaveRollback,
   ];
+
   /** Send form gift */
-  public sendGiftForm: FormGroup = this.formBuilder.group({
-    giftReason: ['', Validators.required],
-  });
+  public formControls = {
+    giftReason: new FormControl('', [Validators.required]),
+    expireDate: new FormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
+    hasExpirationDate: new FormControl(false),
+  };
+  public sendGiftForm = new FormGroup(this.formControls);
 
   /** Font awesome icons */
   public trashIcon = faTrashAlt;
@@ -103,9 +111,11 @@ export abstract class GiftBasketBaseComponent<
   /** Game title */
   public abstract title: GameTitleCodeName;
 
+  /** Sets wether the title supports expiration date on gift. */
+  public abstract allowSettingExpireDate: boolean;
+
   constructor(
     private readonly backgroundJobService: BackgroundJobService,
-    private readonly formBuilder: FormBuilder,
     protected readonly store: Store,
   ) {
     super();
@@ -125,6 +135,12 @@ export abstract class GiftBasketBaseComponent<
 
   /** Sets the state gift basket. */
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
+
+  /** Filter for the expire date date time component */
+  public dateTimeFutureFilter = (input: DateTime | null): boolean => {
+    const day = input || DateTime.local().startOf('day');
+    return day > DateTime.local().startOf('day');
+  };
 
   /** On gift reason chaged */
   public giftReasonChanged(event: MatSelectChange): void {
@@ -230,6 +246,24 @@ export abstract class GiftBasketBaseComponent<
         takeUntil(this.onDestroy$),
       )
       .subscribe();
+  }
+
+  /** Get the number of days between right now and the selected date */
+  public getExpireDateInDays(): BigNumber {
+    if (!this.formControls.hasExpirationDate.value) {
+      return new BigNumber(0);
+    }
+    let numberOfDays = _.round(this.formControls.expireDate.value.diffNow('days').days);
+    // Replace negative values by 0 to avoid sending negative values to API which takes a uint
+    numberOfDays = _.max([0, numberOfDays]);
+    return tryParseBigNumber(numberOfDays).integerValue();
+  }
+
+  /** Add a default expiration the first time the hasExpiration checkbox is checked */
+  public initExpireDate(): void {
+    if (!this.formControls.expireDate.value) {
+      this.formControls.expireDate.setValue(DateTime.local().plus({ days: 7 }));
+    }
   }
 
   /** Waits for a background job to complete. */
