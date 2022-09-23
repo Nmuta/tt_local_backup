@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserInventoryManagementService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix

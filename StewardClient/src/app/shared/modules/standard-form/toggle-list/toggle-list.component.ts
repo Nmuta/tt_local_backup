@@ -34,8 +34,8 @@ export type ToggleListOptions = Record<string, boolean>;
 })
 export class ToggleListComponent implements OnChanges, ControlValueAccessor, Validator {
   @Input() public order: string[] = [];
-  @Input() public initial: Record<string, boolean> = {};
-  public current: Record<string, boolean> = {};
+  @Input() public initial: ToggleListOptions = {};
+  public current: ToggleListOptions = {};
 
   public formControls: Record<string, FormControl> = {};
 

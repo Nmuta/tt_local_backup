@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     /// <summary>
     ///     Handles requests for Woodstock.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/ugc")]
+    [Route("api/v{version:apiVersion}/title/woodstock/ugc/{id}/geoflags")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
@@ -34,14 +34,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Woodstock")]
-    public class GeoFlagController : V2ControllerBase
+    public class GeoFlagsController : V2ControllerBase
     {
         private readonly IWoodstockStorefrontProvider storefrontProvider;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GeoFlagController"/> class.
+        ///     Initializes a new instance of the <see cref="GeoFlagsController"/> class.
         /// </summary>
-        public GeoFlagController(IWoodstockStorefrontProvider storefrontProvider)
+        public GeoFlagsController(IWoodstockStorefrontProvider storefrontProvider)
         {
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
 
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         /// <summary>
         ///    Search UGC items.
         /// </summary>
-        [HttpPost("{id}/geoflags")]
+        [HttpPost]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]

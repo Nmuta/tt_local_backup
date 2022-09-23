@@ -1,7 +1,21 @@
 import { chain, uniq } from 'lodash';
 
-/** Produces a complete Record object given a list of all possible keys, and a list of "true" keys. */
-export function toCompleteLookup(allKeys: string[], setKeys: string[]): Record<string, boolean> {
+/**
+ * Produces a "complete" Record object given a list of all possible keys, and a list of "true" keys.
+ * @param allKeys example: `[a, b, c, d]`
+ * @param setKeys example: `[b, d]`
+ * @returns
+ * example:
+ * ```ts
+ * {
+ *   a: false,
+ *   b: true,
+ *   c: false,
+ *   d: true,
+ * }
+ * ```
+ */
+export function generateLookupRecord(allKeys: string[], setKeys: string[]): Record<string, boolean> {
   // TODO: We should be able to improve the typings above to allow passing in a string-enum for sourcing the keys, and provide typesafe output
   setKeys = setKeys ?? [];
 

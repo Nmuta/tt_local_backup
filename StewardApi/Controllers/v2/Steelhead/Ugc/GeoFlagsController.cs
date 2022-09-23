@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Topic.Ugc, Target.Details)]
-    public class GeoFlagController : V2SteelheadControllerBase
+    public class GeoFlagsController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
 

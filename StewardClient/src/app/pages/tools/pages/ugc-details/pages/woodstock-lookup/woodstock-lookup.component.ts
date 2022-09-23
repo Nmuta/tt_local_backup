@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
-import { toCompleteLookup as toCompleteRecord } from '@helpers/to-complete-record';
+import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { PermissionServiceTool, PermissionsService } from '@services/permissions';

@@ -21,7 +21,9 @@ export interface ToggleListEzContract {
   styleUrls: ['./toggle-list-ez.component.scss'],
 })
 export class ToggleListEzComponent extends BaseComponent implements OnChanges {
+  /** Fired after Submit is pressed, the contract function is called, and the data is synced. */
   @Output() public afterSubmitted = new EventEmitter<ToggleListOptions>();
+  /** The service contract for this component. */
   @Input() public contract: ToggleListEzContract;
 
   public submitMonitor = new ActionMonitor('Submit Toggle List');
