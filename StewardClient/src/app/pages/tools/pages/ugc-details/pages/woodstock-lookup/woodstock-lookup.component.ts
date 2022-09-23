@@ -171,7 +171,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
   /** Updates the geoflags contract after submit. */
   public updateGeoFlagsModel(geoFlags: ToggleListOptions): void {
-    this.geoFlagsToggleListEzContract = cloneDeep(this.geoFlagsToggleListEzContract);
-    this.geoFlagsToggleListEzContract.initialModel = geoFlags;
+    const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);;
+    newGeoFlagsContract.initialModel = geoFlags;
+    this.geoFlagsToggleListEzContract = newGeoFlagsContract
   }
 }

@@ -15,7 +15,10 @@ import { chain, uniq } from 'lodash';
  * }
  * ```
  */
-export function generateLookupRecord(allKeys: string[], setKeys: string[]): Record<string, boolean> {
+export function generateLookupRecord(
+  allKeys: string[],
+  setKeys: string[],
+): Record<string, boolean> {
   // TODO: We should be able to improve the typings above to allow passing in a string-enum for sourcing the keys, and provide typesafe output
   setKeys = setKeys ?? [];
 

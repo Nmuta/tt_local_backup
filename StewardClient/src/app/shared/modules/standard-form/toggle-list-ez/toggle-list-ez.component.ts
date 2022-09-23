@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { isEqual } from 'lodash';
 import { Observable, takeUntil } from 'rxjs';
 import { ToggleListOptions } from '../toggle-list/toggle-list.component';
 
@@ -35,6 +36,12 @@ export class ToggleListEzComponent extends BaseComponent implements OnChanges {
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges) {
+    this.formControl.valueChanges.subscribe(v => {
+      if (isEqual(v, this.contract.initialModel)) {
+        this.formControl.reset();
+      }
+    });
+
     this.validateContract(this.contract);
     this.syncContract(this.contract);
   }

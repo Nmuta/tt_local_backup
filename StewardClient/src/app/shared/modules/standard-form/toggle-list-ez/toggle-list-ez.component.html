@@ -6,7 +6,7 @@
         ><mat-icon color="warn">warn</mat-icon>{{ contract.error }}</ng-container
       >
       <ng-container *ngIf="!contract.error"
-        >Toggle and submit flags {{ formControl.dirty }} {{ formControl.pristine }}</ng-container
+        >Toggle and submit flags</ng-container
       >
     </mat-card-subtitle>
     <ng-content select="help-popover-icon"></ng-content>
@@ -48,6 +48,7 @@
         matTooltip="Verify Submit"
         [disabled]="!!contract.error"
       ></mat-checkbox>
+      <inline-spinner [monitor]="submitMonitor"></inline-spinner>
     </div>
   </mat-card-title-group>
 
