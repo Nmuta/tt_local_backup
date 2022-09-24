@@ -15,6 +15,7 @@ import { NavbarTool } from '@environments/environment';
   template: '',
 })
 export abstract class GamertagsBaseComponent<T> extends BaseComponent implements OnInit, OnChanges {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
   /** The retrieved list of shared users. */

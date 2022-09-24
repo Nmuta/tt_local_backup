@@ -67,10 +67,15 @@ export type LeaderboardTopTalentOption = {
 })
 export class LeaderboardStatsComponent extends BaseComponent implements OnChanges {
   @ViewChildren(MatMenuTrigger) childMenuTriggers: QueryList<MatMenuTrigger>;
+  /** REVIEW-COMMENT: Game title. */
   @Input() public gameTitle: GameTitle;
+  /** REVIEW-COMMENT: The leaderboard stats service. */
   @Input() service: LeaderboardStatsContract;
+  /** REVIEW-COMMENT: Leaderboard metadata and query. */
   @Input() leaderboard: LeaderboardMetadataAndQuery;
+  /** REVIEW-COMMENT: Leaderboard scores deleted. */
   @Input() scoresDeleted: LeaderboardScore[];
+  /** REVIEW-COMMENT: Output when a leaderboard score is selected. */
   @Output() selectedScore = new EventEmitter<LeaderboardScore>();
 
   public getLeaderboardScoresMonitor = new ActionMonitor('GET leaderboard scores');

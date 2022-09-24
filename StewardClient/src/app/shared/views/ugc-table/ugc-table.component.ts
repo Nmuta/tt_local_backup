@@ -66,7 +66,9 @@ export abstract class UgcTableBaseComponent
 {
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  /** REVIEW-COMMENT: Player UGC items. */
   @Input() content: PlayerUgcItem[];
+  /** REVIEW-COMMENT: Content type. Default to {@link UgcType.Unknown}. */
   @Input() contentType: UgcType = UgcType.Unknown;
   public readonly THUMBNAIL_LOOKUP_BATCH_SIZE = 250;
   public readonly THUMBNAIL_LOOKUP_MAX_CONCURRENCY = 4;

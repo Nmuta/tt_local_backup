@@ -63,6 +63,7 @@ export class SelectLocalizedStringComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor, Validator
 {
+  /** REVIEW-COMMENT: The select localized string service. */
   @Input() service: SelectLocalizedStringContract;
 
   public localizedStringLookup: LocalizedStringsMap = new Map();

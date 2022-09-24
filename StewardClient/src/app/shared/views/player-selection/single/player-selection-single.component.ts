@@ -24,6 +24,7 @@ import {
   styleUrls: ['./player-selection-single.component.scss'],
 })
 export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent {
+  /** REVIEW-COMMENT: Output when identities are found. */
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity>();
   @ContentChild(TemplateRef) templateRef: TemplateRef<AugmentedCompositeIdentity>;
   @ViewChild('chipList') public chipList: MatChipList;

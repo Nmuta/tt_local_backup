@@ -22,6 +22,7 @@ export type MakeModelFilterGroup = {
   template: '',
 })
 export abstract class AuctionsFiltersBaseComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: Output for new auction filter search. */
   @Output() public newAuctionFilterSearch = new EventEmitter<AuctionFilters>();
 
   public statusOptions = keys(AuctionStatus) as AuctionStatus[];

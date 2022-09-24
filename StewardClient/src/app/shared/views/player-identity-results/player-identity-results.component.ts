@@ -11,6 +11,7 @@ import { IdentityResultBeta, IdentityResultUnion } from '@models/identity-query.
   styleUrls: ['./player-identity-results.component.scss'],
 })
 export class PlayerIdentityResultsComponent {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() identity: IdentityResultUnion;
 
   /** The players Turn 10 ID. */

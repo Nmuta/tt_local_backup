@@ -53,9 +53,11 @@ export class DatetimeRangePickerComponent
 {
   private static readonly UTC_NOW = DateTime.utc();
 
+  /** REVIEW-COMMENT: Minimum datetime allowed. Default to 2000-01-01. */
   @Input()
   public min: DateTime = DateTime.fromObject({ year: 2000, month: 1, day: 1 });
 
+  /** REVIEW-COMMENT: Is start time disabled. */
   @Input()
   public disableStartTime: boolean = false;
 

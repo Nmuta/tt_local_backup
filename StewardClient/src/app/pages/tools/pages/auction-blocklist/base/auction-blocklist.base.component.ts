@@ -32,7 +32,9 @@ export interface FormGroupBlocklistEntry {
   styleUrls: ['./auction-blocklist.base.component.scss'],
 })
 export class AuctionBlocklistBaseComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: The auction blocklist service. */
   @Input() service: AuctionBlocklistService;
+  /** REVIEW-COMMENT: Output when new auction blocklist entries are loaded. */
   @Input() newEntries$: Observable<AuctionBlocklistEntry[]>;
 
   private readonly getBlocklist$ = new Subject<void>();

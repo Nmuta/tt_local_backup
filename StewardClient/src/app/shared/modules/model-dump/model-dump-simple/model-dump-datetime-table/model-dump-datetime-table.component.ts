@@ -11,5 +11,6 @@ import { ObjectEntry } from '../../helpers';
   styleUrls: ['./model-dump-datetime-table.component.scss'],
 })
 export class ModelDumpDatetimeTableComponent {
+  /** REVIEW-COMMENT: Date times to render. */
   @Input() public values: ObjectEntry<DateTime>[];
 }

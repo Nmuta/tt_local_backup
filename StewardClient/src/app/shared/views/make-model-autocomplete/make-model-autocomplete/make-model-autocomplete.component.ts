@@ -24,6 +24,7 @@ export interface MakeModelAutocompleteServiceContract {
   ],
 })
 export class MakeModelAutocompleteComponent extends MakeModelAutocompleteBaseComponent {
+  /** REVIEW-COMMENT: The make-model autocomplete service. */
   @Input() public service: MakeModelAutocompleteServiceContract;
 
   /** Gets master inventory list */

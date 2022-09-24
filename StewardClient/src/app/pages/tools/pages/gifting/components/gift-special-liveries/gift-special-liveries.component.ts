@@ -61,9 +61,13 @@ interface SpecialLiveryModel {
   styleUrls: ['./gift-special-liveries.component.scss'],
 })
 export class GiftSpecialLiveriesComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: Player identities. */
   @Input() public playerIdentities: IdentityResultAlpha[];
+  /** REVIEW-COMMENT: Lsp Group. */
   @Input() public lspGroup: LspGroup;
+  /** REVIEW-COMMENT: Component is using player identities. */
   @Input() public usingPlayerIdentities: boolean;
+  /** REVIEW-COMMENT: The special livery gifting service. */
   @Input() public contract: GiftSpecialLiveriesContract;
 
   public liveries: SpecialLiveryModel[];

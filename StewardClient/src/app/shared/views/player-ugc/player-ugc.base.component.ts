@@ -29,9 +29,13 @@ export abstract class PlayerUgcBaseComponent
   extends BaseComponent
   implements OnChanges, AfterViewInit
 {
+  /** REVIEW-COMMENT: Is using player identities. */
   @Input() public usingIdentities?: boolean;
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
+  /** REVIEW-COMMENT: Share code. */
   @Input() public shareCode?: string;
+  /** REVIEW-COMMENT: Content type. */
   @Input() public contentType?: UgcType;
 
   public useCondensedTableView: boolean;

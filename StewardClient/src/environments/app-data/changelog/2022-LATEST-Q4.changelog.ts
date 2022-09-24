@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'ed73707c-d956-45ff-b94e-72dc92613a7b',
+      shortText: 'Add new typescript linter rules for Input and Output',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
       uuid: '5d7bad3d-5f99-4f6f-a77f-c08d579c75d3',
       shortText: 'Add localized message creation and sending',

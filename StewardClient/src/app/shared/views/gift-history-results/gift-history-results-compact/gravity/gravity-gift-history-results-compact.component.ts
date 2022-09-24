@@ -13,8 +13,11 @@ import { GiftHistoryResultAndView } from '@models/gift-history';
   templateUrl: './gravity-gift-history-results-compact.component.html',
 })
 export class GravityGiftHistoryResultsCompactComponent {
+  /** REVIEW-COMMENT: Selected player. */
   @Input() public selectedPlayer: IdentityResultBeta;
+  /** REVIEW-COMMENT: Selected lsp group. */
   @Input() public selectedGroup: LspGroup;
+  /** REVIEW-COMMENT: Is using player identities. */
   @Input() public usingPlayerIdentities: boolean;
 
   public service: GiftHistoryResultsServiceContract;

@@ -12,6 +12,7 @@ export class HoverToCopyDirective {
   @HostBinding('style.display') display = 'inline-block';
   @HostBinding('style.user-select') userSelect = 'none';
 
+  /** REVIEW-COMMENT: Hover to copy. */
   @Input() hoverToCopy: string | { toString(): string };
 
   private tooltip: HTMLElement;

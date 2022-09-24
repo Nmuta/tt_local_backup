@@ -27,8 +27,11 @@ export interface AuctionActionLogTableServiceContract extends LogTableServiceCon
   styleUrls: ['./log-table-loader.component.scss'],
 })
 export class LogTableLoaderComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
+  /** REVIEW-COMMENT: The auction log-table service. */
   @Input() public service: AuctionActionLogTableServiceContract;
+  /** REVIEW-COMMENT: Auction link generator. */
   @Input() public linkGenerator: AuctionDetailsLinkGenerator;
 
   public getMonitor = new ActionMonitor('GET Auction Action Logs');

@@ -18,6 +18,7 @@ export interface CreateLocalizedStringContract {
   styleUrls: ['./create-localized-string.component.scss'],
 })
 export class CreateLocalizedStringComponent extends BaseComponent {
+  /** REVIEW-COMMENT: The create localized string service. */
   @Input() service: CreateLocalizedStringContract;
 
   public postMonitor = new ActionMonitor('POST String Localization');

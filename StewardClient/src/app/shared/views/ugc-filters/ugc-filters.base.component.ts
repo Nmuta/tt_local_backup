@@ -18,6 +18,7 @@ export type MakeModelFilterGroup = {
   template: '',
 })
 export abstract class UgcFiltersBaseComponent extends BaseComponent {
+  /** REVIEW-COMMENT: Output when UGC filters changes. */
   @Output() public changes = new EventEmitter<UgcFilters>();
 
   public accessLevelOptions = keys(UgcAccessLevel) as UgcAccessLevel[];

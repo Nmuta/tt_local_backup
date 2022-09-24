@@ -45,8 +45,11 @@ export class AuctionActionLogTableComponent
   extends BaseComponent
   implements OnInit, OnChanges, AfterViewInit
 {
+  /** REVIEW-COMMENT: Player auction logs. */
   @Input() public auctionLog: PlayerAuctionAction[] = [];
+  /** REVIEW-COMMENT: The log table service */
   @Input() public service: LogTableServiceContract;
+  /** REVIEW-COMMENT: Auction details link generator. */
   @Input() public linkGenerator: AuctionDetailsLinkGenerator;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

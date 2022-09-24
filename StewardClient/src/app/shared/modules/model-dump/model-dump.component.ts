@@ -32,6 +32,7 @@ export const MODEL_DUMP_PROCESSED_MODEL$ = 'MODEL_DUMP_PROCESSED_MODEL$';
   ],
 })
 export class ModelDumpComponent extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Model to dump. */
   @Input() model: unknown;
 
   public processedModel$ = new BehaviorSubject<ExtractedModel>(undefined);

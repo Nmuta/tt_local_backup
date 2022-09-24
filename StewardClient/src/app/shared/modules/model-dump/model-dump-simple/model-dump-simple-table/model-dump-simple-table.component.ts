@@ -10,5 +10,6 @@ import { ObjectEntry } from '../../helpers';
   styleUrls: ['./model-dump-simple-table.component.scss'],
 })
 export class ModelDumpSimpleTableComponent {
+  /** REVIEW-COMMENT: Values to render. */
   @Input() public values: ObjectEntry<unknown>[];
 }

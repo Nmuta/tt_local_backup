@@ -49,7 +49,9 @@ type LoyaltyRewardsDataInterface = {
   styleUrls: ['./loyalty-rewards.component.scss'],
 })
 export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: The loyalty reward service. */
   @Input() serviceContract: LoyaltyRewardsServiceContract;
+  /** REVIEW-COMMENT: Player identity. */
   @Input() identity: IdentityResultAlpha;
 
   public externalProfileId: GuidLikeString;

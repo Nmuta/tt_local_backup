@@ -11,6 +11,7 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
   styleUrls: ['./old-changelog.component.scss'],
 })
 export class OldChangelogComponent implements OnInit {
+  /** REVIEW-COMMENT: Expand first. Default is true. */
   @Input() public expandFirst = true;
   public clientOnNewVersion: boolean = false;
   public isProduction: boolean = false;

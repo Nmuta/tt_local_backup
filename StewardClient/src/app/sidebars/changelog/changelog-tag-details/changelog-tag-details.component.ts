@@ -20,6 +20,7 @@ interface ChanglogEntryChip {
   providers: [GameTitleAbbreviationPipe, GameTitleFullNamePipe, HumanizePipe],
 })
 export class ChangelogTagDetailsComponent extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Changelog entry to be displayed. */
   @Input() public entry: ChangelogEntry;
 
   public tagOrToolChips: ChanglogEntryChip[] = [];

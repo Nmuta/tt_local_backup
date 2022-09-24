@@ -27,8 +27,11 @@ enum BackgroundJobRetryStatus {
 export abstract class GiftLiveryBaseComponent<
   IdentityT extends IdentityResultUnion,
 > extends BaseComponent {
+  /** REVIEW-COMMENT: Player identities. */
   @Input() public playerIdentities: IdentityT[];
+  /** REVIEW-COMMENT: Lsp Group. */
   @Input() public lspGroup: LspGroup;
+  /** REVIEW-COMMENT: Component is using player identities. */
   @Input() public usingPlayerIdentities: boolean;
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
