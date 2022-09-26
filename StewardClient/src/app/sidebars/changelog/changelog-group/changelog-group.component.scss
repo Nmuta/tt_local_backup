@@ -4,6 +4,16 @@
   .mat-expansion-panel-content {
     display: none;
   }
+
+  .mat-expanded {
+    height: 48px; // value is sourced from the default .mat-expanded height. normally this rule would override it with 96px, which we do not want here
+  }
+  
+  mat-checkbox {
+    .mat-checkbox-label {
+      white-space: initial;
+    }
+  }
 }
 
 .title-bar {
@@ -14,8 +24,4 @@
   .spacer {
     flex-grow: 1;
   }
-}
-
-changelog-tag-details {
-  margin-bottom: $gap-small;
 }

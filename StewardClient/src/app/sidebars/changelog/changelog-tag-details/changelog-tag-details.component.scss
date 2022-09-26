@@ -1,0 +1,52 @@
+.tagOrTool {
+  background-color: lime;
+}
+
+mat-chip {
+  overflow: hidden;
+  padding: 0;
+}
+
+mat-chip span {
+  height: 2.2em;
+  line-height: 2.2em;
+
+  white-space: nowrap;
+
+  &.title {
+    padding: 0 .5em;
+    padding-right: .25em;
+  }
+
+  &.title + .title {
+    padding: 0 .25em;
+    border-left: 1px solid #0002;
+  }
+
+  &.tag {
+    padding: 0 .5em;
+  }
+
+  &.tag + .tag {
+    border-left: 1px solid #0002;
+  }
+
+  &.title + .tag {
+    // margin-left: .25em;
+  }
+  
+  &.tag {
+    &.general {
+      background-color: lime;
+    }
+    &.internal {
+      background-color: pink;
+    }
+    &.all {
+      background-color: fuchsia;
+    }
+    &.target {
+      background-color: skyblue;
+    }
+  }
+}
