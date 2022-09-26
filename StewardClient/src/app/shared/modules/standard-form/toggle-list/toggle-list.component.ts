@@ -33,7 +33,9 @@ export type ToggleListOptions = Record<string, boolean>;
   ],
 })
 export class ToggleListComponent implements OnChanges, ControlValueAccessor, Validator {
+  /** The order the toggle options should appear in. */
   @Input() public order: string[] = [];
+  /** The initial state of the toggle options. */
   @Input() public initial: ToggleListOptions = {};
   public current: ToggleListOptions = {};
 
