@@ -8,6 +8,18 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'b1857a74-0302-4248-8e30-60c199066d32',
+      shortText: 'Adjust changelog popout',
+      longText: [
+        'Adjusting a few older changelog entries for brevity; moving the details into expando text.',
+        'Repositioning the chips to the right, condensing some contents and adding explanatory tooltips.',
+        'Apply limited color-coding to the chips, emphasizing General entries, and de-emphasizing Internal entries.',
+        'Fix expand-all + collapse-all feature to not "expand" entries with no expando content.',
+        'Adjust padding for clarity.',
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'ed73707c-d956-45ff-b94e-72dc92613a7b',
       shortText: 'Add new typescript linter rules for Input and Output',
@@ -80,8 +92,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '459b4469-89ee-4e9d-8358-e4063e3141c1',
-      shortText:
-        'Refactor messaging component contracts to make them validate at build time instead of runtime',
+      shortText: 'Refactor messaging component contracts',
+      longText: ['Contracts validate at build time instead of runtime'],
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
@@ -102,8 +114,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },
       uuid: 'c17418be-38f2-4f73-812e-f04ced9e8eab',
-      shortText:
-        'Added message scheduling to Woodstock and Steelhead. Updated Sunrise messaging UI to match, but behavior unchanged',
+      shortText: 'Added message scheduling to Woodstock and Steelhead',
+      longText: ['Updated Sunrise messaging UI to match, but behavior unchanged'],
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },

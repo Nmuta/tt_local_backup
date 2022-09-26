@@ -15,11 +15,10 @@
       [class.no-expand]="!(entry.longText?.length ?? false)"
       [hideToggle]="!(entry.longText?.length ?? false)"
       [expanded]="entry.longText?.length ?? false"
-      class="top-border header-two-rows"
+      class="top-border"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <changelog-tag-details [entry]="entry"></changelog-tag-details>
           <mat-checkbox
             clickStop
             [ngModel]="isAcknowledgedEntry(entry)"
@@ -27,6 +26,8 @@
           >
             {{ entry.shortText }}
           </mat-checkbox>
+          <span class="sf-spacer"></span>
+          <changelog-tag-details [entry]="entry"></changelog-tag-details>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <p *ngFor="let paragraph of entry.longText">{{ paragraph }}</p>
