@@ -12,6 +12,7 @@ import { ReportWeightServiceContract } from '../report-weight.component';
   templateUrl: './woodstock-report-weight.component.html',
 })
 export class WoodstockReportWeightComponent {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() identity: IdentityResultAlpha;
 
   public service: ReportWeightServiceContract;

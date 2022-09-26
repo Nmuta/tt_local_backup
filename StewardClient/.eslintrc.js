@@ -117,17 +117,23 @@ module.exports = {
         'jsdoc/require-returns-type': 'off', // why? we already know these from TS
         'jsdoc/require-param': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
         'jsdoc/require-param-type': 'off', // why? we already know these from TS
-        'jsdoc/require-description': ['error'], // why? requires summaries to actually be filled out
+        'jsdoc/require-description': [
+          'error',
+          {
+            contexts: ['PropertyDefinition', 'MethodDefinition', 'ClassDeclaration'],
+          },
+        ], // why? requires summaries to actually be filled out
         'jsdoc/newline-after-description': ['error', 'never'], // why? vertical space is precious
         'jsdoc/require-jsdoc': [
           // why? all public/protected exported members should have documentation
           'error',
           {
-            publicOnly: true,
+            publicOnly: false,
             checkConstructors: false,
             contexts: [
               // See for more info: https://github.com/gajus/eslint-plugin-jsdoc/issues/519#issuecomment-616007752
-              'MethodDefinition:not([kind="get"],[kind="set"],[accessibility="private"]) > *',
+              'MethodDefinition:not([kind="get"],[kind="set"],[accessibility="private"])',
+              'PropertyDefinition > Decorator:matches([expression.callee.name="Input"],[expression.callee.name="Output"])',
             ],
             require: {
               ArrowFunctionExpression: false,

@@ -51,7 +51,9 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   extends BaseComponent
   implements OnInit, OnChanges
 {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultType;
+  /** REVIEW-COMMENT: Output when profile change happens. */
   @Output() public profileChange = new EventEmitter<InventoryProfileType>();
 
   public profiles: AcceptableInventoryProfileTypesIntersection[] = [];

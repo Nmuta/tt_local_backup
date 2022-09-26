@@ -50,6 +50,7 @@ export interface SearchLeaderboardsContract {
   styleUrls: ['./search-leaderboards.component.scss'],
 })
 export class SearchLeaderboardsComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: The search leaderboard service. */
   @Input() public service: SearchLeaderboardsContract;
 
   /** The object to build leaderboard filters multi-select. */

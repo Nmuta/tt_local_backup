@@ -16,11 +16,14 @@ import faker from '@faker-js/faker';
 import { GroupNotification } from '@models/notifications.model';
 import BigNumber from 'bignumber.js';
 
+/** Test for notification management service for lsp group. */
 class TestNotificationManagementService implements GroupNotificationManagementContract {
   public gameTitle: GameTitle.Street;
+  /** Get group notification. */
   public getGroupNotifications$(): Observable<GroupNotification[]> {
     return null;
   }
+  /** Edit Lsp Group Community Message. */
   public postEditLspGroupCommunityMessage$(
     _lspGroupId: BigNumber,
     _notificationId: string,
@@ -28,6 +31,7 @@ class TestNotificationManagementService implements GroupNotificationManagementCo
   ): Observable<void> {
     return null;
   }
+  /** Delete Lsp Group Community Message. */
   public deleteLspGroupCommunityMessage$(
     _lspGroupId: BigNumber,
     _notificationId: string,

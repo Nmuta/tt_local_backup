@@ -9,6 +9,7 @@ import { ThemeService } from '../theme.service';
   styleUrls: ['./toggle-environment-warning.component.scss'],
 })
 export class ToggleEnvironmentWarningComponent {
+  /** REVIEW-COMMENT: Is environment warning disabled. */
   @Input() public disabled: boolean;
 
   /** The theme override setting. */

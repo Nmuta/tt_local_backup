@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -35,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         UserRole.MotorsportDesigner,
         UserRole.MediaTeam)]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.Player, Topic.ReportWeight)]
+    [StandardTags(Title.Woodstock, Target.Player, Topic.ReportWeight)]
     public class ReportWeightController : V2ControllerBase
     {
         private readonly IWoodstockPlayerDetailsProvider playerDetailsProvider;

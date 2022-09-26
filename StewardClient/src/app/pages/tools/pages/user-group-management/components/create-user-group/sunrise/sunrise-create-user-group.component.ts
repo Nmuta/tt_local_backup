@@ -13,7 +13,7 @@ import { CreateUserGroupServiceContract } from '../create-user-group.component';
   styleUrls: ['./sunrise-create-user-group.component.scss'],
 })
 export class SunriseCreateUserGroupComponent extends BaseComponent {
-  /** Outputs when a new user group is created */
+  /** REVIEW-COMMENT: Outputs when a new user group is created. */
   @Output() newUserGroup = new EventEmitter<LspGroup>();
 
   public service: CreateUserGroupServiceContract;

@@ -25,15 +25,18 @@ type MessageSendResultViewable = {
   template: '',
 })
 export abstract class CommunityMessagingComponent extends BaseComponent {
+  /** REVIEW-COMMENT: Player identities. Default to empty array. */
   @Input() playerIdentities: IdentityResultAlpha[] = [];
+  /** REVIEW-COMMENT: Selected Lsp Group. */
   @Input() selectedLspGroup: LspGroup;
+  /** REVIEW-COMMENT: If component is using player identities. */
   @Input() isUsingPlayerIdentities: boolean = true;
 
   /** True while waiting for community message verification. */
   public waitingForVerification: boolean = false;
   /** The pending community message. */
   public newCommunityMessage: CommunityMessage;
-  /** The community message results */
+  /** The community message results. */
   public sentCommunityMessageResults: JsonTableResult<MessageSendResultViewable>[] = [];
 
   /** True while waiting on a request. */

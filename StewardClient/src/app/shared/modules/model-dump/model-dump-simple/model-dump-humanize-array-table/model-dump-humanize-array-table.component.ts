@@ -10,5 +10,6 @@ import { ObjectEntry } from '../../helpers';
   styleUrls: ['./model-dump-humanize-array-table.component.scss'],
 })
 export class ModelDumpHumanizeArrayTableComponent {
+  /** REVIEW-COMMENT: Values to renders. */
   @Input() public values: ObjectEntry<string[]>[];
 }

@@ -18,9 +18,7 @@ export class EndpointKeyMemoryModel {
   public [GameTitleCodeName.FM8]: string[];
 }
 
-/**
- *
- */
+/** Memory state. */
 @Injectable()
 @State<EndpointKeyMemoryModel>({
   name: 'endpointKeyMemory',
@@ -31,7 +29,7 @@ export class EndpointKeyMemoryModel {
     [GameTitleCodeName.FM8]: [],
   },
 })
-/** Defines the lsp group memoty state. */
+/** Defines the lsp group memory state. */
 export class EndpointKeyMemoryState {
   constructor(private readonly store: Store, private readonly settingsService: SettingsService) {}
 

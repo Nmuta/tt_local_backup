@@ -19,6 +19,7 @@ export abstract class PlayerNotificationsBaseComponent<T extends PlayerNotificat
   extends BaseComponent
   implements OnChanges
 {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
   /** True while waiting on a request. */

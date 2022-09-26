@@ -13,7 +13,9 @@ import {
   styleUrls: ['./external-dropdown.component.scss'],
 })
 export class ExternalDropdownComponent implements CustomTileComponent {
+  /** REVIEW-COMMENT: Is the dropdown disabled. */
   @Input() public disabled: boolean;
+  /** REVIEW-COMMENT: Item. */
   @Input() public item: HomeTileInfo;
 
   /** Safely produces the dropdown entry data. */

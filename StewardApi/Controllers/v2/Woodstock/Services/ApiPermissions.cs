@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
@@ -32,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Services
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.Lsp, Topic.Permissions)]
+    [DangerousTags(Title.Woodstock, Target.Lsp, Topic.Permissions)]
     public class ApiPermissions : V2WoodstockControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;

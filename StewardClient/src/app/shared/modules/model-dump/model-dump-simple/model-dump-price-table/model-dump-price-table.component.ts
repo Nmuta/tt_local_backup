@@ -11,5 +11,6 @@ import { ObjectEntry } from '../../helpers';
   styleUrls: ['./model-dump-price-table.component.scss'],
 })
 export class ModelDumpPriceTableComponent {
+  /** REVIEW-COMMENT: BigNumbers to render as prices. */
   @Input() public values: ObjectEntry<BigNumber>[];
 }

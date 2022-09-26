@@ -17,7 +17,7 @@ type UgcDownloadOption = {
 })
 export class UgcDownloadButtonComponent extends BaseComponent implements OnChanges {
   @ViewChild(MatMenuTrigger) menuTrigger: MatMenuTrigger;
-  /**The UGC item to display download options for. */
+  /** REVIEW-COMMENT: The UGC item to display download options for. */
   @Input() public item: PlayerUgcItem;
 
   public downloadOptions: UgcDownloadOption[] = [];

@@ -8,5 +8,6 @@ import { ActionMonitor } from '../action-monitor';
   styleUrls: ['./inline-spinner.component.scss'],
 })
 export class InlineSpinnerComponent {
+  /** REVIEW-COMMENT: ActionMonitor that decide whether the spinner is shown. */
   @Input() monitor: ActionMonitor;
 }

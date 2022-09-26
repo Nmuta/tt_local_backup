@@ -10,6 +10,7 @@ type TemplateName = 'array' | 'unknown';
   styleUrls: ['./json-dump.component.scss'],
 })
 export class JsonDumpComponent implements OnChanges {
+  /** REVIEW-COMMENT: Input to be dumped as Json. */
   @Input() public input: unknown;
 
   /** The input as an array, if it is one. */

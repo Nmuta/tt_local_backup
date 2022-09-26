@@ -32,7 +32,9 @@ import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-invent
 export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   @ViewChild('quantity') quantityElement: ElementRef;
 
+  /** REVIEW-COMMENT: Master inventory. */
   @Input() public masterInventory: MasterInventoryUnion;
+  /** REVIEW-COMMENT: Output when a master inventory item is selected. */
   @Output() public addItemEvent = new EventEmitter<MasterInventoryItem>();
 
   public inventoryItemGroups: InventoryItemGroup[];

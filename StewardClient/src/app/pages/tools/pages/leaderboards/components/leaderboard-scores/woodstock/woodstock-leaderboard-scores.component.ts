@@ -10,8 +10,11 @@ import { WoodstockService } from '@services/woodstock';
   templateUrl: './woodstock-leaderboard-scores.component.html',
 })
 export class WoodstockLeaderboardScoresComponent {
+  /** REVIEW-COMMENT: Leaderboard metadata and query. */
   @Input() leaderboard: LeaderboardMetadataAndQuery;
+  /** REVIEW-COMMENT: Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
   constructor(public service: WoodstockService) {}

@@ -9,6 +9,7 @@ import { ThemeService } from '../theme.service';
   styleUrls: ['./toggle-darkmode.component.scss'],
 })
 export class ToggleDarkmodeComponent {
+  /** REVIEW-COMMENT: Is dark mode disabled. */
   @Input() public disabled: boolean;
 
   /** The theme override setting. */

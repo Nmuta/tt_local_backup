@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
@@ -22,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags(Dev.SunriseTest)]
+    [StandardTags(Dev.SunriseTest)]
     public class TestProxiesController : V2ControllerBase
     {
         /// <summary>

@@ -11,5 +11,6 @@ import { ObjectEntry } from '../../helpers';
   styleUrls: ['./model-dump-duration-table.component.scss'],
 })
 export class ModelDumpDurationTableComponent {
+  /** REVIEW-COMMENT: Durations to render. */
   @Input() public values: ObjectEntry<Duration>[];
 }

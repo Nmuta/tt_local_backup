@@ -18,6 +18,7 @@ export abstract class ProfileOverviewBaseComponent<T extends ProfileSummaryUnion
   extends BaseComponent
   implements OnChanges
 {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
   /** The overview data. */

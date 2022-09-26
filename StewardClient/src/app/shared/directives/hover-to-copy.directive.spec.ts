@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { HoverToCopyDirective } from './hover-to-copy.directive';
 
+/** Hover to copy test container component. */
 @Component({
   selector: 'copy-content',
   template: `<span id="copyContent" hoverToCopy="Copied Content">Content to Copy</span>`,

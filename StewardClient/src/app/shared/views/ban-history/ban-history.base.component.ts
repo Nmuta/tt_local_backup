@@ -20,6 +20,7 @@ type BanHistoryTableEntry = LiveOpsExtendedBanDescription & {
   template: '',
 })
 export abstract class BanHistoryBaseComponent extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Player xuid. */
   @Input() public xuid?: BigNumber;
 
   /** True while waiting on a request. */

@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
     [LogTagTitle(TitleLogTags.Apollo)]
-    [Tags(Title.Multiple)]
+    [StandardTags(Title.Multiple)]
     public sealed class ApolloGiftingController : V2ControllerBase
     {
 

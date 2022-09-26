@@ -63,6 +63,7 @@ export class UgcSearchFiltersComponent
   extends BaseComponent
   implements OnInit, OnChanges, ControlValueAccessor
 {
+  /** REVIEW-COMMENT: The UGC search filter service. */
   @Input() public serviceContract: UgcSearchFiltersServiceContract;
 
   public formControls = {

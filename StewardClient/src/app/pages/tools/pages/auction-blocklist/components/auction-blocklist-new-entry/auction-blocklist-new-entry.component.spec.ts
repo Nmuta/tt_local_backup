@@ -8,10 +8,13 @@ import { Observable } from 'rxjs';
 import { AuctionBlocklistNewEntryComponent } from './auction-blocklist-new-entry.component';
 import { AuctionBlocklistNewEntryService } from './auction-blocklist-new-entry.service';
 
+/** Test for auction blocklist new entry service. */
 class TestAuctionBlocklistNewEntryService implements AuctionBlocklistNewEntryService {
+  /** Get game title. */
   public getGameTitle(): GameTitle {
     return null;
   }
+  /** Post auction blocklist entries. */
   public postAuctionBlocklistEntries$(
     _entries: AuctionBlocklistEntry[],
   ): Observable<AuctionBlocklistEntry[]> {
