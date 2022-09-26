@@ -97,7 +97,7 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
         return [
           {
             title: 'All Titles',
-            tooltip: 'Changes to all titles change the behavior of all title-modes of the tool',
+            tooltip: 'Changes to all titles changes the behavior of all supported title modes of the tool',
             type: 'tag target',
           }
         ];

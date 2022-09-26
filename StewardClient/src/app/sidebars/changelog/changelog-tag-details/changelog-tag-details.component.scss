@@ -1,11 +1,12 @@
 @import '/src/styles/mixins';
 
+// TODO: Generalize this mat-chip-segmented business into a helper component
+
 $mat-chip-segment-general: app-color-default($app-success, 0.5);
 $mat-chip-segment-internal: app-color-default($app-background, 0.5);
 $mat-chip-segment-internal-foreground: app-color-default-contrast($app-background, 0.5);
 $mat-chip-segment-all: app-color-default($app-primary, 0.5);
 $mat-chip-segment-target: app-color-default($app-accent, 0.5);
-// $mat-chip-segment-target: app-color-lighter($app-background, 0.5);
 
 $mat-chip-segment-height: 2.5em;
 $mat-chip-segment-large-gap: .5em;

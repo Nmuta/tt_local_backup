@@ -8,6 +8,18 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'b1857a74-0302-4248-8e30-60c199066d32',
+      shortText: 'Adjust changelog popout',
+      longText: [
+        'Adjusting a few older changelog entries for brevity; moving the details into expando text.',
+        'Repositioning the chips to the right, condensing some contents and adding explanatory tooltips.',
+        'Apply limited color-coding to the chips, emphasizing General entries, and de-emphasizing Internal entries.',
+        'Fix expand-all + collapse-all feature to not "expand" entries with no expando content.',
+        'Adjust padding for clarity.'
+      ]
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'ed73707c-d956-45ff-b94e-72dc92613a7b',
       shortText: 'Add new typescript linter rules for Input and Output',
