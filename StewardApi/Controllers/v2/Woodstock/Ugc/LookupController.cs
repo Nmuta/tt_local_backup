@@ -9,6 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
@@ -33,14 +34,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Details, Topic.Ugc)]
-    public class WoodstockUgcLookup : V2ControllerBase
+    public class LookupController : V2ControllerBase
     {
         private readonly IWoodstockStorefrontProvider storefrontProvider;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WoodstockUgcLookup"/> class.
+        ///     Initializes a new instance of the <see cref="LookupController"/> class.
         /// </summary>
-        public WoodstockUgcLookup(IWoodstockStorefrontProvider storefrontProvider)
+        public LookupController(IWoodstockStorefrontProvider storefrontProvider)
         {
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
 
@@ -57,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         public async Task<IActionResult> Get([FromBody] List<Guid> ugcIds)
         {
             var thumbnails = new List<ThumbnailLookupOutput>();
-            var thumbnailLookups = new List<Task<UgcItem>>();
+            var thumbnailLookups = new List<Task<WoodstockUgcItem>>();
 
             foreach (var id in ugcIds)
             {

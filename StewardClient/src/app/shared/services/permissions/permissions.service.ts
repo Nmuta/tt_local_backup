@@ -11,6 +11,7 @@ export enum PermissionServiceTool {
   UnhideUgc,
   HideUgc,
   FeatureUgc,
+  SetUgcGeoFlags,
   Unban,
 }
 
@@ -47,6 +48,11 @@ export class PermissionsService {
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.CommunityManager,
+    ],
+    [PermissionServiceTool.SetUgcGeoFlags]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
     ],
     [PermissionServiceTool.Unban]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
   };

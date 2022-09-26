@@ -8,6 +8,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '1a0d8f00-e291-4e7c-b9a6-e5ca4d274285',
+      shortText: 'Allow modification of Geo Flags on UGC',
+      longText: [
+        'Note that Geo Flags are cached for 5 minutes on a rolling basis. The cache time resets every time the UGC is viewed.',
+        "As such, the Geo Flag configuration won't update immediately in the UI, and instead you may need to wait to view it.",
+        'We have a request in with Services to make an uncached, Steward-only version of the data source.',
+      ],
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'b1857a74-0302-4248-8e30-60c199066d32',
       shortText: 'Adjust changelog popout',

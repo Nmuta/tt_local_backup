@@ -36,6 +36,18 @@ export interface PlayerUgcItem {
   liveryDownloadDataBase64?: string;
 }
 
+/** Geoflags that are valid in Woodstock. */
+export enum WoodstockGeoFlags {
+  China = 'China',
+  Australia = 'Australia',
+}
+
+/** A UGC Item for woodstock players, which includes Woodstock-specific features. */
+export interface WoodstockPlayerUgcItem extends PlayerUgcItem {
+  /** Only for Woodstock / supported titles. */
+  geoFlags: WoodstockGeoFlags[];
+}
+
 /** Creates a fake player UGC item */
 export function fakePlayerUgcItem(): PlayerUgcItem {
   const id = faker.datatype.uuid();

@@ -9,6 +9,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
@@ -37,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<UgcItem>> GetPlayerUgcContentAsync(ulong xuid, UgcType ugcType, string endpoint, bool includeThumbnails = false)
+        public async Task<IList<WoodstockUgcItem>> GetPlayerUgcContentAsync(ulong xuid, UgcType ugcType, string endpoint, bool includeThumbnails = false)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -50,11 +51,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
             var results = await this.woodstockService.GetPlayerUgcContentAsync(xuid, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<UgcItem>>(results.result);
+            return this.mapper.Map<IList<WoodstockUgcItem>>(results.result);
         }
 
         /// <inheritdoc />
-        public async Task<IList<UgcItem>> SearchUgcContentAsync(UgcType ugcType, ServicesLiveOps.ForzaUGCSearchRequest filters, string endpoint, bool includeThumbnails = false)
+        public async Task<IList<WoodstockUgcItem>> SearchUgcContentAsync(UgcType ugcType, ServicesLiveOps.ForzaUGCSearchRequest filters, string endpoint, bool includeThumbnails = false)
         {
             ugcType.ShouldNotBeNull(nameof(ugcType));
             filters.ShouldNotBeNull(nameof(filters));
@@ -71,16 +72,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
             var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
 
-            return this.mapper.Map<IList<UgcItem>>(filteredResults);
+            return this.mapper.Map<IList<WoodstockUgcItem>>(filteredResults);
         }
 
         /// <inheritdoc />
-        public async Task<UgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint)
+        public async Task<WoodstockUgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var liveryOutput = await this.woodstockService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
-            var livery = this.mapper.Map<UgcLiveryItem>(liveryOutput.result);
+            var livery = this.mapper.Map<WoodstockUgcLiveryItem>(liveryOutput.result);
 
             if (livery.GameTitle != (int)GameTitle.FH5)
             {
@@ -91,12 +92,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint)
+        public async Task<WoodstockUgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var photoOutput = await this.woodstockService.GetPlayerPhotoAsync(photoId, endpoint).ConfigureAwait(false);
-            var photo = this.mapper.Map<UgcItem>(photoOutput.result);
+            var photo = this.mapper.Map<WoodstockUgcItem>(photoOutput.result);
 
             if (photo.GameTitle != (int)GameTitle.FH5)
             {
@@ -107,12 +108,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint)
+        public async Task<WoodstockUgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var tuneOutput = await this.woodstockService.GetPlayerTuneAsync(tuneId, endpoint).ConfigureAwait(false);
-            var tune = this.mapper.Map<UgcItem>(tuneOutput.result);
+            var tune = this.mapper.Map<WoodstockUgcItem>(tuneOutput.result);
 
             if (tune.GameTitle != (int)GameTitle.FH5)
             {
@@ -123,12 +124,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint)
+        public async Task<WoodstockUgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var eventBlueprintOutput = await this.woodstockService.GetEventBlueprintAsync(eventBlueprintId, endpoint).ConfigureAwait(false);
-            var eventBlueprint = this.mapper.Map<UgcItem>(eventBlueprintOutput.result);
+            var eventBlueprint = this.mapper.Map<WoodstockUgcItem>(eventBlueprintOutput.result);
 
             if (eventBlueprint.GameTitle != (int)GameTitle.FH5)
             {
