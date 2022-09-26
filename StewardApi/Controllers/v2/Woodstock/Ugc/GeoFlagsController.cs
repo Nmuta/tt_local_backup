@@ -18,7 +18,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
     /// <summary>
-    ///     Handles requests for Woodstock.
+    ///     Handles GeoFlags requests for Woodstock.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/ugc/{id}/geoflags")]
     [LogTagTitle(TitleLogTags.Woodstock)]
@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         }
 
         /// <summary>
-        ///    Search UGC items.
+        ///    Set GeoFlags for a specific UGC Item.
         /// </summary>
         [HttpPost]
         [SwaggerResponse(200)]
