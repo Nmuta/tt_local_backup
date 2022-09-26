@@ -20,6 +20,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     {
         private static IEnumerable<string> Order { get; } = new List<string>
         {
+            Meta.All,
+            Meta.DangerousAll,
             Dev.InDev,
 
             Title.Multiple,

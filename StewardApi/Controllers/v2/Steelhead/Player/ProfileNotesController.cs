@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -39,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         UserRole.MotorsportDesigner,
         UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.Player, Topic.ProfileNotes)]
+    [StandardTags(Title.Steelhead, Target.Player, Topic.ProfileNotes)]
     public class ProfileNotesController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;
