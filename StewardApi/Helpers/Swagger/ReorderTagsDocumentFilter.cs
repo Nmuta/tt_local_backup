@@ -31,12 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             Title.Gravity,
             Title.Apollo,
 
-            Sentinel.UnknownAlphabetic,
+            Sentinel.NonDangerousAlphabetic,
 
             Dev.SteelheadTest,
             Dev.WoodstockTest,
             Dev.SunriseTest,
             Dev.ApolloTest,
+
+            Sentinel.Dangerous,
+
             Dev.ReviseTags,
             Dev.Incomplete,
         };
@@ -87,8 +90,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
         {
             switch (sentinel)
             {
+                case Sentinel.Dangerous:
+                    return aggregateTagsWithoutSlots.Where(IsDangerous).OrderBy(t => t).SelectMany(t => aggregateTagsByName[t]).ToList();
+                case Sentinel.NonDangerousAlphabetic:
+                    return aggregateTagsWithoutSlots.Where(t => !IsDangerous(t)).OrderBy(t => t).SelectMany(t => aggregateTagsByName[t]).ToList();
                 case Sentinel.UnknownAlphabetic:
-                    return aggregateTagsWithoutSlots.OrderBy(v => v).SelectMany(v => aggregateTagsByName[v]).ToList();
+                    return aggregateTagsWithoutSlots.OrderBy(t => t).SelectMany(t => aggregateTagsByName[t]).ToList();
                 default:
                     throw new InvalidOperationException($"Unknown sentinel '{sentinel}'");
             }

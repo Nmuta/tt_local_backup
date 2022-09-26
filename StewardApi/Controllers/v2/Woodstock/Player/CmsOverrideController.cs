@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.v2;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
@@ -31,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.Player, Topic.CmsOverride)]
+    [DangerousTags(Title.Woodstock, Target.Player, Topic.CmsOverride)]
     public class CmsOverrideController : V2WoodstockControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
