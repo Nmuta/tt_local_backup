@@ -65,15 +65,15 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
       switch (this.entry.tag as ChangelogTag) {
         case ChangelogTag.All:
           type = 'tag all';
-          tooltip = 'This change affects everything'
+          tooltip = 'This change affects everything';
           break;
         case ChangelogTag.General:
           type = 'tag general';
-          tooltip = 'General changes may alter many tools'
+          tooltip = 'General changes may alter many tools';
           break;
         case ChangelogTag.Internal:
           type = 'tag internal';
-          tooltip = 'Internal changes are largely development-related'
+          tooltip = 'Internal changes are largely development-related';
           break;
       }
 
@@ -97,9 +97,10 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
         return [
           {
             title: 'All Titles',
-            tooltip: 'Changes to all titles changes the behavior of all supported title modes of the tool',
+            tooltip:
+              'Changes to all titles changes the behavior of all supported title modes of the tool',
             type: 'tag target',
-          }
+          },
         ];
       }
 

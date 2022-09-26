@@ -9,8 +9,8 @@ $mat-chip-segment-all: app-color-default($app-primary, 0.5);
 $mat-chip-segment-target: app-color-default($app-accent, 0.5);
 
 $mat-chip-segment-height: 2.5em;
-$mat-chip-segment-large-gap: .5em;
-$mat-chip-segment-small-gap: .25em;
+$mat-chip-segment-large-gap: 0.5em;
+$mat-chip-segment-small-gap: 0.25em;
 
 mat-chip {
   overflow: hidden;
@@ -45,7 +45,7 @@ mat-chip span {
   &.title + .tag {
     // margin-left: .25em;
   }
-  
+
   &.tag {
     &.general {
       background-color: $mat-chip-segment-general;

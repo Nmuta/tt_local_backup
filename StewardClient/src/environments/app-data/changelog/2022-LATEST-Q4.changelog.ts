@@ -16,8 +16,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
         'Repositioning the chips to the right, condensing some contents and adding explanatory tooltips.',
         'Apply limited color-coding to the chips, emphasizing General entries, and de-emphasizing Internal entries.',
         'Fix expand-all + collapse-all feature to not "expand" entries with no expando content.',
-        'Adjust padding for clarity.'
-      ]
+        'Adjust padding for clarity.',
+      ],
     },
     {
       tag: ChangelogTag.Internal,
