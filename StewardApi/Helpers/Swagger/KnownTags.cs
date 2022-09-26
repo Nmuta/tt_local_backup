@@ -39,6 +39,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             return tags.Concat(new[] { Meta.All });
         }
 
+        /// <summary>
+        ///     Utility tags not for development.
+        /// </summary>
         public static class Meta
         {
             /// <summary>A meta-tag to enable ctrl+f on APIs.</summary>
