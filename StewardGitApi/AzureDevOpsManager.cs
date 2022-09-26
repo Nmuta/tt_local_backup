@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.TeamFoundation.Core.WebApi;
+﻿using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Organization.Client;
@@ -13,28 +6,15 @@ using Microsoft.VisualStudio.Services.Organization.Client;
 namespace StewardGitApi
 {
     /// <summary>
-    /// Manages Azure Dev Ops git operations within Steward.
+    /// Manages Steward's Azure DevOps git operations.
     /// </summary>
-    /// <remarks>
-    /// <c> await AzureContext.Connection.ConnectAsync()</c>
-    /// verifies a connection because AzureContext.Dispose()
-    /// possibly called resulting in Connection.Disconnect()
-    /// </remarks>
     public class AzureDevOpsManager : IAzureDevOpsManager
     {
         internal AzureContext AzureContext { get; }
 
-        internal Stack<GitChange> GitChanges { get; }
-
         public AzureDevOpsManager(Uri organizationUrl, VssBasicCredential credential, Settings connectionSettings)
         {
             AzureContext = new AzureContext(organizationUrl, credential, connectionSettings);
-            GitChanges = new Stack<GitChange>();
-        }
-
-        public int GetNumberOfUncommitChanges()
-        {
-            return GitChanges.Count;
         }
 
         public Guid GetCurrentUserId()
@@ -86,8 +66,8 @@ namespace StewardGitApi
             _ = Check.ForNull(proxyChange, nameof(proxyChange));
             proxyChange.VersionControlChangeType = VersionControlChangeType.Add;
             await AzureContext.Connection.ConnectAsync();
-            (GitPush gitPush, GitRefUpdateResult result) = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { proxyChange }).ConfigureAwait(false);
-            OnSuccess?.Invoke(result.Success);
+            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { proxyChange }).ConfigureAwait(false);
+            OnSuccess?.Invoke(gitPush != null);
             return gitPush;
         }
 
@@ -95,8 +75,8 @@ namespace StewardGitApi
         {
             _ = Check.ForNullOrEmpty(proxyChanges, nameof(proxyChanges));
             await AzureContext.Connection.ConnectAsync();
-            (GitPush gitPush, GitRefUpdateResult result) = await GitHelper.CommitAndPushAsync(AzureContext, proxyChanges).ConfigureAwait(false);
-            OnSuccess?.Invoke(result.Success);
+            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, proxyChanges).ConfigureAwait(false);
+            OnSuccess?.Invoke(gitPush != null);
             return gitPush;
         }
 
@@ -133,6 +113,33 @@ namespace StewardGitApi
             GitPullRequest pullRequest = await GitHelper.CreatePullRequestAsync(AzureContext, push, title, description).ConfigureAwait(false);
             OnSuccess?.Invoke(pullRequest != null);
             return pullRequest;
+        }
+
+        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRef gitRef, Action<bool> OnSuccess = null)
+        {
+            _ = Check.ForNull(gitRef, nameof(gitRef));
+            await AzureContext.Connection.ConnectAsync();
+            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(AzureContext, gitRef).ConfigureAwait(false);
+            OnSuccess?.Invoke(result.Success);
+            return result;
+        }
+
+        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitPush gitPush, Action<bool> OnSuccess = null)
+        {
+            _ = Check.ForNull(gitPush, nameof(gitPush));
+            await AzureContext.Connection.ConnectAsync();
+            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(AzureContext, gitPush).ConfigureAwait(false);
+            OnSuccess?.Invoke(result.Success);
+            return result;
+        }
+
+        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRefUpdate gitRefUpdate, Action<bool> OnSuccess = null)
+        {
+            _ = Check.ForNull(gitRefUpdate, nameof(gitRefUpdate));
+            await AzureContext.Connection.ConnectAsync();
+            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(AzureContext, gitRefUpdate).ConfigureAwait(false);
+            OnSuccess?.Invoke(result.Success);
+            return result;
         }
     }
 }

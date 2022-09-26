@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.VisualStudio.Services.Common;
 
@@ -17,18 +12,16 @@ namespace StewardGitApi
 
         internal (Guid projectId, Guid repoId) Ids => (ProjectId, RepoId);
 
-        // TODO consider making private if
-        // the connection is never set to a new org
         public Guid ProjectId { get; set; }
         public Guid RepoId { get; set; }
 
-        private Settings() 
-        { 
+        private Settings()
+        {
         }
 
         public Settings(Guid projectId, Guid repoId)
         {
-            ProjectId = Guid.TryParseExact(projectId.ToString(), "D", out Guid pid) 
+            ProjectId = Guid.TryParseExact(projectId.ToString(), "D", out Guid pid)
                 ? pid : throw new ArgumentException("Malformed Guid", nameof(projectId));
 
             RepoId = Guid.TryParseExact(repoId.ToString(), "D", out Guid rid)
@@ -45,7 +38,7 @@ namespace StewardGitApi
             return (T)_cache[key];
         }
 
-        public void SetValue<T>(string key, T value)
+        public void CacheValue<T>(string key, T value)
         {
             _cache[key] = value;
         }
@@ -65,12 +58,12 @@ namespace StewardGitApi
             return other.ProjectId == ProjectId && other.RepoId == RepoId;
         }
 
-        public static bool operator==(Settings lhs, Settings rhs)
+        public static bool operator ==(Settings lhs, Settings rhs)
         {
             return lhs.Equals(rhs);
         }
 
-        public static bool operator!=(Settings lhs, Settings rhs)
+        public static bool operator !=(Settings lhs, Settings rhs)
         {
             return !(lhs == rhs);
         }

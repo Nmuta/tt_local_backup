@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.TeamFoundation.SourceControl.WebApi;
+﻿using Microsoft.TeamFoundation.SourceControl.WebApi;
 
 namespace StewardGitApi
 {
@@ -16,9 +10,9 @@ namespace StewardGitApi
         public VersionControlChangeType VersionControlChangeType { get; internal set; }
 
         public CommitRefProxy(
-            string commitComment, 
-            string pathToFile, 
-            string newFileContent, 
+            string commitComment,
+            string pathToFile,
+            string newFileContent,
             VersionControlChangeType versionControlChangeType = VersionControlChangeType.Edit)
         {
             this.CommitComment = Check.ForNullEmptyOrWhiteSpace(commitComment, nameof(commitComment));

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.VisualStudio.Services.Common;
+﻿using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 
 namespace StewardGitApi
@@ -48,8 +41,7 @@ namespace StewardGitApi
 
             Connection = new VssConnection(organizationUrl, credential);
 
-            // Test connection, blocking call
-            // will throw remote exception if raised.
+            // Test connection
             Connection.ConnectAsync().SyncResult();
         }
 
