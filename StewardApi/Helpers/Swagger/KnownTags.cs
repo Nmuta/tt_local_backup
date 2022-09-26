@@ -15,6 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     {
         private const string DangerousPrefix = "Dangerous: ";
 
+        /// <summary>Returns true if the given tag is "Dangerous".</summary>
         public static bool IsDangerous(string tag)
         {
             return tag.StartsWith(DangerousPrefix, true, CultureInfo.InvariantCulture);
