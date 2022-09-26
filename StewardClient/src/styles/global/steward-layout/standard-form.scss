@@ -133,13 +133,13 @@
 .sf-chip-separate-left {
   margin-left: $gap-micro;
   padding-left: $gap-micro;
-  border-left: 1px solid $border-faded;
+  border-left: 1px solid $border-foreground-faded;
 }
 
 .sf-chip-separate-right {
   margin-right: $gap-micro;
   padding-right: $gap-micro;
-  border-right: 1px solid $border-faded;
+  border-right: 1px solid $border-foreground-faded;
 }
 
 .mat-card-actions.sf-actions,

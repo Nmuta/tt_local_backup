@@ -1,6 +1,15 @@
-.tagOrTool {
-  background-color: lime;
-}
+@import '/src/styles/mixins';
+
+$mat-chip-segment-general: app-color-default($app-success, 0.5);
+$mat-chip-segment-internal: app-color-default($app-background, 0.5);
+$mat-chip-segment-internal-foreground: app-color-default-contrast($app-background, 0.5);
+$mat-chip-segment-all: app-color-default($app-primary, 0.5);
+$mat-chip-segment-target: app-color-default($app-accent, 0.5);
+// $mat-chip-segment-target: app-color-lighter($app-background, 0.5);
+
+$mat-chip-segment-height: 2.5em;
+$mat-chip-segment-large-gap: .5em;
+$mat-chip-segment-small-gap: .25em;
 
 mat-chip {
   overflow: hidden;
@@ -8,27 +17,28 @@ mat-chip {
 }
 
 mat-chip span {
-  height: 2.2em;
-  line-height: 2.2em;
+  // based on the height of the chip
+  height: $mat-chip-segment-height;
+  line-height: $mat-chip-segment-height;
 
   white-space: nowrap;
 
   &.title {
-    padding: 0 .5em;
-    padding-right: .25em;
+    padding: 0 $mat-chip-segment-large-gap;
+    padding-right: $mat-chip-segment-small-gap;
   }
 
   &.title + .title {
-    padding: 0 .25em;
-    border-left: 1px solid #0002;
+    padding: 0 $mat-chip-segment-small-gap;
+    border-left: $border-vertical-bar;
   }
 
   &.tag {
-    padding: 0 .5em;
+    padding: 0 $mat-chip-segment-large-gap;
   }
 
   &.tag + .tag {
-    border-left: 1px solid #0002;
+    border-left: $border-vertical-bar;
   }
 
   &.title + .tag {
@@ -37,16 +47,17 @@ mat-chip span {
   
   &.tag {
     &.general {
-      background-color: lime;
+      background-color: $mat-chip-segment-general;
     }
     &.internal {
-      background-color: pink;
+      background-color: $mat-chip-segment-internal;
+      color: $mat-chip-segment-internal-foreground;
     }
     &.all {
-      background-color: fuchsia;
+      background-color: $mat-chip-segment-all;
     }
     &.target {
-      background-color: skyblue;
+      background-color: $mat-chip-segment-target;
     }
   }
 }
