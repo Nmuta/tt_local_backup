@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NEVER } from 'rxjs';
+import { ToggleListComponent } from '../toggle-list/toggle-list.component';
 
 import { ToggleListEzComponent } from './toggle-list-ez.component';
 
@@ -9,7 +10,7 @@ describe('ToggleListEzComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ToggleListEzComponent],
+      declarations: [ToggleListEzComponent, ToggleListComponent],
     }).compileComponents();
   });
 
