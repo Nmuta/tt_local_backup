@@ -396,6 +396,7 @@ namespace Turn10.LiveOps.StewardApi
 
                 c.OAuthClientId(this.configuration[ConfigurationKeyConstants.AzureClientId]);
                 c.OAuthScopeSeparator(" ");
+                c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
             });
 
             applicationBuilder.UseHttpsRedirection();
