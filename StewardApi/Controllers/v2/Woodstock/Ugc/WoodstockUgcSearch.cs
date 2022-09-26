@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -33,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         UserRole.MediaTeam)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.Details, Topic.Ugc)]
+    [StandardTags(Title.Woodstock, Target.Details, Topic.Ugc)]
     public class WoodstockUgcSearch : V2ControllerBase
     {
         private readonly IWoodstockStorefrontProvider storefrontProvider;

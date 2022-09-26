@@ -19,6 +19,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -40,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         UserRole.SupportAgent,
         UserRole.CommunityManager)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.LspGroup, Topic.Gifting)]
+    [StandardTags(Title.Steelhead, Target.LspGroup, Topic.Gifting)]
     public class GiftController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;

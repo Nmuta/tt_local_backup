@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -38,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.LspGroup, Topic.LspGroups)]
+    [StandardTags(Title.Woodstock, Target.LspGroup, Topic.LspGroups)]
     public class LeaderboardTalentController : V2WoodstockControllerBase
     {
         private readonly int leaderboardTalentGroupId = 14;

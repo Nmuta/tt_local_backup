@@ -15,14 +15,14 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     ///     and are typically used to group operations by tags in the UI.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Delegate | AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class DangerousTagsAttribute : Attribute, ITagsMetadata
+    public sealed class StandardTagsAttribute : Attribute, ITagsMetadata
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DangerousTagsAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="StandardTagsAttribute"/> class.
         /// </summary>
-        public DangerousTagsAttribute(params string[] tags)
+        public StandardTagsAttribute(params string[] tags)
         {
-            this.Tags = KnownTags.MakeDangerous(KnownTags.WithAll(tags)).ToList();
+            this.Tags = KnownTags.WithAll(tags).ToList();
         }
 
         /// <summary>Gets the tags.</summary>

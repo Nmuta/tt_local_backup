@@ -12,6 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -25,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags(Dev.SteelheadTest, Dev.ReviseTags)]
+    [StandardTags(Dev.SteelheadTest, Dev.ReviseTags)]
     public class TestProxiesController : V2ControllerBase
     {
         /// <summary>

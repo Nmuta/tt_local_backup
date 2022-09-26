@@ -33,6 +33,21 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             return tags.Select(MakeDangerous);
         }
 
+        /// <summary>Adds the All tag to the API.</summary>
+        public static IEnumerable<string> WithAll(IEnumerable<string> tags)
+        {
+            return tags.Concat(new[] { Meta.All });
+        }
+
+        public static class Meta
+        {
+            /// <summary>A meta-tag to enable ctrl+f on APIs.</summary>
+            public const string All = "All";
+
+            /// <summary>A meta-tag to enable ctrl+f on Dangerous APIs.</summary>
+            public static readonly string DangerousAll = MakeDangerous(All);
+        }
+
         /// <summary>
         ///     Utility tags for development purposes. Controls sorting.
         /// </summary>

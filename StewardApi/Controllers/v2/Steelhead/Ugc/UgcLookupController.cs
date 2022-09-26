@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -43,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         UserRole.MotorsportDesigner,
         UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Topic.Ugc, Target.Details)]
+    [StandardTags(Title.Steelhead, Topic.Ugc, Target.Details)]
     public class UgcLookupController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;
