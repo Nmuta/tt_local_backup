@@ -61,21 +61,21 @@ namespace StewardGitApi
             return item;
         }
 
-        public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy proxyChange, Action<bool> OnSuccess = null)
+        public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy changeToPush, Action<bool> OnSuccess = null)
         {
-            _ = Check.ForNull(proxyChange, nameof(proxyChange));
-            proxyChange.VersionControlChangeType = VersionControlChangeType.Add;
+            _ = Check.ForNull(changeToPush, nameof(changeToPush));
+            changeToPush.VersionControlChangeType = VersionControlChangeType.Add;
             await AzureContext.Connection.ConnectAsync();
-            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { proxyChange }).ConfigureAwait(false);
+            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { changeToPush }).ConfigureAwait(false);
             OnSuccess?.Invoke(gitPush != null);
             return gitPush;
         }
 
-        public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> proxyChanges, Action<bool> OnSuccess = null)
+        public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> changesToPush, Action<bool> OnSuccess = null)
         {
-            _ = Check.ForNullOrEmpty(proxyChanges, nameof(proxyChanges));
+            _ = Check.ForNullOrEmpty(changesToPush, nameof(changesToPush));
             await AzureContext.Connection.ConnectAsync();
-            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, proxyChanges).ConfigureAwait(false);
+            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, changesToPush).ConfigureAwait(false);
             OnSuccess?.Invoke(gitPush != null);
             return gitPush;
         }

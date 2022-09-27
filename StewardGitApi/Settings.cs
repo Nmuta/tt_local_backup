@@ -6,14 +6,13 @@ namespace StewardGitApi
 {
     public class Settings
     {
-        private readonly Dictionary<string, object> _cache = new();
+        private readonly Dictionary<string, object> cache = new ();
+        private readonly Guid projectId;
+        private readonly Guid repoId;
 
-        internal static Settings Default => new(Guid.Empty, Guid.Empty);
+        internal static Settings Default => new (Guid.Empty, Guid.Empty);
 
-        internal (Guid projectId, Guid repoId) Ids => (ProjectId, RepoId);
-
-        public Guid ProjectId { get; set; }
-        public Guid RepoId { get; set; }
+        internal (Guid projectId, Guid repoId) Ids => (projectId, repoId);
 
         private Settings()
         {
@@ -21,31 +20,31 @@ namespace StewardGitApi
 
         public Settings(Guid projectId, Guid repoId)
         {
-            ProjectId = Guid.TryParseExact(projectId.ToString(), "D", out Guid pid)
+            this.projectId = Guid.TryParseExact(projectId.ToString(), "D", out Guid pid)
                 ? pid : throw new ArgumentException("Malformed Guid", nameof(projectId));
 
-            RepoId = Guid.TryParseExact(repoId.ToString(), "D", out Guid rid)
+            this.repoId = Guid.TryParseExact(repoId.ToString(), "D", out Guid rid)
                 ? rid : throw new ArgumentException("Malformed Guid", nameof(repoId));
         }
 
         public bool TryGetValue<T>(string key, out T value)
         {
-            return _cache.TryGetValue<T>(key, out value);
+            return cache.TryGetValue<T>(key, out value);
         }
 
         public T GetValue<T>(string key)
         {
-            return (T)_cache[key];
+            return (T)cache[key];
         }
 
         public void CacheValue<T>(string key, T value)
         {
-            _cache[key] = value;
+            cache[key] = value;
         }
 
         public void RemoveValue(string name)
         {
-            _cache.Remove(name);
+            cache.Remove(name);
         }
 
         public override bool Equals([NotNullWhen(true)] object? obj)
@@ -55,7 +54,7 @@ namespace StewardGitApi
 
         public bool Equals(Settings other)
         {
-            return other.ProjectId == ProjectId && other.RepoId == RepoId;
+            return other.projectId == projectId && other.repoId == repoId;
         }
 
         public static bool operator ==(Settings lhs, Settings rhs)
@@ -70,7 +69,7 @@ namespace StewardGitApi
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(RepoId, ProjectId);
+            return HashCode.Combine(repoId, projectId);
         }
     }
 }

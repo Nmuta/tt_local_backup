@@ -5,24 +5,20 @@ namespace StewardGitApi
 {
     public class AzureContext : IDisposable
     {
-        private VssConnection _connection;
-        private readonly VssBasicCredential _credential;
-
-        public Uri Url { get; private set; }
+        private VssConnection connection;
+        private readonly VssBasicCredential credential;
 
         internal Settings Settings { get; }
 
+        public Uri Url { get; private set; }
+
         public VssConnection Connection
         {
-            get
-            {
-                _connection ??= new VssConnection(Url, _credential);
-                return _connection;
-            }
+            get => connection;
             private set
             {
-                Connection.Disconnect();
-                _connection = value;
+                connection.Disconnect();
+                connection = value;
             }
         }
 
@@ -30,16 +26,17 @@ namespace StewardGitApi
         {
         }
 
-        public AzureContext(Uri organizationUrl, VssBasicCredential credential, Settings connectionSettings)
+        public AzureContext(Uri organizationUrl, VssBasicCredential vssBasicCredential, Settings connectionSettings)
         {
-            _credential = Check.ForNull(credential, nameof(credential));
+            credential = vssBasicCredential ?? throw new VssCredentialException("No credentials provided");
+
+            if (connectionSettings == Settings.Default)
+                throw new ArgumentException($"No connection settings provided in {nameof(AzureContext)}");
+
             Url = Check.ForNull(organizationUrl, nameof(organizationUrl));
             Settings = Check.ForNull(connectionSettings, nameof(connectionSettings));
 
-            if (connectionSettings == Settings.Default)
-                throw new InvalidOperationException($"No connection settings provided in {nameof(AzureContext)}");
-
-            Connection = new VssConnection(organizationUrl, credential);
+            Connection = new VssConnection(organizationUrl, vssBasicCredential);
 
             // Test connection
             Connection.ConnectAsync().SyncResult();
@@ -47,10 +44,10 @@ namespace StewardGitApi
 
         public void Dispose()
         {
-            if (_connection != null)
+            if (connection != null)
             {
-                _connection.Disconnect();
-                ((IDisposable)_connection).Dispose();
+                connection.Disconnect();
+                ((IDisposable)connection).Dispose();
             }
 
             GC.SuppressFinalize(this);

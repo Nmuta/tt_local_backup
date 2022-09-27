@@ -4,21 +4,24 @@ namespace StewardGitApi
 {
     public class CommitRefProxy
     {
-        public string CommitComment { get; }
-        public string PathToFile { get; }
-        public string NewFileContent { get; }
+        public string CommitComment { get; init; }
+        public string PathToFile { get; init; }
+        public string NewFileContent { get; init; }
         public VersionControlChangeType VersionControlChangeType { get; internal set; }
 
-        public CommitRefProxy(
+        public static CommitRefProxy Create(
             string commitComment,
             string pathToFile,
             string newFileContent,
             VersionControlChangeType versionControlChangeType = VersionControlChangeType.Edit)
         {
-            this.CommitComment = Check.ForNullEmptyOrWhiteSpace(commitComment, nameof(commitComment));
-            this.PathToFile = Check.ForNullEmptyOrWhiteSpace(pathToFile, nameof(pathToFile));
-            this.NewFileContent = Check.ForNullEmptyOrWhiteSpace(newFileContent, nameof(newFileContent));
-            this.VersionControlChangeType = versionControlChangeType;
+            return new CommitRefProxy()
+            {
+                CommitComment = Check.ForNullEmptyOrWhiteSpace(commitComment, nameof(commitComment)),
+                PathToFile = Check.ForNullEmptyOrWhiteSpace(pathToFile, nameof(pathToFile)),
+                NewFileContent = Check.ForNullEmptyOrWhiteSpace(newFileContent, nameof(newFileContent)),
+                VersionControlChangeType = versionControlChangeType,
+            };
         }
     }
 }
