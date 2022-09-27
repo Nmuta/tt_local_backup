@@ -42,7 +42,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin)]
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Target.Player, Topic.Banning)]
     public class BanController : V2ControllerBase

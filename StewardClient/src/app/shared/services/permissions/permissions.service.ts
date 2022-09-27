@@ -26,6 +26,7 @@ export class PermissionsService {
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
       UserRole.SupportAgentNew,
+      UserRole.CommunityManager,
     ],
     [PermissionServiceTool.ConsoleBan]: [
       UserRole.LiveOpsAdmin,
@@ -49,12 +50,16 @@ export class PermissionsService {
       UserRole.SupportAgentAdmin,
       UserRole.CommunityManager,
     ],
+    [PermissionServiceTool.Unban]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
+    ],
     [PermissionServiceTool.SetUgcGeoFlags]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
     ],
-    [PermissionServiceTool.Unban]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
   };
 
   constructor(private readonly store: Store) {}

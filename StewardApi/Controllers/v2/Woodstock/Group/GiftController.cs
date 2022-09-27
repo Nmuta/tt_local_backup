@@ -40,7 +40,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
     [Route("api/v{version:apiVersion}/title/woodstock/group/{groupId}/gift")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.LspGroup, Topic.Gifting)]
     public class GiftController : V2WoodstockControllerBase

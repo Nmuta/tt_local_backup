@@ -36,7 +36,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
-        UserRole.CommunityManager)]
+        UserRole.CommunityManager,
+        UserRole.MediaTeam)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",

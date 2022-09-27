@@ -16,8 +16,11 @@
     <button
       mat-raised-button
       color="primary"
-      [disabled]="!canSetReportWeight && (!hasChanges || postMonitor.isActive)"
+      [disabled]="!canSetReportWeight || !hasChanges"
       (click)="setReportWeight()"
+      stateManager
+      [monitor]="postMonitor"
+      monitorDisable
     >
       <span [matTooltip]="!canSetReportWeight ? featureDisabledText : null">
         Update <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>

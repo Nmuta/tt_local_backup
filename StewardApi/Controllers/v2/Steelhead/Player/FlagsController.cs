@@ -95,7 +95,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.SupportAgent,
+            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]

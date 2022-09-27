@@ -94,6 +94,20 @@ export const CommonAccessLevels = {
     UserRole.MotorsportDesigner,
   ],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+  SearchUgc: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.CommunityManager,
+    UserRole.MediaTeam,
+  ],
+  Gifting: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.SupportAgent,
+    UserRole.SupportAgentNew,
+    UserRole.CommunityManager,
+    UserRole.MediaTeam,
+  ],
 };
 
 /**
@@ -325,7 +339,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerGift,
     tool: NavbarTool.Gifting,
-    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
+    accessList: CommonAccessLevels.Gifting,
     title: 'Gifting',
     subtitle: 'Send gifts',
     imageUrl: undefined,
@@ -354,7 +368,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.SearchUGC,
     oldToolRoutes: ['ugc'],
-    accessList: CommonAccessLevels.CommunityManagersAndAdmins,
+    accessList: CommonAccessLevels.Gifting,
     title: 'UGC Search',
     subtitle: 'Search User Generated Content',
     imageUrl: undefined,

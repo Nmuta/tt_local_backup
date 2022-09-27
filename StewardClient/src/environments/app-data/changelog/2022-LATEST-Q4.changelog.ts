@@ -8,6 +8,19 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: {
+        title: 'all',
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.Gifting],
+      },
+      uuid: '87a7f39a-783c-458b-b92c-186f96cd38d9',
+      shortText: 'Grant various roles access to tools and features',
+      longText: [
+        'Grant player flag and report weight permissions to CommunityManager role',
+        'Grant ban expiry and deletion permissions to SupportAgent role',
+        'Grant UGC Search permissions to MediaTeam role',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '1a0d8f00-e291-4e7c-b9a6-e5ca4d274285',
       shortText: 'Allow modification of Geo Flags on UGC',

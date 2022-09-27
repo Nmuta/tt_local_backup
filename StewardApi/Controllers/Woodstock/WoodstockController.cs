@@ -360,7 +360,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.SupportAgent,
+            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(WoodstockUserFlags))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Group)]
@@ -1121,7 +1122,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [HttpPost("ban/{banEntryId}/expire")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -1149,7 +1151,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [HttpPost("ban/{banEntryId}/delete")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -1587,7 +1590,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.CommunityManager,
+            UserRole.MediaTeam)]
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
