@@ -45,7 +45,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
     [Tags(Title.Multiple)]
     public sealed class ApolloGiftingController : V2ControllerBase
     {
-
         private const TitleCodeName CodeName = TitleCodeName.Apollo;
 
         private static readonly IList<string> RequiredSettings = new List<string>
