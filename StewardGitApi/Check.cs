@@ -2,13 +2,19 @@
 
 namespace StewardGitApi
 {
-    [DebuggerStepThrough, DebuggerNonUserCode]
+    /// <summary>
+    ///     Provides basic error checking.
+    /// </summary>
+    [DebuggerStepThrough]
+    [DebuggerNonUserCode]
     public static class Check
     {
         /// <summary>
         ///     Checks the object for null.
         /// </summary>
-        public static T ForNull<T>(T target, string parameterName, string message = null) where T : class
+        /// <typeparam name="T">The type of target.</typeparam>
+        public static T ForNull<T>(T target, string parameterName, string message = null)
+            where T : class
         {
             return target ?? throw new ArgumentNullException(parameterName, message ?? string.Empty);
         }
@@ -22,6 +28,7 @@ namespace StewardGitApi
             {
                 throw new ArgumentNullException(parameterName, message ?? string.Empty);
             }
+
             return target;
         }
 
@@ -37,6 +44,7 @@ namespace StewardGitApi
                     throw new ArgumentNullException(target, message ?? string.Empty);
                 }
             }
+
             return true;
         }
 
@@ -73,12 +81,14 @@ namespace StewardGitApi
         /// <summary>
         ///     Checks the enumerable for null or empty.
         /// </summary>
+        /// <typeparam name="T">The type of target.</typeparam>
         public static IEnumerable<T> ForNullOrEmpty<T>(IEnumerable<T> target, string parameterName, string message = null)
         {
             if (target == null || !target.Any())
             {
                 throw new ArgumentNullException(parameterName, message ?? string.Empty);
             }
+
             return target;
         }
     }

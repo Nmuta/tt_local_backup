@@ -8,11 +8,18 @@ using Microsoft.VisualStudio.Services.WebApi;
 
 namespace StewardGitApi
 {
+    /// <summary>
+    ///     Contains the git operation implementations.
+    /// </summary>
     internal class GitHelper
     {
         private const string AutogenBranchNameRoot = "steward-api-autogen";
         private const int GitCommitHashLength = 40;
 
+        /// <summary>
+        ///     Gets the project from the current org that
+        ///     matches the current <see cref="AzureContext.Settings"/>.ProjectId.
+        /// </summary>
         internal static async Task<TeamProjectReference> GetProjectAsync(AzureContext context)
         {
             string projectId = context.Settings.Ids.projectId.ToString();
@@ -36,6 +43,9 @@ namespace StewardGitApi
             return project;
         }
 
+        /// <summary>
+        ///     Gets the organization.
+        /// </summary>
         internal static async Task<Organization> GetOrganizationAsync(AzureContext context, string organizationId)
         {
             VssConnection connection = context.Connection;
@@ -43,16 +53,26 @@ namespace StewardGitApi
             return await organizationHttpClient.GetOrganizationAsync(organizationId).ConfigureAwait(false);
         }
 
+        /// <summary>
+        ///     Gets current user id.
+        /// </summary>
         internal static Guid GetCurrentUserId(AzureContext context)
         {
             return context.Connection.AuthorizedIdentity.Id;
         }
 
+        /// <summary>
+        ///     Gets current user display name.
+        /// </summary>
         internal static string GetCurrentUserDisplayName(AzureContext context)
         {
             return context.Connection.AuthorizedIdentity.ProviderDisplayName;
         }
 
+        /// <summary>
+        ///     Gets an item from the repository.
+        ///     Use GitObjectType to retrive blobs, commits, tags, refs or deltas.
+        /// </summary>
         internal static async Task<GitItem> GetItemAsync(AzureContext context, string path, GitObjectType gitObjectType)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
@@ -73,6 +93,9 @@ namespace StewardGitApi
             return item;
         }
 
+        /// <summary>
+        ///     Gets a list of repositories from the current project.
+        /// </summary>
         internal static async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(AzureContext context)
         {
             GitHttpClient gitHttpClient = context.Connection.GetClient<GitHttpClient>();
@@ -84,6 +107,10 @@ namespace StewardGitApi
             catch (ProjectDoesNotExistException) { return new List<GitRepository>(); }
         }
 
+        /// <summary>
+        ///     Gets a repository from the current project that
+        ///     matches the current <see cref="AzureContext.Settings"/>.RepoId.
+        /// </summary>
         internal static async Task<GitRepository> GetRepositoryAsync(AzureContext context)
         {
             var (projectId, repoId) = context.Settings.Ids;
@@ -110,12 +137,20 @@ namespace StewardGitApi
             return repo;
         }
 
+        /// <summary>
+        ///     Gets pull request statuses.
+        ///     A <c>null</c> <paramref name="mostRecent"/> will
+        ///     retrive the repo's entire pull request status history.
+        /// </summary>
         internal static async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(AzureContext context, int? mostRecent = null)
         {
             IEnumerable<GitPullRequest> gitPullRequests = await GetPullRequestsIntoDefaultBranchAsync(context, mostRecent: mostRecent).ConfigureAwait(false);
             return gitPullRequests.Select(pr => pr.Status);
         }
 
+        /// <summary>
+        ///     Gets a pull request by id.
+        /// </summary>
         internal static async Task<GitPullRequest> GetPullRequestAsync(AzureContext context, int pullRequestId)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
@@ -131,6 +166,9 @@ namespace StewardGitApi
             }
         }
 
+        /// <summary>
+        ///     Creates a pull request.
+        /// </summary>
         internal static async Task<GitPullRequest> CreatePullRequestAsync(AzureContext context, GitPush push, string title, string description)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
@@ -152,7 +190,13 @@ namespace StewardGitApi
             return pr;
         }
 
-        internal static async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(AzureContext context,
+        /// <summary>
+        ///     Get pull requests scheduled for merge into the default branch.
+        ///     A <c>null</c> <paramref name="mostRecent"/> will
+        ///     retrieve all matching pull requests.
+        /// </summary>
+        internal static async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(
+            AzureContext context,
             PullRequestStatus status = PullRequestStatus.NotSet,
             int? mostRecent = null)
         {
@@ -176,6 +220,10 @@ namespace StewardGitApi
             return prs;
         }
 
+        /// <summary>
+        ///     Commits and pushes content changes
+        ///     represented by <paramref name="proxyChanges"/>.
+        /// </summary>
         internal static async Task<GitPush> CommitAndPushAsync(AzureContext context, IEnumerable<CommitRefProxy> proxyChanges)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
@@ -207,6 +255,9 @@ namespace StewardGitApi
             return push;
         }
 
+        /// <summary>
+        ///     Deletes a branch pushed to.
+        /// </summary>
         internal static async Task<GitRefUpdateResult> DeleteBranchAsync(AzureContext context, GitPush push)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
@@ -227,6 +278,9 @@ namespace StewardGitApi
             return refDeleteResult;
         }
 
+        /// <summary>
+        ///     Deletes an udpated branch.
+        /// </summary>
         internal static async Task<GitRefUpdateResult> DeleteBranchAsync(AzureContext context, GitRefUpdate refUpdate)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
@@ -247,6 +301,9 @@ namespace StewardGitApi
             return refDeleteResult;
         }
 
+        /// <summary>
+        ///     Deletes a branch.
+        /// </summary>
         internal static async Task<GitRefUpdateResult> DeleteBranchAsync(AzureContext context, GitRef gitRef)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();

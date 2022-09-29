@@ -1,12 +1,30 @@
 ﻿namespace StewardGitApi
 {
-    internal class VssCredentialException : Exception
+    /// <summary>
+    ///     Represents a credential error.
+    /// </summary>
+    public class VssCredentialException : Exception
     {
-        public VssCredentialException(string message) : base(message)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="VssCredentialException"/> class.
+        /// </summary>
+        public VssCredentialException(string message)
+            : base(message)
         {
         }
 
-        public VssCredentialException(string message, Exception inner) : base(message, inner)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="VssCredentialException"/> class.
+        /// </summary>
+        public VssCredentialException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="VssCredentialException"/> class.
+        /// </summary>
+        public VssCredentialException()
         {
         }
     }

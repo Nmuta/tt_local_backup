@@ -6,139 +6,159 @@ using Microsoft.VisualStudio.Services.Organization.Client;
 namespace StewardGitApi
 {
     /// <summary>
-    /// Manages Steward's Azure DevOps git operations.
+    ///     Manages Steward's Azure DevOps git operations.
     /// </summary>
     public class AzureDevOpsManager : IAzureDevOpsManager
     {
-        internal AzureContext AzureContext { get; }
-
-        public AzureDevOpsManager(Uri organizationUrl, VssBasicCredential credential, Settings connectionSettings)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AzureDevOpsManager"/> class.
+        /// </summary>
+        public AzureDevOpsManager(Uri organizationUrl, VssBasicCredential credential, RepoSettings connectionSettings)
         {
-            AzureContext = new AzureContext(organizationUrl, credential, connectionSettings);
+            this.AzureContext = new AzureContext(organizationUrl, credential, connectionSettings);
         }
 
+        /// <inheritdoc/>
+        public AzureContext AzureContext { get; }
+
+        /// <inheritdoc/>
         public Guid GetCurrentUserId()
         {
-            return GitHelper.GetCurrentUserId(AzureContext);
+            return GitHelper.GetCurrentUserId(this.AzureContext);
         }
 
+        /// <inheritdoc/>
         public string GetCurrentUserDisplayName()
         {
-            return GitHelper.GetCurrentUserDisplayName(AzureContext);
+            return GitHelper.GetCurrentUserDisplayName(this.AzureContext);
         }
 
+        /// <inheritdoc/>
         public async Task<Organization> GetOrganizationAsync(string organizationId)
         {
-            await AzureContext.Connection.ConnectAsync();
-            return await GitHelper.GetOrganizationAsync(AzureContext, organizationId).ConfigureAwait(false);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            return await GitHelper.GetOrganizationAsync(this.AzureContext, organizationId).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
         public async Task<TeamProjectReference> GetProjectAsync()
         {
-            await AzureContext.Connection.ConnectAsync();
-            return await GitHelper.GetProjectAsync(AzureContext).ConfigureAwait(false);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            return await GitHelper.GetProjectAsync(this.AzureContext).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
         public async Task<GitRepository> GetRepositoryAsync()
         {
-            await AzureContext.Connection.ConnectAsync();
-            return await GitHelper.GetRepositoryAsync(AzureContext).ConfigureAwait(false);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            return await GitHelper.GetRepositoryAsync(this.AzureContext).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitRepository>> GetRepositoriesAsync(Action<bool> onSuccess = null)
         {
-            await AzureContext.Connection.ConnectAsync();
-            IEnumerable<GitRepository> repos = await GitHelper.GetRepositoriesAsync(AzureContext).ConfigureAwait(false);
-            OnSuccess?.Invoke(repos.Any());
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            IEnumerable<GitRepository> repos = await GitHelper.GetRepositoriesAsync(this.AzureContext).ConfigureAwait(false);
+            onSuccess?.Invoke(repos.Any());
             return repos;
         }
 
-        public async Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType, Action<bool> onSuccess = null)
         {
-            await AzureContext.Connection.ConnectAsync();
-            GitItem item = await GitHelper.GetItemAsync(AzureContext, path, gitObjectType).ConfigureAwait(false);
-            OnSuccess?.Invoke(item != null);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitItem item = await GitHelper.GetItemAsync(this.AzureContext, path, gitObjectType).ConfigureAwait(false);
+            onSuccess?.Invoke(item != null);
             return item;
         }
 
-        public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy changeToPush, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy changeToPush, Action<bool> onSuccess = null)
         {
             _ = Check.ForNull(changeToPush, nameof(changeToPush));
             changeToPush.VersionControlChangeType = VersionControlChangeType.Add;
-            await AzureContext.Connection.ConnectAsync();
-            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, new CommitRefProxy[] { changeToPush }).ConfigureAwait(false);
-            OnSuccess?.Invoke(gitPush != null);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitPush gitPush = await GitHelper.CommitAndPushAsync(this.AzureContext, new CommitRefProxy[] { changeToPush }).ConfigureAwait(false);
+            onSuccess?.Invoke(gitPush != null);
             return gitPush;
         }
 
-        public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> changesToPush, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> changesToPush, Action<bool> onSuccess = null)
         {
             _ = Check.ForNullOrEmpty(changesToPush, nameof(changesToPush));
-            await AzureContext.Connection.ConnectAsync();
-            GitPush gitPush = await GitHelper.CommitAndPushAsync(AzureContext, changesToPush).ConfigureAwait(false);
-            OnSuccess?.Invoke(gitPush != null);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitPush gitPush = await GitHelper.CommitAndPushAsync(this.AzureContext, changesToPush).ConfigureAwait(false);
+            onSuccess?.Invoke(gitPush != null);
             return gitPush;
         }
 
-        public async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(int? mostRecent = null, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(int? mostRecent = null, Action<bool> onSuccess = null)
         {
             _ = Check.ForGreaterThanZero(mostRecent, nameof(mostRecent));
-            await AzureContext.Connection.ConnectAsync();
-            IEnumerable<PullRequestStatus> prStatuses = await GitHelper.GetPullRequestStatusAsync(AzureContext, mostRecent);
-            OnSuccess?.Invoke(prStatuses.Any());
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            IEnumerable<PullRequestStatus> prStatuses = await GitHelper.GetPullRequestStatusAsync(this.AzureContext, mostRecent).ConfigureAwait(false);
+            onSuccess?.Invoke(prStatuses.Any());
             return prStatuses;
         }
 
-        public async Task<GitPullRequest> GetPullRequestAsync(int pullRequestId, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitPullRequest> GetPullRequestAsync(int pullRequestId, Action<bool> onSuccess = null)
         {
-            await AzureContext.Connection.ConnectAsync();
-            GitPullRequest pullRequest = await GitHelper.GetPullRequestAsync(AzureContext, pullRequestId).ConfigureAwait(false);
-            OnSuccess?.Invoke(pullRequest != null);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitPullRequest pullRequest = await GitHelper.GetPullRequestAsync(this.AzureContext, pullRequestId).ConfigureAwait(false);
+            onSuccess?.Invoke(pullRequest != null);
             return pullRequest;
         }
 
-        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecent = null, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecent = null, Action<bool> onSuccess = null)
         {
             _ = Check.ForGreaterThanZero(mostRecent, nameof(mostRecent));
-            await AzureContext.Connection.ConnectAsync();
-            IEnumerable<GitPullRequest> pullRequests = await GitHelper.GetPullRequestsIntoDefaultBranchAsync(AzureContext, status, mostRecent);
-            OnSuccess?.Invoke(true);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            IEnumerable<GitPullRequest> pullRequests = await GitHelper.GetPullRequestsIntoDefaultBranchAsync(this.AzureContext, status, mostRecent).ConfigureAwait(false);
+            onSuccess?.Invoke(true);
             return pullRequests;
         }
 
-        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush push, string title, string description, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush push, string title, string description, Action<bool> onSuccess = null)
         {
             _ = Check.ForNullEmptyOrWhiteSpace(new string[] { title, description });
-            await AzureContext.Connection.ConnectAsync();
-            GitPullRequest pullRequest = await GitHelper.CreatePullRequestAsync(AzureContext, push, title, description).ConfigureAwait(false);
-            OnSuccess?.Invoke(pullRequest != null);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitPullRequest pullRequest = await GitHelper.CreatePullRequestAsync(this.AzureContext, push, title, description).ConfigureAwait(false);
+            onSuccess?.Invoke(pullRequest != null);
             return pullRequest;
         }
 
-        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRef gitRef, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRef gitRef, Action<bool> onSuccess = null)
         {
             _ = Check.ForNull(gitRef, nameof(gitRef));
-            await AzureContext.Connection.ConnectAsync();
-            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(AzureContext, gitRef).ConfigureAwait(false);
-            OnSuccess?.Invoke(result.Success);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(this.AzureContext, gitRef).ConfigureAwait(false);
+            onSuccess?.Invoke(result.Success);
             return result;
         }
 
-        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitPush gitPush, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitPush gitPush, Action<bool> onSuccess = null)
         {
             _ = Check.ForNull(gitPush, nameof(gitPush));
-            await AzureContext.Connection.ConnectAsync();
-            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(AzureContext, gitPush).ConfigureAwait(false);
-            OnSuccess?.Invoke(result.Success);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(this.AzureContext, gitPush).ConfigureAwait(false);
+            onSuccess?.Invoke(result.Success);
             return result;
         }
 
-        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRefUpdate gitRefUpdate, Action<bool> OnSuccess = null)
+        /// <inheritdoc/>
+        public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRefUpdate gitRefUpdate, Action<bool> onSuccess = null)
         {
             _ = Check.ForNull(gitRefUpdate, nameof(gitRefUpdate));
-            await AzureContext.Connection.ConnectAsync();
-            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(AzureContext, gitRefUpdate).ConfigureAwait(false);
-            OnSuccess?.Invoke(result.Success);
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            GitRefUpdateResult result = await GitHelper.DeleteBranchAsync(this.AzureContext, gitRefUpdate).ConfigureAwait(false);
+            onSuccess?.Invoke(result.Success);
             return result;
         }
     }
