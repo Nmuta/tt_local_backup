@@ -67,6 +67,8 @@ using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 using System.Linq;
 using System.Threading.Tasks;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
+using Turn10.LiveOps.StewardApi.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -79,6 +81,7 @@ namespace Turn10.LiveOps.StewardApi
         private readonly IConfiguration configuration;
 
         private IServiceCollection allServices;
+
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Startup"/> class.
@@ -124,6 +127,7 @@ namespace Turn10.LiveOps.StewardApi
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 });
+
             services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
@@ -155,9 +159,14 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
-                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
+                options.AddPolicy(Turn10.LiveOps.StewardApi.Common.ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
+                options.AddPolicy(Turn10.LiveOps.StewardApi.Common.ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
+                options.AddPolicy("Test", policy => policy.Requirements.Add(new AttributeRequirement("Test")));
             });
+
+            // As always, handlers must be provided for the requirements of the authorization policies
+            services.AddSingleton<IAuthorizationHandler, AttributeAuthorizationHandler>();
+
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {

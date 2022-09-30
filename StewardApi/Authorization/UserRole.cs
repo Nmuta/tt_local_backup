@@ -49,14 +49,10 @@
     }
 
     // Or enums?
-    public enum Woodstock
+    public enum AuthorizationTags
     {
-        Retail,
-    }
-
-    public enum User
-    {
-        Gifter,
-
+        Woodstock,
+        Retail, 
+        Gifter
     }
 }
