@@ -14,7 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     /// <inheritdoc />
-    public sealed class StewardUserProvider : IStewardUserProvider
+    public sealed class StewardUserProvider : IStewardUserProvider, IScopedStewardUserProvider
     {
         private readonly ITableStorageClient tableStorageClient;
         private readonly IRefreshableCacheStore refreshableCacheStore;
