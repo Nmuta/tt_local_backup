@@ -24,8 +24,8 @@ namespace StewardGitApi
                 throw new ArgumentException($"No connection settings provided in {nameof(AzureContext)}");
             }
 
-            this.Url = Check.ForNull(organizationUrl, nameof(organizationUrl));
-            this.Settings = Check.ForNull(connectionSettings, nameof(connectionSettings));
+            this.Url = organizationUrl.CheckForNull(nameof(organizationUrl));
+            this.Settings = connectionSettings.CheckForNull(nameof(connectionSettings));
 
             this.Connection = new VssConnection(organizationUrl, vssBasicCredential);
 
@@ -48,7 +48,7 @@ namespace StewardGitApi
         /// <summary>
         ///     Gets the organization url.
         /// </summary>
-        public Uri Url { get; private set; }
+        public Uri Url { get; }
 
         /// <summary>
         ///     Gets the connection.

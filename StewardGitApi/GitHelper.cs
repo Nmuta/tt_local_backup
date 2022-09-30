@@ -234,7 +234,7 @@ namespace StewardGitApi
             string defaultBranchName = WithoutRefsPrefix(repo.DefaultBranch);
             GitRef defaultBranch = (await gitClient.GetRefsAsync(repo.Id, filter: defaultBranchName).ConfigureAwait(false)).First();
 
-            // Craft the branch and commit that we'll push
+            // Craft the new branch that we'll push
             string refId = GetUniqueRefId();
             GitRefUpdate newBranch = new ()
             {

@@ -38,9 +38,9 @@ namespace StewardGitApi
         {
             return new CommitRefProxy()
             {
-                CommitComment = Check.ForNullEmptyOrWhiteSpace(commitComment, nameof(commitComment)),
-                PathToFile = Check.ForNullEmptyOrWhiteSpace(pathToFile, nameof(pathToFile)),
-                NewFileContent = Check.ForNullEmptyOrWhiteSpace(newFileContent, nameof(newFileContent)),
+                CommitComment = commitComment.CheckForNullEmptyOrWhiteSpace(nameof(commitComment)),
+                PathToFile = pathToFile.CheckForNullEmptyOrWhiteSpace(nameof(pathToFile)),
+                NewFileContent = newFileContent.CheckForNullEmptyOrWhiteSpace(nameof(newFileContent)),
                 VersionControlChangeType = versionControlChangeType,
             };
         }
