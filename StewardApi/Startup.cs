@@ -67,6 +67,7 @@ using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 using System.Linq;
 using System.Threading.Tasks;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
+using StewardGitApi;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -319,6 +320,8 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IOpusPlayerInventoryProvider, OpusPlayerInventoryProvider>();
 
             services.AddSingleton<IBlobStorageProvider, BlobStorageProvider>();
+
+            services.AddSingleton<IAzureDevOpsFactory, AzureDevOpsFactory>();
 
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 

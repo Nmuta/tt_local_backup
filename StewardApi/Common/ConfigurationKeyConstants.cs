@@ -259,5 +259,25 @@
         ///     The Steward environment.
         /// </summary>
         public const string StewardEnvironment = "StewardEnvironment";
+
+        /// <summary>
+        ///     The Steelhead Content PAT.
+        /// </summary>
+        public const string SteelheadContentAccessToken = "Git:SteelheadContentAccessToken";
+
+        /// <summary>
+        ///     The Steelhead Content Project Id.
+        /// </summary>
+        public const string SteelheadContentProjectId = "Git:SteelheadContentProjectId";
+
+        /// <summary>
+        ///     The Steelhead Content Repo Id.
+        /// </summary>
+        public const string SteelheadContentRepoId = "Git:SteelheadContentProjectId";
+
+        /// <summary>
+        ///     The Steelhead Content Organization Url.
+        /// </summary>
+        public const string SteelheadContentOrganizationUrl = "Git:SteelheadContentOrganizationUrl";
     }
 }

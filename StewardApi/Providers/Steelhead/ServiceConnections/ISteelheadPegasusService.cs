@@ -43,5 +43,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets vanity items.
         /// </summary>
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
+
+        /// <summary>
+        ///     Gets Messages of the Day from Pegasus.
+        /// </summary>
+        Task<SteelheadMessageOfTheDay> GetMotDMessagesAsync();
     }
 }

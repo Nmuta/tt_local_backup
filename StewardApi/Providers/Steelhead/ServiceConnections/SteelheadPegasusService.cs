@@ -7,7 +7,10 @@ using AutoMapper;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using SteelheadLiveOpsContent;
+using StewardGitApi;
+
 using Turn10.Data.Common;
+using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -34,12 +37,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private readonly CMSRetrievalHelper cmsRetrievalHelper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IMapper mapper;
+        private readonly IAzureDevOpsManager azureDevOpsManager;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SteelheadPegasusService"/> class.
         /// </summary>
         public SteelheadPegasusService(
             PegasusCmsProvider pegasusCmsProvider,
+            IAzureDevOpsFactory azureDevOpsFactory,
+            IKeyVaultProvider keyVaultProvider,
             IRefreshableCacheStore refreshableCacheStore,
             IMapper mapper,
             IConfiguration configuration,
@@ -49,6 +55,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             mapper.ShouldNotBeNull(nameof(mapper));
             loggingService.ShouldNotBeNull(nameof(loggingService));
+            azureDevOpsFactory.ShouldNotBeNull(nameof(azureDevOpsFactory));
+            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
 
             configuration.ShouldNotBeNull(nameof(configuration));
             configuration.ShouldContainSettings(RequiredSettings);
@@ -65,6 +73,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.mapper = mapper;
 
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
+
+            string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
+                configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                configuration[ConfigurationKeyConstants.SteelheadContentAccessToken]).GetAwaiter().GetResult();
+
+            string steelheadContentOrgUrl = configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl];
+
+            this.azureDevOpsManager = azureDevOpsFactory.Create(
+                steelheadContentOrgUrl,
+                steelheadContentPAT,
+                Guid.ParseExact(configuration[ConfigurationKeyConstants.SteelheadContentProjectId], "D"),
+                Guid.ParseExact(configuration[ConfigurationKeyConstants.SteelheadContentRepoId], "D"));
         }
 
         /// <inheritdoc />
@@ -211,5 +231,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return this.refreshableCacheStore.GetItem<IEnumerable<VanityItem>>(vanityItemsKey)
                    ?? await GetVanityItems().ConfigureAwait(false);
         }
+
+        /// <inheritdoc />
+        public async Task<SteelheadMessageOfTheDay> GetMotDMessagesAsync()
+        {
+            // TODO use adomanager to get steelhead file info, add editing params to param list, edit here.
+            throw new NotImplementedException();
+        }
+
+        /// This snippet is for getting cms MotD, change signature to make obvious.
+        //public async Task<SteelheadMessageOfTheDay> GetMotDMessagesAsync()
+        //{
+        //    var motdKey = $"{PegasusBaseCacheKey}MotDMessages";
+
+        //    async Task<SteelheadMessageOfTheDay> GetMotDMessages()
+        //    {
+        //        var pegasusMotdMessages = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadMessageOfTheDay>(
+        //            CMSFileNames.MotDMessages,
+        //            this.cmsEnvironment).ConfigureAwait(false);
+        //        // TODO convert to v2 after steelhead liveops projection is ready
+        //        // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1304646
+
+        //        //var motdMessages = this.mapper.Map<SteelheadMessageOfTheDay>(pegasusMotdMessages);
+        //        this.refreshableCacheStore.PutItem(motdKey, TimeSpan.FromDays(1), pegasusMotdMessages);
+        //        return pegasusMotdMessages;
+        //    }
+
+        //    return this.refreshableCacheStore.GetItem<SteelheadMessageOfTheDay>(motdKey)
+        //        ?? await GetMotDMessages().ConfigureAwait(false);
+        //}
     }
 }
