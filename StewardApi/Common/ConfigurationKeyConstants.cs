@@ -266,17 +266,17 @@
         public const string SteelheadContentAccessToken = "Git:SteelheadContentAccessToken";
 
         /// <summary>
-        ///     The Steelhead Content Project Id.
+        ///     The Steelhead Content project id.
         /// </summary>
         public const string SteelheadContentProjectId = "Git:SteelheadContentProjectId";
 
         /// <summary>
-        ///     The Steelhead Content Repo Id.
+        ///     The Steelhead Content repo id.
         /// </summary>
         public const string SteelheadContentRepoId = "Git:SteelheadContentProjectId";
 
         /// <summary>
-        ///     The Steelhead Content Organization Url.
+        ///     The Steelhead Content organization URL.
         /// </summary>
         public const string SteelheadContentOrganizationUrl = "Git:SteelheadContentOrganizationUrl";
     }

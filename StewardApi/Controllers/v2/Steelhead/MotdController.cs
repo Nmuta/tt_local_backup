@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using AutoMapper;
 
@@ -59,7 +60,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(SteelheadMessageOfTheDay))]
         public async Task<IActionResult> GetMessagesOfTheDay()
         {
-            var motdMessages = await this.steelheadPegasusService.GetMotDMessagesAsync().ConfigureAwait(true);
+            Dictionary<XName, string> editsToMake = new Dictionary<XName, string>();
+
+            // TODO add edits to dict, need help on settin up endpoint to get data from UI
+
+            var motdMessages = await this.steelheadPegasusService.EditMotDMessagesAsync(editsToMake).ConfigureAwait(true);
 
             return this.Ok(motdMessages);
         }

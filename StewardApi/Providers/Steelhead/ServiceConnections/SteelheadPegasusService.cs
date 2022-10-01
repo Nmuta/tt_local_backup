@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+
 using AutoMapper;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.TeamFoundation.SourceControl.WebApi;
+
 using SteelheadLiveOpsContent;
 using StewardGitApi;
 
@@ -233,32 +239,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadMessageOfTheDay> GetMotDMessagesAsync()
+        public async Task<GitPush> EditMotDMessagesAsync(Dictionary<XName, string> editsToMake)
         {
-            // TODO use adomanager to get steelhead file info, add editing params to param list, edit here.
-            throw new NotImplementedException();
+            const string messageOfTheDayPath = "GitXml/Data/original.xml";
+
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(messageOfTheDayPath, GitObjectType.Blob, null).ConfigureAwait(false);
+            string filecontent = item.Content;
+
+            XDocument doc = XDocument.Parse(filecontent);
+            XNamespace nspc = "scribble:title-content";
+
+            foreach (KeyValuePair<XName, string> pair in editsToMake)
+            {
+                XElement el = doc.Descendants(nspc + $"{pair.Key}").FirstOrDefault();
+                if (el != null)
+                {
+                    el.Value = pair.Value;
+                }
+            }
+
+            // convert doc to string UTF8, XmlDoc.ToString() returns UTF16
+            MemoryStream memory = new ();
+            doc.Save(memory);
+            string xmlText = Encoding.UTF8.GetString(memory.ToArray());
+            await memory.DisposeAsync().ConfigureAwait(false);
+
+            var change = new CommitRefProxy()
+            {
+                CommitComment = $"Edit Message of the Day",
+                NewFileContent = xmlText,
+                PathToFile = messageOfTheDayPath,
+                VersionControlChangeType = VersionControlChangeType.Edit
+            };
+
+            GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(new CommitRefProxy[] { change }, null).ConfigureAwait(false);
+            return pushed;
         }
-
-        /// This snippet is for getting cms MotD, change signature to make obvious.
-        //public async Task<SteelheadMessageOfTheDay> GetMotDMessagesAsync()
-        //{
-        //    var motdKey = $"{PegasusBaseCacheKey}MotDMessages";
-
-        //    async Task<SteelheadMessageOfTheDay> GetMotDMessages()
-        //    {
-        //        var pegasusMotdMessages = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadMessageOfTheDay>(
-        //            CMSFileNames.MotDMessages,
-        //            this.cmsEnvironment).ConfigureAwait(false);
-        //        // TODO convert to v2 after steelhead liveops projection is ready
-        //        // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1304646
-
-        //        //var motdMessages = this.mapper.Map<SteelheadMessageOfTheDay>(pegasusMotdMessages);
-        //        this.refreshableCacheStore.PutItem(motdKey, TimeSpan.FromDays(1), pegasusMotdMessages);
-        //        return pegasusMotdMessages;
-        //    }
-
-        //    return this.refreshableCacheStore.GetItem<SteelheadMessageOfTheDay>(motdKey)
-        //        ?? await GetMotDMessages().ConfigureAwait(false);
-        //}
     }
 }

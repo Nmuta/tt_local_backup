@@ -25,7 +25,7 @@ namespace StewardGitApi
         /// <summary>
         ///     Gets the pull request change type.
         /// </summary>
-        public VersionControlChangeType VersionControlChangeType { get; internal set; }
+        public VersionControlChangeType VersionControlChangeType { get; init; }
 
         /// <summary>
         ///     Creates a POCO <see cref="CommitRefProxy"/>.
