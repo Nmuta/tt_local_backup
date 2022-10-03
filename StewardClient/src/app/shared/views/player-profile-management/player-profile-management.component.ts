@@ -42,9 +42,13 @@ export interface PlayerProfileManagementServiceContract {
   styleUrls: ['./player-profile-management.component.scss'],
 })
 export class PlayerProfileManagementComponent extends BaseComponent implements OnInit, OnChanges {
+  /** REVIEW-COMMENT: Player xuid. */
   @Input() public xuid: BigNumber;
+  /** REVIEW-COMMENT: External profile id. */
   @Input() public externalProfileId: GuidLikeString;
+  /** REVIEW-COMMENT: The player profile management service. */
   @Input() public service: PlayerProfileManagementServiceContract;
+  /** REVIEW-COMMENT: Output when profile id is updated. */
   @Output() public externalProfileIdUpdated = new EventEmitter<GuidLikeString>();
 
   public hasAccessToTool: boolean = false;

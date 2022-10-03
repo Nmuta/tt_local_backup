@@ -11,6 +11,7 @@ import {
   styleUrls: ['./leaderboard-validations.component.scss'],
 })
 export class LeaderboardValidationsComponent implements OnChanges {
+  /** REVIEW-COMMENT: Leaderboard metadata and query. */
   @Input() leaderboard: LeaderboardMetadataAndQuery;
 
   public expanded: boolean = true;

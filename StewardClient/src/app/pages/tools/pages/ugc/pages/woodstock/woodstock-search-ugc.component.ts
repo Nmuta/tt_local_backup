@@ -28,6 +28,7 @@ import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 })
 export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit {
   @ViewChild(HelpPopoverIconComponent) helpPopoverIcon: HelpPopoverIconComponent;
+  /** REVIEW-COMMENT: Pegasus slot id. Default to {@link PegasusProjectionSlot.Live}. */
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
   public gameTitle = GameTitle.FH5;
   public searchUgc$ = new Subject<UgcSearchFilters>();

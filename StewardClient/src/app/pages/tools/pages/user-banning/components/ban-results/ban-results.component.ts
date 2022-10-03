@@ -10,12 +10,13 @@ import { BanResultsUnion } from '../../pages/base/user-banning.base.component';
   styleUrls: ['./ban-results.component.scss'],
 })
 export class BanResultsComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: Ban results. */
   @Input() public banResults: BanResultsUnion[];
 
   public banCsvData: string[][];
   public banErrorCount: number = 0;
 
-  /** Test */
+  /** Initialization hook. */
   public ngOnInit(): void {
     this.banResults = sortBy(this.banResults, result => !result.error); //Failures to the top
     this.banErrorCount = this.banResults.filter(data => data.error).length;

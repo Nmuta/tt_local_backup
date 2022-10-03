@@ -21,8 +21,11 @@ export abstract class MakeModelAutocompleteBaseComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor
 {
+  /** REVIEW-COMMENT: Can only search by make. */
   @Input() public makeOnlyOptions = true;
+  /** REVIEW-COMMENT: Pegasus slot Id. */
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
+  /** REVIEW-COMMENT: Output when new ugc search filters are selected. */
   @Output() public changes = new EventEmitter<DetailedCar>();
 
   public formControls = {

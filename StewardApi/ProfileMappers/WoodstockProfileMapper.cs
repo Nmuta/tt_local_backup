@@ -197,7 +197,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ReverseMap();
             this.CreateMap<UgcType, ServicesLiveOps.ForzaUGCContentType>().ReverseMap();
-            this.CreateMap<ServicesLiveOps.ForzaUGCData, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaUGCData, WoodstockUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(
                     dest => dest.ThumbnailOneImageBase64,
@@ -241,7 +242,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaLiveryData, UgcLiveryItem>()
+            this.CreateMap<ServicesLiveOps.ForzaLiveryData, WoodstockUgcLiveryItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
                 .ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
@@ -270,7 +272,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaPhotoData, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaPhotoData, WoodstockUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
@@ -297,7 +300,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaTuneData, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaTuneData, WoodstockUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
@@ -323,7 +327,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<WebServicesContracts.ForzaEventBlueprint, UgcItem>()
+            this.CreateMap<WebServicesContracts.ForzaEventBlueprint, WoodstockUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.EventBlueprint))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))

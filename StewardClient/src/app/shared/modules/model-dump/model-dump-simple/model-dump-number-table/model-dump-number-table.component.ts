@@ -11,5 +11,6 @@ import { ObjectEntry } from '../../helpers';
   styleUrls: ['./model-dump-number-table.component.scss'],
 })
 export class ModelDumpNumberTableComponent {
+  /** REVIEW-COMMENT: Array of BigNumber */
   @Input() public values: ObjectEntry<BigNumber>[];
 }

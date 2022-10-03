@@ -17,10 +17,15 @@ export type LocalizedMessageWithEnglishPreview = LocalizedMessage & { englishTex
 })
 export class NewLocalizedMessageComponent implements OnChanges {
   private static readonly UTC_NOW = DateTime.utc();
+  /** REVIEW-COMMENT: Pending localized message. */
   @Input() public pendingLocalizedMessage: LocalizedMessageWithEnglishPreview;
+  /** REVIEW-COMMENT: Allow device type filter. */
   @Input() public allowDeviceTypeFilter: boolean;
+  /** REVIEW-COMMENT: The localized string service. */
   @Input() public service: SelectLocalizedStringContract;
+  /** REVIEW-COMMENT: Is start time lock. */
   @Input() public lockStartTime: boolean = false;
+  /** REVIEW-COMMENT: Event when new localized message is created. */
   @Output() public emitNewLocalizedMessage = new EventEmitter<LocalizedMessageWithEnglishPreview>();
 
   private dateRange: DatetimeRangePickerFormValue = {

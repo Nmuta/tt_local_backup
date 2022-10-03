@@ -46,11 +46,13 @@ export class OptionalNumberComponent
 {
   @ContentChild(TemplateRef) template: TemplateRef<unknown>;
 
+  /** REVIEW-COMMENT: Label. */
   @Input() public label: string;
 
+  /** REVIEW-COMMENT: Placeholder. */
   @Input() public placeholder: string;
 
-  /** Configures the minimum value. */
+  /** REVIEW-COMMENT: Configures the minimum value. */
   @Input()
   public set min(value: number | null) {
     this._min = value;
@@ -62,7 +64,7 @@ export class OptionalNumberComponent
     return this._min;
   }
 
-  /** Configures the maximum value. */
+  /** REVIEW-COMMENT: Configures the maximum value. */
   @Input()
   public set max(value: number | null) {
     this._max = value;

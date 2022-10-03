@@ -5,6 +5,7 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
   selector: '[matBadge][matBadgeIcon]',
 })
 export class MatBadgeIconDirective implements OnInit {
+  /** REVIEW-COMMENT: Mat badge icon. */
   @Input() matBadgeIcon: string;
 
   constructor(private readonly el: ElementRef) {}

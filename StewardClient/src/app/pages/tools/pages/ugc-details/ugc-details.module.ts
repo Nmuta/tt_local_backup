@@ -35,6 +35,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
+import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
+import { MatSelectModule } from '@angular/material/select';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -80,6 +82,8 @@ import { VerifyActionButtonModule } from '@components/verify-action-button/verif
     MatCheckboxModule,
     DirectivesModule,
     StateManagersModule,
+    StandardFormModule,
+    MatSelectModule,
   ],
 })
 export class UgcDetailsModule {}

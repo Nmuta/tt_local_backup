@@ -8,6 +8,55 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '21cfcc58-6336-4147-b267-e994a7092e06',
+      shortText: 'Add new report button to ugc details',
+      longText: [
+        'Any Ugc can be reported with a mandatory reason coming from a dropdown.',
+        'Reporting a Ugc will send it to Salus for the T10 Enforcement team to review.',
+      ],
+    },
+    {
+      tag: {
+        title: 'all',
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.Gifting],
+      },
+      uuid: '87a7f39a-783c-458b-b92c-186f96cd38d9',
+      shortText: 'Grant various roles access to tools and features',
+      longText: [
+        'Grant player flag and report weight permissions to CommunityManager role',
+        'Grant ban expiry and deletion permissions to SupportAgent role',
+        'Grant UGC Search permissions to MediaTeam role',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '1a0d8f00-e291-4e7c-b9a6-e5ca4d274285',
+      shortText: 'Allow modification of Geo Flags on UGC',
+      longText: [
+        'Note that Geo Flags are cached for 5 minutes on a rolling basis. The cache time resets every time the UGC is viewed.',
+        "As such, the Geo Flag configuration won't update immediately in the UI, and instead you may need to wait to view it.",
+        'We have a request in with Services to make an uncached, Steward-only version of the data source.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'b1857a74-0302-4248-8e30-60c199066d32',
+      shortText: 'Adjust changelog popout',
+      longText: [
+        'Adjusting a few older changelog entries for brevity; moving the details into expando text.',
+        'Repositioning the chips to the right, condensing some contents and adding explanatory tooltips.',
+        'Apply limited color-coding to the chips, emphasizing General entries, and de-emphasizing Internal entries.',
+        'Fix expand-all + collapse-all feature to not "expand" entries with no expando content.',
+        'Adjust padding for clarity.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ed73707c-d956-45ff-b94e-72dc92613a7b',
+      shortText: 'Add new typescript linter rules for Input and Output',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
       uuid: '5d7bad3d-5f99-4f6f-a77f-c08d579c75d3',
       shortText: 'Add localized message creation and sending',
@@ -75,8 +124,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '459b4469-89ee-4e9d-8358-e4063e3141c1',
-      shortText:
-        'Refactor messaging component contracts to make them validate at build time instead of runtime',
+      shortText: 'Refactor messaging component contracts',
+      longText: ['Contracts validate at build time instead of runtime'],
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
@@ -97,8 +146,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },
       uuid: 'c17418be-38f2-4f73-812e-f04ced9e8eab',
-      shortText:
-        'Added message scheduling to Woodstock and Steelhead. Updated Sunrise messaging UI to match, but behavior unchanged',
+      shortText: 'Added message scheduling to Woodstock and Steelhead',
+      longText: ['Updated Sunrise messaging UI to match, but behavior unchanged'],
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },

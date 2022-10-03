@@ -9,8 +9,10 @@ import {
   SelectLocalizedStringContract,
 } from './select-localized-string.component';
 
+/** Test class for {@link SelectLocalizedStringContract}. */
 class TestSelectLocalizedStringContract implements SelectLocalizedStringContract {
   gameTitle: GameTitle.FM8;
+  /** Get localized strings. */
   getLocalizedStrings$(): Observable<LocalizedStringsMap> {
     return;
   }

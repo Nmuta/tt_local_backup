@@ -100,9 +100,13 @@ export class LeaderboardScoresComponent
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('dateSlideToggle') dateSlideToggle: MatSlideToggle;
+  /** The leaderboard scores service.*/
   @Input() service: LeaderboardScoresContract;
+  /** REVIEW-COMMENT: Leaderboard metadata and query. */
   @Input() leaderboard: LeaderboardMetadataAndQuery;
+  /** REVIEW-COMMENT: Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
   public getLeaderboardScores$ = new Subject<LeaderboardQuery>();

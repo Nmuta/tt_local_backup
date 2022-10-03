@@ -47,9 +47,13 @@ export abstract class GiftBasketBaseComponent<
   IdentityT extends IdentityResultUnion,
   MasterInventoryT extends MasterInventoryUnion,
 > extends BaseComponent {
+  /** REVIEW-COMMENT: Player identities. */
   @Input() public playerIdentities: IdentityT[];
+  /** REVIEW-COMMENT: Lsp Group. */
   @Input() public lspGroup: LspGroup;
+  /** REVIEW-COMMENT: Component is using player identities. */
   @Input() public usingPlayerIdentities: boolean;
+  /** Reference inventory.*/
   @Input() public referenceInventory: MasterInventoryT;
 
   /** User profile. */

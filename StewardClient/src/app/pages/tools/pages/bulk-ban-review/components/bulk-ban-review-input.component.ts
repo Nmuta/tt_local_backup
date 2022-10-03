@@ -27,6 +27,7 @@ export type BulkBanReviewInput = {
 })
 export class BulkBanReviewInputComponent extends BaseComponent implements OnInit {
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
+  /** REVIEW-COMMENT: Output when bulk ban review input changes. */
   @Output() selection = new EventEmitter<BulkBanReviewInput>();
 
   public woodstockEnvs: string[];

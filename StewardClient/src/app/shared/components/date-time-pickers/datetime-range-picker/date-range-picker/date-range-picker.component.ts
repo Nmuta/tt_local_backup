@@ -59,6 +59,7 @@ export class DateRangePickerComponent
   implements ControlValueAccessor, Validator, AfterViewInit
 {
   @ViewChild('defaultToggle') defaultToggle: MatButtonToggle;
+  /** REVIEW-COMMENT: Datetime range options. Default to empty array. */
   @Input() toggleOptions: DatetimeRangeOption[] = [];
 
   private defaultRange = {

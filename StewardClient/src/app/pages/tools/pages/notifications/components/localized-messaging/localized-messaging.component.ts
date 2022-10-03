@@ -46,9 +46,13 @@ type MessageSendResultViewable = {
   styleUrls: ['./localized-messaging.component.scss'],
 })
 export class LocalizedMessagingComponent extends BaseComponent {
+  /** REVIEW-COMMENT: The localized messaging service. */
   @Input() service: LocalizedMessagingContract;
+  /** REVIEW-COMMENT: Player identities. */
   @Input() playerIdentities: IdentityResultAlpha[] = [];
+  /** REVIEW-COMMENT: Selected Lsp Group. */
   @Input() selectedLspGroup: LspGroup;
+  /** REVIEW-COMMENT: Is using player identities. */
   @Input() isUsingPlayerIdentities: boolean = true;
 
   /** True while waiting for community message verification. */

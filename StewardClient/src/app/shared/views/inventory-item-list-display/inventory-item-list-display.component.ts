@@ -13,6 +13,7 @@ import { isPlayerInventoryItem } from '@models/player-inventory-item';
   styleUrls: ['./inventory-item-list-display.component.scss'],
 })
 export class InventoryItemListDisplayComponent implements OnInit {
+  /** REVIEW-COMMENT: Player inventory list to show. */
   @Input() public whatToShow: PlayerInventoryItemList;
   public inventoryColumns: string[] = ['quantity', 'description', 'errors'];
   public errors: MSError[];

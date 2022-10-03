@@ -17,6 +17,7 @@ export abstract class BackstagePassHistoryBaseComponent
   extends BaseComponent
   implements OnInit, OnChanges
 {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
   /** A list of player backstage pass events. */

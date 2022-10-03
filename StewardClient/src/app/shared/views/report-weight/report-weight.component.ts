@@ -33,7 +33,9 @@ export interface ReportWeightServiceContract {
   styleUrls: ['./report-weight.component.scss'],
 })
 export class ReportWeightComponent extends BaseComponent implements OnInit, OnChanges {
+  /** REVIEW-COMMENT: The report weight service. */
   @Input() service: ReportWeightServiceContract;
+  /** REVIEW-COMMENT: Player xuid. */
   @Input() xuid: BigNumber;
 
   public ReportWeightType = ReportWeightType;

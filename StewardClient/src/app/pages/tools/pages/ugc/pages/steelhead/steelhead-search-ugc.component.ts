@@ -28,6 +28,7 @@ import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon
 })
 export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit {
   @ViewChild(HelpPopoverIconComponent) helpPopoverIcon: HelpPopoverIconComponent;
+  /** REVIEW-COMMENT: Pegasus slot id. Default to {@link PegasusProjectionSlot.Live}. */
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
   public gameTitle = GameTitle.FM8;
   public searchUgc$ = new Subject<UgcSearchFilters>();

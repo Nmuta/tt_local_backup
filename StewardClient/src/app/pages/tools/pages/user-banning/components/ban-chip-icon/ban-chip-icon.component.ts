@@ -27,9 +27,13 @@ type AnyBanSummary =
   styleUrls: ['./ban-chip-icon.component.scss'],
 })
 export class BanChipIconComponent extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultUnion = null;
+  /** REVIEW-COMMENT: Ban summary. */
   @Input() public banSummary: AnyBanSummary = null;
+  /** REVIEW-COMMENT: Ban query. */
   @Input() public banQuery: BanQuery = null;
+  /** REVIEW-COMMENT: Output for when gavel icon is clicked. */
   @Output() public gavelClick = new EventEmitter<BanChipIconComponent>();
 
   public bannedIcon = faGavel;

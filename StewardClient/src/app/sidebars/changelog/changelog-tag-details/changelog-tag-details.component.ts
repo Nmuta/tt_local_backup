@@ -9,6 +9,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 interface ChanglogEntryChip {
   title: string;
+  type: 'tag target' | 'tag internal' | 'tag all' | 'tag general' | null;
   tooltip: string;
 }
 
@@ -20,6 +21,7 @@ interface ChanglogEntryChip {
   providers: [GameTitleAbbreviationPipe, GameTitleFullNamePipe, HumanizePipe],
 })
 export class ChangelogTagDetailsComponent extends BaseComponent implements OnChanges {
+  /** Changelog entry to be displayed. */
   @Input() public entry: ChangelogEntry;
 
   public tagOrToolChips: ChanglogEntryChip[] = [];
@@ -53,14 +55,33 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
         tool =>
           ({
             title: this.humanizePipe.transform(tool.split('-').join(' ')), // Navtool is a hyphen separate string
+            type: 'tag target',
             tooltip: null,
           } as ChanglogEntryChip),
       );
     } else {
+      let type = 'tag';
+      let tooltip: string = null;
+      switch (this.entry.tag as ChangelogTag) {
+        case ChangelogTag.All:
+          type = 'tag all';
+          tooltip = 'This change affects everything';
+          break;
+        case ChangelogTag.General:
+          type = 'tag general';
+          tooltip = 'General changes may alter many tools';
+          break;
+        case ChangelogTag.Internal:
+          type = 'tag internal';
+          tooltip = 'Internal changes are largely development-related';
+          break;
+      }
+
       return [
         {
           title: this.humanizePipe.transform(this.entry.tag as ChangelogTag),
-          tooltip: null,
+          type,
+          tooltip,
         } as ChanglogEntryChip,
       ];
     }
@@ -71,6 +92,18 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
 
     const hasTitleDetails = !!entryAsArea?.title;
     if (hasTitleDetails) {
+      const isAllTitleChange = entryAsArea?.title === 'all';
+      if (isAllTitleChange) {
+        return [
+          {
+            title: 'All Titles',
+            tooltip:
+              'Changes to all titles changes the behavior of all supported title modes of the tool',
+            type: 'tag target',
+          },
+        ];
+      }
+
       const isMultiTitleChange =
         entryAsArea?.title === 'all' || entryAsArea?.title instanceof Array;
       let titles: GameTitle[] = [];
@@ -84,7 +117,7 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
         titles = [entryAsArea?.title as GameTitle];
       }
 
-      return titles
+      const result = titles
         .filter(title => title !== GameTitle.Street)
         .map(
           title =>
@@ -93,6 +126,8 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
               tooltip: this.gameTitleFullNamePipe.transform(title),
             } as ChanglogEntryChip),
         );
+
+      return result;
     }
   }
 }

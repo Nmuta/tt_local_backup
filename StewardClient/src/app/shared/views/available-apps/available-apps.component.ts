@@ -43,6 +43,8 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
 
   private shouldReloadData = false;
 
+  public readonly UserRole = UserRole;
+
   constructor(
     private readonly store: Store,
     private readonly windowService: WindowService,
@@ -100,34 +102,14 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
       this.enableStagingApi = latest.enableStagingApi;
     });
 
-    if (!!(this.userProfile as UserModel)?.role) {
-      const role = (this.userProfile as UserModel).role;
-      switch (role) {
-        case UserRole.LiveOpsAdmin:
-          this.areAnyAppsAccessible = true;
-          this.areZendeskAppsAccessible = true;
-          break;
-        case UserRole.SupportAgentAdmin:
-        case UserRole.SupportAgent:
-        case UserRole.SupportAgentNew:
-          this.areAnyAppsAccessible = true;
-          this.areZendeskAppsAccessible = true;
-          break;
-        case UserRole.DataPipelineAdmin:
-        case UserRole.DataPipelineContributor:
-        case UserRole.DataPipelineRead:
-          this.areAnyAppsAccessible = true;
-          break;
-        case UserRole.CommunityManager:
-          this.areAnyAppsAccessible = true;
-          break;
-        case UserRole.HorizonDesigner:
-          this.areAnyAppsAccessible = true;
-          break;
-        case UserRole.MotorsportDesigner:
-          this.areAnyAppsAccessible = true;
-          break;
-      }
-    }
+    const role = this.userProfile?.role ?? UserRole.None;
+    this.areAnyAppsAccessible = role !== UserRole.None;
+    // Only support agents have access to Zendesk.
+    // Doing this manually until Zendesk app is deleted.
+    this.areZendeskAppsAccessible =
+      role === UserRole.LiveOpsAdmin ||
+      role === UserRole.SupportAgentAdmin ||
+      role === UserRole.SupportAgent ||
+      role === UserRole.SupportAgentNew;
   }
 }

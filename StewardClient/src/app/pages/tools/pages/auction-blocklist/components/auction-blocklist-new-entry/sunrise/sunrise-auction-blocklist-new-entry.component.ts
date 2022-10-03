@@ -12,6 +12,7 @@ import { SunriseAuctionBlocklistNewEntryService } from './sunrise-auction-blockl
   providers: [SunriseAuctionBlocklistNewEntryService],
 })
 export class SunriseAuctionBlocklistNewEntryComponent {
+  /** REVIEW-COMMENT: Output when a new list of auction blocklist entry is created. */
   @Output() newEntries = new EventEmitter<AuctionBlocklistEntry[]>();
   constructor(public service: SunriseAuctionBlocklistNewEntryService) {}
 }

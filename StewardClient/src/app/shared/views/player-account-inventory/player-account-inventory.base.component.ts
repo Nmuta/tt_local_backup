@@ -19,6 +19,7 @@ export abstract class PlayerAccountInventoryBaseComponent<T extends AccountInven
   extends BaseComponent
   implements OnChanges
 {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
   public accountInventory: T;

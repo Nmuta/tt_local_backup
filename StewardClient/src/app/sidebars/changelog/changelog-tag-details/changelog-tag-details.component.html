@@ -1,8 +1,10 @@
 <mat-chip-list>
-  <mat-chip *ngFor="let chip of tagOrToolChips" [matTooltip]="chip.tooltip" selected clickStop>{{
-    chip.title
-  }}</mat-chip>
-  <mat-chip *ngFor="let chip of titleChips" [matTooltip]="chip.tooltip" clickStop>{{
-    chip.title
-  }}</mat-chip>
+  <mat-chip clickStop>
+    <span class="title" *ngFor="let chip of titleChips" [matTooltip]="chip.tooltip">{{
+      chip.title
+    }}</span>
+    <span *ngFor="let chip of tagOrToolChips" [class]="chip.type" [matTooltip]="chip.tooltip">{{
+      chip.title
+    }}</span>
+  </mat-chip>
 </mat-chip-list>

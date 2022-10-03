@@ -20,10 +20,25 @@ export const RestrictedToolAccessLookup = {
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
   },
   [RestrictedFeature.GiftLivery]: {
-    [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
-    [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+    [GameTitle.FH5]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.CommunityManager,
+      UserRole.MediaTeam,
+    ],
+    [GameTitle.FH4]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.CommunityManager,
+      UserRole.MediaTeam,
+    ],
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
-    [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+    [GameTitle.FM7]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.CommunityManager,
+      UserRole.MediaTeam,
+    ],
   },
   [RestrictedFeature.SendLoyaltyRewards]: {
     [GameTitle.FH5]: [
@@ -37,10 +52,30 @@ export const RestrictedToolAccessLookup = {
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
   [RestrictedFeature.SetReportWeight]: {
-    [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
-    [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
-    [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
-    [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.SupportAgent],
+    [GameTitle.FH5]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
+      UserRole.CommunityManager,
+    ],
+    [GameTitle.FH4]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
+      UserRole.CommunityManager,
+    ],
+    [GameTitle.FM8]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
+      UserRole.CommunityManager,
+    ],
+    [GameTitle.FM7]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.SupportAgentAdmin,
+      UserRole.SupportAgent,
+      UserRole.CommunityManager,
+    ],
   },
   [RestrictedFeature.PlayerProfileManagement]: {
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],

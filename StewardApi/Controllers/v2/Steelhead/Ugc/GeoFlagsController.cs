@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Bond;
 using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -15,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -33,8 +33,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Topic.Ugc, Target.Details)]
-    public class GeoFlagController : V2SteelheadControllerBase
+    [StandardTags(Title.Steelhead, Topic.Ugc, Target.Details)]
+    public class GeoFlagsController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
 

@@ -10,6 +10,40 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class EnumExtensions
     {
         /// <summary>
+        ///     Enumerate the array of integer flags as if they were an enum of the given type.
+        ///     Throws if an unexpected value is encountered.
+        /// </summary>
+        /// <typeparam name="T">Type of the enum to cast to.</typeparam>
+        /// <param name="source">Integer source.</param>
+        /// <returns>A list of the set flags.</returns>
+        /// <exception cref="ArgumentException">When the source type is not an enum.</exception>
+        /// <exception cref="InvalidOperationException">When an unexpected value is encountered.</exception>
+        public static IEnumerable<T> AsEnumList<T>(this int[] source)
+            where T : Enum
+        {
+            if (!typeof(T).IsEnum)
+            {
+                throw new ArgumentException("source must be an enum");
+            }
+
+            if (source == null || !source.Any())
+            {
+                yield break; // produces empty iterable
+            }
+
+            foreach (var item in source)
+            {
+                var isValidEnum = Enum.IsDefined(typeof(T), (T)(object)item);
+                if (!isValidEnum)
+                {
+                    throw new InvalidOperationException($"'{item}' is not a valid value for the enum '{typeof(T).Name}'");
+                }
+
+                yield return (T)(object)item;
+            }
+        }
+
+        /// <summary>
         ///     Enumerate the flags of a Flag Enum.
         /// </summary>
         /// <typeparam name="T">Type of the enum.</typeparam>

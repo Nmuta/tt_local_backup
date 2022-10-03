@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
@@ -41,9 +42,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin)]
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.Player, Topic.Banning)]
+    [StandardTags(Title.Steelhead, Target.Player, Topic.Banning)]
     public class BanController : V2ControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;

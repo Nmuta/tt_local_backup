@@ -17,5 +17,12 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         /// </summary>
         Task<StorefrontManagementService.GetUGCLiveryOutput> GetUGCLivery(
             Guid id);
+
+        Task SetUGCGeoFlag(Guid id, int[] geoFlags);
+
+        /// <summary>
+        ///     Report content with a reason. Reason should come from pegasus.
+        /// </summary>
+        Task ReportContentWithReason(Guid fileId, Guid reason);
     }
 }

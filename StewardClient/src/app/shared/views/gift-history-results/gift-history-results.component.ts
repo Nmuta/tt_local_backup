@@ -39,13 +39,21 @@ export type GiftHistoryResultsServiceContract = {
   providers: [HumanizePipe],
 })
 export class GiftHistoryResultsComponent extends BaseComponent implements OnChanges, OnInit {
+  /** REVIEW-COMMENT: The gift history result service. */
   @Input() public service: GiftHistoryResultsServiceContract;
+  /** REVIEW-COMMENT: Selected player. */
   @Input() public selectedPlayer: IdentityResultUnion;
+  /** REVIEW-COMMENT: Selected Lsp Group */
   @Input() public selectedGroup: LspGroup;
+  /** REVIEW-COMMENT: Player identities. */
   @Input() public usingPlayerIdentities: boolean; // TODO: This could be better named: usePlayerIdentities
+  /** REVIEW-COMMENT: Game Title. */
   @Input() public gameTitle: GameTitle;
+  /** REVIEW-COMMENT: Gift start date. */
   @Input() public startDate: DateTime;
+  /** REVIEW-COMMENT: Gift end date. */
   @Input() public endDate: DateTime;
+  /** REVIEW-COMMENT: Output when gift history is found. */
   @Output() public foundGiftHistoryList = new EventEmitter<GiftHistoryResultAndView[]>();
 
   public SENTINEL_VALUE = NEGATIVE_ONE;

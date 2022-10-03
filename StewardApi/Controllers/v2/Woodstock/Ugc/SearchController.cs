@@ -10,7 +10,9 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -33,17 +35,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         UserRole.MediaTeam)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.Details, Topic.Ugc)]
-    public class WoodstockUgcSearch : V2ControllerBase
+    [StandardTags(Title.Woodstock, Target.Details, Topic.Ugc)]
+    public class SearchController : V2ControllerBase
     {
         private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IMapper mapper;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WoodstockUgcSearch"/> class.
+        ///     Initializes a new instance of the <see cref="SearchController"/> class.
         /// </summary>
-        public WoodstockUgcSearch(IWoodstockStorefrontProvider storefrontProvider, IWoodstockItemsProvider itemsProvider, IMapper mapper)
+        public SearchController(IWoodstockStorefrontProvider storefrontProvider, IWoodstockItemsProvider itemsProvider, IMapper mapper)
         {
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
@@ -58,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         ///    Search UGC items.
         /// </summary>
         [HttpPost("{ugcType}")]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get([FromBody] UGCSearchFilters parameters, string ugcType)

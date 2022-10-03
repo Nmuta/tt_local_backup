@@ -11,6 +11,7 @@ import { ModelDumpChildBaseComponent } from '../helpers/model-dump-child.base.co
   styleUrls: ['./model-dump-images.component.scss'],
 })
 export class ModelDumpImagesComponent extends ModelDumpChildBaseComponent {
+  /** REVIEW-COMMENT: Images to render. */
   @Input() public values: ObjectEntry<string>[];
 
   /** Gets the images to render, allowing for overrides. */

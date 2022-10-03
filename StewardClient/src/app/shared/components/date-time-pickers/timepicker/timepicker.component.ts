@@ -62,6 +62,7 @@ export class TimepickerComponent
   @Input('aria-describedby')
   public userAriaDescribedBy: string;
 
+  /** REVIEW-COMMENT: Minimum datetime allowed. */
   @Input()
   public min: DateTime;
   public minFormatted: string;
@@ -87,7 +88,7 @@ export class TimepickerComponent
   private _required = false;
   private _disabled = false;
 
-  /** Gets or sets the value of the input. MatFormFieldControl hook. */
+  /** REVIEW-COMMENT: Gets or sets the value of the input. MatFormFieldControl hook. */
   @Input()
   public get value(): DateTime {
     return this._value;
@@ -100,7 +101,7 @@ export class TimepickerComponent
     this.stateChanges.next();
   }
 
-  /** Gets or sets the value of the input. Designed to translate for ngx-material-timepicker. */
+  /** REVIEW-COMMENT: Gets or sets the value of the input. Designed to translate for ngx-material-timepicker. */
   @Input()
   public get valueInternal(): string {
     return this._valueInternal;
@@ -120,7 +121,7 @@ export class TimepickerComponent
     this.stateChanges.next();
   }
 
-  /** Gets or sets the placeholder text. MatFormFieldControl hook. */
+  /** REVIEW-COMMENT: Gets or sets the placeholder text. MatFormFieldControl hook. */
   @Input()
   public get placeholder(): string {
     return this._placeholder;
@@ -143,7 +144,7 @@ export class TimepickerComponent
     return !!this.valueInternal || this.focused || !this.empty;
   }
 
-  /** MatFormFieldControl hook. */
+  /** REVIEW-COMMENT: MatFormFieldControl hook. */
   @Input()
   public get required(): boolean {
     return this._required;
@@ -155,7 +156,7 @@ export class TimepickerComponent
     this.stateChanges.next();
   }
 
-  /** MatFormFieldControl hook. */
+  /** REVIEW-COMMENT: MatFormFieldControl hook. */
   @Input()
   public get disabled(): boolean {
     return this._disabled;

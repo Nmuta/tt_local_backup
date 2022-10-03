@@ -43,7 +43,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
         public async Task<WoodstockMasterInventory> GetMasterInventoryAsync()
         {
-
             var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<DataCar>(), new List<Exception>());
             var getCarHorns = this.pegasusService.GetCarHornsAsync().SuccessOrDefault(Array.Empty<CarHorn>(), new List<Exception>());
             var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<VanityItem>(), new List<Exception>());

@@ -15,8 +15,11 @@ import { WoodstockCarsCacheService } from '../../managers/woodstock/cars-cache.s
   styleUrls: ['./cached-car.component.scss'],
 })
 export class CachedCarComponent extends BaseComponent implements OnInit, OnChanges {
+  /** REVIEW-COMMENT: Game title. */
   @Input() public title: GameTitle = null;
+  /** REVIEW-COMMENT: Car id. */
   @Input() public carId: BigNumber;
+  /** REVIEW-COMMENT: Hide if unavailable. Default to false. */
   @Input() public hideIfUnavailable = false;
 
   public shouldHide = false;
