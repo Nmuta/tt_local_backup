@@ -6,6 +6,8 @@ import { mergedParamMap$ } from '@helpers/param-map';
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
+import { UgcReportReason } from '@models/ugc-report-reason';
+import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-report.service';
 import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -37,11 +39,14 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: WoodstockPlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
+  public reportMonitor = new ActionMonitor('Post Report UGC');
+  public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
 
   public userHasWritePerms: boolean = false;
   public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
+  public canReportUgc: boolean = true;
   public featureMatToolip: string = null;
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
@@ -49,6 +54,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     title: 'Geo Flags',
     submitModel$: () => EMPTY,
   };
+  public reportReasons: UgcReportReason[] = null;
+  public selectedReason: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
 
@@ -56,6 +63,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly service: WoodstockService,
     private readonly permissionsService: PermissionsService,
+    private readonly ugcReportService: WoodstockUgcReportService,
     private readonly dialog: MatDialog,
   ) {
     super();
@@ -136,6 +144,13 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
           this.featureMatToolip = this.privateUgcTooltip;
         }
       });
+
+    this.ugcReportService
+      .getUgcReportReasons$()
+      .pipe(this.getReportReasonsMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(results => {
+        this.reportReasons = results;
+      });
   }
 
   /** Features a UGC item in Woodstock */
@@ -179,5 +194,21 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);
     newGeoFlagsContract.initialModel = geoFlags;
     this.geoFlagsToggleListEzContract = newGeoFlagsContract;
+  }
+
+  /** Report a Ugc item in Woodstock */
+  public reportUgcItem(): void {
+    if (!this.ugcItem || !this.selectedReason) {
+      return;
+    }
+    this.reportMonitor = this.reportMonitor.repeat();
+
+    this.ugcReportService
+      .reportUgc$(this.ugcItem.id, this.selectedReason)
+      .pipe(this.reportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.selectedReason = null;
+        this.canReportUgc = false;
+      });
   }
 }

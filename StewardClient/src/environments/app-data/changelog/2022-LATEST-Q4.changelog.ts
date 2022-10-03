@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '21cfcc58-6336-4147-b267-e994a7092e06',
+      shortText: 'Add new report button to ugc details',
+      longText: [
+        'Any Ugc can be reported with a mandatory reason coming from a dropdown.',
+        'Reporting a Ugc will send it to Salus for the T10 Enforcement team to review.',
+      ],
+    },
+    {
       tag: {
         title: 'all',
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.Gifting],

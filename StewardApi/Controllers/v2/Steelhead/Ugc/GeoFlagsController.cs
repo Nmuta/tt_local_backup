@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Bond;
 using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

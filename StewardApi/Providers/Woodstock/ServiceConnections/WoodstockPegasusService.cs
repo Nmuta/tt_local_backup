@@ -216,5 +216,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return this.refreshableCacheStore.GetItem<IEnumerable<QuickChat>>(quickChatLinesKey)
                    ?? await GetQuickChatLines().ConfigureAwait(false);
         }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync()
+        {
+            var ugcReportingCategoryKey = $"{PegasusBaseCacheKey}UGCReportingCategory";
+
+            async Task<Dictionary<Guid, UGCReportingCategory>> GetUGCReportingCategory()
+            {
+                var ugcReportingReasons = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, UGCReportingCategory>>(CMSFileNames.UGCReportingCategories, this.cmsEnvironment).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(ugcReportingCategoryKey, TimeSpan.FromDays(1), ugcReportingReasons);
+
+                return ugcReportingReasons;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, UGCReportingCategory>>(ugcReportingCategoryKey)
+                   ?? await GetUGCReportingCategory().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync()
+        {
+            var supportedLocaleKey = $"{PegasusBaseCacheKey}SupportedLocale";
+
+            async Task<IEnumerable<SupportedLocale>> GetSupportedLocales()
+            {
+                var supportedLocales = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SupportedLocale>>(CMSFileNames.SupportedLocales, this.cmsEnvironment).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(supportedLocaleKey, TimeSpan.FromDays(1), supportedLocales);
+
+                return supportedLocales;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<SupportedLocale>>(supportedLocaleKey)
+                   ?? await GetSupportedLocales().ConfigureAwait(false);
+        }
     }
 }

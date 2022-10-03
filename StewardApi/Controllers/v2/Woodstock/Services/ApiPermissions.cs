@@ -19,7 +19,6 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
-using Turn10.Services.LiveOps.Interfaces.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using PermissionsManagementService = Turn10.Services.LiveOps.FH5_main.Generated.PermissionsManagementService;
 
@@ -66,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Services
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.ServiceApis, ActionAreaLogTags.Update)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.ApiPermissions)]
-        public async Task<IActionResult> SetServicesApiPermissions([FromBody] ILiveOpsPermissionsUpdateParameters[] parametersList)
+        public async Task<IActionResult> SetServicesApiPermissions([FromBody] ForzaLiveOpsPermissionsUpdateParameters[] parametersList)
         {
             try
             {

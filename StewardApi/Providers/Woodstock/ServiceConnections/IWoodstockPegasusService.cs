@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -53,5 +54,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Gets quick chat lines.
         /// </summary>
         Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync();
+
+        /// <summary>
+        ///     Gets Ugc reporting reasons.
+        /// </summary>
+        Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync();
+
+        /// <summary>
+        ///     Gets supported locales.
+        /// </summary>
+        Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync();
     }
 }
