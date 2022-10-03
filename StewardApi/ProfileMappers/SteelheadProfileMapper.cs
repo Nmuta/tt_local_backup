@@ -315,6 +315,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.reportWeightType));
+            this.CreateMap<ForzaUser, PlayerGameDetails>()
+                .ForMember(dest => dest.LastLoginDateUtc, opt => opt.MapFrom(src => src.LastLogin))
+                .ForMember(dest => dest.FirstLoginDateUtc, opt => opt.MapFrom(src => src.FirstLogin));
         }
     }
 }

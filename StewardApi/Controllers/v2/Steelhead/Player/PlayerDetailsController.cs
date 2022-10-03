@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -21,11 +20,12 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
-    ///     Test controller for testing Steelhead LSP APIs.
+    ///     Handles requests for Steelhead player details.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -103,6 +103,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             {
                 throw new FailedToSendStewardException($"No player found. (XUID: {xuid})", ex);
             }
+        }
+
+        /// <summary>
+        ///     Gets the player game details.
+        /// </summary>
+        [HttpGet("xuid/{xuid}/gamedetails")]
+        [SwaggerResponse(200, type: typeof(PlayerGameDetails))]
+        public async Task<IActionResult> GetPlayerGameDetails(
+            ulong xuid)
+        {
+            GetUserDetailsOutput response;
+
+            try
+            {
+                response = await this.Services.UserManagementService.GetUserDetails(xuid)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get player game details. (XUID: {xuid})", ex);
+            }
+
+            var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
+
+            return this.Ok(result);
         }
     }
 }

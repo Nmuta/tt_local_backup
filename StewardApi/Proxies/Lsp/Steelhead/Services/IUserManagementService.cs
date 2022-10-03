@@ -203,5 +203,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Creates a LSP user group.
         /// </summary>
         Task<CreateUserGroupOutput> CreateUserGroup(string groupName);
+
+        /// <summary>
+        ///     Gets user details.
+        /// </summary>
+        Task<GetUserDetailsOutput> GetUserDetails(ulong xuid);
     }
 }

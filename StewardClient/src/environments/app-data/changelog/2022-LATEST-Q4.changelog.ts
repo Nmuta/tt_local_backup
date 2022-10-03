@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '39a2eee0-fb44-4034-8743-32fb47798535',
+      shortText: 'Display first and last login information in user details',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '21cfcc58-6336-4147-b267-e994a7092e06',
       shortText: 'Add new report button to ugc details',

@@ -440,6 +440,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ServicesLiveOps.ForzaLiveOpsHasPlayedRecord, HasPlayedRecord>() // Use UGC contracts GameTitle, confirmed with Caleb 6/23/22
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(src => Enum.GetName(typeof(Turn10.UGC.Contracts.GameTitle), src.gameTitle)))
                 .ReverseMap();
+            this.CreateMap<ForzaUser, PlayerGameDetails>()
+                .ForMember(dest => dest.LastLoginDateUtc, opt => opt.MapFrom(src => src.LastLogin))
+                .ForMember(dest => dest.FirstLoginDateUtc, opt => opt.MapFrom(src => src.FirstLogin));
         }
 
         private string PrepareDeviceType(string deviceType)
