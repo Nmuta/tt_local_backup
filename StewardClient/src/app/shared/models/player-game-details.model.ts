@@ -7,4 +7,8 @@ export interface PlayerGameDetails {
   gamertag: string;
   lastLoginDateUtc: DateTime;
   firstLoginDateUtc: DateTime;
+  cmsSlotVersion: BigNumber;
+  cmsSlotIdOverride: string;
+  cmsEnvironmentOverride: string;
+  cmsSnapshotId: string;
 }

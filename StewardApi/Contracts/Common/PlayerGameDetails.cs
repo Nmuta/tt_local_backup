@@ -26,5 +26,25 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the first login date in universal time.
         /// </summary>
         public DateTime FirstLoginDateUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the CMS slot version.
+        /// </summary>
+        public int CmsSlotVersion { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the CMS slot id override.
+        /// </summary>
+        public string CmsSlotIdOverride { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the CMS environment override.
+        /// </summary>
+        public string CmsEnvironmentOverride { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the CMS snapshot id.
+        /// </summary>
+        public string CmsSnapshotId { get; set; }
     }
 }

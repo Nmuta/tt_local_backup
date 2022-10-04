@@ -14,6 +14,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '0f0fa8ff-ddaf-474d-8548-292155b160ce',
+      shortText: 'Display CMS information in user details',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '39a2eee0-fb44-4034-8743-32fb47798535',
       shortText: 'Display first and last login information in user details',
     },

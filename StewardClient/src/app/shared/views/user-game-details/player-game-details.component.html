@@ -18,6 +18,22 @@
           <th>Last Login Date</th>
           <td>{{ playerGameDetails.lastLoginDateUtc | utcDate: 'short' }}</td>
         </tr>
+        <tr>
+          <th>CMS Slot Version</th>
+          <td>{{ playerGameDetails.cmsSlotVersion }}</td>
+        </tr>
+        <tr>
+          <th>CMS Slot Id</th>
+          <td>{{ playerGameDetails.cmsSlotIdOverride }}</td>
+        </tr>
+        <tr>
+          <th>CMS Environment</th>
+          <td>{{ playerGameDetails.cmsEnvironmentOverride }}</td>
+        </tr>
+        <tr>
+          <th>CMS Snapshot Id</th>
+          <td>{{ playerGameDetails.cmsSnapshotId }}</td>
+        </tr>
       </table>
     </ng-container>
   </mat-card-content>
