@@ -16,11 +16,19 @@ import { MatPaginator } from '@angular/material/paginator';
 import { renderDelay } from '@helpers/rxjs';
 import { DateValidators } from '@shared/validators/date-validators';
 import BigNumber from 'bignumber.js';
+import { LocalizedMessage } from '@models/community-message';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
 /** Service contract for managing localized messages for individuals. */
 export interface LocalizedGroupMessagingManagementContract {
   gameTitle: GameTitle;
+  selectLocalizedStringService: SelectLocalizedStringContract;
   getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]>;
+  postEditLspGroupCommunityMessage$(
+    lspGroupId: BigNumber,
+    notificationId: string,
+    localizedMessage: LocalizedMessage,
+  ): Observable<void>;
   deleteLspGroupCommunityMessage$(lspGroupId: BigNumber, notificationId: string): Observable<void>;
 }
 
@@ -128,7 +136,7 @@ export class LocalizedGroupNotificationManagementComponent
 
   /** Checks if notification is of Community Message type */
   public isCommunityMessage(entry: GroupNotification): boolean {
-    return entry?.notificationType === 'CommunityMessageNotification';
+    return entry?.notificationType === 'CommunityMessageNotificationV2';
   }
 
   /** Retrieves notifications */
@@ -139,25 +147,27 @@ export class LocalizedGroupNotificationManagementComponent
   }
 
   /** Update notification selected */
-  public updateNotificationEntry(_entry: FormGroupNotificationEntry): void {
-    // const notificationId = entry.notification.notificationId as string;
-    // const entryMessage: CommunityMessage = {
-    //   message: entry.formGroup.controls.message.value as string,
-    //   deviceType: entry.formGroup.controls.deviceType.value as string,
-    //   startTimeUtc: entry.notification.sentDateUtc,
-    //   expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
-    // };
-    // entry.postMonitor = this.updateMonitors(entry.postMonitor);
-    // this.service
-    //   .postEditLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId, entryMessage)
-    //   .pipe(
-    //     entry.postMonitor.monitorSingleFire(),
-    //     renderDelay(),
-    //     catchError(() => {
-    //       return EMPTY;
-    //     }),
-    //   )
-    //   .subscribe(() => this.replaceEntry(entry));
+  public updateNotificationEntry(entry: FormGroupNotificationEntry): void {
+    console.log(entry.formGroup.controls.localizedMessageInfo.value)
+    const notificationId = entry.notification.notificationId as string;
+    const entryMessage: LocalizedMessage = {
+      localizedMessageId: entry.formGroup.controls.localizedMessageInfo.value?.id as string,
+      deviceType: entry.formGroup.controls.deviceType.value as string,
+      startTimeUtc: entry.notification.sentDateUtc,
+      expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
+      notificationType: null,
+    };
+    entry.postMonitor = this.updateMonitors(entry.postMonitor);
+    this.service
+      .postEditLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId, entryMessage)
+      .pipe(
+        entry.postMonitor.monitorSingleFire(),
+        renderDelay(),
+        catchError(() => {
+          return EMPTY;
+        }),
+      )
+      .subscribe(() => this.replaceEntry(entry));
   }
 
   /** Remove notification selected */
@@ -197,9 +207,8 @@ export class LocalizedGroupNotificationManagementComponent
   private prepareNotifications(groupNotification: GroupNotification): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), groupNotification.sentDateUtc]);
     const formControls = {
-      message: new FormControl(groupNotification.message, [
+      localizedMessageInfo: new FormControl({}, [
         Validators.required,
-        Validators.maxLength(this.messageMaxLength),
       ]),
       deviceType: new FormControl(groupNotification.deviceType),
       expireDateUtc: new FormControl(groupNotification.expirationDateUtc, [
@@ -239,10 +248,11 @@ export class LocalizedGroupNotificationManagementComponent
   }
 
   private replaceEntry(entry: FormGroupNotificationEntry): void {
+    console.log(entry.formGroup.controls.localizedMessageInfo.value?.englishText)
     const newEntry: GroupNotification = {
       notificationId: entry.notification.notificationId,
       groupId: this.selectedLspGroup.id,
-      message: entry.formGroup.controls.message.value,
+      message: entry.formGroup.controls.localizedMessageInfo.value?.englishText,
       hasDeviceType: false,
       deviceType: entry.formGroup.controls.deviceType.value,
       notificationType: entry.notification.notificationType,
@@ -253,6 +263,7 @@ export class LocalizedGroupNotificationManagementComponent
     entry.edit = false;
     const index = this.notifications.data.indexOf(entry);
     this.rawNotifications.splice(index, 1, newEntry);
+    this.notifications.data[index].notification = newEntry;
     this.notifications._updateChangeSubscription();
   }
 }

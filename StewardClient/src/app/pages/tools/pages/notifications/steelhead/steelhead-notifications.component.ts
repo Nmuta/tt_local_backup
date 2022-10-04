@@ -13,11 +13,11 @@ import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localiz
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { LocalizedStringsMap, LocalizedStringData } from '@models/localization';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
-import { LocalizedIndividualMessagingManagementContract, LocalizedIndividualNotificationManagementComponent } from '../components/notification-management/localized-individual-notification-management/localized-individual-notification-management.component';
 import { SteelheadPlayerMessagesService } from '@services/api-v2/steelhead/player/messages/steelhead-player-messages.service';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
-import { LocalizedGroupMessagingManagementContract, LocalizedGroupNotificationManagementComponent } from '../components/notification-management/localized-group-notification-management/localized-group-notification-management.component';
 import { renderGuard } from '@helpers/rxjs';
+import { LocalizedGroupMessagingManagementContract, LocalizedGroupNotificationManagementComponent } from '../components/notification-management/localized-group-notification-management/localized-group-notification-management.component';
+import { LocalizedIndividualMessagingManagementContract, LocalizedIndividualNotificationManagementComponent } from '../components/notification-management/localized-individual-notification-management/localized-individual-notification-management.component';
 
 /**
  *  Steelhead notification component.
@@ -111,8 +111,16 @@ export class SteelheadNotificationsComponent {
 
     this.localizedGroupMessagingManagementService = {
       gameTitle: this.gameTitle,
+      selectLocalizedStringService: this.localizationSelectionService,
       getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
         return steelheadGroupMessagesService.getGroupNotifications$(lspGroupId);
+      },
+      postEditLspGroupCommunityMessage$(
+        lspGroupId: BigNumber,
+        notificationId: string,
+        localizedMessage: LocalizedMessage,
+      ): Observable<void> {
+        return steelheadGroupMessagesService.postEditLspGroupLocalizedMessage$(lspGroupId, notificationId, localizedMessage);
       },
       deleteLspGroupCommunityMessage$(
         lspGroupId: BigNumber,

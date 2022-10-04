@@ -16,14 +16,14 @@
           <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
             <div class="message" *ngIf="!entry.edit">
               <span *ngIf="entry.isCommunityMessage"
-                >{{ entry.formGroup.controls.message.value }}
+                >{{ entry.notification.message }}
               </span>
               <span class="warn" *ngIf="!entry.isCommunityMessage">
                 No message for notifications of type:
                 {{ entry.notification.notificationType }}
               </span>
             </div>
-            <mat-form-field *ngIf="entry.edit" appearance="fill" class="message">
+            <!-- <mat-form-field *ngIf="entry.edit" appearance="fill" class="message">
               <mat-label
                 >Message {{ entry.formGroup.controls.message.value.length }}/{{
                   messageMaxLength
@@ -37,7 +37,14 @@
                 type="text"
                 required
               ></textarea>
-            </mat-form-field>
+            </mat-form-field> -->
+            <div class="message" *ngIf="entry.edit">
+              <select-localized-string
+                *ngIf="entry.edit"
+                [service]="service?.selectLocalizedStringService"
+                [formControl]="entry.formControls.localizedMessageInfo"
+              ></select-localized-string>
+            </div>
           </td>
         </ng-container>
 
