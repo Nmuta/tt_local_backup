@@ -364,6 +364,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IJobTracker, JobTracker>();
             services.AddSingleton<IKustoQueryProvider, KustoQueryProvider>();
             services.AddSingleton<IStewardUserProvider, StewardUserProvider>();
+            services.AddSingleton<IScopedStewardUserProvider, StewardUserProvider>();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
