@@ -15,10 +15,18 @@ import BigNumber from 'bignumber.js';
 import { DateValidators } from '@shared/validators/date-validators';
 import { renderDelay } from '@helpers/rxjs';
 import { GuidLikeString } from '@models/extended-types';
+import { LocalizedMessage } from '@models/community-message';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
 /** Service contract for managing localized messages for individuals. */
 export interface LocalizedIndividualMessagingManagementContract {
   gameTitle: GameTitle;
+  selectLocalizedStringService: SelectLocalizedStringContract;
+  postEditPlayerCommunityMessage$(
+    lspGroupId: BigNumber,
+    notificationId: string,
+    localizedMessage: LocalizedMessage,
+  ): Observable<void>;
   getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]>;
   deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void>;
 }
@@ -31,7 +39,7 @@ export interface FormGroupNotificationEntry {
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
   notification: PlayerNotification;
-  isCommunityMessage: boolean;
+  isEditable: boolean;
   tooltip: string;
 }
 
@@ -124,37 +132,39 @@ export class LocalizedIndividualNotificationManagementComponent
     this.getNotifications$.next();
   }
 
-  /** Checks if notification is of Community Message type */
-  public isCommunityMessage(entry: PlayerNotification): boolean {
-    return entry?.notificationType === 'CommunityMessageNotification';
+  /** Checks if PlayerNotification is of an editable type */
+  public isEditable(entry: PlayerNotification): boolean {
+    return entry?.notificationType === 'CommunityMessageNotificationV2' 
+        || entry?.notificationType === 'PatchNotesMessageNotification';
   }
 
   /** Retrieves notifications */
   public generateEditTooltip(entry: PlayerNotification): string {
-    return this.isCommunityMessage(entry)
+    return this.isEditable(entry)
       ? 'Edit expire date'
       : `Editing is disabled for notifications of type: ${entry.notificationType}`;
   }
 
   /** Update notification selected */
-  public updateNotificationEntry(_entry: FormGroupNotificationEntry): void {
-    // const notificationId = entry.notification.notificationId as string;
-    // const entryMessage: CommunityMessage = {
-    //   message: entry.formGroup.controls.message.value as string,
-    //   startTimeUtc: entry.notification.sentDateUtc,
-    //   expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
-    // };
-    //entry.postMonitor = this.updateMonitors(entry.postMonitor);
-    // this.service
-    //   .postEditPlayerCommunityMessage$(this.selectedXuid, notificationId, entryMessage)
-    //   .pipe(
-    //     entry.postMonitor.monitorSingleFire(),
-    //     renderDelay(),
-    //     catchError(() => {
-    //       return EMPTY;
-    //     }),
-    //   )
-    //   .subscribe(() => this.replaceEntry(entry));
+  public updateNotificationEntry(entry: FormGroupNotificationEntry): void {
+    const notificationId = entry.notification.notificationId as string;
+    const entryMessage: LocalizedMessage = {
+      localizedMessageId: entry.formGroup.controls.localizedMessageInfo.value?.id as string,
+      startTimeUtc: entry.notification.sentDateUtc,
+      expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
+      notificationType: null,
+    };
+    entry.postMonitor = this.updateMonitors(entry.postMonitor);
+    this.service
+      .postEditPlayerCommunityMessage$(this.selectedXuid, notificationId, entryMessage)
+      .pipe(
+        entry.postMonitor.monitorSingleFire(),
+        renderDelay(),
+        catchError(() => {
+          return EMPTY;
+        }),
+      )
+      .subscribe(() => this.replaceEntry(entry));
   }
 
   /** Remove notification selected */
@@ -181,7 +191,7 @@ export class LocalizedIndividualNotificationManagementComponent
     );
 
     entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expirationDateUtc);
-    entry.formGroup.controls.message.setValue(rawEntry.message);
+    entry.formGroup.controls.localizedMessageInfo.setValue(null);
     entry.postMonitor = new ActionMonitor('Edit Notification');
     entry.deleteMonitor = new ActionMonitor('Delete Notification');
   }
@@ -194,9 +204,8 @@ export class LocalizedIndividualNotificationManagementComponent
   private prepareNotifications(playerNotification: PlayerNotification): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), playerNotification.sentDateUtc]);
     const formControls = {
-      message: new FormControl(playerNotification.message, [
+      localizedMessageInfo: new FormControl({}, [
         Validators.required,
-        Validators.maxLength(this.messageMaxLength),
       ]),
       expireDateUtc: new FormControl(playerNotification.expirationDateUtc, [
         Validators.required,
@@ -211,7 +220,7 @@ export class LocalizedIndividualNotificationManagementComponent
       postMonitor: new ActionMonitor('Edit Notification'),
       deleteMonitor: new ActionMonitor('Delete Notification'),
       notification: playerNotification,
-      isCommunityMessage: this.isCommunityMessage(playerNotification),
+      isEditable: this.isEditable(playerNotification),
       tooltip: this.generateEditTooltip(playerNotification),
     };
 
@@ -238,7 +247,7 @@ export class LocalizedIndividualNotificationManagementComponent
   private replaceEntry(entry: FormGroupNotificationEntry): void {
     const newEntry: PlayerNotification = {
       notificationId: entry.notification.notificationId,
-      message: entry.formGroup.controls.message.value,
+      message: entry.formGroup.controls.localizedMessageInfo.value?.englishText,
       isRead: entry.notification.isRead,
       notificationType: entry.notification.notificationType,
       sentDateUtc: entry.notification.sentDateUtc,
@@ -248,6 +257,7 @@ export class LocalizedIndividualNotificationManagementComponent
     entry.edit = false;
     const index = this.notifications.data.indexOf(entry);
     this.rawNotifications.splice(index, 1, newEntry);
+    this.notifications.data[index].notification = newEntry;
     this.notifications._updateChangeSubscription();
   }
 }

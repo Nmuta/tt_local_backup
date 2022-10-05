@@ -15,34 +15,20 @@
           <th mat-header-cell *matHeaderCellDef>Message</th>
           <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
             <div class="message" *ngIf="!entry.edit">
-              <span *ngIf="entry.isCommunityMessage"
+              <span *ngIf="entry.isEditable"
                 >{{ entry.notification.message }}
               </span>
-              <span class="warn" *ngIf="!entry.isCommunityMessage">
+              <span class="warn" *ngIf="!entry.isEditable">
                 No message for notifications of type:
                 {{ entry.notification.notificationType }}
               </span>
             </div>
-            <!-- <mat-form-field *ngIf="entry.edit" appearance="fill" class="message">
-              <mat-label
-                >Message {{ entry.formGroup.controls.message.value.length }}/{{
-                  messageMaxLength
-                }}</mat-label
-              >
-              <textarea
-                matInput
-                [formControl]="entry.formControls.message"
-                cdkTextareaAutosize
-                placeholder="Community Message"
-                type="text"
-                required
-              ></textarea>
-            </mat-form-field> -->
             <div class="message" *ngIf="entry.edit">
               <select-localized-string
                 *ngIf="entry.edit"
                 [service]="service?.selectLocalizedStringService"
                 [formControl]="entry.formControls.localizedMessageInfo"
+                [disableLanguagePreview]="true"
               ></select-localized-string>
             </div>
           </td>
@@ -81,6 +67,12 @@
                   </standard-absolute-time-utc>
                 </td>
               </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Device Type:</th>
+                <td>
+                  {{ entry.formGroup.controls.deviceType.value | deppoh }}
+                </td>
+              </tr>
             </table>
             <ng-container *ngIf="entry.edit">
               <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
@@ -88,6 +80,16 @@
                 [min]="entry.min"
                 [formControl]="entry.formControls.expireDateUtc"
               ></datetime-picker>
+            </ng-container>
+            <ng-container *ngIf="entry.edit">
+              <mat-form-field appearance="fill" class="device-type">
+                <mat-label>Device Type</mat-label>
+                <mat-select [formControl]="entry.formControls.deviceType">
+                  <mat-option *ngFor="let type of deviceTypes" [value]="type">
+                    {{ type | deppoh }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </ng-container>
           </td>
         </ng-container>
@@ -100,7 +102,7 @@
                 class="edit"
                 mat-raised-button
                 color="primary"
-                [disabled]="!entry.isCommunityMessage"
+                [disabled]="!entry.isEditable"
                 (click)="editEntry(entry)"
               >
                 <span [matTooltip]="entry.tooltip">Edit</span>
@@ -157,7 +159,7 @@
         <tr
           mat-row
           *matRowDef="let row; columns: columnsToDisplay; let entry"
-          [class.nonEditable]="!entry.isCommunityMessage"
+          [class.nonEditable]="!entry.isEditable"
         ></tr>
       </table>
     </form>

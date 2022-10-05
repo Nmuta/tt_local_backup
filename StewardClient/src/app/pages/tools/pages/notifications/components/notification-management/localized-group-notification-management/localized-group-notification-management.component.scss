@@ -61,7 +61,8 @@ mat-form-field {
 
   &.device-type,
   &.expiry-date {
-    width: $metadataWidth;
+    min-width: $metadataWidth;
+    margin-top: $gap-small;
   }
 
   textarea {

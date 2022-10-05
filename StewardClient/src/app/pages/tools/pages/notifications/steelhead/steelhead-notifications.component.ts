@@ -101,8 +101,16 @@ export class SteelheadNotificationsComponent {
 
     this.localizedIndividualMessagingManagementService = {
       gameTitle: this.gameTitle,
+      selectLocalizedStringService: this.localizationSelectionService,
       getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {
         return steelheadPlayerMessagesService.getPlayerNotifications$(xuid);
+      },
+      postEditPlayerCommunityMessage$(
+        xuid: BigNumber,
+        notificationId: string,
+        localizedMessage: LocalizedMessage,
+      ): Observable<void> {
+        return steelheadPlayerMessagesService.postEditPlayerLocalizedMessage$(xuid, notificationId, localizedMessage);
       },
       deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
         return steelheadPlayerMessagesService.deletePlayerLocalizedMessage$(xuid, notificationId);

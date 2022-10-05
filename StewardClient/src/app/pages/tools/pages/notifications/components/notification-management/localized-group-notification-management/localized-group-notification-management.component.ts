@@ -40,7 +40,7 @@ export interface FormGroupNotificationEntry {
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
   notification: GroupNotification;
-  isCommunityMessage: boolean;
+  isEditable: boolean;
   tooltip: string;
 }
 
@@ -134,21 +134,21 @@ export class LocalizedGroupNotificationManagementComponent
     this.getNotifications$.next();
   }
 
-  /** Checks if notification is of Community Message type */
-  public isCommunityMessage(entry: GroupNotification): boolean {
-    return entry?.notificationType === 'CommunityMessageNotificationV2';
+  /** Checks if GroupNotification is of an editable type */
+  public isEditable(entry: GroupNotification): boolean {
+    return entry?.notificationType === 'CommunityMessageNotificationV2' 
+        || entry?.notificationType === 'PatchNotesMessageNotification';
   }
 
   /** Retrieves notifications */
   public generateEditTooltip(entry: GroupNotification): string {
-    return this.isCommunityMessage(entry)
+    return this.isEditable(entry)
       ? 'Edit expire date'
       : `Editing is disabled for notifications of type: ${entry.notificationType}`;
   }
 
   /** Update notification selected */
   public updateNotificationEntry(entry: FormGroupNotificationEntry): void {
-    console.log(entry.formGroup.controls.localizedMessageInfo.value)
     const notificationId = entry.notification.notificationId as string;
     const entryMessage: LocalizedMessage = {
       localizedMessageId: entry.formGroup.controls.localizedMessageInfo.value?.id as string,
@@ -193,7 +193,7 @@ export class LocalizedGroupNotificationManagementComponent
       v => v.notificationId == entry.notification.notificationId,
     );
     entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expirationDateUtc);
-    entry.formGroup.controls.message.setValue(rawEntry.message);
+    entry.formGroup.controls.localizedMessageInfo.setValue(null);
     entry.formGroup.controls.deviceType.setValue(rawEntry.deviceType);
     entry.postMonitor = new ActionMonitor('Edit Notification');
     entry.deleteMonitor = new ActionMonitor('Delete Notification');
@@ -223,7 +223,7 @@ export class LocalizedGroupNotificationManagementComponent
       postMonitor: new ActionMonitor('Edit Notification'),
       deleteMonitor: new ActionMonitor('Delete Notification'),
       notification: groupNotification,
-      isCommunityMessage: this.isCommunityMessage(groupNotification),
+      isEditable: this.isEditable(groupNotification),
       tooltip: this.generateEditTooltip(groupNotification),
     };
 
@@ -248,7 +248,6 @@ export class LocalizedGroupNotificationManagementComponent
   }
 
   private replaceEntry(entry: FormGroupNotificationEntry): void {
-    console.log(entry.formGroup.controls.localizedMessageInfo.value?.englishText)
     const newEntry: GroupNotification = {
       notificationId: entry.notification.notificationId,
       groupId: this.selectedLspGroup.id,
