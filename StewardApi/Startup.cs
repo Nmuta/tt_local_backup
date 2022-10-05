@@ -69,6 +69,8 @@ using System.Threading.Tasks;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -370,6 +372,22 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
 
             this.allServices = services;
+
+            Assembly asm = Assembly.GetExecutingAssembly();
+            var controllers = asm.GetTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)); //filter controllers
+            var actions = controllers.SelectMany(controller => controller.GetMethods().Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute))));
+
+
+            var colProvider = services.Where(service => service.ServiceType.Name is "IActionDescriptorCollectionProvider");
+            foreach (var action in actions)
+            {
+                Console.WriteLine($"{action.Name}: {string.Join(",", action.CustomAttributes.Select(attribute => attribute.AttributeType).ToList())}");
+            }
+
+             //   .SelectMany(type => type.GetMethods());
+
+             //   .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
+
         }
 
         /// <summary>
