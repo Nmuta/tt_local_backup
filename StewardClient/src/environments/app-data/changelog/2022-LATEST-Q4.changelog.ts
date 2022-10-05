@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '87e2f72e-87a2-42e0-8519-b73aaeb87179',
+      shortText: 'Add helper functions to get tool route',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '898e0712-5212-4d3b-9c97-e043617df293',
       shortText: 'Allow assist toggling to support both on & off selections',

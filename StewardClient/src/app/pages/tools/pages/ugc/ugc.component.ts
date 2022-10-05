@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getUgcSearchRoute } from '@helpers/route-links';
 import { GameTitle, GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
 
 /** Navbar component to display user generated content component. */
@@ -15,12 +16,12 @@ export class UgcComponent implements OnInit {
       {
         name: GameTitleAbbreviation.FM8,
         codename: GameTitleCodeName.FM8,
-        route: ['.', GameTitle.FM8],
+        route: getUgcSearchRoute(GameTitle.FM8),
       },
       {
         name: GameTitleAbbreviation.FH5,
         codename: GameTitleCodeName.FH5,
-        route: ['.', GameTitle.FH5],
+        route: getUgcSearchRoute(GameTitle.FH5),
       },
     ];
   }
