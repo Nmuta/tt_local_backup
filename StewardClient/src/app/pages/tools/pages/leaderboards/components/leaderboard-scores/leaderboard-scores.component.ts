@@ -87,6 +87,12 @@ enum LeaderboardView {
   Player = 'Near Player',
 }
 
+enum BooleanFilterToggle {
+  Ignore,
+  On,
+  Off,
+}
+
 /** Displays a leaderboard's scores. */
 @Component({
   selector: 'leaderboard-scores',
@@ -154,11 +160,42 @@ export class LeaderboardScoresComponent
       } as DateRangePickerFormValue,
       disabled: true,
     }),
-    usedStmAssist: new FormControl(false),
-    usedAbsAssist: new FormControl(false),
-    usedTcsAssist: new FormControl(false),
-    usedAutoAssist: new FormControl(false),
+    usedStmAssist: new FormControl(BooleanFilterToggle.Ignore),
+    usedAbsAssist: new FormControl(BooleanFilterToggle.Ignore),
+    usedTcsAssist: new FormControl(BooleanFilterToggle.Ignore),
+    usedAutoAssist: new FormControl(BooleanFilterToggle.Ignore),
   };
+
+  public readonly assistFilterContexts = {
+    stmAssist: {
+      formControl: this.filterFormControls.usedStmAssist,
+      name: 'STM Assist',
+      helpTitle: 'Stability Management Assist Filter',
+      helpText:
+        'Allows for slightly more slip before applying corrective braking to individual wheels.',
+    },
+    absAssist: {
+      formControl: this.filterFormControls.usedAbsAssist,
+      name: 'ABS Assist',
+      helpTitle: 'Anti-Lock Braking System Assist Filter',
+      helpText:
+        "When a driver applies the brakes, this system pulses the brakes to ensure that they don't lock up.",
+    },
+    tcsAssist: {
+      formControl: this.filterFormControls.usedTcsAssist,
+      name: 'TCS Assist',
+      helpTitle: 'Traction Control System Assist Filter',
+      helpText: 'Allows for slightly more slip before applying corrective braking.',
+    },
+    autoAssist: {
+      formControl: this.filterFormControls.usedAutoAssist,
+      name: 'Auto Assist',
+      helpTitle: 'Automatic Transmission Assist Filter',
+      helpText: "Uses Forza's artificial intelligence to handle the shifting for the player.",
+    },
+  };
+
+  public BooleanFilterToggle = BooleanFilterToggle;
 
   constructor(
     private readonly router: Router,
@@ -459,18 +496,22 @@ export class LeaderboardScoresComponent
         passesDateFilter = scoreDate >= startDate && scoreDate <= endDate;
       }
 
-      const passesStmFilter = this.filterFormControls.usedStmAssist.value
-        ? score.stabilityManagement
-        : true;
-      const passesAbsFilter = this.filterFormControls.usedAbsAssist.value
-        ? score.antiLockBrakingSystem
-        : true;
-      const passesTcsFilter = this.filterFormControls.usedTcsAssist.value
-        ? score.tractionControlSystem
-        : true;
-      const passesAutoFilter = this.filterFormControls.usedAutoAssist.value
-        ? score.automaticTransmission
-        : true;
+      const passesStmFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedStmAssist.value,
+        score.stabilityManagement,
+      );
+      const passesAbsFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedAbsAssist.value,
+        score.antiLockBrakingSystem,
+      );
+      const passesTcsFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedTcsAssist.value,
+        score.tractionControlSystem,
+      );
+      const passesAutoFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedAutoAssist.value,
+        score.automaticTransmission,
+      );
 
       return (
         passesDateFilter &&
@@ -530,5 +571,16 @@ export class LeaderboardScoresComponent
 
   private unsetHighlightForAllLeaderboardScores() {
     this.leaderboardScores.data.forEach(s => (s.highlighted = false));
+  }
+
+  private doesPassAssistFilter(toggle: BooleanFilterToggle, assist: boolean): boolean {
+    switch (toggle) {
+      case BooleanFilterToggle.On:
+        return assist;
+      case BooleanFilterToggle.Off:
+        return !assist;
+      default:
+        return true;
+    }
   }
 }
