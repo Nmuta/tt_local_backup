@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
@@ -15,19 +16,19 @@ namespace Turn10.LiveOps.StewardApi.Proxies
         /// <summary>
         ///     Performs the registration. Use on startup.
         /// </summary>
-        public static void Register(IServiceCollection services)
+        public static void Register(ContainerBuilder builder)
         {
-            services.AddSingleton<ISteelheadProxyFactory, SteelheadProxyFactory>();
-            services.AddScoped<SteelheadProxyBundle>();
+            builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().SingleInstance();
+            builder.RegisterType<SteelheadProxyBundle>().InstancePerLifetimeScope();
 
-            services.AddSingleton<IWoodstockProxyFactory, WoodstockProxyFactory>();
-            services.AddScoped<WoodstockProxyBundle>();
+            builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().SingleInstance();
+            builder.RegisterType<WoodstockProxyBundle>().InstancePerLifetimeScope();
 
-            services.AddSingleton<IApolloProxyFactory, ApolloProxyFactory>();
-            services.AddScoped<ApolloProxyBundle>();
+            builder.RegisterType<ApolloProxyFactory>().As<IApolloProxyFactory>().SingleInstance();
+            builder.RegisterType<ApolloProxyBundle>().InstancePerLifetimeScope();
 
-            services.AddSingleton<ISunriseProxyFactory, SunriseProxyFactory>();
-            services.AddScoped<SunriseProxyBundle>();
+            builder.RegisterType<SunriseProxyFactory>().As<ISunriseProxyFactory>().SingleInstance();
+            builder.RegisterType<SunriseProxyBundle>().InstancePerLifetimeScope();
         }
     }
 }

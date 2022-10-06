@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using Autofac;
 using AutoMapper;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,8 +67,6 @@ using Turn10.Services.Diagnostics.Geneva;
 using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
-using System.Linq;
-using System.Threading.Tasks;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 
 namespace Turn10.LiveOps.StewardApi
@@ -80,6 +81,8 @@ namespace Turn10.LiveOps.StewardApi
 
         private IServiceCollection allServices;
 
+        public ILifetimeScope AutofacContainer { get; private set; }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -93,6 +96,8 @@ namespace Turn10.LiveOps.StewardApi
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
             // If you are setting "redacted due to PII" when debugging certificates/dates/identities, enable this.
             // IdentityModelEventSource.ShowPII = true;
             services.AddControllers();
@@ -189,14 +194,14 @@ namespace Turn10.LiveOps.StewardApi
                             .AllowAnyHeader());
             });
 
-            ProviderRegistrations.Register(services);
-            ProxyRegistrations.Register(services);
+            //ProviderRegistrations.Register(services);
+            //ProxyRegistrations.Register(services);
 
-            services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
-            services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
-            services.AddSingleton<IObligationAuthoringClient, ObligationAuthoringClient>();
-            services.AddSingleton<IObligationProvider, ObligationProvider>();
-            services.AddSingleton<IUserIdProvider, UserIdProvider>();
+            //services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
+            //services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
+            //services.AddSingleton<IObligationAuthoringClient, ObligationAuthoringClient>();
+            //services.AddSingleton<IObligationProvider, ObligationProvider>();
+            //services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
             // Prepare LogSink
             var ifxLogSink = new IfxLogSink(
@@ -214,42 +219,42 @@ namespace Turn10.LiveOps.StewardApi
 
             var keyVaultProvider = new KeyVaultProvider(new KeyVaultClientFactory());
 
-            var mappingConfiguration = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new OpusProfileMapper());
-                mc.AddProfile(new SunriseProfileMapper());
-                mc.AddProfile(new GravityProfileMapper());
-                mc.AddProfile(new ApolloProfileMapper());
-                mc.AddProfile(new SteelheadProfileMapper());
-                mc.AddProfile(new WoodstockProfileMapper());
-                mc.AddProfile(new DataProfileMapper());
-                mc.AllowNullCollections = true;
-            });
-            var mapper = mappingConfiguration.CreateMapper();
-            services.AddSingleton(mapper);
+            //var mappingConfiguration = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(new OpusProfileMapper());
+            //    mc.AddProfile(new SunriseProfileMapper());
+            //    mc.AddProfile(new GravityProfileMapper());
+            //    mc.AddProfile(new ApolloProfileMapper());
+            //    mc.AddProfile(new SteelheadProfileMapper());
+            //    mc.AddProfile(new WoodstockProfileMapper());
+            //    mc.AddProfile(new DataProfileMapper());
+            //    mc.AllowNullCollections = true;
+            //});
+            //var mapper = mappingConfiguration.CreateMapper();
+            //services.AddSingleton(mapper);
 
-            services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
+            //services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
 
-            services.AddSingleton(this.configuration);
+            //services.AddSingleton(this.configuration);
 
-            services.AddSingleton<IStsClient, StsClientWrapper>();
+            //services.AddSingleton<IStsClient, StsClientWrapper>();
 
-            services.AddSingleton<ILoggingService, LoggingService>();
-            services.AddSingleton<INotificationHistoryProvider, NotificationHistoryProvider>();
+            //services.AddSingleton<ILoggingService, LoggingService>();
+            //services.AddSingleton<INotificationHistoryProvider, NotificationHistoryProvider>();
 
-            services.AddSingleton<IWoodstockService, WoodstockServiceWrapper>();
-            services.AddSingleton<IWoodstockPegasusService, WoodstockPegasusService>();
-            services.AddSingleton<ILiveProjectionWoodstockServiceFactory, LiveProjectionWoodstockServiceFactory>();
-            services.AddSingleton<IStewardProjectionWoodstockServiceFactory, StewardProjectionWoodstockServiceFactory>();
-            services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
-            services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
-            services.AddSingleton<IWoodstockServiceManagementProvider, WoodstockServiceManagementProvider>();
-            services.AddSingleton<IWoodstockNotificationProvider, WoodstockNotificationProvider>();
-            services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
-            services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
-            services.AddSingleton<IWoodstockStorefrontProvider, WoodstockStorefrontProvider>();
-            services.AddSingleton<IWoodstockLeaderboardProvider, WoodstockLeaderboardProvider>();
-            services.AddSingleton<IWoodstockItemsProvider, WoodstockItemsProvider>();
+            //services.AddSingleton<IWoodstockService, WoodstockServiceWrapper>();
+            //services.AddSingleton<IWoodstockPegasusService, WoodstockPegasusService>();
+            //services.AddSingleton<ILiveProjectionWoodstockServiceFactory, LiveProjectionWoodstockServiceFactory>();
+            //services.AddSingleton<IStewardProjectionWoodstockServiceFactory, StewardProjectionWoodstockServiceFactory>();
+            //services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
+            //services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
+            //services.AddSingleton<IWoodstockServiceManagementProvider, WoodstockServiceManagementProvider>();
+            //services.AddSingleton<IWoodstockNotificationProvider, WoodstockNotificationProvider>();
+            //services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
+            //services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
+            //services.AddSingleton<IWoodstockStorefrontProvider, WoodstockStorefrontProvider>();
+            //services.AddSingleton<IWoodstockLeaderboardProvider, WoodstockLeaderboardProvider>();
+            //services.AddSingleton<IWoodstockItemsProvider, WoodstockItemsProvider>();
 
             services.AddSingleton<IRequestValidator<WoodstockBanParametersInput>, WoodstockBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<WoodstockGroupGift>, WoodstockGroupGiftRequestValidator>();
@@ -335,14 +340,14 @@ namespace Turn10.LiveOps.StewardApi
             var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
             services.AddSingleton<IKustoProvider>(kustoProvider);
 
-            services.AddScoped<ActionData>();
-            services.AddScoped<IActionLogger, ActionLogger>();
-            services.AddSingleton<IScheduler, TaskExecutionScheduler>();
-            services.AddSingleton<IRefreshableCacheStore, LocalCacheStore>();
+            //services.AddScoped<ActionData>();
+            //services.AddScoped<IActionLogger, ActionLogger>();
+            //services.AddSingleton<IScheduler, TaskExecutionScheduler>();
+            //services.AddSingleton<IRefreshableCacheStore, LocalCacheStore>();
 
-            services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
+            //services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
 
-            services.AddSingleton<ITableStorageClientFactory, TableStorageClientFactory>();
+            //services.AddSingleton<ITableStorageClientFactory, TableStorageClientFactory>();
 
             var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
 
@@ -359,6 +364,64 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
 
             this.allServices = services;
+        }
+
+        /// <summary>
+        ///     Register directly with Autofac.
+        /// </summary>
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            ProviderRegistrations.Register(builder);
+            ProxyRegistrations.Register(builder);
+
+            builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
+            builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
+            builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
+            builder.RegisterType<ObligationAuthoringClient>().As<IObligationAuthoringClient>().SingleInstance();
+            builder.RegisterType<ObligationProvider>().As<IObligationProvider>().SingleInstance();
+            builder.RegisterType<UserIdProvider>().As<IUserIdProvider>().SingleInstance();
+
+            var mappingConfiguration = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new OpusProfileMapper());
+                mc.AddProfile(new SunriseProfileMapper());
+                mc.AddProfile(new GravityProfileMapper());
+                mc.AddProfile(new ApolloProfileMapper());
+                mc.AddProfile(new SteelheadProfileMapper());
+                mc.AddProfile(new WoodstockProfileMapper());
+                mc.AddProfile(new DataProfileMapper());
+                mc.AllowNullCollections = true;
+            });
+            var mapper = mappingConfiguration.CreateMapper();
+            builder.Register(c => mapper).As<IMapper>().SingleInstance();
+
+            builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
+            builder.RegisterType<StsClientWrapper>().As<IStsClient>().SingleInstance();
+            builder.RegisterType<LoggingService>().As<ILoggingService>().SingleInstance();
+
+            builder.RegisterType<TaskExecutionScheduler>().As<IScheduler>().SingleInstance();
+            builder.RegisterType<LocalCacheStore>().As<IRefreshableCacheStore>().SingleInstance();
+            builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
+            builder.RegisterType<TableStorageClientFactory>().As<ITableStorageClientFactory>().SingleInstance();
+            builder.RegisterType<NotificationHistoryProvider>().As<INotificationHistoryProvider>().SingleInstance();
+
+            builder.RegisterType<WoodstockServiceWrapper>().As<IWoodstockService>().SingleInstance();
+            builder.RegisterType<WoodstockPegasusService>().As<IWoodstockPegasusService>().SingleInstance();
+            builder.RegisterType<LiveProjectionWoodstockServiceFactory>().As<ILiveProjectionWoodstockServiceFactory>().SingleInstance();
+            builder.RegisterType<StewardProjectionWoodstockServiceFactory>().As<IStewardProjectionWoodstockServiceFactory>().SingleInstance();
+            builder.RegisterType<WoodstockPlayerDetailsProvider>().As<IWoodstockPlayerDetailsProvider>().SingleInstance();
+            builder.RegisterType<WoodstockPlayerInventoryProvider>().As<IWoodstockPlayerInventoryProvider>().SingleInstance();
+            builder.RegisterType<WoodstockServiceManagementProvider>().As<IWoodstockServiceManagementProvider>().SingleInstance();
+            builder.RegisterType<WoodstockNotificationProvider>().As<IWoodstockNotificationProvider>().SingleInstance();
+            builder.RegisterType<WoodstockBanHistoryProvider>().As<IWoodstockBanHistoryProvider>().SingleInstance();
+            builder.RegisterType<WoodstockGiftHistoryProvider>().As<IWoodstockGiftHistoryProvider>().SingleInstance();
+            builder.RegisterType<WoodstockStorefrontProvider>().As<IWoodstockStorefrontProvider>().SingleInstance();
+            builder.RegisterType<WoodstockLeaderboardProvider>().As<IWoodstockLeaderboardProvider>().SingleInstance();
+            builder.RegisterType<WoodstockItemsProvider>().As<IWoodstockItemsProvider>().SingleInstance();
+
+            // Scoped items
+            builder.RegisterType<ActionData>().InstancePerLifetimeScope();
+            builder.RegisterType<ActionLogger>().As<IActionLogger>().InstancePerLifetimeScope();
         }
 
         /// <summary>
