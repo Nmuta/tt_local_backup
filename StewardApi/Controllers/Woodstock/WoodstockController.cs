@@ -198,27 +198,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 identityQueries.ToList(),
                 endpoint).ConfigureAwait(true);
 
-            try
+            foreach (var result in results)
             {
-                foreach (var result in results)
+                if (result.Error == null)
                 {
-                    if (result.Error == null)
-                    {
-                        this.memoryCache.GetOrCreate(
-                            MakeKey(result.Query),
-                            (entry) =>
-                            {
-                                entry.AbsoluteExpirationRelativeToNow =
-                                    TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
-                                return result;
-                            });
-                    }
+                    this.memoryCache.GetOrCreate(
+                        MakeKey(result.Query),
+                        (entry) =>
+                        {
+                            entry.AbsoluteExpirationRelativeToNow =
+                                TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
+                            return result;
+                        });
                 }
-            }
-            catch (Exception ex)
-            {
-                var test = 1;
-                throw ex;
             }
 
             return this.Ok(results);
