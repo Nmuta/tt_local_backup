@@ -85,6 +85,18 @@
     mat-form-field {
       margin-bottom: 2em;
     }
+
+    // things that shouldn't grow to fill space
+    > mat-checkbox,
+    > button,
+    > help-popover-icon {
+      flex-grow: 0;
+    }
+
+    // align the button
+    > button {
+      margin: $gap-small/2;
+    }
   }
 
   .shrinkwrap {

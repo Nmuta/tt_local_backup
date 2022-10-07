@@ -66,7 +66,7 @@ export class SelectLocalizedStringComponent
   /** The contract used to lookup and display localized strings. */
   @Input() service: SelectLocalizedStringContract;
 
-/** Determines if the language preview display should never show. */
+  /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;
 
   public localizedStringLookup: LocalizedStringsMap = new Map();

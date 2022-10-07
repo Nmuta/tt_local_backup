@@ -136,8 +136,10 @@ export class LocalizedGroupNotificationManagementComponent
 
   /** Checks if GroupNotification is of an editable type */
   public isEditable(entry: GroupNotification): boolean {
-    return entry?.notificationType === 'CommunityMessageNotificationV2' 
-        || entry?.notificationType === 'PatchNotesMessageNotification';
+    return (
+      entry?.notificationType === 'CommunityMessageNotificationV2' ||
+      entry?.notificationType === 'PatchNotesMessageNotification'
+    );
   }
 
   /** Retrieves notifications */
@@ -207,9 +209,7 @@ export class LocalizedGroupNotificationManagementComponent
   private prepareNotifications(groupNotification: GroupNotification): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), groupNotification.sentDateUtc]);
     const formControls = {
-      localizedMessageInfo: new FormControl({}, [
-        Validators.required,
-      ]),
+      localizedMessageInfo: new FormControl({}, [Validators.required]),
       deviceType: new FormControl(groupNotification.deviceType),
       expireDateUtc: new FormControl(groupNotification.expirationDateUtc, [
         Validators.required,

@@ -25,12 +25,12 @@ class TestNotificationManagementService implements LocalizedIndividualMessagingM
     /** Get localized strings. */
     getLocalizedStrings$(): Observable<LocalizedStringsMap> {
       return;
-    }
+    },
   };
   /** Get player notifications. */
   public getPlayerNotifications$(): Observable<PlayerNotification[]> {
     return null;
-  };
+  }
   /** Edit player notification. */
   public postEditPlayerCommunityMessage$(
     _xuid: BigNumber,
@@ -38,14 +38,14 @@ class TestNotificationManagementService implements LocalizedIndividualMessagingM
     _communityMessage: LocalizedMessage,
   ): Observable<void> {
     return null;
-  };
+  }
   /** Delete player notifications. */
   public deletePlayerCommunityMessage$(
     _xuid: BigNumber,
     _notificationId: string,
   ): Observable<void> {
     return null;
-  };
+  }
 }
 
 describe('NotificationManagementComponent', () => {

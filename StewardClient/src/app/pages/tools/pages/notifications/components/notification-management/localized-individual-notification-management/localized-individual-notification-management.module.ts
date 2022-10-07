@@ -33,9 +33,7 @@ import { LocalizationModule } from '@components/localization/localization.module
 
 /** Routed module for viewing steward user history. */
 @NgModule({
-  declarations: [
-    LocalizedIndividualNotificationManagementComponent,
-  ],
+  declarations: [LocalizedIndividualNotificationManagementComponent],
   imports: [
     ...STANDARD_DATE_IMPORTS,
     CommonModule,
@@ -70,8 +68,6 @@ import { LocalizationModule } from '@components/localization/localization.module
     StandardDateModule,
     LocalizationModule,
   ],
-  exports: [
-    LocalizedIndividualNotificationManagementComponent,
-  ],
+  exports: [LocalizedIndividualNotificationManagementComponent],
 })
 export class LocalizedIndividualNotificationManagementModule {}

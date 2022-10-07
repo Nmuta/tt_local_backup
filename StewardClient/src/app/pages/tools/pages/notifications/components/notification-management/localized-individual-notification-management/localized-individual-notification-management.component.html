@@ -9,21 +9,19 @@
     </ng-container>
     <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
     </mat-paginator>
-    <form *waitForMonitor="getMonitor">
+    <form *waitForMonitor="getMonitor" class="sf-wrapper">
       <table mat-table [dataSource]="notifications">
         <ng-container matColumnDef="message">
           <th mat-header-cell *matHeaderCellDef>Message</th>
           <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
-            <div class="message" *ngIf="!entry.edit">
-              <span *ngIf="entry.isEditable"
-                >{{ entry.notification.message }}
-              </span>
+            <div class="sf-full-width" *ngIf="!entry.edit">
+              <span *ngIf="entry.isEditable">{{ entry.notification.message }} </span>
               <span class="warn" *ngIf="!entry.isEditable">
                 No message for notifications of type:
                 {{ entry.notification.notificationType }}
               </span>
             </div>
-            <div class="message" *ngIf="entry.edit">
+            <div *ngIf="entry.edit">
               <select-localized-string
                 *ngIf="entry.edit"
                 [service]="service?.selectLocalizedStringService"
@@ -87,7 +85,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
-            <span class="editable" *ngIf="!entry.edit">
+            <span class="sf-vertical" *ngIf="!entry.edit">
               <button
                 class="edit"
                 mat-raised-button
@@ -117,7 +115,7 @@
                 >Verify Deletion</mat-checkbox
               >
             </span>
-            <span class="edit" *ngIf="entry.edit">
+            <span class="sf-vertical" *ngIf="entry.edit">
               <button
                 mat-raised-button
                 color="primary"

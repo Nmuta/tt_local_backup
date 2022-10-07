@@ -42,7 +42,7 @@ describe('SunriseNotificationsComponent', () => {
       });
 
       it('when third tab selected', () => {
-        component.viewSelectionTypeChange(1);
+        component.viewSelectionTypeChange(2);
         expect(component.isInEditTab).toBeFalsy();
       });
     });

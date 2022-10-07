@@ -26,12 +26,12 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
     /** Get localized strings. */
     getLocalizedStrings$(): Observable<LocalizedStringsMap> {
       return;
-    }
+    },
   };
   /** Get group notifications. */
   public getGroupNotifications$(): Observable<GroupNotification[]> {
     return null;
-  };
+  }
   /** Edit group notification. */
   public postEditLspGroupCommunityMessage$(
     _lspGroupId: BigNumber,
@@ -39,14 +39,14 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
     _communityMessage: LocalizedMessage,
   ): Observable<void> {
     return null;
-  };
+  }
   /** Delete group notification. */
   public deleteLspGroupCommunityMessage$(
     _lspGroupId: BigNumber,
     _notificationId: string,
   ): Observable<void> {
     return null;
-  };
+  }
 }
 
 describe('NotificationManagementComponent', () => {

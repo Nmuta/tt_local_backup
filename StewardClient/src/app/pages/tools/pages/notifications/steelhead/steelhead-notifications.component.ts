@@ -16,8 +16,14 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
 import { SteelheadPlayerMessagesService } from '@services/api-v2/steelhead/player/messages/steelhead-player-messages.service';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
 import { renderGuard } from '@helpers/rxjs';
-import { LocalizedGroupMessagingManagementContract, LocalizedGroupNotificationManagementComponent } from '../components/notification-management/localized-group-notification-management/localized-group-notification-management.component';
-import { LocalizedIndividualMessagingManagementContract, LocalizedIndividualNotificationManagementComponent } from '../components/notification-management/localized-individual-notification-management/localized-individual-notification-management.component';
+import {
+  LocalizedGroupMessagingManagementContract,
+  LocalizedGroupNotificationManagementComponent,
+} from '../components/notification-management/localized-group-notification-management/localized-group-notification-management.component';
+import {
+  LocalizedIndividualMessagingManagementContract,
+  LocalizedIndividualNotificationManagementComponent,
+} from '../components/notification-management/localized-individual-notification-management/localized-individual-notification-management.component';
 
 /**
  *  Steelhead notification component.
@@ -110,12 +116,16 @@ export class SteelheadNotificationsComponent {
         notificationId: string,
         localizedMessage: LocalizedMessage,
       ): Observable<void> {
-        return steelheadPlayerMessagesService.postEditPlayerLocalizedMessage$(xuid, notificationId, localizedMessage);
+        return steelheadPlayerMessagesService.postEditPlayerLocalizedMessage$(
+          xuid,
+          notificationId,
+          localizedMessage,
+        );
       },
       deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
         return steelheadPlayerMessagesService.deletePlayerLocalizedMessage$(xuid, notificationId);
       },
-    }
+    };
 
     this.localizedGroupMessagingManagementService = {
       gameTitle: this.gameTitle,
@@ -128,7 +138,11 @@ export class SteelheadNotificationsComponent {
         notificationId: string,
         localizedMessage: LocalizedMessage,
       ): Observable<void> {
-        return steelheadGroupMessagesService.postEditLspGroupLocalizedMessage$(lspGroupId, notificationId, localizedMessage);
+        return steelheadGroupMessagesService.postEditLspGroupLocalizedMessage$(
+          lspGroupId,
+          notificationId,
+          localizedMessage,
+        );
       },
       deleteLspGroupCommunityMessage$(
         lspGroupId: BigNumber,
@@ -172,7 +186,7 @@ export class SteelheadNotificationsComponent {
   /** Sets if tool is using player identities as selection type; */
   public playerSelectionTypeChange(tabIndex: number): void {
     this.isUsingPlayerIdentities = tabIndex === 0;
-    
+
     renderGuard(() => {
       this.playerManagementComponent?.refreshNotificationList();
       this.groupManagementComponent?.refreshNotificationList();

@@ -1,10 +1,10 @@
 @import '/src/styles/mixins';
-$rowHeight: 250px;
-$shortRowHeight: 120px;
-$metadataWidth: 250px;
-$messageMinHeight: 200px;
-$messageMaxWidth: 500px;
-$columnMinWidth: 300px;
+// $rowHeight: 250px;
+// $shortRowHeight: 120px;
+// $metadataWidth: 250px;
+// $messageMinHeight: 200px;
+// $messageMaxWidth: 500px;
+// $columnMinWidth: 300px;
 
 :host {
   @include flex-column-fill();
@@ -13,81 +13,13 @@ $columnMinWidth: 300px;
 table {
   width: 100%;
 
-  tr.mat-row {
-    height: $rowHeight;
+  .mat-cell {
+    padding: 1em;
   }
-
-  tr.nonEditable {
-    height: $shortRowHeight;
-  }
-}
-
-button {
-  display: block;
-  min-width: $button-min-size;
-  margin-bottom: $gap-small;
-
-  &.edit {
-    padding: 0;
-
-    // Allows tooltip display on disabled button.
-    span {
-      display: block;
-      float: none;
-      width: 100%;
-    }
-  }
-}
-
-div.input {
-  flex-flow: row wrap;
-  > * {
-    flex: 1 0;
-  }
-
-  .options {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    margin: -0.5em;
-    > * {
-      margin: 0.5em;
-    }
-  }
-}
-
-mat-form-field {
-  display: block;
-
-  &.device-type,
-  &.expiry-date {
-    min-width: $metadataWidth;
-    margin-top: $gap-small;
-  }
-
-  textarea {
-    min-height: $messageMinHeight;
-  }
-}
-
-.message {
-  width: 100%;
-  max-width: $messageMaxWidth;
-}
-
-.mat-column-message {
-  min-width: $columnMinWidth;
-  padding-right: $gap-medium;
-}
-
-.mat-column-metadata {
-  min-width: $columnMinWidth;
 }
 
 .mat-column-actions {
   @include table-width(200);
-  min-width: $button-min-size;
-  padding-left: $gap-medium;
 }
 
 .warn {

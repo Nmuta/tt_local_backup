@@ -134,8 +134,10 @@ export class LocalizedIndividualNotificationManagementComponent
 
   /** Checks if PlayerNotification is of an editable type */
   public isEditable(entry: PlayerNotification): boolean {
-    return entry?.notificationType === 'CommunityMessageNotificationV2' 
-        || entry?.notificationType === 'PatchNotesMessageNotification';
+    return (
+      entry?.notificationType === 'CommunityMessageNotificationV2' ||
+      entry?.notificationType === 'PatchNotesMessageNotification'
+    );
   }
 
   /** Retrieves notifications */
@@ -204,9 +206,7 @@ export class LocalizedIndividualNotificationManagementComponent
   private prepareNotifications(playerNotification: PlayerNotification): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), playerNotification.sentDateUtc]);
     const formControls = {
-      localizedMessageInfo: new FormControl({}, [
-        Validators.required,
-      ]),
+      localizedMessageInfo: new FormControl({}, [Validators.required]),
       expireDateUtc: new FormControl(playerNotification.expirationDateUtc, [
         Validators.required,
         DateValidators.isAfter(min),

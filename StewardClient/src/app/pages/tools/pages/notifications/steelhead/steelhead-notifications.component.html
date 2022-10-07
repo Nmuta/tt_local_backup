@@ -45,15 +45,15 @@
       </mat-tab>
       <mat-tab label="Edit/Delete">
         <localized-individual-notification-management
-        *ngIf="isUsingPlayerIdentities"
+          *ngIf="isUsingPlayerIdentities"
           [service]="localizedIndividualMessagingManagementService"
           [selectedXuid]="selectedXuid"
-        ></localized-individual-notification-management>        
+        ></localized-individual-notification-management>
         <localized-group-notification-management
           *ngIf="!isUsingPlayerIdentities"
           [service]="localizedGroupMessagingManagementService"
           [selectedLspGroup]="selectedLspGroup"
-      ></localized-group-notification-management>
+        ></localized-group-notification-management>
       </mat-tab>
     </mat-tab-group>
   </div>
