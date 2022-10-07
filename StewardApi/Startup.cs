@@ -67,6 +67,7 @@ using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 using System.Linq;
 using System.Threading.Tasks;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -224,7 +225,9 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
                 mc.AllowNullCollections = true;
+                mc.IgnoreUnmapped(); // TODO: We should remove this and correct all the mappings. //Should we? Some of the unmapped properties are left empty on purpose. Like error property on valid successes
             });
+            mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();
             services.AddSingleton(mapper);
 
