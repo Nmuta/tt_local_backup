@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
+import { getLeaderboardRoute } from '@helpers/route-links';
+import { GameTitle, GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
 
 /** Displays the leaderboards tool. */
 @Component({
@@ -11,7 +12,7 @@ export class LeaderboardsComponent {
     {
       name: GameTitleAbbreviation.FH5,
       codename: GameTitleCodeName.FH5,
-      route: ['.', GameTitleCodeName.FH5.toLowerCase()],
+      route: getLeaderboardRoute(GameTitle.FH5),
     },
   ];
 }

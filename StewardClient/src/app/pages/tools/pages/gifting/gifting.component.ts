@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { GameTitleCodeName, GameTitleAbbreviation } from '@models/enums';
+import { getGiftRoute } from '@helpers/route-links';
+import { GameTitleCodeName, GameTitleAbbreviation, GameTitle } from '@models/enums';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -11,22 +12,22 @@ export class GiftingComponent {
     {
       name: GameTitleAbbreviation.FM8,
       codename: GameTitleCodeName.FM8,
-      route: ['.', GameTitleCodeName.FM8.toLowerCase()],
+      route: getGiftRoute(GameTitle.FM8),
     },
     {
       name: GameTitleAbbreviation.FH5,
       codename: GameTitleCodeName.FH5,
-      route: ['.', GameTitleCodeName.FH5.toLowerCase()],
+      route: getGiftRoute(GameTitle.FH5),
     },
     {
       name: GameTitleAbbreviation.FH4,
       codename: GameTitleCodeName.FH4,
-      route: ['.', GameTitleCodeName.FH4.toLowerCase()],
+      route: getGiftRoute(GameTitle.FH4),
     },
     {
       name: GameTitleAbbreviation.FM7,
       codename: GameTitleCodeName.FM7,
-      route: ['.', GameTitleCodeName.FM7.toLowerCase()],
+      route: getGiftRoute(GameTitle.FM7),
     },
   ];
 }

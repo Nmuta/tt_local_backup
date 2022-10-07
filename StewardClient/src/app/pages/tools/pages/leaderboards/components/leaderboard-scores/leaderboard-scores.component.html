@@ -34,20 +34,18 @@
           <ng-container
             *ngIf="allScores.length > 0 && activeLeaderboardView !== LeaderboardView.Player"
           >
-            <div class="assist filters">
-              <mat-slide-toggle [formControl]="filterFormControls.usedStmAssist">
-                Used STM Assist
-              </mat-slide-toggle>
-              <mat-slide-toggle [formControl]="filterFormControls.usedAbsAssist">
-                Used ABS Assist
-              </mat-slide-toggle>
-              <mat-slide-toggle [formControl]="filterFormControls.usedTcsAssist">
-                Used TCS Assist
-              </mat-slide-toggle>
-              <mat-slide-toggle [formControl]="filterFormControls.usedAutoAssist">
-                Used Auto Assist
-              </mat-slide-toggle>
-            </div>
+            <ng-template
+              *ngTemplateOutlet="toggleFilter; context: assistFilterContexts.stmAssist"
+            ></ng-template>
+            <ng-template
+              *ngTemplateOutlet="toggleFilter; context: assistFilterContexts.absAssist"
+            ></ng-template>
+            <ng-template
+              *ngTemplateOutlet="toggleFilter; context: assistFilterContexts.tcsAssist"
+            ></ng-template>
+            <ng-template
+              *ngTemplateOutlet="toggleFilter; context: assistFilterContexts.autoAssist"
+            ></ng-template>
             <div class="date-range">
               <mat-slide-toggle #dateSlideToggle (change)="toggleDatetimeFilter($event)">
                 Filter by date range
@@ -283,4 +281,28 @@
 <ng-template #deleteLeaderboardScoresTemplate>
   <!-- We do not want to show json dump on delete error, using snackbar instead. -->
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>
+
+<ng-template
+  #toggleFilter
+  let-formControl="formControl"
+  let-name="name"
+  let-helpTitle="helpTitle"
+  let-helpText="helpText"
+>
+  <div>
+    <mat-button-toggle-group [formControl]="formControl">
+      <mat-button-toggle [value]="BooleanFilterToggle.Ignore">Ignore</mat-button-toggle>
+      <mat-button-toggle [value]="BooleanFilterToggle.On">On</mat-button-toggle>
+      <mat-button-toggle [value]="BooleanFilterToggle.Off">Off</mat-button-toggle>
+    </mat-button-toggle-group>
+    {{ name }}
+    <help-popover-icon [cardTitle]="helpTitle">
+      {{ helpText }} <br />
+      <br />
+      <b>Ignore</b> = Assist turned on or off<br />
+      <b>On</b> = Assist turned on <br />
+      <b>Off</b> = Assist turned off <br />
+    </help-popover-icon>
+  </div>
 </ng-template>

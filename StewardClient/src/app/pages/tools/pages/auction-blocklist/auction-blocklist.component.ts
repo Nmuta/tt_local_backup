@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { getAuctionBlocklistRoute } from '@helpers/route-links';
 import { GameTitle, GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
 
 /**
@@ -17,12 +18,12 @@ export class AuctionBlocklistComponent implements OnInit {
       {
         name: GameTitleAbbreviation.FH5,
         codename: GameTitleCodeName.FH5,
-        route: ['.', GameTitle.FH5],
+        route: getAuctionBlocklistRoute(GameTitle.FH5),
       },
       {
         name: GameTitleAbbreviation.FH4,
         codename: GameTitleCodeName.FH4,
-        route: ['.', GameTitle.FH4],
+        route: getAuctionBlocklistRoute(GameTitle.FH4),
       },
     ];
   }

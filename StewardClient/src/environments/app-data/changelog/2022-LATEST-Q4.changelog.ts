@@ -8,6 +8,37 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '87e2f72e-87a2-42e0-8519-b73aaeb87179',
+      shortText: 'Add helper functions to get tool route',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '898e0712-5212-4d3b-9c97-e043617df293',
+      shortText: 'Allow assist toggling to support both on & off selections',
+      longText: [
+        'You can now toggle through 3 different filter options for each assist type.',
+        'Ignore - Shows scores with assist turned on or off.',
+        'On - Shows scores with assist turned on.',
+        'Off - Shows scores with assist turned off.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
+      uuid: 'e7fe305c-5e79-4f92-990d-92e4be5ef5d5',
+      shortText: 'Allow gifting up to 500 players',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '0f0fa8ff-ddaf-474d-8548-292155b160ce',
+      shortText: 'Display CMS information in user details',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '39a2eee0-fb44-4034-8743-32fb47798535',
+      shortText: 'Display first and last login information in user details',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '21cfcc58-6336-4147-b267-e994a7092e06',
       shortText: 'Add new report button to ugc details',
