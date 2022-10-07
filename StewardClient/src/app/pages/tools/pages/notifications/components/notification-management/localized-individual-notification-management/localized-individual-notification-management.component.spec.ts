@@ -13,25 +13,39 @@ import {
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
 import BigNumber from 'bignumber.js';
+import { LocalizedMessage } from '@models/community-message';
+import { LocalizedStringsMap } from '@models/localization';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
+/** Test class for {@link LocalizedIndividualMessagingManagementContract}. */
 class TestNotificationManagementService implements LocalizedIndividualMessagingManagementContract {
   public gameTitle: GameTitle.Street;
+  public selectLocalizedStringService: SelectLocalizedStringContract = {
+    gameTitle: GameTitle.Street,
+    /** Get localized strings. */
+    getLocalizedStrings$(): Observable<LocalizedStringsMap> {
+      return;
+    }
+  };
+  /** Get player notifications. */
   public getPlayerNotifications$(): Observable<PlayerNotification[]> {
     return null;
-  }
-  // public postEditPlayerCommunityMessage$(
-  //   _xuid: BigNumber,
-  //   _notificationId: string,
-  //   _communityMessage: CommunityMessage,
-  // ): Observable<void> {
-  //   return null;
-  // }
+  };
+  /** Edit player notification. */
+  public postEditPlayerCommunityMessage$(
+    _xuid: BigNumber,
+    _notificationId: string,
+    _communityMessage: LocalizedMessage,
+  ): Observable<void> {
+    return null;
+  };
+  /** Delete player notifications. */
   public deletePlayerCommunityMessage$(
     _xuid: BigNumber,
     _notificationId: string,
   ): Observable<void> {
     return null;
-  }
+  };
 }
 
 describe('NotificationManagementComponent', () => {

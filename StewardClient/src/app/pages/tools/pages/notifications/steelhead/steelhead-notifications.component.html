@@ -44,17 +44,11 @@
         ></localized-messaging>
       </mat-tab>
       <mat-tab label="Edit/Delete">
-        
-        <!-- *ngIf="isUsingPlayerIdentities" -->
-        <!-- [hidden]="!isUsingPlayerIdentities" -->
         <localized-individual-notification-management
         *ngIf="isUsingPlayerIdentities"
           [service]="localizedIndividualMessagingManagementService"
           [selectedXuid]="selectedXuid"
-        ></localized-individual-notification-management>
-        
-        <!-- *ngIf="!isUsingPlayerIdentities" -->
-        <!-- [hidden]="isUsingPlayerIdentities" -->
+        ></localized-individual-notification-management>        
         <localized-group-notification-management
           *ngIf="!isUsingPlayerIdentities"
           [service]="localizedGroupMessagingManagementService"

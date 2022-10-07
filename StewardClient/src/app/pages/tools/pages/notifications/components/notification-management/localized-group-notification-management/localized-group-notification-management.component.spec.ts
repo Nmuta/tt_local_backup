@@ -14,25 +14,39 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import { GroupNotification } from '@models/notifications.model';
 import BigNumber from 'bignumber.js';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { LocalizedStringsMap } from '@models/localization';
+import { LocalizedMessage } from '@models/community-message';
 
+/** Test class for {@link LocalizedGroupMessagingManagementContract}. */
 class TestNotificationManagementService implements LocalizedGroupMessagingManagementContract {
   public gameTitle: GameTitle.Street;
+  public selectLocalizedStringService: SelectLocalizedStringContract = {
+    gameTitle: GameTitle.Street,
+    /** Get localized strings. */
+    getLocalizedStrings$(): Observable<LocalizedStringsMap> {
+      return;
+    }
+  };
+  /** Get group notifications. */
   public getGroupNotifications$(): Observable<GroupNotification[]> {
     return null;
-  }
-  // public postEditLspGroupCommunityMessage$(
-  //   _lspGroupId: BigNumber,
-  //   _notificationId: string,
-  //   _communityMessage: CommunityMessage,
-  // ): Observable<void> {
-  //   return null;
-  // }
+  };
+  /** Edit group notification. */
+  public postEditLspGroupCommunityMessage$(
+    _lspGroupId: BigNumber,
+    _notificationId: string,
+    _communityMessage: LocalizedMessage,
+  ): Observable<void> {
+    return null;
+  };
+  /** Delete group notification. */
   public deleteLspGroupCommunityMessage$(
     _lspGroupId: BigNumber,
     _notificationId: string,
   ): Observable<void> {
     return null;
-  }
+  };
 }
 
 describe('NotificationManagementComponent', () => {

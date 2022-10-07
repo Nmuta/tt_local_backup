@@ -11,8 +11,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
-    <div *ngIf="!disableLanguagePreview">
+    <div *ngIf="!disableLanguagePreview" class="sf-vertical sf-full-width">
       <mat-form-field *ngIf="displayLanguageChips" class="sf-default-hint">
         <mat-label>Language Codes</mat-label>
         <mat-chip-list selectable="true" multiple="false" (change)="onLanguageChipSelect($event)">
@@ -45,6 +44,6 @@
           selectedLanguageLocalizedString.message
         }}</textarea>
       </mat-form-field>
-  </div>
+    </div>
   </div>
 </div>

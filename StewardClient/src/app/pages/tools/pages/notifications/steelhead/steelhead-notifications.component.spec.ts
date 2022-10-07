@@ -22,5 +22,32 @@ describe('SunriseNotificationsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.sendMessageService).toBeTruthy();
+    expect(component.localizationCreationService).toBeTruthy();
+    expect(component.localizationSelectionService).toBeTruthy();
+    expect(component.localizedIndividualMessagingManagementService).toBeTruthy();
+    expect(component.localizedGroupMessagingManagementService).toBeTruthy();
   });
+
+  describe('viewSelectionTypeChange', () => {
+    describe('should properly update edit status', () => {
+      it('when first tab selected', () => {
+        component.viewSelectionTypeChange(0);
+        expect(component.isInEditTab).toBeFalsy();
+      });
+
+      it('when second tab selected', () => {
+        component.viewSelectionTypeChange(1);
+        expect(component.isInEditTab).toBeFalsy();
+      });
+
+      it('when third tab selected', () => {
+        component.viewSelectionTypeChange(1);
+        expect(component.isInEditTab).toBeFalsy();
+      });
+    });
+  });
+
+  // Add a test for switching tabs properly updating the public property
+  // Add a test for selecting /changing identities
 });

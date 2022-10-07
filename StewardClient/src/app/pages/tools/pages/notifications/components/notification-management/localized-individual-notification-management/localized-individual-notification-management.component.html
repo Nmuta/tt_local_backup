@@ -38,25 +38,25 @@
           <th mat-header-cell *matHeaderCellDef>Metadata</th>
           <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
             <table class="info-table">
-              <tr>
+              <tr *ngIf="!entry.edit">
                 <th>ID:</th>
                 <td>
                   {{ entry.notification.notificationId }}
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="!entry.edit">
                 <th>Type:</th>
                 <td>
                   {{ entry.notification.notificationType }}
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="!entry.edit">
                 <th>Is Read:</th>
                 <td>
                   {{ entry.notification.isRead }}
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="!entry.edit">
                 <th>Sent Date:</th>
                 <td>
                   <standard-absolute-time-utc [timeUtc]="entry.notification.sentDateUtc">
