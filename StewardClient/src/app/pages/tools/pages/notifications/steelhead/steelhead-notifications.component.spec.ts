@@ -47,7 +47,4 @@ describe('SunriseNotificationsComponent', () => {
       });
     });
   });
-
-  // Add a test for switching tabs properly updating the public property
-  // Add a test for selecting /changing identities
 });
