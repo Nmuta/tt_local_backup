@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
                 mc.AllowNullCollections = true;
-                mc.IgnoreUnmapped(); // TODO: We should remove this and correct all the mappings. //Should we? Some of the unmapped properties are left empty on purpose. Like error property on valid successes
+                mc.IgnoreUnmapped(); // TODO: We should remove this and correct all the mappings.
             });
             mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();
