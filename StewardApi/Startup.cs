@@ -1,79 +1,79 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using AutoMapper;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Identity.Web;
-using Newtonsoft.Json;
-using Turn10.Data.Azure;
-using Turn10.Data.Common;
-using Turn10.Data.Kusto;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Apollo;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Gravity;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using Turn10.LiveOps.StewardApi.Filters;
-using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
-using Turn10.LiveOps.StewardApi.Helpers.Swagger;
-using Turn10.LiveOps.StewardApi.Hubs;
-using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Middleware;
-using Turn10.LiveOps.StewardApi.Obligation;
-using Turn10.LiveOps.StewardApi.ProfileMappers;
-using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Apollo;
-using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Gravity;
-using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Opus;
-using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Pipelines;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Sunrise;
-using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Proxies;
-using Turn10.LiveOps.StewardApi.Validation;
-using Turn10.LiveOps.StewardApi.Validation.Apollo;
-using Turn10.LiveOps.StewardApi.Validation.Gravity;
-using Turn10.LiveOps.StewardApi.Validation.Steelhead;
-using Turn10.LiveOps.StewardApi.Validation.Sunrise;
-using Turn10.LiveOps.StewardApi.Validation.Woodstock;
-using Turn10.Services.CMSRetrieval;
-using Turn10.Services.Diagnostics;
-using Turn10.Services.Diagnostics.Geneva;
-using Turn10.Services.Storage.Blob;
-using Turn10.Services.WebApi.Core;
-using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
-using System.Linq;
-using System.Threading.Tasks;
-using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using Turn10.LiveOps.StewardApi.Authorization;
-using Microsoft.AspNetCore.Authorization;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-
 namespace Turn10.LiveOps.StewardApi
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Net;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
+    using Microsoft.AspNetCore.SignalR;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Identity.Web;
+    using Newtonsoft.Json;
+    using Turn10.Data.Azure;
+    using Turn10.Data.Common;
+    using Turn10.Data.Kusto;
+    using Turn10.Data.SecretProvider;
+    using Turn10.LiveOps.StewardApi.Authorization;
+    using Turn10.LiveOps.StewardApi.Common;
+    using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+    using Turn10.LiveOps.StewardApi.Contracts.Data;
+    using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+    using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+    using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+    using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+    using Turn10.LiveOps.StewardApi.Filters;
+    using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
+    using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+    using Turn10.LiveOps.StewardApi.Hubs;
+    using Turn10.LiveOps.StewardApi.Logging;
+    using Turn10.LiveOps.StewardApi.Middleware;
+    using Turn10.LiveOps.StewardApi.Obligation;
+    using Turn10.LiveOps.StewardApi.ProfileMappers;
+    using Turn10.LiveOps.StewardApi.Providers;
+    using Turn10.LiveOps.StewardApi.Providers.Apollo;
+    using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
+    using Turn10.LiveOps.StewardApi.Providers.Data;
+    using Turn10.LiveOps.StewardApi.Providers.Gravity;
+    using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
+    using Turn10.LiveOps.StewardApi.Providers.Opus;
+    using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
+    using Turn10.LiveOps.StewardApi.Providers.Pipelines;
+    using Turn10.LiveOps.StewardApi.Providers.Steelhead;
+    using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+    using Turn10.LiveOps.StewardApi.Providers.Sunrise;
+    using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
+    using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+    using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+    using Turn10.LiveOps.StewardApi.Proxies;
+    using Turn10.LiveOps.StewardApi.Validation;
+    using Turn10.LiveOps.StewardApi.Validation.Apollo;
+    using Turn10.LiveOps.StewardApi.Validation.Gravity;
+    using Turn10.LiveOps.StewardApi.Validation.Steelhead;
+    using Turn10.LiveOps.StewardApi.Validation.Sunrise;
+    using Turn10.LiveOps.StewardApi.Validation.Woodstock;
+    using Turn10.Services.CMSRetrieval;
+    using Turn10.Services.Diagnostics;
+    using Turn10.Services.Diagnostics.Geneva;
+    using Turn10.Services.Storage.Blob;
+    using Turn10.Services.WebApi.Core;
+    using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
+    using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
+
     /// <summary>
     ///     Entry point for the app.
     /// </summary>
@@ -83,7 +83,6 @@ namespace Turn10.LiveOps.StewardApi
         private readonly IConfiguration configuration;
 
         private IServiceCollection allServices;
-
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Startup"/> class.
@@ -129,7 +128,6 @@ namespace Turn10.LiveOps.StewardApi
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 });
-
             services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
@@ -168,9 +166,7 @@ namespace Turn10.LiveOps.StewardApi
                 UserAttribute.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 
-            // As always, handlers must be provided for the requirements of the authorization policies
             services.AddSingleton<IAuthorizationHandler, AuthorizationAttributeHandler>();
-
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
@@ -372,6 +368,8 @@ namespace Turn10.LiveOps.StewardApi
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
+
+            this.allServices = services;
         }
 
         /// <summary>

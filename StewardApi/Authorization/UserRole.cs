@@ -28,7 +28,5 @@
         public const string MotorsportDesigner = "MotorsportDesigner";
 
         public const string MediaTeam = "MediaTeam";
-
-        public const string User = "User";
     }
 }

@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardUserInternal"/> class.
         /// </summary>
-        public StewardUserInternal(string userObjectId, string name, string emailAddress, string role, string userAttributes)
+        public StewardUserInternal(string userObjectId, string name, string emailAddress, string role, string attributes)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
@@ -29,8 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             this.PartitionKey = "Users";
             this.EmailAddress = emailAddress;
             this.Role = role;
-
-
+            this.Attributes = attributes;
         }
 
         /// <summary>
