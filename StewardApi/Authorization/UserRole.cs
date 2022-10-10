@@ -31,28 +31,4 @@
 
         public const string User = "User";
     }
-
-    /*
-     * -	System attribute: Environment, title, tool, feature, cms slot (of person for gifting)
--	User attributes: admin, team, external vs. internal, hierarchical reports?...
-*/
-    public static class SystemAttribute
-    {
-
-        public const string Woodstock = "Woodstock";
-        public const string Retail = "Retail";
-    }
-
-    public static class UserAttribute
-    {
-        public const string Admin = "Admin";
-    }
-
-    // Or enums?
-    public enum AuthorizationTags
-    {
-        Woodstock,
-        Retail, 
-        Gifter
-    }
 }

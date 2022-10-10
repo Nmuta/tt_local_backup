@@ -161,13 +161,15 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(Turn10.LiveOps.StewardApi.Common.ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
-                options.AddPolicy(Turn10.LiveOps.StewardApi.Common.ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
-                options.AddPolicy("Test", policy => policy.Requirements.Add(new AttributeRequirement("Test")));
+                options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
+                options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
+
+                // Register all policies here
+                UserAttribute.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 
             // As always, handlers must be provided for the requirements of the authorization policies
-            services.AddSingleton<IAuthorizationHandler, AttributeAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, AuthorizationAttributeHandler>();
 
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -370,24 +372,6 @@ namespace Turn10.LiveOps.StewardApi
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
-
-            this.allServices = services;
-
-            Assembly asm = Assembly.GetExecutingAssembly();
-            var controllers = asm.GetTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)); //filter controllers
-            var actions = controllers.SelectMany(controller => controller.GetMethods().Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute))));
-
-
-            var colProvider = services.Where(service => service.ServiceType.Name is "IActionDescriptorCollectionProvider");
-            foreach (var action in actions)
-            {
-                Console.WriteLine($"{action.Name}: {string.Join(",", action.CustomAttributes.Select(attribute => attribute.AttributeType).ToList())}");
-            }
-
-             //   .SelectMany(type => type.GetMethods());
-
-             //   .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
-
         }
 
         /// <summary>
