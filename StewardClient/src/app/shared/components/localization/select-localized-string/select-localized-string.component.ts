@@ -41,7 +41,7 @@ export interface LocalizationOptions {
   id: GuidLikeString;
 }
 
-/** Displays the value sent on `input` as a json blob. */
+/** Lookup and display localized strings for selection. */
 @Component({
   selector: 'select-localized-string',
   templateUrl: './select-localized-string.component.html',

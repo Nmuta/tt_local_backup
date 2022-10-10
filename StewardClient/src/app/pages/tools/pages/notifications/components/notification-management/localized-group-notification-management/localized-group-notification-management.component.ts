@@ -19,7 +19,7 @@ import BigNumber from 'bignumber.js';
 import { LocalizedMessage } from '@models/community-message';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 
-/** Service contract for managing localized messages for individuals. */
+/** Service contract for managing localized messages for groups. */
 export interface LocalizedGroupMessagingManagementContract {
   gameTitle: GameTitle;
   selectLocalizedStringService: SelectLocalizedStringContract;
@@ -145,7 +145,7 @@ export class LocalizedGroupNotificationManagementComponent
   /** Retrieves notifications */
   public generateEditTooltip(entry: GroupNotification): string {
     return this.isEditable(entry)
-      ? 'Edit expire date'
+      ? 'Edit notificaiton properties'
       : `Editing is disabled for notifications of type: ${entry.notificationType}`;
   }
 

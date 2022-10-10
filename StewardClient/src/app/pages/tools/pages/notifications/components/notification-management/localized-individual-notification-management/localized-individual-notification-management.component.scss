@@ -1,10 +1,4 @@
 @import '/src/styles/mixins';
-// $rowHeight: 250px;
-// $shortRowHeight: 120px;
-// $metadataWidth: 250px;
-// $messageMinHeight: 200px;
-// $messageMaxWidth: 500px;
-// $columnMinWidth: 300px;
 
 :host {
   @include flex-column-fill();

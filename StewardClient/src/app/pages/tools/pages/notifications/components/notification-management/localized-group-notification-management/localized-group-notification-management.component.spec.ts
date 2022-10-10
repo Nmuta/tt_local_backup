@@ -25,12 +25,12 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
     gameTitle: GameTitle.Street,
     /** Get localized strings. */
     getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-      return;
+      return of(null);
     },
   };
   /** Get group notifications. */
   public getGroupNotifications$(): Observable<GroupNotification[]> {
-    return null;
+    return of([]);
   }
   /** Edit group notification. */
   public postEditLspGroupCommunityMessage$(
@@ -38,18 +38,18 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
     _notificationId: string,
     _communityMessage: LocalizedMessage,
   ): Observable<void> {
-    return null;
+    return of();
   }
   /** Delete group notification. */
   public deleteLspGroupCommunityMessage$(
     _lspGroupId: BigNumber,
     _notificationId: string,
   ): Observable<void> {
-    return null;
+    return of();
   }
 }
 
-describe('NotificationManagementComponent', () => {
+describe('LocalizedGroupNotificationManagementComponent', () => {
   let component: LocalizedGroupNotificationManagementComponent;
   let fixture: ComponentFixture<LocalizedGroupNotificationManagementComponent>;
   let testGroupNotifications: GroupNotification[];

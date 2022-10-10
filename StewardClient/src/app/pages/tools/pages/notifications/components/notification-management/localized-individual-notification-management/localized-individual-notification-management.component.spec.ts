@@ -24,12 +24,12 @@ class TestNotificationManagementService implements LocalizedIndividualMessagingM
     gameTitle: GameTitle.Street,
     /** Get localized strings. */
     getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-      return;
+      return of(null);
     },
   };
   /** Get player notifications. */
   public getPlayerNotifications$(): Observable<PlayerNotification[]> {
-    return null;
+    return of([]);
   }
   /** Edit player notification. */
   public postEditPlayerCommunityMessage$(
@@ -37,18 +37,18 @@ class TestNotificationManagementService implements LocalizedIndividualMessagingM
     _notificationId: string,
     _communityMessage: LocalizedMessage,
   ): Observable<void> {
-    return null;
+    return of();
   }
   /** Delete player notifications. */
   public deletePlayerCommunityMessage$(
     _xuid: BigNumber,
     _notificationId: string,
   ): Observable<void> {
-    return null;
+    return of();
   }
 }
 
-describe('NotificationManagementComponent', () => {
+describe('LocalizedIndividualNotificationManagementComponent', () => {
   let component: LocalizedIndividualNotificationManagementComponent;
   let fixture: ComponentFixture<LocalizedIndividualNotificationManagementComponent>;
   let testGroupNotifications: GroupNotification[];

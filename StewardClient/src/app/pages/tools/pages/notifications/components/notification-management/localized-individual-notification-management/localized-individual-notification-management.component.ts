@@ -143,7 +143,7 @@ export class LocalizedIndividualNotificationManagementComponent
   /** Retrieves notifications */
   public generateEditTooltip(entry: PlayerNotification): string {
     return this.isEditable(entry)
-      ? 'Edit expire date'
+      ? 'Edit message properties'
       : `Editing is disabled for notifications of type: ${entry.notificationType}`;
   }
 
