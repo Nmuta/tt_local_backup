@@ -57,5 +57,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Gets player UGC.
         /// </summary>
         Task<StorefrontManagementService.GetUGCForUserOutput> GetUGCForUser(ulong xuid, ForzaUGCContentType contentType, bool includeThumbnails, int maxResults);
+
+        /// <summary>
+        ///     Report content with a reason. Reason should come from pegasus.
+        /// </summary>
+        Task ReportContentWithReason(Guid fileId, Guid reason);
     }
 }
