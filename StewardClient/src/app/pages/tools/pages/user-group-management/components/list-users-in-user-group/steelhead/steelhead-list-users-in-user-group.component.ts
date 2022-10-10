@@ -7,6 +7,7 @@ import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
 import { SteelheadUserGroupService } from '@services/api-v2/steelhead/user-group/steelhead-user-group.service';
+import BigNumber from 'bignumber.js';
 import { first } from 'lodash';
 import { map, Observable } from 'rxjs';
 import { ListUsersInGroupServiceContract } from '../list-users-in-user-group.component';
@@ -27,6 +28,8 @@ export class SteelheadListUsersInGroupComponent extends BaseComponent {
 
     this.service = {
       gameTitle: GameTitle.FM8,
+      //Includes "All Users", "VIP", "ULTIMATE_VIP"
+      largeUserGroups: [new BigNumber(0), new BigNumber(1), new BigNumber(2)],
       getPlayersInUserGroup$(
         userGroup: LspGroup,
         startIndex: number,

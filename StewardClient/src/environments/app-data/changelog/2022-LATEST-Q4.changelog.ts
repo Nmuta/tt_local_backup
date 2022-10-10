@@ -13,6 +13,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Add report button',
     },
     {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: '10cc76cf-5aae-434c-bc5f-fbe3ddb9209b',
+      shortText: 'No longer load users from large user groups',
+      longText: [
+        'The restricted groups are "All Users", "VIP" and "ULTIMATE_VIP".',
+        'These groups are very large and trying to get their users would take too long.',
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '87e2f72e-87a2-42e0-8519-b73aaeb87179',
       shortText: 'Add helper functions to get tool route',
