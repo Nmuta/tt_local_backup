@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '5e25ef5c-e537-4fe3-bd50-5f8fc8a7a5f5',
+      shortText: 'Add Current Endpoints navbar widget',
+      longText: [
+        'The Current Endpoints widget allows viewing and adjusting your current endpoint settings in the navbar.',
+        'Includes a toggle for Forza Motorsport and Forza Horizon 5, one-click-switch to Retail and Studio, and a summary grid of the currently active endpoints.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '738427c1-f87a-40d9-8534-fc0f716aca36',
       shortText: 'Add report button',

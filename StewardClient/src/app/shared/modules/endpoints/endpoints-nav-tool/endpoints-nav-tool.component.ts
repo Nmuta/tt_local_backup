@@ -52,8 +52,8 @@ type EndpointStateGrid = EndpointStateLine[];
 
 const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
   {
-    name: 'Select Retail Endpoints',
-    tooltip: 'Selects Retail and Flight',
+    name: 'Select All Retail Endpoints',
+    tooltip: 'Selects Flight for FM, and Retail for all other titles',
     icon: 'question_mark',
 
     apolloEndpointKey: 'Retail',
@@ -62,8 +62,8 @@ const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
     steelheadEndpointKey: 'Flight',
   },
   {
-    name: 'Select Studio Endpoints',
-    tooltip: 'Selects Retail and Flight',
+    name: 'Select All Studio Endpoints',
+    tooltip: 'Selects Studio endpoints for all titles',
     icon: 'question_mark',
 
     apolloEndpointKey: 'Studio',
@@ -71,16 +71,6 @@ const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
     woodstockEndpointKey: 'Studio',
     steelheadEndpointKey: 'Studio',
   },
-  {
-    name: 'Test Impossible Combination',
-    tooltip: 'This combination is impossible',
-    icon: 'question_mark',
-
-    apolloEndpointKey: 'This',
-    sunriseEndpointKey: 'Is',
-    woodstockEndpointKey: 'Not',
-    steelheadEndpointKey: 'A Pipe',
-  }
 ];
 
 
@@ -176,6 +166,24 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
       new SetSunriseEndpointKey(optionSet.sunriseEndpointKey),
       new SetWoodstockEndpointKey(optionSet.woodstockEndpointKey),
       new SetSteelheadEndpointKey(optionSet.steelheadEndpointKey),
+    ]).subscribe(() => {
+      this.windowService.location().reload();
+    });
+  }
+
+  /** Sets all endpoints and reloads the page. */
+  public setSteelheadEndpoint(newEndpoint: string): void {
+    this.store.dispatch([
+      new SetSteelheadEndpointKey(newEndpoint),
+    ]).subscribe(() => {
+      this.windowService.location().reload();
+    });
+  }
+
+  /** Sets all endpoints and reloads the page. */
+  public setWoodstockEndpoint(newEndpoint: string): void {
+    this.store.dispatch([
+      new SetWoodstockEndpointKey(newEndpoint),
     ]).subscribe(() => {
       this.windowService.location().reload();
     });
