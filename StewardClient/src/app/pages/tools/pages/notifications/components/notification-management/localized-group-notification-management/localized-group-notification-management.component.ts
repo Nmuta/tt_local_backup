@@ -142,11 +142,15 @@ export class LocalizedGroupNotificationManagementComponent
     );
   }
 
-  /** Retrieves notifications */
+  /** Generates Edit Tooltip */
   public generateEditTooltip(entry: GroupNotification): string {
-    return this.isEditable(entry)
-      ? 'Edit notificaiton properties'
-      : `Editing is disabled for notifications of type: ${entry.notificationType}`;
+    if(this.isEditable(entry))
+    {
+      return 'Edit message properties';
+    }
+    else {
+      return `Editing is disabled for notifications of type: ${entry.notificationType}`;
+    }
   }
 
   /** Update notification selected */

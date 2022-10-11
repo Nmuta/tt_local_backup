@@ -140,11 +140,15 @@ export class LocalizedIndividualNotificationManagementComponent
     );
   }
 
-  /** Retrieves notifications */
+  /** Generates Edit Tooltip */
   public generateEditTooltip(entry: PlayerNotification): string {
-    return this.isEditable(entry)
-      ? 'Edit message properties'
-      : `Editing is disabled for notifications of type: ${entry.notificationType}`;
+    if(this.isEditable(entry))
+    {
+      return 'Edit message properties';
+    }
+    else {
+      return `Editing is disabled for notifications of type: ${entry.notificationType}`;
+    }
   }
 
   /** Update notification selected */
