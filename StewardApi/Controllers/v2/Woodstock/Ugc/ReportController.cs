@@ -27,7 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [Route("api/v{version:apiVersion}/title/woodstock/ugc")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [Tags(Title.Woodstock, Topic.Ugc, Target.Details)]
     public class ReportController : V2WoodstockControllerBase
