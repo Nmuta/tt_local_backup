@@ -10,7 +10,8 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 #pragma warning disable SA1600 // Elements should be documented
     public static class UserAttribute
     {
-        public const string Ban = "Ban";
+        public const string TestController = "TestController";
+        public const string TestAction = "TestAction";
         // TODO: add them all here
 
         public static IEnumerable<string> AllAttributes()

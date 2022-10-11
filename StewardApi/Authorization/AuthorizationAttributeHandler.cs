@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -33,6 +36,19 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 throw new ArgumentNullException(nameof(context));
             }
 
+            // Another policy has already failed
+            if (context.HasFailed)
+            {
+                return Task.CompletedTask;
+            }
+
+            if (!(context.Resource is HttpContext httpContext))
+            {
+                return Task.CompletedTask;
+            }
+
+            EnvironmentAndTitle(httpContext, out string title, out string environment);
+
             if (requirement == null)
             {
                 throw new ArgumentNullException(nameof(requirement));
@@ -44,15 +60,8 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 throw new Exception("Invalid user claim");
             }
 
-            // Another policy has already failed
-            if (context.HasFailed)
-            {
-                return Task.CompletedTask;
-            }
 
             var user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
-            string environment = "Retail"; // TODO
-            string title = "Apollo"; // TODO
 
             var authorizationAttributes = user.AuthorizationAttributes();
 
@@ -79,6 +88,32 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             {
                 return str.Length == 0 || str.Equals(attr);
             }
+        }
+
+        private static void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
+        {
+            var requestPathSegments = httpContext.Request.Path.ToUriComponent().Split("/");
+            var titleIndex = requestPathSegments.IndexOf(segment => segment.ToLower() == "title") + 1; // Plus to get segment after 'title'
+            if (titleIndex >= requestPathSegments.Length)
+            {
+                throw new BadHttpRequestException("No title provided.");
+            }
+
+            title = requestPathSegments[titleIndex];
+            var titleCapitalized = char.ToUpper(title[0]) + title.Substring(1);
+            var envKey = $"Endpoint-{titleCapitalized}";
+
+            if (!httpContext.Request.Headers.TryGetValue(envKey, out var env))
+            {
+                throw new BadHttpRequestException("No environment provided.");
+            }
+
+            if (env.IsNullOrEmpty())
+            {
+                throw new BadHttpRequestException("No environment provided.");
+            }
+
+            environment = env;
         }
     }
 

@@ -35,7 +35,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
     [ApiController]
     [ApiVersion("2.0")]
     [AuthorizeRoles(
-        UserRole.User, // has permission to everything
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.CommunityManager)]
@@ -45,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         Justification = "This can't be avoided.")]
     [LogTagTitle(TitleLogTags.Apollo)]
     [Tags(Title.Multiple)]
-    [AuthorizeAttribute("Test")]
+    [Authorize(Policy = UserAttribute.TestController)]
     public sealed class ApolloGiftingController : V2ControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Apollo;
@@ -99,10 +98,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [HttpPost("livery/{liveryId}/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+
+        [Authorize(Policy = UserAttribute.TestAction)]
+
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(string liveryId, [FromBody] GroupGift groupGift)
         {
-            //-------- User attributes
-            //-------- system attributes => attribute 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
