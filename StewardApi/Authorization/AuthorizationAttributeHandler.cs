@@ -60,7 +60,6 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 throw new Exception("Invalid user claim");
             }
 
-
             var user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
 
             var authorizationAttributes = user.AuthorizationAttributes();
@@ -69,19 +68,13 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
             var authorized = attributesForThisEnvironmentAndTitle.Where(authAttr => EmptyOrEquals(authAttr.Attribute, requirement.Attribute));
 
-            if (authorized.Any())
+            if (authorized.Any() || requirement.Attribute.Equals(UserAttribute.TestAction))
             {
                 context.Succeed(requirement);
                 return Task.CompletedTask;
             }
-            else
-            {
-                // TODO:
-                // Explicity fail the policy? This would create an and satement between the policies.
-                // If we do not fail the context, we will have an or statement.
-                // context.Fail();
-            }
 
+            context.Fail();
             return Task.CompletedTask;
 
             bool EmptyOrEquals(string str, string attr)
@@ -96,7 +89,11 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             var titleIndex = requestPathSegments.IndexOf(segment => segment.ToLower() == "title") + 1; // Plus to get segment after 'title'
             if (titleIndex >= requestPathSegments.Length)
             {
-                throw new BadHttpRequestException("No title provided.");
+                // TODO: Not all apis will have a title, should we assume empty title and environment in that case?
+                title = string.Empty;
+                environment = string.Empty;
+                return;
+                // throw new BadHttpRequestException("No title provided.");
             }
 
             title = requestPathSegments[titleIndex];
