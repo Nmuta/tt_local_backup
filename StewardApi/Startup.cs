@@ -289,8 +289,8 @@ namespace Turn10.LiveOps.StewardApi
             builder.Register(c => pegasusProvider).As<PegasusCmsProvider>().SingleInstance();
 
             // Scoped items
-            builder.RegisterType<ActionData>().InstancePerLifetimeScope();
-            builder.RegisterType<ActionLogger>().As<IActionLogger>().InstancePerLifetimeScope();
+            builder.RegisterType<ActionData>();
+            builder.RegisterType<ActionLogger>().As<IActionLogger>();
         }
 
         /// <summary>

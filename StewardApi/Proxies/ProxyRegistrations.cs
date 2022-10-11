@@ -19,16 +19,16 @@ namespace Turn10.LiveOps.StewardApi.Proxies
         public static void Register(ContainerBuilder builder)
         {
             builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().SingleInstance();
-            builder.RegisterType<SteelheadProxyBundle>().InstancePerLifetimeScope();
+            builder.RegisterType<SteelheadProxyBundle>();
 
             builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().SingleInstance();
-            builder.RegisterType<WoodstockProxyBundle>().InstancePerLifetimeScope();
+            builder.RegisterType<WoodstockProxyBundle>();
 
             builder.RegisterType<ApolloProxyFactory>().As<IApolloProxyFactory>().SingleInstance();
-            builder.RegisterType<ApolloProxyBundle>().InstancePerLifetimeScope();
+            builder.RegisterType<ApolloProxyBundle>();
 
             builder.RegisterType<SunriseProxyFactory>().As<ISunriseProxyFactory>().SingleInstance();
-            builder.RegisterType<SunriseProxyBundle>().InstancePerLifetimeScope();
+            builder.RegisterType<SunriseProxyBundle>();
         }
     }
 }
