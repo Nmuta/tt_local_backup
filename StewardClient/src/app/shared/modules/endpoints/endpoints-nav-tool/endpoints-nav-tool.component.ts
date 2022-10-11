@@ -7,7 +7,7 @@ import { WindowService } from '@services/window';
 import { EndpointKeyMemoryState, EndpointKeyMemoryModel } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { SetApolloEndpointKey, SetSunriseEndpointKey, SetWoodstockEndpointKey, SetSteelheadEndpointKey } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsState, UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
-import { cloneDeep, concat, every, initial, isElement, max } from 'lodash';
+import { cloneDeep, every, max } from 'lodash';
 import { filter, Observable, takeUntil } from 'rxjs';
 
 const ENDPOINT_OPTION_ACTIVE_ICON = 'explore';
