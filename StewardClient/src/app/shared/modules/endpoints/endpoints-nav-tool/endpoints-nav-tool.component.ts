@@ -4,9 +4,20 @@ import { CustomTileComponent, HomeTileInfo } from '@environments/environment';
 import { renderGuard } from '@helpers/rxjs';
 import { Select, Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
-import { EndpointKeyMemoryState, EndpointKeyMemoryModel } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
-import { SetApolloEndpointKey, SetSunriseEndpointKey, SetWoodstockEndpointKey, SetSteelheadEndpointKey } from '@shared/state/user-settings/user-settings.actions';
-import { UserSettingsState, UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
+import {
+  EndpointKeyMemoryState,
+  EndpointKeyMemoryModel,
+} from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
+import {
+  SetApolloEndpointKey,
+  SetSunriseEndpointKey,
+  SetWoodstockEndpointKey,
+  SetSteelheadEndpointKey,
+} from '@shared/state/user-settings/user-settings.actions';
+import {
+  UserSettingsState,
+  UserSettingsStateModel,
+} from '@shared/state/user-settings/user-settings.state';
 import { cloneDeep, every, max } from 'lodash';
 import { filter, Observable, takeUntil } from 'rxjs';
 
@@ -36,7 +47,7 @@ interface EndpointStateEntry {
 }
 
 interface EndpointStateEntrySpacer {
-  isSpacer: true,
+  isSpacer: true;
   classes: Record<string, boolean>;
   tooltip: string;
 }
@@ -73,20 +84,25 @@ const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
   },
 ];
 
-
+/**
+ * View and adjust current endpoint settings in the navbar.
+ */
 @Component({
   templateUrl: './endpoints-nav-tool.component.html',
   styleUrls: ['./endpoints-nav-tool.component.scss'],
 })
-export class EndpointsNavToolComponent extends BaseComponent implements OnInit, CustomTileComponent {
+export class EndpointsNavToolComponent
+  extends BaseComponent
+  implements OnInit, CustomTileComponent
+{
   /** Set to true when this component should be disabled. */
   @Input() public disabled: boolean;
   /** The nav item we are working with. */
   @Input() public item: HomeTileInfo;
-  
+
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
-  
+
   public apolloEndpointKey: string;
   public sunriseEndpointKey: string;
   public woodstockEndpointKey: string;
@@ -101,11 +117,8 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
 
   public quickEndpointOptions = QUICK_ENDPOINT_OPTIONS;
   public allUpTooltip = '';
-  
-  constructor(
-    private readonly store: Store,
-    private readonly windowService: WindowService,
-  ) {
+
+  constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
   }
 
@@ -143,10 +156,10 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
   /** Produces a formatted tooltip for the box. */
   public makeTooltip(title: string, endpoint: string, selectedEndpoint: string) {
     if (endpoint === selectedEndpoint) {
-      return `${title} ${endpoint} (active)`
+      return `${title} ${endpoint} (active)`;
     }
-    
-    return `${title} ${endpoint}`
+
+    return `${title} ${endpoint}`;
   }
 
   /** Produces a set of classes for the entry. */
@@ -161,30 +174,28 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
 
   /** Sets all endpoints and reloads the page. */
   public setAllEndpoints(optionSet: EndpointOptionSet): void {
-    this.store.dispatch([
-      new SetApolloEndpointKey(optionSet.apolloEndpointKey),
-      new SetSunriseEndpointKey(optionSet.sunriseEndpointKey),
-      new SetWoodstockEndpointKey(optionSet.woodstockEndpointKey),
-      new SetSteelheadEndpointKey(optionSet.steelheadEndpointKey),
-    ]).subscribe(() => {
-      this.windowService.location().reload();
-    });
+    this.store
+      .dispatch([
+        new SetApolloEndpointKey(optionSet.apolloEndpointKey),
+        new SetSunriseEndpointKey(optionSet.sunriseEndpointKey),
+        new SetWoodstockEndpointKey(optionSet.woodstockEndpointKey),
+        new SetSteelheadEndpointKey(optionSet.steelheadEndpointKey),
+      ])
+      .subscribe(() => {
+        this.windowService.location().reload();
+      });
   }
 
   /** Sets all endpoints and reloads the page. */
   public setSteelheadEndpoint(newEndpoint: string): void {
-    this.store.dispatch([
-      new SetSteelheadEndpointKey(newEndpoint),
-    ]).subscribe(() => {
+    this.store.dispatch([new SetSteelheadEndpointKey(newEndpoint)]).subscribe(() => {
       this.windowService.location().reload();
     });
   }
 
   /** Sets all endpoints and reloads the page. */
   public setWoodstockEndpoint(newEndpoint: string): void {
-    this.store.dispatch([
-      new SetWoodstockEndpointKey(newEndpoint),
-    ]).subscribe(() => {
+    this.store.dispatch([new SetWoodstockEndpointKey(newEndpoint)]).subscribe(() => {
       this.windowService.location().reload();
     });
   }
@@ -202,7 +213,7 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
         `FM: ${this.steelheadEndpointKey}`,
         `FH5: ${this.woodstockEndpointKey}`,
         `FH4: ${this.sunriseEndpointKey}`,
-        `FM7: ${this.apolloEndpointKey}`
+        `FM7: ${this.apolloEndpointKey}`,
       ].join('\n');
     });
   }
@@ -219,23 +230,27 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
     const maxDevEntries = max(initialGrid.map(l => l.devEntries.length));
     const maxFlightEntries = max(initialGrid.map(l => l.flightEntries.length));
 
-    const spacerEntry: EndpointStateEntrySpacer = { isSpacer: true, classes: { entry: true, spacer: true }, tooltip: null};
+    const spacerEntry: EndpointStateEntrySpacer = {
+      isSpacer: true,
+      classes: { entry: true, spacer: true },
+      tooltip: null,
+    };
     for (const line of initialGrid) {
       line.entries = [];
       // flights
       for (let i = 0; i < maxFlightEntries - line.flightEntries.length; i++) {
         line.entries.push(spacerEntry);
       }
-      line.entries.push(...line.flightEntries)
-      
+      line.entries.push(...line.flightEntries);
+
       // retail
       for (let i = 0; i < maxRetailEntries - line.retailEntries.length; i++) {
         line.entries.push(spacerEntry);
       }
-      line.entries.push(...line.retailEntries)
-      
+      line.entries.push(...line.retailEntries);
+
       // dev
-      line.entries.push(...line.devEntries)
+      line.entries.push(...line.devEntries);
       for (let i = 0; i < maxDevEntries - line.devEntries.length; i++) {
         line.entries.push(spacerEntry);
       }
@@ -244,7 +259,11 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
     return initialGrid;
   }
 
-  private makeLineForTitle(title: string, endpointKeyList: string[], selectedEndpointKey: string): EndpointStateLine {
+  private makeLineForTitle(
+    title: string,
+    endpointKeyList: string[],
+    selectedEndpointKey: string,
+  ): EndpointStateLine {
     if (!endpointKeyList || !selectedEndpointKey) {
       return {
         entries: null,
@@ -266,7 +285,7 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
 
     const flightEntries = line.filter(e => e.isFlight);
     const retailEntries = line.filter(e => e.isRetail && !e.isFlight);
-    const devEntries = line.filter(e => !e.isRetail && !e.isFlight)
+    const devEntries = line.filter(e => !e.isRetail && !e.isFlight);
 
     return {
       entries: null,
@@ -311,14 +330,14 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
     for (const optionSet of optionSets) {
       if (optionSet.isActive) {
         optionSet.icon = ENDPOINT_OPTION_ACTIVE_ICON;
-        optionSet.iconTooltip = 'This configuration is active'
+        optionSet.iconTooltip = 'This configuration is active';
         continue;
       }
 
       if (!optionSet.isPossible) {
         optionSet.icon = ENDPOINT_OPTION_IMPOSSIBLE_ICON;
-        optionSet.iconTooltip = 'This combination is broken. Contact support'
-        optionSet.tooltip = 'This combination is broken. Contact support'
+        optionSet.iconTooltip = 'This combination is broken. Contact support';
+        optionSet.tooltip = 'This combination is broken. Contact support';
         continue;
       }
 

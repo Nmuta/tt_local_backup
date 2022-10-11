@@ -10,10 +10,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+/**
+ * Contains utility modules for interacting with currently selected endpoints.
+ */
 @NgModule({
-  declarations: [
-    EndpointsNavToolComponent
-  ],
+  declarations: [EndpointsNavToolComponent],
   imports: [
     CommonModule,
     MatTooltipModule,
@@ -24,6 +25,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatIconModule,
     AppRoutingModule,
     MatButtonToggleModule,
-  ]
+  ],
 })
-export class EndpointsModule { }
+export class EndpointsModule {}

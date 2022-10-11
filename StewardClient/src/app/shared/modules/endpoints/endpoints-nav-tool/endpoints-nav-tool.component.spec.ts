@@ -8,9 +8,8 @@ describe('EndpointsNavToolComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EndpointsNavToolComponent ]
-    })
-    .compileComponents();
+      declarations: [EndpointsNavToolComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

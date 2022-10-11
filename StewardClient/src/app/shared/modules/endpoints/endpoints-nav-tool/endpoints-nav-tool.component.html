@@ -1,36 +1,49 @@
-<button
-  mat-button
-  [matMenuTriggerFor]="quickOptions"
-  [disabled]="disabled"
->
-<div class="container">
-  <div class="summary" [matTooltip]="allUpTooltip" matTooltipClass="sf-tooltip-multiline">
-    <div class="row" *ngFor="let line of endpointStateGrid">
-      <div *ngFor="let entry of line.entries" [ngClass]="entry.classes"></div>
+<button mat-button [matMenuTriggerFor]="quickOptions" [disabled]="disabled">
+  <div class="container">
+    <div class="summary" [matTooltip]="allUpTooltip" matTooltipClass="sf-tooltip-multiline">
+      <div class="row" *ngFor="let line of endpointStateGrid">
+        <div *ngFor="let entry of line.entries" [ngClass]="entry.classes"></div>
+      </div>
     </div>
+    <span class="label" [matTooltip]="item.tooltipDescription">{{ item.title }}</span>
   </div>
-  <span class="label" [matTooltip]="item.tooltipDescription" >{{ item.title }}</span>
-</div>
 </button>
 <mat-menu #quickOptions>
   <div class="menu-header">
     <div class="toggle-group">
       <label>Forza Motorsport</label>
-      <mat-button-toggle-group [(ngModel)]="steelheadEndpointKey" (ngModelChange)="setSteelheadEndpoint($event)">
-        <mat-button-toggle *ngFor="let key of steelheadEndpointKeyList" [value]="key">{{key}}</mat-button-toggle>
+      <mat-button-toggle-group
+        [(ngModel)]="steelheadEndpointKey"
+        (ngModelChange)="setSteelheadEndpoint($event)"
+      >
+        <mat-button-toggle *ngFor="let key of steelheadEndpointKeyList" [value]="key">{{
+          key
+        }}</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
     <div class="toggle-group">
       <label>Forza Horizon 5</label>
-      <mat-button-toggle-group [(ngModel)]="woodstockEndpointKey" (ngModelChange)="setWoodstockEndpoint($event)">
-        <mat-button-toggle *ngFor="let key of woodstockEndpointKeyList" [value]="key">{{key}}</mat-button-toggle>
+      <mat-button-toggle-group
+        [(ngModel)]="woodstockEndpointKey"
+        (ngModelChange)="setWoodstockEndpoint($event)"
+      >
+        <mat-button-toggle *ngFor="let key of woodstockEndpointKeyList" [value]="key">{{
+          key
+        }}</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
   </div>
   <hr />
-  <a *ngFor="let optionSet of quickEndpointOptions" [matTooltip]="optionSet.tooltip" matTooltipPosition="right"
-    (click)="setAllEndpoints(optionSet)" mat-menu-item [disabled]="!optionSet.isPossible">
-    <mat-icon>{{ optionSet.icon ?? '' }}</mat-icon>{{ optionSet.name }}
+  <a
+    *ngFor="let optionSet of quickEndpointOptions"
+    [matTooltip]="optionSet.tooltip"
+    matTooltipPosition="right"
+    (click)="setAllEndpoints(optionSet)"
+    mat-menu-item
+    [disabled]="!optionSet.isPossible"
+  >
+    <mat-icon>{{ optionSet.icon ?? '' }}</mat-icon
+    >{{ optionSet.name }}
   </a>
   <a
     [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
@@ -40,6 +53,6 @@
     matTooltip="Configure manually in the settings menu"
     matTooltipPosition="right"
   >
-  <mat-icon>engineering</mat-icon>Configure Manually
+    <mat-icon>engineering</mat-icon>Configure Manually
   </a>
 </mat-menu>
