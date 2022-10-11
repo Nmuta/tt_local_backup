@@ -36,6 +36,13 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 throw new ArgumentNullException(nameof(context));
             }
 
+            // If the user is in any of the v1 roles, succeed the policy
+            if (UserRole.V1Roles().Any(role => context.User.IsInRole(role)))
+            {
+                context.Succeed(requirement);
+                return Task.CompletedTask;
+            }
+
             // Another policy has already failed
             if (context.HasFailed)
             {
