@@ -6,7 +6,6 @@ import { ChangelogGroup, ChangelogTag } from './types';
 export const CHANGELOG_2022_Q4: ChangelogGroup = {
   title: '2022 Q4',
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
-
   entries: [
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
