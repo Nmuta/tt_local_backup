@@ -1,0 +1,33 @@
+<button
+  mat-button
+  [matMenuTriggerFor]="quickOptions"
+  [disabled]="disabled"
+>
+<div class="container">
+  <div class="summary">
+    <div class="row">
+      <div *ngFor="let key of apolloEndpointKeyList" [ngClass]="determineClasses(key, apolloEndpointKey)"
+        [matTooltip]="makeTooltip('Apollo', key, apolloEndpointKey)"></div>
+    </div>
+    <div class="row">
+      <div *ngFor="let key of woodstockEndpointKeyList" [ngClass]="determineClasses(key, woodstockEndpointKey)"
+        [matTooltip]="makeTooltip('Woodstock', key, woodstockEndpointKey)"></div>
+    </div>
+    <div class="row">
+      <div *ngFor="let key of sunriseEndpointKeyList" [ngClass]="determineClasses(key, sunriseEndpointKey)"
+        [matTooltip]="makeTooltip('Sunrise', key, sunriseEndpointKey)"></div>
+    </div>
+    <div class="row">
+      <div *ngFor="let key of steelheadEndpointKeyList" [ngClass]="determineClasses(key, steelheadEndpointKey)"
+        [matTooltip]="makeTooltip('Steelhead', key, steelheadEndpointKey)"></div>
+    </div>
+  </div>
+  <span class="label">{{ item.title }}</span>
+</div>
+</button>
+<mat-menu #quickOptions>
+  <a *ngFor="let optionSet of quickEndpointOptions" [matTooltip]="optionSet.tooltip" matTooltipPosition="right"
+    (click)="setAllEndpoints(optionSet)" mat-menu-item [disabled]="!optionSet.isPossible">
+    <mat-icon>{{ optionSet.icon ?? '' }}</mat-icon>{{ optionSet.name }}
+  </a>
+</mat-menu>

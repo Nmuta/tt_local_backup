@@ -32,6 +32,7 @@ export enum NavbarTool {
   StewardManagement = 'steward-management',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
+  Endpoints = 'endpoints',
   RacersCup = 'racers-cup',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
@@ -137,6 +138,7 @@ export enum AppIcon {
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
   DevEnvironment = 'admin_panel_settings',
+  Endpoints = 'explore',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -684,6 +686,27 @@ export const unprocessedToolList: HomeTileInfo[] = [
     navComponent: () =>
       import('../../app/shared/modules/theme/theme-nav-content/theme-nav-content.component').then(
         m => m.ThemeNavContentComponent,
+      ),
+    hideLink: true,
+  },
+  <HomeTileInfoCustomTile>{
+    icon: AppIcon.Endpoints,
+    extraIcon: ExtraIcon.Custom,
+    tool: NavbarTool.Endpoints,
+    accessList: CommonAccessLevels.Everyone,
+    title: 'Current Endpoints',
+    subtitle: 'Quickly manage current endpoints',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View and adjust your current endpoint settings',
+    shortDescription: [`View and adjust your current endpoint settings here or in the cog menu.`],
+    // tileContentComponent: () =>
+    //   import('../../app/shared/modules/theme/theme-tile-content/theme-tile-content.component').then(
+    //     m => m.ThemeTileContentComponent,
+    //   ),
+    navComponent: () =>
+      import('../../app/shared/modules/endpoints/endpoints-nav-tool/endpoints-nav-tool.component').then(
+        m => m.EndpointsNavToolComponent,
       ),
     hideLink: true,
   },
