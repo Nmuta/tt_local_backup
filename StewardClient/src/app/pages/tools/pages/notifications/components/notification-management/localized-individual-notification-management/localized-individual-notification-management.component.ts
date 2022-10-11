@@ -169,6 +169,7 @@ export class LocalizedIndividualNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.replaceEntry(entry));
   }
@@ -185,6 +186,7 @@ export class LocalizedIndividualNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.deleteEntry(entry));
   }

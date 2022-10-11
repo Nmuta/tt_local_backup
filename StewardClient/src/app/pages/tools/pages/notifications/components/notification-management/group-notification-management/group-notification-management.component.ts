@@ -150,6 +150,7 @@ export class GroupNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.replaceEntry(entry));
   }
@@ -166,6 +167,7 @@ export class GroupNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.deleteEntry(entry));
   }

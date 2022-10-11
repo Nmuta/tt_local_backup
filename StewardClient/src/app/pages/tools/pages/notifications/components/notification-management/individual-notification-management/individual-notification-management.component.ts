@@ -148,6 +148,7 @@ export class IndividualNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.replaceEntry(entry));
   }
@@ -164,6 +165,7 @@ export class IndividualNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.deleteEntry(entry));
   }

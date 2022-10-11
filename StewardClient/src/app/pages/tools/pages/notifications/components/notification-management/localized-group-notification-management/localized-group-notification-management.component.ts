@@ -172,6 +172,7 @@ export class LocalizedGroupNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.replaceEntry(entry));
   }
@@ -188,6 +189,7 @@ export class LocalizedGroupNotificationManagementComponent
         catchError(() => {
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => this.deleteEntry(entry));
   }
