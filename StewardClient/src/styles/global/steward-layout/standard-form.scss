@@ -160,3 +160,7 @@ textarea.sf-standard-height {
   min-height: $text-area-medium-height;
   max-height: $text-area-max-height;
 }
+
+.sf-tooltip-multiline {
+  white-space: pre-line;
+}

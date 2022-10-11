@@ -7,7 +7,7 @@ import { WindowService } from '@services/window';
 import { EndpointKeyMemoryState, EndpointKeyMemoryModel } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { SetApolloEndpointKey, SetSunriseEndpointKey, SetWoodstockEndpointKey, SetSteelheadEndpointKey } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsState, UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
-import { cloneDeep, every } from 'lodash';
+import { cloneDeep, concat, every, initial, isElement, max } from 'lodash';
 import { filter, Observable, takeUntil } from 'rxjs';
 
 const ENDPOINT_OPTION_ACTIVE_ICON = 'explore';
@@ -31,9 +31,24 @@ interface EndpointOptionSet {
 interface EndpointStateEntry {
   classes: Record<string, boolean>;
   tooltip: string;
+  isFlight: boolean;
+  isRetail: boolean;
 }
 
-type EndpointStateGrid = EndpointStateEntry[][];
+interface EndpointStateEntrySpacer {
+  isSpacer: true,
+  classes: Record<string, boolean>;
+  tooltip: string;
+}
+
+interface EndpointStateLine {
+  entries: (EndpointStateEntry | EndpointStateEntrySpacer)[];
+  flightEntries: EndpointStateEntry[];
+  retailEntries: EndpointStateEntry[];
+  devEntries: EndpointStateEntry[];
+}
+
+type EndpointStateGrid = EndpointStateLine[];
 
 const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
   {
@@ -95,7 +110,7 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
   public endpointStateGrid: EndpointStateGrid = [];
 
   public quickEndpointOptions = QUICK_ENDPOINT_OPTIONS;
-  public 
+  public allUpTooltip = '';
   
   constructor(
     private readonly store: Store,
@@ -146,11 +161,11 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
 
   /** Produces a set of classes for the entry. */
   public determineClasses(endpoint: string, selectedEndpoint: string) {
-    const isRetail = endpoint === 'Retail' || endpoint === 'Flight';
     return {
       entry: true,
       active: endpoint === selectedEndpoint,
-      retail: isRetail,
+      retail: endpoint === 'Retail',
+      flight: endpoint === 'Flight',
     };
   }
 
@@ -174,21 +189,61 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
       const withUpdateIcons = this.setIcons(withActiveState);
       this.quickEndpointOptions = withUpdateIcons;
       this.endpointStateGrid = this.makeGrid();
+
+      this.allUpTooltip = [
+        `FM: ${this.steelheadEndpointKey}`,
+        `FH5: ${this.woodstockEndpointKey}`,
+        `FH4: ${this.sunriseEndpointKey}`,
+        `FM7: ${this.apolloEndpointKey}`
+      ].join('\n');
     });
   }
 
   private makeGrid(): EndpointStateGrid {
-    return [
-      this.makeLineForTitle('Apollo', this.apolloEndpointKeyList, this.apolloEndpointKey),
+    const initialGrid = [
+      this.makeLineForTitle('Steelhead', this.steelheadEndpointKeyList, this.steelheadEndpointKey),
       this.makeLineForTitle('Woodstock', this.woodstockEndpointKeyList, this.woodstockEndpointKey),
       this.makeLineForTitle('Sunrise', this.sunriseEndpointKeyList, this.sunriseEndpointKey),
-      this.makeLineForTitle('Steelhead', this.steelheadEndpointKeyList, this.steelheadEndpointKey),
+      this.makeLineForTitle('Apollo', this.apolloEndpointKeyList, this.apolloEndpointKey),
     ];
+
+    const maxRetailEntries = max(initialGrid.map(l => l.retailEntries.length));
+    const maxDevEntries = max(initialGrid.map(l => l.devEntries.length));
+    const maxFlightEntries = max(initialGrid.map(l => l.flightEntries.length));
+
+    const spacerEntry: EndpointStateEntrySpacer = { isSpacer: true, classes: { entry: true, spacer: true }, tooltip: null};
+    for (const line of initialGrid) {
+      line.entries = [];
+      // flights
+      for (let i = 0; i < maxFlightEntries - line.flightEntries.length; i++) {
+        line.entries.push(spacerEntry);
+      }
+      line.entries.push(...line.flightEntries)
+      
+      // retail
+      for (let i = 0; i < maxRetailEntries - line.retailEntries.length; i++) {
+        line.entries.push(spacerEntry);
+      }
+      line.entries.push(...line.retailEntries)
+      
+      // dev
+      line.entries.push(...line.devEntries)
+      for (let i = 0; i < maxDevEntries - line.devEntries.length; i++) {
+        line.entries.push(spacerEntry);
+      }
+    }
+
+    return initialGrid;
   }
 
-  private makeLineForTitle(title: string, endpointKeyList: string[], selectedEndpointKey: string): EndpointStateEntry[] {
+  private makeLineForTitle(title: string, endpointKeyList: string[], selectedEndpointKey: string): EndpointStateLine {
     if (!endpointKeyList || !selectedEndpointKey) {
-      return [];
+      return {
+        entries: null,
+        devEntries: [],
+        flightEntries: [],
+        retailEntries: [],
+      };
     }
 
     const line: EndpointStateEntry[] = [];
@@ -196,10 +251,21 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
       line.push({
         classes: this.determineClasses(endpointKey, selectedEndpointKey),
         tooltip: this.makeTooltip(title, endpointKey, selectedEndpointKey),
+        isFlight: endpointKey.toLowerCase().includes('flight'),
+        isRetail: endpointKey.toLowerCase().includes('retail'),
       });
     }
 
-    return line;
+    const flightEntries = line.filter(e => e.isFlight);
+    const retailEntries = line.filter(e => e.isRetail && !e.isFlight);
+    const devEntries = line.filter(e => !e.isRetail && !e.isFlight)
+
+    return {
+      entries: null,
+      devEntries,
+      flightEntries,
+      retailEntries,
+    };
   }
 
   private markEndpointPossibilities(optionSets: EndpointOptionSet[]): EndpointOptionSet[] {

@@ -4,9 +4,9 @@
   [disabled]="disabled"
 >
 <div class="container">
-  <div class="summary">
+  <div class="summary" [matTooltip]="allUpTooltip" matTooltipClass="sf-tooltip-multiline">
     <div class="row" *ngFor="let line of endpointStateGrid">
-      <div *ngFor="let entry of line" [ngClass]="entry.classes" [matTooltip]="entry.tooltip"></div>
+      <div *ngFor="let entry of line.entries" [ngClass]="entry.classes"></div>
     </div>
   </div>
   <span class="label">{{ item.title }}</span>

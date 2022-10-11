@@ -24,13 +24,21 @@
     margin: .5px;
     width: 5px;
     height: 5px;
-    background-color: gray;
+    background-color: #fff5;
+
+    &.spacer {
+      background-color: #0000;
+    }
 
     &.active {
       background-color: white;
 
       &.retail {
         background-color: lime;
+      }
+
+      &.flight {
+        background-color: cyan;
       }
     }
   }
