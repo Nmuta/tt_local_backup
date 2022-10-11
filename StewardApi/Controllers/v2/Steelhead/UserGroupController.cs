@@ -45,6 +45,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [StandardTags(Title.Steelhead, Topic.LspGroups, Target.Details, Dev.ReviseTags)]
     public class UserGroupController : V2SteelheadControllerBase
     {
+        // "All Users", "VIP", "ULTIMATE_VIP"
+        private static readonly List<int> LargeUserGroups = new List<int>() { 0, 1, 2 };
+
         private readonly ISteelheadServiceManagementProvider serviceManagementProvider;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
@@ -56,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         public UserGroupController(
             IJobTracker jobTracker,
             IScheduler scheduler,
-            ILoggingService loggingService, 
+            ILoggingService loggingService,
             ISteelheadServiceManagementProvider serviceManagementProvider)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -85,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///    Get a user group users. User list index starts at 1.
+        ///    Get a user group users.
         /// </summary>
         [HttpGet("{userGroupId}")]
         [SwaggerResponse(200, type: typeof(GetUserGroupUsersResponse))]
@@ -94,6 +97,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Add, StewardSubject.UserGroup)]
         public async Task<IActionResult> GetUserGroupUsers(int userGroupId, int startIndex, int maxResults)
         {
+            // If the userGroupId received it part of the large user group list, throw an exception
+            if (LargeUserGroups.Contains(userGroupId))
+            {
+                throw new InvalidArgumentsStewardException($"User group provided is part of large user group list. (userGroupId: {userGroupId})");
+            }
+
             try
             {
                 var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);

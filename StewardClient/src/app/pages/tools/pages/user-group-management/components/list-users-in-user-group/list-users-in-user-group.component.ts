@@ -51,6 +51,8 @@ export interface ListUsersInGroupServiceContract {
     userGroup: LspGroup,
   ): Observable<BackgroundJob<void>>;
   deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<void>;
+  // Represent user group too large to load users
+  largeUserGroups: BigNumber[];
 }
 
 enum UserGroupManagementAction {
@@ -107,6 +109,7 @@ export class ListUsersInGroupComponent
 
   public userHasWritePerms: boolean = false;
   public userHasRemoveAllPerms: boolean = false;
+  public isGroupTooLarge: boolean = false;
   public readonly incorrectPermsTooltip = 'This action is restricted for your user role';
   public displayedColumns = ['xuid', 'gamertag', 'actions'];
   public playersDataSource = new BetterMatTableDataSource<PlayerInUserGroup>();
@@ -147,6 +150,7 @@ export class ListUsersInGroupComponent
     this.allPlayers = [];
     this.playersDataSource.data = this.allPlayers;
     if (changes.userGroup && !!this.userGroup) {
+      this.isGroupTooLarge = this.isLargeUserGroup();
       this.playersDataSource.paginator = this.paginator;
       this.playersDataSource.paginator.pageIndex = 0;
       this.getPlayersInUserGroup();
@@ -288,7 +292,22 @@ export class ListUsersInGroupComponent
       });
   }
 
+  /** Return true if the currently selected group is part of the "large user groups" list. */
+  public isLargeUserGroup(): boolean {
+    if (!this.userGroup) {
+      return false;
+    }
+    if (this.service.largeUserGroups.some(x => x.isEqualTo(this.userGroup.id))) {
+      return true;
+    }
+    return false;
+  }
+
   private getPlayersInUserGroup(): void {
+    // If the user group is too large, avoid loading the users
+    if (this.isLargeUserGroup()) {
+      return;
+    }
     this.getMonitor = this.getMonitor.repeat();
 
     const startIndex =
@@ -305,11 +324,7 @@ export class ListUsersInGroupComponent
     }
 
     this.service
-      .getPlayersInUserGroup$(
-        this.userGroup,
-        startIndex + 1,
-        this.playersDataSource.paginator.pageSize,
-      )
+      .getPlayersInUserGroup$(this.userGroup, startIndex, this.playersDataSource.paginator.pageSize)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(response => {
         const players = response.playerList.map(player => {

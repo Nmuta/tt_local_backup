@@ -14,6 +14,20 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Add localized message editing',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '738427c1-f87a-40d9-8534-fc0f716aca36',
+      shortText: 'Add report button',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: '10cc76cf-5aae-434c-bc5f-fbe3ddb9209b',
+      shortText: 'No longer load users from large user groups',
+      longText: [
+        'The restricted groups are "All Users", "VIP" and "ULTIMATE_VIP".',
+        'These groups are very large and trying to get their users would take too long.',
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '87e2f72e-87a2-42e0-8519-b73aaeb87179',
       shortText: 'Add helper functions to get tool route',
@@ -45,7 +59,7 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Display first and last login information in user details',
     },
     {
-      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '21cfcc58-6336-4147-b267-e994a7092e06',
       shortText: 'Add new report button to ugc details',
       longText: [

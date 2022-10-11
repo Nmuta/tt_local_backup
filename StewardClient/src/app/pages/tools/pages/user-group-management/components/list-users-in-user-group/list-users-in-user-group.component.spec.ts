@@ -32,6 +32,7 @@ describe('ListUsersInGroupComponent', () => {
 
   const mockService: ListUsersInGroupServiceContract = {
     gameTitle: GameTitle.FH5,
+    largeUserGroups: [],
     getPlayersInUserGroup$: (_userGroup: LspGroup, _startIndex: number, _maxResults: number) => {
       return of(undefined);
     },

@@ -46,7 +46,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
-  public canReportUgc: boolean = true;
   public featureMatToolip: string = null;
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
@@ -208,7 +207,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .pipe(this.reportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.selectedReason = null;
-        this.canReportUgc = false;
       });
   }
 }

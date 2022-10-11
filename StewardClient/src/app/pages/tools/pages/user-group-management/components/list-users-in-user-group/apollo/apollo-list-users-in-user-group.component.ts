@@ -7,6 +7,7 @@ import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
 import { ApolloUserGroupService } from '@services/api-v2/apollo/user-group/apollo-user-group.service';
+import BigNumber from 'bignumber.js';
 import { first } from 'lodash';
 import { map, Observable } from 'rxjs';
 import { ListUsersInGroupServiceContract } from '../list-users-in-user-group.component';
@@ -27,6 +28,8 @@ export class ApolloListUsersInGroupComponent extends BaseComponent {
 
     this.service = {
       gameTitle: GameTitle.FM7,
+      //Includes "All Users", "VIP"
+      largeUserGroups: [new BigNumber(0), new BigNumber(1)],
       getPlayersInUserGroup$(
         userGroup: LspGroup,
         startIndex: number,

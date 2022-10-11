@@ -20,18 +20,38 @@
       ></model-dump-simple-table>
       <model-dump-flags></model-dump-flags>
       <mat-card-actions align="end">
-        <ng-content select="button"></ng-content>
-        <ugc-download-button [item]="ugcItem"></ugc-download-button>
-        <button
-          [disabled]="!canFeatureUgc"
-          mat-raised-button
-          color="primary"
-          (click)="featureUgcItem()"
-        >
-          <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
-            ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
-          }}</span>
-        </button>
+        <div class="mat-form-field-wrapper">
+          <button
+            mat-raised-button
+            color="warn"
+            [verifyWith]="verifyReport"
+            (click)="reportUgcItem()"
+            stateManager
+            [monitor]="reportMonitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+            monitorCompleteSnackbar
+          >
+            <span>Report</span>
+          </button>
+          <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
+            Verify
+          </mat-checkbox>
+        </div>
+        <div>
+          <ugc-download-button [item]="ugcItem"></ugc-download-button>
+          <button
+            [disabled]="!canFeatureUgc"
+            mat-raised-button
+            color="primary"
+            (click)="featureUgcItem()"
+          >
+            <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+              ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
+            }}</span>
+          </button>
+        </div>
       </mat-card-actions>
     </mat-card>
 
