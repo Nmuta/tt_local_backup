@@ -7,7 +7,6 @@ import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateTime } from 'luxon';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { replace } from '@helpers/replace';
 import { flatten, max } from 'lodash';
 import { LspGroup } from '@models/lsp-group';
 import { CommunityMessage } from '@models/community-message';
@@ -80,7 +79,7 @@ export class GroupNotificationManagementComponent
 
     this.getNotifications$
       .pipe(
-        tap(() => (this.getMonitor = this.updateMonitors(this.getMonitor))),
+        tap(() => (this.getMonitor = this.getMonitor.repeat())),
         switchMap(() => {
           this.notifications.data = [];
           if (this.selectedLspGroup?.id) {
@@ -141,7 +140,7 @@ export class GroupNotificationManagementComponent
       startTimeUtc: entry.notification.sentDateUtc,
       expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
     };
-    entry.postMonitor = this.updateMonitors(entry.postMonitor);
+    entry.postMonitor = entry.postMonitor.repeat();
     this.service
       .postEditLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId, entryMessage)
       .pipe(
@@ -158,7 +157,7 @@ export class GroupNotificationManagementComponent
   /** Remove notification selected */
   public removeNotificationEntry(entry: FormGroupNotificationEntry): void {
     const notificationId = entry.notification.notificationId as GuidLikeString;
-    entry.deleteMonitor = this.updateMonitors(entry.deleteMonitor);
+    entry.deleteMonitor = entry.deleteMonitor.repeat();
     this.service
       .deleteLspGroupCommunityMessage$(this.selectedLspGroup.id, notificationId)
       .pipe(
@@ -215,14 +214,6 @@ export class GroupNotificationManagementComponent
     };
 
     return newControls;
-  }
-
-  /** Recreates the given action monitor, replacing it in the allMonitors list. */
-  private updateMonitors(oldMonitor: ActionMonitor): ActionMonitor {
-    oldMonitor.dispose();
-    const newMonitor = new ActionMonitor(oldMonitor.label);
-    this.allMonitors = replace(this.allMonitors, oldMonitor, newMonitor);
-    return newMonitor;
   }
 
   private deleteEntry(entry: FormGroupNotificationEntry): void {

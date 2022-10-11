@@ -22,11 +22,11 @@ describe('SunriseNotificationsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.sendMessageService).toBeTruthy();
-    expect(component.localizationCreationService).toBeTruthy();
-    expect(component.localizationSelectionService).toBeTruthy();
-    expect(component.localizedIndividualMessagingManagementService).toBeTruthy();
-    expect(component.localizedGroupMessagingManagementService).toBeTruthy();
+    expect(component.sendMessageServiceContract).toBeTruthy();
+    expect(component.localizationCreationServiceContract).toBeTruthy();
+    expect(component.localizationSelectionServiceContract).toBeTruthy();
+    expect(component.localizedIndividualMessagingManagementServiceContract).toBeTruthy();
+    expect(component.localizedGroupMessagingManagementServiceContract).toBeTruthy();
   });
 
   describe('viewSelectionTypeChange', () => {
