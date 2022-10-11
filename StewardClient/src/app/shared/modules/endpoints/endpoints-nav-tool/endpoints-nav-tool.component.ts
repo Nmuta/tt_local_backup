@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CustomTileComponent, HomeTileInfo } from '@environments/environment';
+import { renderGuard } from '@helpers/rxjs';
 import { Select, Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
 import { EndpointKeyMemoryState, EndpointKeyMemoryModel } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
@@ -26,6 +27,13 @@ interface EndpointOptionSet {
   woodstockEndpointKey: string;
   steelheadEndpointKey: string;
 }
+
+interface EndpointStateEntry {
+  classes: Record<string, boolean>;
+  tooltip: string;
+}
+
+type EndpointStateGrid = EndpointStateEntry[][];
 
 const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
   {
@@ -84,7 +92,10 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
   public woodstockEndpointKeyList: string[];
   public steelheadEndpointKeyList: string[];
 
+  public endpointStateGrid: EndpointStateGrid = [];
+
   public quickEndpointOptions = QUICK_ENDPOINT_OPTIONS;
+  public 
   
   constructor(
     private readonly store: Store,
@@ -156,11 +167,39 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
   }
 
   private refreshState(): void {
-    const optionSets = QUICK_ENDPOINT_OPTIONS;
-    const withPossibilityState = this.markEndpointPossibilities(optionSets);
-    const withActiveState = this.markActiveStates(withPossibilityState);
-    const withUpdateIcons = this.setIcons(withActiveState);
-    this.quickEndpointOptions = withUpdateIcons;
+    renderGuard(() => {
+      const optionSets = QUICK_ENDPOINT_OPTIONS;
+      const withPossibilityState = this.markEndpointPossibilities(optionSets);
+      const withActiveState = this.markActiveStates(withPossibilityState);
+      const withUpdateIcons = this.setIcons(withActiveState);
+      this.quickEndpointOptions = withUpdateIcons;
+      this.endpointStateGrid = this.makeGrid();
+    });
+  }
+
+  private makeGrid(): EndpointStateGrid {
+    return [
+      this.makeLineForTitle('Apollo', this.apolloEndpointKeyList, this.apolloEndpointKey),
+      this.makeLineForTitle('Woodstock', this.woodstockEndpointKeyList, this.woodstockEndpointKey),
+      this.makeLineForTitle('Sunrise', this.sunriseEndpointKeyList, this.sunriseEndpointKey),
+      this.makeLineForTitle('Steelhead', this.steelheadEndpointKeyList, this.steelheadEndpointKey),
+    ];
+  }
+
+  private makeLineForTitle(title: string, endpointKeyList: string[], selectedEndpointKey: string): EndpointStateEntry[] {
+    if (!endpointKeyList || !selectedEndpointKey) {
+      return [];
+    }
+
+    const line: EndpointStateEntry[] = [];
+    for (const endpointKey of endpointKeyList) {
+      line.push({
+        classes: this.determineClasses(endpointKey, selectedEndpointKey),
+        tooltip: this.makeTooltip(title, endpointKey, selectedEndpointKey),
+      });
+    }
+
+    return line;
   }
 
   private markEndpointPossibilities(optionSets: EndpointOptionSet[]): EndpointOptionSet[] {
@@ -204,7 +243,8 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit, 
 
       if (!optionSet.isPossible) {
         optionSet.icon = ENDPOINT_OPTION_IMPOSSIBLE_ICON;
-        optionSet.iconTooltip = 'This configuration is not currently possible'
+        optionSet.iconTooltip = 'This combination is broken. Contact support'
+        optionSet.tooltip = 'This combination is broken. Contact support'
         continue;
       }
 

@@ -5,6 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AppRoutingModule } from 'app/app.routing';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    AppRoutingModule,
   ]
 })
 export class EndpointsModule { }

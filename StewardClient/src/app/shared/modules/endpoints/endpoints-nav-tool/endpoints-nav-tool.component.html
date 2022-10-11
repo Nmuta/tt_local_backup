@@ -5,21 +5,8 @@
 >
 <div class="container">
   <div class="summary">
-    <div class="row">
-      <div *ngFor="let key of apolloEndpointKeyList" [ngClass]="determineClasses(key, apolloEndpointKey)"
-        [matTooltip]="makeTooltip('Apollo', key, apolloEndpointKey)"></div>
-    </div>
-    <div class="row">
-      <div *ngFor="let key of woodstockEndpointKeyList" [ngClass]="determineClasses(key, woodstockEndpointKey)"
-        [matTooltip]="makeTooltip('Woodstock', key, woodstockEndpointKey)"></div>
-    </div>
-    <div class="row">
-      <div *ngFor="let key of sunriseEndpointKeyList" [ngClass]="determineClasses(key, sunriseEndpointKey)"
-        [matTooltip]="makeTooltip('Sunrise', key, sunriseEndpointKey)"></div>
-    </div>
-    <div class="row">
-      <div *ngFor="let key of steelheadEndpointKeyList" [ngClass]="determineClasses(key, steelheadEndpointKey)"
-        [matTooltip]="makeTooltip('Steelhead', key, steelheadEndpointKey)"></div>
+    <div class="row" *ngFor="let line of endpointStateGrid">
+      <div *ngFor="let entry of line" [ngClass]="entry.classes" [matTooltip]="entry.tooltip"></div>
     </div>
   </div>
   <span class="label">{{ item.title }}</span>
@@ -29,5 +16,15 @@
   <a *ngFor="let optionSet of quickEndpointOptions" [matTooltip]="optionSet.tooltip" matTooltipPosition="right"
     (click)="setAllEndpoints(optionSet)" mat-menu-item [disabled]="!optionSet.isPossible">
     <mat-icon>{{ optionSet.icon ?? '' }}</mat-icon>{{ optionSet.name }}
+  </a>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+    queryParamsHandling="preserve"
+    mat-menu-item
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Configure manually in the settings menu"
+    matTooltipPosition="right"
+  >
+  <mat-icon>engineering</mat-icon>Configure Manually
   </a>
 </mat-menu>
