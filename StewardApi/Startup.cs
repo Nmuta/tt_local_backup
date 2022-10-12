@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
                 mc.AllowNullCollections = true;
-                mc.IgnoreUnmapped(); // TODO: We should remove this and correct all the mappings.
+                mc.IgnoreUnmapped(); // TODO: Should we remove this and correct all the mappings: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1347837
             });
             mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();
