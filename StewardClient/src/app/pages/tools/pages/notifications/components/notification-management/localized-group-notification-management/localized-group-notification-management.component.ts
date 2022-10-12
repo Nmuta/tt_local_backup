@@ -137,10 +137,13 @@ export class LocalizedGroupNotificationManagementComponent
 
   /** Checks if GroupNotification is of an editable type */
   public isEditable(entry: GroupNotification): boolean {
-    return (
-      entry?.notificationType === 'CommunityMessageNotificationV2' ||
-      entry?.notificationType === 'PatchNotesMessageNotification'
-    );
+    switch (entry?.notificationType) {
+      case 'CommunityMessageNotificationV2':
+      case 'PatchNotesMessageNotification':
+        return true;
+      default:
+        return false;
+    }
   }
 
   /** Generates Edit Tooltip */
