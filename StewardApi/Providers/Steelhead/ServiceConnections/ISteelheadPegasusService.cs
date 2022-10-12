@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 
 using SteelheadLiveOpsContent;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
+
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
@@ -49,8 +52,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
-        ///     Gets Messages of the Day from Pegasus.
+        ///     Edits motd.
         /// </summary>
-        Task<GitPush> EditMotDMessagesAsync(Dictionary<XName, string> editsToMake);
+        Task EditMotDMessagesAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id);
+
+        /// <summary>
+        ///     Get motd current values.
+        /// </summary>
+        Task<MessageOfTheDayBridge> GetMotDCurrentValuesAsync(Guid id);
+
+        /// <summary>
+        ///     Get motd selection choices for user.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetMotDSelectionChoicesAsync();
+
+        /// <summary>
+        ///     Gets a motd entry as an Xelement.
+        /// </summary>
+        Task<XElement> GetSelectedElementAsync(Guid id);
     }
 }

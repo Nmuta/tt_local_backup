@@ -11,6 +11,7 @@ using Forza.WebServices.FH5_main.Generated;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.TeamFoundation.SourceControl.WebApi;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -19,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -54,19 +56,47 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Retrieves a collection of messages of the day.
+        ///     Gets selection choices.
         /// </summary>
-        [HttpGet]
-        [SwaggerResponse(200, type: typeof(SteelheadMessageOfTheDay))]
-        public async Task<IActionResult> GetMessagesOfTheDay()
+        [HttpGet("options")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        public async Task<IActionResult> GetMotDSelectionChoicesAsync()
         {
-            Dictionary<XName, string> editsToMake = new Dictionary<XName, string>();
+            var choices = await this.steelheadPegasusService.GetMotDSelectionChoicesAsync().ConfigureAwait(false);
 
-            // TODO add edits to dict, need help on settin up endpoint to get data from UI
+            return this.Ok(choices);
+        }
 
-            var motdMessages = await this.steelheadPegasusService.EditMotDMessagesAsync(editsToMake).ConfigureAwait(true);
+        /// <summary>
+        ///     Gets current motd values.
+        /// </summary>
+        [HttpGet("{id}")]
+        [SwaggerResponse(200, type: typeof(MessageOfTheDayBridge))]
+        public async Task<IActionResult> GetMotDCurrentValuesAsync(string id)
+        {
+            if (!Guid.TryParse(id, out var parsedId))
+            {
+                throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
+            }
 
-            return this.Ok(motdMessages);
+            var motd = await this.steelheadPegasusService.GetMotDCurrentValuesAsync(parsedId).ConfigureAwait(false);
+
+            return this.Ok(motd);
+        }
+
+        /// <summary>
+        ///     Editing message of the day.
+        /// </summary>
+        [HttpPost("{id}")]
+        [SwaggerResponse(200, type: typeof(void))]
+        public async Task EditMessageOfTheDay(string id, [FromBody] MessageOfTheDayBridge motd)
+        {
+            if (!Guid.TryParse(id, out var parsedId))
+            {
+                throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
+            }
+
+            await this.steelheadPegasusService.EditMotDMessagesAsync(motd, parsedId).ConfigureAwait(true);
         }
     }
 }

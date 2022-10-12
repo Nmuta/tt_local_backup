@@ -1,4 +1,6 @@
-﻿using Microsoft.TeamFoundation.SourceControl.WebApi;
+﻿#pragma warning disable SA1600 // Elements should be documented
+
+using Microsoft.TeamFoundation.SourceControl.WebApi;
 
 namespace StewardGitApi
 {
@@ -7,28 +9,16 @@ namespace StewardGitApi
     /// </summary>
     public class CommitRefProxy
     {
-        /// <summary>
-        ///     Gets the commit comment.
-        /// </summary>
         public string CommitComment { get; init; }
 
-        /// <summary>
-        ///     Gets the path to the file on repo.
-        /// </summary>
         public string PathToFile { get; init; }
 
-        /// <summary>
-        ///     Gets file with edited content.
-        /// </summary>
         public string NewFileContent { get; init; }
 
-        /// <summary>
-        ///     Gets the pull request change type.
-        /// </summary>
         public VersionControlChangeType VersionControlChangeType { get; init; }
 
         /// <summary>
-        ///     Creates a POCO <see cref="CommitRefProxy"/>.
+        ///     Factory creation.
         /// </summary>
         public static CommitRefProxy Create(
             string commitComment,

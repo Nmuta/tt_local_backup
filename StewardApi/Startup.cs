@@ -224,6 +224,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new SteelheadProfileMapper());
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
+                mc.AddProfile(new WelcomeCenterProfileMapper());
                 mc.AllowNullCollections = true;
             });
 

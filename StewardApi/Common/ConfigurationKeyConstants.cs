@@ -273,7 +273,7 @@
         /// <summary>
         ///     The Steelhead Content repo id.
         /// </summary>
-        public const string SteelheadContentRepoId = "Git:SteelheadContentProjectId";
+        public const string SteelheadContentRepoId = "Git:SteelheadContentRepoId";
 
         /// <summary>
         ///     The Steelhead Content organization URL.

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
 {
-    public class SteelheadMessageOfTheDay
+    public class SteelheadCmsMessageOfTheDay
     {
         public string ID { get; set; }
 

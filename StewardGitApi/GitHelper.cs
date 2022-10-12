@@ -85,10 +85,10 @@ namespace StewardGitApi
                 scopePath: path,
                 recursionLevel: VersionControlRecursionType.OneLevel).ConfigureAwait(false);
 
-            string filename = gitItems.Where(o => o.GitObjectType == gitObjectType).FirstOrDefault().Path;
+            string filepath = gitItems.Where(o => o.GitObjectType == gitObjectType).FirstOrDefault().Path;
 
             // retrieve the contents of the file
-            GitItem item = await gitClient.GetItemAsync(repo.Id, filename, includeContent: true).ConfigureAwait(false);
+            GitItem item = await gitClient.GetItemAsync(repo.Id, filepath, includeContent: true).ConfigureAwait(false);
 
             return item;
         }

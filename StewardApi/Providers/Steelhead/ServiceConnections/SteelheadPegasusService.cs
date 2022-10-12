@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 using AutoMapper;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 
 using SteelheadLiveOpsContent;
+
 using StewardGitApi;
 
 using Turn10.Data.Common;
@@ -22,9 +28,14 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
+
+using static Azure.Core.HttpHeader;
+
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
@@ -34,10 +45,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     {
         private const string PegasusBaseCacheKey = "SteelheadPegasus_";
         private const string LocalizationFileAntecedent = "LiveOps_LocalizationStrings-";
+        private const string PathOriginal = "GitXml/data/MessageOfTheDay.xml";
+
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.PegasusCmsDefaultSteelhead
         };
+
+        private static readonly XNamespace namespaceRoot = "scribble:title-content";
+        private static readonly XNamespace namespaceElement = "scribble:x";
 
         private readonly string cmsEnvironment;
         private readonly CMSRetrievalHelper cmsRetrievalHelper;
@@ -80,10 +96,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
 
-            string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
-                configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                configuration[ConfigurationKeyConstants.SteelheadContentAccessToken]).GetAwaiter().GetResult();
+            // string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
+            //    configuration[ConfigurationKeyConstants.KeyVaultUrl],
+            //    configuration[ConfigurationKeyConstants.SteelheadContentAccessToken]).GetAwaiter().GetResult();
 
+            string steelheadContentPAT = configuration[ConfigurationKeyConstants.SteelheadContentAccessToken];
             string steelheadContentOrgUrl = configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl];
 
             this.azureDevOpsManager = azureDevOpsFactory.Create(
@@ -238,25 +255,44 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                    ?? await GetVanityItems().ConfigureAwait(false);
         }
 
-        /// <inheritdoc />
-        public async Task<GitPush> EditMotDMessagesAsync(Dictionary<XName, string> editsToMake)
+        /// <inheritdoc/>
+        public async Task EditMotDMessagesAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id)
         {
-            const string messageOfTheDayPath = "GitXml/Data/original.xml";
+            var entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
 
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(messageOfTheDayPath, GitObjectType.Blob, null).ConfigureAwait(false);
-            string filecontent = item.Content;
+            List<(XName, object)> values = new ();
 
-            XDocument doc = XDocument.Parse(filecontent);
-            XNamespace nspc = "scribble:title-content";
+            ReadPropertiesRecursive(entry);
 
-            foreach (KeyValuePair<XName, string> pair in editsToMake)
+            void ReadPropertiesRecursive(object target)
             {
-                XElement el = doc.Descendants(nspc + $"{pair.Key}").FirstOrDefault();
-                if (el != null)
+                foreach (PropertyInfo property in target.GetType().GetProperties())
                 {
-                    el.Value = pair.Value;
+                    if (property.PropertyType.GetCustomAttribute<PegEditAttribute>() != null && property.PropertyType.IsClass)
+                    {
+                        Console.WriteLine(property.PropertyType);
+
+                        XNamespace ns = property.PropertyType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
+                        XName nn = ns + property.Name;
+                        values.Add((nn, null));
+
+                        ReadPropertiesRecursive(property.GetValue(target, null));
+                    }
+
+                    if (property.GetCustomAttribute<PegEditAttribute>() != null)
+                    {
+                        Console.WriteLine("\t" + property.Name);
+
+                        XNamespace ns = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
+                        XName nn = ns + property.Name;
+                        values.Add((nn, property.GetValue(target)));
+                    }
                 }
             }
+
+            XElement doc = await this.GetSelectedElementAsync(id).ConfigureAwait(false);
+
+            FillXmlRecursive(doc, values, 0, namespaceRoot);
 
             // convert doc to string UTF8, XmlDoc.ToString() returns UTF16
             MemoryStream memory = new ();
@@ -268,12 +304,83 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             {
                 CommitComment = $"Edit Message of the Day",
                 NewFileContent = xmlText,
-                PathToFile = messageOfTheDayPath,
-                VersionControlChangeType = VersionControlChangeType.Edit
+                PathToFile = PathOriginal,
+                VersionControlChangeType = VersionControlChangeType.Edit // if Add, the two paths can differ, if Edit has to be same else error.
             };
 
             GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(new CommitRefProxy[] { change }, null).ConfigureAwait(false);
-            return pushed;
+
+            var pr = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, "My custom edit from steward", "edits MotD", null).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<XElement> GetSelectedElementAsync(Guid id)
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PathOriginal, GitObjectType.Blob, null).ConfigureAwait(false);
+
+            XDocument doc = XDocument.Parse(item.Content);
+            var selectedElement = doc.Root.Elements(namespaceRoot + "UserMessages.MessageOfTheDay")
+                .Where(e => e.Attribute(namespaceElement + "id")?.Value == id.ToString())
+                .FirstOrDefault();
+
+            selectedElement.ShouldNotBeNull(nameof(selectedElement));
+            return selectedElement;
+        }
+
+        /// <inheritdoc/>
+        public async Task<MessageOfTheDayBridge> GetMotDCurrentValuesAsync(Guid id)
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PathOriginal, GitObjectType.Blob, null).ConfigureAwait(false);
+
+            MotDXmlRoot root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+            var xmlEntry = root.UserMessagesMessageOfTheDay.Where(motdXml => motdXml.idAttribute == id).First();
+
+            MessageOfTheDayBridge subset = this.mapper.Map<MessageOfTheDayBridge>(xmlEntry);
+
+            return subset;
+        }
+
+        /// <inheritdoc/>
+        public async Task<Dictionary<Guid, string>> GetMotDSelectionChoicesAsync()
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PathOriginal, GitObjectType.Blob, null).ConfigureAwait(false);
+
+            MotDXmlRoot root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+
+            Dictionary<Guid, string> choices = new ();
+            foreach (var entry in root.UserMessagesMessageOfTheDay)
+            {
+                choices.Add(entry.idAttribute, entry.FriendlyMessageName);
+            }
+
+            return choices;
+        }
+
+        private static int FillXmlRecursive(XElement el, List<(XName, object)> values, int index, XNamespace xnamespace)
+        {
+            while (index < values.Count)
+            {
+                var value = values[index];
+
+                if (value.Item1.Namespace != xnamespace)
+                {
+                    return index;
+                }
+
+                if ((value.Item1.Namespace == namespaceRoot || value.Item1.Namespace == namespaceElement) && value.Item2 != null)
+                {
+                    // set
+                    el.Descendants(value.Item1).First().Value = value.Item2.ToString();
+                    index++;
+                }
+                else if (value.Item1.Namespace == namespaceRoot && value.Item2 == null)
+                {
+                    // recurse
+                    index = FillXmlRecursive(el.Descendants(value.Item1).First(), values, index + 1, values[index + 1].Item1.Namespace);
+                }
+            }
+
+            return index + 1;
         }
     }
 }
