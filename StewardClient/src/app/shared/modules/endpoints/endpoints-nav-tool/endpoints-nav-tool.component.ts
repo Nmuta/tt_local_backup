@@ -41,7 +41,6 @@ interface EndpointOptionSet {
 
 interface EndpointStateEntry {
   classes: Record<string, boolean>;
-  tooltip: string;
   isFlight: boolean;
   isRetail: boolean;
 }
@@ -220,10 +219,10 @@ export class EndpointsNavToolComponent
 
   private makeGrid(): EndpointStateGrid {
     const initialGrid = [
-      this.makeLineForTitle('Steelhead', this.steelheadEndpointKeyList, this.steelheadEndpointKey),
-      this.makeLineForTitle('Woodstock', this.woodstockEndpointKeyList, this.woodstockEndpointKey),
-      this.makeLineForTitle('Sunrise', this.sunriseEndpointKeyList, this.sunriseEndpointKey),
-      this.makeLineForTitle('Apollo', this.apolloEndpointKeyList, this.apolloEndpointKey),
+      this.makeLineForTitle(this.steelheadEndpointKeyList, this.steelheadEndpointKey),
+      this.makeLineForTitle(this.woodstockEndpointKeyList, this.woodstockEndpointKey),
+      this.makeLineForTitle(this.sunriseEndpointKeyList, this.sunriseEndpointKey),
+      this.makeLineForTitle(this.apolloEndpointKeyList, this.apolloEndpointKey),
     ];
 
     const maxRetailEntries = max(initialGrid.map(l => l.retailEntries.length));
@@ -260,7 +259,6 @@ export class EndpointsNavToolComponent
   }
 
   private makeLineForTitle(
-    title: string,
     endpointKeyList: string[],
     selectedEndpointKey: string,
   ): EndpointStateLine {
@@ -277,7 +275,6 @@ export class EndpointsNavToolComponent
     for (const endpointKey of endpointKeyList) {
       line.push({
         classes: this.determineClasses(endpointKey, selectedEndpointKey),
-        tooltip: this.makeTooltip(title, endpointKey, selectedEndpointKey),
         isFlight: endpointKey.toLowerCase().includes('flight'),
         isRetail: endpointKey.toLowerCase().includes('retail'),
       });
