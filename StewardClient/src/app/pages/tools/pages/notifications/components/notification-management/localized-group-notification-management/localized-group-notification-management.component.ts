@@ -116,9 +116,6 @@ export class LocalizedGroupNotificationManagementComponent
         });
 
         this.rawNotifications = returnList;
-        // this.allMonitors = flatten(controls.map(v => [v.postMonitor, v.deleteMonitor])).concat(
-        //   this.getMonitor,
-        // );
         this.allMonitors = chain(controls)
           .map(v => [v.postMonitor, v.deleteMonitor])
           .flatten()
