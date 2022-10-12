@@ -147,6 +147,10 @@
                 color="primary"
                 (click)="revertEntryEdit(entry)"
                 matTooltip="Cancel entry edit"
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="entry.postMonitor"
+                monitorDisable
               >
                 Undo
               </button>
