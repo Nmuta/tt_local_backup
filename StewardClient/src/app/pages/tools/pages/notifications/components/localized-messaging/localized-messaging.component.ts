@@ -13,7 +13,7 @@ import { GameTitle } from '@models/enums';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { LocalizedMessageWithEnglishPreview } from './components/new-localized-message/new-localized-message.component';
 
-/** Service contract for UGC search filters. */
+/** Service contract for sending localized messages. */
 export interface LocalizedMessagingContract {
   gameTitle: GameTitle;
   lockStartTime: boolean;

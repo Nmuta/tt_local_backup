@@ -41,7 +41,7 @@ export interface LocalizationOptions {
   id: GuidLikeString;
 }
 
-/** Displays the value sent on `input` as a json blob. */
+/** Lookup and display localized strings for selection. */
 @Component({
   selector: 'select-localized-string',
   templateUrl: './select-localized-string.component.html',
@@ -63,8 +63,11 @@ export class SelectLocalizedStringComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor, Validator
 {
-  /** REVIEW-COMMENT: The select localized string service. */
+  /** The contract used to lookup and display localized strings. */
   @Input() service: SelectLocalizedStringContract;
+
+  /** Determines if the language preview display should never show. */
+  @Input() disableLanguagePreview: boolean = false;
 
   public localizedStringLookup: LocalizedStringsMap = new Map();
   public localizedStringDetails: LocalizationOptions[] = [];

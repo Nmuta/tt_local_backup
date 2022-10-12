@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -21,33 +22,20 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
-import { NotificationsRoutingModule } from './notifications.routing';
-import { LspGroupSelectionModule } from '@shared/views/lsp-group-selection/lsp-group-selection.module';
 import { MatSelectModule } from '@angular/material/select';
-import { NotificationsComponent } from './notifications.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { SunriseNotificationsComponent } from './sunrise/sunrise-notifications.component';
-import { WoodstockNotificationsComponent } from './woodstock/woodstock-notifications.component';
-import { CommunityMessagingModule } from './components/community-messaging/community-messaging.module';
-import { GroupNotificationManagementModule } from './components/notification-management/group-notification-management/group-notification-management.module';
-import { IndividualNotificationManagementModule } from './components/notification-management/individual-notification-management/individual-notification-management.module';
-import { SteelheadNotificationsComponent } from './steelhead/steelhead-notifications.component';
-import { LocalizedMessagingModule } from './components/localized-messaging/localized-messaging.module';
+import { LocalizedGroupNotificationManagementComponent } from './localized-group-notification-management.component';
+import { LuxonDateModule } from 'ngx-material-luxon';
+import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { LocalizationModule } from '@components/localization/localization.module';
-import { LocalizedIndividualNotificationManagementModule } from './components/notification-management/localized-individual-notification-management/localized-individual-notification-management.module';
-import { LocalizedGroupNotificationManagementModule } from './components/notification-management/localized-group-notification-management/localized-group-notification-management.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
-  declarations: [
-    NotificationsComponent,
-    SunriseNotificationsComponent,
-    WoodstockNotificationsComponent,
-    SteelheadNotificationsComponent,
-  ],
+  declarations: [LocalizedGroupNotificationManagementComponent],
   imports: [
+    ...STANDARD_DATE_IMPORTS,
     CommonModule,
     DirectivesModule,
     FontAwesomeModule,
@@ -71,20 +59,15 @@ import { LocalizedGroupNotificationManagementModule } from './components/notific
     MakeModelAutocompleteModule,
     EndpointSelectionModule,
     MatTabsModule,
-    PlayerSelectionModule,
-    LspGroupSelectionModule,
-    NotificationsRoutingModule,
     MatOptionModule,
     MatSelectModule,
     MatTooltipModule,
     MatPaginatorModule,
-    CommunityMessagingModule,
-    LocalizedMessagingModule,
-    GroupNotificationManagementModule,
-    IndividualNotificationManagementModule,
+    DateTimePickersModule,
+    LuxonDateModule,
+    StandardDateModule,
     LocalizationModule,
-    LocalizedIndividualNotificationManagementModule,
-    LocalizedGroupNotificationManagementModule,
   ],
+  exports: [LocalizedGroupNotificationManagementComponent],
 })
-export class NotificationsModule {}
+export class LocalizedGroupNotificationManagementModule {}

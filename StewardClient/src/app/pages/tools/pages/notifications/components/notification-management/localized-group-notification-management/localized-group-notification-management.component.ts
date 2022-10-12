@@ -2,20 +2,34 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { DeviceType, GameTitle } from '@models/enums';
-import { EMPTY, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateTime } from 'luxon';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { flatten, max } from 'lodash';
+import { chain, max } from 'lodash';
 import { LspGroup } from '@models/lsp-group';
-import { CommunityMessage } from '@models/community-message';
 import { GuidLikeString } from '@models/extended-types';
-import { GroupNotificationManagementContract } from './group-notification-management.contract';
 import { GroupNotification } from '@models/notifications.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { renderDelay } from '@helpers/rxjs';
 import { DateValidators } from '@shared/validators/date-validators';
+import BigNumber from 'bignumber.js';
+import { LocalizedMessage } from '@models/community-message';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+
+/** Service contract for managing localized messages for groups. */
+export interface LocalizedGroupMessagingManagementContract {
+  gameTitle: GameTitle;
+  selectLocalizedStringService: SelectLocalizedStringContract;
+  getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]>;
+  postEditLspGroupCommunityMessage$(
+    lspGroupId: BigNumber,
+    notificationId: string,
+    localizedMessage: LocalizedMessage,
+  ): Observable<void>;
+  deleteLspGroupCommunityMessage$(lspGroupId: BigNumber, notificationId: string): Observable<void>;
+}
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
@@ -25,7 +39,7 @@ export interface FormGroupNotificationEntry {
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
   notification: GroupNotification;
-  isCommunityMessage: boolean;
+  isEditable: boolean;
   tooltip: string;
 }
 
@@ -33,17 +47,17 @@ export interface FormGroupNotificationEntry {
  *  Notification management component.
  */
 @Component({
-  selector: 'group-notification-management',
-  templateUrl: './group-notification-management.component.html',
-  styleUrls: ['./group-notification-management.component.scss'],
+  selector: 'localized-group-notification-management',
+  templateUrl: './localized-group-notification-management.component.html',
+  styleUrls: ['./localized-group-notification-management.component.scss'],
 })
-export class GroupNotificationManagementComponent
+export class LocalizedGroupNotificationManagementComponent
   extends BaseComponent
   implements OnInit, AfterViewInit, OnChanges
 {
   /** The group notification service. */
-  @Input() public service: GroupNotificationManagementContract;
-  /** The selected LSP group. */
+  @Input() public service: LocalizedGroupMessagingManagementContract;
+  /** The selected LSP group, determines which inbox to display. */
   @Input() public selectedLspGroup: LspGroup;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
@@ -102,9 +116,11 @@ export class GroupNotificationManagementComponent
         });
 
         this.rawNotifications = returnList;
-        this.allMonitors = flatten(controls.map(v => [v.postMonitor, v.deleteMonitor])).concat(
-          this.getMonitor,
-        );
+        this.allMonitors = chain(controls)
+          .map(v => [v.postMonitor, v.deleteMonitor])
+          .flatten()
+          .concat([this.getMonitor])
+          .value();
         this.notifications.data = controls;
       });
   }
@@ -119,26 +135,35 @@ export class GroupNotificationManagementComponent
     this.getNotifications$.next();
   }
 
-  /** Checks if notification is of Community Message type */
-  public isCommunityMessage(entry: GroupNotification): boolean {
-    return entry?.notificationType === 'CommunityMessageNotification';
+  /** Checks if GroupNotification is of an editable type */
+  public isEditable(entry: GroupNotification): boolean {
+    switch (entry?.notificationType) {
+      case 'CommunityMessageNotificationV2':
+      case 'PatchNotesMessageNotification':
+        return true;
+      default:
+        return false;
+    }
   }
 
-  /** Retrieves notifications */
+  /** Generates Edit Tooltip */
   public generateEditTooltip(entry: GroupNotification): string {
-    return this.isCommunityMessage(entry)
-      ? 'Edit expire date'
-      : `Editing is disabled for notifications of type: ${entry.notificationType}`;
+    if (this.isEditable(entry)) {
+      return 'Edit message properties';
+    } else {
+      return `Editing is disabled for notifications of type: ${entry.notificationType}`;
+    }
   }
 
   /** Update notification selected */
   public updateNotificationEntry(entry: FormGroupNotificationEntry): void {
     const notificationId = entry.notification.notificationId as string;
-    const entryMessage: CommunityMessage = {
-      message: entry.formGroup.controls.message.value as string,
+    const entryMessage: LocalizedMessage = {
+      localizedMessageId: entry.formGroup.controls.localizedMessageInfo.value?.id as string,
       deviceType: entry.formGroup.controls.deviceType.value as string,
       startTimeUtc: entry.notification.sentDateUtc,
       expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
+      notificationType: null,
     };
     entry.postMonitor = entry.postMonitor.repeat();
     this.service
@@ -178,7 +203,7 @@ export class GroupNotificationManagementComponent
       v => v.notificationId == entry.notification.notificationId,
     );
     entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expirationDateUtc);
-    entry.formGroup.controls.message.setValue(rawEntry.message);
+    entry.formGroup.controls.localizedMessageInfo.setValue(null);
     entry.formGroup.controls.deviceType.setValue(rawEntry.deviceType);
     entry.postMonitor = new ActionMonitor('Edit Notification');
     entry.deleteMonitor = new ActionMonitor('Delete Notification');
@@ -192,10 +217,7 @@ export class GroupNotificationManagementComponent
   private prepareNotifications(groupNotification: GroupNotification): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), groupNotification.sentDateUtc]);
     const formControls = {
-      message: new FormControl(groupNotification.message, [
-        Validators.required,
-        Validators.maxLength(this.messageMaxLength),
-      ]),
+      localizedMessageInfo: new FormControl({}, [Validators.required]),
       deviceType: new FormControl(groupNotification.deviceType),
       expireDateUtc: new FormControl(groupNotification.expirationDateUtc, [
         Validators.required,
@@ -209,7 +231,7 @@ export class GroupNotificationManagementComponent
       postMonitor: new ActionMonitor('Edit Notification'),
       deleteMonitor: new ActionMonitor('Delete Notification'),
       notification: groupNotification,
-      isCommunityMessage: this.isCommunityMessage(groupNotification),
+      isEditable: this.isEditable(groupNotification),
       tooltip: this.generateEditTooltip(groupNotification),
     };
 
@@ -229,7 +251,7 @@ export class GroupNotificationManagementComponent
     const newEntry: GroupNotification = {
       notificationId: entry.notification.notificationId,
       groupId: this.selectedLspGroup.id,
-      message: entry.formGroup.controls.message.value,
+      message: entry.formGroup.controls.localizedMessageInfo.value?.englishText,
       hasDeviceType: false,
       deviceType: entry.formGroup.controls.deviceType.value,
       notificationType: entry.notification.notificationType,
@@ -240,6 +262,7 @@ export class GroupNotificationManagementComponent
     entry.edit = false;
     const index = this.notifications.data.indexOf(entry);
     this.rawNotifications.splice(index, 1, newEntry);
+    this.notifications.data[index].notification = newEntry;
     this.notifications._updateChangeSubscription();
   }
 }

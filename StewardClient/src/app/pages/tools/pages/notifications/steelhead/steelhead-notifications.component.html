@@ -33,15 +33,29 @@
       (selectedTabChange)="viewSelectionTypeChange($event.index)"
     >
       <mat-tab label="Create">
-        <create-localized-string [service]="localizationCreationService"></create-localized-string>
+        <create-localized-string
+          [service]="localizationCreationServiceContract"
+        ></create-localized-string>
       </mat-tab>
       <mat-tab label="Send">
         <localized-messaging
-          [service]="sendMessageService"
+          [service]="sendMessageServiceContract"
           [playerIdentities]="playerIdentities"
           [selectedLspGroup]="selectedLspGroup"
           [isUsingPlayerIdentities]="isUsingPlayerIdentities"
         ></localized-messaging>
+      </mat-tab>
+      <mat-tab label="Edit/Delete">
+        <localized-individual-notification-management
+          *ngIf="isUsingPlayerIdentities"
+          [service]="localizedIndividualMessagingManagementServiceContract"
+          [selectedXuid]="selectedXuid"
+        ></localized-individual-notification-management>
+        <localized-group-notification-management
+          *ngIf="!isUsingPlayerIdentities"
+          [service]="localizedGroupMessagingManagementServiceContract"
+          [selectedLspGroup]="selectedLspGroup"
+        ></localized-group-notification-management>
       </mat-tab>
     </mat-tab-group>
   </div>
