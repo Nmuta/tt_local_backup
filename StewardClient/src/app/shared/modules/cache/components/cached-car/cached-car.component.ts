@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { pairwiseSkip, PairwiseSkipPredicates } from '@helpers/rxjs';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
@@ -24,7 +24,7 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
 
   public shouldHide = false;
   public monitor = new ActionMonitor('Get Car Data');
-  public carData: DetailedCar = null;
+  public carData: SimpleCar = null;
 
   private carId$ = new Subject<BigNumber>();
 
@@ -69,7 +69,7 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
     return this.getCarData$(new BigNumber(NaN)) !== EMPTY;
   }
 
-  private getCarData$(carId: BigNumber): Observable<DetailedCar> {
+  private getCarData$(carId: BigNumber): Observable<SimpleCar> {
     switch (this.title) {
       case GameTitle.FH5:
         return this.woodstock.getDetails$(carId);

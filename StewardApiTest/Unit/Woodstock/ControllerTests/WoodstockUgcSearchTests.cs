@@ -116,7 +116,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
                 this.storefrontProvider.SearchUgcContentAsync(Arg.Any<UgcType>(), Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockUgcItem>>());
-                this.ItemsProvider.GetCarsAsync().Returns(Fixture.Create<IEnumerable<DetailedCar>>());
+                this.ItemsProvider.GetCarsAsync<SimpleCar>().Returns(Fixture.Create<IEnumerable<SimpleCar>>());
             }
             public IWoodstockStorefrontProvider storefrontProvider { get; set; } = Substitute.For<IWoodstockStorefrontProvider>();
 

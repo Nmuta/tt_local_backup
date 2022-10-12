@@ -9,8 +9,8 @@ import { WoodstockUgcFiltersComponent } from './woodstock-ugc-filters.component'
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { DetailedCar } from '@models/detailed-car';
-import { WoodstockDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
+import { SimpleCar } from '@models/cars';
+import { WoodstockSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import faker from '@faker-js/faker';
 
 describe('WoodstockUgcFiltersComponent', () => {
@@ -19,7 +19,7 @@ describe('WoodstockUgcFiltersComponent', () => {
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let fakeDetailedCars: DetailedCar[];
+  let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -44,7 +44,7 @@ describe('WoodstockUgcFiltersComponent', () => {
     mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
     mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
 
-    fakeDetailedCars = WoodstockDetailedCarsFakeApi.make();
+    fakeSimpleCars = WoodstockSimpleCarsFakeApi.make();
   }));
 
   it('should create', () => {
@@ -52,7 +52,7 @@ describe('WoodstockUgcFiltersComponent', () => {
   });
 
   describe('Method: searchFilters', () => {
-    let carInput: DetailedCar;
+    let carInput: SimpleCar;
     const testUgcFilters = {
       type: UgcType.Livery,
       carId: fakeBigNumber(),
@@ -64,7 +64,7 @@ describe('WoodstockUgcFiltersComponent', () => {
 
     beforeEach(() => {
       component.changes.emit = jasmine.createSpy('changes.emit');
-      carInput = fakeDetailedCars[0];
+      carInput = fakeSimpleCars[0];
       component.formControls.makeModelInput.setValue('');
       component.formControls.keyword.setValue(testUgcFilters.keyword);
       component.formControls.accessLevel.setValue(testUgcFilters.accessLevel);

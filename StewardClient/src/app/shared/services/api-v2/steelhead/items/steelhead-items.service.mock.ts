@@ -11,8 +11,8 @@ export class MockSteelheadItemsService {
     .createSpy('getMasterInventory$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
 
-  public getDetailedCars$ = jasmine
-    .createSpy('getDetailedCars$')
+  public getSimpleCars$ = jasmine
+    .createSpy('getSimpleCars$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   constructor(private readonly generator$: () => unknown) {}

@@ -1,5 +1,5 @@
 import { Component, forwardRef } from '@angular/core';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { Observable } from 'rxjs';
 import { MakeModelAutocompleteBaseComponent } from '../make-model-autocomplete.base.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -24,7 +24,7 @@ export class SteelheadMakeModelAutocompleteComponent extends MakeModelAutocomple
   }
 
   /** Gets master inventory list */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.steelheadItemsService.getDetailedCars$(this.pegasusSlotId);
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.steelheadItemsService.getSimpleCars$(this.pegasusSlotId);
   }
 }

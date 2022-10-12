@@ -3,14 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { DefaultUgcFilters, UgcAccessLevel, UgcFilters, UgcOrderBy } from '@models/ugc-filters';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import BigNumber from 'bignumber.js';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
 
 export type MakeModelFilterGroup = {
   category: string;
-  items: DetailedCar[];
+  items: SimpleCar[];
 };
 
 /** A base component for ugcs filters. */
@@ -44,7 +44,7 @@ export abstract class UgcFiltersBaseComponent extends BaseComponent {
 
   /** Outputs new ugc search filters. */
   public searchFilters(): void {
-    const carFilter = this.formControls.makeModelInput.value as DetailedCar;
+    const carFilter = this.formControls.makeModelInput.value as SimpleCar;
     let carId: BigNumber = undefined;
     let makeId: BigNumber = undefined;
 

@@ -56,16 +56,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
             };
 
-            if (this.User.UserClaims().Role == UserRole.LiveOpsAdmin)
-            {
-                return this.Ok(validEndpoints);
-            }
-
-            validEndpoints.Apollo = validEndpoints.Apollo.Where(endpoint => endpoint.Name != nameof(ApolloEndpoint.Studio));
-            validEndpoints.Sunrise = validEndpoints.Sunrise.Where(endpoint => endpoint.Name != nameof(SunriseEndpoint.Studio));
-            validEndpoints.Woodstock = validEndpoints.Woodstock.Where(endpoint => endpoint.Name != nameof(WoodstockEndpoint.Studio));
-            validEndpoints.Steelhead = validEndpoints.Steelhead.Where(endpoint => endpoint.Name != nameof(SteelheadEndpoint.Studio));
-
             return this.Ok(validEndpoints);
         }
 
