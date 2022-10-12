@@ -17,7 +17,8 @@ $tile-gap-size: 1px;
   padding-left: 0.5em;
 }
 
-.summary, .inline-summary {
+.summary,
+.inline-summary {
   .row {
     display: flex;
     flex-flow: row nowrap;
