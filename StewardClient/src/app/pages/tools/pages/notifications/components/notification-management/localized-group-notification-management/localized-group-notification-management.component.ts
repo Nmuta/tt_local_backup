@@ -57,7 +57,7 @@ export class LocalizedGroupNotificationManagementComponent
 {
   /** The group notification service. */
   @Input() public service: LocalizedGroupMessagingManagementContract;
-  /** The selected LSP group. */
+  /** The selected LSP group, determines which inbox to display. */
   @Input() public selectedLspGroup: LspGroup;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 

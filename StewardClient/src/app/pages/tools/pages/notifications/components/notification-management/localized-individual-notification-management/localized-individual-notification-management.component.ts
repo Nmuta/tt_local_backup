@@ -56,7 +56,7 @@ export class LocalizedIndividualNotificationManagementComponent
 {
   /** The individual notification management service. */
   @Input() public service: LocalizedIndividualMessagingManagementContract;
-  /** The selected xuid. */
+  /** The selected xuid, determines which inbox to display. */
   @Input() public selectedXuid: BigNumber;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
