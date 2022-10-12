@@ -17,6 +17,21 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: ChangelogTag.General,
+      uuid: '28aa6c7c-d26c-4a4c-b667-80f768ce24a5',
+      shortText: 'Open Studio endpoints for all user roles',
+      longText: [
+        'To change your environment, click on the settings cogwheel in the top right-hand corner of the Steward app.',
+        'Next, click the dropdown of the title you would like to change and select your new environment.',
+        'Steward will force reload the webpage after selection.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'b3c3079b-43d9-491f-a757-546df2507daa',
+      shortText: 'Add new tool to view full car details',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '738427c1-f87a-40d9-8534-fc0f716aca36',
       shortText: 'Add report button',

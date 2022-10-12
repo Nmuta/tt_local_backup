@@ -1,19 +1,42 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿using System;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a detailed car.
+    ///     Represents detailed car info.
     /// </summary>
     #pragma warning disable CS1591
     #pragma warning disable SA1600
-    public sealed class DetailedCar
+    public class DetailedCar : SimpleCar
     {
-        public long Id { get; set; }
+        public int AspirationTypeId { get; set; }
 
-        public long MakeId { get; set; }
+        public int? EnginePlacementId { get; set; }
 
-        public string Make { get; set; }
+        public int? PowertrainId { get; set; }
 
-        public string Model { get; set; }
+        public string MediaName { get; set; }
 
+        public int? ClassId { get; set; }
+
+        public int? CarTypeId { get; set; }
+
+        public int? FamilyModelId { get; set; }
+
+        public double? BaseRarity { get; set; }
+
+        public int? BaseCost { get; set; }
+
+        public bool IsPurchased { get; set; }
+
+        public bool IsUnicorn { get; set; }
+
+        public int FamilySpecialId { get; set; }
+
+        public int RegionId { get; set; }
+
+        public int CountryId { get; set; }
+
+        public bool IsAvailableInAutoshow { get; set; }
     }
 }

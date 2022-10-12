@@ -406,11 +406,25 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<WoodstockLiveOpsContent.DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} {src.Year}"));
-            this.CreateMap<WoodstockLiveOpsContent.DataCar, DetailedCar>()
+            this.CreateMap<WoodstockLiveOpsContent.DataCar, SimpleCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
                 .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.MakeDisplayName));
+            this.CreateMap<WoodstockLiveOpsContent.DataCar, DetailedCar>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
+                .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.MakeDisplayName))
+                .ForMember(dest => dest.EnginePlacementId, opt => opt.MapFrom(src => src.EnginePlacementID))
+                .ForMember(dest => dest.PowertrainId, opt => opt.MapFrom(src => src.PowertrainID))
+                .ForMember(dest => dest.ClassId, opt => opt.MapFrom(src => src.ClassID))
+                .ForMember(dest => dest.CarTypeId, opt => opt.MapFrom(src => src.CarTypeID))
+                .ForMember(dest => dest.FamilyModelId, opt => opt.MapFrom(src => src.FamilyModelID))
+                .ForMember(dest => dest.FamilySpecialId, opt => opt.MapFrom(src => src.FamilySpecialID))
+                .ForMember(dest => dest.RegionId, opt => opt.MapFrom(src => src.RegionID))
+                .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.CountryID))
+                .ForMember(dest => dest.IsAvailableInAutoshow, opt => opt.MapFrom(src => src.NotAvailableInAutoshow == null || src.NotAvailableInAutoshow.Value == 0));
 
             this.CreateMap<WoodstockLiveOpsContent.CarHorn, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))

@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var searchParameters = this.mapper.Map<ForzaUGCSearchRequest>(parameters);
 
             var getUgc = this.storefrontProvider.SearchUgcContentAsync(typeEnum, searchParameters, this.WoodstockEndpoint.Value);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getUgc, getCars).ConfigureAwait(true);
 

@@ -19,6 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Gets the Woodstock cars detailed.
         /// </summary>
-        Task<IEnumerable<DetailedCar>> GetCarsAsync(string slotId = "live");
+        Task<IEnumerable<T>> GetCarsAsync<T>(string slotId = "live")
+            where T : SimpleCar;
     }
 }

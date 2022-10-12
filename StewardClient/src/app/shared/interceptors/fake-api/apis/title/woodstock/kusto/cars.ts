@@ -1,11 +1,11 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import faker from '@faker-js/faker';
 
 /** Fake API for getting kusto cars. */
-export class WoodstockDetailedCarsFakeApi extends FakeApiBase {
+export class WoodstockSimpleCarsFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -19,13 +19,13 @@ export class WoodstockDetailedCarsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): DetailedCar[] {
-    return WoodstockDetailedCarsFakeApi.make();
+  public handle(): SimpleCar[] {
+    return WoodstockSimpleCarsFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): DetailedCar[] {
-    function makeFakeDetailedCars(count: number): DetailedCar[] {
+  public static make(): SimpleCar[] {
+    function makeFakeSimpleCars(count: number): SimpleCar[] {
       return Array(faker.datatype.number({ min: 5, max: count }))
         .fill(undefined)
         .map(() => {
@@ -39,6 +39,6 @@ export class WoodstockDetailedCarsFakeApi extends FakeApiBase {
         });
     }
 
-    return makeFakeDetailedCars(20);
+    return makeFakeSimpleCars(20);
   }
 }

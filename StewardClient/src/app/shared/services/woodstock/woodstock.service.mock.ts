@@ -22,7 +22,7 @@ import { WoodstockPlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/
 import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/backstagePassHistory';
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/accountInventory';
 import { WoodstockPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
-import { WoodstockDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
+import { WoodstockSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import { WoodstockGiftLiveryToPlayersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/useBackgroundProcessing/players';
 import { WoodstockGiftLiveryToLspGroupFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/groupId';
 import { WoodstockPlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileNotes';
@@ -179,10 +179,10 @@ export class MockWoodstockService {
       this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUgcFakeApi.makeMany()[0]))),
     );
 
-  public getDetailedCars$ = jasmine
-    .createSpy('getDetailedCars')
+  public getSimpleCars$ = jasmine
+    .createSpy('getSimpleCars')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(WoodstockDetailedCarsFakeApi.make()))),
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockSimpleCarsFakeApi.make()))),
     );
   public getProfileNotesXuid$ = jasmine
     .createSpy('getProfileNotesXuid')

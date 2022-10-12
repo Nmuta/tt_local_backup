@@ -39,7 +39,7 @@ import {
   CommunityMessageResult,
 } from '@models/community-message';
 import { AuctionFilters } from '@models/auction-filters';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { PlayerAuction } from '@models/player-auction';
 import { ProfileNote } from '@models/profile-note.model';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
@@ -177,8 +177,8 @@ export class SunriseService {
   }
 
   /** Gets the sunrise detailed car list. */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/kusto/cars`);
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.apiService.getRequest$<SimpleCar[]>(`${this.basePath}/kusto/cars`);
   }
 
   /** Gets sunrise player details with a gamertag. This can be used to retrieve a XUID. */

@@ -9,7 +9,7 @@ import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source'
 import { JSONBigInt } from '@helpers/json-bigint';
 import { AuctionDetailsLinkGenerator } from '@helpers/link-generators';
 import { toDateTime } from '@helpers/luxon';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { PlayerAuctionAction } from '@models/player-auction-action';
 import { AuctionDataServiceContract } from '@views/auction-data/auction-data.component';
 import { MakeModelAutocompleteServiceContract } from '@views/make-model-autocomplete/make-model-autocomplete/make-model-autocomplete.component';
@@ -20,7 +20,7 @@ interface LogTableFilter {
   text?: string;
   dateStart?: DateTime;
   dateEnd?: DateTime;
-  car?: DetailedCar;
+  car?: SimpleCar;
 }
 
 /** Service contract for log-table component.*/
@@ -63,7 +63,7 @@ export class AuctionActionLogTableComponent
     dateRangeStart: this.formControls.dateRangeStart,
     dateRangeEnd: this.formControls.dateRangeEnd,
   });
-  public filteredCar: DetailedCar = null;
+  public filteredCar: SimpleCar = null;
 
   public filter: LogTableFilter = {};
 
@@ -150,9 +150,9 @@ export class AuctionActionLogTableComponent
   };
 
   /** Updates the filtered make-model. */
-  public applyMakeModelFilter(detailedCar: DetailedCar): void {
-    this.filteredCar = detailedCar;
-    this.filter.car = detailedCar;
+  public applyMakeModelFilter(SimpleCar: SimpleCar): void {
+    this.filteredCar = SimpleCar;
+    this.filter.car = SimpleCar;
     this.dataSource.betterFilter = this.filter;
   }
 

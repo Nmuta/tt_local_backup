@@ -1,5 +1,5 @@
 import { Component, forwardRef } from '@angular/core';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
 import { MakeModelAutocompleteBaseComponent } from '../make-model-autocomplete.base.component';
@@ -24,7 +24,7 @@ export class ApolloMakeModelAutocompleteComponent extends MakeModelAutocompleteB
   }
 
   /** Gets master inventory list */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.apolloService.getDetailedCars$();
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.apolloService.getSimpleCars$();
   }
 }

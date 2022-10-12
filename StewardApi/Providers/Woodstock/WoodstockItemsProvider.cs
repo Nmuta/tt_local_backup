@@ -97,12 +97,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<DetailedCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<T>> GetCarsAsync<T>(string slotId = WoodstockPegasusSlot.Live)
+            where T : SimpleCar
         {
             try
             {
                 var cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
-                return this.mapper.Map<IEnumerable<DetailedCar>>(cars);
+                return this.mapper.Map<IEnumerable<T>>(cars);
             }
             catch (Exception ex)
             {
