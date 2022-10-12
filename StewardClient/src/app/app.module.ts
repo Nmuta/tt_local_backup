@@ -78,7 +78,6 @@ import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
 import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
 import { NavModule } from '@shared/modules/nav/nav.module';
-import { EndpointsModule } from '@shared/modules/endpoints/endpoints.module';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -140,7 +139,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     BrowserAnimationsModule,
     ThemeModule,
     NavModule,
-    EndpointsModule,
     AppRoutingModule,
     SidebarsModule,
     FontAwesomeModule,
