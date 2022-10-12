@@ -4,18 +4,6 @@
   @include flex-column-fill();
 }
 
-table {
-  width: 100%;
-
-  .mat-cell {
-    padding: 1em;
-  }
-}
-
 .mat-column-actions {
   @include table-width(200);
-}
-
-.warn {
-  color: app-color-default($app-warn);
 }

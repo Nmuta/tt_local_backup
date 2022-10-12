@@ -141,11 +141,9 @@ export class LocalizedIndividualNotificationManagementComponent
 
   /** Generates Edit Tooltip */
   public generateEditTooltip(entry: PlayerNotification): string {
-    if(this.isEditable(entry))
-    {
+    if (this.isEditable(entry)) {
       return 'Edit message properties';
-    }
-    else {
+    } else {
       return `Editing is disabled for notifications of type: ${entry.notificationType}`;
     }
   }
