@@ -17,11 +17,16 @@ $tile-gap-size: 1px;
   padding-left: 0.5em;
 }
 
-.summary {
+.summary, .inline-summary {
   .row {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
+  }
+
+  &.inline-summary {
+    display: inline-flex;
+    align-items: center;
   }
 
   .entry {

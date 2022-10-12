@@ -52,6 +52,7 @@ interface EndpointStateEntrySpacer {
 }
 
 interface EndpointStateLine {
+  label: string;
   entries: (EndpointStateEntry | EndpointStateEntrySpacer)[];
   flightEntries: EndpointStateEntry[];
   retailEntries: EndpointStateEntry[];
@@ -219,10 +220,10 @@ export class EndpointsNavToolComponent
 
   private makeGrid(): EndpointStateGrid {
     const initialGrid = [
-      this.makeLineForTitle(this.steelheadEndpointKeyList, this.steelheadEndpointKey),
-      this.makeLineForTitle(this.woodstockEndpointKeyList, this.woodstockEndpointKey),
-      this.makeLineForTitle(this.sunriseEndpointKeyList, this.sunriseEndpointKey),
-      this.makeLineForTitle(this.apolloEndpointKeyList, this.apolloEndpointKey),
+      this.makeLineForTitle('FM', this.steelheadEndpointKeyList, this.steelheadEndpointKey),
+      this.makeLineForTitle('FH5', this.woodstockEndpointKeyList, this.woodstockEndpointKey),
+      this.makeLineForTitle('FH4', this.sunriseEndpointKeyList, this.sunriseEndpointKey),
+      this.makeLineForTitle('FH7', this.apolloEndpointKeyList, this.apolloEndpointKey),
     ];
 
     const maxRetailEntries = max(initialGrid.map(l => l.retailEntries.length));
@@ -236,11 +237,6 @@ export class EndpointsNavToolComponent
     };
     for (const line of initialGrid) {
       line.entries = [];
-      // flights
-      for (let i = 0; i < maxFlightEntries - line.flightEntries.length; i++) {
-        line.entries.push(spacerEntry);
-      }
-      line.entries.push(...line.flightEntries);
 
       // retail
       for (let i = 0; i < maxRetailEntries - line.retailEntries.length; i++) {
@@ -253,17 +249,25 @@ export class EndpointsNavToolComponent
       for (let i = 0; i < maxDevEntries - line.devEntries.length; i++) {
         line.entries.push(spacerEntry);
       }
+
+      // flights
+      line.entries.push(...line.flightEntries);
+      for (let i = 0; i < maxFlightEntries - line.flightEntries.length; i++) {
+        line.entries.push(spacerEntry);
+      }
     }
 
     return initialGrid;
   }
 
   private makeLineForTitle(
+    label: string,
     endpointKeyList: string[],
     selectedEndpointKey: string,
   ): EndpointStateLine {
     if (!endpointKeyList || !selectedEndpointKey) {
       return {
+        label,
         entries: null,
         devEntries: [],
         flightEntries: [],
@@ -285,6 +289,7 @@ export class EndpointsNavToolComponent
     const devEntries = line.filter(e => !e.isRetail && !e.isFlight);
 
     return {
+      label,
       entries: null,
       devEntries,
       flightEntries,

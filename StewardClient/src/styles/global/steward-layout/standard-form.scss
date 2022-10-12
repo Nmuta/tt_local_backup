@@ -164,3 +164,19 @@ textarea.sf-standard-height {
 .sf-tooltip-multiline {
   white-space: pre-line;
 }
+
+
+.sf-menu-relative-container > .mat-menu-content {
+  position: relative;
+  overflow-x: hidden;
+}
+
+help-popover-icon.sf-menu-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.sf-no-bullet {
+  list-style-type: none;
+}
