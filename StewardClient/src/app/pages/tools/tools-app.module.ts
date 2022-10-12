@@ -26,6 +26,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NavModule } from '@shared/modules/nav/nav.module';
+import { EndpointsModule } from '@shared/modules/endpoints/endpoints.module';
 
 /** A module for all tools, with a configurable navbar. */
 @NgModule({
@@ -58,6 +59,7 @@ import { NavModule } from '@shared/modules/nav/nav.module';
     MatButtonToggleModule,
     MatFormFieldModule,
     ThemeModule,
+    EndpointsModule,
   ],
 })
 export class ToolsAppModule {}

@@ -21,14 +21,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         public const string V2Default = "Studio";
 
         /// <summary>
-        ///     Gets studio LSP endpoint.
-        /// </summary>
-        public static string Studio => "https://steelhead-15.dev.services.forzamotorsport.net/Services/o.xtsw";
-
-        /// <summary>
         ///     Gets flight LSP endpoint.
         /// </summary>
         public static string Flight => "https://steelhead-flight-15.dev.services.forzamotorsport.net/Services/o.xtsw";
+
+        /// <summary>
+        ///     Gets studio LSP endpoint.
+        /// </summary>
+        public static string Studio => "https://steelhead-15.dev.services.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
         ///     Converts endpoint key into endpoint.

@@ -14,6 +14,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: '5e25ef5c-e537-4fe3-bd50-5f8fc8a7a5f5',
+      shortText: 'Add Current Endpoints navbar widget',
+      longText: [
+        'The Current Endpoints widget allows viewing and adjusting your current endpoint settings in the navbar.',
+        'Includes a toggle for Forza Motorsport and Forza Horizon 5, one-click-switch to Retail and Studio, and a summary grid of the currently active endpoints.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: '28aa6c7c-d26c-4a4c-b667-80f768ce24a5',
       shortText: 'Open Studio endpoints for all user roles',
       longText: [
