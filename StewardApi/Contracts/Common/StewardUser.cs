@@ -54,16 +54,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Attribute.
         /// </summary>
-        public string Attribute { get; }
+        public string Attribute { get; set;  }
 
         /// <summary>
         ///     Environment.
         /// </summary>
-        public string Environment { get; }
+        public string Environment { get; set;  }
 
         /// <summary>
         ///     Title.
         /// </summary>
-        public string Title { get; }
+        public string Title { get; set; }
     }
 }
