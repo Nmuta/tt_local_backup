@@ -7,7 +7,7 @@ import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateTime } from 'luxon';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { flatten, max } from 'lodash';
+import { chain, max } from 'lodash';
 import { PlayerNotification } from '@models/notifications.model';
 import { MatPaginator } from '@angular/material/paginator';
 import BigNumber from 'bignumber.js';
@@ -114,9 +114,14 @@ export class LocalizedIndividualNotificationManagementComponent
         });
 
         this.rawNotifications = returnList;
-        this.allMonitors = flatten(controls.map(v => [v.postMonitor, v.deleteMonitor])).concat(
-          this.getMonitor,
-        );
+        // this.allMonitors = flatten(controls.map(v => [v.postMonitor, v.deleteMonitor])).concat(
+        //   this.getMonitor,
+        // );
+        this.allMonitors = chain(controls)
+          .map(v => [v.postMonitor, v.deleteMonitor])
+          .flatten()
+          .concat([this.getMonitor])
+          .value();
         this.notifications.data = controls;
       });
   }
