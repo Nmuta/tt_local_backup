@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
 import { AuctionsFiltersBaseComponent } from '../auction-filters.base.component';
@@ -16,7 +16,7 @@ export class SunriseAuctionFiltersComponent extends AuctionsFiltersBaseComponent
   }
 
   /** Gets master inventory list */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.sunriseService.getDetailedCars$();
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.sunriseService.getSimpleCars$();
   }
 }

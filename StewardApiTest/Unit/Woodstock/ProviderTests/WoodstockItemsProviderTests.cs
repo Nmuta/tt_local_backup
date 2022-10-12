@@ -99,11 +99,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var provider = new Dependencies().Build();
 
             // Act.
-            async Task<IEnumerable<DetailedCar>> Action() => await provider.GetCarsAsync().ConfigureAwait(false);
+            async Task<IEnumerable<SimpleCar>> Action() => await provider.GetCarsAsync<SimpleCar>().ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.First().Should().BeOfType<DetailedCar>();
+            result.First().Should().BeOfType<SimpleCar>();
         }
 
         private sealed class Dependencies
@@ -116,7 +116,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.PegasusService.GetEmotesAsync().Returns(Fixture.Create<IEnumerable<WoodstockLiveOpsContent.EmoteData>>());
                 this.PegasusService.GetQuickChatLinesAsync().Returns(Fixture.Create<IEnumerable<WoodstockLiveOpsContent.QuickChat>>());
 
-                this.Mapper.Map<IEnumerable<DetailedCar>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.DataCar>>()).Returns(Fixture.Create<IEnumerable<DetailedCar>>());
+                this.Mapper.Map<IEnumerable<SimpleCar>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.DataCar>>()).Returns(Fixture.Create<IEnumerable<SimpleCar>>());
                 this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.DataCar>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
                 this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.CarHorn>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
                 this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.VanityItem>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());

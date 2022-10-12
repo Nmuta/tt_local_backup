@@ -4,9 +4,9 @@ import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
+import { SunriseSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 import faker from '@faker-js/faker';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockSunriseService } from '@services/sunrise';
 import { uniqBy } from 'lodash';
@@ -20,7 +20,7 @@ describe('MakeModelAutocompleteComponent', () => {
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let fakeDetailedCars: DetailedCar[];
+  let fakeSimpleCars: SimpleCar[];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,7 +46,7 @@ describe('MakeModelAutocompleteComponent', () => {
     mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     component.changes.emit = jasmine.createSpy('changes.emit');
 
-    fakeDetailedCars = SunriseDetailedCarsFakeApi.make();
+    fakeSimpleCars = SunriseSimpleCarsFakeApi.make();
   });
 
   it('should create', () => {
@@ -55,23 +55,23 @@ describe('MakeModelAutocompleteComponent', () => {
 
   describe('Method: ngOnInit', () => {
     beforeEach(() => {
-      component.getDetailedCars$ = jasmine
-        .createSpy('getDetailedCars$')
-        .and.returnValue(of(fakeDetailedCars));
+      component.getSimpleCars$ = jasmine
+        .createSpy('getSimpleCars$')
+        .and.returnValue(of(fakeSimpleCars));
       component.getMonitor.monitorSingleFire = jasmine.createSpy('monitorSingleFire');
     });
 
-    it('Should call getDetailedCars$', () => {
+    it('Should call getSimpleCars$', () => {
       component.ngOnInit();
 
-      expect(component.getDetailedCars$).toHaveBeenCalled();
+      expect(component.getSimpleCars$).toHaveBeenCalled();
     });
 
     it('Should set makeModelFilterGroups', () => {
       component.ngOnInit();
 
-      const expectedNumberOfCars = fakeDetailedCars.length;
-      const expectedNumberOfCarMakes = uniqBy(fakeDetailedCars, car => car.makeId).length;
+      const expectedNumberOfCars = fakeSimpleCars.length;
+      const expectedNumberOfCarMakes = uniqBy(fakeSimpleCars, car => car.makeId).length;
       expect(component.makeModelFilterGroups.length).toEqual(2);
       expect(component.makeModelFilterGroups[0].category).toEqual('Make');
       expect(component.makeModelFilterGroups[0].items.length).toEqual(expectedNumberOfCarMakes);
@@ -95,7 +95,7 @@ describe('MakeModelAutocompleteComponent', () => {
 
     describe('When input is Kusto car', () => {
       it('should patch value to form control', () => {
-        const carInput = fakeDetailedCars[0];
+        const carInput = fakeSimpleCars[0];
         component.writeValue(carInput);
 
         expect(component.formControls.makeModelInput.patchValue).toHaveBeenCalledWith(carInput, {
@@ -136,7 +136,7 @@ describe('MakeModelAutocompleteComponent', () => {
 
     describe('When makeModelInput is a Kusto car', () => {
       it('should call changes.emit with Kusto car', () => {
-        const carInput = fakeDetailedCars[0];
+        const carInput = fakeSimpleCars[0];
         component.formControls.makeModelInput.setValue(carInput);
         component.emitMakeModelChangeEvent();
 
@@ -156,7 +156,7 @@ describe('MakeModelAutocompleteComponent', () => {
 
     describe('When input is a Kusto car with an id', () => {
       it('should return full car name (make + model + [carId])', () => {
-        const carInput = fakeDetailedCars[0];
+        const carInput = fakeSimpleCars[0];
         const res = component.autoCompleteDisplayFn(carInput);
 
         expect(res).toEqual(`${carInput.make} ${carInput.model} [${carInput.id}]`);
@@ -165,7 +165,7 @@ describe('MakeModelAutocompleteComponent', () => {
 
     describe('When input is a Kusto car without an id', () => {
       it('should return only car make', () => {
-        const carInput = fakeDetailedCars[0];
+        const carInput = fakeSimpleCars[0];
         carInput.makeOnly = true;
         const res = component.autoCompleteDisplayFn(carInput);
 

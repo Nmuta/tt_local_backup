@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'b3c3079b-43d9-491f-a757-546df2507daa',
+      shortText: 'Add new tool to view full car details',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '738427c1-f87a-40d9-8534-fc0f716aca36',
       shortText: 'Add report button',

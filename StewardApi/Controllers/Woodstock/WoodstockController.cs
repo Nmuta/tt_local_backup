@@ -533,7 +533,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint)
                 .ConfigureAwait(true);
 
-            var cars = await this.itemsProvider.GetCarsAsync().ConfigureAwait(true);
+            var cars = await this.itemsProvider.GetCarsAsync<SimpleCar>().ConfigureAwait(true);
             var carsDict = cars.ToDictionary(car => car.Id);
 
             foreach (var auction in results)
@@ -632,7 +632,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
-            var getCars = this.itemsProvider.GetCarsAsync(WoodstockPegasusSlot.LiveSteward);
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>(WoodstockPegasusSlot.LiveSteward);
             var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
 
             await Task.WhenAll(getBlockList, getCars).ConfigureAwait(true);
@@ -706,7 +706,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 xuid,
                 typeEnum,
                 endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -745,7 +745,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 filters,
                 endpoint,
                 includeThumbnails: true);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -772,7 +772,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUgcLiveryAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getLivery, getCars).ConfigureAwait(true);
 
@@ -797,7 +797,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUgcPhotoAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
 
@@ -822,7 +822,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUgcTuneAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getTune, getCars).ConfigureAwait(true);
 

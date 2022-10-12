@@ -9,9 +9,9 @@ import { SteelheadUgcFiltersComponent } from './steelhead-ugc-filters.component'
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import faker from '@faker-js/faker';
-import { SteelheadDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/items/cars';
+import { SteelheadSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/items/cars';
 
 describe('SteelheadUgcFiltersComponent', () => {
   let fixture: ComponentFixture<SteelheadUgcFiltersComponent>;
@@ -19,7 +19,7 @@ describe('SteelheadUgcFiltersComponent', () => {
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let fakeDetailedCars: DetailedCar[];
+  let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -44,7 +44,7 @@ describe('SteelheadUgcFiltersComponent', () => {
     mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
     mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
 
-    fakeDetailedCars = SteelheadDetailedCarsFakeApi.make();
+    fakeSimpleCars = SteelheadSimpleCarsFakeApi.make();
   }));
 
   it('should create', () => {
@@ -52,7 +52,7 @@ describe('SteelheadUgcFiltersComponent', () => {
   });
 
   describe('Method: searchFilters', () => {
-    let carInput: DetailedCar;
+    let carInput: SimpleCar;
     const testUgcFilters = {
       type: UgcType.Livery,
       carId: fakeBigNumber(),
@@ -64,7 +64,7 @@ describe('SteelheadUgcFiltersComponent', () => {
 
     beforeEach(() => {
       component.changes.emit = jasmine.createSpy('changes.emit');
-      carInput = fakeDetailedCars[0];
+      carInput = fakeSimpleCars[0];
       component.formControls.makeModelInput.setValue('');
       component.formControls.keyword.setValue(testUgcFilters.keyword);
       component.formControls.accessLevel.setValue(testUgcFilters.accessLevel);

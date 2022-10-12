@@ -8,8 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseUgcFiltersComponent } from './sunrise-ugc-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
-import { DetailedCar } from '@models/detailed-car';
-import { SunriseDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
+import { SimpleCar } from '@models/cars';
+import { SunriseSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 
@@ -19,7 +19,7 @@ describe('SunriseUgcFiltersComponent', () => {
 
   // const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let fakeDetailedCars: DetailedCar[];
+  let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -44,7 +44,7 @@ describe('SunriseUgcFiltersComponent', () => {
     mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
     mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
 
-    fakeDetailedCars = SunriseDetailedCarsFakeApi.make();
+    fakeSimpleCars = SunriseSimpleCarsFakeApi.make();
   }));
 
   it('should create', () => {
@@ -52,7 +52,7 @@ describe('SunriseUgcFiltersComponent', () => {
   });
 
   describe('Method: searchFilters', () => {
-    let carInput: DetailedCar;
+    let carInput: SimpleCar;
     const testUgcFilters = {
       type: UgcType.Livery,
       carId: fakeBigNumber(),
@@ -64,7 +64,7 @@ describe('SunriseUgcFiltersComponent', () => {
 
     beforeEach(() => {
       component.changes.emit = jasmine.createSpy('changes.emit');
-      carInput = fakeDetailedCars[0];
+      carInput = fakeSimpleCars[0];
       component.formControls.makeModelInput.setValue('');
       component.formControls.keyword.setValue(testUgcFilters.keyword);
       component.formControls.accessLevel.setValue(testUgcFilters.accessLevel);

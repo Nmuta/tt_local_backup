@@ -45,7 +45,7 @@ import { BackstagePassHistory } from '@models/backstage-pass-history';
 import { PlayerUgcItem, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { Gift, GroupGift } from '@models/gift';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
@@ -565,13 +565,13 @@ export class WoodstockService {
   }
 
   /** Gets the woodstock detailed car list. */
-  public getDetailedCars$(pegasusSlotId?: PegasusProjectionSlot): Observable<DetailedCar[]> {
+  public getSimpleCars$(pegasusSlotId?: PegasusProjectionSlot): Observable<SimpleCar[]> {
     let params = new HttpParams();
     if (!!pegasusSlotId) {
       params = params.set('slotId', pegasusSlotId);
     }
 
-    return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/items/cars`, params);
+    return this.apiService.getRequest$<SimpleCar[]>(`${this.basePath}/items/cars`, params);
   }
 
   /** Gets a player's UGC item.  */

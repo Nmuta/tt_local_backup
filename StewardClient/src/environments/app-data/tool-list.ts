@@ -33,6 +33,7 @@ export enum NavbarTool {
   Leaderboards = 'leaderboards',
   Theming = 'theming',
   RacersCup = 'racers-cup',
+  CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
 }
@@ -137,6 +138,7 @@ export enum AppIcon {
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
   DevEnvironment = 'admin_panel_settings',
+  CarDetails = 'minor_crash',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -422,6 +424,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/auction-blocklist/auction-blocklist.module').then(
         m => m.StewardAuctionBlocklistModule,
       ),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.CarDetails,
+    tool: NavbarTool.CarDetails,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Car Details',
+    subtitle: 'View full car details',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Search cars to view their full details.',
+    shortDescription: [`Search cars to view their full details.`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/car-details/car-details.module').then(
+        m => m.CarDetailsModule,
+      ),
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.Messaging,

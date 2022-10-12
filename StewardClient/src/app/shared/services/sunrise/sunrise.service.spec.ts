@@ -57,13 +57,13 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getDetailedCars$', () => {
+  describe('Method: getSimpleCars$', () => {
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getDetailedCars$().subscribe(() => {
+      service.getSimpleCars$().subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/kusto/cars`);
         done();
       });
