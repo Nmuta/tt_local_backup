@@ -1,6 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppIcon, CommonAccessLevels, ExtraIcon, HomeTileInfoCustomTile, NavbarTool } from '@environments/environment';
+import {
+  AppIcon,
+  CommonAccessLevels,
+  ExtraIcon,
+  HomeTileInfoCustomTile,
+  NavbarTool,
+} from '@environments/environment';
 import { NgxsModule } from '@ngxs/store';
 
 import { EndpointsNavToolComponent } from './endpoints-nav-tool.component';
