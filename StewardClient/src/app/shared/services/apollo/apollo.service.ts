@@ -34,7 +34,7 @@ import { DateTime } from 'luxon';
 import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { UnbanResult } from '@models/unban-result';
 
 /** Handles calls to Sunrise API routes. */
@@ -294,7 +294,7 @@ export class ApolloService {
   }
 
   /** Gets the sunrise detailed car list. */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.apiService.getRequest$<DetailedCar[]>(`${this.basePath}/kusto/cars`);
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.apiService.getRequest$<SimpleCar[]>(`${this.basePath}/kusto/cars`);
   }
 }

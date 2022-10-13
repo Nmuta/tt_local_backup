@@ -33,6 +33,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Hubs;
@@ -126,10 +127,10 @@ namespace Turn10.LiveOps.StewardApi
             services.AddMemoryCache();
 
             services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                });
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            });
             services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
@@ -261,7 +262,9 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
                 mc.AllowNullCollections = true;
+                mc.IgnoreUnmapped(); // TODO: Should we remove this and correct all the mappings: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1347837
             });
+            mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();
             builder.Register(c => mapper).As<IMapper>().SingleInstance();
 

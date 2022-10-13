@@ -12,7 +12,7 @@ import {
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import BigNumber from 'bignumber.js';
 import { isEqual } from 'lodash';
 import { Subject } from 'rxjs';
@@ -129,7 +129,7 @@ export class UgcSearchFiltersComponent
         startWith({ initial: true, ...this.formGroup.value }), // start with the initial value, so pairwise will work on every new value
       )
       .subscribe(() => {
-        const carFilter = this.formControls.makeModelInput.value as DetailedCar;
+        const carFilter = this.formControls.makeModelInput.value as SimpleCar;
         let carId: BigNumber = undefined;
 
         if (!!carFilter) {
@@ -181,7 +181,7 @@ export class UgcSearchFiltersComponent
   /** Form control hook. */
   public registerOnChange(fn: (data: UgcSearchFiltersFormValue) => void): void {
     this.onChangeFn = fn;
-    const carFilter = this.formControls.makeModelInput.value as DetailedCar;
+    const carFilter = this.formControls.makeModelInput.value as SimpleCar;
     let carId: BigNumber = undefined;
 
     if (!!carFilter) {

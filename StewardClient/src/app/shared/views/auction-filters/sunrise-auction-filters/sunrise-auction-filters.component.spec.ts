@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseAuctionFiltersComponent } from './sunrise-auction-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import { MakeModelFilterGroup } from '@views/ugc-filters/ugc-filters.base.component';
@@ -52,8 +52,8 @@ describe('SunriseAuctionFiltersComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    describe('When getDetailedCars$() returns valid data', () => {
-      const car: DetailedCar = {
+    describe('When getSimpleCars$() returns valid data', () => {
+      const car: SimpleCar = {
         id: fakeBigNumber(),
         makeId: fakeBigNumber(),
         make: faker.random.word(),
@@ -67,9 +67,9 @@ describe('SunriseAuctionFiltersComponent', () => {
       };
 
       beforeEach(() => {
-        component.getDetailedCars$ = jasmine
-          .createSpy('getDetailedCars$')
-          .and.returnValue(of([car] as DetailedCar[]));
+        component.getSimpleCars$ = jasmine
+          .createSpy('getSimpleCars$')
+          .and.returnValue(of([car] as SimpleCar[]));
         component.buildMatAutocompleteState = jasmine
           .createSpy('buildMatAutocompleteState')
           .and.returnValue([filterGroup] as MakeModelFilterGroup[]);
@@ -84,17 +84,17 @@ describe('SunriseAuctionFiltersComponent', () => {
     });
   });
 
-  describe('Method: getDetailedCars', () => {
+  describe('Method: getSimpleCars', () => {
     beforeEach(() => {
-      mockSunriseService.getDetailedCars$ = jasmine
-        .createSpy('getDetailedCars')
+      mockSunriseService.getSimpleCars$ = jasmine
+        .createSpy('getSimpleCars')
         .and.returnValue(of([]));
     });
 
-    it('should call SunriseService.getDetailedCars$()', () => {
-      component.getDetailedCars$();
+    it('should call SunriseService.getSimpleCars$()', () => {
+      component.getSimpleCars$();
 
-      expect(mockSunriseService.getDetailedCars$).toHaveBeenCalled();
+      expect(mockSunriseService.getSimpleCars$).toHaveBeenCalled();
     });
   });
 
@@ -112,7 +112,7 @@ describe('SunriseAuctionFiltersComponent', () => {
           make: faker.random.word(),
           model: faker.random.word(),
           makeOnly: false,
-        } as DetailedCar);
+        } as SimpleCar);
         component.formControls.sort.setValue(sort);
         component.formControls.status.setValue(status);
       });
@@ -142,7 +142,7 @@ describe('SunriseAuctionFiltersComponent', () => {
           make: faker.random.word(),
           model: faker.random.word(),
           makeOnly: true,
-        } as DetailedCar);
+        } as SimpleCar);
         component.formControls.sort.setValue(sort);
         component.formControls.status.setValue(status);
       });

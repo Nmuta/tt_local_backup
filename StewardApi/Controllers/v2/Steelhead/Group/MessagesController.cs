@@ -215,11 +215,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         public async Task<IActionResult> EditGroupMessage(
             int groupId,
             string messageId,
-            [FromBody] LspGroupCommunityMessage editParameters)
+            [FromBody] LspGroupLocalizedMessage editParameters)
         {
             editParameters.ShouldNotBeNull(nameof(editParameters));
-            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
-            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedMessageID));
             editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
@@ -227,12 +226,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
+            if (!Guid.TryParse(editParameters.LocalizedMessageID, out var localizedStringIdAsGuid))
+            {
+                throw new BadRequestStewardException($"Localized message ID could not be parsed as GUID. (LocalizedMessageID: {editParameters.LocalizedMessageID})");
+            }
+
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
             var response = await this.Services.NotificationManagementService.GetUserGroupMessage(messageIdAsGuid).ConfigureAwait(true);
             var message = response.userGroupMessage;
-            if (message.NotificationType != "CommunityMessageNotification")
+            if (message.NotificationType != "CommunityMessageNotificationV2")
             {
                 throw new FailedToSendStewardException(
                     $"Cannot edit notification of type: {message.NotificationType}.");
@@ -242,7 +246,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
-                Message = editParameters.Message,
+                MessageStringId = localizedStringIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = forzaDeviceType != ForzaLiveDeviceType.Invalid,
                 DeviceType = forzaDeviceType
@@ -266,7 +270,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 {
                     Id = messageId.ToString(),
                     Title = TitleConstants.SteelheadCodeName,
-                    Message = editParameters.Message,
+                    Message = editParameters.LocalizedMessageID.ToString(),
                     RequesterObjectId = requesterObjectId,
                     RecipientId = notificationInfo.userGroupMessage.GroupId.ToString(CultureInfo.InvariantCulture),
                     Type = notificationInfo.userGroupMessage.NotificationType,

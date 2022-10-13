@@ -528,7 +528,7 @@ describe('WoodstockService', () => {
     });
   });
 
-  describe('Method: getDetailedCars$', () => {
+  describe('Method: getSimpleCars$', () => {
     let httpParams = new HttpParams();
 
     beforeEach(() => {
@@ -537,7 +537,7 @@ describe('WoodstockService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getDetailedCars$(PegasusProjectionSlot.Live).subscribe(() => {
+      service.getSimpleCars$(PegasusProjectionSlot.Live).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/items/cars`,
           httpParams,

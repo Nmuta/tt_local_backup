@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the detailed car list.
         /// </summary>
         [HttpGet("cars")]
-        [SwaggerResponse(200, type: typeof(IEnumerable<DetailedCar>))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<SimpleCar>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarsAsync([FromQuery] string slotId = SteelheadPegasusSlot.Live)

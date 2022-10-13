@@ -91,7 +91,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"User flags not updated. (XUID: {xuid})", ex);
                 throw new NotFoundStewardException(
                     $"Failed to retrieve messages for player. (xuid: {xuid})", ex);
             }
@@ -169,18 +168,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> EditPlayerMessage(
-            string messageId,
             ulong xuid,
-            [FromBody] CommunityMessage editParameters)
+            string messageId,
+            [FromBody] LocalizedMessage editParameters)
         {
             editParameters.ShouldNotBeNull(nameof(editParameters));
-            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
-            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedMessageID));
             editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
             {
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
+            }
+
+            if (!Guid.TryParse(editParameters.LocalizedMessageID, out var localizedStringIdAsGuid))
+            {
+                throw new BadRequestStewardException($"Localized message ID could not be parsed as GUID. (LocalizedMessageID: {editParameters.LocalizedMessageID})");
             }
 
             //xuid.EnsureValidXuid();
@@ -192,7 +195,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
-                Message = editParameters.Message,
+                MessageStringId = localizedStringIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = false,
                 DeviceType = ForzaLiveDeviceType.Invalid

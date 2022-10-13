@@ -125,25 +125,22 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<ForzaUserGroupMessage, UserGroupNotification>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
+                .ForMember(dest => dest.SentDateUtc, opt => opt.MapFrom(src => src.SentDate))
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
                 .ReverseMap();
             this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
-            this.CreateMap<ForzaRacersCupScheduleData, RacersCupSchedule>()
-                .ReverseMap();
+            this.CreateMap<ForzaRacersCupScheduleData, RacersCupSchedule>();
             this.CreateMap<ForzaChampionshipDataV3, RacersCupChampionship>()
-                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.ChampionshipSeriesData))
-                .ReverseMap();
+                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.ChampionshipSeriesData));
             this.CreateMap<ForzaChampionshipSeriesDataV3, RacersCupSeries>()
                 .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
                 .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
                 .ForMember(
                     dest => dest.EventPlaylistTransitionTimeUtc,
                     opt => opt.MapFrom(src => src.EventPlaylistTransitionTime))
-                .ForMember(dest => dest.Events, opt => opt.MapFrom(src => src.ChampionshipEventData))
-                .ReverseMap();
+                .ForMember(dest => dest.Events, opt => opt.MapFrom(src => src.ChampionshipEventData));
             this.CreateMap<ForzaBaseChampionshipEventData, RacersCupEvent>()
-                .ForMember(dest => dest.EventWindows, opt => opt.MapFrom(src => src.ChampionshipEventWindows))
-                .ReverseMap();
+                .ForMember(dest => dest.EventWindows, opt => opt.MapFrom(src => src.ChampionshipEventWindows));
             this.CreateMap<ForzaBaseChampionshipEventWindowData, RacersCupEventWindow>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.EndTimeUtc, opt => opt.MapFrom(src => src.EndTime))
@@ -159,7 +156,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512)).ReverseMap();
             this.CreateMap<LocalizationStringResult, SteelheadLiveOpsContent.LocalizedString>()
                 .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
-                .ReverseMap();
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => src.MaxLength))
+                .ConstructUsing(x => new SteelheadLiveOpsContent.LocalizedString(x.Category, x.LocalizedString, x.MaxLength));
             this.CreateMap<ForzaUserAdminComment, ProfileNote>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(source => source.date))
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(source => source.author))
@@ -303,7 +302,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<SteelheadLiveOpsContent.DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} {src.Year}"));
-            this.CreateMap<SteelheadLiveOpsContent.DataCar, DetailedCar>()
+            this.CreateMap<SteelheadLiveOpsContent.DataCar, SimpleCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))

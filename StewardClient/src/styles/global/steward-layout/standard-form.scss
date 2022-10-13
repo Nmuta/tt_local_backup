@@ -85,12 +85,32 @@
     mat-form-field {
       margin-bottom: 2em;
     }
+
+    // things that shouldn't grow to fill space
+    > mat-checkbox,
+    > button,
+    > help-popover-icon {
+      flex-grow: 0;
+    }
+
+    // align the button
+    > button {
+      margin: $gap-small/2;
+    }
   }
 
   .shrinkwrap {
     flex-basis: 0;
     flex-grow: 1;
     flex-shrink: 1;
+  }
+
+  table.sf-full-width {
+    width: 100%;
+
+    .mat-cell {
+      padding: 1em;
+    }
   }
 }
 
@@ -159,4 +179,23 @@ button.sf-standard-width {
 textarea.sf-standard-height {
   min-height: $text-area-medium-height;
   max-height: $text-area-max-height;
+}
+
+.sf-tooltip-multiline {
+  white-space: pre-line;
+}
+
+.sf-menu-relative-container > .mat-menu-content {
+  position: relative;
+  overflow-x: hidden;
+}
+
+help-popover-icon.sf-menu-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.sf-no-bullet {
+  list-style-type: none;
 }

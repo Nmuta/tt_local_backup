@@ -8,6 +8,35 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
+      uuid: '69000317-a117-4e05-b94a-fe055e292a7e',
+      shortText: 'Add localized message editing',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5e25ef5c-e537-4fe3-bd50-5f8fc8a7a5f5',
+      shortText: 'Add Current Endpoints navbar widget',
+      longText: [
+        'The Current Endpoints widget allows viewing and adjusting your current endpoint settings in the navbar.',
+        'Includes a toggle for Forza Motorsport and Forza Horizon 5, one-click-switch to Retail and Studio, and a summary grid of the currently active endpoints.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '28aa6c7c-d26c-4a4c-b667-80f768ce24a5',
+      shortText: 'Open Studio endpoints for all user roles',
+      longText: [
+        'To change your environment, click on the settings cogwheel in the top right-hand corner of the Steward app.',
+        'Next, click the dropdown of the title you would like to change and select your new environment.',
+        'Steward will force reload the webpage after selection.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'b3c3079b-43d9-491f-a757-546df2507daa',
+      shortText: 'Add new tool to view full car details',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '738427c1-f87a-40d9-8534-fc0f716aca36',
       shortText: 'Add report button',
