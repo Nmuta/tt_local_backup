@@ -5,15 +5,13 @@ using Castle.Core.Internal;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Authorization
 {
     /// <summary>
-    ///     Verify user auth attributes.
+    ///     Verify user authorization attributes.
     /// </summary>
     /// <remarks>Throws unauthorized exception if user attributes are unmet.</remarks>
     public class AuthorizationAttributeHandler : AuthorizationHandler<AttributeRequirement>
@@ -36,11 +34,9 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 throw new ArgumentNullException(nameof(context));
             }
 
-            // If the user is in any of the v1 roles, succeed the policy
-            if (UserRole.V1Roles().Any(role => context.User.IsInRole(role)))
+            if (requirement == null)
             {
-                context.Succeed(requirement);
-                return Task.CompletedTask;
+                throw new ArgumentNullException(nameof(requirement));
             }
 
             // Another policy has already failed
@@ -54,12 +50,15 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 return Task.CompletedTask;
             }
 
-            EnvironmentAndTitle(httpContext, out string title, out string environment);
-
-            if (requirement == null)
+            // If the user is in any of the v1 roles, succeed the policy
+            // TODO: Once all users are migrated to auth v2, remove this
+            if (UserRole.V1Roles().Any(role => context.User.IsInRole(role)))
             {
-                throw new ArgumentNullException(nameof(requirement));
+                context.Succeed(requirement);
+                return Task.CompletedTask;
             }
+
+            EnvironmentAndTitle(httpContext, out string title, out string environment);
 
             var objectId = context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimConstants.ObjectId);
             if (objectId == null)
@@ -74,49 +73,67 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                     EmptyOrEquals(authAttr.Title, title) &&
                     EmptyOrEquals(authAttr.Attribute, requirement.Attribute));
 
-            if (authorized.Any() || requirement.Attribute.Equals(UserAttribute.TestAction))
+            if (authorized.Any())
             {
                 context.Succeed(requirement);
                 return Task.CompletedTask;
             }
 
+            // Fail the context so any future policies can fail fast
             context.Fail();
             return Task.CompletedTask;
 
             bool EmptyOrEquals(string str, string attr)
             {
-                return str.Length == 0 || str.Equals(attr);
+                return string.IsNullOrEmpty(str) || str.Equals(attr);
             }
-        }
 
-        private static void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
-        {
-            var requestPathSegments = httpContext.Request.Path.ToUriComponent().Split("/");
-            var titleIndex = requestPathSegments.IndexOf(segment => segment.ToLower() == "title") + 1; // Plus to get segment after 'title'
-            if (titleIndex >= requestPathSegments.Length)
+            void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
             {
-                // TODO: Not all apis will have a title, should we assume empty title and environment in that case?
-                title = string.Empty;
-                environment = string.Empty;
-                return;
-                // throw new BadHttpRequestException("No title provided.");
+                title = RequestPathSegment(httpContext.Request.Path, "title", true);
+                var api = RequestPathSegment(httpContext.Request.Path, "api");
+
+                if (string.IsNullOrEmpty(title))
+                {
+                    environment = string.Empty;
+                    return;
+                }
+
+                // v1 apis use | (Endpoint|Title), v2 apis use - (Endpoing-Title)
+                var environmentKey = $"Endpoint{("v1".Equals(api) ? "|" : "-")}{title}";
+
+                if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
+                {
+                    throw new BadHttpRequestException("No environment provided.");
+                }
+
+                if (env.IsNullOrEmpty())
+                {
+                    throw new BadHttpRequestException("No environment provided.");
+                }
+
+                environment = env;
             }
 
-            title = requestPathSegments[titleIndex];
-            var titleCapitalized = char.ToUpper(title[0]) + title.Substring(1);
-            var envKey = $"Endpoint-{titleCapitalized}";
-
-            if (!httpContext.Request.Headers.TryGetValue(envKey, out var env))
+            string RequestPathSegment(PathString path, string key, bool capitalize = false)
             {
-                throw new BadHttpRequestException("No environment provided.");
-            }
+                if (path == null)
+                {
+                    return string.Empty;
+                }
 
-            if (env.IsNullOrEmpty())
-            {
-                throw new BadHttpRequestException("No environment provided.");
-            }
+                var segments = path.ToUriComponent().Split("/");
 
-            environment = env;
+                var index = segments.IndexOf(segment => segment.ToLower() == key) + 1;
+                if (index >= segments.Length)
+                {
+                    return string.Empty;
+                }
+
+                var segment = segments[index];
+
+                return capitalize ? char.ToUpper(segment[0]) + segment[1..] : segment;
+            }
         }
     }
 

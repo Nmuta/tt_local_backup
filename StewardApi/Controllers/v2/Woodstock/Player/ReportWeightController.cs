@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -58,7 +57,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         ///    Gets a player's report weight.
         /// </summary>
         [HttpGet]
-        [AuthorizeAttribute("Test")]
         [SwaggerResponse(200, type: typeof(UserReportWeight))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]

@@ -160,7 +160,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
                 options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
 
-                // Register all policies here
+                // All policies get registered here
                 UserAttribute.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 

@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +43,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         Justification = "This can't be avoided.")]
     [LogTagTitle(TitleLogTags.Apollo)]
     [Tags(Title.Multiple)]
-    [Authorize(Policy = UserAttribute.TestController)]
     public sealed class ApolloGiftingController : V2ControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Apollo;
@@ -98,9 +96,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [HttpPost("livery/{liveryId}/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-
-        [Authorize(Policy = UserAttribute.TestAction)]
-
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(string liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();

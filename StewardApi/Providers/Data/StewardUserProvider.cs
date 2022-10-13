@@ -102,6 +102,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
                 this.refreshableCacheStore.ClearItem(id);
+
+                // Make sure the user gets updated in the cache, but don't block
+                _ = this.GetStewardUserAsync(id);
             }
             catch (Exception ex)
             {
@@ -126,9 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             try
             {
-                var user = this.refreshableCacheStore.GetItem<StewardUserInternal>(id) ?? await QueryUser().ConfigureAwait(false);
-
-                return user;
+                return this.refreshableCacheStore.GetItem<StewardUserInternal>(id) ?? await QueryUser().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
