@@ -17,6 +17,20 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: ChangelogTag.General,
+      uuid: 'cf3a716d-7272-4951-b15c-57d842d9b375',
+      shortText: 'Increase minimum size of tiles on home page',
+      longText: [
+        'Previous minimum size was 15rem. New minimum size is 18rem.',
+        'At 1080p, this means we go from 7-tiles horizontally to 6-tiles horizontally, allowing a bit more space for tools descriptions.',
+      ],
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
+      uuid: '0503a2c8-69cf-4c26-955d-d8bd3e3f8a62',
+      shortText: 'Enabled Steelhead messaging in production',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
       uuid: '69000317-a117-4e05-b94a-fe055e292a7e',
       shortText: 'Add localized message editing',
