@@ -147,8 +147,12 @@ mat-icon[mat-card-avatar] {
   @include mat.elevation(2);
   mat-card,
   mat-card-actions,
-  mat-card-header {
+  mat-card-header,
+  mat-card-title,
+  mat-card-subtitle {
     transition: color 0.5s ease, background-color 0.5s ease;
+    background-color: app-color-default($app-background);
+    color: app-color-default-contrast($app-background);
   }
 }
 

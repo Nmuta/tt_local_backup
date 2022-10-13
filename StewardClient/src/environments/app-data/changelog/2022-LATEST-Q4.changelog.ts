@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '63d0d2b1-78a3-4685-8399-dd96264f5758',
+      shortText: 'Adjust homepage tile styling',
+      longText: [
+        'Correctly scroll text on deselected homepage tiles behind the title + actions sections.',
+        'Additionally, makes the color transition smoothly between selected/deselected and dark/light mode.',
+      ],
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
       uuid: '69000317-a117-4e05-b94a-fe055e292a7e',
       shortText: 'Add localized message editing',
