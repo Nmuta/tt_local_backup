@@ -289,6 +289,7 @@ namespace Turn10.LiveOps.StewardApi
             var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
             var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString));
             builder.Register(c => blobRepo).As<IBlobRepository>().SingleInstance();
+
             builder.RegisterType<HubManager>().SingleInstance();
             builder.RegisterType<JobTracker>().As<IJobTracker>().SingleInstance();
             builder.RegisterType<KustoQueryProvider>().As<IKustoQueryProvider>().SingleInstance();
