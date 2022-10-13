@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '@environments/environment';
+import { getMessagingRoute } from '@helpers/route-links';
 import { GameTitle, GameTitleAbbreviation } from '@models/enums';
 
 /**
@@ -16,23 +16,20 @@ export class NotificationsComponent implements OnInit {
   public ngOnInit(): void {
     this.navbarRouterLinks = [
       {
+        name: GameTitleAbbreviation.FM8,
+        codename: GameTitle.FM8,
+        route: getMessagingRoute(GameTitle.FM8),
+      },
+      {
         name: GameTitleAbbreviation.FH5,
         codename: GameTitle.FH5,
-        route: ['.', GameTitle.FH5],
+        route: getMessagingRoute(GameTitle.FH5),
       },
       {
         name: GameTitleAbbreviation.FH4,
         codename: GameTitle.FH4,
-        route: ['.', GameTitle.FH4],
+        route: getMessagingRoute(GameTitle.FH4),
       },
     ];
-
-    if (!environment.production) {
-      this.navbarRouterLinks.unshift({
-        name: GameTitleAbbreviation.FM8,
-        codename: GameTitle.FM8,
-        route: ['.', GameTitle.FM8.toLowerCase()],
-      });
-    }
   }
 }
