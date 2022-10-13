@@ -1,22 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using Autofac;
 using AutoMapper;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
@@ -29,6 +33,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Hubs;
@@ -64,10 +69,7 @@ using Turn10.Services.Diagnostics.Geneva;
 using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
-using System.Linq;
-using System.Threading.Tasks;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -80,6 +82,8 @@ namespace Turn10.LiveOps.StewardApi
         private readonly IConfiguration configuration;
 
         private IServiceCollection allServices;
+
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Startup"/> class.
@@ -94,6 +98,8 @@ namespace Turn10.LiveOps.StewardApi
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
             // If you are setting "redacted due to PII" when debugging certificates/dates/identities, enable this.
             // IdentityModelEventSource.ShowPII = true;
             services.AddControllers();
@@ -121,10 +127,10 @@ namespace Turn10.LiveOps.StewardApi
             services.AddMemoryCache();
 
             services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                });
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            });
             services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
@@ -190,30 +196,61 @@ namespace Turn10.LiveOps.StewardApi
                             .AllowAnyHeader());
             });
 
-            ProviderRegistrations.Register(services);
-            ProxyRegistrations.Register(services);
+            this.allServices = services;
+        }
 
-            services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
-            services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
-            services.AddSingleton<IObligationAuthoringClient, ObligationAuthoringClient>();
-            services.AddSingleton<IObligationProvider, ObligationProvider>();
-            services.AddSingleton<IUserIdProvider, UserIdProvider>();
+        /// <summary>
+        ///     Register directly with Autofac.
+        /// </summary>
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            var keyVaultProvider = new KeyVaultProvider(new KeyVaultClientFactory());
+
+            ProviderRegistrations.Register(builder);
+            ProxyRegistrations.Register(builder);
+            this.RegisterWoodstockTypes(builder);
+            this.RegisterSunriseTypes(builder);
+            this.RegisterOpusTypes(builder);
+            this.RegisterSteelheadTypes(builder);
+            this.RegisterApolloTypes(builder);
+            this.RegisterGravityTypes(builder);
 
             // Prepare LogSink
             var ifxLogSink = new IfxLogSink(
                 this.configuration[ConfigurationKeyConstants.GenevaTenantId],
                 this.configuration[ConfigurationKeyConstants.GenevaRoleId],
                 GetRoleInstanceName());
-            services.AddSingleton(new LogManager(new List<ILogSink> { ifxLogSink }));
+            builder.Register(c => new LogManager(new List<ILogSink> { ifxLogSink })).As<LogManager>().SingleInstance();
 
             // Prepare Metrics Sink
             var ifxMetricsSink = new IfxMetricsSink(
                 this.configuration[ConfigurationKeyConstants.GenevaMdmAccount],
                 this.configuration[ConfigurationKeyConstants.GenevaMdmNamespace],
                 GetRoleInstanceName());
-            services.AddSingleton(new MetricsManager(new List<IMetricsSink> { ifxMetricsSink }));
+            builder.Register(c => new MetricsManager(new List<IMetricsSink> { ifxMetricsSink })).As<MetricsManager>().SingleInstance();
 
-            var keyVaultProvider = new KeyVaultProvider(new KeyVaultClientFactory());
+            // Kusto
+            var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
+
+            var kustoLoggerConfiguration = new KustoConfiguration();
+
+            this.configuration.Bind("KustoLoggerConfiguration", kustoLoggerConfiguration);
+            kustoLoggerConfiguration.ClientSecret = kustoClientSecret;
+            var kustoStreamingLogger = new KustoStreamingLogger(new KustoFactory(kustoLoggerConfiguration));
+            builder.Register(c => kustoStreamingLogger).As<IKustoStreamingLogger>().SingleInstance();
+
+            var kustoConfiguration = new KustoConfiguration();
+            this.configuration.Bind("KustoConfiguration", kustoConfiguration);
+            kustoConfiguration.ClientSecret = kustoClientSecret;
+            var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
+            builder.Register(c => kustoProvider).As<IKustoProvider>().SingleInstance();
+
+            builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
+            builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
+            builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
+            builder.RegisterType<ObligationAuthoringClient>().As<IObligationAuthoringClient>().SingleInstance();
+            builder.RegisterType<ObligationProvider>().As<IObligationProvider>().SingleInstance();
+            builder.RegisterType<UserIdProvider>().As<IUserIdProvider>().SingleInstance();
 
             var mappingConfiguration = new MapperConfiguration(mc =>
             {
@@ -229,139 +266,34 @@ namespace Turn10.LiveOps.StewardApi
             });
             mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();
-            services.AddSingleton(mapper);
+            builder.Register(c => mapper).As<IMapper>().SingleInstance();
 
-            services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
+            builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
+            builder.RegisterType<StsClientWrapper>().As<IStsClient>().SingleInstance();
+            builder.RegisterType<LoggingService>().As<ILoggingService>().SingleInstance();
 
-            services.AddSingleton(this.configuration);
-
-            services.AddSingleton<IStsClient, StsClientWrapper>();
-
-            services.AddSingleton<ILoggingService, LoggingService>();
-            services.AddSingleton<INotificationHistoryProvider, NotificationHistoryProvider>();
-
-            services.AddSingleton<IWoodstockService, WoodstockServiceWrapper>();
-            services.AddSingleton<IWoodstockPegasusService, WoodstockPegasusService>();
-            services.AddSingleton<ILiveProjectionWoodstockServiceFactory, LiveProjectionWoodstockServiceFactory>();
-            services.AddSingleton<IStewardProjectionWoodstockServiceFactory, StewardProjectionWoodstockServiceFactory>();
-            services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
-            services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
-            services.AddSingleton<IWoodstockServiceManagementProvider, WoodstockServiceManagementProvider>();
-            services.AddSingleton<IWoodstockNotificationProvider, WoodstockNotificationProvider>();
-            services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
-            services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
-            services.AddSingleton<IWoodstockStorefrontProvider, WoodstockStorefrontProvider>();
-            services.AddSingleton<IWoodstockLeaderboardProvider, WoodstockLeaderboardProvider>();
-            services.AddSingleton<IWoodstockItemsProvider, WoodstockItemsProvider>();
-
-            services.AddSingleton<IRequestValidator<WoodstockBanParametersInput>, WoodstockBanParametersRequestValidator>();
-            services.AddSingleton<IRequestValidator<WoodstockGroupGift>, WoodstockGroupGiftRequestValidator>();
-            services.AddSingleton<IRequestValidator<WoodstockGift>, WoodstockGiftRequestValidator>();
-            services.AddSingleton<IRequestValidator<WoodstockMasterInventory>, WoodstockMasterInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<WoodstockUserFlagsInput>, WoodstockUserFlagsRequestValidator>();
-
-            services.AddSingleton<ISteelheadService, SteelheadServiceWrapper>();
-            services.AddSingleton<ISteelheadPegasusService, SteelheadPegasusService>();
-            services.AddSingleton<ISteelheadServiceFactory, SteelheadServiceFactory>();
-            services.AddSingleton<ISteelheadPlayerDetailsProvider, SteelheadPlayerDetailsProvider>();
-            services.AddSingleton<ISteelheadPlayerInventoryProvider, SteelheadPlayerInventoryProvider>();
-            services.AddSingleton<ISteelheadServiceManagementProvider, SteelheadServiceManagementProvider>();
-            services.AddSingleton<ISteelheadNotificationProvider, SteelheadNotificationProvider>();
-            services.AddSingleton<ISteelheadBanHistoryProvider, SteelheadBanHistoryProvider>();
-            services.AddSingleton<ISteelheadGiftHistoryProvider, SteelheadGiftHistoryProvider>();
-            services.AddSingleton<IRequestValidator<SteelheadBanParametersInput>, SteelheadBanParametersRequestValidator>();
-            services.AddSingleton<IRequestValidator<SteelheadGroupGift>, SteelheadGroupGiftRequestValidator>();
-            services.AddSingleton<IRequestValidator<SteelheadGift>, SteelheadGiftRequestValidator>();
-            services.AddSingleton<IRequestValidator<SteelheadMasterInventory>, SteelheadMasterInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<SteelheadUserFlagsInput>, SteelheadUserFlagsRequestValidator>();
-            // V2 providers
-            services.AddSingleton<SteelheadV2Providers.ISteelheadItemsProvider, SteelheadV2Providers.SteelheadItemsProvider>();
-            services.AddSingleton<SteelheadV2Providers.ISteelheadGiftHistoryProvider, SteelheadV2Providers.SteelheadGiftHistoryProvider>();
-            services.AddSingleton<SteelheadV2Providers.ISteelheadPlayerInventoryProvider, SteelheadV2Providers.SteelheadPlayerInventoryProvider>();
-            services.AddSingleton<SteelheadV2Providers.ISteelheadServiceManagementProvider, SteelheadV2Providers.SteelheadServiceManagementProvider>();
-
-            services.AddSingleton<IGravityService, GravityServiceWrapper>();
-            services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();
-            services.AddSingleton<IGravityGameSettingsProvider, GravityGameSettingsProvider>();
-            services.AddSingleton<IGravityPlayerInventoryProvider, GravityPlayerInventoryProvider>();
-            services.AddSingleton<IRequestValidator<GravityMasterInventory>, GravityMasterInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<GravityGift>, GravityGiftRequestValidator>();
-            services.AddSingleton<IGravityGiftHistoryProvider, GravityGiftHistoryProvider>();
-
-            services.AddSingleton<ISunriseService, SunriseServiceWrapper>();
-            services.AddSingleton<ISunriseServiceFactory, SunriseServiceFactory>();
-            services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
-            services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
-            services.AddSingleton<ISunriseServiceManagementProvider, SunriseServiceManagementProvider>();
-            services.AddSingleton<ISunriseNotificationProvider, SunriseNotificationProvider>();
-            services.AddSingleton<IRequestValidator<SunriseMasterInventory>, SunriseMasterInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<SunriseBanParametersInput>, SunriseBanParametersRequestValidator>();
-            services.AddSingleton<IRequestValidator<SunriseUserFlagsInput>, SunriseUserFlagsRequestValidator>();
-            services.AddSingleton<IRequestValidator<SunriseGift>, SunriseGiftRequestValidator>();
-            services.AddSingleton<IRequestValidator<SunriseGroupGift>, SunriseGroupGiftRequestValidator>();
-            services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
-            services.AddSingleton<ISunriseBanHistoryProvider, SunriseBanHistoryProvider>();
-            services.AddSingleton<ISunriseStorefrontProvider, SunriseStorefrontProvider>();
-
-            services.AddSingleton<IApolloService, ApolloServiceWrapper>();
-            services.AddSingleton<IApolloPlayerDetailsProvider, ApolloPlayerDetailsProvider>();
-            services.AddSingleton<IApolloPlayerInventoryProvider, ApolloPlayerInventoryProvider>();
-            services.AddSingleton<IApolloBanHistoryProvider, ApolloBanHistoryProvider>();
-            services.AddSingleton<IApolloServiceManagementProvider, ApolloServiceManagementProvider>();
-            services.AddSingleton<IRequestValidator<ApolloBanParametersInput>, ApolloBanParametersRequestValidator>();
-            services.AddSingleton<IRequestValidator<ApolloMasterInventory>, ApolloMasterInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<ApolloUserFlagsInput>, ApolloUserFlagsRequestValidator>();
-            services.AddSingleton<IRequestValidator<ApolloGift>, ApolloGiftRequestValidator>();
-            services.AddSingleton<IRequestValidator<ApolloGroupGift>, ApolloGroupGiftRequestValidator>();
-            services.AddSingleton<IApolloGiftHistoryProvider, ApolloGiftHistoryProvider>();
-            services.AddSingleton<IApolloStorefrontProvider, ApolloStorefrontProvider>();
-
-            services.AddSingleton<IOpusService, OpusServiceWrapper>();
-            services.AddSingleton<IOpusPlayerDetailsProvider, OpusPlayerDetailsProvider>();
-            services.AddSingleton<IOpusPlayerInventoryProvider, OpusPlayerInventoryProvider>();
-
-            services.AddSingleton<IBlobStorageProvider, BlobStorageProvider>();
-
-            var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
-
-            var kustoLoggerConfiguration = new KustoConfiguration();
-
-            this.configuration.Bind("KustoLoggerConfiguration", kustoLoggerConfiguration);
-            kustoLoggerConfiguration.ClientSecret = kustoClientSecret;
-            var kustoStreamingLogger = new KustoStreamingLogger(new KustoFactory(kustoLoggerConfiguration));
-            services.AddSingleton<IKustoStreamingLogger>(kustoStreamingLogger);
-
-            // TODO: This is not how to do DI. I'll come back later and fix all of this (emersonf).
-            var kustoConfiguration = new KustoConfiguration();
-            this.configuration.Bind("KustoConfiguration", kustoConfiguration);
-            kustoConfiguration.ClientSecret = kustoClientSecret;
-            var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
-            services.AddSingleton<IKustoProvider>(kustoProvider);
-
-            services.AddScoped<ActionData>();
-            services.AddScoped<IActionLogger, ActionLogger>();
-            services.AddSingleton<IScheduler, TaskExecutionScheduler>();
-            services.AddSingleton<IRefreshableCacheStore, LocalCacheStore>();
-
-            services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
-
-            services.AddSingleton<ITableStorageClientFactory, TableStorageClientFactory>();
+            builder.RegisterType<TaskExecutionScheduler>().As<IScheduler>().SingleInstance();
+            builder.RegisterType<LocalCacheStore>().As<IRefreshableCacheStore>().SingleInstance();
+            builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
+            builder.RegisterType<TableStorageClientFactory>().As<ITableStorageClientFactory>().SingleInstance();
+            builder.RegisterType<NotificationHistoryProvider>().As<INotificationHistoryProvider>().SingleInstance();
+            builder.RegisterType<BlobStorageProvider>().As<IBlobStorageProvider>().SingleInstance();
 
             var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
-
             var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString));
+            builder.Register(c => blobRepo).As<IBlobRepository>().SingleInstance();
 
-            services.AddSingleton<IBlobRepository>(blobRepo);
-
-            services.AddSingleton<HubManager>();
-            services.AddSingleton<IJobTracker, JobTracker>();
-            services.AddSingleton<IKustoQueryProvider, KustoQueryProvider>();
-            services.AddSingleton<IStewardUserProvider, StewardUserProvider>();
+            builder.RegisterType<HubManager>().SingleInstance();
+            builder.RegisterType<JobTracker>().As<IJobTracker>().SingleInstance();
+            builder.RegisterType<KustoQueryProvider>().As<IKustoQueryProvider>().SingleInstance();
+            builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
-            services.AddSingleton<PegasusCmsProvider>(pegasusProvider);
+            builder.Register(c => pegasusProvider).As<PegasusCmsProvider>().SingleInstance();
 
-            this.allServices = services;
+            // Scoped items
+            builder.RegisterType<ActionData>();
+            builder.RegisterType<ActionLogger>().As<IActionLogger>();
         }
 
         /// <summary>
@@ -433,6 +365,109 @@ namespace Turn10.LiveOps.StewardApi
             }
 
             return null;
+        }
+
+        private void RegisterSteelheadTypes(ContainerBuilder builder)
+        {
+            builder.RegisterType<SteelheadServiceWrapper>().As<ISteelheadService>().SingleInstance();
+            builder.RegisterType<SteelheadPegasusService>().As<ISteelheadPegasusService>().SingleInstance();
+            builder.RegisterType<SteelheadServiceFactory>().As<ISteelheadServiceFactory>().SingleInstance();
+            builder.RegisterType<SteelheadPlayerDetailsProvider>().As<ISteelheadPlayerDetailsProvider>().SingleInstance();
+            builder.RegisterType<SteelheadPlayerInventoryProvider>().As<ISteelheadPlayerInventoryProvider>().SingleInstance();
+            builder.RegisterType<SteelheadServiceManagementProvider>().As<ISteelheadServiceManagementProvider>().SingleInstance();
+            builder.RegisterType<SteelheadNotificationProvider>().As<ISteelheadNotificationProvider>().SingleInstance();
+            builder.RegisterType<SteelheadBanHistoryProvider>().As<ISteelheadBanHistoryProvider>().SingleInstance();
+            builder.RegisterType<SteelheadGiftHistoryProvider>().As<ISteelheadGiftHistoryProvider>().SingleInstance();
+
+            // V2 Providers
+            builder.RegisterType<SteelheadV2Providers.SteelheadItemsProvider>().As<SteelheadV2Providers.ISteelheadItemsProvider>().SingleInstance();
+            builder.RegisterType<SteelheadV2Providers.SteelheadGiftHistoryProvider>().As<SteelheadV2Providers.ISteelheadGiftHistoryProvider>().SingleInstance();
+            builder.RegisterType<SteelheadV2Providers.SteelheadPlayerInventoryProvider>().As<SteelheadV2Providers.ISteelheadPlayerInventoryProvider>().SingleInstance();
+            builder.RegisterType<SteelheadV2Providers.SteelheadServiceManagementProvider>().As<SteelheadV2Providers.ISteelheadServiceManagementProvider>().SingleInstance();
+
+            builder.RegisterType<SteelheadBanParametersRequestValidator>().As<IRequestValidator<SteelheadBanParametersInput>>().SingleInstance();
+            builder.RegisterType<SteelheadGroupGiftRequestValidator>().As<IRequestValidator<SteelheadGroupGift>>().SingleInstance();
+            builder.RegisterType<SteelheadGiftRequestValidator>().As<IRequestValidator<SteelheadGift>>().SingleInstance();
+            builder.RegisterType<SteelheadMasterInventoryRequestValidator>().As<IRequestValidator<SteelheadMasterInventory>>().SingleInstance();
+            builder.RegisterType<SteelheadUserFlagsRequestValidator>().As<IRequestValidator<SteelheadUserFlagsInput>>().SingleInstance();
+        }
+
+        private void RegisterApolloTypes(ContainerBuilder builder)
+        {
+            builder.RegisterType<ApolloServiceWrapper>().As<IApolloService>().SingleInstance();
+            builder.RegisterType<ApolloPlayerDetailsProvider>().As<IApolloPlayerDetailsProvider>().SingleInstance();
+            builder.RegisterType<ApolloPlayerInventoryProvider>().As<IApolloPlayerInventoryProvider>().SingleInstance();
+            builder.RegisterType<ApolloBanHistoryProvider>().As<IApolloBanHistoryProvider>().SingleInstance();
+            builder.RegisterType<ApolloServiceManagementProvider>().As<IApolloServiceManagementProvider>().SingleInstance();
+            builder.RegisterType<ApolloGiftHistoryProvider>().As<IApolloGiftHistoryProvider>().SingleInstance();
+            builder.RegisterType<ApolloStorefrontProvider>().As<IApolloStorefrontProvider>().SingleInstance();
+
+            builder.RegisterType<ApolloBanParametersRequestValidator>().As<IRequestValidator<ApolloBanParametersInput>>().SingleInstance();
+            builder.RegisterType<ApolloMasterInventoryRequestValidator>().As<IRequestValidator<ApolloMasterInventory>>().SingleInstance();
+            builder.RegisterType<ApolloUserFlagsRequestValidator>().As<IRequestValidator<ApolloUserFlagsInput>>().SingleInstance();
+            builder.RegisterType<ApolloGiftRequestValidator>().As<IRequestValidator<ApolloGift>>().SingleInstance();
+            builder.RegisterType<ApolloGroupGiftRequestValidator>().As<IRequestValidator<ApolloGroupGift>>().SingleInstance();
+        }
+
+        private void RegisterWoodstockTypes(ContainerBuilder builder)
+        {
+            builder.RegisterType<WoodstockServiceWrapper>().As<IWoodstockService>().SingleInstance();
+            builder.RegisterType<WoodstockPegasusService>().As<IWoodstockPegasusService>().SingleInstance();
+            builder.RegisterType<LiveProjectionWoodstockServiceFactory>().As<ILiveProjectionWoodstockServiceFactory>().SingleInstance();
+            builder.RegisterType<StewardProjectionWoodstockServiceFactory>().As<IStewardProjectionWoodstockServiceFactory>().SingleInstance();
+            builder.RegisterType<WoodstockPlayerDetailsProvider>().As<IWoodstockPlayerDetailsProvider>().SingleInstance();
+            builder.RegisterType<WoodstockPlayerInventoryProvider>().As<IWoodstockPlayerInventoryProvider>().SingleInstance();
+            builder.RegisterType<WoodstockServiceManagementProvider>().As<IWoodstockServiceManagementProvider>().SingleInstance();
+            builder.RegisterType<WoodstockNotificationProvider>().As<IWoodstockNotificationProvider>().SingleInstance();
+            builder.RegisterType<WoodstockBanHistoryProvider>().As<IWoodstockBanHistoryProvider>().SingleInstance();
+            builder.RegisterType<WoodstockGiftHistoryProvider>().As<IWoodstockGiftHistoryProvider>().SingleInstance();
+            builder.RegisterType<WoodstockStorefrontProvider>().As<IWoodstockStorefrontProvider>().SingleInstance();
+            builder.RegisterType<WoodstockLeaderboardProvider>().As<IWoodstockLeaderboardProvider>().SingleInstance();
+            builder.RegisterType<WoodstockItemsProvider>().As<IWoodstockItemsProvider>().SingleInstance();
+
+            builder.RegisterType<WoodstockBanParametersRequestValidator>().As<IRequestValidator<WoodstockBanParametersInput>>().SingleInstance();
+            builder.RegisterType<WoodstockGroupGiftRequestValidator>().As<IRequestValidator<WoodstockGroupGift>>().SingleInstance();
+            builder.RegisterType<WoodstockGiftRequestValidator>().As<IRequestValidator<WoodstockGift>>().SingleInstance();
+            builder.RegisterType<WoodstockMasterInventoryRequestValidator>().As<IRequestValidator<WoodstockMasterInventory>>().SingleInstance();
+            builder.RegisterType<WoodstockUserFlagsRequestValidator>().As<IRequestValidator<WoodstockUserFlagsInput>>().SingleInstance();
+        }
+
+        private void RegisterSunriseTypes(ContainerBuilder builder)
+        {
+            builder.RegisterType<SunriseServiceWrapper>().As<ISunriseService>().SingleInstance();
+            builder.RegisterType<SunriseServiceFactory>().As<ISunriseServiceFactory>().SingleInstance();
+            builder.RegisterType<SunrisePlayerDetailsProvider>().As<ISunrisePlayerDetailsProvider>().SingleInstance();
+            builder.RegisterType<SunrisePlayerInventoryProvider>().As<ISunrisePlayerInventoryProvider>().SingleInstance();
+            builder.RegisterType<SunriseServiceManagementProvider>().As<ISunriseServiceManagementProvider>().SingleInstance();
+            builder.RegisterType<SunriseNotificationProvider>().As<ISunriseNotificationProvider>().SingleInstance();
+            builder.RegisterType<SunriseGiftHistoryProvider>().As<ISunriseGiftHistoryProvider>().SingleInstance();
+            builder.RegisterType<SunriseBanHistoryProvider>().As<ISunriseBanHistoryProvider>().SingleInstance();
+            builder.RegisterType<SunriseStorefrontProvider>().As<ISunriseStorefrontProvider>().SingleInstance();
+
+            builder.RegisterType<SunriseMasterInventoryRequestValidator>().As<IRequestValidator<SunriseMasterInventory>>().SingleInstance();
+            builder.RegisterType<SunriseBanParametersRequestValidator>().As<IRequestValidator<SunriseBanParametersInput>>().SingleInstance();
+            builder.RegisterType<SunriseUserFlagsRequestValidator>().As<IRequestValidator<SunriseUserFlagsInput>>().SingleInstance();
+            builder.RegisterType<SunriseGiftRequestValidator>().As<IRequestValidator<SunriseGift>>().SingleInstance();
+            builder.RegisterType<SunriseGroupGiftRequestValidator>().As<IRequestValidator<SunriseGroupGift>>().SingleInstance();
+        }
+
+        private void RegisterOpusTypes(ContainerBuilder builder)
+        {
+            builder.RegisterType<OpusServiceWrapper>().As<IOpusService>().SingleInstance();
+            builder.RegisterType<OpusPlayerDetailsProvider>().As<IOpusPlayerDetailsProvider>().SingleInstance();
+            builder.RegisterType<OpusPlayerInventoryProvider>().As<IOpusPlayerInventoryProvider>().SingleInstance();
+        }
+
+        private void RegisterGravityTypes(ContainerBuilder builder)
+        {
+            builder.RegisterType<GravityServiceWrapper>().As<IGravityService>().SingleInstance();
+            builder.RegisterType<GravityPlayerDetailsProvider>().As<IGravityPlayerDetailsProvider>().SingleInstance();
+            builder.RegisterType<GravityGameSettingsProvider>().As<IGravityGameSettingsProvider>().SingleInstance();
+            builder.RegisterType<GravityPlayerInventoryProvider>().As<IGravityPlayerInventoryProvider>().SingleInstance();
+
+            builder.RegisterType<GravityMasterInventoryRequestValidator>().As<IRequestValidator<GravityMasterInventory>>().SingleInstance();
+            builder.RegisterType<GravityGiftRequestValidator>().As<IRequestValidator<GravityGift>>().SingleInstance();
+            builder.RegisterType<GravityGiftHistoryProvider>().As<IGravityGiftHistoryProvider>().SingleInstance();
         }
     }
 }
