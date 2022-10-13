@@ -32,7 +32,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
-    ///     Controller for steelhead consoles.
+    ///     Controller for steelhead Welcome Center's Message of the Day.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/motd")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -40,15 +40,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Topic.Consoles, Target.Details, Dev.ReviseTags)]
-    public class MotdController : V2SteelheadControllerBase
+    public class MotDController : V2SteelheadControllerBase
     {
         private readonly ISteelheadPegasusService steelheadPegasusService;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MotdController"/> class.
+        ///     Initializes a new instance of the <see cref="MotDController"/> class.
         /// </summary>
         /// <param name="steelheadPegasusService">The steelhead pegasus service.</param>
-        public MotdController(ISteelheadPegasusService steelheadPegasusService)
+        public MotDController(ISteelheadPegasusService steelheadPegasusService)
         {
             steelheadPegasusService.ShouldNotBeNull(nameof(steelheadPegasusService));
 
@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Gets selection choices.
+        ///     Gets Message of the Day selection choices.
         /// </summary>
         [HttpGet("options")]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
@@ -68,7 +68,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Gets current motd values.
+        ///     Gets current Message of the Day values for the entry
+        ///     with matching id.
         /// </summary>
         [HttpGet("{id}")]
         [SwaggerResponse(200, type: typeof(MessageOfTheDayBridge))]
@@ -85,18 +86,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Editing message of the day.
+        ///     Edits and submit Message of the Day.
         /// </summary>
         [HttpPost("{id}")]
-        [SwaggerResponse(200, type: typeof(void))]
-        public async Task EditMessageOfTheDay(string id, [FromBody] MessageOfTheDayBridge motd)
+        [SwaggerResponse(200, type: typeof(GitPullRequest))]
+        public async Task<IActionResult> EditAndSubmitMessageOfTheDay(
+            string id,
+            string commitComment,
+            string pullRequestTitle,
+            string pullRequestDescription,
+            [FromBody] MessageOfTheDayBridge motd)
         {
             if (!Guid.TryParse(id, out var parsedId))
             {
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
             }
 
-            await this.steelheadPegasusService.EditMotDMessagesAsync(motd, parsedId).ConfigureAwait(true);
+            GitPush pushed = await this.steelheadPegasusService.EditMotDMessagesAsync(motd, parsedId, commitComment).ConfigureAwait(true);
+
+            GitPullRequest pr = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
+
+            return this.Ok(pr);
         }
     }
 }

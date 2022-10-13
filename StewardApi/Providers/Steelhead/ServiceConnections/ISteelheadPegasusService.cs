@@ -52,22 +52,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
-        ///     Edits motd.
+        ///     Edits Message of the Day.
         /// </summary>
-        Task EditMotDMessagesAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id);
+        Task<GitPush> EditMotDMessagesAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment);
 
         /// <summary>
-        ///     Get motd current values.
+        ///     Creates pull request.
+        /// </summary>
+        Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription);
+
+        /// <summary>
+        ///     Gets current Message of the Day values for the entry
+        ///     with matching id.
         /// </summary>
         Task<MessageOfTheDayBridge> GetMotDCurrentValuesAsync(Guid id);
 
         /// <summary>
-        ///     Get motd selection choices for user.
+        ///     Gets Message of the Day selection choices.
         /// </summary>
         Task<Dictionary<Guid, string>> GetMotDSelectionChoicesAsync();
 
         /// <summary>
-        ///     Gets a motd entry as an Xelement.
+        ///     Gets a Message of the Day entry as an Xelement.
         /// </summary>
         Task<XElement> GetSelectedElementAsync(Guid id);
     }

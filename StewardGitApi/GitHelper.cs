@@ -367,7 +367,7 @@ namespace StewardGitApi
                             ChangeType = c.VersionControlChangeType,
                             Item = new GitItem()
                             {
-                                Path = $"/{c.PathToFile}",
+                                Path = $"{c.PathToFile}",
                             },
                             NewContent = new ItemContent()
                             {
