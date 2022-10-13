@@ -6,9 +6,7 @@ import { Observable, of } from 'rxjs';
 import { UpdateTitleMemory } from './title-memory.actions';
 import { TitleMemoryModel } from './title-memory.model';
 
-/**
- *
- */
+/** Title Memory model. */
 @State<TitleMemoryModel>({
   name: 'titleMemory',
   defaults: {
@@ -24,6 +22,7 @@ import { TitleMemoryModel } from './title-memory.model';
     leaderboards: GameTitleCodeName.FH5,
     racersCup: GameTitleCodeName.FM8,
     userGroupManagement: GameTitleCodeName.FH5,
+    carDetails: GameTitleCodeName.FH5,
   },
 })
 @Injectable()

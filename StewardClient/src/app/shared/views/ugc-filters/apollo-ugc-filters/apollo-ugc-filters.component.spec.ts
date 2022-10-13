@@ -8,17 +8,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ApolloUgcFiltersComponent } from './apollo-ugc-filters.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { ApolloDetailedCarsFakeApi } from '@interceptors/fake-api/apis/title/apollo/kusto/cars';
+import { ApolloSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/apollo/kusto/cars';
 
 describe('ApolloUgcFiltersComponent', () => {
   let fixture: ComponentFixture<ApolloUgcFiltersComponent>;
   let component: ApolloUgcFiltersComponent;
 
   let mockStore: Store;
-  let fakeDetailedCars: DetailedCar[];
+  let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -43,7 +43,7 @@ describe('ApolloUgcFiltersComponent', () => {
     mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
     mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
 
-    fakeDetailedCars = ApolloDetailedCarsFakeApi.make();
+    fakeSimpleCars = ApolloSimpleCarsFakeApi.make();
   }));
 
   it('should create', () => {
@@ -51,7 +51,7 @@ describe('ApolloUgcFiltersComponent', () => {
   });
 
   describe('Method: searchFilters', () => {
-    let carInput: DetailedCar;
+    let carInput: SimpleCar;
     const testUgcFilters = {
       type: UgcType.Livery,
       carId: fakeBigNumber(),
@@ -63,7 +63,7 @@ describe('ApolloUgcFiltersComponent', () => {
 
     beforeEach(() => {
       component.changes.emit = jasmine.createSpy('changes.emit');
-      carInput = fakeDetailedCars[0];
+      carInput = fakeSimpleCars[0];
       component.formControls.makeModelInput.setValue('');
       component.formControls.keyword.setValue(testUgcFilters.keyword);
       component.formControls.accessLevel.setValue(testUgcFilters.accessLevel);

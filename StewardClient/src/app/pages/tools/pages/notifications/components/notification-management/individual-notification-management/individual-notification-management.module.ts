@@ -30,7 +30,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { IndividualNotificationManagementComponent } from './individual-notification-management.component';
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
-import { SteelheadIndividualNotificationManagementComponent } from './steelhead/steelhead-individual-notification-management.component';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 
 /** Routed module for viewing steward user history. */
@@ -39,7 +38,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     IndividualNotificationManagementComponent,
     SunriseIndividualNotificationManagementComponent,
     WoodstockIndividualNotificationManagementComponent,
-    SteelheadIndividualNotificationManagementComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
@@ -78,7 +76,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     IndividualNotificationManagementComponent,
     SunriseIndividualNotificationManagementComponent,
     WoodstockIndividualNotificationManagementComponent,
-    SteelheadIndividualNotificationManagementComponent,
   ],
 })
 export class IndividualNotificationManagementModule {}

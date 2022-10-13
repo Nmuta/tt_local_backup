@@ -23,4 +23,5 @@ export class TitleMemoryModel {
   public leaderboards: GameTitleCodeName.FH5;
   public racersCup: GameTitleCodeName.FM8;
   public userGroupManagement: GameTitleCodeName.FH5;
+  public carDetails: GameTitleCodeName.FH5;
 }

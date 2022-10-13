@@ -32,7 +32,9 @@ export enum NavbarTool {
   StewardManagement = 'steward-management',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
+  Endpoints = 'endpoints',
   RacersCup = 'racers-cup',
+  CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
 }
@@ -94,6 +96,20 @@ export const CommonAccessLevels = {
     UserRole.MotorsportDesigner,
   ],
   AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+  SearchUgc: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.CommunityManager,
+    UserRole.MediaTeam,
+  ],
+  Gifting: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.SupportAgent,
+    UserRole.SupportAgentNew,
+    UserRole.CommunityManager,
+    UserRole.MediaTeam,
+  ],
 };
 
 /**
@@ -123,6 +139,8 @@ export enum AppIcon {
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
   DevEnvironment = 'admin_panel_settings',
+  Endpoints = 'explore',
+  CarDetails = 'minor_crash',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -325,7 +343,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.PlayerGift,
     tool: NavbarTool.Gifting,
-    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
+    accessList: CommonAccessLevels.Gifting,
     title: 'Gifting',
     subtitle: 'Send gifts',
     imageUrl: undefined,
@@ -354,7 +372,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.SearchUGC,
     oldToolRoutes: ['ugc'],
-    accessList: CommonAccessLevels.CommunityManagersAndAdmins,
+    accessList: CommonAccessLevels.Gifting,
     title: 'UGC Search',
     subtitle: 'Search User Generated Content',
     imageUrl: undefined,
@@ -408,6 +426,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/auction-blocklist/auction-blocklist.module').then(
         m => m.StewardAuctionBlocklistModule,
       ),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.CarDetails,
+    tool: NavbarTool.CarDetails,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Car Details',
+    subtitle: 'View full car details',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Search cars to view their full details.',
+    shortDescription: [`Search cars to view their full details.`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/car-details/car-details.module').then(
+        m => m.CarDetailsModule,
+      ),
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.Messaging,
@@ -671,6 +705,27 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/shared/modules/theme/theme-nav-content/theme-nav-content.component').then(
         m => m.ThemeNavContentComponent,
       ),
+    hideLink: true,
+  },
+  <HomeTileInfoCustomTile>{
+    icon: AppIcon.Endpoints,
+    extraIcon: ExtraIcon.Custom,
+    tool: NavbarTool.Endpoints,
+    accessList: CommonAccessLevels.Everyone,
+    title: 'Current Endpoints',
+    subtitle: 'Navbar widget',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription:
+      'Options for changing current endpoint settings. Hover over the grid to view current settings',
+    shortDescription: [
+      `View and adjust your current endpoint settings in the navbar.`,
+      `Includes a toggle for Forza Motorsport and Forza Horizon 5, one-click-switch to Retail and Studio, and a summary grid of the currently active endpoints. `,
+    ],
+    navComponent: () =>
+      import(
+        '../../app/shared/modules/endpoints/endpoints-nav-tool/endpoints-nav-tool.component'
+      ).then(m => m.EndpointsNavToolComponent),
     hideLink: true,
   },
 ];

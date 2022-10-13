@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 };
 
                 this.ItemsProvider.GetMasterInventoryAsync().Returns(fakeMasterInventory);
-                this.ItemsProvider.GetCarsAsync().Returns(Fixture.Create<IEnumerable<DetailedCar>>());
+                this.ItemsProvider.GetCarsAsync<SimpleCar>().Returns(Fixture.Create<IEnumerable<SimpleCar>>());
             }
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 

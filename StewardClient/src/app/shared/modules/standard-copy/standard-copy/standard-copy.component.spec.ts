@@ -4,6 +4,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { StandardCopyComponent } from './standard-copy.component';
 
+/** Test harness component for standard copy component. */
 @Component({
   template: '<standard-copy>test</standard-copy>',
 })

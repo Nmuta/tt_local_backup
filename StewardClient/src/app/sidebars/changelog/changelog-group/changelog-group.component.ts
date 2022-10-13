@@ -18,6 +18,7 @@ import { Observable, takeUntil } from 'rxjs';
 })
 export class ChangelogGroupComponent extends BaseComponent implements AfterViewInit {
   @Select(ChangelogState) public changelogState$: Observable<ChangelogModel>;
+  /** REVIEW-COMMENT: Changelog group to be displayed. */
   @Input() public group: ChangelogGroup;
   @ViewChild(MatAccordion) public accordion: MatAccordion;
   @ViewChildren(MatExpansionPanel) public panels: MatExpansionPanel[];

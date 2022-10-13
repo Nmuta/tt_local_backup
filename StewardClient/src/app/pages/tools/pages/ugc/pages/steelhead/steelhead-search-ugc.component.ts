@@ -12,7 +12,7 @@ import {
 } from '@views/ugc-search-filters/ugc-search-filters.component';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import BigNumber from 'bignumber.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
@@ -28,6 +28,7 @@ import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon
 })
 export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit {
   @ViewChild(HelpPopoverIconComponent) helpPopoverIcon: HelpPopoverIconComponent;
+  /** REVIEW-COMMENT: Pegasus slot id. Default to {@link PegasusProjectionSlot.Live}. */
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
   public gameTitle = GameTitle.FM8;
   public searchUgc$ = new Subject<UgcSearchFilters>();
@@ -38,7 +39,7 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
 
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
-    makeModelAutocompleteServiceContract: { getDetailedCars$: () => this.getDetailedCars$() },
+    makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
     supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.Tune],
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,
@@ -99,8 +100,8 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
   }
 
   /** Gets master inventory list */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.itemsService.getDetailedCars$(this.pegasusSlotId);
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.itemsService.getSimpleCars$(this.pegasusSlotId);
   }
 
   /** Logic when player details tool button is clicked. */

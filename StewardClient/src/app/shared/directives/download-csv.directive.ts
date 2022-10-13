@@ -6,11 +6,12 @@ import BigNumber from 'bignumber.js';
   selector: '[downloadCsv]',
 })
 export class DownloadCsvDirective {
-  /** CSV Rows where first array in array is the column definitions and subsequent ones defined the rows. */
+  /** REVIEW-COMMENT: CSV Rows where first array in array is the column definitions and subsequent ones defined the rows. */
   @Input() downloadCsv: string[][];
+  /** REVIEW-COMMENT: File name to write */
   @Input() filename: string;
 
-  /** CLick event. */
+  /** Click event. */
   @HostListener('click', ['$event'])
   public onClick(_event: Event): void {
     const csvContent =

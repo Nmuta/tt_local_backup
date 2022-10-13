@@ -8,13 +8,13 @@
       >
         <mat-tab label="Player Selection">
           <mat-card class="steward-layout-vertical-fill">
-            <player-selection-single
+            <player-selection-bulk
               [disableLookupTypes]="['t10Id']"
               [allowSelection]="true"
               [rejectionFn]="identityRejectionFn"
-              (found)="onPlayerIdentityChange($event)"
+              (found)="onPlayerIdentitiesChange($event)"
               (selected)="playerIdentitySelected($event)"
-            ></player-selection-single>
+            ></player-selection-bulk>
           </mat-card>
         </mat-tab>
         <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">

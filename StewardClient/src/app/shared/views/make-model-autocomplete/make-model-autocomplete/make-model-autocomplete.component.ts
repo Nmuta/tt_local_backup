@@ -1,5 +1,5 @@
 import { Component, forwardRef, Input } from '@angular/core';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { Observable } from 'rxjs';
 import { MakeModelAutocompleteBaseComponent } from '../make-model-autocomplete.base.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -7,7 +7,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 /** Service contract for make-model autocomplete component.*/
 export interface MakeModelAutocompleteServiceContract {
   /** Gets the detailed car list. */
-  getDetailedCars$(): Observable<DetailedCar[]>;
+  getSimpleCars$(): Observable<SimpleCar[]>;
 }
 
 /** Component for Sunrise make & model autocomplete. */
@@ -24,10 +24,11 @@ export interface MakeModelAutocompleteServiceContract {
   ],
 })
 export class MakeModelAutocompleteComponent extends MakeModelAutocompleteBaseComponent {
+  /** REVIEW-COMMENT: The make-model autocomplete service. */
   @Input() public service: MakeModelAutocompleteServiceContract;
 
   /** Gets master inventory list */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.service.getDetailedCars$();
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.service.getSimpleCars$();
   }
 }

@@ -21,7 +21,9 @@ import { renderDelay } from '@helpers/rxjs';
   styleUrls: ['./auction-blocklist-new-entry.component.scss'],
 })
 export class AuctionBlocklistNewEntryComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: The auction blocklist new entry service. */
   @Input() service: AuctionBlocklistNewEntryService;
+  /** REVIEW-COMMENT: Output when a new list of auction blocklist entry is created. */
   @Output() newEntries = new EventEmitter<AuctionBlocklistEntry[]>();
 
   private readonly noExpireDefaultTime = DateTime.local(9999, 12, 31);

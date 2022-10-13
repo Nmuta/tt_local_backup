@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
@@ -28,9 +29,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/inventory")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.Player, Topic.Inventory)]
+    [StandardTags(Title.Steelhead, Target.Player, Topic.Inventory)]
     public class InventoryController : V2SteelheadControllerBase
     {
         private const int MaxProfileResults = 50;
@@ -82,24 +91,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 }
             }
 
-            // TODO uncomment below when Steelhead Pegasus item data is ready.
             var getPlayerInventory = GetInventory();
-            //var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
+            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
 
-            await Task.WhenAll(getPlayerInventory/*, getMasterInventory*/).ConfigureAwait(true);
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
             var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            //var masterInventory = await getMasterInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
 
             if (playerInventory == null)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.");
             }
 
-            //playerInventory.SetItemDescriptions(
-            //    masterInventory,
-            //    $"XUID: {xuid}",
-            //    this.loggingService);
+            playerInventory.SetItemDescriptions(
+                masterInventory,
+                $"XUID: {xuid}",
+                this.loggingService);
 
             return this.Ok(playerInventory);
         }

@@ -10,8 +10,8 @@ export enum InventoryOption {
  * @deprecated Use GameTitle + angular pipe
  */
 export enum GameTitleName {
+  FM8 = 'Forza Motorsport',
   FH5 = 'Forza Horizon 5',
-  FM8 = 'Forza Motorsport 8',
   Street = 'Forza Street',
   FH4 = 'Forza Horizon 4',
   FM7 = 'Forza Motorsport 7',
@@ -23,8 +23,8 @@ export enum GameTitleName {
  * @deprecated Use GameTitle + angular pipe
  */
 export enum GameTitleAbbreviation {
+  FM8 = 'FM',
   FH5 = 'FH5',
-  FM8 = 'FM', // Left as steelhead until official name announced.
   Street = 'Street',
   FH4 = 'FH4',
   FM7 = 'FM7',
@@ -49,8 +49,8 @@ export enum GameTitleCodeName {
 
 /** Enum for game title names. lowerCamel. */
 export enum GameTitle {
-  FH5 = 'woodstock',
   FM8 = 'steelhead',
+  FH5 = 'woodstock',
   Street = 'gravity',
   FH4 = 'sunrise',
   FM7 = 'apollo',
@@ -93,6 +93,44 @@ export enum DeviceType {
   XboxOne = 'XboxOne',
   XboxCloud = 'XboxCloud',
   XboxSeriesXS = 'XboxSeriesXS',
+}
+
+/** Enum for notification types. */
+export enum NotificationType {
+  CommunityMessage = 'CommunityMessage',
+  PatchNotes = 'PatchNotes',
+}
+
+/** Enum for localization categories. */
+export enum LocalizationCategory {
+  MOTD = 'MOTD', //Casing matches that of Service Enum 'LocalizationCategory'. Do not change.
+  PatchNotes = 'PatchNotes',
+  Notifications = 'Notifications',
+  Gifts = 'Gifts',
+}
+
+/** Enum for localization categories language + locales. */
+export enum SupportedLocalizationLanguageCodes {
+  cs_CZ = 'cs-CZ',
+  de_DE = 'de-DE',
+  en_US = 'en-US',
+  es_ES = 'es-ES',
+  es_MX = 'es-MX',
+  fi_FI = 'fi-FI',
+  fr_FR = 'fr-FR',
+  hu_HU = 'hu-HU',
+  it_IT = 'it-IT',
+  ja_JP = 'ja-JP',
+  ko_KR = 'ko-KR',
+  nb_NO = 'nb-NO',
+  nl_NL = 'nl-NL',
+  pl_PL = 'pl-PL',
+  pt_BR = 'bt-BR',
+  ru_RU = 'ru-RU',
+  sv_SE = 'sv-SE',
+  tr_TR = 'tr-TR',
+  zh_CN = 'zh-CN',
+  zh_TW = 'zh-TW',
 }
 
 /** Enum for Steward error codes. */

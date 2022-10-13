@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment } from '@environments/environment';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Store } from '@ngxs/store';
@@ -15,9 +14,7 @@ import { renderDelay } from '@helpers/rxjs';
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss'],
 })
-export class UserDetailsComponent extends BaseComponent implements OnInit {
-  public isProduction: boolean;
-
+export class UserDetailsComponent extends BaseComponent {
   public lookupType: keyof IdentityQueryBetaIntersection;
   public lookupList: string[] = [];
   public identity: AugmentedCompositeIdentity;
@@ -117,12 +114,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
       .subscribe(() => {
         window.dispatchEvent(new Event('resize'));
       });
-  }
-
-  /** Initialization hook. */
-  public ngOnInit(): void {
-    // TODO: Remove variable when steelhead becomes a permanent route in the app.
-    this.isProduction = environment.production;
   }
 
   /** Handles the identity-found */

@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockElementRef } from '@mocks/element-ref.mock';
 import { ClickStopDirective } from './click-stop.directive';
 
+/** Click stop container component. */
 @Component({
   template: `<span id="container-element" clickStop>Foo Bar</span>`,
 })

@@ -7,14 +7,14 @@ import {
   AuctionStatus,
   DefaultAuctionFilters,
 } from '@models/auction-filters';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { cloneDeep, keys } from 'lodash';
 import { Observable } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
 export type MakeModelFilterGroup = {
   category: string;
-  items: DetailedCar[];
+  items: SimpleCar[];
 };
 
 /** A base component for auctions filters. */
@@ -22,6 +22,7 @@ export type MakeModelFilterGroup = {
   template: '',
 })
 export abstract class AuctionsFiltersBaseComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: Output for new auction filter search. */
   @Output() public newAuctionFilterSearch = new EventEmitter<AuctionFilters>();
 
   public statusOptions = keys(AuctionStatus) as AuctionStatus[];
@@ -48,11 +49,11 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
     super();
   }
 
-  public abstract getDetailedCars$(): Observable<DetailedCar[]>;
+  public abstract getSimpleCars$(): Observable<SimpleCar[]>;
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.getDetailedCars$()
+    this.getSimpleCars$()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(cars => {
         this.makeModelFilterGroups = this.buildMatAutocompleteState(cars);
@@ -70,7 +71,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
-  public buildMatAutocompleteState(cars: DetailedCar[]): MakeModelFilterGroup[] {
+  public buildMatAutocompleteState(cars: SimpleCar[]): MakeModelFilterGroup[] {
     const makeModelFilterGroups: MakeModelFilterGroup[] = [];
 
     // make
@@ -103,7 +104,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
 
   /** Outputs new auction search filters. */
   public searchFilters(): void {
-    const carFilter = this.formControls.makeModelInput.value as DetailedCar;
+    const carFilter = this.formControls.makeModelInput.value as SimpleCar;
     const cardId = !!carFilter ? (!!carFilter.id ? carFilter.id : undefined) : undefined;
     const makeId = !!carFilter ? (!carFilter.id ? carFilter.makeId : undefined) : undefined;
 
@@ -116,8 +117,17 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Mat autocomplete display */
-  public autoCompleteDisplayFn(item: DetailedCar): string {
-    return !!item ? (!!item?.id ? `${item.make} ${item.model}` : item.make) : '';
+  public autoCompleteDisplayFn(item: SimpleCar): string {
+    if (!item) {
+      return '';
+    }
+
+    // If item doesn't an id, then just show full make
+    if (!item?.id) {
+      return item.make;
+    }
+
+    return `${item.make} ${item.model}`;
   }
 
   /** Clears the make model input and resubmits the search filters. */
@@ -127,7 +137,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Autocomplete filter function. */
-  private filterGroup(value: string | DetailedCar): MakeModelFilterGroup[] {
+  private filterGroup(value: string | SimpleCar): MakeModelFilterGroup[] {
     if (value) {
       if (typeof value !== 'string') {
         return this.makeModelFilterGroups;
@@ -151,7 +161,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
     return this.makeModelFilterGroups;
   }
 
-  private filter(prefix: string, opt: DetailedCar[], value: string): DetailedCar[] {
+  private filter(prefix: string, opt: SimpleCar[], value: string): SimpleCar[] {
     const filterValue = value.toLowerCase();
     const prefixFilterValue = prefix.toLowerCase();
     if (prefixFilterValue.includes(filterValue)) {
@@ -178,7 +188,7 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   }
 
   /** Compares a filter string against an InventoryItem, returning true if the string was found. */
-  private checkFilterAgainstInventoryItem(item: DetailedCar, filter: string): boolean {
+  private checkFilterAgainstInventoryItem(item: SimpleCar, filter: string): boolean {
     return item?.make.toLowerCase().includes(filter) || item?.model.toLowerCase().includes(filter);
   }
 }

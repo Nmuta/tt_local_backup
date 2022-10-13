@@ -373,7 +373,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [HttpPost("ban/{banEntryId}/expire")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -401,7 +402,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [HttpPost("ban/{banEntryId}/delete")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -580,7 +582,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
-            UserRole.SupportAgentNew)]
+            UserRole.SupportAgentNew,
+            UserRole.CommunityManager)]
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]

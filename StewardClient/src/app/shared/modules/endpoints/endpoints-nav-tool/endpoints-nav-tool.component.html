@@ -1,0 +1,92 @@
+<button mat-button [matMenuTriggerFor]="quickOptions" [disabled]="disabled">
+  <div class="container">
+    <div class="summary" [matTooltip]="allUpTooltip" matTooltipClass="sf-tooltip-multiline">
+      <div class="row" *ngFor="let line of endpointStateGrid">
+        <div *ngFor="let entry of line.entries" [ngClass]="entry.classes"></div>
+      </div>
+    </div>
+    <span class="label" [matTooltip]="item.tooltipDescription">{{ item.title }}</span>
+  </div>
+</button>
+<mat-menu #quickOptions class="sf-menu-relative-container">
+  <help-popover-icon
+    class="sf-menu-top-right"
+    clickStop
+    cardTitle="Current Endpoints"
+    cardSubtitle="Navbar widget"
+    confluenceName="current-endpoints-navbar-widget"
+  >
+    <p>The colored tiles on the left of this widget summarize the currently selected endpoints.</p>
+    <p>
+      Each row represents a title's endpoints. Hovering over the tiles shows a summary of the
+      current endpoints. This order matches the order of the tile rows.
+    </p>
+    <p>
+      The smaller tiles represent endpoints. Each column is a single type of endpoint (Retail,
+      Studio, Flight, etc).
+    </p>
+    <ul class="sf-no-bullet">
+      <li>
+        <span class="inline-summary"><span class="entry active retail"></span></span> a selected
+        Retail endpoint
+      </li>
+      <li>
+        <span class="inline-summary"><span class="entry active"></span></span> a selected Studio
+        endpoint
+      </li>
+      <li>
+        <span class="inline-summary"><span class="entry active flight"></span></span> a selected
+        Flight endpoint
+      </li>
+      <li>
+        <span class="inline-summary"><span class="entry"></span></span> endpoint is not selected
+      </li>
+    </ul>
+  </help-popover-icon>
+  <div class="menu-header">
+    <div class="toggle-group">
+      <label>Forza Motorsport</label>
+      <mat-button-toggle-group
+        [(ngModel)]="steelheadEndpointKey"
+        (ngModelChange)="setSteelheadEndpoint($event)"
+      >
+        <mat-button-toggle *ngFor="let key of steelheadEndpointKeyList" [value]="key">{{
+          key
+        }}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="toggle-group">
+      <label>Forza Horizon 5</label>
+      <mat-button-toggle-group
+        [(ngModel)]="woodstockEndpointKey"
+        (ngModelChange)="setWoodstockEndpoint($event)"
+      >
+        <mat-button-toggle *ngFor="let key of woodstockEndpointKeyList" [value]="key">{{
+          key
+        }}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+  <hr />
+  <a
+    *ngFor="let optionSet of quickEndpointOptions"
+    [matTooltip]="optionSet.tooltip"
+    matTooltipPosition="right"
+    (click)="setAllEndpoints(optionSet)"
+    mat-menu-item
+    [disabled]="!optionSet.isPossible"
+  >
+    <mat-icon>{{ optionSet.icon ?? '' }}</mat-icon
+    >{{ optionSet.name }}
+  </a>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+    queryParamsHandling="preserve"
+    mat-menu-item
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Configure manually in the settings menu"
+    matTooltipPosition="right"
+  >
+    <mat-icon>engineering</mat-icon>Configure Manually
+  </a>
+</mat-menu>

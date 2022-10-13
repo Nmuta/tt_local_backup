@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SteelheadLiveOpsContent;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 {
@@ -34,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// </summary>
         Task<Guid> AddStringToLocalizeAsync(LocalizedStringData data, string endpoint);
 
-        // <summary>
+        /// <summary>
         ///     Retrieves a collection of supported locales.
         /// </summary>
         Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync();
@@ -42,6 +43,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Gets localized strings.
         /// </summary>
-        Task<Dictionary<Guid, List<string>>> GetLocalizedStringsAsync();
+        Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync();
     }
 }

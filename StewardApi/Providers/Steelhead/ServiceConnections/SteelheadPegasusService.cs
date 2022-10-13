@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
-using SteelheadContent;
+using SteelheadLiveOpsContent;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
-using SupportedLocale = Turn10.LiveOps.StewardApi.Contracts.Steelhead.Pegasus.SupportedLocale;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {
@@ -73,18 +72,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync()
         {
             var locales =
-                await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadContent.SupportedLocale>>(
-                    SteelheadContent.CMSFileNames.SupportedLocales,
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadLiveOpsContent.SupportedLocale>>(
+                    SteelheadLiveOpsContent.CMSFileNames.SupportedLocales,
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
-            return this.mapper.Map<IEnumerable<SupportedLocale>>(locales);
+            return locales;
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, List<string>>> GetLocalizedStringsAsync()
+        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync()
         {
-            var results = new Dictionary<Guid, List<string>>();
+            var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
             var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
             foreach (var supportedLocale in supportedLocales)
@@ -92,32 +91,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 var filename = $"{LocalizationFileAntecedent}{supportedLocale.Locale}";
 
                 var localizedStrings = await this.cmsRetrievalHelper
-                    .GetCMSObjectAsync<Dictionary<Guid, SteelheadContent.LocalizedString>>(
+                    .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
                         filename,
                         this.cmsEnvironment,
                         slot: "daily").ConfigureAwait(false);
 
-                // No translations found for this language code.
-                if (localizedStrings == null)
-                {
-                    continue;
-                }
-
                 foreach (var locStringKey in localizedStrings.Keys)
                 {
-                    // Untranslated values start with antecedent "[Not Translated]".
-                    if (localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture))
+                    var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+
+                    var localizedResult = new LiveOpsContracts.LocalizedString()
                     {
-                        continue;
-                    }
+                        Message = localizedStrings[locStringKey].LocString,
+                        Category = localizedStrings[locStringKey].Category,
+                        LanguageCode = supportedLocale.Locale,
+                        IsTranslated = isTranslated,
+                    };
+
 
                     if (!results.ContainsKey(locStringKey))
                     {
                         // Create if not exists in dictionary
-                        results[locStringKey] = new List<string>();
+                        results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
                     }
 
-                    results[locStringKey].Add(supportedLocale.Locale);
+                    results[locStringKey].Add(localizedResult);
                 }
             }
 
@@ -131,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<IEnumerable<CarClass>> GetCarClasses()
             {
-                var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadContent.CarClass>>(
+                var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadLiveOpsContent.CarClass>>(
                     CMSFileNames.CarClasses,
                     this.cmsEnvironment).ConfigureAwait(false);
                 var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
@@ -178,7 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<IEnumerable<ListCarMake>> GetCarMakes()
             {
-                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(CMSFileNames.CarMakes, this.cmsEnvironment).ConfigureAwait(false);
+                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment).ConfigureAwait(false);
                 this.refreshableCacheStore.PutItem(carMakesKey, TimeSpan.FromDays(1), pegasusResults);
 
                 return pegasusResults;

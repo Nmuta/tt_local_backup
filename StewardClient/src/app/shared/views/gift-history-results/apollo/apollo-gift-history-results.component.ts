@@ -12,10 +12,15 @@ import { DateTime } from 'luxon';
   templateUrl: './apollo-gift-history-results.component.html',
 })
 export class ApolloGiftHistoryResultsComponent {
+  /** REVIEW-COMMENT: Selected player. */
   @Input() public selectedPlayer: IdentityResultAlpha;
+  /** REVIEW-COMMENT: Selected lsp group. */
   @Input() public selectedGroup: LspGroup;
+  /** REVIEW-COMMENT: Is using player identites. */
   @Input() public usingPlayerIdentities: boolean;
+  /** REVIEW-COMMENT: Gift start date. */
   @Input() public startDate: DateTime;
+  /** REVIEW-COMMENT: Gift end date.  */
   @Input() public endDate: DateTime;
 
   public service: GiftHistoryResultsServiceContract;

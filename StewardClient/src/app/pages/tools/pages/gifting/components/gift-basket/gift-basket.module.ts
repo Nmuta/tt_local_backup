@@ -23,6 +23,8 @@ import { SteelheadGiftBasketComponent } from './steelhead/steelhead-gift-basket.
 import { WoodstockGiftBasketComponent } from './woodstock/woodstock-gift-basket.component';
 import { MatIconModule } from '@angular/material/icon';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 /** The gift basket module. */
 @NgModule({
@@ -55,6 +57,8 @@ import { HelpModule } from '@shared/modules/help/help.module';
     GiftingResultModule,
     MatIconModule,
     HelpModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
   ],
   exports: [
     WoodstockGiftBasketComponent,

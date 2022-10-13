@@ -30,6 +30,13 @@ import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-dow
 import { SteelheadUgcDetailsComponent } from './pages/steelhead/steelhead-ugc-details.component';
 import { SteelheadLookupComponent } from './pages/steelhead-lookup/steelhead-lookup.component';
 import { SteelheadRedirectComponent } from './pages/steelhead-redirect/steelhead-redirect.component';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
+import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
+import { MatSelectModule } from '@angular/material/select';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -70,6 +77,13 @@ import { SteelheadRedirectComponent } from './pages/steelhead-redirect/steelhead
     FeatureUgcModalModule,
     PipesModule,
     UgcDownloadButtonModule,
+    VerifyActionButtonModule,
+    VerifyCheckboxModule,
+    MatCheckboxModule,
+    DirectivesModule,
+    StateManagersModule,
+    StandardFormModule,
+    MatSelectModule,
   ],
 })
 export class UgcDetailsModule {}

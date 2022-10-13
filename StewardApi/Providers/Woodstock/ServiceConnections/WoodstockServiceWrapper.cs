@@ -397,11 +397,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             InventoryItemType itemType,
             int itemValue,
+            bool hasExpiration,
+            uint expireTimeSpanInDays,
             string endpoint)
         {
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGiftV2(xuid, itemType.ToString(), itemValue, false, 0).ConfigureAwait(false);
+            await giftingService.AdminSendItemGiftV2(xuid, itemType.ToString(), itemValue, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -409,6 +411,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int groupId,
             InventoryItemType itemType,
             int itemValue,
+            bool hasExpiration,
+            uint expireTimeSpanInDays,
             string endpoint)
         {
             if (groupId == 0 && !this.allowGiftingToAllUsers)
@@ -419,19 +423,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGroupGiftV2(groupId, itemType.ToString(), itemValue, false, 0).ConfigureAwait(false);
+            await giftingService.AdminSendItemGroupGiftV2(groupId, itemType.ToString(), itemValue, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(ulong[] xuids, Guid liveryId, string endpoint)
+        public async Task<ServicesLiveOps.GiftingManagementService.AdminSendLiveryGiftOutput> SendCarLiveryAsync(
+            ulong[] xuids,
+            Guid liveryId,
+            bool hasExpiration,
+            uint expireTimeSpanInDays,
+            string endpoint)
         {
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId, false, 0).ConfigureAwait(false);
+            return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(int groupId, Guid liveryId, string endpoint)
+        public async Task<ServicesLiveOps.GiftingManagementService.AdminSendGroupLiveryGiftOutput> SendCarLiveryAsync(
+            int groupId,
+            Guid liveryId,
+            bool hasExpiration,
+            uint expireTimeSpanInDays,
+            string endpoint)
         {
             if (groupId == 0 && !this.allowGiftingToAllUsers)
             {
@@ -441,7 +455,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId, false, 0).ConfigureAwait(false);
+            return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

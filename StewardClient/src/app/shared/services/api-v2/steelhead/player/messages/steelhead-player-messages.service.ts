@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CommunityMessage } from '@models/community-message';
+import { LocalizedMessage } from '@models/community-message';
 import { PlayerNotification } from '@models/notifications.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
-/** The /v2/title/steelhead/player/{xuid} endpoints. */
+/** The /v2/title/steelhead/player/{xuid}/messages endpoints. */
 @Injectable({
   providedIn: 'root',
 })
@@ -18,20 +18,20 @@ export class SteelheadPlayerMessagesService {
     return this.api.getRequest$(`${this.basePath}/${xuid}/messages`);
   }
 
-  /** Edits a player's community message. */
-  public postEditPlayerCommunityMessage$(
+  /** Edits a player's localized message. */
+  public postEditPlayerLocalizedMessage$(
     xuid: BigNumber,
     notificationId: string,
-    communityMessage: CommunityMessage,
+    localizedMessage: LocalizedMessage,
   ): Observable<void> {
     return this.api.postRequest$<void>(
       `${this.basePath}/${xuid}/messages/${notificationId}`,
-      communityMessage,
+      localizedMessage,
     );
   }
 
-  /** Deletes a player's community message. */
-  public deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
+  /** Deletes a player's localized message. */
+  public deletePlayerLocalizedMessage$(xuid: BigNumber, notificationId: string): Observable<void> {
     return this.api.deleteRequest$<void>(`${this.basePath}/${xuid}/messages/${notificationId}`);
   }
 }

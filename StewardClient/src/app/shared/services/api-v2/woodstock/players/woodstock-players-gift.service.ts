@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
-import { BulkPlayerBulkLiveryGift } from '@models/gift';
+import { WoodstockBulkPlayerBulkLiveryGift } from '@models/woodstock';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { BigNumber } from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -18,10 +18,11 @@ export class WoodstockPlayersGiftService {
     giftReason: string,
     liveryIds: string[],
     xuids: BigNumber[],
+    expireTimeSpanInDays: BigNumber,
   ): Observable<BackgroundJob<unknown>> {
-    const model: BulkPlayerBulkLiveryGift = {
+    const model: WoodstockBulkPlayerBulkLiveryGift = {
       liveryIds,
-      target: { xuids, giftReason },
+      target: { xuids, giftReason, expireTimeSpanInDays },
     };
 
     return this.api.postRequest$(`${this.basePath}/livery/useBackgroundProcessing`, model);

@@ -75,23 +75,12 @@
         <ng-template mat-tab-label>
           <span [matTooltip]="giftingLiveryTooltip">Gift Livery</span>
         </ng-template>
-        <woodstock-gift-livery
-          [playerIdentities]="selectedPlayerIdentities"
-          [lspGroup]="selectedLspGroup"
-          [usingPlayerIdentities]="isUsingPlayerIdentities"
-        ></woodstock-gift-livery>
-      </mat-tab>
-      <!-- TODO: Uncomment once PBI #1262512 is done -->
-      <!-- <mat-tab [disabled]="disableGiftingLiveries">
-        <ng-template mat-tab-label>
-          <span [matTooltip]="giftingLiveryTooltip">Gift Livery</span>
-        </ng-template>
         <woodstock-bulk-gift-livery
           [playerIdentities]="selectedPlayerIdentities"
           [lspGroup]="selectedLspGroup"
           [usingPlayerIdentities]="isUsingPlayerIdentities"
         ></woodstock-bulk-gift-livery>
-      </mat-tab> -->
+      </mat-tab>
       <mat-tab [disabled]="disableGiftingLiveries || disableBulkGiftingLiveries">
         <ng-template mat-tab-label>
           <span [matTooltip]="giftingLiveryTooltip">Gift Special Liveries</span>

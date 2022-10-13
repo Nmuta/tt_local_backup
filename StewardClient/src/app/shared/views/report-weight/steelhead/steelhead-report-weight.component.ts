@@ -12,6 +12,7 @@ import { ReportWeightServiceContract } from '../report-weight.component';
   templateUrl: './steelhead-report-weight.component.html',
 })
 export class SteelheadReportWeightComponent {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() identity: IdentityResultAlpha;
 
   public service: ReportWeightServiceContract;

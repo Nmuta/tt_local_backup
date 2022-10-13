@@ -14,7 +14,9 @@ import { PermissionServiceTool, PermissionsService } from '@services/permissions
   template: '',
 })
 export abstract class ConsolesBaseComponent<T> extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
+  /** REVIEW-COMMENT: If input is disabled. */
   @Input() public disabled: boolean = false;
 
   public consoleDetails: T[];

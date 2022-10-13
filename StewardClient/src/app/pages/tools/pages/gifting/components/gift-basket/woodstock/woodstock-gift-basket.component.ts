@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
-import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -43,15 +43,15 @@ export class WoodstockGiftBasketComponent
 {
   @Select(WoodstockGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FH5;
+  public allowSettingExpireDate = true;
 
   constructor(
     private readonly woodstockService: WoodstockService,
     private readonly snackBar: MatSnackBar,
     backgroundJobService: BackgroundJobService,
     store: Store,
-    formBuilder: FormBuilder,
   ) {
-    super(backgroundJobService, formBuilder, store);
+    super(backgroundJobService, store);
   }
 
   /** Angular lifecycle hook. */
@@ -84,6 +84,7 @@ export class WoodstockGiftBasketComponent
     const giftBasketItems = this.giftBasket.data;
     return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
+      expireTimeSpanInDays: this.getExpireDateInDays(),
       inventory: {
         creditRewards: giftBasketItems
           .filter(item => item.itemType === 'creditRewards')

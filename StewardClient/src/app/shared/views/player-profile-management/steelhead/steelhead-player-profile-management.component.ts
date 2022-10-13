@@ -14,8 +14,11 @@ import { PlayerProfileManagementServiceContract } from '../player-profile-manage
   templateUrl: './steelhead-player-profile-management.component.html',
 })
 export class SteelheadPlayerProfileManagementComponent {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
+  /** REVIEW-COMMENT: External profile id. */
   @Input() public externalProfileId: GuidLikeString;
+  /** REVIEW-COMMENT: Output when external profile id is updated. */
   @Output() public externalProfileIdUpdated = new EventEmitter<GuidLikeString>();
 
   public service: PlayerProfileManagementServiceContract;

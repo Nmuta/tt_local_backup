@@ -159,13 +159,39 @@
       </ng-container>
     </ng-container>
   </mat-card-content>
-  <mat-card-actions *ngIf="!isLoading && !loadError && !giftResponse">
+  <mat-card-actions class="sf-actions" *ngIf="!isLoading && !loadError && !giftResponse">
     <div class="send-gift-basket-container">
       <p *ngIf="ignoreMaxCreditLimit">
         <b>Notice: </b>You are allowed to exceed the typical currency maximum of 500,000,000.
       </p>
       <form [formGroup]="sendGiftForm" (ngSubmit)="sendGiftBasket()" class="sf-wrapper">
         <div class="sf-horizontal">
+          <ng-container *ngIf="allowSettingExpireDate">
+            <mat-checkbox
+              matTooltip="Adds an expiration date"
+              aria-label="Adds an expiration date"
+              formControlName="hasExpirationDate"
+              (change)="initExpireDate()"
+            >
+              Add Expiration Date
+            </mat-checkbox>
+            <mat-form-field appearance="fill">
+              <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
+              <input
+                matInput
+                [disabled]="!formControls.hasExpirationDate.value"
+                [matDatepicker]="picker"
+                formControlName="expireDate"
+                [matDatepickerFilter]="dateTimeFutureFilter"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-hint>Expire time must be in the future</mat-hint>
+              <mat-error *ngIf="formControls.expireDate?.hasError('is-after')">
+                Expiry time must be in the future
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
           <mat-form-field appearance="fill">
             <mat-label>Gift Reason</mat-label>
             <mat-select formControlName="giftReason" (selectionChange)="giftReasonChanged($event)">
@@ -186,6 +212,56 @@
             <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
           </button>
         </div>
+        <!-- <div class="sf-horizontal">
+        <ng-container *ngIf="allowSettingExpireDate">
+          <mat-form-field class="sf-9-char">
+            <mat-checkbox
+              matTooltip="Adds an expiration date"
+              aria-label="Adds an expiration date"
+              formControlName="hasExpirationDate"
+              (change)="initExpireDate()"
+            >
+              Add Expiration Date
+            </mat-checkbox>
+          </mat-form-field>
+          <mat-form-field class="sf-9-char">
+              <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
+              <input
+                matInput
+                [disabled]="!formControls.hasExpirationDate.value"
+                [matDatepicker]="picker"
+                formControlName="expireDate"
+                [matDatepickerFilter]="dateTimeFutureFilter"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-hint>Expire time must be in the future</mat-hint>
+              <mat-error *ngIf="formControls.expireDate?.hasError('is-after')">
+                Expiry time must be in the future
+              </mat-error>
+          </mat-form-field>
+        </ng-container>
+        
+          <mat-form-field appearance="fill">
+            <mat-label>Gift Reason</mat-label>
+            <mat-select formControlName="giftReason" (selectionChange)="giftReasonChanged($event)">
+              <mat-option *ngFor="let reason of giftReasons" [value]="reason">
+                {{ reason }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            class="send-gift-basket"
+            color="primary"
+            type="submit"
+            [disabled]="!isGiftBasketReady()"
+          >
+            Send Gift
+            <span *ngIf="usingPlayerIdentities">To Player(s)</span>
+            <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
+          </button>
+        </div> -->
       </form>
     </div>
   </mat-card-actions>

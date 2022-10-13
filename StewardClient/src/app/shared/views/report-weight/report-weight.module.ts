@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SteelheadReportWeightComponent } from './steelhead/steelhead-report-weight.component';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 
 /** Module for getting and setting a player's report weight. */
 @NgModule({
@@ -41,6 +42,7 @@ import { SteelheadReportWeightComponent } from './steelhead/steelhead-report-wei
     MatFormFieldModule,
     MatSelectModule,
     MatCardModule,
+    StateManagersModule,
   ],
   exports: [WoodstockReportWeightComponent, SteelheadReportWeightComponent],
 })

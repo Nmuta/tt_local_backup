@@ -5,6 +5,7 @@
       <mat-tab label="User Details">
         <div class="tab-container">
           <steelhead-user-flags [identity]="identity"></steelhead-user-flags>
+          <steelhead-player-game-details [identity]="identity"></steelhead-player-game-details>
           <steelhead-report-weight [identity]="identity"></steelhead-report-weight>
           <steelhead-ban-history [xuid]="identity.xuid"></steelhead-ban-history>
           <entitlements [identity]="identity"></entitlements>

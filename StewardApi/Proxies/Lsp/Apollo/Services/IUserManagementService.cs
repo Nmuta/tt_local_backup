@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services
     public interface IUserManagementService
     {
         /// <summary>
-        ///     Gets users for a user group. Index starts at 1 (Investigation ongoing to check if it being 1-based index is expected behavior #1292616).
+        ///     Gets users for a user group.
         /// </summary>
         Task<GetUserGroupUsersOutput> GetUserGroupUsers(int userGroupId, int startAt, int maxResults);
 

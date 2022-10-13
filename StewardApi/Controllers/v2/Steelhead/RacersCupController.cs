@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
@@ -28,9 +29,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/racersCup")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.MotorsportDesigner,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Topic.Calendar, Topic.RacersCup, Target.Details, Dev.ReviseTags)]
+    [StandardTags(Title.Steelhead, Topic.Calendar, Topic.RacersCup, Target.Details, Dev.ReviseTags)]
     public class RacersCupController : V2SteelheadControllerBase
     {
         private const int GroupLookupMaxResults = 1000;
@@ -53,10 +57,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a Racer Cup schedule.
         /// </summary>
         [HttpGet("schedule")]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.MotorsportDesigner,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
         public async Task<IActionResult> GetCmsRacersCupSchedule(
             [FromQuery] string pegasusEnvironment,
@@ -107,10 +107,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a user's Racer Cup schedule.
         /// </summary>
         [HttpGet("player/{xuid}/schedule")]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.MotorsportDesigner,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
         public async Task<IActionResult> GetCmsRacersCupScheduleForUser(
             ulong xuid,

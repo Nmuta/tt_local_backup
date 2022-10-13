@@ -22,16 +22,9 @@
 
   <div class="steward-layout-pane steward-layout-fill reference-inventory">
     <div>
-      <mat-card class="manage-user-group-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>manage_accounts</mat-icon>
-          <mat-card-title>User Group Management</mat-card-title>
-          <mat-card-subtitle>Apollo</mat-card-subtitle>
-        </mat-card-header>
-        <apollo-list-users-in-user-group
-          [userGroup]="selectedUserGroup"
-        ></apollo-list-users-in-user-group>
-      </mat-card>
+      <apollo-list-users-in-user-group
+        [userGroup]="selectedUserGroup"
+      ></apollo-list-users-in-user-group>
     </div>
   </div>
 </div>

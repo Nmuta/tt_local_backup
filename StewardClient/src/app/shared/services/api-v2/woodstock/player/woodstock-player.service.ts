@@ -6,6 +6,7 @@ import { HasPlayedRecord } from '@models/loyalty-rewards';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
+import { PlayerGameDetails } from '@models/player-game-details.model';
 
 /** The /v2/woodstock/player endpoints. */
 @Injectable({
@@ -57,5 +58,10 @@ export class WoodstockPlayerService {
       gameTitles,
       params,
     );
+  }
+
+  /** Gets user game details. */
+  public getUserGameDetails$(xuid: BigNumber): Observable<PlayerGameDetails> {
+    return this.api.getRequest$<PlayerGameDetails>(`${this.basePath}/xuid/${xuid}/gamedetails`);
   }
 }

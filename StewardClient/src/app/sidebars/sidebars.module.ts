@@ -26,6 +26,9 @@ import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { ChangelogComponent } from './changelog/changelog.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { ChangelogGroupComponent } from './changelog/changelog-group/changelog-group.component';
+import { ChangelogTagDetailsComponent } from './changelog/changelog-tag-details/changelog-tag-details.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -59,6 +62,7 @@ export const sidebarRoutes = [
     NotificationsComponent,
     ChangelogComponent,
     ChangelogGroupComponent,
+    ChangelogTagDetailsComponent,
   ],
   imports: [
     ChangelogModule,
@@ -81,8 +85,10 @@ export const sidebarRoutes = [
     MatSelectModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    MatChipsModule,
     RouterModule.forChild(sidebarRoutes),
     ThemeModule,
+    PipesModule,
   ],
   exports: [RouterModule],
 })

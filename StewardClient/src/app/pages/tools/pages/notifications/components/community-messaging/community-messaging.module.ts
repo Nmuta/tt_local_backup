@@ -27,7 +27,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-community-messaging.component';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
-import { SteelheadCommunityMessagingComponent } from './steelhead/steelhead-community-messaging.component';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 
@@ -36,7 +35,6 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
   declarations: [
     SunriseCommunityMessagingComponent,
     WoodstockCommunityMessagingComponent,
-    SteelheadCommunityMessagingComponent,
     NewCommunityMessageComponent,
   ],
   imports: [
@@ -72,7 +70,6 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
   exports: [
     SunriseCommunityMessagingComponent,
     WoodstockCommunityMessagingComponent,
-    SteelheadCommunityMessagingComponent,
     NewCommunityMessageComponent,
   ],
 })

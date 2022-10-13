@@ -1,0 +1,30 @@
+<ng-container *ngIf="!!carIdLookup">
+  <ng-container *waitForMonitor="getActionMonitor">
+    <model-dump #source [model]="carDetails">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>minor_crash</mat-icon>
+          <mat-card-title>Car Details</mat-card-title>
+          <mat-card-subtitle>Woodstock | {{ carSubtitle }}</mat-card-subtitle>
+        </mat-card-header>
+        <model-dump-humanize-table
+          [values]="source.processedModel.extractedStrings.all"
+        ></model-dump-humanize-table>
+        <model-dump-simple-table
+          [values]="source.processedModel.extractedNumbers.ids"
+        ></model-dump-simple-table>
+        <model-dump-number-table
+          [values]="source.processedModel.extractedNumbers.other"
+        ></model-dump-number-table>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>flag</mat-icon>
+          <mat-card-title>Car Flags</mat-card-title>
+          <mat-card-subtitle>Woodstock | {{ carSubtitle }}</mat-card-subtitle>
+        </mat-card-header>
+        <model-dump-flags></model-dump-flags>
+      </mat-card>
+    </model-dump>
+  </ng-container>
+</ng-container>

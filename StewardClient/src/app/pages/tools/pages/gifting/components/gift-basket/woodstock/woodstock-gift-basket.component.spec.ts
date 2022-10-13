@@ -10,6 +10,7 @@ import { WoodstockService } from '@services/woodstock';
 import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
 import faker from '@faker-js/faker';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
 
 describe('WoodstockGiftBasketComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
@@ -181,6 +182,7 @@ describe('WoodstockGiftBasketComponent', () => {
           quickChatLines: [],
           emotes: [],
         },
+        expireTimeSpanInDays: fakeBigNumber(),
       });
 
       expect(mockWoodstockService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
@@ -203,6 +205,7 @@ describe('WoodstockGiftBasketComponent', () => {
           quickChatLines: [],
           emotes: [],
         },
+        expireTimeSpanInDays: fakeBigNumber(),
       });
 
       expect(mockWoodstockService.postGiftLspGroup$).toHaveBeenCalled();

@@ -9,5 +9,6 @@ import { RacersCupMeta } from '../racers-cup-calendar/racers-cup-calendar.compon
   styleUrls: ['./racers-cup-event-card.component.scss'],
 })
 export class RacersCupEventCardComponent {
+  /** REVIEW-COMMENT: Calendar event. */
   @Input() public event: CalendarEvent<RacersCupMeta>;
 }

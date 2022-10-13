@@ -24,6 +24,8 @@ import { WoodstockBulkGiftLiveryComponent } from './woodstock-bulk-gift-livery.c
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
 import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-player-gift.service.mock';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
+import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service.mock';
+import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service';
 
 describe('WoodstockGiftLiveryComponent', () => {
   let fixture: ComponentFixture<WoodstockBulkGiftLiveryComponent>;
@@ -32,6 +34,7 @@ describe('WoodstockGiftLiveryComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
   let mockWoodstockService: WoodstockService;
   let mockPlayerGiftService: WoodstockPlayersGiftService;
+  let mockGroupGiftService: WoodstockGroupGiftService;
 
   const liveryIds = [faker.datatype.uuid(), faker.datatype.uuid()];
 
@@ -48,6 +51,7 @@ describe('WoodstockGiftLiveryComponent', () => {
       providers: [
         createMockBackgroundJobService(),
         createMockWoodstockPlayersGiftService(),
+        createMockWoodstockGroupGiftService(),
         createMockWoodstockService(),
       ],
     }).compileComponents();
@@ -58,6 +62,7 @@ describe('WoodstockGiftLiveryComponent', () => {
 
     mockBackgroundJobService = TestBed.inject(BackgroundJobService);
     mockPlayerGiftService = TestBed.inject(WoodstockPlayersGiftService);
+    mockGroupGiftService = TestBed.inject(WoodstockGroupGiftService);
     mockWoodstockService = TestBed.inject(WoodstockService);
   }));
 
@@ -73,7 +78,7 @@ describe('WoodstockGiftLiveryComponent', () => {
     });
 
     it('should call unriseService.getPlayerUgcItem$ with correct parmas', () => {
-      component.getLivery$(liveryIds[0]);
+      component.service.getLivery$(liveryIds[0]);
 
       expect(mockWoodstockService.getPlayerUgcItem$).toHaveBeenCalledWith(
         liveryIds[0],
@@ -85,6 +90,7 @@ describe('WoodstockGiftLiveryComponent', () => {
   describe('Method: giftLiveriesToPlayers$', () => {
     const xuids = [fakeBigNumber(), fakeBigNumber(), fakeBigNumber()];
     const giftReason = faker.random.words(5);
+    const expireTimeSpanInDays = fakeBigNumber();
 
     beforeEach(() => {
       mockPlayerGiftService.giftLiveriesByXuids$ = jasmine
@@ -94,8 +100,8 @@ describe('WoodstockGiftLiveryComponent', () => {
 
     describe('If xuid list provided is null', () => {
       it('should throw error', () => {
-        component
-          .giftLiveriesToPlayers$(liveryIds, null, giftReason)
+        component.service
+          .giftLiveriesToPlayers$(liveryIds, null, giftReason, expireTimeSpanInDays)
           .pipe(
             take(1),
             catchError(_error => {
@@ -113,8 +119,8 @@ describe('WoodstockGiftLiveryComponent', () => {
 
     describe('If xuid list provided length is 0', () => {
       it('should throw error', () => {
-        component
-          .giftLiveriesToPlayers$(liveryIds, [], giftReason)
+        component.service
+          .giftLiveriesToPlayers$(liveryIds, [], giftReason, expireTimeSpanInDays)
           .pipe(
             take(1),
             catchError(_error => {
@@ -132,59 +138,71 @@ describe('WoodstockGiftLiveryComponent', () => {
 
     describe('If playerIdentities is valid', () => {
       it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
-        component.giftLiveriesToPlayers$(liveryIds, xuids, giftReason);
+        component.service.giftLiveriesToPlayers$(
+          liveryIds,
+          xuids,
+          giftReason,
+          expireTimeSpanInDays,
+        );
 
         expect(mockPlayerGiftService.giftLiveriesByXuids$).toHaveBeenCalledWith(
           giftReason,
           liveryIds,
           xuids,
+          expireTimeSpanInDays,
         );
       });
     });
   });
 
-  // TODO: Uncomment and fix once PBI #1262512 is done
-  // describe('Method: giftLiveryToLspGroup$', () => {
-  //   const lspGroup = { id: fakeBigNumber(), name: faker.random.words(2) } as LspGroup;
-  //   const giftReason = faker.random.words(5);
+  describe('Method: giftLiveriesToLspGroup$', () => {
+    const lspGroup = { id: fakeBigNumber(), name: faker.random.words(2) } as LspGroup;
+    const giftReason = faker.random.words(5);
+    const expireTimeSpanInDays = fakeBigNumber();
 
-  //   beforeEach(() => {
-  //     mockWoodstockService.postGiftLiveryToLspGroup$ = jasmine
-  //       .createSpy('postGiftLiveryToLspGroup$')
-  //       .and.returnValue(of());
-  //   });
+    beforeEach(() => {
+      mockGroupGiftService.giftLiveriesByUserGroup$ = jasmine
+        .createSpy('giftLiveriesByUserGroup$')
+        .and.returnValue(of());
+    });
 
-  //   describe('If lsp group provided is null', () => {
-  //     it('should throw error', () => {
-  //       component
-  //         .giftLiveryToLspGroup$(liveryId, null, giftReason)
-  //         .pipe(
-  //           take(1),
-  //           catchError(_error => {
-  //             expect(true).toBeTruthy();
-  //             return EMPTY;
-  //           }),
-  //         )
-  //         .subscribe(() => {
-  //           expect(true).toBeFalsy();
-  //         });
+    describe('If lsp group provided is null', () => {
+      it('should throw error', () => {
+        component.service
+          .giftLiveriesToLspGroup$(liveryIds, null, giftReason, expireTimeSpanInDays)
+          .pipe(
+            take(1),
+            catchError(_error => {
+              expect(true).toBeTruthy();
+              return EMPTY;
+            }),
+          )
+          .subscribe(() => {
+            expect(true).toBeFalsy();
+          });
 
-  //       expect(mockWoodstockService.postGiftLiveryToLspGroup$).not.toHaveBeenCalled();
-  //     });
-  //   });
+        expect(mockGroupGiftService.giftLiveriesByUserGroup$).not.toHaveBeenCalled();
+      });
+    });
 
-  //   describe('If lsp group provided is valid', () => {
-  //     it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
-  //       component.giftLiveryToLspGroup$(liveryId, lspGroup, giftReason);
+    describe('If lsp group provided is valid', () => {
+      it('should call GroupGiftService.giftLiveriesByUserGroup with correct parmas', () => {
+        component.service.giftLiveriesToLspGroup$(
+          liveryIds,
+          lspGroup,
+          giftReason,
+          expireTimeSpanInDays,
+        );
 
-  //       expect(mockWoodstockService.postGiftLiveryToLspGroup$).toHaveBeenCalledWith(
-  //         liveryId,
-  //         lspGroup,
-  //         { giftReason: giftReason } as Gift,
-  //       );
-  //     });
-  //   });
-  // });
+        expect(mockGroupGiftService.giftLiveriesByUserGroup$).toHaveBeenCalledWith(
+          giftReason,
+          liveryIds,
+          lspGroup.id,
+          expireTimeSpanInDays,
+        );
+      });
+    });
+  });
 
   describe('Method: onLiveryIdChange', () => {
     const input = faker.random.word();
@@ -201,7 +219,7 @@ describe('WoodstockGiftLiveryComponent', () => {
         .createSpy('formControls.livery.setErrors')
         .and.callThrough();
 
-      component.getLivery$ = jasmine.createSpy('getLivery$').and.returnValue(of(livery));
+      component.service.getLivery$ = jasmine.createSpy('getLivery$').and.returnValue(of(livery));
       component.getMonitor.monitorSingleFire = jasmine
         .createSpy('getMonitor.monitorSingleFire')
         .and.callThrough();
@@ -220,7 +238,7 @@ describe('WoodstockGiftLiveryComponent', () => {
       it('should not call getLivery$', () => {
         component.onLiveryIdChange(null);
 
-        expect(component.getLivery$).not.toHaveBeenCalled();
+        expect(component.service.getLivery$).not.toHaveBeenCalled();
       });
     });
 
@@ -228,14 +246,16 @@ describe('WoodstockGiftLiveryComponent', () => {
       it('should call getLivery$', () => {
         component.onLiveryIdChange(input);
 
-        expect(component.getLivery$).toHaveBeenCalled();
+        expect(component.service.getLivery$).toHaveBeenCalled();
       });
 
       describe('When getLivery$ throws error', () => {
         const error = { message: faker.random.words(5) };
 
         beforeEach(() => {
-          component.getLivery$ = jasmine.createSpy('getLivery$').and.returnValue(throwError(error));
+          component.service.getLivery$ = jasmine
+            .createSpy('getLivery$')
+            .and.returnValue(throwError(error));
         });
 
         it('should set error on form controls', () => {
@@ -260,10 +280,10 @@ describe('WoodstockGiftLiveryComponent', () => {
 
   describe('Method: sendGiftLivery', () => {
     beforeEach(() => {
-      component.giftLiveriesToPlayers$ = jasmine
+      component.service.giftLiveriesToPlayers$ = jasmine
         .createSpy('giftLiveriesToPlayers$')
         .and.returnValue(of({ jobId: faker.datatype.uuid() } as BackgroundJob<void>));
-      component.giftLiveriesToLspGroup$ = jasmine
+      component.service.giftLiveriesToLspGroup$ = jasmine
         .createSpy('giftLiveriesToLspGroup$')
         .and.returnValue(
           of({
@@ -281,8 +301,8 @@ describe('WoodstockGiftLiveryComponent', () => {
       it('should not call either giftLiveryToPlayers or giftLiveryToLspGroup', () => {
         component.sendGiftLivery();
 
-        expect(component.giftLiveriesToPlayers$).not.toHaveBeenCalled();
-        expect(component.giftLiveriesToLspGroup$).not.toHaveBeenCalled();
+        expect(component.service.giftLiveriesToPlayers$).not.toHaveBeenCalled();
+        expect(component.service.giftLiveriesToLspGroup$).not.toHaveBeenCalled();
       });
     });
 
@@ -301,8 +321,8 @@ describe('WoodstockGiftLiveryComponent', () => {
         it('should call giftLiveryToPlayers$', () => {
           component.sendGiftLivery();
 
-          expect(component.giftLiveriesToPlayers$).toHaveBeenCalled();
-          expect(component.giftLiveriesToLspGroup$).not.toHaveBeenCalled();
+          expect(component.service.giftLiveriesToPlayers$).toHaveBeenCalled();
+          expect(component.service.giftLiveriesToLspGroup$).not.toHaveBeenCalled();
         });
       });
 
@@ -316,8 +336,8 @@ describe('WoodstockGiftLiveryComponent', () => {
         it('should call giftLiveryToLspGroup$', () => {
           component.sendGiftLivery();
 
-          expect(component.giftLiveriesToPlayers$).not.toHaveBeenCalled();
-          expect(component.giftLiveriesToLspGroup$).toHaveBeenCalled();
+          expect(component.service.giftLiveriesToPlayers$).not.toHaveBeenCalled();
+          expect(component.service.giftLiveriesToLspGroup$).toHaveBeenCalled();
         });
       });
     });

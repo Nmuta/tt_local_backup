@@ -13,6 +13,7 @@ import { WoodstockAuctionBlocklistNewEntryService } from './woodstock-auction-bl
   providers: [WoodstockAuctionBlocklistNewEntryService],
 })
 export class WoodstockAuctionBlocklistNewEntryComponent {
+  /** REVIEW-COMMENT: Output when a new list of auction blocklist entry is created. */
   @Output() newEntries = new EventEmitter<AuctionBlocklistEntry[]>();
   public readonly pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.LiveSteward;
   constructor(public service: WoodstockAuctionBlocklistNewEntryService) {}

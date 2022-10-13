@@ -4,6 +4,21 @@
     <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
     <button
+      mat-stroked-button
+      color="primary"
+      class="private-ugc-search-link"
+      (click)="playerDetailsClick()"
+    >
+      <help-popover-icon cardTitle="Search Private UGC">
+        <div>
+          Private UGC can only be viewed per player in the player details tool.<br />
+          Click on this link and navigate to the UGC tab to see content.
+        </div>
+      </help-popover-icon>
+      <span>Looking for private UGC?</span>
+      <div class="player-details-link-with-xuid" *ngIf="!!filterXuid">XUID: {{ filterXuid }}</div>
+    </button>
+    <button
       class="filter-search"
       mat-raised-button
       color="primary"
@@ -18,18 +33,6 @@
       Search
       <button-spinner defaultIcon="search" [monitor]="getMonitor"></button-spinner>
     </button>
-    <help-popover-icon cardTitle="Search Private UGC">
-      <div>Private UGC can only be viewed per player in the player details tool.</div>
-      <button
-        mat-stroked-button
-        color="primary"
-        class="private-ugc-search-link"
-        (click)="playerDetailsClick()"
-      >
-        <span>Player Details Tool</span>
-        <div class="player-details-link-with-xuid" *ngIf="!!filterXuid">XUID: {{ filterXuid }}</div>
-      </button>
-    </help-popover-icon>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="formGroup">

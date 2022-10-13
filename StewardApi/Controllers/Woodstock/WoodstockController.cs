@@ -360,7 +360,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.SupportAgent,
+            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(WoodstockUserFlags))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Group)]
@@ -532,7 +533,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint)
                 .ConfigureAwait(true);
 
-            var cars = await this.itemsProvider.GetCarsAsync().ConfigureAwait(true);
+            var cars = await this.itemsProvider.GetCarsAsync<SimpleCar>().ConfigureAwait(true);
             var carsDict = cars.ToDictionary(car => car.Id);
 
             foreach (var auction in results)
@@ -631,7 +632,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
-            var getCars = this.itemsProvider.GetCarsAsync(WoodstockPegasusSlot.LiveSteward);
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>(WoodstockPegasusSlot.LiveSteward);
             var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
 
             await Task.WhenAll(getBlockList, getCars).ConfigureAwait(true);
@@ -688,7 +689,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets player UGC items.
         /// </summary>
         [HttpGet("storefront/xuid({xuid})")]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
@@ -705,7 +706,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 xuid,
                 typeEnum,
                 endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -724,7 +725,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets UGC item by share code.
         /// </summary>
         [HttpGet("storefront/shareCode({shareCode})")]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcItems(string shareCode, [FromQuery] string ugcType = "Unknown")
@@ -744,7 +745,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 filters,
                 endpoint,
                 includeThumbnails: true);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -763,7 +764,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC livery by ID.
         /// </summary>
         [HttpGet("storefront/livery({id})")]
-        [SwaggerResponse(200, type: typeof(UgcLiveryItem))]
+        [SwaggerResponse(200, type: typeof(WoodstockUgcLiveryItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcLivery(Guid id)
@@ -771,7 +772,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUgcLiveryAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getLivery, getCars).ConfigureAwait(true);
 
@@ -788,7 +789,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC photo by ID.
         /// </summary>
         [HttpGet("storefront/photo({id})")]
-        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [SwaggerResponse(200, type: typeof(WoodstockUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcPhoto(Guid id)
@@ -796,7 +797,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUgcPhotoAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
 
@@ -813,7 +814,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("storefront/tune({id})")]
-        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [SwaggerResponse(200, type: typeof(WoodstockUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcTune(Guid id)
@@ -821,7 +822,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUgcTuneAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
 
             await Task.WhenAll(getTune, getCars).ConfigureAwait(true);
 
@@ -838,7 +839,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("storefront/eventBlueprint({id})")]
-        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [SwaggerResponse(200, type: typeof(WoodstockUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgvEventBlueprint(string id)
@@ -1121,7 +1122,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [HttpPost("ban/{banEntryId}/expire")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -1149,7 +1151,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
         [HttpPost("ban/{banEntryId}/delete")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -1587,13 +1590,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.CommunityManager,
+            UserRole.MediaTeam)]
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] ExpirableGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -1667,7 +1671,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
+        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] ExpirableGift gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;

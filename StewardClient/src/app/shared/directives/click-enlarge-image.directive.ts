@@ -7,7 +7,9 @@ import { ImageModalComponent, ImageModalData } from '@views/image-modal/image-mo
   selector: 'img[enlargeImage]',
 })
 export class ClickEnlargeImageDirective {
+  /** REVIEW-COMMENT: Enlarge image. */
   @Input() enlargeImage: string;
+  /** REVIEW-COMMENT: Image title. */
   @Input() title: string;
 
   constructor(private readonly dialog: MatDialog) {}

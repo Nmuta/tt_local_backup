@@ -13,8 +13,11 @@ import { LeaderboardStatsContract } from '../leaderboard-stats.component';
   templateUrl: './woodstock-leaderboard-stats.component.html',
 })
 export class WoodstockLeaderboardStatsComponent {
+  /** REVIEW-COMMENT: Leaderboard metadata and query. */
   @Input() leaderboard: LeaderboardMetadataAndQuery;
+  /** REVIEW-COMMENT: Leaderboard scores deleted. */
   @Input() scoresDeleted: LeaderboardScore[];
+  /** REVIEW-COMMENT: Output when a leaderboard score is selected. */
   @Output() selectedScore = new EventEmitter<LeaderboardScore>();
 
   public readonly gameTitle = GameTitle.FH5;

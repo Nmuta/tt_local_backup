@@ -8,9 +8,187 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
+      uuid: '69000317-a117-4e05-b94a-fe055e292a7e',
+      shortText: 'Add localized message editing',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5e25ef5c-e537-4fe3-bd50-5f8fc8a7a5f5',
+      shortText: 'Add Current Endpoints navbar widget',
+      longText: [
+        'The Current Endpoints widget allows viewing and adjusting your current endpoint settings in the navbar.',
+        'Includes a toggle for Forza Motorsport and Forza Horizon 5, one-click-switch to Retail and Studio, and a summary grid of the currently active endpoints.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '28aa6c7c-d26c-4a4c-b667-80f768ce24a5',
+      shortText: 'Open Studio endpoints for all user roles',
+      longText: [
+        'To change your environment, click on the settings cogwheel in the top right-hand corner of the Steward app.',
+        'Next, click the dropdown of the title you would like to change and select your new environment.',
+        'Steward will force reload the webpage after selection.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'b3c3079b-43d9-491f-a757-546df2507daa',
+      shortText: 'Add new tool to view full car details',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '738427c1-f87a-40d9-8534-fc0f716aca36',
+      shortText: 'Add report button',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: '10cc76cf-5aae-434c-bc5f-fbe3ddb9209b',
+      shortText: 'No longer load users from large user groups',
+      longText: [
+        'The restricted groups are "All Users", "VIP" and "ULTIMATE_VIP".',
+        'These groups are very large and trying to get their users would take too long.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '87e2f72e-87a2-42e0-8519-b73aaeb87179',
+      shortText: 'Add helper functions to get tool route',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '898e0712-5212-4d3b-9c97-e043617df293',
+      shortText: 'Allow assist toggling to support both on & off selections',
+      longText: [
+        'You can now toggle through 3 different filter options for each assist type.',
+        'Ignore - Shows scores with assist turned on or off.',
+        'On - Shows scores with assist turned on.',
+        'Off - Shows scores with assist turned off.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
+      uuid: 'e7fe305c-5e79-4f92-990d-92e4be5ef5d5',
+      shortText: 'Allow gifting up to 500 players',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '0f0fa8ff-ddaf-474d-8548-292155b160ce',
+      shortText: 'Display CMS information in user details',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '39a2eee0-fb44-4034-8743-32fb47798535',
+      shortText: 'Display first and last login information in user details',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '21cfcc58-6336-4147-b267-e994a7092e06',
+      shortText: 'Add new report button to ugc details',
+      longText: [
+        'Any Ugc can be reported with a mandatory reason coming from a dropdown.',
+        'Reporting a Ugc will send it to Salus for the T10 Enforcement team to review.',
+      ],
+    },
+    {
+      tag: {
+        title: 'all',
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.Gifting],
+      },
+      uuid: '87a7f39a-783c-458b-b92c-186f96cd38d9',
+      shortText: 'Grant various roles access to tools and features',
+      longText: [
+        'Grant player flag and report weight permissions to CommunityManager role',
+        'Grant ban expiry and deletion permissions to SupportAgent role',
+        'Grant UGC Search permissions to MediaTeam role',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '1a0d8f00-e291-4e7c-b9a6-e5ca4d274285',
+      shortText: 'Allow modification of Geo Flags on UGC',
+      longText: [
+        'Note that Geo Flags are cached for 5 minutes on a rolling basis. The cache time resets every time the UGC is viewed.',
+        "As such, the Geo Flag configuration won't update immediately in the UI, and instead you may need to wait to view it.",
+        'We have a request in with Services to make an uncached, Steward-only version of the data source.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'b1857a74-0302-4248-8e30-60c199066d32',
+      shortText: 'Adjust changelog popout',
+      longText: [
+        'Adjusting a few older changelog entries for brevity; moving the details into expando text.',
+        'Repositioning the chips to the right, condensing some contents and adding explanatory tooltips.',
+        'Apply limited color-coding to the chips, emphasizing General entries, and de-emphasizing Internal entries.',
+        'Fix expand-all + collapse-all feature to not "expand" entries with no expando content.',
+        'Adjust padding for clarity.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ed73707c-d956-45ff-b94e-72dc92613a7b',
+      shortText: 'Add new typescript linter rules for Input and Output',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
+      uuid: '5d7bad3d-5f99-4f6f-a77f-c08d579c75d3',
+      shortText: 'Add localized message creation and sending',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '47a3b05e-8d58-4f6d-a757-c8ea481612ac',
+      shortText: 'Add expiration date field for gifting',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: '0db8d052-9ff4-435d-8e3c-5a0c6990eeec',
+      shortText: 'Show error for players that failed to be added or removed',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '61b0d6c8-269e-49e3-b208-b4bcbfe746cf',
+      shortText: 'Display and filter assists on leaderboard scores',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '4070e253-05fc-4758-a39a-37521e5fb103',
+      shortText: 'Unlock FM tooling in production',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
+      uuid: '46a55e0d-8b53-4414-b65c-b16ba44bf3cd',
+      shortText: 'Revert private UGC quick link button',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'feb2c9f8-0bf4-486a-9c9a-e29d5a070da0',
+      shortText: 'Unlock Content Creator user flag',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5de789a1-0a15-4054-a619-18a1ca3b672e',
+      shortText: 'Change bulk gift livery component to composition',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd0db08a7-b27b-489f-8e6f-86323c8c27f4',
+      shortText: 'Add tag and tool details to each changelog entry',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: '279c7f32-2de6-442b-909a-abc4b48aa8ab',
+      shortText: 'Add Hide UGC button to UGC details',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserGroupManagement },
       uuid: '9470551b-e557-4004-9bf2-edf4a40d7752',
       shortText: 'Moved the Delete All Users button to top of table',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '96eaa5d4-2b10-4466-94fb-b185f2fcdf29',
+      shortText: 'Enable new bulk livery gifting UI for FH5',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
@@ -20,8 +198,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '459b4469-89ee-4e9d-8358-e4063e3141c1',
-      shortText:
-        'Refactor messaging component contracts to make them validate at build time instead of runtime',
+      shortText: 'Refactor messaging component contracts',
+      longText: ['Contracts validate at build time instead of runtime'],
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
@@ -42,8 +220,8 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },
       uuid: 'c17418be-38f2-4f73-812e-f04ced9e8eab',
-      shortText:
-        'Added message scheduling to Woodstock and Steelhead. Updated Sunrise messaging UI to match, but behavior unchanged',
+      shortText: 'Added message scheduling to Woodstock and Steelhead',
+      longText: ['Updated Sunrise messaging UI to match, but behavior unchanged'],
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.Messaging },

@@ -10,13 +10,14 @@ export type RacersCupCalendarInputs = {
   daysForward: number;
 };
 
-/**Inputs for Racers Cup Calendar. */
+/** Inputs for Racers Cup Calendar. */
 @Component({
   selector: 'racers-cup-inputs',
   templateUrl: './racers-cup-inputs.component.html',
   styleUrls: ['./racers-cup-inputs.component.scss'],
 })
 export class RacersCupInputsComponent {
+  /** REVIEW-COMMENT: Output for racers cup schedule lookup.  */
   @Output() public playerAndDaysForward = new EventEmitter<RacersCupCalendarInputs>();
   public matTabSelectedIndex = 0;
 
@@ -43,7 +44,7 @@ export class RacersCupInputsComponent {
     return null;
   }
 
-  /** Player identity selected */
+  /** Player identity selected. */
   public playerIdentityFound(newIdentity: AugmentedCompositeIdentity): void {
     if (newIdentity?.steelhead?.error) {
       return;
@@ -52,7 +53,7 @@ export class RacersCupInputsComponent {
     this.identityFormControls.identity.setValue(newIdentity?.steelhead);
   }
 
-  /** Output values for racers cup schedule lookup */
+  /** Output values for racers cup schedule lookup. */
   public submitClicked(): void {
     // Using identity lookup
     if (this.matTabSelectedIndex == 0) {

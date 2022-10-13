@@ -12,6 +12,7 @@ import { LogTableLoaderComponent } from '../log-table-loader/log-table-loader.co
   styleUrls: ['./woodstock-player-auction-action-log.component.scss'],
 })
 export class WoodstockPlayerAuctionActionLogComponent {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
   @ViewChild('loader', { static: true }) public loader: LogTableLoaderComponent;
   public linkGenerator = WOODSTOCK_LINK_GENERATOR;

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member: It's a constants file
 #pragma warning disable SA1600 // Elements should be documented: It's a constants file
@@ -11,6 +13,44 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     /// </summary>
     public static class KnownTags
     {
+        private const string DangerousPrefix = "Dangerous: ";
+
+        /// <summary>Returns true if the given tag is "Dangerous".</summary>
+        public static bool IsDangerous(string tag)
+        {
+            return tag.StartsWith(DangerousPrefix, true, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>Converts the given tag to its "Dangerous" form.</summary>
+        public static string MakeDangerous(string tag)
+        {
+            return $"{DangerousPrefix}{tag}";
+        }
+
+        /// <summary>Converts the given tags to their "Dangerous" form.</summary>
+        public static IEnumerable<string> MakeDangerous(IEnumerable<string> tags)
+        {
+            return tags.Select(MakeDangerous);
+        }
+
+        /// <summary>Adds the All tag to the API.</summary>
+        public static IEnumerable<string> WithAll(IEnumerable<string> tags)
+        {
+            return tags.Concat(new[] { Meta.All });
+        }
+
+        /// <summary>
+        ///     Utility tags not for development.
+        /// </summary>
+        public static class Meta
+        {
+            /// <summary>A meta-tag to enable ctrl+f on APIs.</summary>
+            public const string All = "All";
+
+            /// <summary>A meta-tag to enable ctrl+f on Dangerous APIs.</summary>
+            public static readonly string DangerousAll = MakeDangerous(All);
+        }
+
         /// <summary>
         ///     Utility tags for development purposes. Controls sorting.
         /// </summary>
@@ -110,10 +150,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
         public static class Sentinel
         {
             public const string UnknownAlphabetic = "Sentinel_Unknown_Alphabetic";
+            public const string Dangerous = "Sentinel_Dangerous";
+            public const string NonDangerousAlphabetic = "Sentinel_Unknown_NonDangerous_Alphabetic";
+
 
             public static ISet<string> Values { get; } = new HashSet<string>
             {
-                UnknownAlphabetic
+                UnknownAlphabetic,
+                Dangerous,
+                NonDangerousAlphabetic,
             };
         }
     }

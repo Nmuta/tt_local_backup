@@ -11,18 +11,23 @@ import { Observable, of, Subject } from 'rxjs';
 import { AuctionBlocklistBaseComponent } from './auction-blocklist.base.component';
 import { AuctionBlocklistService } from './auction-blocklist.base.service';
 
+/** Test for auction blocklist service. */
 class TestAuctionBlocklistService implements AuctionBlocklistService {
+  /** Get game title. */
   public getGameTitle(): GameTitle {
     return null;
   }
+  /** Get auction blocklist. */
   public getAuctionBlocklist$(): Observable<AuctionBlocklistEntry[]> {
     return null;
   }
+  /** Post auction blocklist entries. */
   public postAuctionBlocklistEntries$(
     _entries: AuctionBlocklistEntry[],
   ): Observable<AuctionBlocklistEntry[]> {
     return null;
   }
+  /** Delete auction blocklist entry. */
   public deleteAuctionBlocklistEntry$(_carId: BigNumber): Observable<AuctionBlocklistEntry[]> {
     return null;
   }

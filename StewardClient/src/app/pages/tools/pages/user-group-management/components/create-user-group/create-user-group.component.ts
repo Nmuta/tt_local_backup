@@ -22,9 +22,9 @@ export interface CreateUserGroupServiceContract {
   styleUrls: ['./create-user-group.component.scss'],
 })
 export class CreateUserGroupComponent extends BaseComponent implements OnChanges, OnInit {
-  /** Service contract for create user group component. */
+  /** REVIEW-COMMENT: Service contract for create user group component. */
   @Input() service: CreateUserGroupServiceContract;
-  /** Outputs when a new user group is created */
+  /** REVIEW-COMMENT: Outputs when a new user group is created. */
   @Output() newUserGroup = new EventEmitter<LspGroup>();
 
   public userHasWritePerms: boolean = false;
@@ -49,7 +49,7 @@ export class CreateUserGroupComponent extends BaseComponent implements OnChanges
     );
   }
 
-  /** Initialization hook */
+  /** Initialization hook. */
   public ngOnChanges(): void {
     if (!this.service) {
       throw new Error('No service contract was provided for CreateUserGroupComponent');

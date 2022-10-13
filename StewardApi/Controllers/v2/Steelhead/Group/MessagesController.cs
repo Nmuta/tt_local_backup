@@ -19,6 +19,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -36,9 +37,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     [Route("api/v{version:apiVersion}/title/steelhead/group/{groupId}/messages")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [Authorize]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.LspGroup, Topic.Messaging)]
+    [StandardTags(Title.Steelhead, Target.LspGroup, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
@@ -111,12 +115,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
-            [FromBody] LspGroupCommunityMessage communityMessage)
+            [FromBody] LspGroupLocalizedMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
-            communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
-            communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
+            communityMessage.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedMessageID));
             communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
+
+            if (!Guid.TryParse(communityMessage.LocalizedMessageID, out var localizedMessageGuid))
+            {
+                throw new BadRequestStewardException("Message could not be parsed as GUID.");
+            }
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -138,13 +146,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 
             try
             {
-                var response = await this.Services.NotificationManagementService.SendGroupMessageNotification(
+                var response = await this.Services.NotificationManagementService.SendGroupMessage(
                     groupId,
-                    communityMessage.Message,
-                    communityMessage.ExpireTimeUtc,
+                    localizedMessageGuid,
                     forzaDeviceType != ForzaLiveDeviceType.Invalid,
                     forzaDeviceType,
-                    communityMessage.StartTimeUtc).ConfigureAwait(true);
+                    communityMessage.StartTimeUtc,
+                    communityMessage.ExpireTimeUtc,
+                    communityMessage.NotificationType
+                    ).ConfigureAwait(true);
 
                 notificationId = response.notificationId;
                 messageResponse.NotificationId = response.notificationId;
@@ -165,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 {
                     Id = notificationId.ToString(),
                     Title = TitleConstants.SteelheadCodeName,
-                    Message = communityMessage.Message,
+                    Message = localizedMessageGuid.ToString(),
                     RequesterObjectId = requesterObjectId,
                     RecipientId = groupId.ToString(CultureInfo.InvariantCulture),
                     Type = notificationInfo.userGroupMessage.NotificationType,
@@ -205,11 +215,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         public async Task<IActionResult> EditGroupMessage(
             int groupId,
             string messageId,
-            [FromBody] LspGroupCommunityMessage editParameters)
+            [FromBody] LspGroupLocalizedMessage editParameters)
         {
             editParameters.ShouldNotBeNull(nameof(editParameters));
-            editParameters.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.Message));
-            editParameters.Message.ShouldBeUnderMaxLength(512, nameof(editParameters.Message));
+            editParameters.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedMessageID));
             editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
@@ -217,12 +226,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
+            if (!Guid.TryParse(editParameters.LocalizedMessageID, out var localizedStringIdAsGuid))
+            {
+                throw new BadRequestStewardException($"Localized message ID could not be parsed as GUID. (LocalizedMessageID: {editParameters.LocalizedMessageID})");
+            }
+
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
             var response = await this.Services.NotificationManagementService.GetUserGroupMessage(messageIdAsGuid).ConfigureAwait(true);
             var message = response.userGroupMessage;
-            if (message.NotificationType != "CommunityMessageNotification")
+            if (message.NotificationType != "CommunityMessageNotificationV2")
             {
                 throw new FailedToSendStewardException(
                     $"Cannot edit notification of type: {message.NotificationType}.");
@@ -232,7 +246,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
-                Message = editParameters.Message,
+                MessageStringId = localizedStringIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = forzaDeviceType != ForzaLiveDeviceType.Invalid,
                 DeviceType = forzaDeviceType
@@ -256,7 +270,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 {
                     Id = messageId.ToString(),
                     Title = TitleConstants.SteelheadCodeName,
-                    Message = editParameters.Message,
+                    Message = editParameters.LocalizedMessageID.ToString(),
                     RequesterObjectId = requesterObjectId,
                     RecipientId = notificationInfo.userGroupMessage.GroupId.ToString(CultureInfo.InvariantCulture),
                     Type = notificationInfo.userGroupMessage.NotificationType,

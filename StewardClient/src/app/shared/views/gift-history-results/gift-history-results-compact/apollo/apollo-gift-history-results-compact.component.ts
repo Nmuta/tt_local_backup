@@ -12,8 +12,11 @@ import { GiftHistoryResultAndView } from '@models/gift-history';
   templateUrl: './apollo-gift-history-results-compact.component.html',
 })
 export class ApolloGiftHistoryResultsCompactComponent {
+  /** REVIEW-COMMENT: Selected player. */
   @Input() public selectedPlayer: IdentityResultAlpha;
+  /** REVIEW-COMMENT: Selected group. */
   @Input() public selectedGroup: LspGroup;
+  /** REVIEW-COMMENT: Is using player identities. */
   @Input() public usingPlayerIdentities: boolean;
 
   public service: GiftHistoryResultsServiceContract;

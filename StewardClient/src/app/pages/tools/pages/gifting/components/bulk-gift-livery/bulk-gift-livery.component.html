@@ -2,7 +2,7 @@
   <mat-card-header class="sf-header">
     <mat-card-title>Gift Car + Livery</mat-card-title>
     <mat-card-subtitle>
-      {{ gameTitle }}
+      {{ service.gameTitle }}
     </mat-card-subtitle>
   </mat-card-header>
   <ng-container *waitForMonitor="postMonitor">
@@ -23,7 +23,7 @@
           <mat-expansion-panel *ngFor="let livery of liveries" [expanded]="true" hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title> {{ livery.carDescription }} | {{ livery.id }} </mat-panel-title>
-              <mat-panel-description> Click to view full details </mat-panel-description>.
+              <mat-panel-description> Click to view full details </mat-panel-description>
               <button mat-icon-button matTooltip="Remove Livery" (click)="removeLivery(livery)">
                 <mat-icon>close</mat-icon>
               </button>
@@ -60,22 +60,52 @@
       </ng-container>
     </mat-card-content>
     <mat-card-actions *ngIf="!giftResponse" class="sf-actions">
-      <mat-form-field appearance="fill">
-        <mat-label>Gift Reason</mat-label>
-        <mat-select [formControl]="formControls.giftReason">
-          <mat-option *ngFor="let reason of giftReasons" [value]="reason">
-            {{ reason }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="!isGiftLiveryReady()"
-        (click)="sendGiftLivery()"
-      >
-        Gift Livery
-      </button>
+      <div class="sf-wrapper">
+        <div class="sf-horizontal">
+          <ng-container *ngIf="service.allowSettingExpireDate">
+            <mat-checkbox
+              matTooltip="Adds an expiration date"
+              aria-label="Adds an expiration date"
+              [formControl]="formControls.hasExpirationDate"
+              (change)="initExpireDate()"
+            >
+              Add Expiration Date
+            </mat-checkbox>
+            <mat-form-field appearance="fill">
+              <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
+              <input
+                matInput
+                [disabled]="!formControls.hasExpirationDate.value"
+                [matDatepicker]="picker"
+                [formControl]="formControls.expireDate"
+                [matDatepickerFilter]="dateTimeFutureFilter"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-hint>Expire time must be in the future</mat-hint>
+              <mat-error *ngIf="formControls.expireDate?.hasError('is-after')">
+                Expiry time must be in the future
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+          <mat-form-field appearance="fill">
+            <mat-label>Gift Reasons</mat-label>
+            <mat-select [formControl]="formControls.giftReason">
+              <mat-option *ngFor="let reason of giftReasons" [value]="reason">
+                {{ reason }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!isGiftLiveryReady()"
+            (click)="sendGiftLivery()"
+          >
+            Gift Livery
+          </button>
+        </div>
+      </div>
     </mat-card-actions>
   </ng-container>
   <button

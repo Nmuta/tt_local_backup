@@ -9,8 +9,9 @@ import { StandardAbsoluteDateTimeFormats } from '../standard-absolute-datetime.m
   styleUrls: ['./standard-absolute-time-utc.component.scss'],
 })
 export class StandardAbsoluteTimeUtcComponent {
-  /** The target time. */
+  /** REVIEW-COMMENT: The target time. */
   @Input() timeUtc: DateTime;
+  /** REVIEW-COMMENT: Datetime format. Default to "shortMedium". */
   @Input() format: keyof StandardAbsoluteDateTimeFormats = 'shortMedium';
 
   /** Format mapping for the angular pipes. */

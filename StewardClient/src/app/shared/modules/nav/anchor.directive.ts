@@ -21,8 +21,11 @@ import { from } from 'rxjs';
   selector: '[navAnchor]',
 })
 export class AnchorDirective implements OnChanges, AfterViewInit, OnDestroy {
+  /** REVIEW-COMMENT: UI "navAnchor" to resolve. */
   @Input('navAnchor') public componentToResolve?: () => Promise<Type<CustomTileComponent>>;
+  /** REVIEW-COMMENT: Nav item. */
   @Input() public navItem: HomeTileInfoForNav;
+  /** REVIEW-COMMENT: Is nav anchor disabled. */
   @Input() public navAnchorDisabled?: boolean;
 
   private componentRef: ComponentRef<CustomTileComponent>;

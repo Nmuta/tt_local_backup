@@ -9,10 +9,11 @@ import { renderGuard } from '@helpers/rxjs';
   styleUrls: ['./pastable-single-input.component.scss'],
 })
 export class PastableSingleInputComponent extends BaseComponent implements OnInit {
-  /** Defines the mat-input label */
+  /** REVIEW-COMMENT: Defines the mat-input label */
   @Input() public label: string = null;
-  /** Sets provided value to input on initial load */
+  /** REVIEW-COMMENT: Sets provided value to input on initial load */
   @Input() public presetValue: string = null;
+  /** REVIEW-COMMENT: Output when a string is pasted in the input. */
   @Output() public changes = new EventEmitter<string>();
 
   public input: string = '';

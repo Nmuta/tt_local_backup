@@ -11,7 +11,9 @@ import { GameTitle } from '@models/enums';
   styleUrls: ['./auction-data.component.scss'],
 })
 export class AuctionDataComponent implements OnChanges, AfterViewInit {
+  /** REVIEW-COMMENT: Auction data. */
   @Input() public auctionData: AuctionData = null;
+  /** REVIEW-COMMENT: Game title. */
   @Input() public title: GameTitle = null;
 
   @ViewChild(MatSort) sort: MatSort;

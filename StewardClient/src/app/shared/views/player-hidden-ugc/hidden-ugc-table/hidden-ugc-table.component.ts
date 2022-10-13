@@ -32,8 +32,11 @@ type HideableUgcTableEntries = HideableUgc & {
   styleUrls: ['./hidden-ugc-table.component.scss'],
 })
 export class HiddenUgcTableComponent extends BaseComponent implements OnChanges, OnInit {
+  /** REVIEW-COMMENT: The hidden UGC service. */
   @Input() public service: HiddenUgcServiceContract;
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
+  /** REVIEW-COMMENT: Output when reload. */
   @Output() public reloadMonitor = new EventEmitter<ActionMonitor>();
 
   public displayedColumns = ['preview', 'info', 'times', 'actions'];

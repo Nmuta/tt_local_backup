@@ -19,6 +19,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
@@ -35,9 +36,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     [Route("api/v{version:apiVersion}/title/steelhead/players/messages")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.Players, Topic.Messaging)]
+    [StandardTags(Title.Steelhead, Target.Players, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
@@ -63,23 +67,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         ///     Sends players a message.
         /// </summary>
         [HttpPost]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
         public async Task<IActionResult> SendMessageToPlayers(
-            [FromBody] BulkCommunityMessage communityMessage)
+            [FromBody] BulkLocalizedMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             //communityMessage.Xuids.EnsureValidXuids();
-            communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
-            communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
+            communityMessage.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedMessageID));
             communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
             await this.EnsurePlayersExist(this.Services, communityMessage.Xuids).ConfigureAwait(true);
+
+            if (!Guid.TryParse(communityMessage.LocalizedMessageID, out var localizedMessageGuid))
+            {
+                throw new BadRequestStewardException("Message could not be parsed as GUID.");
+            }
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -88,13 +92,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 
             try
             {
-                var results = await this.Services.NotificationManagementService.SendMessageNotificationToMultipleUsers(
+                var results = await this.Services.NotificationManagementService.SendMessage(
                     communityMessage.Xuids.ToArray(),
-                    communityMessage.Xuids.Count,
-                    communityMessage.Message,
+                    localizedMessageGuid,
+                    communityMessage.StartTimeUtc,
                     communityMessage.ExpireTimeUtc,
-                    string.Empty, // Image Url is unused in Steward
-                    communityMessage.StartTimeUtc).ConfigureAwait(true);
+                    communityMessage.NotificationType).ConfigureAwait(true);
 
                 notifications.AddRange(this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults));
             }

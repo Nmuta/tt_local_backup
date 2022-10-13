@@ -21,11 +21,14 @@ import { PastableSingleInputModule } from '@views/pastable-single-input/pastable
 import { MatExpansionModule } from '@angular/material/expansion';
 import { WoodstockBulkGiftLiveryComponent } from './woodstock/woodstock-bulk-gift-livery.component';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { BulkGiftLiveryBaseComponent } from './bulk-gift-livery.base.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 /** The gift livery module. */
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [WoodstockBulkGiftLiveryComponent],
+  declarations: [WoodstockBulkGiftLiveryComponent, BulkGiftLiveryBaseComponent],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
@@ -51,6 +54,8 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     GiftingResultModule,
     MatExpansionModule,
     MonitorActionModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
   ],
   exports: [WoodstockBulkGiftLiveryComponent],
 })

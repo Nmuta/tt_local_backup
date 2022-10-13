@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, map, retryWhen, switchMap, takeUntil } from 'rxjs/operators';
@@ -15,29 +15,69 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GiftReason } from '../gift-basket/gift-basket.base.component';
 import { HCI } from '@environments/environment';
 import { PastableSingleInputComponent } from '@views/pastable-single-input/pastable-single-input.component';
+import { DateValidators } from '@shared/validators/date-validators';
+import { DateTime } from 'luxon';
+import _ from 'lodash';
+import { tryParseBigNumber } from '@helpers/bignumbers';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
   UnexpectedError = 'Background job failed unexpectedly.',
 }
 
+/** Upstream contract for bulk gift liveries UI. */
+export interface BulkGiftLiveryContract {
+  gameTitle: GameTitle;
+
+  /** Sets whether the title supports expiration date on gift. */
+  allowSettingExpireDate: boolean;
+
+  /** API for retrieving livery information. */
+  getLivery$(liveryId: string): Observable<PlayerUgcItem>;
+
+  /** API for gifting liveries to specific players. */
+  giftLiveriesToPlayers$(
+    liveryIds: string[],
+    xuids: BigNumber[],
+    giftReason: string,
+    expireTimeSpanInDays: BigNumber,
+  ): Observable<BackgroundJob<unknown>>;
+
+  /** API for gifting liveries to an LSP group. */
+  giftLiveriesToLspGroup$(
+    liveryIds: string[],
+    lspGroup: LspGroup,
+    giftReason: string,
+    expireTimeSpanInDays: BigNumber,
+  ): Observable<GiftResponse<BigNumber>>;
+}
+
 /** The base gift-livery component. */
 @Component({
-  template: '',
+  selector: 'bulk-gift-livery',
+  templateUrl: './bulk-gift-livery.component.html',
+  styleUrls: ['./bulk-gift-livery.component.scss'],
 })
-export abstract class BulkGiftLiveryBaseComponent<
+export class BulkGiftLiveryBaseComponent<
   IdentityT extends IdentityResultUnion,
 > extends BaseComponent {
   @ViewChild(PastableSingleInputComponent) liveryInput: PastableSingleInputComponent;
 
+  /** REVIEW-COMMENT: Player identities. */
   @Input() public playerIdentities: IdentityT[];
+  /** REVIEW-COMMENT: Lsp Group. */
   @Input() public lspGroup: LspGroup;
+  /** REVIEW-COMMENT: Component is using player identities. */
   @Input() public usingPlayerIdentities: boolean;
+  /** REVIEW-COMMENT: The livery gifting service. */
+  @Input() public service: BulkGiftLiveryContract;
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
   public formControls = {
     livery: new FormControl(null, [Validators.required]),
     giftReason: new FormControl('', [Validators.required]),
+    expireDate: new FormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
+    hasExpirationDate: new FormControl(false),
   };
   public formGroup = new FormGroup(this.formControls);
 
@@ -60,24 +100,15 @@ export abstract class BulkGiftLiveryBaseComponent<
     return this.formControls.livery.hasError('invalidId');
   }
 
-  /** Game title */
-  public abstract gameTitle: GameTitleCodeName;
-
   constructor(private readonly backgroundJobService: BackgroundJobService) {
     super();
   }
 
-  public abstract getLivery$(liveryId: string): Observable<PlayerUgcItem>;
-  public abstract giftLiveriesToPlayers$(
-    liveryIds: string[],
-    xuids: BigNumber[],
-    giftReason: string,
-  ): Observable<BackgroundJob<unknown>>;
-  public abstract giftLiveriesToLspGroup$(
-    liveryIds: string[],
-    lspGroup: LspGroup,
-    giftReason: string,
-  ): Observable<GiftResponse<BigNumber>>;
+  /** Filter for the expire date date time component */
+  public dateTimeFutureFilter = (input: DateTime | null): boolean => {
+    const day = input || DateTime.local().startOf('day');
+    return day > DateTime.local().startOf('day');
+  };
 
   /** Called when livery id input has changes. */
   public onLiveryIdChange(input: string): void {
@@ -86,7 +117,7 @@ export abstract class BulkGiftLiveryBaseComponent<
     this.formControls.livery.setErrors({});
     if (!input) return;
 
-    const getLivery$ = this.getLivery$(input);
+    const getLivery$ = this.service.getLivery$(input);
     getLivery$
       .pipe(
         this.getMonitor.monitorSingleFire(),
@@ -180,8 +211,27 @@ export abstract class BulkGiftLiveryBaseComponent<
     return (
       this.liveries.length > 0 &&
       !this.formControls.giftReason.errors &&
+      (!this.formControls.hasExpirationDate.value || !this.formControls.expireDate.errors) &&
       (hasPlayerIdentities || hasLspGroup)
     );
+  }
+
+  /** Get the number of days between right now and the selected date */
+  public getExpireDateInDays(): BigNumber {
+    if (!this.formControls.hasExpirationDate.value) {
+      return new BigNumber(0);
+    }
+    let numberOfDays = _.round(this.formControls.expireDate.value.diffNow('days').days);
+    // Replace negative values by 0 to avoid sending negative values to API which takes a uint
+    numberOfDays = _.max([0, numberOfDays]);
+    return tryParseBigNumber(numberOfDays).integerValue();
+  }
+
+  /** Add a default expiration the first time the hasExpiration checkbox is checked */
+  public initExpireDate(): void {
+    if (!this.formControls.expireDate.value) {
+      this.formControls.expireDate.setValue(DateTime.local().plus({ days: 7 }));
+    }
   }
 
   /** Resets the UI. */
@@ -199,16 +249,18 @@ export abstract class BulkGiftLiveryBaseComponent<
 
   private sendLiveryRequest$(): Observable<BackgroundJob<unknown> | GiftResponse<BigNumber>> {
     if (this.usingPlayerIdentities) {
-      return this.giftLiveriesToPlayers$(
+      return this.service.giftLiveriesToPlayers$(
         this.liveries.map(x => x.id),
         this.playerIdentities.map(identity => identity.xuid),
         this.formControls.giftReason.value,
+        this.getExpireDateInDays(),
       );
     } else {
-      return this.giftLiveriesToLspGroup$(
+      return this.service.giftLiveriesToLspGroup$(
         this.liveries.map(x => x.id),
         this.lspGroup,
         this.formControls.giftReason.value,
+        this.getExpireDateInDays(),
       );
     }
   }

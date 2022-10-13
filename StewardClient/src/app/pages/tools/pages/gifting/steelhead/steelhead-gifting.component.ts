@@ -57,8 +57,8 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
-    const newIdentities = [identity].filter(i => i?.extra?.hasSteelhead).map(i => i.steelhead);
+  public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity[]): void {
+    const newIdentities = identity.filter(i => i?.extra?.hasSteelhead).map(i => i.steelhead);
     this.store.dispatch(new SetSteelheadGiftingSelectedPlayerIdentities(newIdentities));
   }
 

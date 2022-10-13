@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FH5_main.Generated;
-using Turn10.Services.LiveOps.Interfaces.FH5_main.Generated;
 using PermissionsManagementService = Turn10.Services.LiveOps.FH5_main.Generated.PermissionsManagementService;
 
 #pragma warning disable VSTHRD200 // Use  Suffix
@@ -20,6 +19,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <summary>
         ///     Updates API permissions.
         /// </summary>
-        Task<PermissionsManagementService.UpdateApiPermissionsOutput> UpdateApiPermissions(ILiveOpsPermissionsUpdateParameters[] parametersList);
+        Task<PermissionsManagementService.UpdateApiPermissionsOutput> UpdateApiPermissions(ForzaLiveOpsPermissionsUpdateParameters[] parametersList);
     }
 }
