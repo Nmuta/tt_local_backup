@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
+      uuid: '0503a2c8-69cf-4c26-955d-d8bd3e3f8a62',
+      shortText: 'Enabled Steelhead messaging in production',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Messaging },
       uuid: '69000317-a117-4e05-b94a-fe055e292a7e',
       shortText: 'Add localized message editing',
     },
