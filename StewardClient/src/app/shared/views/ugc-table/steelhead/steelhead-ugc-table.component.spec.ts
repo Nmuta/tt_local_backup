@@ -1,13 +1,10 @@
 import { NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { SteelheadUgcTableComponent } from './steelhead-ugc-table.component';
-import { EMPTY } from 'rxjs';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
@@ -18,33 +15,20 @@ describe('SteelheadUgcTableComponent', () => {
   let component: SteelheadUgcTableComponent;
   let fixture: ComponentFixture<SteelheadUgcTableComponent>;
   let mockSteelheadUgcLookupService: SteelheadUgcLookupService;
-  let mockPermissionsService: PermissionsService;
-  let mockMatDialog: MatDialog;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+      imports: [MatPaginatorModule, BrowserAnimationsModule],
       declarations: [SteelheadUgcTableComponent, BigJsonPipe],
-      providers: [
-        createMockSteelheadUgcLookupService(),
-        createMockPermissionsService(),
-        {
-          provide: MatDialog,
-          useValue: { open: () => MatDialogRef },
-        },
-      ],
+      providers: [createMockSteelheadUgcLookupService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadUgcTableComponent);
     component = fixture.componentInstance;
-    mockMatDialog = TestBed.inject(MatDialog);
     mockSteelheadUgcLookupService = TestBed.inject(SteelheadUgcLookupService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
 
     fixture.detectChanges();
-
-    mockMatDialog.open = jasmine.createSpy('open').and.returnValue({ afterClosed: () => EMPTY });
   });
 
   it('should create', waitForAsync(() => {
@@ -61,62 +45,6 @@ describe('SteelheadUgcTableComponent', () => {
         component.ngOnInit();
 
         expect(component.useExpandoColumnDef).toBeFalsy();
-      });
-
-      describe('When user has write permissions to feature UGC', () => {
-        beforeEach(() => {
-          mockPermissionsService.currentUserHasWritePermission = jasmine
-            .createSpy('currentUserHasWritePermission')
-            .and.returnValue(true);
-        });
-
-        it('should set canFeatureUgc to true', () => {
-          component.ngOnInit();
-
-          expect(component.canFeatureUgc).toBeTruthy();
-        });
-      });
-
-      describe('When user does not have write permissions to feature UGC', () => {
-        beforeEach(() => {
-          mockPermissionsService.currentUserHasWritePermission = jasmine
-            .createSpy('currentUserHasWritePermission')
-            .and.returnValue(false);
-        });
-
-        it('should set canFeatureUgc to false', () => {
-          component.ngOnInit();
-
-          expect(component.canFeatureUgc).toBeFalsy();
-        });
-      });
-
-      describe('When user has write permissions to hide UGC', () => {
-        beforeEach(() => {
-          mockPermissionsService.currentUserHasWritePermission = jasmine
-            .createSpy('currentUserHasWritePermission')
-            .and.returnValue(true);
-        });
-
-        it('should set canHideUgc to true', () => {
-          component.ngOnInit();
-
-          expect(component.canHideUgc).toBeTruthy();
-        });
-      });
-
-      describe('When user does not have write permissions to hide UGC', () => {
-        beforeEach(() => {
-          mockPermissionsService.currentUserHasWritePermission = jasmine
-            .createSpy('currentUserHasWritePermission')
-            .and.returnValue(false);
-        });
-
-        it('should set canHideUgc to false', () => {
-          component.ngOnInit();
-
-          expect(component.canHideUgc).toBeFalsy();
-        });
       });
     });
 

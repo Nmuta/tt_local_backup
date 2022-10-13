@@ -26,6 +26,7 @@ import { RouterModule } from '@angular/router';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
 import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
 import { SteelheadUgcTableComponent } from './steelhead/steelhead-ugc-table.component';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -60,6 +61,7 @@ import { SteelheadUgcTableComponent } from './steelhead/steelhead-ugc-table.comp
     RouterModule,
     FeatureUgcModalModule,
     UgcDownloadButtonModule,
+    HelpModule,
   ],
   exports: [
     SunriseUgcTableComponent,

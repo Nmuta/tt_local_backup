@@ -8,6 +8,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: [NavbarTool.SearchUGC, NavbarTool.UserDetails] },
+      uuid: '54e6d5e6-0acc-4196-961d-68c37bf2b2b0',
+      shortText: 'Remove hide and feature buttons in UGC table',
+      longText: [
+        'The removed features can still be found in UGC details, and a tooltip was added explaining that.',
+      ],
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '63d0d2b1-78a3-4685-8399-dd96264f5758',
       shortText: 'Adjust homepage tile styling',
