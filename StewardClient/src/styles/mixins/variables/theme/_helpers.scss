@@ -87,18 +87,30 @@
 
   // foreground-based vars
   @include colorToVars(makeLookupName('foreground', 'secondary-text'), $secondary-text-color);
-  @include colorToVars(makeLookupName('background', 'default-contrast'),
-    map-get($theme-foreground-palette, 'base'));
-  @include colorToVars(makeLookupName('background', 'default-contrast'),
-    map-get($theme-foreground-palette, 'base'));
-  @include colorToVars(makeLookupName('background', 'lighter-contrast'),
-    darken(map-get($theme-foreground-palette, 'base'), 20%));
-  @include colorToVars(makeLookupName('background', 'darker-contrast'),
-    lighten(map-get($theme-foreground-palette, 'base'), 20%));
-  @include colorToVars(makeLookupName('background', 'text-contrast'),
-    map-get($theme-foreground-palette, 'base'));
-  @include colorToVars(makeLookupName('foreground', 'disabled-text'),
-    map-get($theme-foreground-palette, 'disabled-text'));
+  @include colorToVars(
+    makeLookupName('background', 'default-contrast'),
+    map-get($theme-foreground-palette, 'base')
+  );
+  @include colorToVars(
+    makeLookupName('background', 'default-contrast'),
+    map-get($theme-foreground-palette, 'base')
+  );
+  @include colorToVars(
+    makeLookupName('background', 'lighter-contrast'),
+    darken(map-get($theme-foreground-palette, 'base'), 20%)
+  );
+  @include colorToVars(
+    makeLookupName('background', 'darker-contrast'),
+    lighten(map-get($theme-foreground-palette, 'base'), 20%)
+  );
+  @include colorToVars(
+    makeLookupName('background', 'text-contrast'),
+    map-get($theme-foreground-palette, 'base')
+  );
+  @include colorToVars(
+    makeLookupName('foreground', 'disabled-text'),
+    map-get($theme-foreground-palette, 'disabled-text')
+  );
 
   // background-based vars
   @include colorToVars(
@@ -146,10 +158,9 @@
   @if (type-of($opacity) == 'number') {
     // all numbers are considered valid
     @return $opacity;
-  }
-  @else if (type-of($opacity) == 'string') {
+  } @else if (type-of($opacity) == 'string') {
     // if it's a string, it must be on this list to be valid
-    @if($opacity == 'secondary-text') {
+    @if ($opacity == 'secondary-text') {
       @return var(--#{makeLookupName('foreground', 'secondary-text-opacity')});
     }
   }

@@ -18,15 +18,20 @@
   @include colorConfigToVars($color-config, $is-dark);
 
   @if ($is-dark) {
-    @include themePalettesToVars(mat.$dark-theme-foreground-palette, mat.$dark-theme-background-palette);
+    @include themePalettesToVars(
+      mat.$dark-theme-foreground-palette,
+      mat.$dark-theme-background-palette
+    );
     @include colorToVars(
       makeLookupName('highlight', 'default'),
       map-get(fgbg.$forza-bg-dark, 'highlight')
     );
-
   } @else {
     // light theme
-    @include themePalettesToVars(mat.$light-theme-foreground-palette, mat.$light-theme-background-palette);
+    @include themePalettesToVars(
+      mat.$light-theme-foreground-palette,
+      mat.$light-theme-background-palette
+    );
     @include colorToVars(
       makeLookupName('highlight', 'default'),
       map-get(fgbg.$forza-bg-light, 'highlight')

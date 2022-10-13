@@ -156,7 +156,10 @@ mat-icon[mat-card-avatar] {
   }
 
   mat-card-subtitle {
-    color: app-color-default-contrast($app-background,'secondary-text'); // opacity value pulled from angular material
+    color: app-color-default-contrast(
+      $app-background,
+      'secondary-text'
+    ); // opacity value pulled from angular material
   }
 }
 
