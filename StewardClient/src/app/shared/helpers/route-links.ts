@@ -46,3 +46,8 @@ export function getUserGroupManagementRoute(gameTitle: GameTitle) {
 export function getUgcDetailsRoute(gameTitle: GameTitle, ugcId: string, ugcType?: UgcType) {
   return ['/app/tools/ugc-details/', gameTitle, ugcId, ugcType?.toLowerCase() ?? ''];
 }
+
+/** Make Messaging route. */
+export function getMessagingRoute(gameTitle: GameTitle) {
+  return getComponentBaseRoute(NavbarTool.Messaging, gameTitle);
+}
