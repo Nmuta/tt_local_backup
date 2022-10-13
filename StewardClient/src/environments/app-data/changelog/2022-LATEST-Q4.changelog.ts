@@ -9,6 +9,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: '63d0d2b1-78a3-4685-8399-dd96264f5758',
+      shortText: 'Adjust homepage tile styling',
+      longText: [
+        'Correctly scroll text on deselected homepage tiles behind the title + actions sections.',
+        'Additionally, makes the color transition smoothly between selected/deselected and dark/light mode.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'cf3a716d-7272-4951-b15c-57d842d9b375',
       shortText: 'Increase minimum size of tiles on home page',
       longText: [
