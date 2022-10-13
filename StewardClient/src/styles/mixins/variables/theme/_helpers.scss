@@ -60,15 +60,18 @@
   @include entryToVars($color-config, $is-dark, 'primary', 'default-contrast', 'default-contrast');
   @include entryToVars($color-config, $is-dark, 'primary', 'lighter-contrast', 'darker-contrast');
   @include entryToVars($color-config, $is-dark, 'primary', 'darker-contrast', 'lighter-contrast');
-  // @include entryToVars($color-config, $is-dark, 'primary', 'text-contrast', 'text-contrast');
   @include entryToVars($color-config, $is-dark, 'accent', 'default-contrast', 'default-contrast');
   @include entryToVars($color-config, $is-dark, 'accent', 'lighter-contrast', 'darker-contrast');
   @include entryToVars($color-config, $is-dark, 'accent', 'darker-contrast', 'lighter-contrast');
-  // @include entryToVars($color-config, $is-dark, 'accent', 'text-contrast', 'text-contrast');
   @include entryToVars($color-config, $is-dark, 'warn', 'default-contrast', 'default-contrast');
   @include entryToVars($color-config, $is-dark, 'warn', 'lighter-contrast', 'darker-contrast');
   @include entryToVars($color-config, $is-dark, 'warn', 'darker-contrast', 'lighter-contrast');
+
+  // you'd expect this to exist, since `text` does above. but it does not
+  // @include entryToVars($color-config, $is-dark, 'primary', 'text-contrast', 'text-contrast');
+  // @include entryToVars($color-config, $is-dark, 'accent', 'text-contrast', 'text-contrast');
   // @include entryToVars($color-config, $is-dark, 'warn', 'text-contrast', 'text-contrast');
+
   @include colorToVars(makeLookupName('unknown', 'default-contrast'), lime);
   @include colorToVars(makeLookupName('unknown', 'lighter-contrast'), lime);
   @include colorToVars(makeLookupName('unknown', 'darker-contrast'), lime);
