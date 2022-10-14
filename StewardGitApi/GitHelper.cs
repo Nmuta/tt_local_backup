@@ -359,7 +359,7 @@ namespace StewardGitApi
             {
                 commitRefs.Add(new GitCommitRef
                 {
-                    Comment = $"{c.CommitComment}",
+                    Comment = c.CommitComment,
                     Changes = new GitChange[]
                     {
                         new GitChange()
@@ -367,11 +367,11 @@ namespace StewardGitApi
                             ChangeType = c.VersionControlChangeType,
                             Item = new GitItem()
                             {
-                                Path = $"{c.PathToFile}",
+                                Path = c.PathToFile,
                             },
                             NewContent = new ItemContent()
                             {
-                                Content = $"{c.NewFileContent}",
+                                Content = c.NewFileContent,
                                 ContentType = ItemContentType.RawText,
                             },
                         },

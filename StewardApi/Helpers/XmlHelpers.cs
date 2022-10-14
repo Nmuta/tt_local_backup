@@ -11,13 +11,24 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class XmlHelpers
     {
         /// <summary>
-        ///     Serializes object into xml a string and writes to <paramref name="filename"/>.
+        ///     Serializes object into an xml string and writes to file.
         /// </summary>
         /// <typeparam name="T">The type to serialize to.</typeparam>
-        public static async Task SerializeAsync<T>(string filename, T objectToSerialize)
+        public static async Task SerializeAsync<T>(T objectToSerialize, string filename)
         {
             var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
             using var writer = XmlWriter.Create(new FileStream(filename, FileMode.Create), xmlWriterSettings);
+            await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(writer, objectToSerialize)).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Serializes object into an xml string and writes to stream.
+        /// </summary>
+        /// <typeparam name="T">The type to serialize to.</typeparam>
+        public static async Task SerializeAsync<T>(T objectToSerialize, Stream stream)
+        {
+            var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
+            using var writer = XmlWriter.Create(stream, xmlWriterSettings);
             await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(writer, objectToSerialize)).ConfigureAwait(false);
         }
 

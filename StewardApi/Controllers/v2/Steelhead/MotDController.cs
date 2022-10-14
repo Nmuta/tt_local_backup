@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         public async Task<IActionResult> GetMotDSelectionChoicesAsync()
         {
-            var choices = await this.steelheadPegasusService.GetMotDSelectionChoicesAsync().ConfigureAwait(false);
+            Dictionary<Guid, string> choices = await this.steelheadPegasusService.GetMotDSelectionChoicesAsync().ConfigureAwait(false);
 
             return this.Ok(choices);
         }
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
             }
 
-            var motd = await this.steelheadPegasusService.GetMotDCurrentValuesAsync(parsedId).ConfigureAwait(false);
+            MessageOfTheDayBridge motd = await this.steelheadPegasusService.GetMotDCurrentValuesAsync(parsedId).ConfigureAwait(false);
 
             return this.Ok(motd);
         }
