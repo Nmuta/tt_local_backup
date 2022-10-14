@@ -33,6 +33,7 @@ import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.c
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -50,6 +51,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatToolbarModule,
     MatButtonModule,
     MatCardModule,
+    MatTooltipModule,
     MatSelectModule,
     MatOptionModule,
     MatButtonToggleModule,

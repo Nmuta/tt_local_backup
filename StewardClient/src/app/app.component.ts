@@ -10,6 +10,8 @@ import { UserModel } from '@models/user.model';
 import { RefreshEndpointKeys } from '@shared/state/user-settings/user-settings.actions';
 import { ThemeService } from '@shared/modules/theme/theme.service';
 import { SyncChangelog } from '@shared/state/changelog/changelog.actions';
+import { UserService } from '@services/user';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 /** Defines the app component. */
 @Component({
@@ -22,6 +24,8 @@ export class AppComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly registryService: MatIconRegistryService,
+    private readonly userService: UserService,
+    private readonly permAttributesService: PermAttributesService,
     private readonly themeService: ThemeService, // just loading this as a dependency is enough to force synchronization
   ) {
     super();
@@ -35,9 +39,12 @@ export class AppComponent extends BaseComponent implements OnInit {
         filter(profile => !!profile),
         take(1),
         switchMap(() => this.store.dispatch(new RefreshEndpointKeys())),
+        switchMap(() => this.userService.getUserAttributes$()),
         takeUntil(this.onDestroy$),
       )
-      .subscribe();
+      .subscribe(permAttributes => {
+        this.permAttributesService.initialize(permAttributes);
+      });
 
     this.store.dispatch(new RequestAccessToken());
     this.store.dispatch(new SyncChangelog());

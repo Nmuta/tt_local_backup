@@ -2,19 +2,12 @@ import { Without } from '@helpers/types';
 import { UserRole } from './enums';
 import { GuidLikeString } from './extended-types';
 
-export interface PermAttribute {
-  name: string;
-  title: string;
-  environment: string;
-}
-
 /** A signed-in user model as known by the API. */
 export interface ApiUserModel {
   emailAddress: string;
   role: UserRole;
   name: string;
   objectId: GuidLikeString;
-  attributes: PermAttribute[];
 }
 
 /** A signed-in user model, enhanced by the UI. */
