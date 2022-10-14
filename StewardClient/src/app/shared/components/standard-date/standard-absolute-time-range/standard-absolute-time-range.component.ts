@@ -9,10 +9,11 @@ import { StandardAbsoluteDateTimeFormats } from '../standard-absolute-datetime.m
   styleUrls: ['./standard-absolute-time-range.component.scss'],
 })
 export class StandardAbsoluteTimeRangeComponent {
-  /** The target start time. */
+  /** REVIEW-COMMENT: The target start time. */
   @Input() startTimeUtc: DateTime;
-  /** The target end time. */
+  /** REVIEW-COMMENT: The target end time. */
   @Input() endTimeUtc: DateTime;
+  /** REVIEW-COMMENT: Datetime format. Default to "shortMedium". */
   @Input() format: keyof StandardAbsoluteDateTimeFormats = 'shortMedium';
 
   /** Format mapping for the angular pipes. */

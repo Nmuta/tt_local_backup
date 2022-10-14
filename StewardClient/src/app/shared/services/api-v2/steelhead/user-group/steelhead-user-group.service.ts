@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
-import { UserGroupManagementResponse } from '@models/user-group-management-response';
 import { BackgroundJob } from '@models/background-job';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { HttpParams } from '@angular/common/http';
+import { BasicPlayerAction } from '@models/basic-player';
 
 /** The /v2/steelhead/usergroup endpoints. */
 @Injectable({
@@ -47,10 +47,10 @@ export class SteelheadUserGroupService {
   public removeUsersFromGroup$(
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
-  ): Observable<UserGroupManagementResponse[]> {
+  ): Observable<BasicPlayerAction[]> {
     const params = new HttpParams().set('useBackgroundProcessing', false);
 
-    return this.api.postRequest$<UserGroupManagementResponse[]>(
+    return this.api.postRequest$<BasicPlayerAction[]>(
       `${this.basePath}/${userGroupId}/remove`,
       playerList,
       params,

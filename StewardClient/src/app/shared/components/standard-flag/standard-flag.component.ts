@@ -7,5 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./standard-flag.component.scss'],
 })
 export class StandardFlagComponent {
+  /** REVIEW-COMMENT: Condition for flag. True=green and False=red. */
   @Input() public value: boolean;
 }

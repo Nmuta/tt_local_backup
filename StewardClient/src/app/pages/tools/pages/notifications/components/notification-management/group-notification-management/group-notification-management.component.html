@@ -46,26 +46,32 @@
           <td mat-cell *matCellDef="let entry" [formGroup]="entry.formGroup">
             <table class="info-table">
               <tr>
-                <th>ID:</th>
+                <th>ID</th>
                 <td>
                   {{ entry.notification.notificationId }}
                 </td>
               </tr>
               <tr>
-                <th>Type:</th>
+                <th>Type</th>
                 <td>
                   {{ entry.notification.notificationType }}
                 </td>
               </tr>
               <tr>
-                <th>Sent Date:</th>
+                <th>Sent Date</th>
                 <td>
                   <standard-absolute-time-utc [timeUtc]="entry.notification.sentDateUtc">
                   </standard-absolute-time-utc>
                 </td>
               </tr>
               <tr *ngIf="!entry.edit">
-                <th>Expire Date:</th>
+                <th>Device Type</th>
+                <td>
+                  {{ entry.formGroup.controls.deviceType.value | deppoh }}
+                </td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Expire Date</th>
                 <td>
                   <standard-absolute-time-utc
                     *ngIf="!entry.edit"
@@ -81,6 +87,16 @@
                 [min]="entry.min"
                 [formControl]="entry.formControls.expireDateUtc"
               ></datetime-picker>
+            </ng-container>
+            <ng-container *ngIf="entry.edit">
+              <mat-form-field appearance="fill" class="device-type">
+                <mat-label>Device Type</mat-label>
+                <mat-select [formControl]="entry.formControls.deviceType">
+                  <mat-option *ngFor="let type of deviceTypes" [value]="type">
+                    {{ type | deppoh }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </ng-container>
           </td>
         </ng-container>

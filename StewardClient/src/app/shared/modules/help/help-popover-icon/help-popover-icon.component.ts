@@ -13,8 +13,11 @@ import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 })
 export class HelpPopoverIconComponent extends BaseComponent implements OnInit {
   @ViewChild(CdkConnectedOverlay) overlay;
+  /** REVIEW-COMMENT: Card title. Default to empty string. */
   @Input() public cardTitle: string = '';
+  /** REVIEW-COMMENT: Card subtitle. Default to "Help card". */
   @Input() public cardSubtitle: string = 'Help card';
+  /** REVIEW-COMMENT: Confluence name. Default to empty string. */
   @Input() public confluenceName: string = '';
 
   public isOpen = false;

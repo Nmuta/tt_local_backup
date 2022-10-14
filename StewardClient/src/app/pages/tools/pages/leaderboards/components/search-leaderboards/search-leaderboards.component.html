@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header class="sf-header">
     <button
       mat-card-avatar
       mat-icon-button
@@ -11,6 +11,17 @@
     </button>
     <mat-card-title> Search Leaderboards </mat-card-title>
     <mat-card-subtitle>Filter and search leaderboards</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="expanded"
+      (click)="setLeaderboardQueryParams()"
+      [disabled]="!selectedLeaderboard"
+      matTooltip="Search leaderboard for scores"
+    >
+      Search Leaderboard
+    </button>
   </mat-card-header>
   <ng-container *waitForMonitor="getLeaderboards">
     <ng-container *ngIf="expanded; else collapsedTemplate">
@@ -133,17 +144,6 @@
           </mat-form-field>
         </form>
       </mat-card-content>
-      <mat-card-actions>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="setLeaderboardQueryParams()"
-          [disabled]="!selectedLeaderboard"
-          matTooltip="Search leaderboard for scores"
-        >
-          Search Leaderboard
-        </button>
-      </mat-card-actions>
     </ng-container>
   </ng-container>
 </mat-card>

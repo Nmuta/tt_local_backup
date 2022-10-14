@@ -10,7 +10,9 @@ import BigNumber from 'bignumber.js';
   styleUrls: ['./go-to-inventory-button.component.scss'],
 })
 export class GoToInventoryButtonComponent {
+  /** REVIEW-COMMENT: Game title. */
   @Input() public gameTitle: GameTitleCodeName = null;
+  /** REVIEW-COMMENT: Player xuid. */
   @Input() public xuid: BigNumber = null;
 
   /** Routes to the inventory app. */

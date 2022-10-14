@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
@@ -137,11 +138,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<UgcLiveryItem> Action() => await provider.GetUgcLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
+            async Task<WoodstockUgcLiveryItem> Action() => await provider.GetUgcLiveryAsync(liveryId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<UgcLiveryItem>();
+            result.Should().BeOfType<WoodstockUgcLiveryItem>();
         }
 
         [TestMethod]
@@ -154,10 +155,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            Func<Task<UgcItem>> act = async () => await provider.GetUgcPhotoAsync(photoId, endpointKey).ConfigureAwait(false);
+            Func<Task<WoodstockUgcItem>> act = async () => await provider.GetUgcPhotoAsync(photoId, endpointKey).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<UgcItem>();
+            act().Result.Should().BeOfType<WoodstockUgcItem>();
         }
 
         [TestMethod]
@@ -170,11 +171,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            async Task<UgcItem> Action() => await provider.GetUgcTuneAsync(tuneId, endpointKey).ConfigureAwait(false);
+            async Task<WoodstockUgcItem> Action() => await provider.GetUgcTuneAsync(tuneId, endpointKey).ConfigureAwait(false);
 
             // Assert.
             var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<UgcItem>();
+            result.Should().BeOfType<WoodstockUgcItem>();
         }
 
         [TestMethod]
@@ -254,13 +255,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput>());
                 this.WoodstockService.GetHiddenUgcForUserAsync(Arg.Any<int>(), Arg.Any<ulong>(), Arg.Any<FileType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontService.GetHiddenUGCForUserOutput>());
                 this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
-                var ugcItem = Fixture.Create<UgcItem>();
-                var ugcLiveryItem = Fixture.Create<UgcLiveryItem>();
+                var ugcItem = Fixture.Create<WoodstockUgcItem>();
+                var ugcLiveryItem = Fixture.Create<WoodstockUgcLiveryItem>();
                 ugcItem.GameTitle = (int)GameTitle.FH5;
                 ugcLiveryItem.GameTitle = (int)GameTitle.FH5;
-                this.Mapper.Map<UgcItem>(Arg.Any<ServicesLiveOps.ForzaPhotoData>()).Returns(ugcItem);
-                this.Mapper.Map<UgcLiveryItem>(Arg.Any<ServicesLiveOps.ForzaLiveryData>()).Returns(ugcLiveryItem);
-                this.Mapper.Map<UgcItem>(Arg.Any<ServicesLiveOps.ForzaTuneData>()).Returns(ugcItem);
+                this.Mapper.Map<WoodstockUgcItem>(Arg.Any<ServicesLiveOps.ForzaPhotoData>()).Returns(ugcItem);
+                this.Mapper.Map<WoodstockUgcLiveryItem>(Arg.Any<ServicesLiveOps.ForzaLiveryData>()).Returns(ugcLiveryItem);
+                this.Mapper.Map<WoodstockUgcItem>(Arg.Any<ServicesLiveOps.ForzaTuneData>()).Returns(ugcItem);
             }
             
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();

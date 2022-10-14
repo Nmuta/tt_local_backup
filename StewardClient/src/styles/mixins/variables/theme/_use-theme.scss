@@ -6,7 +6,8 @@
   $palette-name: paletteToString($palette);
   $var-name: makeLookupName($palette-name, $style);
   @if ($opacity) {
-    @return rgba(var(--rgb-#{$var-name}), $opacity);
+    $real-opacity: namedOpacityVarOrValue($opacity);
+    @return rgba(var(--rgb-#{$var-name}), $real-opacity);
   } @else {
     @return var(--hex-#{$var-name});
   }

@@ -38,7 +38,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
 import { cloneDeep, first, last } from 'lodash';
 import { DateTime } from 'luxon';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, merge, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap, catchError, filter, debounceTime } from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
@@ -87,6 +87,12 @@ enum LeaderboardView {
   Player = 'Near Player',
 }
 
+enum BooleanFilterToggle {
+  Ignore,
+  On,
+  Off,
+}
+
 /** Displays a leaderboard's scores. */
 @Component({
   selector: 'leaderboard-scores',
@@ -99,17 +105,27 @@ export class LeaderboardScoresComponent
   implements OnInit, OnChanges, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSlideToggle) dateSlideToggle: MatSlideToggle;
+  @ViewChild('dateSlideToggle') dateSlideToggle: MatSlideToggle;
+  /** The leaderboard scores service.*/
   @Input() service: LeaderboardScoresContract;
+  /** REVIEW-COMMENT: Leaderboard metadata and query. */
   @Input() leaderboard: LeaderboardMetadataAndQuery;
+  /** REVIEW-COMMENT: Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
   public getLeaderboardScores$ = new Subject<LeaderboardQuery>();
   public leaderboardScores = new BetterMatTableDataSource<LeaderboardScore>([]);
   public getLeaderboardScoresMonitor = new ActionMonitor('GET Leaderboard Scores');
   public deleteLeaderboardScoresMonitor = new ActionMonitor('DELETE Leaderboard Score(s)');
-  public leaderboardDisplayColumns: string[] = ['position', 'score', 'metadata', 'actions'];
+  public leaderboardDisplayColumns: string[] = [
+    'position',
+    'score',
+    'metadata',
+    'assists',
+    'actions',
+  ];
 
   public isMultiDeleteActive: boolean = false;
   public scoreTypeQualifier: string = '';
@@ -144,7 +160,42 @@ export class LeaderboardScoresComponent
       } as DateRangePickerFormValue,
       disabled: true,
     }),
+    usedStmAssist: new FormControl(BooleanFilterToggle.Ignore),
+    usedAbsAssist: new FormControl(BooleanFilterToggle.Ignore),
+    usedTcsAssist: new FormControl(BooleanFilterToggle.Ignore),
+    usedAutoAssist: new FormControl(BooleanFilterToggle.Ignore),
   };
+
+  public readonly assistFilterContexts = {
+    stmAssist: {
+      formControl: this.filterFormControls.usedStmAssist,
+      name: 'STM Assist',
+      helpTitle: 'Stability Management Assist Filter',
+      helpText:
+        'Allows for slightly more slip before applying corrective braking to individual wheels.',
+    },
+    absAssist: {
+      formControl: this.filterFormControls.usedAbsAssist,
+      name: 'ABS Assist',
+      helpTitle: 'Anti-Lock Braking System Assist Filter',
+      helpText:
+        "When a driver applies the brakes, this system pulses the brakes to ensure that they don't lock up.",
+    },
+    tcsAssist: {
+      formControl: this.filterFormControls.usedTcsAssist,
+      name: 'TCS Assist',
+      helpTitle: 'Traction Control System Assist Filter',
+      helpText: 'Allows for slightly more slip before applying corrective braking.',
+    },
+    autoAssist: {
+      formControl: this.filterFormControls.usedAutoAssist,
+      name: 'Auto Assist',
+      helpTitle: 'Automatic Transmission Assist Filter',
+      helpText: "Uses Forza's artificial intelligence to handle the shifting for the player.",
+    },
+  };
+
+  public BooleanFilterToggle = BooleanFilterToggle;
 
   constructor(
     private readonly router: Router,
@@ -167,14 +218,18 @@ export class LeaderboardScoresComponent
       this.getLeaderboardScores$.next(this.leaderboard.query);
     }
 
-    this.filterFormControls.dateRange.valueChanges
+    const dateRangeChanges = this.filterFormControls.dateRange.valueChanges;
+    const stmChanges = this.filterFormControls.usedStmAssist.valueChanges;
+    const absChanges = this.filterFormControls.usedAbsAssist.valueChanges;
+    const tcsChanges = this.filterFormControls.usedTcsAssist.valueChanges;
+    const autoChanges = this.filterFormControls.usedAutoAssist.valueChanges;
+
+    merge(dateRangeChanges, stmChanges, absChanges, tcsChanges, autoChanges)
       .pipe(
         debounceTime(HCI.TypingToAutoSearchDebounceMillis),
         tap(() => {
           this.unsetHighlightForAllLeaderboardScores();
         }),
-        filter(() => this.filterFormControls.dateRange.enabled),
-        filter(data => !!data.start && !!data.end),
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
@@ -333,10 +388,9 @@ export class LeaderboardScoresComponent
       this.filterFormControls.dateRange.enable();
     } else {
       this.filterFormControls.dateRange.disable();
-      this.setLeaderboardScoresData(this.allScores);
     }
 
-    // Make sure slide toggle matches the change event.
+    // Make sure slide toggle matches the change event
     if (!!this.dateSlideToggle && this.dateSlideToggle.checked != toggleEvent.checked) {
       this.dateSlideToggle.toggle();
     }
@@ -430,12 +484,42 @@ export class LeaderboardScoresComponent
 
   private filterScores(_scores: LeaderboardScore[]): LeaderboardScore[] {
     const dateRange = this.filterFormControls.dateRange.value as DateRangePickerFormValue;
+    const dateRangeFilterActive =
+      !this.filterFormControls.dateRange.disabled && !!dateRange.start && !!dateRange.end;
     const startDate = dateRange.start.toLocal();
     const endDate = dateRange.end.toLocal();
 
     return _scores.filter(score => {
-      const scoreDate = score.submissionTimeUtc.toLocal();
-      return scoreDate >= startDate && scoreDate <= endDate;
+      let passesDateFilter = true;
+      if (dateRangeFilterActive) {
+        const scoreDate = score.submissionTimeUtc.toLocal();
+        passesDateFilter = scoreDate >= startDate && scoreDate <= endDate;
+      }
+
+      const passesStmFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedStmAssist.value,
+        score.stabilityManagement,
+      );
+      const passesAbsFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedAbsAssist.value,
+        score.antiLockBrakingSystem,
+      );
+      const passesTcsFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedTcsAssist.value,
+        score.tractionControlSystem,
+      );
+      const passesAutoFilter = this.doesPassAssistFilter(
+        this.filterFormControls.usedAutoAssist.value,
+        score.automaticTransmission,
+      );
+
+      return (
+        passesDateFilter &&
+        passesStmFilter &&
+        passesAbsFilter &&
+        passesTcsFilter &&
+        passesAutoFilter
+      );
     });
   }
 
@@ -487,5 +571,16 @@ export class LeaderboardScoresComponent
 
   private unsetHighlightForAllLeaderboardScores() {
     this.leaderboardScores.data.forEach(s => (s.highlighted = false));
+  }
+
+  private doesPassAssistFilter(toggle: BooleanFilterToggle, assist: boolean): boolean {
+    switch (toggle) {
+      case BooleanFilterToggle.On:
+        return assist;
+      case BooleanFilterToggle.Off:
+        return !assist;
+      default:
+        return true;
+    }
   }
 }

@@ -7,6 +7,8 @@ import { CustomTileComponent, HomeTileInfo } from '@environments/environment';
   styleUrls: ['./theme-tile-content.component.scss'],
 })
 export class ThemeTileContentComponent implements CustomTileComponent {
+  /** REVIEW-COMMENT: Is nav disabled. */
   @Input() public disabled: boolean;
+  /** REVIEW-COMMENT: Nav item. */
   @Input() public item: HomeTileInfo;
 }

@@ -11,6 +11,7 @@ import { sortBy } from 'lodash';
   styleUrls: ['./gifting-result.component.scss'],
 })
 export class GiftingResultComponent extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Gifting result. */
   @Input() public giftingResult: GiftResponse<BigNumber | string>[];
 
   public giftingCsvData: string[][];

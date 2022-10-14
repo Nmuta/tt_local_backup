@@ -26,7 +26,9 @@ export type KustoQueryGroup = {
   styleUrls: ['./kusto-query-selection.component.scss'],
 })
 export class KustoQuerySelectionComponent extends BaseComponent implements OnInit {
+  /** REVIEW-COMMENT: Select query text. */
   @Input() public selectQueryText: string = 'Use Kusto Query';
+  /** REVIEW-COMMENT: Output when a kusto query is selected. */
   @Output() public selectedKustoQueryEvent = new EventEmitter<KustoQuery>();
 
   public queryGroups: KustoQueryGroup[];

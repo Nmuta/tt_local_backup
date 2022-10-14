@@ -17,7 +17,9 @@ import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source'
   styleUrls: ['./entitlements.component.scss'],
 })
 export class EntitlementsComponent extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Default filter. */
   @Input() defaultFilter: string;
+  /** REVIEW-COMMENT: Player identity. */
   @Input() identity: IdentityResultUnion;
 
   public getEntitlements$ = new Subject<void>();

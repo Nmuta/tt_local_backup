@@ -20,36 +20,66 @@
       ></model-dump-simple-table>
       <model-dump-flags></model-dump-flags>
       <mat-card-actions align="end">
-        <ng-content select="button"></ng-content>
-        <ugc-download-button [item]="ugcItem"></ugc-download-button>
-        <button
-          [disabled]="!canFeatureUgc"
-          mat-raised-button
-          color="primary"
-          (click)="featureUgcItem()"
-        >
-          <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
-            ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
-          }}</span>
-        </button>
-        <button
-          mat-raised-button
-          color="warn"
-          [verifyWith]="verifyHide"
-          (click)="hideUgcItem()"
-          stateManager
-          [monitor]="hideMonitor"
-          monitorDisable
-          monitorWarn
-          monitorWarnSnackbar
-          monitorCompleteSnackbar
-          [disabled]="!canHideUgc"
-        >
-          Hide UGC
-        </button>
-        <mat-checkbox #verifyHide matTooltip="Verify Deletion" aria-label="Verify Deletion"
-          >Verify</mat-checkbox
-        >
+        <div *waitForMonitor="getReportReasonsMonitor">
+          <mat-form-field appearance="fill">
+            <mat-label>Report reason</mat-label>
+            <mat-select matInput [(ngModel)]="selectedReason">
+              <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
+                {{ reason.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="warn"
+            [verifyWith]="verifyReport"
+            (click)="reportUgcItem()"
+            stateManager
+            [monitor]="reportMonitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+            monitorCompleteSnackbar
+            [disabled]="!selectedReason"
+          >
+            <span>Report</span>
+          </button>
+          <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
+            Verify
+          </mat-checkbox>
+        </div>
+        <div>
+          <ng-content select="button"></ng-content>
+          <ugc-download-button [item]="ugcItem"></ugc-download-button>
+          <button
+            [disabled]="!canFeatureUgc"
+            mat-raised-button
+            color="primary"
+            (click)="featureUgcItem()"
+          >
+            <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+              ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
+            }}</span>
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            [verifyWith]="verifyHide"
+            (click)="hideUgcItem()"
+            stateManager
+            [monitor]="hideMonitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+            monitorCompleteSnackbar
+            [disabled]="!canHideUgc"
+          >
+            Hide UGC
+          </button>
+          <mat-checkbox #verifyHide matTooltip="Verify Deletion" aria-label="Verify Deletion"
+            >Verify</mat-checkbox
+          >
+        </div>
       </mat-card-actions>
     </mat-card>
 
@@ -77,15 +107,33 @@
       ></model-dump-price-table>
     </mat-card>
 
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>UGC Info</mat-card-title>
-        <mat-card-subtitle>Flags, counters, etc</mat-card-subtitle>
-      </mat-card-header>
-      <model-dump-number-table
-        [values]="source.processedModel.extractedNumbers.other"
-      ></model-dump-number-table>
-    </mat-card>
+    <div>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>UGC Info</mat-card-title>
+          <mat-card-subtitle>Flags, counters, etc</mat-card-subtitle>
+        </mat-card-header>
+        <model-dump-number-table
+          [values]="source.processedModel.extractedNumbers.other"
+        ></model-dump-number-table>
+      </mat-card>
+
+      <toggle-list-ez
+        [contract]="geoFlagsToggleListEzContract"
+        [disabled]="canChangeGeoFlags"
+        (afterSubmitted)="updateGeoFlagsModel($event)"
+      >
+        <help-popover-icon cardTitle="Geo Flags" confluenceName="Geo Flags Card">
+          <h3>This data is cached</h3>
+          <p>The flags displayed in this card are the same as the ones that the client receives.</p>
+          <p>
+            This means they are on a rolling 5 minute cache per-machine. The flags displayed here
+            will not update until the UGC is not viewed for around 5 minutes, and so the checkboxes
+            will not update immediately.
+          </p>
+        </help-popover-icon>
+      </toggle-list-ez>
+    </div>
 
     <div class="images">
       <model-dump-images></model-dump-images>
@@ -94,5 +142,5 @@
 </ng-container>
 
 <ng-template #noItem>
-  <p>No Item Found.</p>
+  <p class="padded">No Item Found.</p>
 </ng-template>

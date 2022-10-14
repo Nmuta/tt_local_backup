@@ -45,8 +45,11 @@ export abstract class PlayerInventoryBaseComponent<
   extends BaseComponent
   implements OnInit, OnChanges
 {
+  /** REVIEW-COMMENT: Player Identity. */
   @Input() public identity: IdentityResultType;
+  /** REVIEW-COMMENT: Profile Id. */
   @Input() public profileId: BigNumber | string | undefined | null;
+  /** REVIEW-COMMENT: Output when player inventory is found. */
   @Output() public inventoryFound = new EventEmitter<PlayerInventoryType>();
 
   /** The located inventory. */

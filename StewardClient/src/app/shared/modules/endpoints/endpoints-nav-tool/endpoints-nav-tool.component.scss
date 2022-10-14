@@ -1,0 +1,69 @@
+@import '/src/styles/mixins';
+
+$tile-size: 5px;
+$tile-gap-size: 1px;
+
+:host {
+  display: flex;
+}
+
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.label {
+  padding-left: 0.5em;
+}
+
+.summary,
+.inline-summary {
+  .row {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+  }
+
+  &.inline-summary {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .entry {
+    border: 1px solid transparent;
+    margin: $tile-gap-size / 2;
+    width: $tile-size;
+    height: $tile-size;
+    background-color: app-color-default-contrast($app-primary, 0.3);
+
+    &.spacer {
+      background-color: transparent;
+    }
+
+    &.active {
+      background-color: app-color-default-contrast($app-primary);
+
+      &.retail {
+        background-color: app-color-default($app-success);
+      }
+
+      &.flight {
+        background-color: app-color-default($app-accent);
+      }
+    }
+  }
+}
+
+.menu-header {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  padding: 0 0.5em;
+  > .toggle-group {
+    padding: 0.5em;
+    label {
+      display: block;
+    }
+  }
+}

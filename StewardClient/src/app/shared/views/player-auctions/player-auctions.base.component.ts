@@ -20,6 +20,7 @@ export abstract class PlayerAuctionsBaseComponent
   extends BaseComponent
   implements OnChanges, AfterViewInit
 {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 

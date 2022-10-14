@@ -10,6 +10,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
   styleUrls: ['./sunrise-player-hidden-ugc.component.scss'],
 })
 export class SunrisePlayerHiddenUgcComponent {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
   public getMonitor: ActionMonitor;
 

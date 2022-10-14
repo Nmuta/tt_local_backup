@@ -19,7 +19,9 @@ export interface AuctionDataServiceContract {
   styleUrls: ['./auction-data.component.scss'],
 })
 export class AuctionDataComponent extends BaseComponent implements OnChanges {
+  /** REVIEW-COMMENT: Auction Id. */
   @Input() public auctionId: GuidLikeString;
+  /** REVIEW-COMMENT: The auction data service. */
   @Input() public service: AuctionDataServiceContract;
   public auctionData: AuctionData;
   public getMonitor = new ActionMonitor('GET Auction Data');

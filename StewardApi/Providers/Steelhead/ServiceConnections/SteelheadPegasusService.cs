@@ -34,6 +34,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
 
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {
@@ -117,9 +118,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, List<string>>> GetLocalizedStringsAsync()
+        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync()
         {
-            var results = new Dictionary<Guid, List<string>>();
+            var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
             var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
             foreach (var supportedLocale in supportedLocales)
@@ -132,27 +133,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         this.cmsEnvironment,
                         slot: "daily").ConfigureAwait(false);
 
-                // No translations found for this language code.
-                if (localizedStrings == null)
-                {
-                    continue;
-                }
-
                 foreach (var locStringKey in localizedStrings.Keys)
                 {
-                    // Untranslated values start with antecedent "[Not Translated]".
-                    if (localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture))
+                    var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+
+                    var localizedResult = new LiveOpsContracts.LocalizedString()
                     {
-                        continue;
-                    }
+                        Message = localizedStrings[locStringKey].LocString,
+                        Category = localizedStrings[locStringKey].Category,
+                        LanguageCode = supportedLocale.Locale,
+                        IsTranslated = isTranslated,
+                    };
+
 
                     if (!results.ContainsKey(locStringKey))
                     {
                         // Create if not exists in dictionary
-                        results[locStringKey] = new List<string>();
+                        results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
                     }
 
-                    results[locStringKey].Add(supportedLocale.Locale);
+                    results[locStringKey].Add(localizedResult);
                 }
             }
 

@@ -23,6 +23,7 @@ import {
   styleUrls: ['./player-selection-bulk.component.scss'],
 })
 export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
+  /** REVIEW-COMMENT: Output when identities are found. */
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity[]>();
   @ContentChild(TemplateRef) templateRef: TemplateRef<AugmentedCompositeIdentity>;
   @ViewChild('chipList') public chipList: MatChipList;

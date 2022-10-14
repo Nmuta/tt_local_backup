@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -33,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.MotorsportDesigner,
         UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead)]
+    [StandardTags(Title.Steelhead)]
     public sealed class ItemsController : V2SteelheadControllerBase
     {
         private readonly ISteelheadItemsProvider itemsProvider;
@@ -65,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the detailed car list.
         /// </summary>
         [HttpGet("cars")]
-        [SwaggerResponse(200, type: typeof(IEnumerable<DetailedCar>))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<SimpleCar>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarsAsync([FromQuery] string slotId = SteelheadPegasusSlot.Live)

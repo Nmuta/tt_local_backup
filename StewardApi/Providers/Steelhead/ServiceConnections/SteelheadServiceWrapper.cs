@@ -151,29 +151,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task SendCreditsGiftAsync(
-            ulong recipientXuid,
-            uint creditAmount,
-            string reason,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            await service.AdminSendCreditsGift(recipientXuid, creditAmount, reason).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task SendCarGiftAsync(
-            ulong recipientXuid,
-            int carId,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            await service.AdminSendCarGift(recipientXuid, carId).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
         public async Task<GiftingManagementService.AdminSendLiveryGiftOutput> SendLiveryGiftAsync(
             ulong[] recipientXuids,
             int xuidCount,

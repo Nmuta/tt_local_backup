@@ -8,8 +8,6 @@ import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-detail
 import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.component';
 import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 import { UserDetailsComponent } from './user-details.component';
-import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
-import { UserRole } from '@models/enums';
 import { GeneralUserDetailsComponent } from './general/general-user-details.component';
 
 const routes: Routes = [
@@ -32,10 +30,7 @@ const routes: Routes = [
       {
         path: 'steelhead',
         component: SteelheadUserDetailsComponent,
-        canActivate: [
-          TitleMemorySetGuard,
-          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
-        ],
+        canActivate: [TitleMemorySetGuard],
         pathMatch: 'full',
       },
       {

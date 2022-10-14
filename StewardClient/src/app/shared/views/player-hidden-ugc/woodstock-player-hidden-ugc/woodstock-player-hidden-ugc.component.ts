@@ -10,6 +10,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
   styleUrls: ['./woodstock-player-hidden-ugc.component.scss'],
 })
 export class WoodstockPlayerHiddenUgcComponent {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
   public getMonitor: ActionMonitor;
 

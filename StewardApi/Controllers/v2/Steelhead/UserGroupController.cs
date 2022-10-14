@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -31,11 +32,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/usergroup")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam,
+        UserRole.MotorsportDesigner,
+        UserRole.HorizonDesigner)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Topic.LspGroups, Target.Details, Dev.ReviseTags)]
+    [StandardTags(Title.Steelhead, Topic.LspGroups, Target.Details, Dev.ReviseTags)]
     public class UserGroupController : V2SteelheadControllerBase
     {
+        // "All Users", "VIP", "ULTIMATE_VIP"
+        private static readonly List<int> LargeUserGroups = new List<int>() { 0, 1, 2 };
+
         private readonly ISteelheadServiceManagementProvider serviceManagementProvider;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
@@ -47,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         public UserGroupController(
             IJobTracker jobTracker,
             IScheduler scheduler,
-            ILoggingService loggingService, 
+            ILoggingService loggingService,
             ISteelheadServiceManagementProvider serviceManagementProvider)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -76,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///    Get a user group users. User list index starts at 1.
+        ///    Get a user group users.
         /// </summary>
         [HttpGet("{userGroupId}")]
         [SwaggerResponse(200, type: typeof(GetUserGroupUsersResponse))]
@@ -85,6 +97,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Add, StewardSubject.UserGroup)]
         public async Task<IActionResult> GetUserGroupUsers(int userGroupId, int startIndex, int maxResults)
         {
+            // If the userGroupId received it part of the large user group list, throw an exception
+            if (LargeUserGroups.Contains(userGroupId))
+            {
+                throw new InvalidArgumentsStewardException($"User group provided is part of large user group list. (userGroupId: {userGroupId})");
+            }
+
             try
             {
                 var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
@@ -125,6 +143,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Create user group.
         /// </summary>
         [HttpPost("{userGroupName}")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager,
+            UserRole.MediaTeam,
+            UserRole.MotorsportDesigner)]
         [SwaggerResponse(200, type: typeof(LspGroup))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create)]
@@ -153,6 +176,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Add users to a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
         /// </summary>
         [HttpPost("{userGroupId}/add")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager,
+            UserRole.MediaTeam,
+            UserRole.MotorsportDesigner)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
@@ -180,6 +208,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Remove users from a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
         /// </summary>
         [HttpPost("{userGroupId}/remove")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager,
+            UserRole.MediaTeam,
+            UserRole.MotorsportDesigner)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
@@ -207,6 +240,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Remove every users from a user group.
         /// </summary>
         [HttpPost("{userGroupId}/removeAllUsers")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]

@@ -20,6 +20,7 @@ import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 import { By } from '@angular/platform-browser';
 
+/** Test harness component. */
 @Component({
   template: '<hook-to-test-obligation-page></hook-to-test-obligation-page>',
 })

@@ -1,8 +1,9 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
+import { NotificationType } from './enums';
 import { MSError } from './error.model';
-import { Merge } from './extended-types';
+import { GuidLikeString, Merge } from './extended-types';
 
 /** Interface for a community message. */
 export interface GenericCommunityMessage {
@@ -22,6 +23,26 @@ export interface LspGroupCommunityMessage extends GenericCommunityMessage {
 }
 
 export type CommunityMessage = Merge<GenericCommunityMessage, LspGroupCommunityMessage>;
+
+/** Interface for a localized message. */
+export interface GenericLocalizedMessage {
+  localizedMessageId: GuidLikeString;
+  startTimeUtc: DateTime;
+  expireTimeUtc: DateTime;
+  notificationType: NotificationType;
+}
+
+/** Interface for a bulk community message. */
+export interface BulkLocalizedMessage extends GenericLocalizedMessage {
+  xuids: BigNumber[];
+}
+
+/** Interface for an LSP group localized message. */
+export interface LspGroupLocalizedMessage extends GenericLocalizedMessage {
+  deviceType: string;
+}
+
+export type LocalizedMessage = Merge<GenericLocalizedMessage, LspGroupLocalizedMessage>;
 
 /** Interface for a community message result. */
 export interface CommunityMessageResult<T> {

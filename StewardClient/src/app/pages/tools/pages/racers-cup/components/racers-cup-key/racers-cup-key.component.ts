@@ -36,7 +36,9 @@ export class RacersCupKeyFlatNode {
   ],
 })
 export class RacersCupKeyComponent implements OnChanges {
+  /** REVIEW-COMMENT: Filter criteria. */
   @Input() public filterCriteria: Map<string, string[]>;
+  /** REVIEW-COMMENT: Output when results are filtered. */
   @Output() public filterResults = new EventEmitter<Map<string, string[]>>();
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */

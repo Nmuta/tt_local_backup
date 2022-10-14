@@ -15,6 +15,7 @@ import { BaseComponent } from '@components/base-component/base.component';
   styleUrls: ['./steward-user.component.scss'],
 })
 export class StewardUserComponent extends BaseComponent implements OnInit, OnChanges {
+  /** REVIEW-COMMENT: Steward user id. */
   @Input() public objectId: GuidLikeString;
 
   public user: UserModel;

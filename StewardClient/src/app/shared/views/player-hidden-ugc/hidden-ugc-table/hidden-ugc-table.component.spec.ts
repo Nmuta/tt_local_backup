@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 
 import { HiddenUgcServiceContract, HiddenUgcTableComponent } from './hidden-ugc-table.component';
 
+/** Test Hidden Ugc Service */
 class TestHiddenUgcService implements HiddenUgcServiceContract {
+  /** Unhide UGC. */
   public unhideUgc$(
     _xuid: BigNumber,
     _fileType: HideableUgcFileType,
@@ -15,6 +17,7 @@ class TestHiddenUgcService implements HiddenUgcServiceContract {
   ): Observable<void> {
     return;
   }
+  /** Get player hidden ugc by xuid. */
   getPlayerHiddenUgcByXuid$(_xuid: BigNumber): Observable<HideableUgc[]> {
     return;
   }

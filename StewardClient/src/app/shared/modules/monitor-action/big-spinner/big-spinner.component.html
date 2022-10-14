@@ -6,7 +6,7 @@
   [errorMessage]="monitor.label + ' failed'"
   [showIconOnError]="false"
 ></error-spinner>
-<json-dump *ngIf="monitor.isErrored" [input]="monitor.status.error">
+<json-dump align="start" *ngIf="monitor.isErrored" [input]="monitor.status.error">
   <div #jsonDumpMessageDiv>
     <ng-content select="[jsonDumpMessage]"></ng-content>
   </div>

@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
@@ -26,9 +27,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/console/{consoleId}")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Topic.Consoles, Target.Details, Dev.ReviseTags)]
+    [StandardTags(Title.Steelhead, Topic.Consoles, Target.Details, Dev.ReviseTags)]
     public class ConsoleController : V2SteelheadControllerBase
     {
         /// <summary>

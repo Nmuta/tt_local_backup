@@ -25,7 +25,9 @@ type TemplateNames =
   providers: [HumanizePipe],
 })
 export class JsonTableResultsComponent implements OnChanges {
+  /** REVIEW-COMMENT: Json table results. */
   @Input() public results: JsonTableResult<unknown>[];
+  /** REVIEW-COMMENT: Download filename. */
   @Input() public downloadFilename: string = 'Unknown';
 
   public resultKeys: string[];

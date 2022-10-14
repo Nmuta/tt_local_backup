@@ -1,16 +1,20 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { PegasusProjectionSlot } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { cloneDeep } from 'lodash';
+import BigNumber from 'bignumber.js';
+import { cloneDeep, find } from 'lodash';
 import { Observable } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
+/** The form control output type for make model autocomplete. */
+export type MakeModelAutoCompleteFormValue = SimpleCar;
+
 export type MakeModelFilterGroup = {
   category: string;
-  items: DetailedCar[];
+  items: SimpleCar[];
 };
 
 /** A base component for ugcs filters. */
@@ -21,9 +25,14 @@ export abstract class MakeModelAutocompleteBaseComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor
 {
+  /** Pre-selects given car id in the select dropdown.  */
+  @Input() preselectedId: BigNumber;
+  /** Determines if make-only options should be shown in select dropdown. */
   @Input() public makeOnlyOptions = true;
+  /** Selects the pegasus slot id to read cars from. */
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
-  @Output() public changes = new EventEmitter<DetailedCar>();
+  /** Output when new ugc search filters are selected. */
+  @Output() public changes = new EventEmitter<SimpleCar>();
 
   public formControls = {
     makeModelInput: new FormControl(null),
@@ -45,12 +54,12 @@ export abstract class MakeModelAutocompleteBaseComponent
     super();
   }
 
-  public abstract getDetailedCars$(): Observable<DetailedCar[]>;
+  public abstract getSimpleCars$(): Observable<SimpleCar[]>;
 
   /** Initialization hook. */
   public ngOnInit(): void {
     this.getMonitor = this.getMonitor.repeat();
-    this.getDetailedCars$()
+    this.getSimpleCars$()
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(cars => {
         this.makeModelFilterGroups = this.buildMatAutocompleteState(cars);
@@ -59,6 +68,11 @@ export abstract class MakeModelAutocompleteBaseComponent
           map(value => this.filterGroup(value)),
           takeUntil(this.onDestroy$),
         );
+
+        const preselectedCar = find(cars, { id: this.preselectedId });
+        if (!!preselectedCar) {
+          this.formControls.makeModelInput.patchValue(preselectedCar, { emitEvent: false });
+        }
       });
 
     this.formGroup.valueChanges
@@ -70,7 +84,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Form control hook. */
-  public writeValue(data: DetailedCar): void {
+  public writeValue(data: SimpleCar): void {
     if (!!data) {
       this.formControls.makeModelInput.patchValue(data, { emitEvent: false });
     } else {
@@ -79,7 +93,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: DetailedCar) => void): void {
+  public registerOnChange(fn: (data: SimpleCar) => void): void {
     this.changeFn = fn;
     this.changeFn(this.makeValue(this.formGroup.value));
   }
@@ -105,12 +119,12 @@ export abstract class MakeModelAutocompleteBaseComponent
 
   /** Outputs new ugc search filters. */
   public emitMakeModelChangeEvent(): void {
-    const carFilter = (this.formControls.makeModelInput?.value as DetailedCar) || null;
+    const carFilter = (this.formControls.makeModelInput?.value as SimpleCar) || null;
     this.changes.emit(carFilter);
   }
 
   /** Mat autocomplete display */
-  public autoCompleteDisplayFn(item: DetailedCar): string {
+  public autoCompleteDisplayFn(item: SimpleCar): string {
     return !!item ? (!item?.makeOnly ? `${item.make} ${item.model} [${item.id}]` : item.make) : '';
   }
 
@@ -121,7 +135,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
-  private buildMatAutocompleteState(cars: DetailedCar[]): MakeModelFilterGroup[] {
+  private buildMatAutocompleteState(cars: SimpleCar[]): MakeModelFilterGroup[] {
     const makeModelFilterGroups: MakeModelFilterGroup[] = [];
 
     // make
@@ -155,7 +169,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Autocomplete filter function. */
-  private filterGroup(value: string | DetailedCar): MakeModelFilterGroup[] {
+  private filterGroup(value: string | SimpleCar): MakeModelFilterGroup[] {
     if (!value) {
       return this.makeModelFilterGroups;
     }
@@ -179,7 +193,7 @@ export abstract class MakeModelAutocompleteBaseComponent
     return prefilter.filter(group => group.items.length > 0);
   }
 
-  private filter(prefix: string, opt: DetailedCar[], value: string): DetailedCar[] {
+  private filter(prefix: string, opt: SimpleCar[], value: string): SimpleCar[] {
     const filterValue = value.toLowerCase();
     const prefixFilterValue = prefix.toLowerCase();
     if (prefixFilterValue.includes(filterValue)) {
@@ -207,7 +221,7 @@ export abstract class MakeModelAutocompleteBaseComponent
   }
 
   /** Compares a filter string against an InventoryItem, returning true if the string was found. */
-  private checkFilterAgainstInventoryItem(item: DetailedCar, filter: string): boolean {
+  private checkFilterAgainstInventoryItem(item: SimpleCar, filter: string): boolean {
     return (
       item?.make.toLowerCase().includes(filter) ||
       item?.model.toLowerCase().includes(filter) ||
@@ -215,12 +229,12 @@ export abstract class MakeModelAutocompleteBaseComponent
     );
   }
 
-  private changeFn = (_data: DetailedCar) => {
+  private changeFn = (_data: SimpleCar) => {
     /* Empty */
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private makeValue(internalValue: any): DetailedCar {
+  private makeValue(internalValue: any): SimpleCar {
     if (internalValue.makeModelInput) {
       return internalValue.makeModelInput;
     }

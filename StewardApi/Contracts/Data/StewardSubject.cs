@@ -26,5 +26,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ApiPermissions,
         Ban,
         UgcGeoFlags,
+        UgcReport,
     }
 }

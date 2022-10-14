@@ -5,6 +5,7 @@ import { mergedParamMap$ } from '@helpers/param-map';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
+import { SteelheadUgcReportService } from '@services/api-v2/steelhead/ugc/report/steelhead-ugc-report.service';
 import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { first, keys } from 'lodash';
@@ -29,6 +30,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: PlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
+  public reportMonitor = new ActionMonitor('Post Report UGC');
 
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
@@ -41,6 +43,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
     private readonly permissionsService: PermissionsService,
+    private readonly ugcReportService: SteelheadUgcReportService,
   ) {
     super();
   }
@@ -110,5 +113,18 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     }
 
     throw new Error(`Steelhead does not support featuring UGC.`);
+  }
+
+  /** Report a Ugc item in Woodstock */
+  public reportUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.reportMonitor = this.reportMonitor.repeat();
+
+    this.ugcReportService
+      .reportUgc$(this.ugcItem.id)
+      .pipe(this.reportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe();
   }
 }

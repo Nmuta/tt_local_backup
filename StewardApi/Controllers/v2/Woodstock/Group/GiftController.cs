@@ -21,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
@@ -39,9 +40,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
     [Route("api/v{version:apiVersion}/title/woodstock/group/{groupId}/gift")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager)]
     [ApiVersion("2.0")]
-    [Tags(Title.Woodstock, Target.LspGroup, Topic.Gifting)]
+    [StandardTags(Title.Woodstock, Target.LspGroup, Topic.Gifting)]
     public class GiftController : V2WoodstockControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;

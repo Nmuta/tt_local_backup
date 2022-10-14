@@ -98,23 +98,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             string endpoint);
 
         /// <summary>
-        ///     Sends credits to a player.
-        /// </summary>
-        Task SendCreditsGiftAsync(
-            ulong recipientXuid,
-            uint creditAmount,
-            string reason,
-            string endpoint);
-
-        /// <summary>
-        ///     Sends car to a player.
-        /// </summary>
-        Task SendCarGiftAsync(
-            ulong recipientXuid,
-            int carId,
-            string endpoint);
-
-        /// <summary>
         ///     Sends car livery to a player.
         /// </summary>
         Task<GiftingManagementService.AdminSendLiveryGiftOutput> SendLiveryGiftAsync(

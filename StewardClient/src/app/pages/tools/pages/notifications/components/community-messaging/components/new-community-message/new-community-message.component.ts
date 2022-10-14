@@ -14,9 +14,13 @@ import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/date
 })
 export class NewCommunityMessageComponent implements OnInit {
   private static readonly UTC_NOW = DateTime.utc();
+  /** REVIEW-COMMENT: Pending community message. */
   @Input() public pendingCommunityMessage: CommunityMessage;
+  /** REVIEW-COMMENT: Is device type filter allowed. */
   @Input() public allowDeviceTypeFilter: boolean;
+  /** REVIEW-COMMENT: Is start time disabled. */
   @Input() public lockStartTime: boolean = false;
+  /** REVIEW-COMMENT: Output when a community message is created. */
   @Output() public emitNewCommunityMessage = new EventEmitter<CommunityMessage>();
 
   private dateRange: DatetimeRangePickerFormValue = {

@@ -13,7 +13,7 @@ import {
 } from '@views/ugc-search-filters/ugc-search-filters.component';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { DetailedCar } from '@models/detailed-car';
+import { SimpleCar } from '@models/cars';
 import { WoodstockService } from '@services/woodstock';
 import BigNumber from 'bignumber.js';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,6 +28,7 @@ import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 })
 export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit {
   @ViewChild(HelpPopoverIconComponent) helpPopoverIcon: HelpPopoverIconComponent;
+  /** REVIEW-COMMENT: Pegasus slot id. Default to {@link PegasusProjectionSlot.Live}. */
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
   public gameTitle = GameTitle.FH5;
   public searchUgc$ = new Subject<UgcSearchFilters>();
@@ -38,7 +39,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
-    makeModelAutocompleteServiceContract: { getDetailedCars$: () => this.getDetailedCars$() },
+    makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
     supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.Tune, UgcType.EventBlueprint],
 
     foundFn: this.foundFn,
@@ -100,8 +101,8 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   }
 
   /** Gets master inventory list */
-  public getDetailedCars$(): Observable<DetailedCar[]> {
-    return this.woodstockService.getDetailedCars$(this.pegasusSlotId);
+  public getSimpleCars$(): Observable<SimpleCar[]> {
+    return this.woodstockService.getSimpleCars$(this.pegasusSlotId);
   }
 
   /** Logic when player details tool button is clicked. */

@@ -20,7 +20,7 @@ export type CreditDetailsEntryMixin = {
   xpDifference?: BigNumber;
 };
 
-/** Applies analysis for timeMatchesAbove and timeMatchesBelow */
+/** Applies analysis for timeMatchesAbove and timeMatchesBelow. */
 function applyGroupingAnalysis(
   startAtIndex: number,
   data: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[],
@@ -122,6 +122,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   extends BaseComponent
   implements OnInit, OnChanges
 {
+  /** REVIEW-COMMENT: Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
   public saveRollbackMonitor = new ActionMonitor('GET save rollback');

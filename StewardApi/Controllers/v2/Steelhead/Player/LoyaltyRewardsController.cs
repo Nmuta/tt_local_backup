@@ -17,6 +17,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -30,9 +31,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/loyalty")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.HorizonDesigner,
+        UserRole.MotorsportDesigner,
+        UserRole.MediaTeam)]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Target.Player, Topic.LoyaltyRewards)]
+    [StandardTags(Title.Steelhead, Target.Player, Topic.LoyaltyRewards)]
     public class LoyaltyRewardsController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;

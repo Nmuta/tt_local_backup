@@ -13,7 +13,7 @@ import { GameTitle } from '@models/enums';
   styleUrls: ['./woodstock-create-user-group.component.scss'],
 })
 export class WoodstockCreateUserGroupComponent extends BaseComponent {
-  /** Outputs when a new user group is created */
+  /** REVIEW-COMMENT: Outputs when a new user group is created. */
   @Output() newUserGroup = new EventEmitter<LspGroup>();
 
   public service: CreateUserGroupServiceContract;

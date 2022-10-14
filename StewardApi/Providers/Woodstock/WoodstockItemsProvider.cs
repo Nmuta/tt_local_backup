@@ -43,7 +43,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
         public async Task<WoodstockMasterInventory> GetMasterInventoryAsync()
         {
-
             var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<DataCar>(), new List<Exception>());
             var getCarHorns = this.pegasusService.GetCarHornsAsync().SuccessOrDefault(Array.Empty<CarHorn>(), new List<Exception>());
             var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<VanityItem>(), new List<Exception>());
@@ -98,12 +97,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<DetailedCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<T>> GetCarsAsync<T>(string slotId = WoodstockPegasusSlot.Live)
+            where T : SimpleCar
         {
             try
             {
                 var cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
-                return this.mapper.Map<IEnumerable<DetailedCar>>(cars);
+                return this.mapper.Map<IEnumerable<T>>(cars);
             }
             catch (Exception ex)
             {

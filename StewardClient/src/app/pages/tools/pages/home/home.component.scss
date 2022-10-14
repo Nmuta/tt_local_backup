@@ -11,7 +11,7 @@
   // horizontal positioning and sizing of the box
   display: grid;
   flex-grow: 0;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 
@@ -147,8 +147,19 @@ mat-icon[mat-card-avatar] {
   @include mat.elevation(2);
   mat-card,
   mat-card-actions,
-  mat-card-header {
+  mat-card-header,
+  mat-card-title,
+  mat-card-subtitle {
     transition: color 0.5s ease, background-color 0.5s ease;
+    background-color: app-color-default($app-background);
+    color: app-color-default-contrast($app-background);
+  }
+
+  mat-card-subtitle {
+    color: app-color-default-contrast(
+      $app-background,
+      'secondary-text'
+    ); // opacity value pulled from angular material
   }
 }
 
@@ -161,6 +172,10 @@ mat-icon[mat-card-avatar] {
   mat-card-subtitle {
     background-color: app-color-lighter($app-accent) !important;
     color: app-color-lighter-contrast($app-accent) !important;
+  }
+
+  mat-card-subtitle {
+    color: app-color-lighter-contrast($app-accent, 'secondary-text') !important;
   }
 }
 

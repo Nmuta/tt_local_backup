@@ -15,11 +15,14 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
 import BigNumber from 'bignumber.js';
 
+/** Test notification management service for player. */
 class TestNotificationManagementService implements IndividualNotificationManagementContract {
   public gameTitle: GameTitle.Street;
+  /** Get player notification. */
   public getPlayerNotifications$(): Observable<PlayerNotification[]> {
     return null;
   }
+  /** Edit player community message. */
   public postEditPlayerCommunityMessage$(
     _xuid: BigNumber,
     _notificationId: string,
@@ -27,6 +30,7 @@ class TestNotificationManagementService implements IndividualNotificationManagem
   ): Observable<void> {
     return null;
   }
+  /** Delete player community message. */
   public deletePlayerCommunityMessage$(
     _xuid: BigNumber,
     _notificationId: string,

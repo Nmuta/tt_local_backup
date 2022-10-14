@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {
@@ -28,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Retrieve localized strings from Pegasus.
         /// </summary>
         /// <remarks>Utilizes a supported subset of BCP 47 Language Codes.</remarks>
-        Task<Dictionary<Guid, List<string>>> GetLocalizedStringsAsync();
+        Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync();
 
         /// <summary>
         ///     Gets car classes.

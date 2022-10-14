@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
@@ -30,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
     [Authorize]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags(Topic.Ugc, Title.Multiple, Title.Woodstock, Title.Sunrise)]
+    [StandardTags(Topic.Ugc, Title.Multiple, Title.Woodstock, Title.Sunrise)]
     public class FindController : V2ControllerBase
     {
         private readonly IWoodstockService fh5Service;

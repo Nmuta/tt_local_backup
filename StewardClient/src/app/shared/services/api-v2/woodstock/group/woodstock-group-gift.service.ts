@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UserGroupBulkLiveryGift } from '@models/gift';
 import { GiftResponse } from '@models/gift-response';
+import { WoodstockUserGroupBulkLiveryGift } from '@models/woodstock/woodstock-gift.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { BigNumber } from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -18,10 +18,11 @@ export class WoodstockGroupGiftService {
     giftReason: string,
     liveryIds: string[],
     userGroupId: BigNumber,
+    expireTimeSpanInDays: BigNumber,
   ): Observable<GiftResponse<BigNumber>> {
-    const model: UserGroupBulkLiveryGift = {
+    const model: WoodstockUserGroupBulkLiveryGift = {
       liveryIds,
-      target: { giftReason },
+      target: { giftReason, expireTimeSpanInDays },
     };
 
     return this.api.postRequest$(`${this.basePath}/${userGroupId}/gift/livery`, model);

@@ -32,6 +32,7 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { GuidLikeString } from '@models/extended-types';
 import { saveAs } from 'file-saver';
 import { chunk, cloneDeep, flatten } from 'lodash';
+import { getUgcDetailsRoute } from '@helpers/route-links';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -44,7 +45,7 @@ export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
 
 /** Extended type from HideableUgc. */
 export type PlayerUgcItemTableEntries = PlayerUgcItem & {
-  ugcDetailsLink?: string;
+  ugcDetailsLink?: string[];
   monitor?: ActionMonitor;
 };
 
@@ -66,7 +67,9 @@ export abstract class UgcTableBaseComponent
 {
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  /** REVIEW-COMMENT: Player UGC items. */
   @Input() content: PlayerUgcItem[];
+  /** REVIEW-COMMENT: Content type. Default to {@link UgcType.Unknown}. */
   @Input() contentType: UgcType = UgcType.Unknown;
   public readonly THUMBNAIL_LOOKUP_BATCH_SIZE = 250;
   public readonly THUMBNAIL_LOOKUP_MAX_CONCURRENCY = 4;
@@ -134,9 +137,7 @@ export abstract class UgcTableBaseComponent
 
       ugcItemsToProcess.forEach(item => {
         if (this.ugcDetailsLinkSupported) {
-          item.ugcDetailsLink = `/app/tools/ugc-details/${this.gameTitle}/${
-            item.id
-          }/${item.type.toLowerCase()}`;
+          item.ugcDetailsLink = getUgcDetailsRoute(this.gameTitle, item.id, item.type);
         }
         item.monitor = new ActionMonitor(`POST Hide UGC with ID: ${item.id}`);
         this.allMonitors.push(item.monitor);
