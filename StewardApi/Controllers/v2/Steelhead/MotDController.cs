@@ -102,7 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
             }
 
-            GitPush pushed = await this.steelheadPegasusService.EditMotDMessagesAsync(motd, parsedId, commitComment).ConfigureAwait(true);
+            GitPush pushed = await this.steelheadPegasusService.EditMotDMessagesAsync(motd, parsedId, commitComment).ConfigureAwait(false);
 
             GitPullRequest pr = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
 

@@ -145,7 +145,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         IsTranslated = isTranslated,
                     };
 
-
                     if (!results.ContainsKey(locStringKey))
                     {
                         // Create if not exists in dictionary
@@ -254,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
 
-            List<(XName, object)> values = new();
+            List<(XName, object)> values = new ();
 
             ReadPropertiesRecursive(entry);
 
@@ -292,7 +291,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             FillXmlRecursive(el, values, 0, namespaceRoot);
 
             // convert doc to string UTF8, ToString() returns UTF16
-            MemoryStream memory = new();
+            MemoryStream memory = new ();
             await el.SaveAsync(memory, default, default).ConfigureAwait(false);
             string xmlText = Encoding.UTF8.GetString(memory.ToArray());
             await memory.DisposeAsync().ConfigureAwait(false);
@@ -353,7 +352,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             MotDXmlRoot root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
 
-            Dictionary<Guid, string> choices = new();
+            Dictionary<Guid, string> choices = new ();
             foreach (var entry in root.UserMessagesMessageOfTheDay)
             {
                 choices.Add(entry.idAttribute, entry.FriendlyMessageName);

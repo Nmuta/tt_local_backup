@@ -1,4 +1,6 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
+﻿using System;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
     /// <summary>
     ///     Message of the Day response object.
@@ -33,6 +35,6 @@
         /// <summary>
         ///     Gets or sets the date.
         /// </summary>
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
     }
 }
