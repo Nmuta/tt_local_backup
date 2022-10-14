@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { GameTitleAbbreviation, GameTitleCodeName } from '@models/enums';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { find } from 'lodash';
-import { filter, take, takeUntil } from 'rxjs';
 import { BaseComponent } from './base.component';
 
 export interface NavbarLink {
@@ -22,15 +21,9 @@ export abstract class BaseNavbarComponent extends BaseComponent {
   constructor(private readonly permAttributesService: PermAttributesService) {
     super();
 
-    this.permAttributesService.isInitialized$
-      .pipe(
-        filter(v => !!v),
-        take(1),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe(() => {
-        this.restrictTitlesBasedOnPerms();
-      });
+    this.permAttributesService.initializationGuard$.subscribe(() => {
+      this.restrictTitlesBasedOnPerms();
+    });
   }
 
   /** Removes titles from the navbarRouterLinks if the user does not have access to them. */

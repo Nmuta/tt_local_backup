@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloBanResult } from '@models/apollo';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import { GameTitle } from '@models/enums';
 import { SunriseBanResult } from '@models/sunrise';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { EMPTY, timer } from 'rxjs';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 
@@ -13,7 +16,7 @@ export type BanResultsUnion = SunriseBanResult | ApolloBanResult;
 @Component({
   template: '',
 })
-export class UserBanningBaseComponent extends BaseComponent {
+export abstract class UserBanningBaseComponent extends BaseComponent {
   /** True while waiting on a request. */
   public banResults: BanResultsUnion[];
   /** True while waiting on a request. */
@@ -21,8 +24,23 @@ export class UserBanningBaseComponent extends BaseComponent {
   /** The error received while loading. */
   public loadError: unknown;
 
-  constructor(private readonly backgroundJobService: BackgroundJobService) {
+  /** Perm attribute check. */
+  public hasBanPerm: boolean = false;
+
+  public abstract gameTitle: GameTitle;
+
+  constructor(
+    private readonly backgroundJobService: BackgroundJobService,
+    private readonly permAttributesService: PermAttributesService,
+  ) {
     super();
+
+    permAttributesService.initializationGuard$.subscribe(() => {
+      this.hasBanPerm = this.permAttributesService.hasFeaturePermission(
+        PermAttributeName.BanPlayer,
+        this.gameTitle,
+      );
+    });
   }
 
   /** Waits for a background job to complete. */

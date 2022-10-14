@@ -62,6 +62,7 @@
               >
                 Submit ban
               </verify-action-button>
+              <div *ngIf="!hasBanPerm">You do not have permission to use this feature</div>
             </form>
           </ng-container>
         </ng-container>

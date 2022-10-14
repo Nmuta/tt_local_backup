@@ -13,6 +13,8 @@ import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
+import { GameTitle } from '@models/enums';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 /** Routed Component; Sunrise Banning Tool. */
 @Component({
@@ -22,6 +24,7 @@ import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 export class SunriseBanningComponent extends UserBanningBaseComponent {
   @ViewChildren('sunrise-ban-history')
   public banHistoryComponents: SunriseBanHistoryComponent[] = [];
+  public gameTitle = GameTitle.FH4;
 
   public playerIdentities$ = new Subject<IdentityResultAlpha[]>();
   public playerIdentities: IdentityResultAlpha[] = [];
@@ -43,9 +46,10 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
 
   constructor(
     backgroundJobService: BackgroundJobService,
+    permAttributesService: PermAttributesService,
     private readonly sunrise: SunriseService,
   ) {
-    super(backgroundJobService);
+    super(backgroundJobService, permAttributesService);
 
     const summaries$ = new ReplaySubject<SunriseBanSummary[]>(1);
     const summaryLookup$ = new ReplaySubject<Dictionary<SunriseBanSummary>>(1);
@@ -131,7 +135,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
 
   /** True when the form can be submitted. */
   public canBan(): boolean {
-    return this.formGroup.valid && this.playerIdentities.length > 0;
+    return this.formGroup.valid && this.playerIdentities.length > 0 && this.hasBanPerm;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

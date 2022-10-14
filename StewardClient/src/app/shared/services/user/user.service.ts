@@ -36,7 +36,7 @@ export class UserService {
       {
         attribute: PermAttributeName.BanPlayer,
         title: GameTitle.FH5,
-        environment: 'Retail',
+        environment: 'console.log',
       },
     ]);
     // This isnt built yet, waiting on API work to go in

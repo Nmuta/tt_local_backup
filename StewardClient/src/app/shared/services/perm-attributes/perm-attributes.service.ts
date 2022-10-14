@@ -9,7 +9,7 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { find, includes } from 'lodash';
-import { BehaviorSubject, Observable, takeUntil } from 'rxjs';
+import { BehaviorSubject, filter, Observable, take, takeUntil } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -40,7 +40,16 @@ export class PermAttributesService extends BaseService {
     [GameTitle.FH4]: null,
   };
 
-  public isInitialized$ = new BehaviorSubject<boolean>(false);
+  private isInitialized$ = new BehaviorSubject<boolean>(false);
+
+  /** Helper function that timeouts state checks for user profile. */
+  public get initializationGuard$(): Observable<boolean> {
+    return this.isInitialized$.pipe(
+      filter(v => !!v),
+      take(1),
+      takeUntil(this.onDestroy$),
+    );
+  }
 
   public get isUsingV1Auth(): boolean {
     return this.userRole !== UserRole.V2Role;
