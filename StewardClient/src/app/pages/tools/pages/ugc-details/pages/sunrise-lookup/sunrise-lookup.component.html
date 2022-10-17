@@ -5,7 +5,7 @@
         <mat-card-title>UGC Overview</mat-card-title>
         <mat-card-subtitle>IDs and other text</mat-card-subtitle>
       </mat-card-header>
-      <div class = "sf-wrapper">
+      <div class="sf-wrapper">
         <div class="sf-horizontal">
           <div class="sf-vertical">
             <model-dump-xuids></model-dump-xuids>
@@ -27,7 +27,8 @@
             <ng-content select="button"></ng-content>
             <ugc-download-button
               class="sf-full-width sf-default-margins sf-action-list-margins"
-              [item]="ugcItem"></ugc-download-button>
+              [item]="ugcItem"
+            ></ugc-download-button>
             <button
               class="sf-default-margins sf-action-list-margins"
               [disabled]="!canFeatureUgc"
