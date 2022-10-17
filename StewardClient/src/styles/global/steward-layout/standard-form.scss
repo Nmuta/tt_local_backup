@@ -42,7 +42,8 @@
     }
 
     // align the button
-    > button {
+    > button:not(.sf-default-margins) ,
+    > ugc-download-button:not(.sf-default-margins) {
       margin-top: 1.5em;
       margin-bottom: $mat-form-field-bottom-spacing;
     }
@@ -55,6 +56,10 @@
         margin-right: 0; // mirror margins if it's in the middle of the block
       }
       margin-bottom: $mat-form-field-bottom-spacing;
+    }
+
+    .sf-grow-to-container {
+      flex-grow: 1;
     }
 
     // support for up to 5 characters
@@ -82,8 +87,12 @@
     flex-flow: column nowrap;
 
     /** This gives a bit more clearance for hints/names that are near each other. */
-    mat-form-field {
+    mat-form-field:not(.sf-default-hint) {
       margin-bottom: 2em;
+    }
+
+    .sf-action-list {
+      margin-top: $gap-medium;
     }
 
     // things that shouldn't grow to fill space
@@ -94,8 +103,12 @@
     }
 
     // align the button
-    > button {
+    > button:not(.sf-default-margins) {
       margin: $gap-small/2;
+    }
+
+    .sf-action-list-margins {
+      margin-bottom: $gap-small/2;
     }
   }
 
@@ -111,6 +124,10 @@
     .mat-cell {
       padding: 1em;
     }
+  }
+
+  .sf-full-width {
+    width: 100%
   }
 }
 
