@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -90,19 +91,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpPost("{id}")]
         [SwaggerResponse(200, type: typeof(GitPullRequest))]
-        public async Task<IActionResult> EditAndSubmitMessageOfTheDay(
-            string id,
-            string commitComment,
-            string pullRequestTitle,
-            string pullRequestDescription,
-            [FromBody] MessageOfTheDayBridge motd)
+        public async Task<IActionResult> EditAndSubmitMessageOfTheDay(string id, [FromBody] MessageOfTheDayBridge motd)
         {
             if (!Guid.TryParse(id, out var parsedId))
             {
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
             }
 
+            string commitComment = "StewardApi: Edits Message of the Day";
+
             GitPush pushed = await this.steelheadPegasusService.EditMotDMessagesAsync(motd, parsedId, commitComment).ConfigureAwait(false);
+
+            StewardUser user = this.User.UserClaims();
+            string pullRequestTitle = $"StewardApi/{user.EmailAddress} - Edit Welcome Center: Message of the Day";
+            string pullRequestDescription = commitComment;
 
             GitPullRequest pr = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
 

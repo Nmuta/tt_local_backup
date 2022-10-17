@@ -101,8 +101,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.azureDevOpsManager = azureDevOpsFactory.Create(
                 configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl],
                 steelheadContentPAT,
-                Guid.ParseExact(configuration[ConfigurationKeyConstants.SteelheadContentProjectId], "D"),
-                Guid.ParseExact(configuration[ConfigurationKeyConstants.SteelheadContentRepoId], "D"));
+                Guid.Parse(configuration[ConfigurationKeyConstants.SteelheadContentProjectId]),
+                Guid.Parse(configuration[ConfigurationKeyConstants.SteelheadContentRepoId]));
         }
 
         /// <inheritdoc />
@@ -290,7 +290,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             FillXmlRecursive(el, values, 0, namespaceRoot);
 
-            // convert doc to string UTF8, ToString() returns UTF16
+            // convert element to string UTF8, ToString() returns UTF16
             MemoryStream memory = new ();
             await el.SaveAsync(memory, default, default).ConfigureAwait(false);
             string xmlText = Encoding.UTF8.GetString(memory.ToArray());
@@ -338,9 +338,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             GitItem item = await this.azureDevOpsManager.GetItemAsync(PathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
             MotDXmlRoot root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
-            var xmlEntry = root.UserMessagesMessageOfTheDay.Where(motdXml => motdXml.idAttribute == id).First();
+            var entry = root.UserMessagesMessageOfTheDay.Where(motdXml => motdXml.idAttribute == id).First();
 
-            MessageOfTheDayBridge subset = this.mapper.Map<MessageOfTheDayBridge>(xmlEntry);
+            MessageOfTheDayBridge subset = this.mapper.Map<MessageOfTheDayBridge>(entry);
 
             return subset;
         }
