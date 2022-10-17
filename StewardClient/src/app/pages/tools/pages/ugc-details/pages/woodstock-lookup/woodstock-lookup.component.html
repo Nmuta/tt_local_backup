@@ -92,7 +92,7 @@
               >
             </div>
           </div>
-        <div *waitForMonitor="getReportReasonsMonitor">
+          <div *waitForMonitor="getReportReasonsMonitor">
           <mat-form-field appearance="fill">
             <mat-label>Report reason</mat-label>
             <mat-select matInput [(ngModel)]="selectedReason">
@@ -119,40 +119,38 @@
           <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
             Verify
           </mat-checkbox>
-        </div>
+          </div>
 
-        <ng-content select="button"></ng-content>
-        <ugc-download-button [item]="ugcItem"></ugc-download-button>
-        <button
-          [disabled]="!canFeatureUgc"
-          mat-raised-button
-          color="primary"
-          (click)="featureUgcItem()"
-        >
-          <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
-            ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
-          }}</span>
-        </button>
-        <button
-          mat-raised-button
-          color="warn"
-          [verifyWith]="verifyHide"
-          (click)="hideUgcItem()"
-          stateManager
-          [monitor]="hideMonitor"
-          monitorDisable
-          monitorWarn
-          monitorWarnSnackbar
-          monitorCompleteSnackbar
-          [disabled]="!canHideUgc"
-        >
-          Hide UGC
-        </button>
-        <mat-checkbox #verifyHide matTooltip="Verify Deletion" aria-label="Verify Deletion"
-          >Verify</mat-checkbox
-        >
-
-      </mat-card-actions> -->
+          <ng-content select="button"></ng-content>
+          <ugc-download-button [item]="ugcItem"></ugc-download-button>
+          <button
+            [disabled]="!canFeatureUgc"
+            mat-raised-button
+            color="primary"
+            (click)="featureUgcItem()"
+          >
+            <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+              ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
+            }}</span>
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            [verifyWith]="verifyHide"
+            (click)="hideUgcItem()"
+            stateManager
+            [monitor]="hideMonitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+            monitorCompleteSnackbar
+            [disabled]="!canHideUgc"
+          >
+            Hide UGC
+          </button>
+          <mat-checkbox #verifyHide matTooltip="Verify Deletion" aria-label="Verify Deletion"
+            >Verify</mat-checkbox
+          >
         </div>
       </div>
     </mat-card>
