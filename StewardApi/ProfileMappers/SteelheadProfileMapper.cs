@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -317,6 +318,26 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUser, PlayerGameDetails>()
                 .ForMember(dest => dest.LastLoginDateUtc, opt => opt.MapFrom(src => src.LastLogin))
                 .ForMember(dest => dest.FirstLoginDateUtc, opt => opt.MapFrom(src => src.FirstLogin));
+
+            // Welcome Center
+            this.CreateMap<UserMessagesMessageOfTheDay, MessageOfTheDayBridge>()
+                .ForMember(dest => dest.FriendlyMessageName, act => act.MapFrom(src => src.FriendlyMessageName))
+                .ForMember(dest => dest.ContentImagePath, act => act.MapFrom(src => src.ContentImagePath))
+                .ForMember(dest => dest.Date, act => act.MapFrom(src => src.Date))
+                .ForMember(dest => dest.ContentBody, act => act.MapFrom(src => src.ContentBody))
+                .ReverseMap();
+            this.CreateMap<UserMessagesMessageOfTheDayContentBody, LocTextBridge>()
+                .ForMember(dest => dest.Base, act => act.MapFrom(src => src.@base))
+                .ForMember(dest => dest.SkipLoc, act => act.MapFrom(src => src.skiploc))
+                .ForMember(dest => dest.Description, act => act.Ignore())
+                .ReverseMap();
+            this.CreateMap<UserMessagesMessageOfTheDayContentHeader, LocTextBridge>()
+                .ForMember(dest => dest.Base, act => act.MapFrom(src => src.@base))
+                .ForMember(dest => dest.SkipLoc, act => act.MapFrom(src => src.skiploc))
+                .ForMember(dest => dest.Description, act => act.Ignore())
+                .ReverseMap();
+            this.CreateMap<UserMessagesMessageOfTheDayTitleHeader, LocTextBridge>()
+                .ReverseMap();
         }
     }
 }

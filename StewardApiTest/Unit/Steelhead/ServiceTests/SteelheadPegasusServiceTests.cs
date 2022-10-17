@@ -122,6 +122,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "loggingService"));
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenAzureDevOpsFactoryNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { AzureDevOpsFactory = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "azureDevOpsFactory"));
+        }
+
+
         private sealed class Dependencies
         {
             public Dependencies(bool validConfiguration = true)
@@ -131,10 +146,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
                 if (validConfiguration)
                 {
                     this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].Returns("1234567890");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentProjectId].Returns("12345678-1234-1234-1234-123456789012");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentRepoId].Returns("12345678-1234-1234-1234-123456789012");
                 }
                 else
                 {
                     this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentProjectId].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentRepoId].ReturnsNull();
                 }
             }
 

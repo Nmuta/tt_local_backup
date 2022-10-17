@@ -142,6 +142,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string RacersCup = "Topic: Racers Cup";
             public const string CmsOverride = "Topic: Cms Override";
             public const string Permissions = "Topic: Permissions";
+            public const string Pegasus = "Topic: Pegasus";
         }
 
         /// <summary>
@@ -152,7 +153,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string UnknownAlphabetic = "Sentinel_Unknown_Alphabetic";
             public const string Dangerous = "Sentinel_Dangerous";
             public const string NonDangerousAlphabetic = "Sentinel_Unknown_NonDangerous_Alphabetic";
-
 
             public static ISet<string> Values { get; } = new HashSet<string>
             {
