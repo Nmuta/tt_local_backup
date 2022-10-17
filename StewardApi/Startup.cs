@@ -171,8 +171,6 @@ namespace Turn10.LiveOps.StewardApi
                 UserAttribute.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 
-            services.AddSingleton<IAuthorizationHandler, AuthorizationAttributeHandler>();
-
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters = new List<JsonConverter> { new TimeSpanConverter() };
@@ -295,6 +293,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<KustoQueryProvider>().As<IKustoQueryProvider>().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();
+            builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             builder.Register(c => pegasusProvider).As<PegasusCmsProvider>().SingleInstance();

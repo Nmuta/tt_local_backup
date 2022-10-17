@@ -1,5 +1,4 @@
 ﻿using Turn10.LiveOps.StewardApi.Contracts.Errors;
-using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -37,33 +36,5 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the attributes.
         /// </summary>
         public string Attributes { get; set; }
-
-        public AuthorizationAttribute[] AuthorizationAttributes()
-        {
-            if(string.IsNullOrEmpty(this.Attributes))
-            {
-                return new AuthorizationAttribute[]{ };
-            }
-
-            return JsonExtensions.FromJson<AuthorizationAttribute[]>(this.Attributes);
-        }
-    }
-
-    public class AuthorizationAttribute
-    {
-        /// <summary>
-        ///     Attribute.
-        /// </summary>
-        public string Attribute { get; set;  }
-
-        /// <summary>
-        ///     Environment.
-        /// </summary>
-        public string Environment { get; set;  }
-
-        /// <summary>
-        ///     Title.
-        /// </summary>
-        public string Title { get; set; }
     }
 }

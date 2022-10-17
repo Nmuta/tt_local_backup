@@ -6,6 +6,7 @@ using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Identity.Web;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Authorization
@@ -31,12 +32,12 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         {
             if (context == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new InvalidArgumentsStewardException($"Null {nameof(context)} provided.");
             }
 
             if (requirement == null)
             {
-                throw new ArgumentNullException(nameof(requirement));
+                throw new InvalidArgumentsStewardException($"Null {nameof(requirement)} provided.");
             }
 
             // Another policy has already failed
@@ -52,6 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
             // If the user is in any of the v1 roles, succeed the policy
             // TODO: Once all users are migrated to auth v2, remove this
+            // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1349616
             if (UserRole.V1Roles().Any(role => context.User.IsInRole(role)))
             {
                 context.Succeed(requirement);
@@ -63,12 +65,12 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             var objectId = context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimConstants.ObjectId);
             if (objectId == null)
             {
-                throw new Exception("Invalid user claim");
+                throw new BadHeaderStewardException("Invalid user claim.");
             }
 
             var user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
 
-            var authorized = user.AuthorizationAttributes().Where(authAttr =>
+            var authorized = user.Attributes.Where(authAttr =>
                     EmptyOrEquals(authAttr.Environment, environment) &&
                     EmptyOrEquals(authAttr.Title, title) &&
                     EmptyOrEquals(authAttr.Attribute, requirement.Attribute));
@@ -99,20 +101,21 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                     return;
                 }
 
-                // v1 apis use | (Endpoint|Title), v2 apis use - (Endpoing-Title)
-                var environmentKey = $"Endpoint{("v1".Equals(api) ? "|" : "-")}{title}";
+                // v1 apis use endpointKey, value is Title|environment
+                // v2 apis use Endpoint-Title, value is environment
+                var environmentKey = "v1".Equals(api) ? "endpointKey" : $"Endpoint-{title}";
 
                 if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
                 {
-                    throw new BadHttpRequestException("No environment provided.");
+                    throw new BadHeaderStewardException("No environment provided.");
                 }
 
                 if (env.IsNullOrEmpty())
                 {
-                    throw new BadHttpRequestException("No environment provided.");
+                    throw new BadHeaderStewardException("No environment provided.");
                 }
 
-                environment = env;
+                environment = env.ToString().Contains("|") ? env.ToString().Split("|")[1] : env;
             }
 
             string RequestPathSegment(PathString path, string key, bool capitalize = false)
@@ -124,7 +127,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
                 var segments = path.ToUriComponent().Split("/");
 
-                var index = segments.IndexOf(segment => segment.ToLower() == key) + 1;
+                var index = segments.IndexOf(segment => string.Equals(segment, key, StringComparison.OrdinalIgnoreCase)) + 1;
                 if (index >= segments.Length)
                 {
                     return string.Empty;

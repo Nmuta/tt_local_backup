@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 result.Name = name;
                 result.EmailAddress = email;
                 result.Role = role;
-                result.Attributes = attributes;
+                result.Attributes = AuthorizationAttribute.Deserialize(attributes);
 
                 var replaceOperation = TableOperation.Replace(result);
 
@@ -150,7 +150,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             {
                 var user = await this.GetStewardUserAsync(id).ConfigureAwait(false);
 
-                if (name != user.Name || email != user.EmailAddress || role != user.Role || attributes != user.Attributes)
+                if (!user.Equals(name, email, role, attributes))
                 {
                     await this.UpdateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
                 }
