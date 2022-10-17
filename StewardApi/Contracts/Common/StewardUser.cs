@@ -1,4 +1,5 @@
-﻿using Turn10.LiveOps.StewardApi.Contracts.Errors;
+﻿using System.Collections.Generic;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -35,6 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the attributes.
         /// </summary>
-        public string Attributes { get; set; }
+        public IEnumerable<AuthorizationAttribute> Attributes { get; set; }
     }
 }

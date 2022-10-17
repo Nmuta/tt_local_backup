@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -25,20 +26,5 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets title.
         /// </summary>
         public string Title { get; set; }
-
-        public static IEnumerable<AuthorizationAttribute> Deserialize(string json)
-        {
-            if (string.IsNullOrEmpty(json))
-            {
-                return Array.Empty<AuthorizationAttribute>();
-            }
-
-            return JsonExtensions.FromJson<AuthorizationAttribute[]>(json);
-        }
-
-        public static string Serialize(IEnumerable<AuthorizationAttribute> attributes)
-        {
-            return JsonExtensions.ToJson(attributes);
-        }
     }
 }

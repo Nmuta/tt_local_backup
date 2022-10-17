@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             this.PartitionKey = "Users";
             this.EmailAddress = emailAddress;
             this.Role = role;
-            this.Attributes = AuthorizationAttribute.Deserialize(attributes);
+            this.Attributes = attributes;
         }
 
         /// <summary>
@@ -57,17 +57,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the attributes.
         /// </summary>
-        public IEnumerable<AuthorizationAttribute> Attributes { get; set; }
+        public string Attributes { get; set; }
 
-        /// <summary>
-        /// Compare to StewardUserInternal.
-        /// </summary>
-        /// <param name="user">User for comparison.</param>
-        /// <returns>True if they are equal.</returns>
-        public bool Equals(string name, string email, string role, string attributes)
+        public IEnumerable<AuthorizationAttribute> AuthorizationAttributes()
         {
-            return this.Name != name || this.EmailAddress != email || this.Role != role ||
-                !AuthorizationAttribute.Serialize(this.Attributes).Equals(attributes);
+            if (string.IsNullOrEmpty(this.Attributes))
+            {
+                return System.Array.Empty<AuthorizationAttribute>();
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<AuthorizationAttribute>>(this.Attributes);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
@@ -51,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         {
             user.ShouldNotBeNull(nameof(user));
 
-            await this.CreateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, user.Attributes).ConfigureAwait(false);
+            await this.CreateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes)).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -81,7 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         {
             user.ShouldNotBeNull(nameof(user));
 
-            await this.UpdateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, user.Attributes).ConfigureAwait(false);
+            await this.UpdateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes)).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -96,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 result.Name = name;
                 result.EmailAddress = email;
                 result.Role = role;
-                result.Attributes = AuthorizationAttribute.Deserialize(attributes);
+                result.Attributes = attributes;
 
                 var replaceOperation = TableOperation.Replace(result);
 
@@ -140,7 +141,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task EnsureStewardUserAsync(StewardUser user)
         {
-            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, user.Attributes).ConfigureAwait(false);
+            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes)).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -150,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             {
                 var user = await this.GetStewardUserAsync(id).ConfigureAwait(false);
 
-                if (!user.Equals(name, email, role, attributes))
+                if (user.Name != name || user.EmailAddress != email || user.Role != role | user.Attributes != attributes)
                 {
                     await this.UpdateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
                 }

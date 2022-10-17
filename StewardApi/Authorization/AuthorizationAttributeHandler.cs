@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
             var user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
 
-            var authorized = user.Attributes.Where(authAttr =>
+            var authorized = user.AuthorizationAttributes().Where(authAttr =>
                     EmptyOrEquals(authAttr.Environment, environment) &&
                     EmptyOrEquals(authAttr.Title, title) &&
                     EmptyOrEquals(authAttr.Attribute, requirement.Attribute));
