@@ -6,30 +6,30 @@
     <div class="sf-spacer"></div>
     <div *ngIf="!!userGroup">
       <div *ngIf="!isAllUsersGroup">
-      <button
-        class="delete-all-button"
-        [disabled]="!verifyDelete.checked || !userHasRemoveAllPerms"
-        mat-raised-button
-        color="warn"
-        (click)="deleteAllUsersInGroup()"
-        stateManager
-        [monitor]="deleteAllMonitor"
-        monitorDisable
-        monitorWarn
-        monitorWarnSnackbar
-      >
-        <span [matTooltip]="!userHasRemoveAllPerms ? incorrectPermsTooltip : null">
-          Delete All Users
-          <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
-        </span>
-      </button>
-      <mat-checkbox
-        #verifyDelete
-        [disabled]="disallowDeleteAllUsers"
-        [matTooltip]="disallowDeleteAllUsers ? 'Disabled for this User Group': 'Verify Deletion'"
-        aria-label="Verify Deletion"
-        >Verify</mat-checkbox
-      >
+        <button
+          class="delete-all-button"
+          [disabled]="!verifyDelete.checked || !userHasRemoveAllPerms"
+          mat-raised-button
+          color="warn"
+          (click)="deleteAllUsersInGroup()"
+          stateManager
+          [monitor]="deleteAllMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+        >
+          <span [matTooltip]="!userHasRemoveAllPerms ? incorrectPermsTooltip : null">
+            Delete All Users
+            <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
+          </span>
+        </button>
+        <mat-checkbox
+          #verifyDelete
+          [disabled]="disallowDeleteAllUsers"
+          [matTooltip]="disallowDeleteAllUsers ? 'Disabled for this User Group' : 'Verify Deletion'"
+          aria-label="Verify Deletion"
+          >Verify</mat-checkbox
+        >
       </div>
     </div>
   </mat-card-header>
@@ -55,7 +55,9 @@
         <div class="action">
           <button
             [disabled]="
-              !verifyBulkAdd.checked || !formControls.userIdentifications.value || !userHasWritePerms
+              !verifyBulkAdd.checked ||
+              !formControls.userIdentifications.value ||
+              !userHasWritePerms
             "
             mat-raised-button
             color="primary"
@@ -93,7 +95,10 @@
           >
             <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
               Delete Users
-              <button-spinner [monitor]="deletePlayersMonitor" defaultIcon="delete"></button-spinner>
+              <button-spinner
+                [monitor]="deletePlayersMonitor"
+                defaultIcon="delete"
+              ></button-spinner>
             </span>
           </button>
           <mat-checkbox
@@ -168,7 +173,10 @@
                     ></button-spinner>
                   </span>
                 </button>
-                <mat-checkbox #verifyDelete matTooltip="Verify Deletion" aria-label="Verify Deletion"
+                <mat-checkbox
+                  #verifyDelete
+                  matTooltip="Verify Deletion"
+                  aria-label="Verify Deletion"
                   >Verify</mat-checkbox
                 >
               </td>

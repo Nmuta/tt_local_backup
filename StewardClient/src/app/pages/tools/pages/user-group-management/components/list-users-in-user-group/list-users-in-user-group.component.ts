@@ -115,7 +115,7 @@ export class ListUsersInGroupComponent
   public playersDataSource = new BetterMatTableDataSource<PlayerInUserGroup>();
   public failedActionForUsers: UserGroupManagementFailures;
   public isAllUsersGroup: boolean = false;
-  public disallowDeleteAllUsers: boolean =false;
+  public disallowDeleteAllUsers: boolean = false;
 
   constructor(
     private readonly backgroundJobService: BackgroundJobService,
@@ -153,9 +153,9 @@ export class ListUsersInGroupComponent
     this.playersDataSource.data = this.allPlayers;
     if (changes.userGroup && !!this.userGroup) {
       this.isAllUsersGroup = this.userGroup?.id.isEqualTo(0);
-      console.log(this.isAllUsersGroup);
-      this.disallowDeleteAllUsers = !!this.service.largeUserGroups.find(x => x.isEqualTo(this.userGroup?.id));
-      console.log(this.disallowDeleteAllUsers)
+      this.disallowDeleteAllUsers = !!this.service.largeUserGroups.find(x =>
+        x.isEqualTo(this.userGroup?.id),
+      );
       this.isGroupTooLarge = this.isLargeUserGroup();
       this.playersDataSource.paginator = this.paginator;
       this.playersDataSource.paginator.pageIndex = 0;

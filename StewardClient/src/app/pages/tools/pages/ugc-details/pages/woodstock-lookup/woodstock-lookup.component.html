@@ -5,7 +5,7 @@
         <mat-card-title>UGC Overview</mat-card-title>
         <mat-card-subtitle>IDs and other text</mat-card-subtitle>
       </mat-card-header>
-      <div class = "sf-wrapper">
+      <div class="sf-wrapper">
         <div class="sf-horizontal">
           <div class="sf-vertical">
             <model-dump-xuids></model-dump-xuids>
@@ -24,9 +24,12 @@
             <model-dump-flags></model-dump-flags>
           </div>
           <div class="sf-vertical">
-            <ugc-download-button class="sf-full-width sf-default-margins sf-action-list-margins" [item]="ugcItem"></ugc-download-button>
+            <ugc-download-button
+              class="sf-full-width sf-default-margins sf-action-list-margins"
+              [item]="ugcItem"
+            ></ugc-download-button>
             <button
-              class="sf-default-margins sf-action-list-margins "
+              class="sf-default-margins sf-action-list-margins"
               [disabled]="!canFeatureUgc"
               mat-raised-button
               color="primary"
@@ -37,7 +40,10 @@
               }}</span>
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
-              <mat-form-field class="sf-full-width sf-default-hint sf-action-list" appearance="fill">
+              <mat-form-field
+                class="sf-full-width sf-default-hint sf-action-list"
+                appearance="fill"
+              >
                 <mat-label>Report reason</mat-label>
                 <mat-select matInput [(ngModel)]="selectedReason">
                   <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
@@ -93,32 +99,32 @@
             </div>
           </div>
           <div *waitForMonitor="getReportReasonsMonitor">
-          <mat-form-field appearance="fill">
-            <mat-label>Report reason</mat-label>
-            <mat-select matInput [(ngModel)]="selectedReason">
-              <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
-                {{ reason.description }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button
-            mat-raised-button
-            color="warn"
-            [verifyWith]="verifyReport"
-            (click)="reportUgcItem()"
-            stateManager
-            [monitor]="reportMonitor"
-            monitorDisable
-            monitorWarn
-            monitorWarnSnackbar
-            monitorCompleteSnackbar
-            [disabled]="!selectedReason"
-          >
-            <span>Report</span>
-          </button>
-          <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
-            Verify
-          </mat-checkbox>
+            <mat-form-field appearance="fill">
+              <mat-label>Report reason</mat-label>
+              <mat-select matInput [(ngModel)]="selectedReason">
+                <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
+                  {{ reason.description }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button
+              mat-raised-button
+              color="warn"
+              [verifyWith]="verifyReport"
+              (click)="reportUgcItem()"
+              stateManager
+              [monitor]="reportMonitor"
+              monitorDisable
+              monitorWarn
+              monitorWarnSnackbar
+              monitorCompleteSnackbar
+              [disabled]="!selectedReason"
+            >
+              <span>Report</span>
+            </button>
+            <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
+              Verify
+            </mat-checkbox>
           </div>
 
           <ng-content select="button"></ng-content>

@@ -42,7 +42,7 @@
     }
 
     // align the button
-    > button:not(.sf-default-margins) ,
+    > button:not(.sf-default-margins),
     > ugc-download-button:not(.sf-default-margins) {
       margin-top: 1.5em;
       margin-bottom: $mat-form-field-bottom-spacing;
@@ -127,7 +127,7 @@
   }
 
   .sf-full-width {
-    width: 100%
+    width: 100%;
   }
 }
 

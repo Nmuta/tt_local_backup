@@ -5,52 +5,54 @@
         <mat-card-title>UGC Overview</mat-card-title>
         <mat-card-subtitle>IDs and other text</mat-card-subtitle>
       </mat-card-header>
-      <model-dump-xuids></model-dump-xuids>
-      <model-dump-simple-table
-        [values]="source.processedModel.extractedStrings.ids"
-      ></model-dump-simple-table>
-      <model-dump-humanize-table
-        [values]="source.processedModel.extractedStrings.other"
-      ></model-dump-humanize-table>
-      <model-dump-humanize-array-table
-        [values]="source.processedModel.extractedStringArrays.all"
-      ></model-dump-humanize-array-table>
-      <model-dump-simple-table
-        [values]="source.processedModel.extractedNumbers.ids"
-      ></model-dump-simple-table>
-      <model-dump-flags></model-dump-flags>
-      <mat-card-actions align="end">
-        <ng-content select="button"></ng-content>
-        <ugc-download-button [item]="ugcItem"></ugc-download-button>
-        <button
-          [disabled]="!canFeatureUgc"
-          mat-raised-button
-          color="primary"
-          (click)="featureUgcItem()"
-        >
-          <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
-            ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
-          }}</span>
-        </button>
-        <button
-          mat-raised-button
-          color="warn"
-          [verifyWith]="verifyHide"
-          (click)="hideUgcItem()"
-          stateManager
-          [monitor]="hideMonitor"
-          monitorDisable
-          monitorWarn
-          monitorWarnSnackbar
-          monitorCompleteSnackbar
-          [disabled]="!canHideUgc"
-        >
-          Hide UGC
-        </button>
-        <mat-checkbox #verifyHide matTooltip="Verify Deletion" aria-label="Verify Deletion"
-          >Verify</mat-checkbox
-        >
-      </mat-card-actions>
+      <div class = "sf-wrapper">
+        <model-dump-xuids></model-dump-xuids>
+        <model-dump-simple-table
+          [values]="source.processedModel.extractedStrings.ids"
+        ></model-dump-simple-table>
+        <model-dump-humanize-table
+          [values]="source.processedModel.extractedStrings.other"
+        ></model-dump-humanize-table>
+        <model-dump-humanize-array-table
+          [values]="source.processedModel.extractedStringArrays.all"
+        ></model-dump-humanize-array-table>
+        <model-dump-simple-table
+          [values]="source.processedModel.extractedNumbers.ids"
+        ></model-dump-simple-table>
+        <model-dump-flags></model-dump-flags>
+        <mat-card-actions align="end">
+          <ng-content select="button"></ng-content>
+          <ugc-download-button [item]="ugcItem"></ugc-download-button>
+          <button
+            [disabled]="!canFeatureUgc"
+            mat-raised-button
+            color="primary"
+            (click)="featureUgcItem()"
+          >
+            <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+              ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
+            }}</span>
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            [verifyWith]="verifyHide"
+            (click)="hideUgcItem()"
+            stateManager
+            [monitor]="hideMonitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+            monitorCompleteSnackbar
+            [disabled]="!canHideUgc"
+          >
+            Hide UGC
+          </button>
+          <mat-checkbox #verifyHide matTooltip="Verify Deletion" aria-label="Verify Deletion"
+            >Verify</mat-checkbox
+          >
+        </mat-card-actions>
+      </div>
     </mat-card>
 
     <mat-card>
