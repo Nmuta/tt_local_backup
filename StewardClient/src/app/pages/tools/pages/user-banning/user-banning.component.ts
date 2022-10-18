@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseNavbarComponent } from '@components/base-component/base-navbar.component';
+import { BaseNavbarComponent, NavbarLink } from '@components/base-component/base-navbar.component';
 import { getUserBanningRoute } from '@helpers/route-links';
 import { GameTitleCodeName, GameTitleAbbreviation, GameTitle } from '@models/enums';
 
@@ -10,7 +10,7 @@ import { GameTitleCodeName, GameTitleAbbreviation, GameTitle } from '@models/enu
   styleUrls: ['./user-banning.component.scss'],
 })
 export class UserBanningComponent extends BaseNavbarComponent {
-  public navbarRouterLinks = [
+  public navbarRouterLinks: NavbarLink[] = [
     {
       name: GameTitleAbbreviation.FM8,
       codename: GameTitleCodeName.FM8,
