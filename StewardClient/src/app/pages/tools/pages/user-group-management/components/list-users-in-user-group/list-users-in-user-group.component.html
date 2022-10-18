@@ -27,7 +27,6 @@
           #verifyDelete
           [disabled]="disallowDeleteAllUsers"
           [matTooltip]="disallowDeleteAllUsers ? 'Disabled for this User Group' : 'Verify Deletion'"
-          aria-label="Verify Deletion"
           >Verify</mat-checkbox
         >
       </div>
@@ -73,7 +72,7 @@
               <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
             </span>
           </button>
-          <mat-checkbox #verifyBulkAdd matTooltip="Verify Bulk Add" aria-label="Verify Bulk Add"
+          <mat-checkbox #verifyBulkAdd matTooltip="Verify Bulk Add"
             >Verify</mat-checkbox
           >
         </div>
@@ -104,7 +103,6 @@
           <mat-checkbox
             #verifyBulkDelete
             matTooltip="Verify Bulk Deletion"
-            aria-label="Verify Bulk Deletion"
             >Verify</mat-checkbox
           >
         </div>
@@ -176,7 +174,6 @@
                 <mat-checkbox
                   #verifyDelete
                   matTooltip="Verify Deletion"
-                  aria-label="Verify Deletion"
                   >Verify</mat-checkbox
                 >
               </td>
