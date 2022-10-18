@@ -151,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             {
                 var user = await this.GetStewardUserAsync(id).ConfigureAwait(false);
 
-                if (user.Name != name || user.EmailAddress != email || user.Role != role | user.Attributes != attributes)
+                if (name != user.Name || email != user.EmailAddress || role != user.Role || attributes != user.Attributes)
                 {
                     await this.UpdateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
                 }
