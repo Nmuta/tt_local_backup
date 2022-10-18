@@ -26,7 +26,6 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { UgcType } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { GameTitle } from '@models/enums';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 import JSZip from 'jszip';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { GuidLikeString } from '@models/extended-types';
@@ -46,7 +45,6 @@ export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
 /** Extended type from HideableUgc. */
 export type PlayerUgcItemTableEntries = PlayerUgcItem & {
   ugcDetailsLink?: string[];
-  monitor?: ActionMonitor;
 };
 
 export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailOneImageBase64', 'actions'];
@@ -86,27 +84,19 @@ export abstract class UgcTableBaseComponent
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcType = UgcType;
-  public canFeatureUgc: boolean = false;
-  public canHideUgc: boolean = false;
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
 
-  // Action availability
-  public supportFeaturing: boolean = true;
-  public supportHiding: boolean = true;
-
   public abstract gameTitle: GameTitle;
 
-  constructor(private readonly permissionService: PermissionsService) {
+  constructor() {
     super();
   }
 
   /** Opens the feature UGC modal. */
-  public abstract openFeatureUgcModal(item: PlayerUgcItem): void;
   public abstract getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem>;
-  public abstract hideUgcItem(item: PlayerUgcItemTableEntries): void;
   public abstract retrievePhotoThumbnails(
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
@@ -121,13 +111,6 @@ export abstract class UgcTableBaseComponent
       .subscribe(_event => {
         this.useExpandoColumnDef = this.shouldUseCondensedTableView();
       });
-
-    this.canFeatureUgc = this.permissionService.currentUserHasWritePermission(
-      PermissionServiceTool.FeatureUgc,
-    );
-    this.canHideUgc = this.permissionService.currentUserHasWritePermission(
-      PermissionServiceTool.HideUgc,
-    );
   }
 
   /** Angular hook. */
@@ -139,8 +122,6 @@ export abstract class UgcTableBaseComponent
         if (this.ugcDetailsLinkSupported) {
           item.ugcDetailsLink = getUgcDetailsRoute(this.gameTitle, item.id, item.type);
         }
-        item.monitor = new ActionMonitor(`POST Hide UGC with ID: ${item.id}`);
-        this.allMonitors.push(item.monitor);
       });
 
       this.ugcTableDataSource.data = ugcItemsToProcess;

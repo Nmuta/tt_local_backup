@@ -1,10 +1,9 @@
 import { Component, OnChanges } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { PlayerUgcItemTableEntries, UgcTableBaseComponent } from '../ugc-table.component';
+import { UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
 import { Observable } from 'rxjs';
-import { PermissionsService } from '@services/permissions';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
@@ -20,26 +19,13 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   public supportFeaturing: boolean = false;
   public supportHiding: boolean = false;
 
-  constructor(
-    private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
-    permissionsService: PermissionsService,
-  ) {
-    super(permissionsService);
-  }
-
-  /** Opens the feature UGC modal. */
-  public openFeatureUgcModal(_item: PlayerUgcItem): void {
-    throw new Error('Steelhead does not support featuring UGC');
+  constructor(private readonly steelheadUgcLookupService: SteelheadUgcLookupService) {
+    super();
   }
 
   /** Gets player UGC item. */
   public getUgcItem(id: GuidLikeString, type: UgcType): Observable<PlayerUgcItem> {
     return this.steelheadUgcLookupService.getPlayerUgcItem$(id, type);
-  }
-
-  /** Hides UGC item.  */
-  public hideUgcItem(_item: PlayerUgcItemTableEntries): void {
-    throw new Error('Steelhead does not support hiding UGC');
   }
 
   /** Retrieve Photo thumnbnails. */

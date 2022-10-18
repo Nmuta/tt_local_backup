@@ -100,9 +100,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
                 this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
 
-                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    await service.GiftingManagementService.AdminSendItemGiftV2(xuid, inventoryItemType.ToString(), itemId, false, 0)
+                    // TODO: Remove once we implement selecting title/body in the UI
+                    // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
+                    var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
+                    var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
+                    await service.GiftingManagementService.AdminSendInventoryItemGift(xuid, inventoryItemType.ToString(), itemId, quantity, testBodyLocString, testTitleLocString, false, 0)
                         .ConfigureAwait(false);
                 }
 
@@ -179,12 +183,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
                 this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
 
-                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    await service.GiftingManagementService.AdminSendItemGroupGiftV2(
+                    // TODO: Remove once we implement selecting title/body in the UI
+                    // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
+                    var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
+                    var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
+                    await service.GiftingManagementService.AdminSendInventoryItemGroupGift(
                         groupId,
                         inventoryItemType.ToString(),
                         itemId,
+                        quantity,
+                        testBodyLocString,
+                        testTitleLocString,
                         false,
                         0).ConfigureAwait(false);
                 }
@@ -214,8 +225,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             // TODO: Log gift to gift history
+            // TODO: Remove once we implement selecting title/body in the UI
+            // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
+            var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
+            var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
             var xuids = groupGift.Xuids.ToArray();
-            var result = await service.GiftingManagementService.AdminSendLiveryGift(xuids, xuids.Length, livery.Id, false, 0).ConfigureAwait(false);
+            var result = await service.GiftingManagementService.AdminSendLiveryGiftV2(xuids, xuids.Length, livery.Id, testBodyLocString, testTitleLocString, false, 0).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -278,7 +293,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             try
             {
                 // TODO: Log gift to gift history
-                var response = await service.GiftingManagementService.AdminSendGroupLiveryGift(groupId, livery.Id, false, 0).ConfigureAwait(false);
+                // TODO: Remove once we implement selecting title/body in the UI
+                // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
+                var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
+                var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
+                var response = await service.GiftingManagementService.AdminSendGroupLiveryGiftV2(groupId, livery.Id, testBodyLocString, testTitleLocString, false, 0).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)
@@ -324,32 +343,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         }
 
         private async Task<IList<StewardError>> SendGiftsAsync(
-            Func<InventoryItemType, int, Task> serviceCall,
+            Func<InventoryItemType, int, uint, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)
         {
             var errors = new List<StewardError>();
-            foreach (var (key, value) in inventoryGifts)
+            foreach (var (type, value) in inventoryGifts)
             {
                 foreach (var item in value)
                 {
                     try
                     {
-                        for (var i = 0; i < item.Quantity; i++)
-                        {
-                            await serviceCall(key, item.Id).ConfigureAwait(false);
-                        }
+                        await serviceCall(type, item.Id, (uint)item.Quantity).ConfigureAwait(false);
                     }
                     catch
                     {
-                        var error = new FailedToSendStewardError($"Failed to send item of type: {key} with ID: {item.Id}");
+                        var error = new FailedToSendStewardError($"Failed to gift item. (type: {type}) (id: {item.Id}) (quantity: {item.Quantity})");
                         item.Error = error;
                         errors.Add(error);
                     }
                 }
             }
 
-            foreach (var (key, value) in currencyGifts)
+            foreach (var (type, value) in currencyGifts)
             {
                 if (value == null || value.Quantity <= 0)
                 {
@@ -366,7 +382,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     try
                     {
                         remainingCurrencyToSend -= creditsToSend;
-                        await serviceCall(key, creditsToSend).ConfigureAwait(false);
+                        // TODO: This is temporary. Services is still figuring out what credit item ids will be.
+                        var creditItemId = 0;
+                        await serviceCall(type, creditItemId, (uint)creditsToSend).ConfigureAwait(false);
                     }
                     catch
                     {
@@ -376,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
                 if (failedToSendAmount > 0)
                 {
-                    var error = new FailedToSendStewardError($"Failed to send {failedToSendAmount} of type: {key}");
+                    var error = new FailedToSendStewardError($"Failed to send item. (type: {type}) (quantity: {failedToSendAmount})");
                     value.Error = error;
                     errors.Add(error);
                 }

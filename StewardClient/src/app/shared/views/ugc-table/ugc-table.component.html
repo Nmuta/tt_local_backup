@@ -113,6 +113,9 @@
         [routerLink]="entry.ugcDetailsLink"
         [disabled]="!ugcDetailsLinkSupported || !entry.ugcDetailsLink"
       >
+        <help-popover-icon cardTitle="Ugc Details">
+          <span>You can hide, feature, report, and more by going to the UGC Details!</span>
+        </help-popover-icon>
         <span
           [matTooltip]="
             ugcDetailsLinkSupported
@@ -122,48 +125,6 @@
           >View Full Details</span
         >
       </a>
-
-      <button
-        *ngIf="supportFeaturing"
-        mat-raised-button
-        color="accent"
-        clickStop
-        (click)="openFeatureUgcModal(entry)"
-        [disabled]="!entry.isPublic || !canFeatureUgc"
-      >
-        <span
-          [matTooltip]="
-            canFeatureUgc ? privateFeaturingDisabledTooltip : invalidRoleDisabledTooltip
-          "
-          [matTooltipDisabled]="entry.isPublic && canFeatureUgc"
-          >{{ entry.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}</span
-        >
-      </button>
-
-      <div *ngIf="supportHiding" class="hide-score">
-        <button
-          mat-raised-button
-          color="warn"
-          matTooltip="Hide this UGC"
-          [verifyWith]="verifyHide"
-          (click)="hideUgcItem(entry)"
-          clickStop
-          stateManager
-          [monitor]="entry.monitor"
-          [waitOnMonitors]="allMonitors"
-          monitorWarn
-          monitorWarnSnackbar
-          monitorCompleteSnackbar
-          [disabled]="!canHideUgc || entry.monitor.isActive"
-        >
-          <span [matTooltip]="invalidRoleDisabledTooltip" [matTooltipDisabled]="canHideUgc"
-            >Hide UGC</span
-          >
-        </button>
-        <mat-checkbox clickStop #verifyHide matTooltip="Check to enable hide UGC.">
-          Verify
-        </mat-checkbox>
-      </div>
     </td>
   </ng-container>
 
