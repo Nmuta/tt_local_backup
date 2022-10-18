@@ -29,39 +29,49 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Sends car livery to a player.
         /// </summary>
-        Task<GiftingManagementService.AdminSendLiveryGiftOutput> AdminSendLiveryGift(
+        Task<GiftingManagementService.AdminSendLiveryGiftV2Output> AdminSendLiveryGiftV2(
             ulong[] recipientXuids,
             int xuidCount,
             Guid liveryId,
+            Guid bodyLocStringId,
+            Guid titleLocStringId,
             bool hasExpiration,
             uint timeSpanInDays);
 
         /// <summary>
         ///     Sends car livery to an LSP user group.
         /// </summary>
-        Task<GiftingManagementService.AdminSendGroupLiveryGiftOutput> AdminSendGroupLiveryGift(
+        Task<GiftingManagementService.AdminSendGroupLiveryGiftV2Output> AdminSendGroupLiveryGiftV2(
             int groupId,
             Guid liveryId,
+            Guid bodyLocStringId,
+            Guid titleLocStringId,
             bool hasExpiration,
             uint timeSpanInDays);
 
         /// <summary>
         ///     Sends a quantity of an item to a player.
         /// </summary>
-        Task AdminSendItemGiftV2(
+        Task<GiftingManagementService.AdminSendInventoryItemGiftOutput> AdminSendInventoryItemGift(
             ulong recipientXuid,
             string itemType,
-            int itemValue,
+            int itemId,
+            uint quantity,
+            Guid bodyLocStringId,
+            Guid titleLocStringId,
             bool hasExpiration,
             uint timeSpanInDays);
 
         /// <summary>
         ///     Sends a quantity of an item to an LSP user group.
         /// </summary>
-        Task AdminSendItemGroupGiftV2(
+        Task<GiftingManagementService.AdminSendInventoryItemGroupGiftOutput> AdminSendInventoryItemGroupGift(
             int groupId,
             string itemType,
-            int itemValue,
+            int itemId,
+            uint quantity,
+            Guid bodyLocStringId,
+            Guid titleLocStringId,
             bool hasExpiration,
             uint timeSpanInDays);
 
