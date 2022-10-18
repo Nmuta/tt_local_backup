@@ -249,7 +249,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             try
             {
-                // Block removing all users from All User's and VIP groups.
+                // Block removing all users from All Users and VIP groups.
                 userGroupId.ShouldBeGreaterThanValue(LargeUserGroups.Max(), nameof(userGroupId));
 
                 await this.Services.UserManagementService.ClearUserGroup(userGroupId).ConfigureAwait(false);
