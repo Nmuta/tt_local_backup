@@ -253,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
 
-            List<(XName, object)> values = new ();
+            var values = new List<(XName, object)>();
 
             ReadPropertiesRecursive(entry);
 
@@ -274,7 +274,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         XNamespace ns = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
 
-                        object val = property.GetValue(target, null);
+                        var val = property.GetValue(target, null);
                         if (ns == namespaceElement && val == null)
                         {
                             throw new ArgumentException($"Null value provided for data marked with {nameof(PegEditAttribute)}: {property.Name}");
@@ -286,14 +286,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 }
             }
 
-            XElement el = await this.GetSelectedElementAsync(id).ConfigureAwait(false);
+            var el = await this.GetSelectedElementAsync(id).ConfigureAwait(false);
 
             FillXmlRecursive(el, values, 0, namespaceRoot);
 
             // convert element to string UTF8, ToString() returns UTF16
-            MemoryStream memory = new ();
+            var memory = new MemoryStream();
             await el.SaveAsync(memory, default, default).ConfigureAwait(false);
-            string xmlText = Encoding.UTF8.GetString(memory.ToArray());
+            var xmlText = Encoding.UTF8.GetString(memory.ToArray());
             await memory.DisposeAsync().ConfigureAwait(false);
 
             var change = new CommitRefProxy()
@@ -304,7 +304,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
 
-            GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(new CommitRefProxy[] { change }, null).ConfigureAwait(false);
+            var pushed = await this.azureDevOpsManager.CommitAndPushAsync(new CommitRefProxy[] { change }, null).ConfigureAwait(false);
 
             return pushed;
         }
@@ -320,9 +320,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<XElement> GetSelectedElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            XDocument doc = XDocument.Parse(item.Content);
+            var doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(namespaceRoot + "UserMessages.MessageOfTheDay")
                 .Where(e => e.Attribute(namespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
@@ -335,12 +335,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<MessageOfTheDayBridge> GetMotDCurrentValuesAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            MotDXmlRoot root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
             var entry = root.UserMessagesMessageOfTheDay.Where(motdXml => motdXml.idAttribute == id).First();
 
-            MessageOfTheDayBridge subset = this.mapper.Map<MessageOfTheDayBridge>(entry);
+            var subset = this.mapper.Map<MessageOfTheDayBridge>(entry);
 
             return subset;
         }
@@ -348,11 +348,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetMotDSelectionChoicesAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            MotDXmlRoot root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
 
-            Dictionary<Guid, string> choices = new ();
+            var choices = new Dictionary<Guid, string>();
             foreach (var entry in root.UserMessagesMessageOfTheDay)
             {
                 choices.Add(entry.idAttribute, entry.FriendlyMessageName);
