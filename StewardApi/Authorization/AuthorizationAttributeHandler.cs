@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
             bool EmptyOrEquals(string str, string attr)
             {
-                return string.IsNullOrEmpty(str) || str.Equals(attr);
+                return string.IsNullOrEmpty(str) || str.Equals(attr, StringComparison.OrdinalIgnoreCase);
             }
 
             void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
