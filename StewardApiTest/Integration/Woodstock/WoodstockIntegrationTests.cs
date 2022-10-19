@@ -1208,13 +1208,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
             try
             {
-                await stewardClient.UpdatePlayerInventoriesAsync(playerGift).ConfigureAwait(false);
-                Assert.Fail();
+                var result = await stewardClient.UpdatePlayerInventoriesAsync(playerGift).ConfigureAwait(false);
+                Assert.IsTrue(result[0].Errors.Count > 0);
+                Assert.IsTrue(result[0].Errors[0].Code == StewardErrorCode.BadRequest);
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. VanityItem: 700, "));
+                Assert.Fail();
             }
         }
 

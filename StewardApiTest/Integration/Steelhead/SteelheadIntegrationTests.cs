@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task GetPlayerIdentityByXuid()
+        public async Task VerifyServiceProxies()
         {
             var query = new IdentityQueryAlpha { Xuid = xuid };
 

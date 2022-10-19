@@ -8,6 +8,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: [NavbarTool.UgcDetails] },
+      uuid: '898997d1-c8fb-41c0-b435-2f889b3e340b',
+      shortText: 'Modified layout of UGC actions in UGC Details view',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.UserGroupManagement] },
+      uuid: '045eb771-8e03-4326-a142-5ae24796c21a',
+      shortText: 'Add UI restrictions to modifying All Users and Vip User groups',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.Gifting] },
       uuid: 'c50e721e-c102-4db1-bb7e-53341f50fa8f',
       shortText: 'Fix gifting liveries issue',

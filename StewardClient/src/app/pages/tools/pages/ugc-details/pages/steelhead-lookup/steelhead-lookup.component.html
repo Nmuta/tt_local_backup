@@ -5,54 +5,63 @@
         <mat-card-title>UGC Overview</mat-card-title>
         <mat-card-subtitle>IDs and other text</mat-card-subtitle>
       </mat-card-header>
-      <model-dump-xuids></model-dump-xuids>
-      <model-dump-simple-table
-        [values]="source.processedModel.extractedStrings.ids"
-      ></model-dump-simple-table>
-      <model-dump-humanize-table
-        [values]="source.processedModel.extractedStrings.other"
-      ></model-dump-humanize-table>
-      <model-dump-humanize-array-table
-        [values]="source.processedModel.extractedStringArrays.all"
-      ></model-dump-humanize-array-table>
-      <model-dump-simple-table
-        [values]="source.processedModel.extractedNumbers.ids"
-      ></model-dump-simple-table>
-      <model-dump-flags></model-dump-flags>
-      <mat-card-actions align="end">
-        <div class="mat-form-field-wrapper">
-          <button
-            mat-raised-button
-            color="warn"
-            [verifyWith]="verifyReport"
-            (click)="reportUgcItem()"
-            stateManager
-            [monitor]="reportMonitor"
-            monitorDisable
-            monitorWarn
-            monitorWarnSnackbar
-            monitorCompleteSnackbar
-          >
-            <span>Report</span>
-          </button>
-          <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
-            Verify
-          </mat-checkbox>
+      <div class="sf-wrapper">
+        <div class="sf-horizontal">
+          <div class="sf-vertical">
+            <model-dump-xuids></model-dump-xuids>
+            <model-dump-simple-table
+              [values]="source.processedModel.extractedStrings.ids"
+            ></model-dump-simple-table>
+            <model-dump-humanize-table
+              [values]="source.processedModel.extractedStrings.other"
+            ></model-dump-humanize-table>
+            <model-dump-humanize-array-table
+              [values]="source.processedModel.extractedStringArrays.all"
+            ></model-dump-humanize-array-table>
+            <model-dump-simple-table
+              [values]="source.processedModel.extractedNumbers.ids"
+            ></model-dump-simple-table>
+            <model-dump-flags></model-dump-flags>
+          </div>
+          <div class="sf-vertical">
+            <ugc-download-button
+              class="sf-full-width sf-default-margins sf-action-list-margins"
+              [item]="ugcItem"
+            ></ugc-download-button>
+            <button
+              class="sf-default-margins sf-action-list-margins"
+              [disabled]="!canFeatureUgc"
+              mat-raised-button
+              color="primary"
+              (click)="featureUgcItem()"
+            >
+              <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+                ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
+              }}</span>
+            </button>
+            <div class="sf-horizontal">
+              <button
+                class="sf-action-list-margins sf-grow-1"
+                mat-raised-button
+                color="warn"
+                [verifyWith]="verifyReport"
+                (click)="reportUgcItem()"
+                stateManager
+                [monitor]="reportMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                <span>Report</span>
+              </button>
+              <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
+                Verify
+              </mat-checkbox>
+            </div>
+          </div>
         </div>
-        <div>
-          <ugc-download-button [item]="ugcItem"></ugc-download-button>
-          <button
-            [disabled]="!canFeatureUgc"
-            mat-raised-button
-            color="primary"
-            (click)="featureUgcItem()"
-          >
-            <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
-              ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
-            }}</span>
-          </button>
-        </div>
-      </mat-card-actions>
+      </div>
     </mat-card>
 
     <mat-card>
