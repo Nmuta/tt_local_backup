@@ -9,23 +9,29 @@ import { BanResultsUnion, UserBanningBaseComponent } from './user-banning.base.c
 import faker from '@faker-js/faker';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
 import { toDateTime } from '@helpers/luxon';
+import { WoodstockBanningComponent } from '../woodstock/woodstock-banning.component';
+import { createMockWoodstockService } from '@services/woodstock';
 
 describe('UserBanningBaseComponent', () => {
   let component: UserBanningBaseComponent;
-  let fixture: ComponentFixture<UserBanningBaseComponent>;
+  let fixture: ComponentFixture<WoodstockBanningComponent>;
 
   let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserBanningBaseComponent],
-      providers: [createMockBackgroundJobService(), createMockNotificationsService()],
+      providers: [
+        createMockBackgroundJobService(),
+        createMockNotificationsService(),
+        createMockWoodstockService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserBanningBaseComponent);
+    fixture = TestBed.createComponent(WoodstockBanningComponent);
     component = fixture.componentInstance;
 
     mockBackgroundJobService = TestBed.inject(BackgroundJobService);

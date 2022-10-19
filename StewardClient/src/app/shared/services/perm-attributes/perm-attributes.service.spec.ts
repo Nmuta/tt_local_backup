@@ -6,6 +6,7 @@ import { NgxsModule } from '@ngxs/store';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 
 import { PermAttributesService } from './perm-attributes.service';
+import { createMockPermAttributesService } from './perm-attributes.service.mock';
 
 describe('PermAttributesService', () => {
   let service: PermAttributesService;
@@ -17,7 +18,7 @@ describe('PermAttributesService', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([ChangelogState]),
       ],
-      providers: [],
+      providers: [createMockPermAttributesService()],
       schemas: [NO_ERRORS_SCHEMA],
     });
 
