@@ -3,10 +3,13 @@
   <section>
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)">
       <mat-tab label="User Details">
-        <div class="tab-container">
-          <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
-          <woodstock-player-game-details [identity]="identity"></woodstock-player-game-details>
-          <woodstock-report-weight [identity]="identity"></woodstock-report-weight>
+        <div class="tab-container sf-wrapper">
+          <div class="sf-horizontal">
+            <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
+            <woodstock-player-game-details [identity]="identity"></woodstock-player-game-details>
+            <woodstock-report-weight [identity]="identity"></woodstock-report-weight>
+          </div>
+
           <woodstock-ban-history [xuid]="identity.xuid"></woodstock-ban-history>
           <woodstock-profile-notes [identity]="identity"></woodstock-profile-notes>
           <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
