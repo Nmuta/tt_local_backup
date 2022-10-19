@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UgcDetails, NavbarTool.SearchUGC] },
+      uuid: '0a83662d-e001-4d5a-9307-69cb10295b47',
+      shortText: 'Add Community Challenge UGC type to UGC details and UGC search',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
       uuid: '2e847b23-bc1d-4b1b-8b72-765146235af0',
       shortText: 'Modify layout of FH5 user details to place smaller tools across the top',
@@ -15,7 +20,7 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: [NavbarTool.UgcDetails] },
       uuid: '898997d1-c8fb-41c0-b435-2f889b3e340b',
-      shortText: 'Modified layout of UGC actions in UGC Details view',
+      shortText: 'Modify layout of UGC actions in UGC Details view',
     },
     {
       tag: { title: 'all', tool: [NavbarTool.UserGroupManagement] },

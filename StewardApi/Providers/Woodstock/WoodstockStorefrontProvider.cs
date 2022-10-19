@@ -140,6 +140,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
+        public async Task<UgcItem> GetUgcCommunityChallengeAsync(Guid communityChallengeId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var communityChallengeOutput = await this.woodstockService.GetCommunityChallengeAsync(communityChallengeId, endpoint).ConfigureAwait(false);
+            var communityChallenge = this.mapper.Map<WoodstockUgcItem>(communityChallengeOutput.result.communityChallengeData);
+
+            if (communityChallenge.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Community Challenge ID could not found: {communityChallengeId}");
+            }
+
+            return communityChallenge;
+        }
+
+        /// <inheritdoc />
         public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));

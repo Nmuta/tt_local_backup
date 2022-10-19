@@ -9,7 +9,7 @@ import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/woodst
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 
-/** Displays sunrise UGC content in a table. */
+/** Displays woodstock UGC content in a table. */
 @Component({
   selector: 'woodstock-ugc-table',
   templateUrl: '../ugc-table.component.html',
