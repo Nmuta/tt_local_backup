@@ -109,7 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         private async Task EnsurePlayerExistsInternal(WoodstockProxyBundle services, IEnumerable<ForzaPlayerLookupParameters> players)
         {
             var stringBuilder = new StringBuilder();
-            var playerLookupResults = await services.UserManagement.GetUserIds(players.Count(), players.ToArray()).ConfigureAwait(false);
+            var playerLookupResults = await services.UserManagementService.GetUserIds(players.Count(), players.ToArray()).ConfigureAwait(false);
 
             foreach (var player in playerLookupResults.playerLookupResult)
             {

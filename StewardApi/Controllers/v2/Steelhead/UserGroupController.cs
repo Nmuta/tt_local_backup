@@ -21,7 +21,9 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
@@ -49,28 +51,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         private static readonly List<int> LargeUserGroups = new List<int>() { 0, 1, 2 };
 
         private readonly ISteelheadServiceManagementProvider serviceManagementProvider;
-        private readonly IJobTracker jobTracker;
-        private readonly IScheduler scheduler;
         private readonly ILoggingService loggingService;
+        private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserGroupController"/> class for Steelhead.
         /// </summary>
         public UserGroupController(
-            IJobTracker jobTracker,
-            IScheduler scheduler,
             ILoggingService loggingService,
-            ISteelheadServiceManagementProvider serviceManagementProvider)
+            ISteelheadServiceManagementProvider serviceManagementProvider,
+            IMapper mapper)
         {
-            jobTracker.ShouldNotBeNull(nameof(jobTracker));
-            scheduler.ShouldNotBeNull(nameof(scheduler));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             serviceManagementProvider.ShouldNotBeNull(nameof(serviceManagementProvider));
+            mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.jobTracker = jobTracker;
-            this.scheduler = scheduler;
             this.loggingService = loggingService;
             this.serviceManagementProvider = serviceManagementProvider;
+            this.mapper = mapper;
         }
 
         /// <summary>
@@ -85,6 +83,36 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var groups = await this.serviceManagementProvider.GetUserGroupsAsync(this.Services).ConfigureAwait(true);
 
             return this.Ok(groups);
+        }
+
+        /// <summary>
+        ///    Get bulk operation status.
+        /// </summary>
+        [HttpGet("{userGroupId}/bulkOperationStatus/{operationId}")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
+        [SwaggerResponse(200, type: typeof(UserGroupBulkOperationStatusOutput))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        public async Task<IActionResult> GetBulkOperationStatus(int userGroupId, string operationId, ForzaBulkOperationType bulkOperationType)
+        {
+            if (!Guid.TryParse(operationId, out var parsedOperationId))
+            {
+                throw new BadRequestStewardException($"Operation ID could not be parsed as GUID. (operationId: {operationId})");
+            }
+
+            GetUserGroupBulkOperationStatusOutput bulkOperationStatusOutput;
+
+            try
+            {
+                bulkOperationStatusOutput = await this.Services.UserManagementService.GetUserGroupBulkOperationStatus(bulkOperationType, userGroupId, parsedOperationId).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get user group bulk operation status. (userGroupId: {userGroupId}) (operationId: {parsedOperationId}) (bulkOperationType: {bulkOperationType})", ex);
+            }
+
+            var userGroupOperationStatus = this.mapper.SafeMap<UserGroupBulkOperationStatusOutput>(bulkOperationStatusOutput.status);
+
+            return this.Ok(userGroupOperationStatus);
         }
 
         /// <summary>
@@ -173,7 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///    Add users to a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
+        ///    Add users to a user group. Can be done with either xuids or gamertags.
         /// </summary>
         [HttpPost("{userGroupId}/add")]
         [AuthorizeRoles(
@@ -185,17 +213,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.UserGroup)]
-        public async Task<IActionResult> AddUsersToGroup(int userGroupId, [FromQuery] bool useBackgroundProcessing, [FromBody] UpdateUserGroupInput userList)
+        public async Task<IActionResult> AddUsersToGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks adding users to the "All" group
             userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
             userList.ValidateUserList();
 
-            if (useBackgroundProcessing)
+            if (useBulkProcessing)
             {
-                var response = await this.AddUsersToGroupUseBackgroundProcessing(userGroupId, userList).ConfigureAwait(false);
-                return response;
+                var response = await this.AddOrRemoveUsersToGroupUseBulkProcessing(userGroupId, userList, ForzaBulkOperationType.Add).ConfigureAwait(false);
+                return this.Ok(response);
             }
             else
             {
@@ -205,7 +233,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///    Remove users from a user group. Can be done with either xuids or gamertags. Can also be done using a background job.
+        ///    Remove users from a user group. Can be done with either xuids or gamertags.
         /// </summary>
         [HttpPost("{userGroupId}/remove")]
         [AuthorizeRoles(
@@ -217,17 +245,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Delete, StewardSubject.UserGroup)]
-        public async Task<IActionResult> RemoveUsersFromGroup(int userGroupId, [FromQuery] bool useBackgroundProcessing, [FromBody] UpdateUserGroupInput userList)
+        public async Task<IActionResult> RemoveUsersFromGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks removing users from the "All" group
             userGroupId.ShouldBeGreaterThanValue(0, nameof(userGroupId));
 
             userList.ValidateUserList();
 
-            if (useBackgroundProcessing)
+            if (useBulkProcessing)
             {
-                var response = await this.RemoveUsersFromGroupUseBackgroundProcessing(userGroupId, userList).ConfigureAwait(false);
-                return response;
+                var response = await this.AddOrRemoveUsersToGroupUseBulkProcessing(userGroupId, userList, ForzaBulkOperationType.Remove).ConfigureAwait(false);
+                return this.Ok(response);
             }
             else
             {
@@ -260,6 +288,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 throw new UnknownFailureStewardException($"Remove all users from user group failed. (userGroupId: {userGroupId})", ex);
             }
+        }
+
+        // Add or remove users to a user group using xuids and/or gamertags using bulk operation.
+        private async Task<UserGroupBulkOperationStatusOutput> AddOrRemoveUsersToGroupUseBulkProcessing(int userGroupId, UpdateUserGroupInput userList, ForzaBulkOperationType bulkOperationType)
+        {
+            var userIdsFromXuids = this.mapper.SafeMap<ForzaUserIds[]>(userList.Xuids) ?? Array.Empty<ForzaUserIds>();
+            var userIdsFromGtags = this.mapper.SafeMap<ForzaUserIds[]>(userList.Gamertags) ?? Array.Empty<ForzaUserIds>();
+            var userIds = userIdsFromXuids.Concat(userIdsFromGtags).ToArray();
+
+            var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperation(bulkOperationType, userGroupId, userIds).ConfigureAwait(false);
+
+            return new UserGroupBulkOperationStatusOutput()
+            {
+                BlobId = bulkOperationOutput.statusId
+            };
         }
 
         // Add users to a user group using xuids and/or gamertags
@@ -305,38 +348,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             return response;
         }
 
-        // Add users to a user group using xuids and/or gamertags as a background job.
-        private async Task<CreatedResult> AddUsersToGroupUseBackgroundProcessing(int userGroupId, UpdateUserGroupInput userList)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
-            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Steelhead Add Users to User Group: {userCount} recipients.").ConfigureAwait(true);
-
-            async Task BackgroundProcessing(CancellationToken cancellationToken)
-            {
-                // Throwing within the hosting environment background worker seems to have significant consequences.
-                // Do not throw.
-                try
-                {
-                    var response = await this.AddUsersToUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
-
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                }
-            }
-
-            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
         // Remove users from a user group using xuids and/or gamertags.
         private async Task<IList<BasicPlayer>> RemoveUsersFromUserGroupAsync(int groupId, UpdateUserGroupInput userList)
         {
@@ -378,48 +389,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             return response;
-        }
-
-        // Remove users from a user group using xuids and/or gamertags as a background job.
-        private async Task<CreatedResult> RemoveUsersFromGroupUseBackgroundProcessing(int userGroupId, UpdateUserGroupInput userList)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
-            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Steelhead Remove Users from User Group: {userCount} recipients.").ConfigureAwait(true);
-
-            async Task BackgroundProcessing(CancellationToken cancellationToken)
-            {
-                // Throwing within the hosting environment background worker seems to have significant consequences.
-                // Do not throw.
-                try
-                {
-                    var response = await this.RemoveUsersFromUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
-
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                }
-            }
-
-            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
     }
 }

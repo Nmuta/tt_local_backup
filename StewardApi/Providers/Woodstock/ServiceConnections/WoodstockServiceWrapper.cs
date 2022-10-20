@@ -649,7 +649,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000).ConfigureAwait(false);
+            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000, false).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

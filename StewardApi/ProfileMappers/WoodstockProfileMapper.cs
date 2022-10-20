@@ -8,7 +8,6 @@ using AutoMapper;
 using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
-using Forza.WebServices.LiveOpsObjects.FH5_main.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
@@ -484,6 +483,16 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUser, PlayerGameDetails>()
                 .ForMember(dest => dest.LastLoginDateUtc, opt => opt.MapFrom(src => src.LastLogin))
                 .ForMember(dest => dest.FirstLoginDateUtc, opt => opt.MapFrom(src => src.FirstLogin));
+
+            this.CreateMap<string, ForzaUserIds>()
+               .ForMember(dest => dest.gamertag, opt => opt.MapFrom(src => src));
+
+            this.CreateMap<ulong, ForzaUserIds>()
+                .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
+
+            this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
+            this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
+            this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
         }
 
         private string PrepareDeviceType(string deviceType)

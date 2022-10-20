@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     shareCodeOrId,
                     ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge,
                     (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
+                    item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
             };
 
             var fh4Lookups = new[]

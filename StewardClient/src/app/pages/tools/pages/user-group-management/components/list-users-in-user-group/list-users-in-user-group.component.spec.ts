@@ -7,6 +7,7 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle, UserRole } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
+import { ForzaBulkOperationType } from '@models/user-group-bulk-operation';
 import { UserModel } from '@models/user.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
@@ -42,15 +43,22 @@ describe('ListUsersInGroupComponent', () => {
     deleteAllPlayersFromUserGroup$: (_userGroup: LspGroup) => {
       return of(undefined);
     },
-    deletePlayersFromUserGroupUsingBackgroundTask$: (
+    deletePlayersFromUserGroupUsingBulkProcessing$: (
       _playerList: BasicPlayerList,
       _userGroup: LspGroup,
     ) => {
       return of(undefined);
     },
-    addPlayersToUserGroupUsingBackgroundTask$: (
+    addPlayersToUserGroupUsingBulkProcessing$: (
       _playerList: BasicPlayerList,
       _userGroup: LspGroup,
+    ) => {
+      return of(undefined);
+    },
+    getBulkOperationStatus$: (
+      _userGroup: LspGroup,
+      _bulkOperationType: ForzaBulkOperationType,
+      _bulkOperationId: string,
     ) => {
       return of(undefined);
     },

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Forza.UserGeneratedContent.FH4.Generated;
-using Forza.UserInventory.FH4.Generated;
+using Forza.WebServices.FH4.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH4.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Xls.Security.FH4.Generated;
 using Xls.WebServices.FH4.Generated;
 using LiveOpsContracts = Forza.LiveOps.FH4.Generated;
+using UserInventory = Forza.UserInventory.FH4.Generated;
 using WebServicesContracts = Forza.WebServices.FH4.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
@@ -30,17 +31,17 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public SunriseProfileMapper()
         {
-            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
+            this.CreateMap<UserInventory.AdminForzaUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ReverseMap();
-            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
+            this.CreateMap<UserInventory.AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, SunrisePlayerInventory>()
+            this.CreateMap<UserInventory.AdminForzaUserInventorySummary, SunrisePlayerInventory>()
                 .ForMember(dest => dest.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
                     new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
@@ -333,6 +334,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.PreviewPayload.ToImageDataUrl()))
                 .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => Enum.GetName(typeof(FileType), src.Type)))
                 .ReverseMap();
+
+            this.CreateMap<string, ForzaUserIds>()
+               .ForMember(dest => dest.gamertag, opt => opt.MapFrom(src => src));
+            this.CreateMap<ulong, ForzaUserIds>()
+                .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
+            this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
+            this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
+            this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
         }
 
         private string PrepareDeviceType(string deviceType)

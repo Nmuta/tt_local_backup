@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var communityChallengeOutput = await this.woodstockService.GetCommunityChallengeAsync(communityChallengeId, endpoint).ConfigureAwait(false);
-            var communityChallenge = this.mapper.Map<WoodstockUgcItem>(communityChallengeOutput.result.communityChallengeData);
+            var communityChallenge = this.mapper.Map<WoodstockUgcItem>(communityChallengeOutput.communityChallengeData);
 
             if (communityChallenge.GameTitle != (int)GameTitle.FH5)
             {
