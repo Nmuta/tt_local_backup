@@ -8,9 +8,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
+      uuid: 'be990d01-585d-45d5-9388-7ead5aad9a99',
+      shortText: 'Improve visibility of leaderboard Top Users lines',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.UserGroupManagement] },
       uuid: 'cd7ae37e-c709-4f68-9644-e11588dd58a1',
-      shortText: 'Implement new bulk operation for add/remove users.',
+      shortText: 'Implement new bulk operation for add/remove users',
     },
     {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.UgcDetails, NavbarTool.SearchUGC] },

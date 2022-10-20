@@ -1,9 +1,12 @@
 @import '/src/styles/mixins';
 
 .ngx-charts {
-  .gridline-path {
-    // The use of !important here is required :`(
-    stroke: app-color-darker($app-background) !important;
+  .gridline-path.gridline-path.gridline-path {
+    stroke: app-color-darker-contrast($app-background);
+  }
+
+  .tooltip-anchor.tooltip-anchor.tooltip-anchor {
+    stroke: app-color-darker-contrast($app-background);
   }
 
   text {
@@ -14,5 +17,18 @@
   g.line-chart > g:last-of-type > g:nth-child(n) g.line-series path {
     stroke-width: 5;
     // stroke-linecap:round
+  }
+
+  /* This hides the text for x-axis tick lines between the first and last */
+  g[ngx-charts-x-axis-ticks] > g {
+    > .tick {
+      display: none;
+    }
+    > .tick:first-child {
+      display: unset;
+    }
+    > .tick:last-child {
+      display: unset;
+    }
   }
 }
