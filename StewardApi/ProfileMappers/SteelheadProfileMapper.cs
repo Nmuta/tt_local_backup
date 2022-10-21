@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+
 using AutoMapper;
+
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
+
 using SteelheadLiveOpsContent;
+
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using Turn10.Services.LiveOps.FM8.Generated;
+
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
+
 using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
+
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
@@ -348,6 +357,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Description, act => act.Ignore())
                 .ReverseMap();
             this.CreateMap<UserMessagesMessageOfTheDayTitleHeader, LocTextBridge>()
+                .ReverseMap();
+            this.CreateMap<WorldOfForzaWoFTileImageText, WofTileBridge>()
+                .ForMember(dest => dest.FriendlyName, act => act.MapFrom(src => src.FriendlyName))
+                .ForMember(dest => dest.Size, act => act.MapFrom(src => src.Size))
+                .ForMember(dest => dest.TileTitle, act => act.MapFrom(src => src.TileTitle))
+                .ForMember(dest => dest.TileType, act => act.MapFrom(src => src.TileType))
+                .ForMember(dest => dest.TileDescription, act => act.MapFrom(src => src.TileDescription))
+                .ForMember(dest => dest.ContentImagePath, act => act.MapFrom(src => src.ContentImagePath))
+                .ForMember(dest => dest.TileImagePath, act => act.MapFrom(src => src.TileImagePath))
+                .ReverseMap()
+                .ForAllOtherMembers(act => act.Ignore());
+            this.CreateMap<LocalizableText, LocTextBridge>()
                 .ReverseMap();
         }
     }

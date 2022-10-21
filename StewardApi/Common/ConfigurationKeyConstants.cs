@@ -279,5 +279,10 @@
         ///     The Steelhead Content organization URL.
         /// </summary>
         public const string SteelheadContentOrganizationUrl = "Git:SteelheadContentOrganizationUrl";
+
+        /// <summary>
+        ///     The Steelhead Message of the Day Path in the Steelhead Content repo.
+        /// </summary>
+        public const string SteelheadMessageOfTheDayPath = "Git:SteelheadMessageOfTheDayPath";
     }
 }

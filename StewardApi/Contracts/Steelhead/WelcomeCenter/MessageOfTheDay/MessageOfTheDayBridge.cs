@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
+namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay
 {
     /// <summary>
     ///     Message of the Day response object.

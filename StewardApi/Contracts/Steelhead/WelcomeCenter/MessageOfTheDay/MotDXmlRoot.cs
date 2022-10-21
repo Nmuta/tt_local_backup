@@ -10,22 +10,22 @@ using System.ComponentModel;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
+namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay
 {
-    [SerializableAttribute]
-    [DesignerCategoryAttribute("code")]
-    [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:x")]
-    [XmlRootAttribute("content-set", Namespace = "scribble:x", IsNullable = false)]
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:x")]
+    [XmlRoot("content-set", Namespace = "scribble:x", IsNullable = false)]
     public partial class MotDXmlRoot
     {
-        [XmlElementAttribute("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content")]
+        [XmlElement("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content")]
         public List<UserMessagesMessageOfTheDay> UserMessagesMessageOfTheDay { get; set; }
     }
 
-    [SerializableAttribute]
-    [DesignerCategoryAttribute("code")]
-    [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
-    [XmlRootAttribute("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content", IsNullable = false)]
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    [XmlRoot("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content", IsNullable = false)]
     public partial class UserMessagesMessageOfTheDay
     {
         public object ID { get; set; }
@@ -49,99 +49,99 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 
         public object DisplayConditionDataList { get; set; }
 
+        [PegEdit]
         public UserMessagesMessageOfTheDayTitleHeader TitleHeader { get; set; }
 
         [PegEdit]
         public DateTime Date { get; set; }
 
+        [PegEdit]
         public UserMessagesMessageOfTheDayContentHeader ContentHeader { get; set; }
 
+        [PegEdit]
         public UserMessagesMessageOfTheDayContentBody ContentBody { get; set; }
 
         [PegEdit]
         public string ContentImagePath { get; set; }
 
-        [XmlAttributeAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string when { get; set; }
 
-        [XmlAttributeAttribute(AttributeName = "id", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [XmlAttribute(AttributeName = "id", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid idAttribute { get; set; }
     }
 
-    [SerializableAttribute]
-    [DesignerCategoryAttribute("code")]
-    [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class UserMessagesMessageOfTheDayUserGroups
     {
-        [XmlElementAttribute(Namespace = "scribble:x")]
+        [XmlElement(Namespace = "scribble:x")]
         public item item { get; set; }
     }
 
-    [SerializableAttribute]
-    [DesignerCategoryAttribute("code")]
-    [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:x")]
-    [XmlRootAttribute(Namespace = "scribble:x", IsNullable = false)]
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:x")]
+    [XmlRoot(Namespace = "scribble:x", IsNullable = false)]
     public partial class item
     {
-        [XmlAttributeAttribute(Form = XmlSchemaForm.Qualified)]
+        [XmlAttribute(Form = XmlSchemaForm.Qualified)]
         public string @ref { get; set; }
     }
 
-    [SerializableAttribute]
-    [DesignerCategoryAttribute("code")]
-    [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
-    [PegEdit]
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class UserMessagesMessageOfTheDayTitleHeader
     {
-        [XmlElementAttribute(Namespace = "scribble:x")]
         [PegEdit]
+        [XmlElement(Namespace = "scribble:x")]
         public string @base { get; set; }
 
-        [XmlElementAttribute(Namespace = "scribble:x")]
         [PegEdit]
+        [XmlElement(Namespace = "scribble:x")]
         public string description { get; set; }
 
-        [XmlElementAttribute(Namespace = "scribble:x")]
         [PegEdit]
+        [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        [XmlAttributeAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }
 
-    [SerializableAttribute]
-    [DesignerCategoryAttribute("code")]
-    [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
-    [PegEdit]
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class UserMessagesMessageOfTheDayContentHeader
     {
-        [XmlElementAttribute(Namespace = "scribble:x")]
         [PegEdit]
+        [XmlElement(Namespace = "scribble:x")]
         public string @base { get; set; }
 
-        [XmlElementAttribute(Namespace = "scribble:x")]
         [PegEdit]
+        [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        [XmlAttributeAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }
 
-    [SerializableAttribute]
-    [DesignerCategoryAttribute("code")]
-    [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
-    [PegEdit]
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class UserMessagesMessageOfTheDayContentBody
     {
-        [XmlElementAttribute(Namespace = "scribble:x")]
         [PegEdit]
+        [XmlElement(Namespace = "scribble:x")]
         public string @base { get; set; }
 
-        [XmlElementAttribute(Namespace = "scribble:x")]
         [PegEdit]
+        [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        [XmlAttributeAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }
 }
