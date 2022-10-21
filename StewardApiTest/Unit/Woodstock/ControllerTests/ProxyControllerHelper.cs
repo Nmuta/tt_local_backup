@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
@@ -61,6 +62,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             mockUserManagementService.RemoveFromUserGroups(Arg.Any<ulong>(), Arg.Any<int[]>()).Returns(Fixture.Create<Task>());
             mockUserManagementService.AddToUserGroups(Arg.Any<ulong>(), Arg.Any<int[]>()).Returns(Fixture.Create<Task>());
             mockUserManagementService.CreateUserGroup(Arg.Any<string>()).Returns(Fixture.Create<CreateUserGroupOutput>());
+            mockUserManagementService.CreateUserGroupBulkOperation(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserIds[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationOutput>());
+            mockUserManagementService.GetUserGroupBulkOperationStatus(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<Guid>()).Returns(Fixture.Create<GetUserGroupBulkOperationStatusOutput>());
 
             return mockUserManagementService;
         }

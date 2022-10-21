@@ -18,6 +18,8 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 using Microsoft.Extensions.Configuration;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
+using AutoMapper;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
@@ -81,7 +83,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void AddUsersToGroup_UseBackgroundProcessing_ShouldNotThrow()
+        public void AddUsersToGroup_UseBulkProcessing_ShouldNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -98,7 +100,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void RemoveUsersFromGroup_UseBackgroundProcessing_ShouldNotThrow()
+        public void RemoveUsersFromGroup_UseBulkProcessing_ShouldNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -117,20 +119,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             private readonly ControllerContext ControllerContext;
 
-            public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
-            public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+            public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
 
             public Dependencies()
             {
                 this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
+                this.Mapper.Map<ForzaUserIds>(Arg.Any<string>()).Returns(Fixture.Create<ForzaUserIds>());
+                this.Mapper.Map<ForzaUserIds>(Arg.Any<ulong>()).Returns(Fixture.Create<ForzaUserIds>());
+                this.Mapper.Map<UserGroupBulkOperationType>(Arg.Any<ForzaBulkOperationType>()).Returns(Fixture.Create<UserGroupBulkOperationType>());
+                this.Mapper.Map<UserGroupBulkOperationStatus>(Arg.Any<ForzaBulkOperationStatus>()).Returns(Fixture.Create<UserGroupBulkOperationStatus>());
+                this.Mapper.Map<UserGroupBulkOperationStatusOutput>(Arg.Any<ForzaUserGroupBulkOperationStatus>()).Returns(Fixture.Create<UserGroupBulkOperationStatusOutput>());
             }
 
             public UserGroupController Build() => new UserGroupController(
-                this.JobTracker,
-                this.Scheduler,
-                this.LoggingService)
+                this.LoggingService,
+                this.Mapper)
             { ControllerContext = this.ControllerContext };
         }
     } 

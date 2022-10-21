@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Rest;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Annotations;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
@@ -36,14 +39,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
     {
         private readonly IWoodstockService fh5Service;
         private readonly ISunriseService fh4Service;
+        private readonly ILoggingService loggingService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="FindController"/> class.
         /// </summary>
-        public FindController(IWoodstockService fh5Service, ISunriseService fh4Service)
+        public FindController(IWoodstockService fh5Service, ISunriseService fh4Service, ILoggingService loggingService)
         {
             this.fh5Service = fh5Service;
             this.fh4Service = fh4Service;
+            this.loggingService = loggingService;
         }
 
         /// <summary>
@@ -84,6 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Tune),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
+                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, ServicesLiveOpsFH5.StorefrontManagementService.GetUGCLiveryOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH5.ForzaUGCContentType.Livery,
@@ -104,6 +110,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint,
                     (id) => this.fh5Service.GetEventBlueprintAsync(id, this.WoodstockEndpoint.Value),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, SubmoduleFH5.LiveOpsService.GetUGCCommunityChallengeOutput>(
+                    shareCodeOrId,
+                    ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge,
+                    (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
+                    item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
             };
 
             var fh4Lookups = new[]
@@ -175,41 +186,65 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
 
         private async Task<ServicesLiveOpsFM8.ForzaUGCContentType?> LookupFM8ShareCodeOrNullAsync(string shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType type)
         {
-            var ugcList = await this.SteelheadServices.Value.StorefrontManagementService.SearchUGC(
-                new ServicesLiveOpsFM8.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1 },
-                type,
-                includeThumbnails: true,
-                1).ConfigureAwait(false);
+            try
+            {
+                var ugcList = await this.SteelheadServices.Value.StorefrontManagementService.SearchUGC(
+                    new ServicesLiveOpsFM8.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1 },
+                    type,
+                    includeThumbnails: true,
+                    1).ConfigureAwait(false);
 
-            var singleUgc = ugcList.result.FirstOrDefault();
-            if (singleUgc == null) { return null; }
-            return type;
+                var singleUgc = ugcList.result.FirstOrDefault();
+                if (singleUgc == null) { return null; }
+                return type;
+            }
+            catch (Exception ex)
+            {
+                this.loggingService.LogException(new AppInsightsException($"Lookup failed for FM8 UGC. (type: {type}) (UGC ID / Sharecode: {shareCodeOrId})", ex));
+                return null;
+            }
         }
 
         private async Task<ServicesLiveOpsFH5.ForzaUGCContentType?> LookupFH5ShareCodeOrNullAsync(string shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType type)
         {
-            var ugcList = await this.fh5Service.SearchUgcContentAsync(
-                new ServicesLiveOpsFH5.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1},
-                type,
-                this.WoodstockEndpoint.Value,
-                includeThumbnails: true).ConfigureAwait(false);
+            try
+            {
+                var ugcList = await this.fh5Service.SearchUgcContentAsync(
+                    new ServicesLiveOpsFH5.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1},
+                    type,
+                    this.WoodstockEndpoint.Value,
+                    includeThumbnails: true).ConfigureAwait(false);
 
-            var singleUgc = ugcList.result.FirstOrDefault();
-            if (singleUgc == null) { return null; }
-            return type;
+                var singleUgc = ugcList.result.FirstOrDefault();
+                if (singleUgc == null) { return null; }
+                return type;
+            }
+            catch (Exception ex)
+            {
+                this.loggingService.LogException(new AppInsightsException($"Lookup failed for FH5 UGC. (type: {type}) (UGC ID / Sharecode: {shareCodeOrId})", ex));
+                return null;
+            }
         }
 
         private async Task<ServicesLiveOpsFH4.ForzaUGCContentType?> LookupFH4ShareCodeOrNullAsync(string shareCode, ServicesLiveOpsFH4.ForzaUGCContentType type)
         {
-            var ugcList = await this.fh4Service.SearchUgcContentAsync(
-                new ServicesLiveOpsFH4.ForzaUGCSearchRequest { ShareCode = shareCode, Xuid = ulong.MaxValue },
-                type,
-                this.SunriseEndpoint.Value,
-                includeThumbnails: true).ConfigureAwait(false);
+            try
+            {
+                var ugcList = await this.fh4Service.SearchUgcContentAsync(
+                    new ServicesLiveOpsFH4.ForzaUGCSearchRequest { ShareCode = shareCode, Xuid = ulong.MaxValue },
+                    type,
+                    this.SunriseEndpoint.Value,
+                    includeThumbnails: true).ConfigureAwait(false);
 
-            var singleUgc = ugcList.result.FirstOrDefault();
-            if (singleUgc == null) { return null; }
-            return type;
+                var singleUgc = ugcList.result.FirstOrDefault();
+                if (singleUgc == null) { return null; }
+                return type;
+            }
+            catch (Exception ex)
+            {
+                this.loggingService.LogException(new AppInsightsException($"Lookup failed for FH4 UGC. (type: {type}) (Share Code: {shareCode})", ex));
+                return null;
+            }
         }
 #nullable disable
 

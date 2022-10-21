@@ -1608,7 +1608,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 Xuids = new List<ulong> { notificationXuid },
                 Message = "Integration Test Message",
-                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-5),
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(-1),
             };
 
             try
@@ -1706,7 +1707,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-1),
+                ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-5),
+                StartTimeUtc = DateTime.UtcNow.AddMinutes(-1),
                 DeviceType = DeviceType.All,
             };
 

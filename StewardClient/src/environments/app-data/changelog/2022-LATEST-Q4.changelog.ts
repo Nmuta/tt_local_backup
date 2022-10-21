@@ -8,6 +8,49 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
+      uuid: 'be990d01-585d-45d5-9388-7ead5aad9a99',
+      shortText: 'Improve visibility of leaderboard Top Users lines',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.UserGroupManagement] },
+      uuid: 'cd7ae37e-c709-4f68-9644-e11588dd58a1',
+      shortText: 'Implement new bulk operation for add/remove users',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UgcDetails, NavbarTool.SearchUGC] },
+      uuid: '0a83662d-e001-4d5a-9307-69cb10295b47',
+      shortText: 'Add Community Challenge UGC type to UGC details and UGC search',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: '2e847b23-bc1d-4b1b-8b72-765146235af0',
+      shortText: 'Modify layout of FH5 user details to place smaller tools across the top',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: [NavbarTool.UgcDetails] },
+      uuid: '898997d1-c8fb-41c0-b435-2f889b3e340b',
+      shortText: 'Modify layout of UGC actions in UGC Details view',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.UserGroupManagement] },
+      uuid: '045eb771-8e03-4326-a142-5ae24796c21a',
+      shortText: 'Add UI restrictions to modifying All Users and Vip User groups',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.Gifting] },
+      uuid: 'c50e721e-c102-4db1-bb7e-53341f50fa8f',
+      shortText: 'Fix gifting liveries issue',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.SearchUGC, NavbarTool.UserDetails] },
+      uuid: '54e6d5e6-0acc-4196-961d-68c37bf2b2b0',
+      shortText: 'Remove hide and feature buttons in UGC table',
+      longText: [
+        'The removed features can still be found in UGC details, and a tooltip was added explaining that.',
+      ],
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '63d0d2b1-78a3-4685-8399-dd96264f5758',
       shortText: 'Adjust homepage tile styling',

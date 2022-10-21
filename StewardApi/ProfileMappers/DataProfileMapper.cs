@@ -27,7 +27,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<KustoQueryInternal, KustoQuery>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.RowKey))
                 .ReverseMap();
-            this.CreateMap<StewardUserInternal, StewardUser>();
+            this.CreateMap<StewardUserInternal, StewardUser>()
+                .ForMember(des => des.Attributes, opt =>
+                    opt.MapFrom(src => src.AuthorizationAttributes()));
         }
     }
 }

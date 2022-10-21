@@ -49,6 +49,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<WoodstockUgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint);
 
         /// <summary>
+        ///    Get community challenege event.
+        /// </summary>
+        Task<UgcItem> GetUgcCommunityChallengeAsync(Guid communityChallengeId, string endpoint);
+
+        /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
         Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);

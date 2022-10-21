@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GameTitle, PegasusProjectionSlot } from '@models/enums';
 import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
+import { UgcSearchFilters, UgcType, WoodstockSupportedUgcTypes } from '@models/ugc-filters';
 import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-search.service';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -28,7 +28,7 @@ import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 })
 export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit {
   @ViewChild(HelpPopoverIconComponent) helpPopoverIcon: HelpPopoverIconComponent;
-  /** REVIEW-COMMENT: Pegasus slot id. Default to {@link PegasusProjectionSlot.Live}. */
+  /** Pegasus slot id. Used to determine CMS slot used to fill in car details on UGC items. Defaults to {@link PegasusProjectionSlot.Live}. */
   @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
   public gameTitle = GameTitle.FH5;
   public searchUgc$ = new Subject<UgcSearchFilters>();
@@ -40,8 +40,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
     makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
-    supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.Tune, UgcType.EventBlueprint],
-
+    supportedUgcTypes: WoodstockSupportedUgcTypes,
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,
   };

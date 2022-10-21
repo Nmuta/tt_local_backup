@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
-import { UgcType } from '@models/ugc-filters';
+import { UgcType, WoodstockSupportedUgcTypes } from '@models/ugc-filters';
 import { takeUntil } from 'rxjs';
 import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.service';
 
@@ -13,7 +13,7 @@ import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.s
 export class WoodstockUgcDetailsComponent extends BaseComponent implements OnInit {
   public GameTitleCodeName = GameTitleCodeName;
 
-  public supportedTypes = [UgcType.Livery, UgcType.Photo, UgcType.Tune, UgcType.EventBlueprint];
+  public supportedTypes = WoodstockSupportedUgcTypes;
   public hasTypeLookup = {};
 
   constructor(public readonly sharedLookupService: ScopedSharedLookupService) {

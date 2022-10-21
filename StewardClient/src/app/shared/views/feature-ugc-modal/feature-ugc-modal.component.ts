@@ -33,6 +33,14 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
   public postMonitor = new ActionMonitor('POST Set Featured Status');
   public ugcItem: PlayerUgcItem;
 
+  public supportedTypes = [
+    UgcType.Livery,
+    UgcType.Photo,
+    UgcType.Tune,
+    UgcType.EventBlueprint,
+    UgcType.CommunityChallenge,
+  ];
+
   public abstract gameTitle: GameTitleCodeName;
 
   constructor(
@@ -43,16 +51,14 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
 
     this.ugcItem = cloneDeep(data);
 
-    const isUnsupportedType =
-      data.type !== UgcType.Livery &&
-      data.type !== UgcType.Photo &&
-      data.type !== UgcType.Tune &&
-      data.type !== UgcType.EventBlueprint;
+    const isUnsupportedType = !this.supportedTypes.includes(data.type);
 
     if (isUnsupportedType) {
       dialogRef.close();
       throw new Error(
-        `Bad UGC Type: ${data.type}. Featuring UGC content is limited to types: ${UgcType.Livery}, ${UgcType.Photo}, ${UgcType.Tune}, ${UgcType.EventBlueprint}.`,
+        `Bad UGC Type: ${
+          data.type
+        }. Featuring UGC content is limited to types: ${this.supportedTypes.join(', ')}.`,
       );
     }
 

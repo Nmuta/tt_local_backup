@@ -16,12 +16,16 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
-import { BackgroundJob } from '@models/background-job';
-import { BasicPlayer, BasicPlayerAction } from '@models/basic-player';
+import { BasicPlayerAction } from '@models/basic-player';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
+import {
+  ForzaBulkOperationStatus,
+  ForzaBulkOperationType,
+  UserGroupBulkOperationStatus,
+} from '@models/user-group-bulk-operation';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
@@ -29,7 +33,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
 import { chain, remove } from 'lodash';
-import { Observable, takeUntil, switchMap, tap } from 'rxjs';
+import { Observable, takeUntil, switchMap, tap, retry, map, of } from 'rxjs';
 
 export interface ListUsersInGroupServiceContract {
   gameTitle: GameTitle;
@@ -42,15 +46,20 @@ export interface ListUsersInGroupServiceContract {
     playerList: BasicPlayerList,
     userGroup: LspGroup,
   ): Observable<BasicPlayerAction>;
-  deletePlayersFromUserGroupUsingBackgroundTask$(
+  deletePlayersFromUserGroupUsingBulkProcessing$(
     playerList: BasicPlayerList,
     userGroup: LspGroup,
-  ): Observable<BackgroundJob<void>>;
-  addPlayersToUserGroupUsingBackgroundTask$(
+  ): Observable<UserGroupBulkOperationStatus>;
+  addPlayersToUserGroupUsingBulkProcessing$(
     playerList: BasicPlayerList,
     userGroup: LspGroup,
-  ): Observable<BackgroundJob<void>>;
+  ): Observable<UserGroupBulkOperationStatus>;
   deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<void>;
+  getBulkOperationStatus$(
+    userGroup: LspGroup,
+    bulkOperationType: ForzaBulkOperationType,
+    bulkOperationId: string,
+  ): Observable<UserGroupBulkOperationStatus>;
   // Represent user group too large to load users
   largeUserGroups: BigNumber[];
 }
@@ -61,9 +70,11 @@ enum UserGroupManagementAction {
 }
 
 interface UserGroupManagementFailures {
-  players: BasicPlayerAction[];
+  //TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130
+  //players: BasicPlayerAction[];
   action: UserGroupManagementAction;
-  copyToClipboard?: string;
+  //copyToClipboard?: string;
+  count: number;
 }
 
 /** A player object within a user group. */
@@ -114,6 +125,8 @@ export class ListUsersInGroupComponent
   public displayedColumns = ['xuid', 'gamertag', 'actions'];
   public playersDataSource = new BetterMatTableDataSource<PlayerInUserGroup>();
   public failedActionForUsers: UserGroupManagementFailures;
+  public isAllUsersGroup: boolean = false;
+  public disallowDeleteAllUsers: boolean = false;
 
   constructor(
     private readonly backgroundJobService: BackgroundJobService,
@@ -150,6 +163,10 @@ export class ListUsersInGroupComponent
     this.allPlayers = [];
     this.playersDataSource.data = this.allPlayers;
     if (changes.userGroup && !!this.userGroup) {
+      this.isAllUsersGroup = this.userGroup?.id.isEqualTo(0);
+      this.disallowDeleteAllUsers = !!this.service.largeUserGroups.find(x =>
+        x.isEqualTo(this.userGroup?.id),
+      );
       this.isGroupTooLarge = this.isLargeUserGroup();
       this.playersDataSource.paginator = this.paginator;
       this.playersDataSource.paginator.pageIndex = 0;
@@ -171,7 +188,7 @@ export class ListUsersInGroupComponent
   public deleteUsersInGroup(): void {
     this.deletePlayersMonitor = this.deletePlayersMonitor.repeat();
     this.failedActionForUsers = {
-      players: [],
+      count: 0,
       action: UserGroupManagementAction.Remove,
     };
 
@@ -181,17 +198,42 @@ export class ListUsersInGroupComponent
     );
 
     this.service
-      .deletePlayersFromUserGroupUsingBackgroundTask$(playerList, this.userGroup)
+      .deletePlayersFromUserGroupUsingBulkProcessing$(playerList, this.userGroup)
       .pipe(
-        switchMap(response => {
-          return this.backgroundJobService.waitForBackgroundJobToComplete<BasicPlayer>(
-            response as BackgroundJob<void>,
-          );
+        switchMap(bulkOperationStatus => {
+          // If there is no blobId, that means the add/remove is already complete. This happens with Apollo
+          if (!bulkOperationStatus.blobId) {
+            return of(bulkOperationStatus);
+          }
+
+          return this.service
+            .getBulkOperationStatus$(
+              this.userGroup,
+              ForzaBulkOperationType.Remove,
+              bulkOperationStatus.blobId,
+            )
+            .pipe(
+              map(bulkOperationStatus => {
+                let returnValue: UserGroupBulkOperationStatus;
+
+                switch (bulkOperationStatus.status) {
+                  case ForzaBulkOperationStatus.Completed:
+                  case ForzaBulkOperationStatus.Failed:
+                    returnValue = bulkOperationStatus;
+                    break;
+                  case ForzaBulkOperationStatus.Pending:
+                    throw new Error('Error!');
+                }
+
+                return returnValue;
+              }),
+              retry({ delay: 2000 }),
+            );
         }),
         this.deletePlayersMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),
       )
-      .subscribe((response: BasicPlayerAction[]) => {
+      .subscribe((response: UserGroupBulkOperationStatus) => {
         this.formGroup.reset({
           useGamertags: this.formControls.useGamertags.value,
         });
@@ -200,11 +242,15 @@ export class ListUsersInGroupComponent
         this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
 
-        const failedUsers = response.filter(data => !!data.error);
-        this.failedActionForUsers.players = failedUsers;
-        this.failedActionForUsers.copyToClipboard = failedUsers
-          .map(player => player.gamertag ?? player.xuid)
-          .join('\n');
+        //TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130
+        // const failedUsers = response.filter(data => !!data.error);
+        // this.failedActionForUsers.players = failedUsers;
+        // this.failedActionForUsers.copyToClipboard = failedUsers
+        //   .map(player => player.gamertag ?? player.xuid)
+        //   .join('\n');
+
+        this.failedActionForUsers.count = response.remaining;
+
         this.clearCheckboxes();
       });
   }
@@ -213,7 +259,7 @@ export class ListUsersInGroupComponent
   public addUsersInGroup(): void {
     this.addPlayersMonitor = this.addPlayersMonitor.repeat();
     this.failedActionForUsers = {
-      players: [],
+      count: 0,
       action: UserGroupManagementAction.Add,
     };
 
@@ -223,17 +269,42 @@ export class ListUsersInGroupComponent
     );
 
     this.service
-      .addPlayersToUserGroupUsingBackgroundTask$(playerList, this.userGroup)
+      .addPlayersToUserGroupUsingBulkProcessing$(playerList, this.userGroup)
       .pipe(
-        switchMap(response => {
-          return this.backgroundJobService.waitForBackgroundJobToComplete<BasicPlayer>(
-            response as BackgroundJob<void>,
-          );
+        switchMap(bulkOperationStatus => {
+          // If there is no blobId, that means the add/remove is already complete. This happens with Apollo
+          if (!bulkOperationStatus.blobId) {
+            return of(bulkOperationStatus);
+          }
+
+          return this.service
+            .getBulkOperationStatus$(
+              this.userGroup,
+              ForzaBulkOperationType.Add,
+              bulkOperationStatus.blobId,
+            )
+            .pipe(
+              map(bulkOperationStatus => {
+                let returnValue: UserGroupBulkOperationStatus;
+
+                switch (bulkOperationStatus.status) {
+                  case ForzaBulkOperationStatus.Completed:
+                  case ForzaBulkOperationStatus.Failed:
+                    returnValue = bulkOperationStatus;
+                    break;
+                  case ForzaBulkOperationStatus.Pending:
+                    throw new Error('Error!');
+                }
+
+                return returnValue;
+              }),
+              retry({ delay: 2000 }),
+            );
         }),
         this.addPlayersMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),
       )
-      .subscribe((response: BasicPlayerAction[]) => {
+      .subscribe((response: UserGroupBulkOperationStatus) => {
         this.formGroup.reset({
           useGamertags: this.formControls.useGamertags.value,
         });
@@ -242,11 +313,15 @@ export class ListUsersInGroupComponent
         this.playersDataSource.paginator.pageIndex = 0;
         this.getPlayersInUserGroup();
 
-        const failedUsers = response.filter(data => !!data.error);
-        this.failedActionForUsers.players = failedUsers;
-        this.failedActionForUsers.copyToClipboard = failedUsers
-          .map(player => player.gamertag ?? player.xuid)
-          .join('\n');
+        //TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130
+        // const failedUsers = response.filter(data => !!data.error);
+        // this.failedActionForUsers.players = failedUsers;
+        // this.failedActionForUsers.copyToClipboard = failedUsers
+        //   .map(player => player.gamertag ?? player.xuid)
+        //   .join('\n');
+
+        this.failedActionForUsers.count = response.remaining;
+
         this.clearCheckboxes();
       });
   }

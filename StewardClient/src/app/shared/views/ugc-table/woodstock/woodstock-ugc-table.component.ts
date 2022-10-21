@@ -1,21 +1,15 @@
 import { Component, OnChanges } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { MatDialog } from '@angular/material/dialog';
-import { WoodstockFeatureUgcModalComponent } from '@views/feature-ugc-modal/woodstock/woodstock-feature-ugc-modal.component';
-import { filter, takeUntil } from 'rxjs/operators';
-import { PlayerUgcItemTableEntries, UgcTableBaseComponent } from '../ugc-table.component';
+import { UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
 import { Observable } from 'rxjs';
 import { WoodstockService } from '@services/woodstock';
-import { pull } from 'lodash';
-import { renderGuard } from '@helpers/rxjs';
-import { PermissionsService } from '@services/permissions';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-lookup.service';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 
-/** Displays sunrise UGC content in a table. */
+/** Displays woodstock UGC content in a table. */
 @Component({
   selector: 'woodstock-ugc-table',
   templateUrl: '../ugc-table.component.html',
@@ -25,34 +19,10 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   public gameTitle = GameTitle.FH5;
 
   constructor(
-    private readonly dialog: MatDialog,
     private readonly woodstockService: WoodstockService,
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
-    permissionsService: PermissionsService,
   ) {
-    super(permissionsService);
-  }
-
-  /** Opens the feature UGC modal. */
-  public openFeatureUgcModal(item: PlayerUgcItem): void {
-    this.dialog
-      .open(WoodstockFeatureUgcModalComponent, {
-        data: item,
-      })
-      .afterClosed()
-      .pipe(
-        filter(data => !!data),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe((response: PlayerUgcItem) => {
-        const updatedData = this.ugcTableDataSource.data;
-        const itemToUpdateIndex = updatedData.findIndex(item => item.id === response.id);
-
-        if (itemToUpdateIndex >= 0) {
-          updatedData[itemToUpdateIndex] = response;
-          this.ugcTableDataSource.data = updatedData;
-        }
-      });
+    super();
   }
 
   /** Gets player UGC item. */
@@ -60,31 +30,8 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     return this.woodstockService.getPlayerUgcItem$(id, type);
   }
 
-  /** Hide UGC item. */
-  public hideUgcItem(item: PlayerUgcItemTableEntries): void {
-    item.monitor = item.monitor.repeat();
-
-    this.woodstockService
-      .hideUgc$(item.id)
-      .pipe(item.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.deleteEntry(item);
-      });
-  }
-
   /** Retrieve Photo thumnbnails. */
   public retrievePhotoThumbnails(ugcIds: GuidLikeString[]): Observable<LookupThumbnailsResult[]> {
     return this.woodstockUgcLookupService.GetPhotoThumbnails$(ugcIds);
-  }
-
-  private deleteEntry(item: PlayerUgcItemTableEntries): void {
-    renderGuard(() => {
-      pull(this.ugcTableDataSource.data, item);
-
-      pull(this.allMonitors, item.monitor);
-      item.monitor.dispose();
-
-      this.ugcTableDataSource._updateChangeSubscription();
-    });
   }
 }

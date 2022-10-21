@@ -842,7 +842,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(WoodstockUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
-        public async Task<IActionResult> GetUgvEventBlueprint(string id)
+        public async Task<IActionResult> GetUgcEventBlueprint(string id)
         {
             if (!Guid.TryParse(id, out var idAsGuid))
             {
@@ -852,6 +852,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var eventBlueprint = await this.storefrontProvider.GetUgcEventBlueprintAsync(idAsGuid, endpoint).ConfigureAwait(true);
+
+            return this.Ok(eventBlueprint);
+        }
+
+        /// <summary>
+        ///     Gets a UGC tune by ID.
+        /// </summary>
+        [HttpGet("storefront/communityChallenge({id})")]
+        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetUgcCommunityChallenge(string id)
+        {
+            if (!Guid.TryParse(id, out var idAsGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {id}");
+            }
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+
+            var eventBlueprint = await this.storefrontProvider.GetUgcCommunityChallengeAsync(idAsGuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(eventBlueprint);
         }

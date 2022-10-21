@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Forza.WebServices.FH4.Generated;
+using System;
 using System.Threading.Tasks;
 using static Forza.WebServices.FH4.Generated.UserService;
 
@@ -30,5 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise.Services
         ///     Adds user to user groups by gamertag.
         /// </summary>
         Task AddToUserGroupsByGamertag(string gamertag, int[] groupIds);
+
+        /// <summary>
+        ///     Create a add/remove bulk operation on a user group.
+        /// </summary>
+        Task<CreateUserGroupBulkOperationOutput> CreateUserGroupBulkOperation(ForzaBulkOperationType operation, int userGroupId, ForzaUserIds[] users);
+
+        /// <summary>
+        ///     Get the status of a user group bulk operation.
+        /// </summary>
+        Task<GetUserGroupBulkOperationStatusOutput> GetUserGroupBulkOperationStatus(ForzaBulkOperationType operation, int userGroupId, Guid blobId);
     }
 }

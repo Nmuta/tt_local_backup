@@ -1,11 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { BackgroundJob } from '@models/background-job';
 import { BasicPlayerAction } from '@models/basic-player';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { LspGroup } from '@models/lsp-group';
+import {
+  ForzaBulkOperationType,
+  UserGroupBulkOperationStatus,
+} from '@models/user-group-bulk-operation';
 import { WoodstockUserGroupService } from '@services/api-v2/woodstock/user-group/woodstock-user-group.service';
 import BigNumber from 'bignumber.js';
 import { first } from 'lodash';
@@ -48,17 +51,28 @@ export class WoodstockListUsersInGroupComponent extends BaseComponent {
       deleteAllPlayersFromUserGroup$(userGroup: LspGroup): Observable<void> {
         return userGroupService.removeAllUsersFromGroup$(userGroup.id);
       },
-      deletePlayersFromUserGroupUsingBackgroundTask$(
+      deletePlayersFromUserGroupUsingBulkProcessing$(
         playerList: BasicPlayerList,
         userGroup: LspGroup,
-      ): Observable<BackgroundJob<void>> {
-        return userGroupService.removeUsersFromGroupUsingBackgroundTask$(userGroup.id, playerList);
+      ): Observable<UserGroupBulkOperationStatus> {
+        return userGroupService.removeUsersFromGroupUsingBulkProcessing$(userGroup.id, playerList);
       },
-      addPlayersToUserGroupUsingBackgroundTask$(
+      addPlayersToUserGroupUsingBulkProcessing$(
         playerList: BasicPlayerList,
         userGroup: LspGroup,
-      ): Observable<BackgroundJob<void>> {
-        return userGroupService.addUsersToGroupUsingBackgroundTask$(userGroup.id, playerList);
+      ): Observable<UserGroupBulkOperationStatus> {
+        return userGroupService.addUsersToGroupUsingBulkProcessing$(userGroup.id, playerList);
+      },
+      getBulkOperationStatus$(
+        userGroup: LspGroup,
+        bulkOperationType: ForzaBulkOperationType,
+        bulkOperationId: string,
+      ): Observable<UserGroupBulkOperationStatus> {
+        return userGroupService.getBulkOperationStatus$(
+          userGroup.id,
+          bulkOperationId,
+          bulkOperationType,
+        );
       },
     };
   }

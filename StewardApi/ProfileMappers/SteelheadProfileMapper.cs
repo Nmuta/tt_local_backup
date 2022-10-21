@@ -293,6 +293,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
+            this.CreateMap<UgcFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => UgcSearchConstants.NoCarId))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
+                .ReverseMap();
             this.CreateMap<UGCSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
                 .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
                 .ForMember(dest => dest.Featured, opt => opt.MapFrom(source => source.IsFeatured))
@@ -318,7 +323,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUser, PlayerGameDetails>()
                 .ForMember(dest => dest.LastLoginDateUtc, opt => opt.MapFrom(src => src.LastLogin))
                 .ForMember(dest => dest.FirstLoginDateUtc, opt => opt.MapFrom(src => src.FirstLogin));
-
+            this.CreateMap<string, ForzaUserIds>()
+               .ForMember(dest => dest.gamertag, opt => opt.MapFrom(src => src));
+            this.CreateMap<ulong, ForzaUserIds>()
+                .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
+            this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
+            this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
+            this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
             // Welcome Center
             this.CreateMap<UserMessagesMessageOfTheDay, MessageOfTheDayBridge>()
                 .ForMember(dest => dest.FriendlyMessageName, act => act.MapFrom(src => src.FriendlyMessageName))

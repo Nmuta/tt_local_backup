@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { LspGroup } from '@models/lsp-group';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
-import { BackgroundJob } from '@models/background-job';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { HttpParams } from '@angular/common/http';
 import { BasicPlayerAction } from '@models/basic-player';
+import { UserGroupBulkOperationStatus } from '@models/user-group-bulk-operation';
 
 /** The /v2/apollo/usergroup endpoints. */
 @Injectable({
@@ -43,7 +43,7 @@ export class ApolloUserGroupService {
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
   ): Observable<BasicPlayerAction[]> {
-    const params = new HttpParams().set('useBackgroundProcessing', false);
+    const params = new HttpParams().set('useBulkProcessing', false);
 
     return this.api.postRequest$<BasicPlayerAction[]>(
       `${this.basePath}/${userGroupId}/remove`,
@@ -52,28 +52,28 @@ export class ApolloUserGroupService {
     );
   }
 
-  /** Remove users from a user group using a background job. */
-  public removeUsersFromGroupUsingBackgroundTask$(
+  /** Remove users from a user group using the bulk processing. */
+  public removeUsersFromGroupUsingBulkProcessing$(
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
-  ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', true);
+  ): Observable<UserGroupBulkOperationStatus> {
+    const params = new HttpParams().set('useBulkProcessing', true);
 
-    return this.api.postRequest$<BackgroundJob<void>>(
+    return this.api.postRequest$<UserGroupBulkOperationStatus>(
       `${this.basePath}/${userGroupId}/remove`,
       playerList,
       params,
     );
   }
 
-  /** Add users to a user group using a background job. */
-  public addUsersToGroupUsingBackgroundTask$(
+  /** Add users to a user group using the bulk processing. */
+  public addUsersToGroupUsingBulkProcessing$(
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
-  ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', true);
+  ): Observable<UserGroupBulkOperationStatus> {
+    const params = new HttpParams().set('useBulkProcessing', true);
 
-    return this.api.postRequest$<BackgroundJob<void>>(
+    return this.api.postRequest$<UserGroupBulkOperationStatus>(
       `${this.basePath}/${userGroupId}/add`,
       playerList,
       params,
