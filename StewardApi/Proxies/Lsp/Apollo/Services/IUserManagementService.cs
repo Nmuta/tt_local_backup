@@ -46,5 +46,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services
         ///     Creates a LSP user group.
         /// </summary>
         Task<CreateUserGroupOutput> CreateUserGroup(string groupName);
+
+        /// <summary>
+        ///     Create a add/remove bulk operation on a user group.
+        ///     To note that Apollo does not actually create a bulk operation like the other titles and adds/removes the users right away.
+        /// </summary>
+        Task<CreateUserGroupBulkOperationOutput> CreateUserGroupBulkOperation(ForzaBulkOperationType operation, int userGroupId, ForzaUserIds[] users);
     }
 }

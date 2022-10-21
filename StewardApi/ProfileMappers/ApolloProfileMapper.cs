@@ -170,6 +170,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => "Ban expired by Steward"));
 
             this.CreateMap<ForzaUserUnBanResult, UnbanResult>();
+
+            this.CreateMap<string, ForzaUserIds>()
+              .ForMember(dest => dest.gamertag, opt => opt.MapFrom(src => src));
+            this.CreateMap<ulong, ForzaUserIds>()
+                .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
         }
     }
 }

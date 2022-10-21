@@ -437,6 +437,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Get a community challenge.
+        /// </summary>
+        Task<LiveOpsService.GetUGCCommunityChallengeOutput> GetCommunityChallengeAsync(
+            Guid eventBlueprintId,
+            string endpoint);
+
+        /// <summary>
         ///     Get hidden UGC.
         /// </summary>
         Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(

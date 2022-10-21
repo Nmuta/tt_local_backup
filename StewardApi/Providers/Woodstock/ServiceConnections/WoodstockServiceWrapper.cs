@@ -403,7 +403,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await giftingService.AdminSendItemGiftV2(xuid, itemType.ToString(), itemValue, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
+            // For now using quantity of 1, but we can do better!
+            await giftingService.AdminSendItemGiftV3(xuid, itemType.ToString(), itemValue, 1, false, 0).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -648,7 +649,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         {
             var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000).ConfigureAwait(false);
+            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000, false).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -701,6 +702,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             var liveOpsService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await liveOpsService.GetUGCEventBlueprint(eventBlueprintId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<LiveOpsService.GetUGCCommunityChallengeOutput> GetCommunityChallengeAsync(
+            Guid communityChallengeId,
+            string endpoint)
+        {
+            var liveOpsService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await liveOpsService.GetUGCCommunityChallenge(communityChallengeId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

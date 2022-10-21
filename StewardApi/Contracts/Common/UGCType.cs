@@ -34,5 +34,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Event Blueprint UGC item type.
         /// </summary>
         EventBlueprint = 6,
+
+        /// <summary>
+        ///     Event Community Challenge UGC item type.
+        /// </summary>
+        CommunityChallenge = 8,
+
     }
 }

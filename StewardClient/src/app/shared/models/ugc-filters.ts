@@ -32,6 +32,7 @@ export enum UgcType {
   Photo = 'Photo',
   Tune = 'Tune',
   EventBlueprint = 'EventBlueprint',
+  CommunityChallenge = 'CommunityChallenge',
 }
 
 /** Order to display UGC results. */
@@ -50,3 +51,12 @@ export const DefaultUgcFilters: UgcFilters = {
   accessLevel: UgcAccessLevel.Any,
   orderBy: UgcOrderBy.CreatedDateDesc,
 };
+
+/** Default values for UgcFilters. */
+export const WoodstockSupportedUgcTypes = [
+  UgcType.Livery,
+  UgcType.Photo,
+  UgcType.Tune,
+  UgcType.EventBlueprint,
+  UgcType.CommunityChallenge,
+];

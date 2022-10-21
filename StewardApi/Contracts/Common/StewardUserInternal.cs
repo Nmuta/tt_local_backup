@@ -1,4 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
@@ -17,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardUserInternal"/> class.
         /// </summary>
-        public StewardUserInternal(string userObjectId, string name, string emailAddress, string role)
+        public StewardUserInternal(string userObjectId, string name, string emailAddress, string role, string attributes)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
@@ -29,6 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             this.PartitionKey = "Users";
             this.EmailAddress = emailAddress;
             this.Role = role;
+            this.Attributes = attributes;
         }
 
         /// <summary>
@@ -50,5 +53,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the role.
         /// </summary>
         public string Role { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the attributes.
+        /// </summary>
+        public string Attributes { get; set; }
+
+        public IEnumerable<AuthorizationAttribute> AuthorizationAttributes()
+        {
+            if (string.IsNullOrEmpty(this.Attributes))
+            {
+                return System.Array.Empty<AuthorizationAttribute>();
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<AuthorizationAttribute>>(this.Attributes);
+        }
     }
 }

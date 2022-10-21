@@ -322,6 +322,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUser, PlayerGameDetails>()
                 .ForMember(dest => dest.LastLoginDateUtc, opt => opt.MapFrom(src => src.LastLogin))
                 .ForMember(dest => dest.FirstLoginDateUtc, opt => opt.MapFrom(src => src.FirstLogin));
+            this.CreateMap<string, ForzaUserIds>()
+               .ForMember(dest => dest.gamertag, opt => opt.MapFrom(src => src));
+            this.CreateMap<ulong, ForzaUserIds>()
+                .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
+            this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
+            this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
+            this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
         }
     }
 }

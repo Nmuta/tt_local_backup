@@ -1,4 +1,7 @@
-﻿namespace Turn10.LiveOps.StewardApi.Authorization
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Turn10.LiveOps.StewardApi.Authorization
 {
     /// <summary>
     ///     Represents the AAD app user roles.
@@ -28,5 +31,23 @@
         public const string MotorsportDesigner = "MotorsportDesigner";
 
         public const string MediaTeam = "MediaTeam";
+
+        public static List<string> V1Roles()
+        {
+            return new List<string>()
+            {
+                LiveOpsAdmin,
+                SupportAgentAdmin,
+                SupportAgent,
+                SupportAgentNew,
+                DataPipelineAdmin,
+                DataPipelineContributor,
+                DataPipelineRead,
+                CommunityManager,
+                HorizonDesigner,
+                MotorsportDesigner,
+                MediaTeam
+            };
+        }
     }
 }

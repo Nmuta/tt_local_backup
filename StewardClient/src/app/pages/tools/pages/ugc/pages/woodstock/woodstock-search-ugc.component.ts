@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GameTitle, PegasusProjectionSlot } from '@models/enums';
 import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
+import { UgcSearchFilters, UgcType, WoodstockSupportedUgcTypes } from '@models/ugc-filters';
 import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-search.service';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -40,8 +40,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
     makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
-    supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.Tune, UgcType.EventBlueprint],
-
+    supportedUgcTypes: WoodstockSupportedUgcTypes,
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,
   };
