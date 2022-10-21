@@ -70,6 +70,8 @@ using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
+using Turn10.LiveOps.StewardApi.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -162,8 +164,11 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
-                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
+                options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
+                options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
+
+                // All policies get registered here
+                UserAttribute.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -287,6 +292,8 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<JobTracker>().As<IJobTracker>().SingleInstance();
             builder.RegisterType<KustoQueryProvider>().As<IKustoQueryProvider>().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
+            builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();
+            builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             builder.Register(c => pegasusProvider).As<PegasusCmsProvider>().SingleInstance();
