@@ -9,17 +9,12 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-
 using AutoMapper;
-
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
-
 using SteelheadLiveOpsContent;
-
 using StewardGitApi;
-
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
@@ -29,11 +24,11 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
-
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
@@ -52,6 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private readonly string cmsEnvironment;
         private readonly string pathMessageOfTheDay;
+        private readonly string pathWorldOfForzaTile;
         private readonly CMSRetrievalHelper cmsRetrievalHelper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IMapper mapper;
@@ -92,6 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
             this.pathMessageOfTheDay = configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath];
+            this.pathWorldOfForzaTile = configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath];
 
             string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
                 configuration[ConfigurationKeyConstants.KeyVaultUrl],
@@ -248,7 +245,59 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GitPush> EditMotDMessagesAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment)
+        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
+        {
+            var pr = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
+
+            return pr;
+        }
+
+        /// <inheritdoc/>
+        public async Task<XElement> GetMessageOfTheDayElementAsync(Guid id)
+        {
+            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+
+            var doc = XDocument.Parse(item.Content);
+            var selectedElement = doc.Root.Elements(XmlConstants.NamespaceRoot + "UserMessages.MessageOfTheDay")
+                .Where(e => e.Attribute(XmlConstants.NamespaceElement + "id")?.Value == id.ToString())
+                .FirstOrDefault();
+
+            selectedElement.ShouldNotBeNull(nameof(selectedElement));
+
+            return selectedElement;
+        }
+
+        /// <inheritdoc/>
+        public async Task<MessageOfTheDayBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id)
+        {
+            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+
+            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+            var entry = root.UserMessagesMessageOfTheDay.Where(motdXml => motdXml.idAttribute == id).First();
+
+            var subset = this.mapper.Map<MessageOfTheDayBridge>(entry);
+
+            return subset;
+        }
+
+        /// <inheritdoc/>
+        public async Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync()
+        {
+            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+
+            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+
+            var choices = new Dictionary<Guid, string>();
+            foreach (var entry in root.UserMessagesMessageOfTheDay)
+            {
+                choices.Add(entry.idAttribute, entry.FriendlyMessageName);
+            }
+
+            return choices;
+        }
+
+        /// <inheritdoc/>
+        public async Task<GitPush> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment)
         {
             UserMessagesMessageOfTheDay entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
 
@@ -256,13 +305,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             XmlHelpers.BuildXmlMetaDataRecursive(entry, metadatas);
 
-            XElement el = await this.GetMotDSelectedElementAsync(id).ConfigureAwait(false);
+            XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
-            XmlHelpers.FillXmlRecursive(el, metadatas, 0, XmlConstants.NamespaceRoot);
+            XmlHelpers.FillXmlRecursive(element, metadatas, 0, XmlConstants.NamespaceRoot);
 
             // convert element to string UTF8, ToString() returns UTF16
             using var memory = new MemoryStream();
-            await el.SaveAsync(memory, default, default).ConfigureAwait(false);
+            await element.SaveAsync(memory, default, default).ConfigureAwait(false);
             string xmlText = Encoding.UTF8.GetString(memory.ToArray());
 
             var change = new CommitRefProxy()
@@ -279,20 +328,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
+        public async Task<WofTileBridge> GetWorldOfForzaCurrentValuesAsync(Guid id)
         {
-            var pr = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            return pr;
+            var root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
+            WorldOfForzaWoFTileImageText entry = root.WorldOfForzaWoFTileImageText.Where(wof => wof.id == id).First();
+
+            var subset = this.mapper.Map<WofTileBridge>(entry);
+
+            return subset;
         }
 
         /// <inheritdoc/>
-        public async Task<XElement> GetMotDSelectedElementAsync(Guid id)
+        public async Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync()
         {
-            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
+
+            WofXmlRoot root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
+
+            var choices = new Dictionary<Guid, string>();
+            foreach (WorldOfForzaWoFTileImageText entry in root.WorldOfForzaWoFTileImageText)
+            {
+                choices.Add(entry.id, entry.FriendlyName);
+            }
+
+            return choices;
+        }
+
+        /// <inheritdoc/>
+        public async Task<XElement> GetWorldOfForzaElementAsync(Guid id)
+        {
+            var item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
             var doc = XDocument.Parse(item.Content);
-            var selectedElement = doc.Root.Elements(XmlConstants.NamespaceRoot + "UserMessages.MessageOfTheDay")
+            var selectedElement = doc.Root.Elements(XmlConstants.NamespaceRoot + "WorldOfForza.WoFTileImageText")
                 .Where(e => e.Attribute(XmlConstants.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
 
@@ -302,32 +372,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<MessageOfTheDayBridge> GetMotDCurrentValuesAsync(Guid id)
+        public async Task<GitPush> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment)
         {
-            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            WorldOfForzaWoFTileImageText entry = this.mapper.Map<WorldOfForzaWoFTileImageText>(wofTileBridge);
 
-            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
-            var entry = root.UserMessagesMessageOfTheDay.Where(motdXml => motdXml.idAttribute == id).First();
+            List<(XName, object)> metadatas = new ();
 
-            var subset = this.mapper.Map<MessageOfTheDayBridge>(entry);
+            XmlHelpers.BuildXmlMetaDataRecursive(entry, metadatas);
 
-            return subset;
-        }
+            XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
 
-        /// <inheritdoc/>
-        public async Task<Dictionary<Guid, string>> GetMotDSelectionChoicesAsync()
-        {
-            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            XmlHelpers.FillXmlRecursive(element, metadatas, 0, XmlConstants.NamespaceRoot);
 
-            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+            // convert element to string UTF8, ToString() returns UTF16
+            using var memory = new MemoryStream();
+            await element.SaveAsync(memory, default, default).ConfigureAwait(false);
+            string xmlText = Encoding.UTF8.GetString(memory.ToArray());
 
-            var choices = new Dictionary<Guid, string>();
-            foreach (var entry in root.UserMessagesMessageOfTheDay)
+            var change = new CommitRefProxy()
             {
-                choices.Add(entry.idAttribute, entry.FriendlyMessageName);
-            }
+                CommitComment = commitComment,
+                NewFileContent = xmlText,
+                PathToFile = this.pathWorldOfForzaTile,
+                VersionControlChangeType = VersionControlChangeType.Edit
+            };
 
-            return choices;
+            GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(new CommitRefProxy[] { change }, null).ConfigureAwait(false);
+
+            return pushed;
         }
     }
 }

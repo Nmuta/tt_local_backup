@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string ContentImagePath { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string id { get; set; }
+        public Guid id { get; set; }
     }
 
     [Serializable]

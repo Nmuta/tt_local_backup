@@ -284,5 +284,10 @@
         ///     The Steelhead Message of the Day Path in the Steelhead Content repo.
         /// </summary>
         public const string SteelheadMessageOfTheDayPath = "Git:SteelheadMessageOfTheDayPath";
+
+        /// <summary>
+        ///     The Steelhead World of Forza path in the Steelhead Content repo.
+        /// </summary>
+        public const string SteelheadWorldOfForzaPath = "Git:SteelheadWorldOfForzaPath";
     }
 }

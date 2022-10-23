@@ -5,8 +5,6 @@
     /// </summary>
     public enum TileSize
     {
-        Small,
-
         Medium,
 
         Large

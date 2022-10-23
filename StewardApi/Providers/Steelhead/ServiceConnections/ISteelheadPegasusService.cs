@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
-
 using SteelheadLiveOpsContent;
-
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
-
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
@@ -55,29 +52,52 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
-        ///     Edits Message of the Day.
-        /// </summary>
-        Task<GitPush> EditMotDMessagesAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment);
-
-        /// <summary>
         ///     Creates pull request.
         /// </summary>
         Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription);
 
         /// <summary>
+        ///     Edits and saves Message of the Day
+        ///     using deserialized xml entry.
+        /// </summary>
+        Task<GitPush> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment);
+
+        /// <summary>
         ///     Gets current Message of the Day values for the entry
         ///     with matching id.
         /// </summary>
-        Task<MessageOfTheDayBridge> GetMotDCurrentValuesAsync(Guid id);
+        Task<MessageOfTheDayBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id);
 
         /// <summary>
-        ///     Gets Message of the Day selection choices.
+        ///     Gets Message of the Day selections.
         /// </summary>
-        Task<Dictionary<Guid, string>> GetMotDSelectionChoicesAsync();
+        Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync();
 
         /// <summary>
         ///     Gets a Message of the Day entry as an Xelement.
         /// </summary>
-        Task<XElement> GetMotDSelectedElementAsync(Guid id);
+        Task<XElement> GetMessageOfTheDayElementAsync(Guid id);
+
+        /// <summary>
+        ///     Edits and saves World of Forza Tile
+        ///     using deserialized xml entry.
+        /// </summary>
+        Task<GitPush> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment);
+
+        /// <summary>
+        ///     Gets current World of Forza values for the entry
+        ///     with matching id.
+        /// </summary>
+        Task<WofTileBridge> GetWorldOfForzaCurrentValuesAsync(Guid id);
+
+        /// <summary>
+        ///     Gets World of Forza selection choices.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync();
+
+        /// <summary>
+        ///     Gets a World of Forza entry as an Xelement.
+        /// </summary>
+        Task<XElement> GetWorldOfForzaElementAsync(Guid id);
     }
 }
