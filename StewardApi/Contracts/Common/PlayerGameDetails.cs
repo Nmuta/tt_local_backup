@@ -46,5 +46,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the CMS snapshot id.
         /// </summary>
         public string CmsSnapshotId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the license plate used on in-game cars.
+        /// </summary>
+        public string LicensePlate { get; set; }
     }
 }

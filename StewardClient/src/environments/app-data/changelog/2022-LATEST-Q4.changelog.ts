@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '50034e5f-d905-4dd3-ab6e-ae16d3a3fcfd',
+      shortText: 'Display license plate information',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: 'be990d01-585d-45d5-9388-7ead5aad9a99',
       shortText: 'Improve visibility of leaderboard Top Users lines',

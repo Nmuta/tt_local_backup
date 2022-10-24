@@ -11,4 +11,5 @@ export interface PlayerGameDetails {
   cmsSlotIdOverride: string;
   cmsEnvironmentOverride: string;
   cmsSnapshotId: string;
+  licensePlate: string;
 }
