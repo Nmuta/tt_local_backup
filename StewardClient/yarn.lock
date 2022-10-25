@@ -6293,6 +6293,11 @@ jasmine-core@3.3.0, jasmine-core@^3.6.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/jasmine-core/-/jasmine-core-3.3.0.tgz#dea1cdc634bc93c7e0d4ad27185df30fa971b10e"
   integrity sha1-3qHNxjS8k8fg1K0nGF3zD6lxsQ4=
 
+jasmine-core@~3.8.0:
+  version "3.8.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/jasmine-core/-/jasmine-core-3.8.0.tgz#815399aae5aa5d9beeb1262805f981b99ffc9bf0"
+  integrity sha1-gVOZquWqXZvusSYoBfmBuZ/8m/A=
+
 jasmine-spec-reporter@^7.0.0:
   version "7.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/jasmine-spec-reporter/-/jasmine-spec-reporter-7.0.0.tgz#94b939448e63d4e2bd01668142389f20f0a8ea49"
@@ -9485,6 +9490,11 @@ tree-kill@1.2.2, tree-kill@^1.2.2:
   version "1.2.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha1-TKCakJLIi3OnzcXooBtQeweQoMw=
+
+ts-essentials@^9.3.0:
+  version "9.3.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/ts-essentials/-/ts-essentials-9.3.0.tgz#7e639c1a76b1805c3c60d6e1b5178da2e70aea02"
+  integrity sha1-fmOcGnaxgFw8YNbhtReNoucK6gI=
 
 ts-loader@^9.2.6:
   version "9.2.8"
