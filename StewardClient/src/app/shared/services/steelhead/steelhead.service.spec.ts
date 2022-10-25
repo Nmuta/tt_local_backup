@@ -5,8 +5,7 @@ import { SteelheadPlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/
 import { SteelheadPlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/sharedConsoleUsers';
 import { SteelheadPlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/userFlags';
 import { fakeXuid } from '@interceptors/fake-api/utility';
-import { SteelheadGift, SteelheadGroupGift, SteelheadUserFlags } from '@models/steelhead';
-import { LspGroup } from '@models/lsp-group';
+import { SteelheadUserFlags } from '@models/steelhead';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
 import { SteelheadService } from './steelhead.service';
@@ -181,84 +180,6 @@ describe('SteelheadService', () => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
           params,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: postGiftPlayers$', () => {
-    const gift: SteelheadGroupGift = {
-      xuids: [new BigNumber(123456789)],
-      giftReason: 'unit testing gift',
-      inventory: {
-        creditRewards: [],
-        cars: [],
-        vanityItems: [],
-      },
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayers$(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/players`,
-          gift,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: postGiftPlayersUsingBackgroundTask$', () => {
-    const gift: SteelheadGroupGift = {
-      xuids: [new BigNumber(123456789)],
-      giftReason: 'unit testing gift',
-      inventory: {
-        creditRewards: [],
-        cars: [],
-        vanityItems: [],
-      },
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/players/useBackgroundProcessing`,
-          gift,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: postGiftLspGroup$', () => {
-    const lspGroup: LspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
-    const gift: SteelheadGift = {
-      giftReason: 'unit testing gift',
-      inventory: {
-        creditRewards: [],
-        cars: [],
-        vanityItems: [],
-      },
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest with the expected params', done => {
-      service.postGiftLspGroup$(lspGroup, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/groupId(${lspGroup.id})`,
-          gift,
         );
         done();
       });

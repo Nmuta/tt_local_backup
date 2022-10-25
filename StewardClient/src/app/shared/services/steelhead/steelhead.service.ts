@@ -6,23 +6,19 @@ import {
   SteelheadBanResult,
   SteelheadBanSummary,
   SteelheadConsoleDetailsEntry,
-  SteelheadGift,
   SteelheadGiftHistory,
-  SteelheadGroupGift,
   SteelheadPlayerDetails,
   SteelheadPlayerInventory,
   SteelheadPlayerInventoryProfile,
   SteelheadSharedConsoleUser,
 } from '@models/steelhead';
 import { BackgroundJob } from '@models/background-job';
-import { GiftResponse } from '@models/gift-response';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
-import { LspGroup } from '@models/lsp-group';
 import { SteelheadUserFlags } from '@models/steelhead';
 import { ApiService } from '@services/api';
 import { chain } from 'lodash';
@@ -217,35 +213,6 @@ export class SteelheadService {
             .value(),
         ),
       );
-  }
-
-  /** Gift players inventory items. */
-  public postGiftPlayers$(gift: SteelheadGroupGift): Observable<GiftResponse<BigNumber>[]> {
-    return this.apiService.postRequest$<GiftResponse<BigNumber>[]>(
-      `${this.basePath}/gifting/players`,
-      gift,
-    );
-  }
-
-  /** Gift players inventory items using a background task. */
-  public postGiftPlayersUsingBackgroundTask$(
-    gift: SteelheadGroupGift,
-  ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/gifting/players/useBackgroundProcessing`,
-      gift,
-    );
-  }
-
-  /** Gift lsp group inventory items. */
-  public postGiftLspGroup$(
-    lspGroup: LspGroup,
-    gift: SteelheadGift,
-  ): Observable<GiftResponse<BigNumber>> {
-    return this.apiService.postRequest$<GiftResponse<BigNumber>>(
-      `${this.basePath}/gifting/groupId(${lspGroup.id})`,
-      gift,
-    );
   }
 
   /** Gets player auctions by XUID. */

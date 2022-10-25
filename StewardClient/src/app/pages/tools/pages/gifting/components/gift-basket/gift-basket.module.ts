@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { LocalizationModule } from '@components/localization/localization.module';
 
 /** The gift basket module. */
 @NgModule({
@@ -59,6 +60,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     HelpModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    LocalizationModule,
   ],
   exports: [
     WoodstockGiftBasketComponent,

@@ -127,19 +127,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
+        public async Task<IActionResult> GiftLiveryToUserGroup(string liveryId, int groupId, [FromBody] LocalizedMessageExpirableGift gift)
         {
+            if (!Guid.TryParse(liveryId, out var liveryIdAsGuid))
+            {
+                throw new BadRequestStewardException($"Livery ID could not be parsed as GUID. (liveryId: {liveryId})");
+            }
+
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
             groupId.ShouldNotBeNull(nameof(groupId));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryId).ConfigureAwait(true);
+            var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryIdAsGuid).ConfigureAwait(true);
             var mappedLivery = this.mapper.Map<UgcItem>(livery);
             if (livery == null)
             {
-                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
+                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryIdAsGuid}");
             }
 
             var response = await this.playerInventoryProvider.SendCarLiveryAsync(this.Services, gift, groupId, mappedLivery, requesterObjectId).ConfigureAwait(true);

@@ -87,14 +87,13 @@ describe('SelectLocalizedStringComponent', () => {
     });
 
     describe('with MatChipListChange value', () => {
-      it('should set selectedLanguageLocalizedString and displayLanguageChips', () => {
+      it('should set selectedLanguageLocalizedString', () => {
         //Run the method with valid value
         component.onLanguageChipSelect({
           value: { languageCode: SupportedLocalizationLanguageCodes.en_US },
           source: null,
         });
         expect(component.selectedLanguageLocalizedString).toEqual(testLocalizedString);
-        expect(component.displayLanguageChips).toEqual(true);
       });
     });
   });

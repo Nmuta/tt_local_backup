@@ -11,6 +11,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
     public interface IGiftingManagementService
     {
+        Task<GiftingManagementService.AdminSendCarGiftV2Output> AdminSendCarGiftV2(ulong recipientXuid, int carId, Guid bodyLocStringId, Guid titleLocStringId);
+
         /// <summary>
         ///     Sends car livery to a player.
         /// </summary>

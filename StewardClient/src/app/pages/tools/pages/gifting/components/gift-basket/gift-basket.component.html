@@ -2,7 +2,7 @@
   <mat-card-header class="sf-header">
     <mat-card-title>Gift Basket</mat-card-title>
     <mat-card-subtitle>
-      {{ title }}
+      {{ title | humanize }}
       <span *ngIf="hasGameSettings">(Game Settings: {{ selectedGameSettingsId || 'None' }})</span>
     </mat-card-subtitle>
     <div class="sf-spacer"></div>
@@ -165,6 +165,20 @@
         <b>Notice: </b>You are allowed to exceed the typical currency maximum of 500,000,000.
       </p>
       <form [formGroup]="sendGiftForm" (ngSubmit)="sendGiftBasket()" class="sf-wrapper">
+        <ng-container *ngIf="allowSettingLocalizedMessage">
+          <select-localized-string
+            label="Select localized title message"
+            [service]="selectLocalizedStringService"
+            [formControl]="formControls.localizedTitleMessageInfo"
+            [disableLanguagePreview]="true"
+          ></select-localized-string>
+          <select-localized-string
+            label="Select localized body message"
+            [service]="selectLocalizedStringService"
+            [formControl]="formControls.localizedBodyMessageInfo"
+            [disableLanguagePreview]="true"
+          ></select-localized-string>
+        </ng-container>
         <div class="sf-horizontal">
           <ng-container *ngIf="allowSettingExpireDate">
             <mat-checkbox

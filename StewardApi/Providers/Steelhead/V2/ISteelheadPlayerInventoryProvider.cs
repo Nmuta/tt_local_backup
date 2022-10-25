@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         /// </summary>
         Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(
             SteelheadProxyBundle service,
-            GroupGift groupGift,
+            LocalizedMessageExpirableGroupGift groupGift,
             UgcItem livery,
             string requesterObjectId);
 
@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         /// </summary>
         Task<GiftResponse<int>> SendCarLiveryAsync(
             SteelheadProxyBundle service,
-            Gift gift,
+            LocalizedMessageExpirableGift gift,
             int groupId,
             UgcItem livery,
             string requesterObjectId);

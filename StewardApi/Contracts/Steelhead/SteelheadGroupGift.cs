@@ -6,7 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// <summary>
     ///     Represents a Steelhead group gift.
     /// </summary>
-    public class SteelheadGroupGift : GroupGift
+    public class SteelheadGroupGift : LocalizedMessageExpirableGroupGift
     {
         /// <summary>
         ///     Gets or sets the gift inventory.
