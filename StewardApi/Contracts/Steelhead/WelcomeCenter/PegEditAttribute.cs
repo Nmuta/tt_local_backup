@@ -16,10 +16,19 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether an xml entry's value
-        ///     should ignore being interpreted as xml character markup.
-        ///     <![CDATA[]]>
+        ///     Gets or sets a value indicating whether
+        ///     the node's value should be
+        ///     wrapped in a CDATA tag to ignore XML markup.
+        ///     e.g. treat the value as a verbatim string.
         /// </summary>
         public bool AddCdataMarkupToEntry { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the element's
+        ///     value has an anonymous property name. e.g. In the following example,
+        ///     the value 'green' is backed by a property in the deserialized model named
+        ///     (for example), Text. <c><![CDATA[<color>green<color/>]]></c>.
+        /// </summary>
+        public bool AnonymousField { get; set; }
     }
 }

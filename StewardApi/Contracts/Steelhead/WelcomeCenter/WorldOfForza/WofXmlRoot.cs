@@ -34,6 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [PegEdit]
         public string Size { get; set; }
 
+        [PegEdit]
         public WorldOfForzaWoFTileImageTextTimer Timer { get; set; }
 
         public WorldOfForzaWoFTileImageTextDisplayConditions DisplayConditions { get; set; }
@@ -54,16 +55,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         public string TelemetryTag { get; set; }
 
-        [PegEdit]
         public LocalizableText PopupTitle { get; set; }
 
-        [PegEdit]
         public LocalizableText PopupHeader { get; set; }
 
-        [PegEdit]
         public LocalizableText PopupSubHeader { get; set; }
 
-        [PegEdit]
         public LocalizableText PopupDescription { get; set; }
 
         [PegEdit]
@@ -78,19 +75,26 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WorldOfForzaWoFTileImageTextTimer
     {
+        // This type appears to be unused in the Pegasus xml.
         public object StartTextOverride { get; set; }
 
+        // This type appears to be unused in the Pegasus xml.
         public object EndTextOverride { get; set; }
 
+        [PegEdit]
         public string TimerType { get; set; }
 
+        // This type appears to be unused in the Pegasus Xml.
         public WorldOfForzaWoFTileImageTextTimerTimeDisplayFrom TimeDisplayFrom { get; set; }
 
+        // This type appears to be unused in the Pegasus Xml.
         public WorldOfForzaWoFTileImageTextTimerTimeDisplayTo TimeDisplayTo { get; set; }
 
+        [PegEdit]
         [XmlElement("CustomRange")]
-        public WorldOfForzaWoFTileImageTextTimerCustomRange[] CustomRange { get; set; }
+        public WorldOfForzaWoFTileImageTextTimerCustomRange CustomRange { get; set; }
 
+        // ?
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
 
@@ -98,6 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string type { get; set; }
     }
 
+    // This type appears to be unused in the Pegasus Xml.
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -107,6 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    // This type appears to be unused in the Pegasus Xml.
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -121,24 +127,31 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WorldOfForzaWoFTileImageTextTimerCustomRange
     {
-        public DateTime From { get; set; }
+        [XmlElement("From")]
+        [PegEdit]
+        public WorldOfForzaWoFTileImageTextTimerCustomRangePoint[] From { get; set; }
 
-        public WorldOfForzaWoFTileImageTextTimerCustomRangeTO To { get; set; }
-
-        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string when { get; set; }
+        [PegEdit]
+        [XmlElement("To")]
+        public WorldOfForzaWoFTileImageTextTimerCustomRangePoint[] To { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileImageTextTimerCustomRangeTO
+    public partial class WorldOfForzaWoFTileImageTextTimerCustomRangePoint
     {
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
 
+        // Check if this property can be DateTime.
+        // TODO investigate XmlText, could replace AnonymousField
+        [PegEdit(AnonymousField = true)]
         [XmlText]
-        public string[] Text { get; set; }
+        public string Text { get; set; }
+
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public string when { get; set; }
     }
 
     [Serializable]

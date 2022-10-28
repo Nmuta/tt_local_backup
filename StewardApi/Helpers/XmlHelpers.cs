@@ -1,88 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
     /// <summary>
-    ///     Generic xml operations.
+    ///     Provides generic xml operations.
     /// </summary>
     public static class XmlHelpers
     {
-        /// <summary>
-        ///     Recursively builds a list of metadata from
-        ///     deserialized xml object.
-        /// </summary>
-        public static void BuildXmlMetaDataRecursive(object target, List<(XName, object)> metadatas)
-        {
-            foreach (PropertyInfo property in target.GetType().GetProperties())
-            {
-                if (property.GetCustomAttribute<PegEditAttribute>() != null && property.PropertyType.IsClass && property.PropertyType != typeof(string))
-                {
-                    object value = property.GetValue(target);
-                    if (value == null)
-                    {
-                        // safety measure in case someone marks an xml object property with [PegEdit],
-                        // but that property doesn't have a value because the bridge did not have a value
-                        // for it when the bridge was mapped to the xml object. So skip the current property
-                        // and go to the next one. This avoids a null reference on `target` on the next recursive call.
-                        continue;
-                    }
-
-                    XNamespace ns = property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
-                    XName nn = ns + property.Name;
-                    metadatas.Add((nn, null));
-
-                    BuildXmlMetaDataRecursive(value, metadatas);
-                }
-                else if (property.GetCustomAttribute<PegEditAttribute>() != null)
-                {
-                    XNamespace ns = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
-
-                    string name = property.GetCustomAttribute<XmlElementAttribute>()?.ElementName;
-
-                    XName nn = string.IsNullOrEmpty(name) ? ns + property.Name : ns + name;
-
-                    metadatas.Add((nn, property.GetValue(target)));
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Recursively assigns property values to xml.
-        /// </summary>
-        public static int FillXmlRecursive(XElement el, List<(XName xname, object value)> metadatas, int index, XNamespace currentNamespace)
-        {
-            while (index < metadatas.Count)
-            {
-                (XName xname, object value) = metadatas[index];
-
-                if (xname.Namespace != currentNamespace)
-                {
-                    return index;
-                }
-
-                if (value != null && (xname.Namespace == XmlConstants.NamespaceRoot || xname.Namespace == XmlConstants.NamespaceElement))
-                {
-                    el.Descendants(xname).First().Value = value.ToString();
-                    index++;
-                }
-                else if (value == null && xname.Namespace == XmlConstants.NamespaceRoot)
-                {
-                    index = FillXmlRecursive(el.Descendants(xname).First(), metadatas, index + 1, metadatas[index + 1].xname.Namespace);
-                }
-            }
-
-            return index + 1;
-        }
-
         /// <summary>
         ///     Serializes object into an xml string and writes to file.
         /// </summary>

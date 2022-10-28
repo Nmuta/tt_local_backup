@@ -258,8 +258,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
             var doc = XDocument.Parse(item.Content);
-            var selectedElement = doc.Root.Elements(XmlConstants.NamespaceRoot + "UserMessages.MessageOfTheDay")
-                .Where(e => e.Attribute(XmlConstants.NamespaceElement + "id")?.Value == id.ToString())
+            var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "UserMessages.MessageOfTheDay")
+                .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
 
             selectedElement.ShouldNotBeNull(nameof(selectedElement));
@@ -301,13 +301,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             UserMessagesMessageOfTheDay entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
 
-            List<(XName, object)> metadatas = new ();
-
-            XmlHelpers.BuildXmlMetaDataRecursive(entry, metadatas);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
 
             XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
-            XmlHelpers.FillXmlRecursive(element, metadatas, 0, XmlConstants.NamespaceRoot);
+            WelcomeCenterHelpers.FillXml(element, tree);
 
             // convert element to string UTF8, ToString() returns UTF16
             using var memory = new MemoryStream();
@@ -362,8 +360,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
             var doc = XDocument.Parse(item.Content);
-            var selectedElement = doc.Root.Elements(XmlConstants.NamespaceRoot + "WorldOfForza.WoFTileImageText")
-                .Where(e => e.Attribute(XmlConstants.NamespaceElement + "id")?.Value == id.ToString())
+            var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "WorldOfForza.WoFTileImageText")
+                .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
 
             selectedElement.ShouldNotBeNull(nameof(selectedElement));
@@ -376,13 +374,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             WorldOfForzaWoFTileImageText entry = this.mapper.Map<WorldOfForzaWoFTileImageText>(wofTileBridge);
 
-            List<(XName, object)> metadatas = new ();
-
-            XmlHelpers.BuildXmlMetaDataRecursive(entry, metadatas);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
 
             XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
 
-            XmlHelpers.FillXmlRecursive(element, metadatas, 0, XmlConstants.NamespaceRoot);
+            WelcomeCenterHelpers.FillXml(element, tree);
 
             // convert element to string UTF8, ToString() returns UTF16
             using var memory = new MemoryStream();

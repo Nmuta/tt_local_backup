@@ -370,6 +370,17 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForAllOtherMembers(act => act.Ignore());
             this.CreateMap<LocalizableText, LocTextBridge>()
                 .ReverseMap();
+            this.CreateMap<WorldOfForzaWoFTileImageTextTimer, TimerBridge>()
+                .ForMember(dest => dest.TimerType, act => act.MapFrom(src => src.TimerType))
+                .ForMember(dest => dest.TimerCustomRange, act => act.MapFrom(src => src.CustomRange))
+                .ReverseMap();
+            this.CreateMap<WorldOfForzaWoFTileImageTextTimerCustomRange, TimerCustomRange>()
+                .ForMember(dest => dest.FromPoints, act => act.MapFrom(src => src.From))
+                .ForMember(dest => dest.ToPoints, act => act.MapFrom(src => src.To))
+                .ReverseMap();
+            this.CreateMap<WorldOfForzaWoFTileImageTextTimerCustomRangePoint, TimerCustomRangePoint>()
+                .ForMember(dest => dest.Text, act => act.MapFrom(src => src.Text))
+                .ReverseMap();
         }
     }
 }

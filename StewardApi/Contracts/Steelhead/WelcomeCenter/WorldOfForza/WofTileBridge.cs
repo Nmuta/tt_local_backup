@@ -53,6 +53,6 @@
         /// <summary>
         ///     Gets or sets the timer.
         /// </summary>
-        //public WorldOfForzaWoFTileImageTextTimer Timer { get; set; }
+        public TimerBridge Timer { get; set; }
     }
 }
