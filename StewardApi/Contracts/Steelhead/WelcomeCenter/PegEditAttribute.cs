@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         ///     Gets or sets a value indicating whether the element's
         ///     value has an anonymous property name. e.g. In the following example,
         ///     the value 'green' is backed by a property in the deserialized model named
-        ///     (for example), Text. <c><![CDATA[<color>green<color/>]]></c>.
+        ///     (e.g., Text). <code><![CDATA[<color>green<color/>]]></code>
         /// </summary>
         public bool AnonymousField { get; set; }
     }

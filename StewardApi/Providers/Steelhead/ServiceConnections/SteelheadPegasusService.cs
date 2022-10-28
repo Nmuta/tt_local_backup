@@ -299,7 +299,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<GitPush> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment)
         {
-            UserMessagesMessageOfTheDay entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
+            var entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
 
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
 
@@ -372,7 +372,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<GitPush> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment)
         {
-            WorldOfForzaWoFTileImageText entry = this.mapper.Map<WorldOfForzaWoFTileImageText>(wofTileBridge);
+            var entry = this.mapper.Map<WorldOfForzaWoFTileImageText>(wofTileBridge);
 
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
 

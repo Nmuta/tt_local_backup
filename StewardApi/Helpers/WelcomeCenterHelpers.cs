@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     object value = property.GetValue(target);
                     if (value == null)
                     {
-                        // safety measure in case someone marks a deserialized model property with [PegEdit],
+                        // safety measure in case someone marks a deserialized model class type property with [PegEdit],
                         // but that property doesn't have a value because the bridge did not have a value
                         // for it when the bridge was mapped to the xml object. So skip the current property
                         // and go to the next one. This avoids a null reference on `target` on the next recursive call.
@@ -92,12 +92,21 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 else if (property.GetCustomAttribute<PegEditAttribute>() != null)
                 {
                     // Create the node with metadata.
-                    XNamespace xnamespace = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
-                    string name = property.GetCustomAttribute<XmlElementAttribute>()?.ElementName;
-                    XName path = string.IsNullOrEmpty(name) ? xnamespace + property.Name : xnamespace + name;
+                    XNamespace xnamespace = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace
+                        ?? property.GetCustomAttribute<XmlAttributeAttribute>()?.Namespace
+                        ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
+
+                    string name = property.GetCustomAttribute<XmlElementAttribute>()?.ElementName
+                        ?? property.GetCustomAttribute<XmlAttributeAttribute>()?.AttributeName;
+
+                    XName path = string.IsNullOrEmpty(name)
+                        ? xnamespace + property.Name
+                        : xnamespace + name;
 
                     bool isCdata = property.GetCustomAttribute<PegEditAttribute>()?.AddCdataMarkupToEntry ?? false;
                     bool isAnony = property.GetCustomAttribute<PegEditAttribute>()?.AnonymousField ?? false;
+                    bool isAttri = property.GetCustomAttribute<XmlAttributeAttribute>() != null;
+
                     object value = property.GetValue(target);
 
                     root.Children.Add(new Node()
@@ -106,7 +115,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         Path = path,
                         Parent = root,
                         IsCdata = isCdata,
-                        IsAnonymousField = isAnony
+                        IsAnonymousField = isAnony,
+                        IsAttributeField = isAttri,
                     });
                 }
             }
@@ -142,6 +152,10 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     {
                         SetElementValue(el, child);
                     }
+                    else if (child.IsAttributeField)
+                    {
+                        el.SetAttributeValue(child.Path, child.Value);
+                    }
                     else
                     {
                         FillXml(el.Descendants(child.Path).First(), child);
@@ -159,6 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             if (node.Value == null)
             {
                 el.Value = string.Empty;
+                el.Add(new XElement(NullElementXname));
             }
             else if (node.IsCdata)
             {

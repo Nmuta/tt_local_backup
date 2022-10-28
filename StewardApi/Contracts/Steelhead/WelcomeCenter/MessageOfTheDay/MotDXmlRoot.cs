@@ -107,6 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
+        [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }
@@ -124,6 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
+        [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }
@@ -141,6 +143,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
+        [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }

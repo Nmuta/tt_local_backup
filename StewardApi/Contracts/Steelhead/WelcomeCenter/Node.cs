@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 
         /// <summary>
         /// Gets or sets the node's index in
-        /// its descendant list e.g. <code>XElement.Descendants(path)[index]</code>
+        /// its descendant list (e.g., <c>XElement.Descendants(path)[index]</c>).
         /// </summary>
         public int Index { get; set; }
 
@@ -44,23 +44,25 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         ///     Gets or sets a value indicating whether
         ///     the node's <see cref="Value"/> should be
         ///     wrapped in a CDATA tag to ignore XML markup.
-        ///     e.g. treat the value as a verbatim string.
+        ///     (i.e., treat the value as a verbatim string.)
+        ///     See <see cref="PegEditAttribute.AddCdataMarkupToEntry"/>.
         /// </summary>
         public bool IsCdata { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether
-        ///     this node's <see cref="Value"/> does not
-        ///     have a corresponding path.
-        ///     Example <![CDATA[<color>green<color/>]]>,
-        ///     green's path is {{examplenamespace}Text}, with Text
-        ///     being the property containing green. The property Text
-        ///     comes from the deserialized model.
+        ///     Gets or sets a value indicating whether the node's value is
+        ///     backed by an anonymous property in the deserialized model.
+        ///     See <see cref="PegEditAttribute.AnonymousField"/>.
         /// </summary>
         public bool IsAnonymousField { get; set; }
 
         /// <summary>
-        ///     The <see cref="Path"/> or "head".
+        ///     Gets or sets a value indicating whether this node is an attribute.
+        /// </summary>
+        public bool IsAttributeField { get; set; }
+
+        /// <summary>
+        ///     The name of othe node.
         /// </summary>
         public override string ToString()
         {
