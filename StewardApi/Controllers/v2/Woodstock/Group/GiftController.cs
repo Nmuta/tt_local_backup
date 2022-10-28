@@ -126,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
                 gift,
                 requesterObjectId,
                 allowedToExceedCreditLimit,
-                endpoint).ConfigureAwait(true);
+                this.ServicesWithProdLiveStewardCms).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -152,7 +152,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
             var liveries = await this.LookupLiveries(gift.LiveryIds).ConfigureAwait(true);
 
             // TODO: Move livery gifting logic out of the provider
-            var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(gift.Target, groupId, livery, requesterObjectId, endpoint)).ToList();
+            var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(gift.Target, groupId, livery, requesterObjectId, this.ServicesWithProdLiveStewardCms)).ToList();
             await Task.WhenAll(jobs).ConfigureAwait(false);
 
             var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -39,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             WoodstockGift gift,
             string requesterObjectId,
             bool useAdminCreditLimit,
-            string endpoint);
+            WoodstockProxyBundle proxyService);
 
         /// <summary>
         ///     Updates player inventories.
@@ -48,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             WoodstockGroupGift groupGift,
             string requesterObjectId,
             bool useAdminCreditLimit,
-            string endpoint);
+            WoodstockProxyBundle proxyService);
 
         /// <summary>
         ///     Updates group inventories.
@@ -58,16 +59,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             WoodstockGift gift,
             string requesterObjectId,
             bool useAdminCreditLimit,
-            string endpoint);
+            WoodstockProxyBundle proxyService);
 
         /// <summary>
         ///    Sends car livery to a player xuid.
         /// </summary>
-        Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(ExpirableGroupGift groupGift, UgcItem livery, string requesterObjectId, string endpoint);
+        Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(ExpirableGroupGift groupGift, UgcItem livery, string requesterObjectId, WoodstockProxyBundle proxyService);
 
         /// <summary>
         ///    Sends car livery to a user group.
         /// </summary>
-        Task<GiftResponse<int>> SendCarLiveryAsync(ExpirableGift gift, int groupId, UgcItem livery, string requesterObjectId, string endpoint);
+        Task<GiftResponse<int>> SendCarLiveryAsync(ExpirableGift gift, int groupId, UgcItem livery, string requesterObjectId, WoodstockProxyBundle proxyService);
     }
 }

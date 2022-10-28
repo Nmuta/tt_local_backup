@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -138,12 +139,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             WoodstockGift gift,
             string requesterObjectId,
             bool useAdminCreditLimit,
-            string endpoint)
+            WoodstockProxyBundle proxyService)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            proxyService.ShouldNotBeNull(nameof(proxyService));
 
             var giftResponse = new GiftResponse<ulong>
             {
@@ -164,14 +165,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     : 0;
                 var hasExpiration = gift.ExpireTimeSpanInDays > 0;
 
-                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    await this.woodstockService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId, hasExpiration, gift.ExpireTimeSpanInDays, endpoint)
+                    await proxyService.GiftingManagementService.AdminSendItemGiftV3(xuid, inventoryItemType.ToString(), itemId, quantity, hasExpiration, gift.ExpireTimeSpanInDays)
                         .ConfigureAwait(false);
                 }
 
                 giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-                await this.UpdateBackstagePassesAsync(xuid, backstagePassDelta, endpoint).ConfigureAwait(false);
+                await this.UpdateBackstagePassesAsync(xuid, backstagePassDelta, proxyService).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
@@ -179,7 +180,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     requesterObjectId,
                     GiftIdentityAntecedent.Xuid,
                     gift,
-                    endpoint).ConfigureAwait(false);
+                    proxyService.Endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -194,13 +195,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             WoodstockGroupGift groupGift,
             string requesterObjectId,
             bool useAdminCreditLimit,
-            string endpoint)
+            WoodstockProxyBundle proxyService)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            proxyService.ShouldNotBeNull(nameof(proxyService));
 
             var response = new List<GiftResponse<ulong>>();
             var gift = this.mapper.Map<WoodstockGift>(groupGift);
@@ -211,7 +212,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     gift,
                     requesterObjectId,
                     useAdminCreditLimit,
-                    endpoint).ConfigureAwait(false));
+                    proxyService).ConfigureAwait(false));
             }
 
             return response;
@@ -223,13 +224,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             WoodstockGift gift,
             string requesterObjectId,
             bool useAdminCreditLimit,
-            string endpoint)
+            WoodstockProxyBundle proxyService)
         {
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            proxyService.ShouldNotBeNull(nameof(proxyService));
 
             var giftResponse = new GiftResponse<int>
             {
@@ -245,15 +246,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
                 var hasExpiration = gift.ExpireTimeSpanInDays > 0;
 
-                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    await this.woodstockService.AdminSendItemGroupGiftAsync(
+                    await proxyService.GiftingManagementService.AdminSendItemGroupGiftV2(
                         groupId,
-                        inventoryItemType,
+                        inventoryItemType.ToString(),
                         itemId,
                         hasExpiration,
-                        gift.ExpireTimeSpanInDays,
-                        endpoint).ConfigureAwait(false);
+                        gift.ExpireTimeSpanInDays).ConfigureAwait(false);
                 }
 
                 giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -264,7 +264,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     requesterObjectId,
                     GiftIdentityAntecedent.LspGroupId,
                     gift,
-                    endpoint).ConfigureAwait(false);
+                    proxyService.Endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -275,15 +275,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc/>
-        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(ExpirableGroupGift groupGift, UgcItem livery, string requesterObjectId, string endpoint)
+        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(ExpirableGroupGift groupGift, UgcItem livery, string requesterObjectId, WoodstockProxyBundle proxyService)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            proxyService.ShouldNotBeNull(nameof(proxyService));
 
             // TODO: Log gift to gift history
             var xuids = groupGift.Xuids.ToArray();
             var hasExpiration = groupGift.ExpireTimeSpanInDays > 0;
-            var result = await this.woodstockService.SendCarLiveryAsync(xuids, livery.Id, hasExpiration, groupGift.ExpireTimeSpanInDays, endpoint).ConfigureAwait(false);
+            var result = await proxyService.GiftingManagementService.AdminSendLiveryGift(xuids, xuids.Length, livery.Id, hasExpiration, groupGift.ExpireTimeSpanInDays).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -310,7 +310,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         DeviceType = DeviceType.All.ToString(),
                         BatchReferenceId = notificationBatchId.ToString(),
                         Action = NotificationAction.Send.ToString(),
-                        Endpoint = endpoint,
+                        Endpoint = proxyService.Endpoint,
                         CreatedDateUtc = DateTime.UtcNow,
                         ExpireDateUtc = createdDate.AddYears(10),
                         Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
@@ -329,10 +329,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> SendCarLiveryAsync(ExpirableGift gift, int groupId, UgcItem livery, string requesterObjectId, string endpoint)
+        public async Task<GiftResponse<int>> SendCarLiveryAsync(ExpirableGift gift, int groupId, UgcItem livery, string requesterObjectId, WoodstockProxyBundle proxyService)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            proxyService.ShouldNotBeNull(nameof(proxyService));
 
             // TODO: Log gift to gift history
             var result = new GiftResponse<int>()
@@ -347,7 +347,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             try
             {
                 // TODO: Log gift to gift history
-                var response = await this.woodstockService.SendCarLiveryAsync(groupId, livery.Id, hasExpiration, gift.ExpireTimeSpanInDays, endpoint).ConfigureAwait(false);
+                var response = await proxyService.GiftingManagementService.AdminSendGroupLiveryGift(groupId, livery.Id, hasExpiration, gift.ExpireTimeSpanInDays).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)
@@ -375,7 +375,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     BatchReferenceId = string.Empty,
                     DeviceType = DeviceType.All.ToString(),
                     Action = NotificationAction.Send.ToString(),
-                    Endpoint = endpoint,
+                    Endpoint = proxyService.Endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
                     ExpireDateUtc = createdDate.AddYears(10),
                     Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
@@ -393,7 +393,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         private async Task<IList<StewardError>> SendGiftsAsync(
-            Func<InventoryItemType, int, Task> serviceCall,
+            Func<InventoryItemType, int, uint, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)
         {
@@ -404,14 +404,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 {
                     try
                     {
-                        for (var i = 0; i < item.Quantity; i++)
-                        {
-                            await serviceCall(key, item.Id).ConfigureAwait(false);
-                        }
+                        await serviceCall(key, item.Id, (uint)item.Quantity).ConfigureAwait(false);
                     }
                     catch
                     {
-                        var error = new FailedToSendStewardError($"Failed to send item of type: {key} with ID: {item.Id}");
+                        var error = new FailedToSendStewardError($"Failed to gift item. (type: {key}) (itemId: {item.Id}) (quantity: {item.Quantity})");
                         item.Error = error;
                         errors.Add(error);
                     }
@@ -435,7 +432,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     try
                     {
                         remainingCurrencyToSend -= creditsToSend;
-                        await serviceCall(key, creditsToSend).ConfigureAwait(false);
+                        await serviceCall(key, 0, (uint)creditsToSend).ConfigureAwait(false);
                     }
                     catch
                     {
@@ -454,20 +451,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             return errors;
         }
 
-        private async Task UpdateBackstagePassesAsync(ulong xuid, int balanceDelta, string endpoint)
+        private async Task UpdateBackstagePassesAsync(ulong xuid, int balanceDelta, WoodstockProxyBundle proxyService)
         {
             if (balanceDelta <= 0)
             {
                 return;
             }
 
-            var status = await this.woodstockService.GetTokenBalanceAsync(xuid, endpoint).ConfigureAwait(false);
+            var status = await proxyService.RareCarShopService.AdminGetTokenBalance(xuid).ConfigureAwait(false);
             var currentBalance = status.transactions.OfflineBalance;
             var newBalance = (uint)Math.Max(0, currentBalance + balanceDelta);
 
-            await this.woodstockService.SetTokenBalanceAsync(xuid, newBalance, endpoint).ConfigureAwait(false);
+            await proxyService.RareCarShopService.AdminSetBalance(xuid, newBalance).ConfigureAwait(false);
 
-            this.refreshableCacheStore.ClearItem(WoodstockCacheKey.MakeBackstagePassKey(endpoint, xuid));
+            this.refreshableCacheStore.ClearItem(WoodstockCacheKey.MakeBackstagePassKey(proxyService.Endpoint, xuid));
         }
 
         private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(

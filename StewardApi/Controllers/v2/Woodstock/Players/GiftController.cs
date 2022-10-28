@@ -153,7 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                         groupGift,
                         requesterObjectId,
                         allowedToExceedCreditLimit,
-                        endpoint).ConfigureAwait(true);
+                        this.ServicesWithProdLiveStewardCms).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
@@ -211,7 +211,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 // Do not throw.
                 try
                 {
-                    var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint)).ToList();
+                    var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, this.ServicesWithProdLiveStewardCms)).ToList();
                     await Task.WhenAll(jobs).ConfigureAwait(false);
 
                     var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();
