@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
@@ -117,34 +119,28 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static void FillXml(XElement el, Node root)
         {
-            var name = root.Path;
-            var value = root.Value;
             var children = root.Children;
 
             if (children.Count > 0)
             {
                 foreach (var child in children)
                 {
-                    if (child.IsArray)
-                    {
-                        var descend = el.Descendants(child.Path).First();
-                        foreach (var c in child.Children)
-                        {
-                            var d2 = descend.Descendants(c.Path).ElementAt(c.Index);
-                            FillXml(d2, c);
-                        }
-
-                        continue;
-                    }
-
                     if (IsNullElement(el))
                     {
                         var ret = HandleNullElement(root, child);
                         el.FirstNode.ReplaceWith(ret);
                     }
+                    else if (child.IsArray)
+                    {
+                        var descend = el.Descendants(child.Path).First();
+                        foreach (var c in child.Children)
+                        {
+                            FillXml(descend.Descendants(c.Path).ElementAt(c.Index), c);
+                        }
+                    }
                     else if (child.Children.Count == 0 && child.IsAnonymousField)
                     {
-                        el.Value = "ZZZZZZZZZZZZZZZZZZ";// SetElementValue(el, child);
+                        SetElementValue(el, child);
                     }
                     else
                     {
@@ -166,55 +162,55 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
             else if (node.IsCdata)
             {
-                // TODO support cdata wrap value in cdata
-                el.Value = new XCData(node.Value.ToString()).Value;
-                XmlCDataSection cdata = new XmlDocument().CreateCDataSection(node.Value.ToString());
-                el.Value = "BBBBBBB";// cdata.Value;
+                // TODO wrap value in cdata
+                el.Value = node.Value.ToString();
             }
             else
             {
-                el.Value = "AAAAAAAAAA";// node.value.ToString();
+                el.Value = node.Value.ToString();
             }
         }
 
         private static bool IsNullElement(XElement el)
         {
-            XName dCereal;
+            XName xname;
 
             if (el.FirstNode == null)
             {
-                dCereal = XElement.Parse(el.ToString()).Name;
+                // example: <From x:when="#bcfeaturedrace" />
+                xname = XElement.Parse(el.ToString()).Name;
             }
             else
             {
-                // TODO: handle better
                 try
                 {
-                    dCereal = XElement.Parse(el.FirstNode.ToString()).Name;
+                    xname = XElement.Parse(el.FirstNode.ToString()).Name;
                 }
                 catch (XmlException)
                 {
+                    // el.FirstNode.ToString() returned the
+                    // anonymous property's value, not the outerxml.
                     return false;
                 }
             }
 
-            if (dCereal == NullElementXname)
-            {
-                return true;
-            }
-
-            return false;
+            return xname == NullElementXname;
         }
 
-        private static XElement HandleNullElement(Node root, Node node)
+        private static XElement HandleNullElement(Node root, Node child)
         {
-            if (node.Value == null)
+            if (child.Value == null)
             {
                 return new XElement(NullElementXname);
             }
+            else if (child.Children.Count > 0)
+            {
+                throw new WelcomeCenterXmlException(
+                    $"Generating nested elements from a null element is not supported: root: {root.Path}, child: {child.Path}");
+            }
             else
             {
-                return new XElement(root.Path, node.Value);
+                return new XElement(root.Path, child.Value);
             }
         }
     }
