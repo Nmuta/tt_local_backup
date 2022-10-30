@@ -35,6 +35,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         /// <summary>
         ///     Gets or sets the date.
         /// </summary>
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Serializes object into an xml string and writes to file.
         /// </summary>
-        /// <typeparam name="T">The type to serialize to.</typeparam>
+        /// <typeparam name="T">The type to serialize.</typeparam>
         public static async Task SerializeAsync<T>(T objectToSerialize, string filename)
         {
             var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
@@ -24,12 +24,24 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Serializes object into an xml string and writes to stream.
         /// </summary>
-        /// <typeparam name="T">The type to serialize to.</typeparam>
+        /// <typeparam name="T">The type to serialize.</typeparam>
         public static async Task SerializeAsync<T>(T objectToSerialize, Stream stream)
         {
             var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
             using var writer = XmlWriter.Create(stream, xmlWriterSettings);
             await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(writer, objectToSerialize)).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Serializes T obj into an xml string and returns it.
+        /// </summary>
+        /// <typeparam name="T">The type to serialize.</typeparam>
+        public static async Task<string> SerializeAsync<T>(T obj, XmlSerializerNamespaces namespaces = null)
+        {
+            using var stringwriter = new StringWriter();
+            using var xmlWriter = XmlWriter.Create(stringwriter, new XmlWriterSettings { Indent = true, Encoding = System.Text.Encoding.UTF8 });
+            await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(xmlWriter, obj, namespaces)).ConfigureAwait(false);
+            return stringwriter.ToString();
         }
 
         /// <summary>
