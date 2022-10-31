@@ -276,14 +276,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<MessageOfTheDayBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id)
+        public async Task<MotdBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id)
         {
-            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
-            var entry = root.Entries.Where(motdXml => motdXml.idAttribute == id).First();
+            MotdRoot root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
+            MotdEntry entry = root.Entries.Where(motdXml => motdXml.idAttribute == id).First();
 
-            var subset = this.mapper.Map<MessageOfTheDayBridge>(entry);
+            var subset = this.mapper.Map<MotdBridge>(entry);
 
             return subset;
         }
@@ -293,7 +293,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+            var root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in root.Entries)
@@ -305,9 +305,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id, string commitComment)
         {
-            var entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
+            var entry = this.mapper.Map<MotdEntry>(messageOfTheDayBridge);
 
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
 
@@ -315,11 +315,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            // stitching together
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
-            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
-
-            string newXml = await root.StitchAsync(element, root, id).ConfigureAwait(false);
+            var root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
+            string newXml = await root.StitchXmlAsync(element, root, id).ConfigureAwait(false);
 
             var change = new CommitRefProxy()
             {
@@ -333,14 +331,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<WofTileBridge> GetWorldOfForzaCurrentValuesAsync(Guid id)
+        public async Task<WofBridge> GetWorldOfForzaCurrentValuesAsync(Guid id)
         {
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            var root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
-            WorldOfForzaWoFTileImageText entry = root.Entries.Where(wof => wof.id == id).First();
+            WofRoot root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
+            WofEntry entry = root.Entries.Where(wof => wof.id == id).First();
 
-            var subset = this.mapper.Map<WofTileBridge>(entry);
+            var subset = this.mapper.Map<WofBridge>(entry);
 
             return subset;
         }
@@ -350,10 +348,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            WofXmlRoot root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
+            WofRoot root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
-            foreach (WorldOfForzaWoFTileImageText entry in root.Entries)
+            foreach (WofEntry entry in root.Entries)
             {
                 choices.Add(entry.id, entry.FriendlyName);
             }
@@ -377,9 +375,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofBridge wofTileBridge, Guid id, string commitComment)
         {
-            var entry = this.mapper.Map<WorldOfForzaWoFTileImageText>(wofTileBridge);
+            var entry = this.mapper.Map<WofEntry>(wofTileBridge);
 
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
 
@@ -387,11 +385,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            // stitching together
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
-            var root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
-
-            string newXml = await root.StitchAsync(element, root, id).ConfigureAwait(false);
+            var root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
+            string newXml = await root.StitchXmlAsync(element, root, id).ConfigureAwait(false);
 
             var change = new CommitRefProxy()
             {

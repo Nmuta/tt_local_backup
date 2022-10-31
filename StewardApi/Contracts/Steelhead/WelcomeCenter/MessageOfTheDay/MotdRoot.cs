@@ -17,17 +17,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     [XmlRoot("content-set", Namespace = "scribble:x", IsNullable = false)]
-    public partial class MotDXmlRoot : XmlRootBase<MotDXmlRoot, UserMessagesMessageOfTheDay>
+    public partial class MotdRoot : XmlRootBase<MotdRoot, MotdEntry>
     {
         [XmlElement("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content")]
-        public override List<UserMessagesMessageOfTheDay> Entries { get; set; }
+        public override List<MotdEntry> Entries { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     [XmlRoot("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content", IsNullable = false)]
-    public partial class UserMessagesMessageOfTheDay : IUniqueId
+    public partial class MotdEntry : IUniqueId
     {
         public object ID { get; set; }
 
@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         public byte Priority { get; set; }
 
-        public UserMessagesMessageOfTheDayUserGroups UserGroups { get; set; }
+        public MotdUserGroups UserGroups { get; set; }
 
         public object Cooldowns { get; set; }
 
@@ -51,16 +51,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         public object DisplayConditionDataList { get; set; }
 
         [PegEdit]
-        public UserMessagesMessageOfTheDayTitleHeader TitleHeader { get; set; }
+        public LocTextMotd TitleHeader { get; set; }
 
         [PegEdit]
         public string Date { get; set; }
 
         [PegEdit]
-        public UserMessagesMessageOfTheDayContentHeader ContentHeader { get; set; }
+        public LocTextMotdNoDesc ContentHeader { get; set; }
 
         [PegEdit]
-        public UserMessagesMessageOfTheDayContentBody ContentBody { get; set; }
+        public LocTextMotdNoDesc ContentBody { get; set; }
 
         [PegEdit]
         public string ContentImagePath { get; set; }
@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class UserMessagesMessageOfTheDayUserGroups
+    public partial class MotdUserGroups
     {
         [XmlElement(Namespace = "scribble:x")]
         public item item { get; set; }
@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class UserMessagesMessageOfTheDayTitleHeader
+    public partial class LocTextMotd
     {
         [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
@@ -119,25 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class UserMessagesMessageOfTheDayContentHeader
-    {
-        [PegEdit]
-        [XmlElement(Namespace = "scribble:x")]
-        public string @base { get; set; }
-
-        [PegEdit]
-        [XmlElement(Namespace = "scribble:x")]
-        public string skiploc { get; set; }
-
-        [PegEdit]
-        [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locdef { get; set; }
-    }
-
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class UserMessagesMessageOfTheDayContentBody
+    public partial class LocTextMotdNoDesc
     {
         [PegEdit]
         [XmlElement(Namespace = "scribble:x")]

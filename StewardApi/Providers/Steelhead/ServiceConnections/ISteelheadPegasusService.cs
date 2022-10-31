@@ -66,13 +66,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Edits and saves Message of the Day
         ///     using deserialized xml entry.
         /// </summary>
-        Task<CommitRefProxy> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id, string commitComment);
 
         /// <summary>
         ///     Gets current Message of the Day values for the entry
         ///     with matching id.
         /// </summary>
-        Task<MessageOfTheDayBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id);
+        Task<MotdBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id);
 
         /// <summary>
         ///     Gets Message of the Day selection options.
@@ -88,13 +88,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Edits and saves World of Forza Tile
         ///     using deserialized xml entry.
         /// </summary>
-        Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofBridge wofTileBridge, Guid id, string commitComment);
 
         /// <summary>
         ///     Gets current World of Forza values for the entry
         ///     with matching id.
         /// </summary>
-        Task<WofTileBridge> GetWorldOfForzaCurrentValuesAsync(Guid id);
+        Task<WofBridge> GetWorldOfForzaCurrentValuesAsync(Guid id);
 
         /// <summary>
         ///     Gets World of Forza selection options.

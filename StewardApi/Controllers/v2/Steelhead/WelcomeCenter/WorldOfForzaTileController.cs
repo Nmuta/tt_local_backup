@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     with matching id.
         /// </summary>
         [HttpGet("{id}")]
-        [SwaggerResponse(200, type: typeof(WofTileBridge))]
+        [SwaggerResponse(200, type: typeof(WofBridge))]
         public async Task<IActionResult> GetWorldOfForzaCurrentValuesAsync(string id)
         {
             if (!Guid.TryParse(id, out var parsedId))
@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
             }
 
-            WofTileBridge woftb = await this.steelheadPegasusService.GetWorldOfForzaCurrentValuesAsync(parsedId).ConfigureAwait(true);
+            WofBridge woftb = await this.steelheadPegasusService.GetWorldOfForzaCurrentValuesAsync(parsedId).ConfigureAwait(true);
 
             return this.Ok(woftb);
         }
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         /// </summary>
         [HttpPost("{id}")]
         [SwaggerResponse(200, type: typeof(GitPullRequest))]
-        public async Task<IActionResult> EditAndSubmitWorldOfForza(string id, [FromBody] WofTileBridge wofTileBridge)
+        public async Task<IActionResult> EditAndSubmitWorldOfForza(string id, [FromBody] WofBridge wofTileBridge)
         {
             if (!Guid.TryParse(id, out var parsedId))
             {
@@ -93,7 +93,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
             }
 
             var commitComment = "StewardApi: Edit World of Forza Tile";
-
             CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(false);

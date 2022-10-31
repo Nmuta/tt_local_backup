@@ -17,17 +17,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     [XmlRoot("content-set", Namespace = "scribble:x", IsNullable = false)]
-    public partial class WofXmlRoot : XmlRootBase<WofXmlRoot, WorldOfForzaWoFTileImageText>
+    public partial class WofRoot : XmlRootBase<WofRoot, WofEntry>
     {
         [XmlElement("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content")]
-        public override List<WorldOfForzaWoFTileImageText> Entries { get; set; }
+        public override List<WofEntry> Entries { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     [XmlRoot("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content", IsNullable = false)]
-    public partial class WorldOfForzaWoFTileImageText : IUniqueId
+    public partial class WofEntry : IUniqueId
     {
         [PegEdit]
         public string FriendlyName { get; set; }
@@ -36,33 +36,33 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string Size { get; set; }
 
         [PegEdit]
-        public WorldOfForzaWoFTileImageTextTimer Timer { get; set; }
+        public WofTimer Timer { get; set; }
 
-        public WorldOfForzaWoFTileImageTextDisplayConditions DisplayConditions { get; set; }
+        public WofDisplayConditions DisplayConditions { get; set; }
 
         public object Cooldowns { get; set; }
 
         public object CMSTileID { get; set; }
 
         [PegEdit]
-        public LocalizableText TileTitle { get; set; }
+        public LocTextWof TileTitle { get; set; }
 
-        public LocalizableText TileType { get; set; }
+        public LocTextWof TileType { get; set; }
 
-        public LocalizableText TileDescription { get; set; }
+        public LocTextWof TileDescription { get; set; }
 
         [PegEdit]
         public string TileImagePath { get; set; }
 
         public string TelemetryTag { get; set; }
 
-        public LocalizableText PopupTitle { get; set; }
+        public LocTextWof PopupTitle { get; set; }
 
-        public LocalizableText PopupHeader { get; set; }
+        public LocTextWof PopupHeader { get; set; }
 
-        public LocalizableText PopupSubHeader { get; set; }
+        public LocTextWof PopupSubHeader { get; set; }
 
-        public LocalizableText PopupDescription { get; set; }
+        public LocTextWof PopupDescription { get; set; }
 
         [PegEdit]
         public string ContentImagePath { get; set; }
@@ -77,28 +77,27 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileImageTextTimer
+    public partial class WofTimer
     {
-        // This type appears to be unused in the Pegasus xml.
+        // This prop appears to be unused in the Pegasus xml.
         public object StartTextOverride { get; set; }
 
-        // This type appears to be unused in the Pegasus xml.
+        // This prop appears to be unused in the Pegasus xml.
         public object EndTextOverride { get; set; }
 
         [PegEdit]
         public string TimerType { get; set; }
 
-        // This type appears to be unused in the Pegasus Xml.
-        public WorldOfForzaWoFTileImageTextTimerTimeDisplayFrom TimeDisplayFrom { get; set; }
+        // This prop appears to be unused in the Pegasus Xml.
+        public WofTimeDisplayFrom TimeDisplayFrom { get; set; }
 
-        // This type appears to be unused in the Pegasus Xml.
-        public WorldOfForzaWoFTileImageTextTimerTimeDisplayTo TimeDisplayTo { get; set; }
+        // This prop appears to be unused in the Pegasus Xml.
+        public WofTimeDisplayTo TimeDisplayTo { get; set; }
 
         [PegEdit]
         [XmlElement("CustomRange")]
-        public WorldOfForzaWoFTileImageTextTimerCustomRange CustomRange { get; set; }
+        public WofTimerCustomRange CustomRange { get; set; }
 
-        // ?
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
 
@@ -106,21 +105,21 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string type { get; set; }
     }
 
-    // This type appears to be unused in the Pegasus Xml.
+    // This prop appears to be unused in the Pegasus Xml.
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileImageTextTimerTimeDisplayFrom
+    public partial class WofTimeDisplayFrom
     {
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
     }
 
-    // This type appears to be unused in the Pegasus Xml.
+    // This prop appears to be unused in the Pegasus Xml.
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileImageTextTimerTimeDisplayTo
+    public partial class WofTimeDisplayTo
     {
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
@@ -129,27 +128,26 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileImageTextTimerCustomRange
+    public partial class WofTimerCustomRange
     {
         [XmlElement("From")]
         [PegEdit]
-        public WorldOfForzaWoFTileImageTextTimerCustomRangePoint[] From { get; set; }
+        public WofRangePoint[] From { get; set; }
 
         [PegEdit]
         [XmlElement("To")]
-        public WorldOfForzaWoFTileImageTextTimerCustomRangePoint[] To { get; set; }
+        public WofRangePoint[] To { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileImageTextTimerCustomRangePoint
+    public partial class WofRangePoint
     {
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
 
-        // Check if this property can be DateTime.
-        // TODO investigate XmlText, could replace AnonymousField
+        // TODO Check if this property can be DateTime.
         [PegEdit(AnonymousField = true)]
         [XmlText]
         public string Text { get; set; }
@@ -161,7 +159,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileImageTextDisplayConditions
+    public partial class WofDisplayConditions
     {
         [XmlElement(Namespace = "scribble:x")]
         public item item { get; set; }
@@ -180,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class LocalizableText
+    public partial class LocTextWof
     {
         [PegEdit(AddCdataMarkupToEntry = true)]
         [XmlElement(Namespace = "scribble:x")]

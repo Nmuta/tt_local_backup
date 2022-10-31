@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         /// <summary>
         ///     Stitches modified xml entry to root xml at the correct location.
         /// </summary>
-        public async Task<string> StitchAsync(XElement element, TRoot root, Guid searchId)
+        public async Task<string> StitchXmlAsync(XElement element, TRoot root, Guid searchId)
         {
             string elementStr = element.ToString();
 

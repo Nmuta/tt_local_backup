@@ -13,7 +13,7 @@
     /// <summary>
     ///     World of Forza Tile Bridge.
     /// </summary>
-    public class WofTileBridge
+    public class WofBridge
     {
         /// <summary>
         ///     Gets or sets the friendly name.

@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     /// <summary>
     ///     Message of the Day response object.
     /// </summary>
-    public class MessageOfTheDayBridge
+    public class MotdBridge
     {
         /// <summary>
         ///     Gets or sets the friendly message name.

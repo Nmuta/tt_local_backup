@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-
 using AutoMapper;
-
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
-
 using SteelheadLiveOpsContent;
-
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
@@ -18,12 +14,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using Turn10.Services.LiveOps.FM8.Generated;
-
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
-
 using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
-
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
@@ -340,25 +333,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
             this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
             // Welcome Center
-            this.CreateMap<UserMessagesMessageOfTheDay, MessageOfTheDayBridge>()
+            this.CreateMap<MotdEntry, MotdBridge>()
                 .ForMember(dest => dest.FriendlyMessageName, act => act.MapFrom(src => src.FriendlyMessageName))
                 .ForMember(dest => dest.ContentImagePath, act => act.MapFrom(src => src.ContentImagePath))
                 .ForMember(dest => dest.Date, act => act.MapFrom(src => src.Date))
                 .ForMember(dest => dest.ContentBody, act => act.MapFrom(src => src.ContentBody))
                 .ReverseMap();
-            this.CreateMap<UserMessagesMessageOfTheDayContentBody, LocTextBridge>()
-                .ForMember(dest => dest.Base, act => act.MapFrom(src => src.@base))
-                .ForMember(dest => dest.SkipLoc, act => act.MapFrom(src => src.skiploc))
+            this.CreateMap<LocTextMotdNoDesc, LocTextBridge>()
                 .ForMember(dest => dest.Description, act => act.Ignore())
                 .ReverseMap();
-            this.CreateMap<UserMessagesMessageOfTheDayContentHeader, LocTextBridge>()
-                .ForMember(dest => dest.Base, act => act.MapFrom(src => src.@base))
-                .ForMember(dest => dest.SkipLoc, act => act.MapFrom(src => src.skiploc))
-                .ForMember(dest => dest.Description, act => act.Ignore())
+            this.CreateMap<LocTextMotd, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<UserMessagesMessageOfTheDayTitleHeader, LocTextBridge>()
-                .ReverseMap();
-            this.CreateMap<WorldOfForzaWoFTileImageText, WofTileBridge>()
+            this.CreateMap<WofEntry, WofBridge>()
                 .ForMember(dest => dest.FriendlyName, act => act.MapFrom(src => src.FriendlyName))
                 .ForMember(dest => dest.Size, act => act.MapFrom(src => src.Size))
                 .ForMember(dest => dest.TileTitle, act => act.MapFrom(src => src.TileTitle))
@@ -368,17 +354,17 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TileImagePath, act => act.MapFrom(src => src.TileImagePath))
                 .ReverseMap()
                 .ForAllOtherMembers(act => act.Ignore());
-            this.CreateMap<LocalizableText, LocTextBridge>()
+            this.CreateMap<LocTextWof, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WorldOfForzaWoFTileImageTextTimer, TimerBridge>()
+            this.CreateMap<WofTimer, TimerBridge>()
                 .ForMember(dest => dest.TimerType, act => act.MapFrom(src => src.TimerType))
                 .ForMember(dest => dest.TimerCustomRange, act => act.MapFrom(src => src.CustomRange))
                 .ReverseMap();
-            this.CreateMap<WorldOfForzaWoFTileImageTextTimerCustomRange, TimerCustomRange>()
+            this.CreateMap<WofTimerCustomRange, TimerCustomRange>()
                 .ForMember(dest => dest.FromPoints, act => act.MapFrom(src => src.From))
                 .ForMember(dest => dest.ToPoints, act => act.MapFrom(src => src.To))
                 .ReverseMap();
-            this.CreateMap<WorldOfForzaWoFTileImageTextTimerCustomRangePoint, TimerCustomRangePoint>()
+            this.CreateMap<WofRangePoint, TimerCustomRangePoint>()
                 .ForMember(dest => dest.Text, act => act.MapFrom(src => src.Text))
                 .ReverseMap();
         }
