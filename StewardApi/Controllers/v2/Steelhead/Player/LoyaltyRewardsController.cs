@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -103,6 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
+        [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromQuery] string externalProfileId, [FromBody] string[] gameTitles)
         {
             //xuid.IsValidXuid();

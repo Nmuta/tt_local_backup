@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -94,6 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
+        [Authorize(Policy = UserAttribute.AddProfileNote)]
         public async Task<IActionResult> AddProfileNoteAsync(
             ulong xuid,
             [FromBody] ProfileNote profileNote)

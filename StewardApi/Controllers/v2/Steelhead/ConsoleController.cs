@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -42,6 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
+        [Authorize(Policy = UserAttribute.BanConsole)]
         public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, [FromBody] bool isBanned)
         {
             try

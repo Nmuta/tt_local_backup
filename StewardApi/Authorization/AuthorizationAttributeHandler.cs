@@ -71,9 +71,9 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             var user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
 
             var authorized = user.AuthorizationAttributes().Where(authAttr =>
-                    EmptyOrEquals(authAttr.Environment, environment) &&
-                    EmptyOrEquals(authAttr.Title, title) &&
-                    EmptyOrEquals(authAttr.Attribute, requirement.Attribute));
+                    Equals(authAttr.Environment, environment) &&
+                    Equals(authAttr.Title, title) &&
+                    Equals(authAttr.Attribute, requirement.Attribute));
 
             if (authorized.Any())
             {
@@ -85,9 +85,9 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             context.Fail();
             return Task.CompletedTask;
 
-            bool EmptyOrEquals(string str, string attr)
+            bool Equals(string str, string attr)
             {
-                return string.IsNullOrEmpty(str) || str.Equals(attr, StringComparison.OrdinalIgnoreCase);
+                return str.Equals(attr, StringComparison.OrdinalIgnoreCase);
             }
 
             void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)

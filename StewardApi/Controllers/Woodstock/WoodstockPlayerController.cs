@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -58,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.DeleteAll, StewardSubject.PlayerMessages)]
+        [Authorize(Policy = UserAttribute.MessagePlayer)]
         public async Task<IActionResult> DeleteAllNotifications(ulong xuid)
         {
             xuid.EnsureValidXuid();

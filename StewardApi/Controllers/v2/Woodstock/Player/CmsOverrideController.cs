@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -66,6 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.CmsOverride)]
+        [Authorize(Policy = UserAttribute.OverrideCms)]
         public async Task<IActionResult> SetPlayerCmsOverride(
             ulong xuid,
             [FromBody] ForzaCMSOverride cmsOverride)
@@ -94,6 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.CmsOverride)]
+        [Authorize(Policy = UserAttribute.OverrideCms)]
         public async Task<IActionResult> DeletePlayerCmsOverride(ulong xuid)
         {
             throw new NotImplementedException("LSP endpoint to delete player CMS override is not ready");

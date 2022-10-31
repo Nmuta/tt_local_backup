@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SteelheadLiveOpsContent;
@@ -71,6 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [HttpPost]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Guid))]
+        [Authorize(Policy = UserAttribute.AddLocalizedString)]
         public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)
         {
             if (!Enum.IsDefined(typeof(LocCategory), data.Category))

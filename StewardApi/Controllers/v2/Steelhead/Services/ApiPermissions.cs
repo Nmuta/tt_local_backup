@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -66,6 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.ServiceApis, ActionAreaLogTags.Update)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.ApiPermissions)]
+        [Authorize(Policy = UserAttribute.ServicesFeature)]
         public async Task<IActionResult> SetServicesApiPermissions([FromBody] ForzaLiveOpsPermissionsUpdateParameters[] parametersList)
         {
             try
