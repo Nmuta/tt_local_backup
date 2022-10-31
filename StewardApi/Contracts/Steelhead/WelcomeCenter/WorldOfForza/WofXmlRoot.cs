@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
@@ -16,17 +17,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     [XmlRoot("content-set", Namespace = "scribble:x", IsNullable = false)]
-    public partial class WofXmlRoot
+    public partial class WofXmlRoot : XmlRootBase<WofXmlRoot, WorldOfForzaWoFTileImageText>
     {
         [XmlElement("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content")]
-        public List<WorldOfForzaWoFTileImageText> WorldOfForzaWoFTileImageText { get; set; }
+        public override List<WorldOfForzaWoFTileImageText> Entries { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     [XmlRoot("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content", IsNullable = false)]
-    public partial class WorldOfForzaWoFTileImageText
+    public partial class WorldOfForzaWoFTileImageText : IUniqueId
     {
         [PegEdit]
         public string FriendlyName { get; set; }
@@ -68,6 +69,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid id { get; set; }
+
+        [XmlIgnore]
+        public Guid UniqueId => this.id;
     }
 
     [Serializable]

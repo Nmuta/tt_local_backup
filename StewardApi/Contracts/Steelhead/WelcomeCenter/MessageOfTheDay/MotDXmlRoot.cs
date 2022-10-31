@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay
 {
@@ -16,17 +17,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     [XmlRoot("content-set", Namespace = "scribble:x", IsNullable = false)]
-    public partial class MotDXmlRoot
+    public partial class MotDXmlRoot : XmlRootBase<MotDXmlRoot, UserMessagesMessageOfTheDay>
     {
         [XmlElement("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content")]
-        public List<UserMessagesMessageOfTheDay> UserMessagesMessageOfTheDay { get; set; }
+        public override List<UserMessagesMessageOfTheDay> Entries { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     [XmlRoot("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content", IsNullable = false)]
-    public partial class UserMessagesMessageOfTheDay
+    public partial class UserMessagesMessageOfTheDay : IUniqueId
     {
         public object ID { get; set; }
 
@@ -69,6 +70,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         [XmlAttribute(AttributeName = "id", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid idAttribute { get; set; }
+
+        [XmlIgnore]
+        public Guid UniqueId => this.idAttribute;
     }
 
     [Serializable]
@@ -107,7 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        //[PegEdit]
+        [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }
@@ -125,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        //[PegEdit]
+        [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }
@@ -143,7 +147,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        //[PegEdit]
+        [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
     }

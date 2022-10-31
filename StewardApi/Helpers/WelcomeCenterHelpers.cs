@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
@@ -18,6 +17,11 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// </summary>
     public static class WelcomeCenterHelpers
     {
+        /// <summary>
+        ///     The element namespace prefix.
+        /// </summary>
+        public const string NamespaceElementPrefix = "x";
+
         /// <summary>
         ///     The root namespace.
         /// </summary>

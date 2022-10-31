@@ -281,7 +281,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
             var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
-            var entry = root.UserMessagesMessageOfTheDay.Where(motdXml => motdXml.idAttribute == id).First();
+            var entry = root.Entries.Where(motdXml => motdXml.idAttribute == id).First();
 
             var subset = this.mapper.Map<MessageOfTheDayBridge>(entry);
 
@@ -296,7 +296,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
-            foreach (var entry in root.UserMessagesMessageOfTheDay)
+            foreach (var entry in root.Entries)
             {
                 choices.Add(entry.idAttribute, entry.FriendlyMessageName);
             }
@@ -315,15 +315,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            // convert element to string UTF8, ToString() returns UTF16
-            using var memory = new MemoryStream();
-            await element.SaveAsync(memory, default, default).ConfigureAwait(false);
-            string xmlText = Encoding.UTF8.GetString(memory.ToArray());
+            // stitching together
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            var root = await XmlHelpers.DeserializeAsync<MotDXmlRoot>(item.Content).ConfigureAwait(false);
+
+            string newXml = await root.StitchAsync(element, root, id).ConfigureAwait(false);
 
             var change = new CommitRefProxy()
             {
                 CommitComment = commitComment,
-                NewFileContent = xmlText,
+                NewFileContent = newXml,
                 PathToFile = this.pathMessageOfTheDay,
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
@@ -337,7 +338,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
             var root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
-            WorldOfForzaWoFTileImageText entry = root.WorldOfForzaWoFTileImageText.Where(wof => wof.id == id).First();
+            WorldOfForzaWoFTileImageText entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.Map<WofTileBridge>(entry);
 
@@ -352,7 +353,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             WofXmlRoot root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
-            foreach (WorldOfForzaWoFTileImageText entry in root.WorldOfForzaWoFTileImageText)
+            foreach (WorldOfForzaWoFTileImageText entry in root.Entries)
             {
                 choices.Add(entry.id, entry.FriendlyName);
             }
@@ -386,15 +387,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            // convert element to string UTF8, ToString() returns UTF16
-            using var memory = new MemoryStream();
-            await element.SaveAsync(memory, default, default).ConfigureAwait(false);
-            string xmlText = Encoding.UTF8.GetString(memory.ToArray());
+            // stitching together
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
+            var root = await XmlHelpers.DeserializeAsync<WofXmlRoot>(item.Content).ConfigureAwait(false);
+
+            string newXml = await root.StitchAsync(element, root, id).ConfigureAwait(false);
 
             var change = new CommitRefProxy()
             {
                 CommitComment = commitComment,
-                NewFileContent = xmlText,
+                NewFileContent = newXml,
                 PathToFile = this.pathWorldOfForzaTile,
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
