@@ -79,7 +79,7 @@ namespace StewardGitApi
             TeamProjectReference project = await GetProjectAsync(context).ConfigureAwait(false);
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
 
-            // get a filename we know exists
+            // get a filepath we know exists
             List<GitItem> gitItems = await gitClient.GetItemsAsync(
                 repo.Id,
                 scopePath: path,
@@ -249,7 +249,7 @@ namespace StewardGitApi
                 new GitPush()
                 {
                     RefUpdates = new GitRefUpdate[] { newBranch },
-                    Commits = gitChanges, // GitCommitRef[]
+                    Commits = gitChanges,
                 }, repo.Id).ConfigureAwait(false);
 
             return push;

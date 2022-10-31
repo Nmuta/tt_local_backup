@@ -247,7 +247,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
         {
-            GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);
+            var pushed = await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);
 
             return pushed;
         }
@@ -255,17 +255,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
         {
-            var pr = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
+            var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
 
-            return pr;
+            return pullrequest;
         }
 
         /// <inheritdoc/>
         public async Task<XElement> GetMessageOfTheDayElementAsync(Guid id)
         {
-            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            var doc = XDocument.Parse(item.Content);
+            XDocument doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "UserMessages.MessageOfTheDay")
                 .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
@@ -281,7 +281,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
             MotdRoot root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
-            MotdEntry entry = root.Entries.Where(motdXml => motdXml.idAttribute == id).First();
+            MotdEntry entry = root.Entries.Where(motd => motd.idAttribute == id).First();
 
             var subset = this.mapper.Map<MotdBridge>(entry);
 
@@ -291,9 +291,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync()
         {
-            var item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
-
-            var root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            MotdRoot root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in root.Entries)
@@ -316,7 +315,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             WelcomeCenterHelpers.FillXml(element, tree);
 
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
-            var root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
+            MotdRoot root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
             string newXml = await root.StitchXmlAsync(element, root, id).ConfigureAwait(false);
 
             var change = new CommitRefProxy()
@@ -347,7 +346,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync()
         {
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
-
             WofRoot root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
@@ -362,9 +360,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<XElement> GetWorldOfForzaElementAsync(Guid id)
         {
-            var item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            var doc = XDocument.Parse(item.Content);
+            XDocument doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "WorldOfForza.WoFTileImageText")
                 .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
@@ -386,7 +384,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             WelcomeCenterHelpers.FillXml(element, tree);
 
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
-            var root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
+            WofRoot root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
             string newXml = await root.StitchXmlAsync(element, root, id).ConfigureAwait(false);
 
             var change = new CommitRefProxy()

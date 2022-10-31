@@ -18,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
     ///     The base for deserialized xml models.
     /// </summary>
     /// <typeparam name="TRoot">Type of the xml root.</typeparam>
-    /// <typeparam name="TEntry">Type of entry of each root object.</typeparam>
+    /// <typeparam name="TEntry">Type of each entry of the xml root.</typeparam>
     public abstract class XmlRootBase<TRoot, TEntry>
         where TEntry : IUniqueId
     {

@@ -18,7 +18,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -76,9 +75,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
             }
 
-            var motd = await this.steelheadPegasusService.GetMessageOfTheDayCurrentValuesAsync(parsedId).ConfigureAwait(true);
+            var motdbridge = await this.steelheadPegasusService.GetMessageOfTheDayCurrentValuesAsync(parsedId).ConfigureAwait(true);
 
-            return this.Ok(motd);
+            return this.Ok(motdbridge);
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
             var commitComment = "StewardApi: Edits Message of the Day";
             CommitRefProxy change = await this.steelheadPegasusService.EditMessageOfTheDayAsync(messageOfTheDayBridge, parsedId, commitComment).ConfigureAwait(true);
 
-            GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(false);
+            GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
 
             var user = this.User.UserClaims();
             var pullRequestTitle = $"StewardApi/{user.EmailAddress} - Edit Welcome Center: Message of the Day";

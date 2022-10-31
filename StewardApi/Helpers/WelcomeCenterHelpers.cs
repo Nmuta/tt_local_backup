@@ -51,11 +51,10 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     object value = property.GetValue(target);
                     if (value == null)
                     {
-                        // safety measure in case someone marks a deserialized model class type property with [PegEdit],
+                        // Safety measure in case someone marks a class-type propeprty in the deserialized model with [PegEdit],
                         // but that property doesn't have a value because the bridge did not have a value
                         // for it when the bridge was mapped to the xml object. So skip the current property
                         // and go to the next one. This avoids a null reference on `target` on the next recursive call.
-                        // NO nulls allowed as a bridge value (make empty str instead)
                         continue;
                     }
 
@@ -141,8 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 {
                     if (IsNullElement(el))
                     {
-                        var ret = HandleNullElement(root, child);
-                        el.FirstNode.ReplaceWith(ret);
+                        el.FirstNode.ReplaceWith(HandleNullElement(root, child));
                     }
                     else if (child.IsArray)
                     {
@@ -158,7 +156,13 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     }
                     else if (child.IsAttributeField)
                     {
-                        el.SetAttributeValue(child.Path, child.Value);
+                        if (child.Value != null)
+                        {
+                            // null check ignores the non-existant loc-ref or loc-def
+                            // always remove loc-def, replace with loc-ref
+                            el.SetAttributeValue(child.Path, null);
+                            el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
+                        }
                     }
                     else
                     {
@@ -181,8 +185,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
             else if (node.IsCdata)
             {
-                // TODO wrap value in cdata
-                el.Value = node.Value.ToString();
+                var newElement = XElement.Parse($"<{el.Name.LocalName}><![CDATA[{node.Value}]]></{el.Name.LocalName}>");
+                newElement.Name = node.Path;
+                el.ReplaceWith(newElement);
             }
             else
             {

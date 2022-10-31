@@ -21,8 +21,13 @@
         public string Description { get; set; }
 
         /// <summary>
-        ///     Gets or sets the localized text GUID.
+        ///     Gets or sets the localized text definition.
         /// </summary>
         public string Locdef { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the localized text reference.
+        /// </summary>
+        public string Locref { get; set; }
     }
 }

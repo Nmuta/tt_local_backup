@@ -16,10 +16,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether
-        ///     the node's value should be
-        ///     wrapped in a CDATA tag to ignore XML markup.
-        ///     e.g. treat the value as a verbatim string.
+        ///     Gets or sets a value indicating whether the node's
+        ///     value should be wrapped in a CDATA tag to ignore XML markup
+        ///     (i.e., treat the value as a verbatim string).
         /// </summary>
         public bool AddCdataMarkupToEntry { get; set; }
 

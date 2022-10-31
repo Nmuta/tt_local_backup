@@ -62,7 +62,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [PegEdit]
         public LocTextMotdNoDesc ContentBody { get; set; }
 
-        [PegEdit]
         public string ContentImagePath { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
@@ -99,21 +98,22 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class LocTextMotd
     {
-        [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
         public string @base { get; set; }
 
-        [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
         public string description { get; set; }
 
-        [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
         [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
+
+        [PegEdit]
+        [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public string locref { get; set; }
     }
 
     [Serializable]
@@ -121,16 +121,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class LocTextMotdNoDesc
     {
-        [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
         public string @base { get; set; }
 
-        [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
         [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
+
+        [PegEdit]
+        [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public string locref { get; set; }
     }
 }

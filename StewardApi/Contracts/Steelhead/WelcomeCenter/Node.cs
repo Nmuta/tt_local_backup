@@ -4,7 +4,7 @@ using System.Xml.Linq;
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
     /// <summary>
-    ///     Node for Welcome Center's xml trees.
+    ///     Node to facilitate processing Welcome Center's xml trees.
     /// </summary>
     public class Node
     {
@@ -29,22 +29,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public object Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the node's index in
-        /// its descendant list (e.g., <c>XElement.Descendants(path)[index]</c>).
+        /// Gets or sets the node's index in its descendant list
+        /// (e.g., <c>XElement.Descendants(path)[index]</c>).
         /// </summary>
         public int Index { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether
-        ///     the node is an array.
+        ///     Gets or sets a value indicating whether the node is an array.
         /// </summary>
         public bool IsArray { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether
-        ///     the node's <see cref="Value"/> should be
-        ///     wrapped in a CDATA tag to ignore XML markup.
-        ///     (i.e., treat the value as a verbatim string.)
+        ///     Gets or sets a value indicating whether the node's
+        ///     <see cref="Value"/> should be wrapped in a CDATA tag
+        ///     to ignore XML markup (i.e., treat the value as a verbatim string).
         ///     See <see cref="PegEditAttribute.AddCdataMarkupToEntry"/>.
         /// </summary>
         public bool IsCdata { get; set; }

@@ -32,7 +32,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [PegEdit]
         public string FriendlyName { get; set; }
 
-        [PegEdit]
         public string Size { get; set; }
 
         [PegEdit]
@@ -88,10 +87,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [PegEdit]
         public string TimerType { get; set; }
 
-        // This prop appears to be unused in the Pegasus Xml.
         public WofTimeDisplayFrom TimeDisplayFrom { get; set; }
 
-        // This prop appears to be unused in the Pegasus Xml.
         public WofTimeDisplayTo TimeDisplayTo { get; set; }
 
         [PegEdit]
@@ -180,20 +177,21 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class LocTextWof
     {
-        [PegEdit(AddCdataMarkupToEntry = true)]
         [XmlElement(Namespace = "scribble:x")]
         public string @base { get; set; }
 
-        [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
         public string description { get; set; }
 
-        [PegEdit]
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
         [PegEdit]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
+
+        [PegEdit]
+        [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public string locref { get; set; }
     }
 }
