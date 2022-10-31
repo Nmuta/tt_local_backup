@@ -9,9 +9,14 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import { of } from 'rxjs';
 import { GetSteelheadMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
-import { SteelheadService } from '@services/steelhead';
 import { SetSteelheadGiftBasket } from '@tools-app/pages/gifting/steelhead/state/steelhead-gifting.state.actions';
 import faker from '@faker-js/faker';
+import { createMockSteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service.mock';
+import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockSteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/gift/steelhead-player-gift.service.mock';
+import { createMockSteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service.mock';
+import { SteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/gift/steelhead-players-gift.service';
+import { SteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service';
 
 describe('SteelheadGiftBasketComponent', () => {
   let fixture: ComponentFixture<SteelheadGiftBasketComponent>;
@@ -19,7 +24,8 @@ describe('SteelheadGiftBasketComponent', () => {
 
   const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let mockSteelheadService: SteelheadService;
+  let mockSteelheadPlayersGiftService: SteelheadPlayersGiftService;
+  let mockSteelheadGroupGiftService: SteelheadGroupGiftService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -28,15 +34,21 @@ describe('SteelheadGiftBasketComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot(),
         ReactiveFormsModule,
+        PipesModule,
       ],
       declarations: [SteelheadGiftBasketComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
+      providers: [
+        createMockSteelheadLocalizationService(),
+        createMockSteelheadPlayersGiftService(),
+        createMockSteelheadGroupGiftService(),
+      ],
     }).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);
-    mockSteelheadService = injector.inject(SteelheadService);
+    mockSteelheadPlayersGiftService = injector.inject(SteelheadPlayersGiftService);
+    mockSteelheadGroupGiftService = injector.inject(SteelheadGroupGiftService);
 
     fixture = TestBed.createComponent(SteelheadGiftBasketComponent);
     component = fixture.debugElement.componentInstance;
@@ -135,7 +147,7 @@ describe('SteelheadGiftBasketComponent', () => {
 
   describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockSteelheadService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
+      mockSteelheadPlayersGiftService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
@@ -143,26 +155,35 @@ describe('SteelheadGiftBasketComponent', () => {
 
     it('should call postGiftPlayersUsingBackgroundTask', () => {
       component.sendGiftToPlayers$({
+        titleMessageId: faker.datatype.uuid(),
+        bodyMessageId: faker.datatype.uuid(),
+        expireTimeSpanInDays: new BigNumber(faker.datatype.number()),
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockSteelheadService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
+      expect(
+        mockSteelheadPlayersGiftService.postGiftPlayersUsingBackgroundTask$,
+      ).toHaveBeenCalled();
     });
   });
 
   describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockSteelheadService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
+      mockSteelheadGroupGiftService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
     it('should call sendGiftToLspGroup$', () => {
+      component.lspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
       component.sendGiftToLspGroup$({
+        titleMessageId: faker.datatype.uuid(),
+        bodyMessageId: faker.datatype.uuid(),
+        expireTimeSpanInDays: new BigNumber(faker.datatype.number()),
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockSteelheadService.postGiftLspGroup$).toHaveBeenCalled();
+      expect(mockSteelheadGroupGiftService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 

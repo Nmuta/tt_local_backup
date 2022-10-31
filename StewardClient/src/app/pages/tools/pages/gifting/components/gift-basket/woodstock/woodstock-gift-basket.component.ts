@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
@@ -42,8 +42,9 @@ export class WoodstockGiftBasketComponent
   implements OnInit
 {
   @Select(WoodstockGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
-  public title = GameTitleCodeName.FH5;
+  public title = GameTitle.FH5;
   public allowSettingExpireDate = true;
+  public allowSettingLocalizedMessage = false;
 
   constructor(
     private readonly woodstockService: WoodstockService,

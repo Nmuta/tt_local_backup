@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bond;
 using Forza.Notifications.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -102,12 +103,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    // TODO: Remove once we implement selecting title/body in the UI
-                    // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
-                    var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
-                    var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
-                    await service.GiftingManagementService.AdminSendInventoryItemGift(xuid, inventoryItemType.ToString(), itemId, quantity, testBodyLocString, testTitleLocString, false, 0)
-                        .ConfigureAwait(false);
+                    var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+
+                    // Cars are a special item type in FM8 and requires its own gifting endpoint.
+                    if (inventoryItemType == InventoryItemType.Car)
+                    {
+                        for (var i = 0; i < quantity; i++)
+                        {
+                            await service.GiftingManagementService.AdminSendCarGiftV2(
+                                xuid,
+                                itemId,
+                                gift.BodyMessageId,
+                                gift.TitleMessageId
+                                /* hasExpiration, */
+                                /* gift.ExpireTimeSpanInDays */).ConfigureAwait(false);
+                        }
+                    }
+                    else
+                    {
+                        await service.GiftingManagementService.AdminSendInventoryItemGift(
+                            xuid,
+                            inventoryItemType.ToString(),
+                            itemId,
+                            quantity,
+                            gift.BodyMessageId,
+                            gift.TitleMessageId,
+                            hasExpiration,
+                            gift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                    }
                 }
 
                 giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -185,19 +208,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    // TODO: Remove once we implement selecting title/body in the UI
-                    // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
-                    var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
-                    var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
-                    await service.GiftingManagementService.AdminSendInventoryItemGroupGift(
-                        groupId,
-                        inventoryItemType.ToString(),
-                        itemId,
-                        quantity,
-                        testBodyLocString,
-                        testTitleLocString,
-                        false,
-                        0).ConfigureAwait(false);
+                    var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+
+                    // Cars are a special item type in FM8 and requires its own gifting endpoint.
+                    if (inventoryItemType == InventoryItemType.Car)
+                    {
+                        // TODO: Switch this with the LSP endpoint once it becomes available
+                        // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1363280
+                        throw new InvalidArgumentsStewardException($"Failed to gift car to a group. This feature is currently not supported. (groupId: {groupId}) (carId: {itemId}), (quantity: {quantity})");
+                    } 
+                    else
+                    {
+                        await service.GiftingManagementService.AdminSendInventoryItemGroupGift(
+                            groupId,
+                            inventoryItemType.ToString(),
+                            itemId,
+                            quantity,
+                            gift.BodyMessageId,
+                            gift.TitleMessageId,
+                            hasExpiration,
+                            gift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                    }
                 }
 
                 giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -219,18 +250,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         }
 
         /// <inheritdoc/>
-        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(SteelheadProxyBundle service, GroupGift groupGift, UgcItem livery, string requesterObjectId)
+        public async Task<IList<GiftResponse<ulong>>> SendCarLiveryAsync(SteelheadProxyBundle service, LocalizedMessageExpirableGroupGift groupGift, UgcItem livery, string requesterObjectId)
         {
             service.ShouldNotBeNull(nameof(service));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             // TODO: Log gift to gift history
-            // TODO: Remove once we implement selecting title/body in the UI
-            // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
-            var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
-            var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
             var xuids = groupGift.Xuids.ToArray();
-            var result = await service.GiftingManagementService.AdminSendLiveryGiftV2(xuids, xuids.Length, livery.Id, testBodyLocString, testTitleLocString, false, 0).ConfigureAwait(false);
+            var hasExpiration = groupGift.ExpireTimeSpanInDays > 0;
+            var result = await service.GiftingManagementService.AdminSendLiveryGiftV2(
+                xuids,
+                xuids.Length,
+                livery.Id,
+                groupGift.BodyMessageId,
+                groupGift.TitleMessageId,
+                hasExpiration,
+                groupGift.ExpireTimeSpanInDays).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -276,7 +311,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> SendCarLiveryAsync(SteelheadProxyBundle service, Gift gift, int groupId, UgcItem livery, string requesterObjectId)
+        public async Task<GiftResponse<int>> SendCarLiveryAsync(SteelheadProxyBundle service, LocalizedMessageExpirableGift gift, int groupId, UgcItem livery, string requesterObjectId)
         {
             service.ShouldNotBeNull(nameof(service));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
@@ -293,11 +328,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             try
             {
                 // TODO: Log gift to gift history
-                // TODO: Remove once we implement selecting title/body in the UI
-                // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1348033
-                var testTitleLocString = Guid.Parse("2aa62e1d-e682-4336-983a-afa40ca56482");
-                var testBodyLocString = Guid.Parse("2cb0be20-32c3-4e8b-a77d-e068759d94e7");
-                var response = await service.GiftingManagementService.AdminSendGroupLiveryGiftV2(groupId, livery.Id, testBodyLocString, testTitleLocString, false, 0).ConfigureAwait(false);
+                var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+                var response = await service.GiftingManagementService.AdminSendGroupLiveryGiftV2(
+                    groupId,
+                    livery.Id,
+                    gift.BodyMessageId,
+                    gift.TitleMessageId,
+                    hasExpiration,
+                    gift.ExpireTimeSpanInDays).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)
@@ -356,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     {
                         await serviceCall(type, item.Id, (uint)item.Quantity).ConfigureAwait(false);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         var error = new FailedToSendStewardError($"Failed to gift item. (type: {type}) (id: {item.Id}) (quantity: {item.Quantity})");
                         item.Error = error;

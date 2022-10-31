@@ -12,6 +12,7 @@ import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-lis
 import { ApolloService } from '@services/apollo';
 import { SetApolloGiftBasket } from '@tools-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
 import faker from '@faker-js/faker';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('ApolloGiftBasketComponent', () => {
   let fixture: ComponentFixture<ApolloGiftBasketComponent>;
@@ -28,6 +29,7 @@ describe('ApolloGiftBasketComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot(),
         ReactiveFormsModule,
+        PipesModule,
       ],
       declarations: [ApolloGiftBasketComponent],
       schemas: [NO_ERRORS_SCHEMA],

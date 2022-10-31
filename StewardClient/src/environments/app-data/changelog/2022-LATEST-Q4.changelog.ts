@@ -8,6 +8,21 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
+      uuid: '517383d9-b9b6-44b2-90ef-27c18779a696',
+      shortText: 'Update group gifting to not support cars until LSP is ready',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e5e35c39-f035-42d9-a711-2e75abea3982',
+      shortText: 'Add stricter typings to BasicPlayer',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '50034e5f-d905-4dd3-ab6e-ae16d3a3fcfd',
+      shortText: 'Display license plate information',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Leaderboards },
       uuid: 'be990d01-585d-45d5-9388-7ead5aad9a99',
       shortText: 'Improve visibility of leaderboard Top Users lines',

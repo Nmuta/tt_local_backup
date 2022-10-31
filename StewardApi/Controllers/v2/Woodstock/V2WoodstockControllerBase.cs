@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -32,18 +33,35 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
             this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() =>
             {
-                var woodstockProxyBundle = this.HttpContext.RequestServices.GetService<WoodstockProxyBundle>();
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var woodstockProxyBundle = componentContext.ResolveNamed<WoodstockProxyBundle>("woodstockProdLiveProxyBundle");
+                woodstockProxyBundle.Endpoint = this.WoodstockEndpoint.Value;
+                return woodstockProxyBundle;
+            });
+
+            this.WoodstockServicesWithProdLiveStewardCms = new Lazy<WoodstockProxyBundle>(() =>
+            {
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var woodstockProxyBundle = componentContext.ResolveNamed<WoodstockProxyBundle>("woodstockProdLiveStewardProxyBundle");
                 woodstockProxyBundle.Endpoint = this.WoodstockEndpoint.Value;
                 return woodstockProxyBundle;
             });
         }
 
         /// <summary>
-        ///     Gets the Woodstock proxy service.
+        ///     Gets the Woodstock proxy service with prod live CMS slot set.
         /// </summary>
         protected WoodstockProxyBundle Services
         {
             get { return this.WoodstockServices.Value; }
+        }
+
+        /// <summary>
+        ///     Gets the Woodstock proxy service with prod live-steward CMS slot set.
+        /// </summary>
+        protected WoodstockProxyBundle ServicesWithProdLiveStewardCms
+        {
+            get { return this.WoodstockServicesWithProdLiveStewardCms.Value; }
         }
 
         /// <summary>Gets (lazily) the Woodstock Endpoint passed to this call.</summary>
@@ -51,6 +69,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
         /// <summary>Gets (lazily) the Woodstock services.</summary>
         private Lazy<WoodstockProxyBundle> WoodstockServices { get; }
+
+        /// <summary>Gets (lazily) the Woodstock services.</summary>
+        private Lazy<WoodstockProxyBundle> WoodstockServicesWithProdLiveStewardCms { get; }
 
         /// <summary>
         ///     Ensures all provided xuids are valid, else throws error.

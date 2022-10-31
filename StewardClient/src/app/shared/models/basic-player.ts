@@ -1,13 +1,23 @@
 import BigNumber from 'bignumber.js';
+import { XOR } from 'ts-essentials';
 import { StewardError } from './steward-error';
 
-/** Interface for a basic player. Expect at least one Gamertag or Xuid, but not necessarily both. */
-export interface BasicPlayer {
-  xuid: BigNumber;
+/** Basic player model with gamertag requirement. */
+export interface BasicPlayerWithGamertag {
   gamertag: string;
+  xuid?: BigNumber;
 }
 
-/** Interface for a basic player action. Error property added to track errors in action. */
-export interface BasicPlayerAction extends BasicPlayer {
-  error?: StewardError;
+/** Basic player model with xuid requirement. */
+export interface BasicPlayerWithXuid {
+  xuid: BigNumber;
+  gamertag?: string;
 }
+
+/** Valid basic player model. */
+export type BasicPlayer = XOR<BasicPlayerWithGamertag, BasicPlayerWithXuid>;
+
+/** Basic player action result model. */
+export type BasicPlayerActionResult = BasicPlayer & {
+  error?: StewardError;
+};

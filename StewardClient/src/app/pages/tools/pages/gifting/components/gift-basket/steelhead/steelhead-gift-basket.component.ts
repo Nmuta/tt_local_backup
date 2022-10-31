@@ -1,16 +1,15 @@
 import BigNumber from 'bignumber.js';
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SteelheadGift, SteelheadGroupGift, SteelheadMasterInventory } from '@models/steelhead';
 import { BackgroundJob } from '@models/background-job';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SteelheadGiftingState } from '@tools-app/pages/gifting/steelhead/state/steelhead-gifting.state';
 import { SetSteelheadGiftBasket } from '@tools-app/pages/gifting/steelhead/state/steelhead-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
-import { SteelheadService } from '@services/steelhead';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { GetSteelheadMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
@@ -19,6 +18,10 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 import { ZERO } from '@helpers/bignumbers';
 import { cloneDeep } from 'lodash';
+import { LocalizedStringsMap } from '@models/localization';
+import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { SteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/gift/steelhead-players-gift.service';
+import { SteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service';
 
 /** Steelhead gift basket. */
 @Component({
@@ -35,18 +38,28 @@ import { cloneDeep } from 'lodash';
 })
 export class SteelheadGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultAlpha, SteelheadMasterInventory>
-  implements OnInit
+  implements OnInit, OnChanges
 {
   @Select(SteelheadGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
-  public title = GameTitleCodeName.FM8;
+  public title = GameTitle.FM8;
   public allowSettingExpireDate = true;
+  public allowSettingLocalizedMessage = true;
 
   constructor(
-    private readonly steelheadService: SteelheadService,
+    private readonly steelheadPlayersGiftService: SteelheadPlayersGiftService,
+    private readonly steelheadGroupGiftService: SteelheadGroupGiftService,
+    steelheadLocalizationService: SteelheadLocalizationService,
     backgroundJobService: BackgroundJobService,
     store: Store,
   ) {
     super(backgroundJobService, store);
+
+    this.selectLocalizedStringService = {
+      gameTitle: this.title,
+      getLocalizedStrings$(): Observable<LocalizedStringsMap> {
+        return steelheadLocalizationService.getLocalizedStrings$();
+      },
+    };
   }
 
   /** Angular lifecycle hook. */
@@ -74,10 +87,26 @@ export class SteelheadGiftBasketComponent
       .subscribe();
   }
 
+  /**
+   * TODO: Remove once car group gifting is supported in Steward API
+   * https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1363280
+   * Lifecycle hook.
+   */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (!!changes.usingPlayerIdentities) {
+      // We temporarily have group gifting restrictions with cars
+      // Recalculate item errors if switching between player/group gifting
+      this.setStateGiftBasket(this.giftBasket.data);
+    }
+  }
+
   /** Generates an steelhead gift from the gift basket. */
   public generateGiftInventoryFromGiftBasket(): SteelheadGift {
     const giftBasketItems = this.giftBasket.data;
     return {
+      titleMessageId: this.formControls.localizedTitleMessageInfo.value?.id,
+      bodyMessageId: this.formControls.localizedBodyMessageInfo.value?.id,
+      expireTimeSpanInDays: this.getExpireDateInDays(),
       giftReason: this.sendGiftForm.controls['giftReason'].value,
       inventory: {
         creditRewards: giftBasketItems
@@ -126,12 +155,12 @@ export class SteelheadGiftBasketComponent
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.steelheadService.postGiftPlayersUsingBackgroundTask$(groupGift);
+    return this.steelheadPlayersGiftService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
   /** Sends an steelhead gift to an LSP group. */
   public sendGiftToLspGroup$(gift: SteelheadGift): Observable<GiftResponse<BigNumber>> {
-    return this.steelheadService.postGiftLspGroup$(this.lspGroup, gift);
+    return this.steelheadGroupGiftService.postGiftLspGroup$(this.lspGroup.id, gift);
   }
 
   /** Sets the state gift basket. */
@@ -178,6 +207,18 @@ export class SteelheadGiftBasketComponent
     );
     if (creditsAboveMax >= 0) {
       giftBasket[creditsAboveMax].restriction = 'Credit max is 999,999,999.';
+    }
+
+    // TODO: Remove once car group gifting is supported in Steward API
+    // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1363280
+    if (!this.usingPlayerIdentities) {
+      giftBasket = giftBasket.map(item => {
+        if (item.itemType === 'cars') {
+          item.restriction = 'Group gifting cars is currently unsupported in FM8.';
+        }
+
+        return item;
+      });
     }
 
     return giftBasket;
