@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
+using StewardGitApi;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
@@ -57,10 +58,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription);
 
         /// <summary>
+        ///     Commits and push changes.
+        /// </summary>
+        Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes);
+
+        /// <summary>
         ///     Edits and saves Message of the Day
         ///     using deserialized xml entry.
         /// </summary>
-        Task<GitPush> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment);
 
         /// <summary>
         ///     Gets current Message of the Day values for the entry
@@ -69,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<MessageOfTheDayBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id);
 
         /// <summary>
-        ///     Gets Message of the Day selections.
+        ///     Gets Message of the Day selection options.
         /// </summary>
         Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync();
 
@@ -82,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Edits and saves World of Forza Tile
         ///     using deserialized xml entry.
         /// </summary>
-        Task<GitPush> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment);
 
         /// <summary>
         ///     Gets current World of Forza values for the entry
@@ -91,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<WofTileBridge> GetWorldOfForzaCurrentValuesAsync(Guid id);
 
         /// <summary>
-        ///     Gets World of Forza selection choices.
+        ///     Gets World of Forza selection options.
         /// </summary>
         Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync();
 

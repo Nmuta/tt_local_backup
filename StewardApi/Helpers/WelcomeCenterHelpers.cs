@@ -203,8 +203,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 }
                 catch (XmlException)
                 {
-                    // el.FirstNode.ToString() returned the
-                    // anonymous property's value, not the outerxml.
+                    // we have the anonymous property's value, not the outerxml.
                     return false;
                 }
             }

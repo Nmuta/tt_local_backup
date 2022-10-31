@@ -9,6 +9,7 @@ using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
+using StewardGitApi;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -54,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         /// </summary>
         [HttpGet("options")]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
-        public async Task<IActionResult> GetWorldOfForzaSelectionsAsync()
+        public async Task<IActionResult> GetWorldOfForzaSelectionOptionsAsync()
         {
             Dictionary<Guid, string> choices = await this.steelheadPegasusService.GetWorldOfForzaSelectionsAsync().ConfigureAwait(true);
 
@@ -93,7 +94,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
 
             var commitComment = "StewardApi: Edit World of Forza Tile";
 
-            GitPush pushed = await this.steelheadPegasusService.EditWorldOfForzaTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
+            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
+
+            GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(false);
 
             var user = this.User.UserClaims();
             var pullRequestTitle = $"StewardApi/{user.EmailAddress} - Edit Welcome Center: World of Forza";

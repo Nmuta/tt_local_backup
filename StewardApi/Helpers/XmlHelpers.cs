@@ -14,22 +14,22 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         ///     Serializes object into an xml string and writes to file.
         /// </summary>
         /// <typeparam name="T">The type to serialize.</typeparam>
-        public static async Task SerializeAsync<T>(T objectToSerialize, string filename)
+        public static async Task SerializeAsync<T>(T obj, string filename)
         {
             var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
             using var writer = XmlWriter.Create(new FileStream(filename, FileMode.Create), xmlWriterSettings);
-            await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(writer, objectToSerialize)).ConfigureAwait(false);
+            await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(writer, obj)).ConfigureAwait(false);
         }
 
         /// <summary>
         ///     Serializes object into an xml string and writes to stream.
         /// </summary>
         /// <typeparam name="T">The type to serialize.</typeparam>
-        public static async Task SerializeAsync<T>(T objectToSerialize, Stream stream)
+        public static async Task SerializeAsync<T>(T obj, Stream stream)
         {
             var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
             using var writer = XmlWriter.Create(stream, xmlWriterSettings);
-            await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(writer, objectToSerialize)).ConfigureAwait(false);
+            await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(writer, obj)).ConfigureAwait(false);
         }
 
         /// <summary>

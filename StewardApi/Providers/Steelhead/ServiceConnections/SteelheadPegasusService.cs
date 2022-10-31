@@ -245,6 +245,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
+        {
+            GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);
+
+            return pushed;
+        }
+
+        /// <inheritdoc/>
         public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
         {
             var pr = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
@@ -297,7 +305,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GitPush> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MessageOfTheDayBridge messageOfTheDayBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<UserMessagesMessageOfTheDay>(messageOfTheDayBridge);
 
@@ -320,9 +328,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
 
-            GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(new CommitRefProxy[] { change }, null).ConfigureAwait(false);
-
-            return pushed;
+            return change;
         }
 
         /// <inheritdoc/>
@@ -370,7 +376,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GitPush> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofTileBridge wofTileBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<WorldOfForzaWoFTileImageText>(wofTileBridge);
 
@@ -393,9 +399,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
 
-            GitPush pushed = await this.azureDevOpsManager.CommitAndPushAsync(new CommitRefProxy[] { change }, null).ConfigureAwait(false);
-
-            return pushed;
+            return change;
         }
     }
 }
