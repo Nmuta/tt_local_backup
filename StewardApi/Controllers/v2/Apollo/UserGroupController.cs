@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -111,6 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Apollo, StewardAction.Add, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.CreateUserGroup)]
         public async Task<IActionResult> CreateUserGroup(string userGroupName)
         {
             userGroupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userGroupName));
@@ -139,6 +141,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Apollo, StewardAction.Update, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
         public async Task<IActionResult> AddUsersToGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks adding users to the "All" group
@@ -166,6 +169,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Apollo, StewardAction.Delete, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
         public async Task<IActionResult> RemoveUsersFromGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks removing users from the "All" group
@@ -192,6 +196,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]
         [AutoActionLogging(TitleCodeName.Apollo, StewardAction.DeleteAll, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.RemoveAllUsersFromGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
             try

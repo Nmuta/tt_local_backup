@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -168,6 +169,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {
@@ -215,6 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             UserRole.SupportAgent)]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {

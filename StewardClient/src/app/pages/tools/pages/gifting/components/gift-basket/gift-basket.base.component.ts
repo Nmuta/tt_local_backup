@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { GameTitleCodeName, UserRole } from '@models/enums';
+import { GameTitle, UserRole } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -24,12 +24,15 @@ import { DateTime } from 'luxon';
 import { DateValidators } from '@shared/validators/date-validators';
 import { tryParseBigNumber } from '@helpers/bignumbers';
 import _ from 'lodash';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { SteelheadGift } from '@models/steelhead';
+import { WoodstockGift } from '@models/woodstock';
 
 export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];
 };
-export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
+export type GiftUnion = SteelheadGift | WoodstockGift | GravityGift | SunriseGift | ApolloGift;
 export type GiftBasketModel = MasterInventoryItem & { edit?: boolean; restriction?: string };
 export enum GiftReason {
   LostSave = 'Lost Save',
@@ -47,13 +50,13 @@ export abstract class GiftBasketBaseComponent<
   IdentityT extends IdentityResultUnion,
   MasterInventoryT extends MasterInventoryUnion,
 > extends BaseComponent {
-  /** REVIEW-COMMENT: Player identities. */
+  /** Player identities to gift to. */
   @Input() public playerIdentities: IdentityT[];
-  /** REVIEW-COMMENT: Lsp Group. */
+  /** LSP group to gift to. */
   @Input() public lspGroup: LspGroup;
-  /** REVIEW-COMMENT: Component is using player identities. */
+  /** Whether component is using player identities. False means LSP group. */
   @Input() public usingPlayerIdentities: boolean;
-  /** Reference inventory.*/
+  /** Reference inventory to auto-fill the gift basket with.*/
   @Input() public referenceInventory: MasterInventoryT;
 
   /** User profile. */
@@ -84,6 +87,8 @@ export abstract class GiftBasketBaseComponent<
 
   /** Send form gift */
   public formControls = {
+    localizedTitleMessageInfo: new FormControl({}, [Validators.required]),
+    localizedBodyMessageInfo: new FormControl({}, [Validators.required]),
     giftReason: new FormControl('', [Validators.required]),
     expireDate: new FormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
     hasExpirationDate: new FormControl(false),
@@ -112,11 +117,20 @@ export abstract class GiftBasketBaseComponent<
    */
   public inventoryItemGroups: InventoryItemGroup[] = [];
 
-  /** Game title */
-  public abstract title: GameTitleCodeName;
+  /** The localized string service. */
+  public selectLocalizedStringService: SelectLocalizedStringContract;
 
-  /** Sets wether the title supports expiration date on gift. */
+  /** Game title */
+  public abstract title: GameTitle;
+
+  /** Sets whether the title supports expiration date on gift. */
   public abstract allowSettingExpireDate: boolean;
+
+  /**
+   * Sets whether the title supports localized title and body ids.
+   * Make sure selectLocalizedStringService is correctly implemented if setting this to true.
+   */
+  public abstract allowSettingLocalizedMessage: boolean;
 
   constructor(
     private readonly backgroundJobService: BackgroundJobService,

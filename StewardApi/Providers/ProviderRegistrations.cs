@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {
@@ -15,7 +16,11 @@ namespace Turn10.LiveOps.StewardApi.Providers
             builder.RegisterType<WoodstockSettings>().SingleInstance();
             builder.RegisterType<SunriseSettings>().SingleInstance();
             builder.RegisterType<ApolloSettings>().SingleInstance();
-            builder.RegisterType<ForgedCredentialProvider>().SingleInstance();
+
+            builder.RegisterType<ForgedCredentialProvider>()
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .SingleInstance();
         }
     }
 }

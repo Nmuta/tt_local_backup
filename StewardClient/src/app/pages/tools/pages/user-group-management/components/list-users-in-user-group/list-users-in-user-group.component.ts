@@ -16,7 +16,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
-import { BasicPlayerAction } from '@models/basic-player';
+import { BasicPlayerActionResult } from '@models/basic-player';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
@@ -45,7 +45,7 @@ export interface ListUsersInGroupServiceContract {
   deletePlayerFromUserGroup$(
     playerList: BasicPlayerList,
     userGroup: LspGroup,
-  ): Observable<BasicPlayerAction>;
+  ): Observable<BasicPlayerActionResult>;
   deletePlayersFromUserGroupUsingBulkProcessing$(
     playerList: BasicPlayerList,
     userGroup: LspGroup,
@@ -71,7 +71,7 @@ enum UserGroupManagementAction {
 
 interface UserGroupManagementFailures {
   //TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130
-  //players: BasicPlayerAction[];
+  //players: BasicPlayerActionResult[];
   action: UserGroupManagementAction;
   //copyToClipboard?: string;
   count: number;
@@ -339,7 +339,7 @@ export class ListUsersInGroupComponent
       .deletePlayerFromUserGroup$(playerList, this.userGroup)
       .pipe(
         // Utilize the action monitor error logic
-        tap((result: BasicPlayerAction) => {
+        tap((result: BasicPlayerActionResult) => {
           if (!!result?.error) {
             throw new Error('Failed to remove player from user group');
           }

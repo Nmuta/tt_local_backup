@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Bond;
 using Forza.UserInventory.FM8.Generated;
+using Forza.WebServices.FH4.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.SystemFunctions;
@@ -103,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] SteelheadGroupGift groupGift)
         {
@@ -184,8 +187,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
+        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(string liveryId, [FromBody] LocalizedMessageExpirableGroupGift groupGift)
         {
+            if (!Guid.TryParse(liveryId, out var liveryIdAsGuid))
+            {
+                throw new BadRequestStewardException($"Livery ID could not be parsed as GUID. (liveryId: {liveryId})");
+            }
+
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
@@ -198,11 +207,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 
             await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
 
-            var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryId).ConfigureAwait(true);
+            var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryIdAsGuid).ConfigureAwait(true);
             var mappedLivery = this.mapper.Map<UgcItem>(livery);
             if (livery == null)
             {
-                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
+                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryIdAsGuid}");
             }
 
             var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Steelhead Gifting Livery: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);

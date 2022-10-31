@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Autofac;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Writers;
 using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
@@ -26,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         ///     Initializes a new instance of the <see cref="WoodstockProxyFactory"/> class.
         /// </summary>
         public WoodstockProxyFactory(
+            Client client,
             WoodstockSettings settingsProvider,
             ForgedCredentialProvider forgedCredentialProvider)
         {
@@ -33,10 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
             this.ForgedCredentialProvider = forgedCredentialProvider;
 
             // TODO: This should also be injected
-            this.ForzaClient = new Client(
-                new CleartextMessageCryptoProvider(),
-                new CleartextMessageCryptoProvider(),
-                clientVersion: this.Settings.ClientVersion);
+            this.ForzaClient = client;
         }
 
         /// <summary>

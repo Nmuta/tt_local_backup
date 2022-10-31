@@ -1,7 +1,11 @@
-﻿using AutoFixture;
+﻿using Autofac;
+using Autofac.Core;
+using AutoFixture;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
@@ -32,8 +36,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var mockProxyBundle = new WoodstockProxyBundle(GenerateProxyFactory(Fixture));
             mockProxyBundle.Endpoint = "fake";
 
+            var builder = new ContainerBuilder();
+            builder.Register(c => mockProxyBundle).Named<WoodstockProxyBundle>("woodstockProdLiveProxyBundle").As<WoodstockProxyBundle>();
+            builder.Register(c => mockProxyBundle).Named<WoodstockProxyBundle>("woodstockProdLiveStewardProxyBundle").As<WoodstockProxyBundle>();
+            var container = builder.Build();
+
             var mockRequestServices = Substitute.For<IServiceProvider>();
             mockRequestServices.GetService<WoodstockProxyBundle>().Returns(mockProxyBundle);
+            mockRequestServices.GetService<IComponentContext>().Returns(container);
 
             httpContext.HttpContext.RequestServices = mockRequestServices;
 

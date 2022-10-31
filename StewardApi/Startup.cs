@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
+using Autofac.Core;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
+using Kusto.Cloud.Platform.Utils;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +31,7 @@ using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.Data.SecretProvider;
+using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -57,6 +64,7 @@ using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.LiveOps.StewardApi.Validation.Apollo;
 using Turn10.LiveOps.StewardApi.Validation.Gravity;
@@ -66,12 +74,13 @@ using Turn10.LiveOps.StewardApi.Validation.Woodstock;
 using Turn10.Services.CMSRetrieval;
 using Turn10.Services.Diagnostics;
 using Turn10.Services.Diagnostics.Geneva;
+using Turn10.Services.ForzaClient;
+using Turn10.Services.MessageEncryption;
 using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
+using static Turn10.LiveOps.StewardApi.Helpers.AutofactHelpers;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using Turn10.LiveOps.StewardApi.Authorization;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -213,6 +222,7 @@ namespace Turn10.LiveOps.StewardApi
 
             ProviderRegistrations.Register(builder);
             ProxyRegistrations.Register(builder);
+            this.RegisterForzaClients(builder);
             this.RegisterWoodstockTypes(builder);
             this.RegisterSunriseTypes(builder);
             this.RegisterOpusTypes(builder);
@@ -309,10 +319,9 @@ namespace Turn10.LiveOps.StewardApi
         public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment, IApiVersionDescriptionProvider provider)
         {
             // initialize everything
-            var initializeableServices = this.allServices.Where(s => typeof(IInitializeable).IsAssignableFrom(s.ServiceType));
+            var componentContext = applicationBuilder.ApplicationServices.GetService<IComponentContext>();
+            var initializeableServices = componentContext.Resolve<IEnumerable<IInitializeable>>();
             var initializationTasks = initializeableServices
-                .Select(service => applicationBuilder.ApplicationServices.GetService(service.ServiceType))
-                .Cast<IInitializeable>()
                 .Select(s => s.InitializeAsync())
                 .ToList();
             Task.WhenAll(initializationTasks).GetAwaiter().GetResult();
@@ -372,6 +381,20 @@ namespace Turn10.LiveOps.StewardApi
             }
 
             return null;
+        }
+
+        private void RegisterForzaClients(ContainerBuilder builder)
+        {
+            builder.RegisterType<Client>().Named<Client>("woodstockClientProdLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion);
+
+            builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => "prod-xlive-steward");
         }
 
         private void RegisterSteelheadTypes(ContainerBuilder builder)

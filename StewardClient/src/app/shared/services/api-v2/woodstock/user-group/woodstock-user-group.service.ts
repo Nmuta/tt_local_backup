@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
 import { HttpParams } from '@angular/common/http';
-import { BasicPlayerAction } from '@models/basic-player';
+import { BasicPlayerActionResult } from '@models/basic-player';
 import {
   ForzaBulkOperationType,
   UserGroupBulkOperationStatus,
@@ -45,10 +45,10 @@ export class WoodstockUserGroupService {
   public removeUsersFromGroup$(
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
-  ): Observable<BasicPlayerAction[]> {
+  ): Observable<BasicPlayerActionResult[]> {
     const params = new HttpParams().set('useBulkProcessing', false);
 
-    return this.api.postRequest$<BasicPlayerAction[]>(
+    return this.api.postRequest$<BasicPlayerActionResult[]>(
       `${this.basePath}/${userGroupId}/remove`,
       playerList,
       params,

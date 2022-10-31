@@ -3,7 +3,7 @@ import { Component, forwardRef, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ApolloGift, ApolloGroupGift, ApolloMasterInventory } from '@models/apollo';
 import { BackgroundJob } from '@models/background-job';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
@@ -38,8 +38,9 @@ export class ApolloGiftBasketComponent
   implements OnInit
 {
   @Select(ApolloGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
-  public title = GameTitleCodeName.FM7;
+  public title = GameTitle.FM7;
   public allowSettingExpireDate = false;
+  public allowSettingLocalizedMessage = false;
 
   constructor(
     private readonly apolloService: ApolloService,

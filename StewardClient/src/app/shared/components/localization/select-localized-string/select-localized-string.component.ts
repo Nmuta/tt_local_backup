@@ -65,7 +65,8 @@ export class SelectLocalizedStringComponent
 {
   /** The contract used to lookup and display localized strings. */
   @Input() service: SelectLocalizedStringContract;
-
+  /** The dropdown mat label. */
+  @Input() label: string = 'Select localized message';
   /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;
 
@@ -73,7 +74,6 @@ export class SelectLocalizedStringComponent
   public localizedStringDetails: LocalizationOptions[] = [];
 
   public selectedLocalizedStringCollection: LocalizedString[] = [];
-  public displayLanguageChips: boolean = false;
   public selectedLanguageLocalizedString: LocalizedString = null;
 
   public formControls = {
@@ -100,14 +100,12 @@ export class SelectLocalizedStringComponent
           this.localizedStringLookup = new Map();
           this.formControls.selectedLocalizedStringInfo.setValue(null);
           this.selectedLocalizedStringCollection = [];
-          this.displayLanguageChips = false;
           return this.service.getLocalizedStrings$().pipe(
             this.getMonitor.monitorSingleFire(),
             catchError(() => {
               this.localizedStringLookup = new Map();
               this.formControls.selectedLocalizedStringInfo.setValue(null);
               this.selectedLocalizedStringCollection = [];
-              this.displayLanguageChips = false;
               return EMPTY;
             }),
           );
@@ -142,7 +140,6 @@ export class SelectLocalizedStringComponent
         const chipList =
           this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value?.id];
         this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.isTranslated);
-        this.displayLanguageChips = true;
         this.selectedLanguageLocalizedString = null;
       });
   }
@@ -160,7 +157,6 @@ export class SelectLocalizedStringComponent
         this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value.id],
         x => !x.isTranslated,
       );
-      this.displayLanguageChips = true;
     }
   }
 
@@ -205,7 +201,6 @@ export class SelectLocalizedStringComponent
       this.selectedLanguageLocalizedString = this.selectedLocalizedStringCollection.find(
         localizedString => localizedString.languageCode == change.value.languageCode,
       );
-      this.displayLanguageChips = true;
     } else {
       this.selectedLanguageLocalizedString = null;
     }

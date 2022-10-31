@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -69,6 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.DeleteBan)]
         public async Task<IActionResult> ExpireBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -107,6 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.DeleteBan)]
         public async Task<IActionResult> DeleteBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);

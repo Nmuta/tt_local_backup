@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
-import { Store } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
 import { WoodstockGiftBasketComponent } from './woodstock-gift-basket.component';
 import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { of } from 'rxjs';
@@ -11,6 +11,9 @@ import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state
 import faker from '@faker-js/faker';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockGiftBasketComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
@@ -24,7 +27,13 @@ describe('WoodstockGiftBasketComponent', () => {
     TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
         declarations: [WoodstockGiftBasketComponent],
-        imports: [ReactiveFormsModule],
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          PipesModule,
+        ],
       }),
     );
 

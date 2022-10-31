@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Bond;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -78,6 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.UgcReport)]
+        [Authorize(Policy = UserAttribute.ReportUgc)]
         public async Task<IActionResult> ReportUgc(string ugcId, string reasonId)
         {
             if (!Guid.TryParse(ugcId, out var parsedUgcId))

@@ -107,6 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
+        [Authorize(Policy = UserAttribute.MessagePlayer)]
         public async Task<IActionResult> DeleteAllPlayerMessages(ulong xuid)
         {
             //xuid.EnsureValidXuid();
@@ -167,6 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
+        [Authorize(Policy = UserAttribute.MessagePlayer)]
         public async Task<IActionResult> EditPlayerMessage(
             ulong xuid,
             string messageId,
@@ -228,6 +230,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
+        [Authorize(Policy = UserAttribute.MessagePlayer)]
         public async Task<IActionResult> DeletePlayerMessage(Guid messageId, ulong xuid)
         {
             //xuid.EnsureValidXuid();

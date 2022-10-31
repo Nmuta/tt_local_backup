@@ -1,9 +1,9 @@
 import { ValueProvider } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
-import { SteelheadItemsService } from './steelhead-items.service';
+import { SteelheadLocalizationService } from './steelhead-localization.service';
 
 /** Defines the mock for the API Service. */
-export class MockSteelheadItemsService {
+export class MockSteelheadLocalizationService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
@@ -19,11 +19,11 @@ export class MockSteelheadItemsService {
 }
 
 /** Creates an injectable mock for Woodstock Service. */
-export function createMockSteelheadItemsService(
+export function createMockSteelheadLocalizationService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
-    provide: SteelheadItemsService,
-    useValue: new MockSteelheadItemsService(returnValueGenerator),
+    provide: SteelheadLocalizationService,
+    useValue: new MockSteelheadLocalizationService(returnValueGenerator),
   };
 }

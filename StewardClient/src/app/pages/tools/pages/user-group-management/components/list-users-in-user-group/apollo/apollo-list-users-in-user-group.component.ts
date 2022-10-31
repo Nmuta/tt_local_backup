@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { BasicPlayerAction } from '@models/basic-player';
+import { BasicPlayerActionResult } from '@models/basic-player';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle } from '@models/enums';
 import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response';
@@ -43,7 +43,7 @@ export class ApolloListUsersInGroupComponent extends BaseComponent {
       deletePlayerFromUserGroup$(
         playerList: BasicPlayerList,
         userGroup: LspGroup,
-      ): Observable<BasicPlayerAction> {
+      ): Observable<BasicPlayerActionResult> {
         return userGroupService
           .removeUsersFromGroup$(userGroup.id, playerList)
           .pipe(map(response => first(response)));
