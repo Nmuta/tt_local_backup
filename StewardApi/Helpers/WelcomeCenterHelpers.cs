@@ -158,8 +158,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     {
                         if (child.Value != null)
                         {
-                            // null check ignores the non-existant loc-ref or loc-def
-                            // always remove loc-def, replace with loc-ref
+                            // Null check ignores the non-existant loc-ref or loc-def.
+                            // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
                             el.SetAttributeValue(child.Path, null);
                             el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
                         }
@@ -212,7 +212,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 }
                 catch (XmlException)
                 {
-                    // we have the anonymous property's value, not the outerxml.
+                    // got anonymous property's value
+                    // instead of outerxml.
                     return false;
                 }
             }

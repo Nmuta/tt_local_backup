@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     [XmlRoot("UserMessages.MessageOfTheDay", Namespace = "scribble:title-content", IsNullable = false)]
-    public partial class MotdEntry : IUniqueId
+    public partial class MotdEntry
     {
         public object ID { get; set; }
 
@@ -69,9 +69,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         [XmlAttribute(AttributeName = "id", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid idAttribute { get; set; }
-
-        [XmlIgnore]
-        public Guid UniqueId => this.idAttribute;
     }
 
     [Serializable]

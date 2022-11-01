@@ -314,9 +314,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
-            MotdRoot root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
-            string newXml = await root.StitchXmlAsync(element, root, id).ConfigureAwait(false);
+            string newXml = element.Document.ToString(SaveOptions.None);
 
             var change = new CommitRefProxy()
             {
@@ -383,9 +381,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
-            WofRoot root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
-            string newXml = await root.StitchXmlAsync(element, root, id).ConfigureAwait(false);
+            string newXml = element.Document.ToString(SaveOptions.None);
 
             var change = new CommitRefProxy()
             {

@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     [XmlRoot("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content", IsNullable = false)]
-    public partial class WofEntry : IUniqueId
+    public partial class WofEntry
     {
         [PegEdit]
         public string FriendlyName { get; set; }
@@ -68,9 +68,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid id { get; set; }
-
-        [XmlIgnore]
-        public Guid UniqueId => this.id;
     }
 
     [Serializable]
