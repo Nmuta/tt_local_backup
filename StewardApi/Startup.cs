@@ -304,13 +304,13 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
+            builder.RegisterType<ActionLogger>().As<IActionLogger>().SingleInstance();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             builder.Register(c => pegasusProvider).As<PegasusCmsProvider>().SingleInstance();
 
             // Scoped items
-            builder.RegisterType<ActionData>();
-            builder.RegisterType<ActionLogger>().As<IActionLogger>();
+            builder.RegisterType<ActionData>().InstancePerLifetimeScope();
         }
 
         /// <summary>
