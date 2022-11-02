@@ -1,3 +1,5 @@
+import { BasicPlayer } from './basic-player';
+
 export enum ForzaBulkOperationType {
   Add = 'Add',
   Remove = 'Remove',
@@ -17,4 +19,5 @@ export interface UserGroupBulkOperationStatus {
   remaining: number;
   bulkOperationType: ForzaBulkOperationType;
   status: ForzaBulkOperationStatus;
+  failedUsers: BasicPlayer[];
 }
