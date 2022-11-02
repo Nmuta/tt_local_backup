@@ -169,230 +169,230 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             result.Should().BeOfType<WoodstockAccountInventory>();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithValidParameters_DoesNotThrow()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var useAdminCreditLimit = Fixture.Create<bool>();
-            var groupId = Fixture.Create<int>();
-            var gift = Fixture.Create<WoodstockGift>();
-            var groupGift = Fixture.Create<WoodstockGroupGift>();
-            var requesterObjectId = Fixture.Create<string>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void UpdatePlayerInventoriesAsync_WithValidParameters_DoesNotThrow()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var xuid = Fixture.Create<ulong>();
+        //    var useAdminCreditLimit = Fixture.Create<bool>();
+        //    var groupId = Fixture.Create<int>();
+        //    var gift = Fixture.Create<WoodstockGift>();
+        //    var groupGift = Fixture.Create<WoodstockGroupGift>();
+        //    var requesterObjectId = Fixture.Create<string>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
-            };
+        //    // Act.
+        //    var actions = new List<Func<Task>>
+        //    {
+        //        async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
+        //    };
 
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().NotThrow();
-            }
-        }
+        //    // Assert.
+        //    foreach (var action in actions)
+        //    {
+        //        action.Should().NotThrow();
+        //    }
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventoryAsync_WithNullPlayerInventory_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var requesterObjectId = Fixture.Create<string>();
-            var useAdminCreditLimit = Fixture.Create<bool>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void UpdatePlayerInventoryAsync_WithNullPlayerInventory_Throws()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var xuid = Fixture.Create<ulong>();
+        //    var requesterObjectId = Fixture.Create<string>();
+        //    var useAdminCreditLimit = Fixture.Create<bool>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-            };
+        //    // Act.
+        //    var actions = new List<Func<Task>>
+        //    {
+        //        async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //    };
 
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
-            }
-        }
+        //    // Assert.
+        //    foreach (var action in actions)
+        //    {
+        //        action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
+        //    }
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithNullWoodstockGift_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var useAdminCreditLimit = Fixture.Create<bool>();
-            var requesterObjectId = Fixture.Create<string>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void UpdatePlayerInventoriesAsync_WithNullWoodstockGift_Throws()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var useAdminCreditLimit = Fixture.Create<bool>();
+        //    var requesterObjectId = Fixture.Create<string>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.UpdatePlayerInventoriesAsync(null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-            };
+        //    // Act.
+        //    var actions = new List<Func<Task>>
+        //    {
+        //        async () => await provider.UpdatePlayerInventoriesAsync(null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //    };
 
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
-        }
+        //    // Assert.
+        //    foreach (var action in actions)
+        //    {
+        //        action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
+        //    }
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdateGroupInventoriesAsync_WithNullPlayerInventory_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var groupId = Fixture.Create<int>();
-            var requesterObjectId = Fixture.Create<string>();
-            var useAdminCreditLimit = Fixture.Create<bool>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void UpdateGroupInventoriesAsync_WithNullPlayerInventory_Throws()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var groupId = Fixture.Create<int>();
+        //    var requesterObjectId = Fixture.Create<string>();
+        //    var useAdminCreditLimit = Fixture.Create<bool>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
-            };
+        //    // Act.
+        //    var actions = new List<Func<Task>>
+        //    {
+        //        async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
+        //    };
 
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
-            }
-        }
+        //    // Assert.
+        //    foreach (var action in actions)
+        //    {
+        //        action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
+        //    }
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var groupId = Fixture.Create<int>();
-            var gift = Fixture.Create<WoodstockGift>();
-            var groupGift = Fixture.Create<WoodstockGroupGift>();
-            var useAdminCreditLimit = Fixture.Create<bool>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void UpdatePlayerInventoriesAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var xuid = Fixture.Create<ulong>();
+        //    var groupId = Fixture.Create<int>();
+        //    var gift = Fixture.Create<WoodstockGift>();
+        //    var groupGift = Fixture.Create<WoodstockGroupGift>();
+        //    var useAdminCreditLimit = Fixture.Create<bool>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false)
-            };
+        //    // Act.
+        //    var actions = new List<Func<Task>>
+        //    {
+        //        async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+        //        async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false)
+        //    };
 
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
-            }
-        }
+        //    // Assert.
+        //    foreach (var action in actions)
+        //    {
+        //        action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
+        //    }
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithNullXuids_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var groupGift = Fixture.Create<WoodstockGroupGift>();
-            groupGift.Xuids = null;
-            var requesterObjectId = Fixture.Create<string>();
-            var useAdminCreditLimit = Fixture.Create<bool>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void UpdatePlayerInventoriesAsync_WithNullXuids_Throws()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var groupGift = Fixture.Create<WoodstockGroupGift>();
+        //    groupGift.Xuids = null;
+        //    var requesterObjectId = Fixture.Create<string>();
+        //    var useAdminCreditLimit = Fixture.Create<bool>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false);
+        //    // Act.
+        //    Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false);
 
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
-        }
+        //    // Assert.
+        //    action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SendCarLiveryAsync_ToUserGroup_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var gift = Fixture.Create<ExpirableGift>();
-            var groupId = Fixture.Create<int>();
-            var livery = Fixture.Create<UgcItem>();
-            var requesterId = Fixture.Create<string>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void SendCarLiveryAsync_ToUserGroup_WithValidParameters_ReturnsCorrectType()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var gift = Fixture.Create<ExpirableGift>();
+        //    var groupId = Fixture.Create<int>();
+        //    var livery = Fixture.Create<UgcItem>();
+        //    var requesterId = Fixture.Create<string>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, requesterId, endpoint).ConfigureAwait(false);
+        //    // Act.
+        //    Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, requesterId, endpoint).ConfigureAwait(false);
 
-            // Assert.
-            action().Result.Should().BeOfType<GiftResponse<int>>();
-        }
+        //    // Assert.
+        //    action().Result.Should().BeOfType<GiftResponse<int>>();
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SendCarLiveryAsync_ToUserGroup_WithNullRequesterId_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var gift = Fixture.Create<ExpirableGift>();
-            var groupId = Fixture.Create<int>();
-            var livery = Fixture.Create<UgcItem>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void SendCarLiveryAsync_ToUserGroup_WithNullRequesterId_Throws()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var gift = Fixture.Create<ExpirableGift>();
+        //    var groupId = Fixture.Create<int>();
+        //    var livery = Fixture.Create<UgcItem>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, null, endpoint).ConfigureAwait(false);
+        //    // Act.
+        //    Func<Task<GiftResponse<int>>> action = async () => await provider.SendCarLiveryAsync(gift, groupId, livery, null, endpoint).ConfigureAwait(false);
 
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
-        }
+        //    // Assert.
+        //    action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SendCarLiveryAsync_ToPlayers_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var groupGift = Fixture.Create<ExpirableGroupGift>();
-            var livery = Fixture.Create<UgcItem>();
-            var requesterId = Fixture.Create<string>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void SendCarLiveryAsync_ToPlayers_WithValidParameters_ReturnsCorrectType()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var groupGift = Fixture.Create<ExpirableGroupGift>();
+        //    var livery = Fixture.Create<UgcItem>();
+        //    var requesterId = Fixture.Create<string>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, requesterId, endpoint).ConfigureAwait(false);
+        //    // Act.
+        //    Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, requesterId, endpoint).ConfigureAwait(false);
 
-            // Assert.
-            action().Result.Should().BeOfType<List<GiftResponse<ulong>>>();
-        }
+        //    // Assert.
+        //    action().Result.Should().BeOfType<List<GiftResponse<ulong>>>();
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SendCarLiveryAsync_ToPlayers_WithNullRequesterId_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var groupGift = Fixture.Create<ExpirableGroupGift>();
-            var livery = Fixture.Create<UgcItem>();
-            var endpoint = Fixture.Create<string>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void SendCarLiveryAsync_ToPlayers_WithNullRequesterId_Throws()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var groupGift = Fixture.Create<ExpirableGroupGift>();
+        //    var livery = Fixture.Create<UgcItem>();
+        //    var endpoint = Fixture.Create<string>();
 
-            // Act.
-            Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, null, endpoint).ConfigureAwait(false);
+        //    // Act.
+        //    Func<Task<IList<GiftResponse<ulong>>>> action = async () => await provider.SendCarLiveryAsync(groupGift, livery, null, endpoint).ConfigureAwait(false);
 
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
-        }
+        //    // Assert.
+        //    action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
+        //}
 
         private sealed class Dependencies
         {
