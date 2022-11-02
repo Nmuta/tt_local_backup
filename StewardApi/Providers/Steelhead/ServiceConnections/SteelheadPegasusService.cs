@@ -280,7 +280,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            MotdRoot root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
+            MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
             MotdEntry entry = root.Entries.Where(motd => motd.idAttribute == id).First();
 
             var subset = this.mapper.Map<MotdBridge>(entry);
@@ -292,7 +292,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync()
         {
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
-            MotdRoot root = await XmlHelpers.DeserializeAsync<MotdRoot>(item.Content).ConfigureAwait(false);
+            MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in root.Entries)
@@ -332,7 +332,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
 
-            WofRoot root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
+            WofRoot root = await item.Content.DeserializeAsync<WofRoot>().ConfigureAwait(false);
             WofEntry entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.Map<WofBridge>(entry);
@@ -344,7 +344,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync()
         {
             GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
-            WofRoot root = await XmlHelpers.DeserializeAsync<WofRoot>(item.Content).ConfigureAwait(false);
+            WofRoot root = await item.Content.DeserializeAsync<WofRoot>().ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
             foreach (WofEntry entry in root.Entries)

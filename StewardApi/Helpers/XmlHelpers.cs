@@ -43,26 +43,5 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(xmlWriter, obj, namespaces)).ConfigureAwait(false);
             return stringwriter.ToString();
         }
-
-        /// <summary>
-        ///     Deserializes xml string into an object.
-        /// </summary>
-        /// <typeparam name="T">The type to deserialize to.</typeparam>
-        public static async Task<T> DeserializeAsync<T>(string xml)
-        {
-            using TextReader reader = new StringReader(xml);
-            using XmlReader xmlreader = XmlReader.Create(reader);
-            return await Task.Run(() => (T)new XmlSerializer(typeof(T)).Deserialize(xmlreader)).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        ///     Deserializes stream data into an object.
-        /// </summary>
-        /// <typeparam name="T">The type to deserialize to.</typeparam>
-        public static async Task<T> DeserializeAsync<T>(Stream stream)
-        {
-            using var reader = XmlReader.Create(stream);
-            return await Task.Run(() => (T)new XmlSerializer(typeof(T)).Deserialize(reader)).ConfigureAwait(false);
-        }
     }
 }
