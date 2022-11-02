@@ -86,5 +86,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Get the status of a user group bulk operation.
         /// </summary>
         Task<GetUserGroupBulkOperationStatusOutput> GetUserGroupBulkOperationStatus(ForzaBulkOperationType operation, int userGroupId, Guid blobId);
+
+        /// <summary>
+        ///     Create a add/remove bulk operation on a user group.
+        /// </summary>
+        Task<CreateUserGroupBulkOperationV2Output> CreateUserGroupBulkOperationV2(ForzaBulkOperationType operation, int userGroupId, ForzaUserGroupOperationPage[] pages);
     }
 }

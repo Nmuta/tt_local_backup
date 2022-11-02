@@ -10,6 +10,7 @@ using Bond;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH4.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.SystemFunctions;
@@ -104,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] SteelheadGroupGift groupGift)
         {
@@ -185,6 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(string liveryId, [FromBody] LocalizedMessageExpirableGroupGift groupGift)
         {
             if (!Guid.TryParse(liveryId, out var liveryIdAsGuid))

@@ -70,10 +70,9 @@ enum UserGroupManagementAction {
 }
 
 interface UserGroupManagementFailures {
-  //TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130
-  //players: BasicPlayerActionResult[];
+  players: BasicPlayerActionResult[];
   action: UserGroupManagementAction;
-  //copyToClipboard?: string;
+  copyToClipboard?: string;
   count: number;
 }
 
@@ -162,6 +161,7 @@ export class ListUsersInGroupComponent
 
     this.allPlayers = [];
     this.playersDataSource.data = this.allPlayers;
+    this.failedActionForUsers = null;
     if (changes.userGroup && !!this.userGroup) {
       this.isAllUsersGroup = this.userGroup?.id.isEqualTo(0);
       this.disallowDeleteAllUsers = !!this.service.largeUserGroups.find(x =>
@@ -187,143 +187,15 @@ export class ListUsersInGroupComponent
   /** Deletes specified users from a user group. */
   public deleteUsersInGroup(): void {
     this.deletePlayersMonitor = this.deletePlayersMonitor.repeat();
-    this.failedActionForUsers = {
-      count: 0,
-      action: UserGroupManagementAction.Remove,
-    };
 
-    const playerList = this.getBasicPlayerList(
-      this.formControls.userIdentifications.value,
-      this.formControls.useGamertags.value,
-    );
-
-    this.service
-      .deletePlayersFromUserGroupUsingBulkProcessing$(playerList, this.userGroup)
-      .pipe(
-        switchMap(bulkOperationStatus => {
-          // If there is no blobId, that means the add/remove is already complete. This happens with Apollo
-          if (!bulkOperationStatus.blobId) {
-            return of(bulkOperationStatus);
-          }
-
-          return this.service
-            .getBulkOperationStatus$(
-              this.userGroup,
-              ForzaBulkOperationType.Remove,
-              bulkOperationStatus.blobId,
-            )
-            .pipe(
-              map(bulkOperationStatus => {
-                let returnValue: UserGroupBulkOperationStatus;
-
-                switch (bulkOperationStatus.status) {
-                  case ForzaBulkOperationStatus.Completed:
-                  case ForzaBulkOperationStatus.Failed:
-                    returnValue = bulkOperationStatus;
-                    break;
-                  case ForzaBulkOperationStatus.Pending:
-                    throw new Error('Error!');
-                }
-
-                return returnValue;
-              }),
-              retry({ delay: 2000 }),
-            );
-        }),
-        this.deletePlayersMonitor.monitorSingleFire(),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe((response: UserGroupBulkOperationStatus) => {
-        this.formGroup.reset({
-          useGamertags: this.formControls.useGamertags.value,
-        });
-        this.allPlayers = [];
-        this.playersDataSource.data = this.allPlayers;
-        this.playersDataSource.paginator.pageIndex = 0;
-        this.getPlayersInUserGroup();
-
-        //TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130
-        // const failedUsers = response.filter(data => !!data.error);
-        // this.failedActionForUsers.players = failedUsers;
-        // this.failedActionForUsers.copyToClipboard = failedUsers
-        //   .map(player => player.gamertag ?? player.xuid)
-        //   .join('\n');
-
-        this.failedActionForUsers.count = response.remaining;
-
-        this.clearCheckboxes();
-      });
+    this.addOrRemoveUsersToUserGroup(this.deletePlayersMonitor, UserGroupManagementAction.Remove);
   }
 
   /** Adds specified users to a user group. */
   public addUsersInGroup(): void {
     this.addPlayersMonitor = this.addPlayersMonitor.repeat();
-    this.failedActionForUsers = {
-      count: 0,
-      action: UserGroupManagementAction.Add,
-    };
 
-    const playerList = this.getBasicPlayerList(
-      this.formControls.userIdentifications.value,
-      this.formControls.useGamertags.value,
-    );
-
-    this.service
-      .addPlayersToUserGroupUsingBulkProcessing$(playerList, this.userGroup)
-      .pipe(
-        switchMap(bulkOperationStatus => {
-          // If there is no blobId, that means the add/remove is already complete. This happens with Apollo
-          if (!bulkOperationStatus.blobId) {
-            return of(bulkOperationStatus);
-          }
-
-          return this.service
-            .getBulkOperationStatus$(
-              this.userGroup,
-              ForzaBulkOperationType.Add,
-              bulkOperationStatus.blobId,
-            )
-            .pipe(
-              map(bulkOperationStatus => {
-                let returnValue: UserGroupBulkOperationStatus;
-
-                switch (bulkOperationStatus.status) {
-                  case ForzaBulkOperationStatus.Completed:
-                  case ForzaBulkOperationStatus.Failed:
-                    returnValue = bulkOperationStatus;
-                    break;
-                  case ForzaBulkOperationStatus.Pending:
-                    throw new Error('Error!');
-                }
-
-                return returnValue;
-              }),
-              retry({ delay: 2000 }),
-            );
-        }),
-        this.addPlayersMonitor.monitorSingleFire(),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe((response: UserGroupBulkOperationStatus) => {
-        this.formGroup.reset({
-          useGamertags: this.formControls.useGamertags.value,
-        });
-        this.allPlayers = [];
-        this.playersDataSource.data = this.allPlayers;
-        this.playersDataSource.paginator.pageIndex = 0;
-        this.getPlayersInUserGroup();
-
-        //TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130
-        // const failedUsers = response.filter(data => !!data.error);
-        // this.failedActionForUsers.players = failedUsers;
-        // this.failedActionForUsers.copyToClipboard = failedUsers
-        //   .map(player => player.gamertag ?? player.xuid)
-        //   .join('\n');
-
-        this.failedActionForUsers.count = response.remaining;
-
-        this.clearCheckboxes();
-      });
+    this.addOrRemoveUsersToUserGroup(this.addPlayersMonitor, UserGroupManagementAction.Add);
   }
 
   /** Deletes a player from a user group */
@@ -376,6 +248,91 @@ export class ListUsersInGroupComponent
       return true;
     }
     return false;
+  }
+
+  private addOrRemoveUsersToUserGroup(
+    actionMonitor: ActionMonitor,
+    action: UserGroupManagementAction,
+  ): void {
+    this.failedActionForUsers = {
+      players: [],
+      action: action,
+      count: null,
+    };
+
+    const playerList = this.getBasicPlayerList(
+      this.formControls.userIdentifications.value,
+      this.formControls.useGamertags.value,
+    );
+
+    const forzaBulkOperationType =
+      action == UserGroupManagementAction.Add
+        ? ForzaBulkOperationType.Add
+        : ForzaBulkOperationType.Remove;
+
+    const serviceObservable =
+      action == UserGroupManagementAction.Add
+        ? this.service.addPlayersToUserGroupUsingBulkProcessing$(playerList, this.userGroup)
+        : this.service.deletePlayersFromUserGroupUsingBulkProcessing$(playerList, this.userGroup);
+
+    serviceObservable
+      .pipe(
+        switchMap(bulkOperationStatus => {
+          // If there is no blobId, that means the add/remove is already complete. This happens with Apollo
+          if (!bulkOperationStatus.blobId) {
+            return of(bulkOperationStatus);
+          }
+
+          return this.service
+            .getBulkOperationStatus$(
+              this.userGroup,
+              forzaBulkOperationType,
+              bulkOperationStatus.blobId,
+            )
+            .pipe(
+              map(bulkOperationStatus => {
+                let returnValue: UserGroupBulkOperationStatus;
+
+                switch (bulkOperationStatus.status) {
+                  case ForzaBulkOperationStatus.Completed:
+                  case ForzaBulkOperationStatus.Failed:
+                    returnValue = bulkOperationStatus;
+                    break;
+                  case ForzaBulkOperationStatus.Pending:
+                    throw new Error('Error!');
+                }
+
+                return returnValue;
+              }),
+              retry({ delay: 2000 }),
+            );
+        }),
+        actionMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((response: UserGroupBulkOperationStatus) => {
+        this.formGroup.reset({
+          useGamertags: this.formControls.useGamertags.value,
+        });
+        this.allPlayers = [];
+        this.playersDataSource.data = this.allPlayers;
+        this.playersDataSource.paginator.pageIndex = 0;
+        this.getPlayersInUserGroup();
+
+        if (response.failedUsers) {
+          this.failedActionForUsers.players = response.failedUsers;
+          this.failedActionForUsers.copyToClipboard = response.failedUsers
+            .map(player => player.gamertag ?? player.xuid)
+            .join('\n');
+        }
+        // For Steelhead, Sunrise and Apollo the list of failedUsers is not returned.
+        // If any user do fail the "remaining" count of the response will be greater than 0
+        else if (response.remaining > 0) {
+          this.failedActionForUsers.count = response.remaining;
+        }
+
+        this.clearCheckboxes();
+      });
   }
 
   private getPlayersInUserGroup(): void {

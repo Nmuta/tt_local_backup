@@ -1,14 +1,10 @@
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-
-using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Authorization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     /// Represents a Steward User Authorization Attribute
-    /// See: UserAttribute.
+    /// <see cref="UserAttribute"/>.
     /// </summary>
     public class AuthorizationAttribute
     {

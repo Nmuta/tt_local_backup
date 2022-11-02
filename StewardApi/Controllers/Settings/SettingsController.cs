@@ -65,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("tools/availability")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(ToolsAvailability))]
+        [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> SetToolsAvailable([FromBody] ToolsAvailability updatedToolsAvailability)
         {
             var results = await this.blobStorageProvider.SetToolsAvailabilityAsync(updatedToolsAvailability).ConfigureAwait(true);

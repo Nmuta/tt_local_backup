@@ -151,6 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.CreateUserGroup)]
         public async Task<IActionResult> CreateUserGroup(string userGroupName)
         {
             userGroupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userGroupName));
@@ -180,6 +181,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
         public async Task<IActionResult> AddUsersToGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks adding users to the "All" group
@@ -208,6 +210,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
         public async Task<IActionResult> RemoveUsersFromGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks removing users from the "All" group
@@ -236,6 +239,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.DeleteAll, StewardSubject.UserGroup)]
+        [Authorize(Policy = UserAttribute.RemoveAllUsersFromGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
             try
@@ -260,7 +264,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             var userIdsFromGtags = this.mapper.SafeMap<ForzaUserIds[]>(userList.Gamertags) ?? Array.Empty<ForzaUserIds>();
             var userIds = userIdsFromXuids.Concat(userIdsFromGtags).ToArray();
 
-            var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperation(bulkOperationType, userGroupId, userIds).ConfigureAwait(false);
+            // Split the userIds into chunk of 8000 and project them to a list of ForzaUserGroupOperationPage.
+            // This is done because the API serializer has a limit of 8192 items in an array.
+            var userIdsPages = userIds.Chunk(8000).Select(x => new ForzaUserGroupOperationPage() { userIds = x });
+
+            var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperationV2(bulkOperationType, userGroupId, userIdsPages.ToArray()).ConfigureAwait(false);
 
             return new UserGroupBulkOperationStatusOutput()
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -111,6 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.AuctionBlocklistEntry)]
+        [Authorize(Policy = UserAttribute.UpdateAuctionBlocklist)]
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
@@ -143,6 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.AuctionBlocklistEntry)]
+        [Authorize(Policy = UserAttribute.UpdateAuctionBlocklist)]
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -48,6 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.Settings
         /// </summary>
         [HttpDelete("{key}")]
         [SwaggerResponse(200)]
+        [Authorize(Policy = UserAttribute.AdminFeature)]
         public IActionResult DeleteCacheKey(string key)
         {
             if (this.refreshableCacheStore.GetItem<object>(key) == null)

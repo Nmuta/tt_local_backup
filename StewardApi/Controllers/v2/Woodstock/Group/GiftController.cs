@@ -9,6 +9,7 @@ using AutoMapper;
 using Bond;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.SystemFunctions;
@@ -95,6 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> GiftItemsToUserGroup(int groupId, [FromBody] WoodstockGift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -138,6 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftGroupLivery)]
         public async Task<IActionResult> GiftLiveryToUserGroup(int groupId, [FromBody] BulkLiveryGift<ExpirableGift> gift)
         {
             var userClaims = this.User.UserClaims();

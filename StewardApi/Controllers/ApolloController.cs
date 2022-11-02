@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -252,6 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<ApolloBanParametersInput> banInput)
         {
@@ -330,6 +332,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<ApolloBanParametersInput> banInput)
         {
@@ -380,6 +383,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.DeleteBan)]
         public async Task<IActionResult> ExpireBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -409,6 +413,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
+        [Authorize(Policy = UserAttribute.DeleteBan)]
         public async Task<IActionResult> DeleteBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -505,6 +510,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
+        [Authorize(Policy = UserAttribute.BanConsole)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -587,6 +593,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
+        [Authorize(Policy = UserAttribute.UpdateUserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] ApolloUserFlagsInput userFlags)
@@ -709,6 +716,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] ApolloGroupGift groupGift)
         {
@@ -799,6 +807,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] ApolloGroupGift groupGift)
         {
@@ -870,6 +879,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] ApolloGift gift)

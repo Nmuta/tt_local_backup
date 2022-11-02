@@ -113,6 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
+        [Authorize(Policy = UserAttribute.MessageGroup)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
             [FromBody] LspGroupLocalizedMessage communityMessage)
@@ -212,6 +213,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
+        [Authorize(Policy = UserAttribute.MessageGroup)]
         public async Task<IActionResult> EditGroupMessage(
             int groupId,
             string messageId,
@@ -307,6 +309,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
+        [Authorize(Policy = UserAttribute.MessageGroup)]
         public async Task<IActionResult> DeleteGroupMessage(int groupId, string messageId)
         {
             var userClaims = this.User.UserClaims();
