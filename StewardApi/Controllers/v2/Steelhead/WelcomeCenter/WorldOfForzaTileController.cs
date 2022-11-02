@@ -6,6 +6,8 @@ using System.Xml.Linq;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -14,6 +16,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
@@ -31,7 +34,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
     /// <summary>
     ///     Controller for steelhead Welcome Center's World of Forza Tile.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/worldofforza")]
+    [Route("api/v{version:apiVersion}/title/steelhead/welcomecenter/worldofforza")]
+    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [ApiVersion("2.0")]
@@ -54,7 +58,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     Gets all World of Forza entries to select.
         /// </summary>
         [HttpGet("options")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetWorldOfForzaSelectionOptionsAsync()
         {
             Dictionary<Guid, string> choices = await this.steelheadPegasusService.GetWorldOfForzaSelectionsAsync().ConfigureAwait(true);
@@ -67,7 +74,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     with matching id.
         /// </summary>
         [HttpGet("{id}")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(WofBridge))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetWorldOfForzaCurrentValuesAsync(string id)
         {
             if (!Guid.TryParse(id, out var parsedId))
@@ -84,7 +94,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     Edits and submit World of Forza.
         /// </summary>
         [HttpPost("{id}")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(GitPullRequest))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.WelcomeCenter)]
+        [Authorize(Policy = UserAttribute.UpdateMessageOfTheDay)]
         public async Task<IActionResult> EditAndSubmitWorldOfForza(string id, [FromBody] WofBridge wofTileBridge)
         {
             if (!Guid.TryParse(id, out var parsedId))

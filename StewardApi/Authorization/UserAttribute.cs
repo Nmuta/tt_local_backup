@@ -37,6 +37,8 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string UpdateObligationPipeline = "UpdateObligationPipeline";
         public const string UpdateProfile = "UpdateProfile";
         public const string UpdateUserGroup = "UpdateUserGroup";
+        public const string UpdateMessageOfTheDay = "UpdateMessageOfTheDay";
+        public const string UpdateWelcomeCenterTiles = "UpdateWelcomeCenterTiles";
 
         public static IEnumerable<string> AllAttributes()
         {
