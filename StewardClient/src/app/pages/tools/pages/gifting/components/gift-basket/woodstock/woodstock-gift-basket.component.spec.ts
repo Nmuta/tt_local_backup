@@ -6,7 +6,6 @@ import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-
 import { of } from 'rxjs';
 import { WoodstockMasterInventory } from '@models/woodstock/woodstock-master-inventory.model';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { WoodstockService } from '@services/woodstock';
 import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
 import faker from '@faker-js/faker';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
@@ -14,6 +13,10 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
+import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
+import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-player-gift.service.mock';
+import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service.mock';
 
 describe('WoodstockGiftBasketComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
@@ -21,7 +24,8 @@ describe('WoodstockGiftBasketComponent', () => {
 
   const formBuilder: FormBuilder = new FormBuilder();
   let mockStore: Store;
-  let mockWoodstockService: WoodstockService;
+  let mockWoodstockPlayersGiftService: WoodstockPlayersGiftService;
+  let mockWoodstockGroupGiftService: WoodstockGroupGiftService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule(
@@ -34,12 +38,14 @@ describe('WoodstockGiftBasketComponent', () => {
           ReactiveFormsModule,
           PipesModule,
         ],
+        providers: [createMockWoodstockPlayersGiftService(), createMockWoodstockGroupGiftService()],
       }),
     );
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);
-    mockWoodstockService = injector.inject(WoodstockService);
+    mockWoodstockPlayersGiftService = injector.inject(WoodstockPlayersGiftService);
+    mockWoodstockGroupGiftService = injector.inject(WoodstockGroupGiftService);
 
     fixture = TestBed.createComponent(WoodstockGiftBasketComponent);
     component = fixture.debugElement.componentInstance;
@@ -174,7 +180,7 @@ describe('WoodstockGiftBasketComponent', () => {
 
   describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockWoodstockService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
+      mockWoodstockPlayersGiftService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
@@ -194,13 +200,15 @@ describe('WoodstockGiftBasketComponent', () => {
         expireTimeSpanInDays: fakeBigNumber(),
       });
 
-      expect(mockWoodstockService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
+      expect(
+        mockWoodstockPlayersGiftService.postGiftPlayersUsingBackgroundTask$,
+      ).toHaveBeenCalled();
     });
   });
 
   describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockWoodstockService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
+      mockWoodstockGroupGiftService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
     it('should call sendGiftToLspGroup$', () => {
@@ -217,7 +225,7 @@ describe('WoodstockGiftBasketComponent', () => {
         expireTimeSpanInDays: fakeBigNumber(),
       });
 
-      expect(mockWoodstockService.postGiftLspGroup$).toHaveBeenCalled();
+      expect(mockWoodstockGroupGiftService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 

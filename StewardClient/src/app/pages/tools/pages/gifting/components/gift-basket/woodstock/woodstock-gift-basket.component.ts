@@ -11,7 +11,6 @@ import { WoodstockGiftingState } from '@tools-app/pages/gifting/woodstock/state/
 import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { WoodstockService } from '@services/woodstock';
 import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { Observable } from 'rxjs';
@@ -23,6 +22,8 @@ import { WOODSTOCK_UNIQUE_CAR_IDS_LOOKUP } from '@environments/app-data/item-lis
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HCI } from '@environments/environment';
 import { pluralize, PLURALIZE_CONFIG } from '@helpers/pluralize';
+import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 
 /** Woodstock gift basket. */
 @Component({
@@ -47,7 +48,8 @@ export class WoodstockGiftBasketComponent
   public allowSettingLocalizedMessage = false;
 
   constructor(
-    private readonly woodstockService: WoodstockService,
+    private readonly woodstockPlayersGiftService: WoodstockPlayersGiftService,
+    private readonly woodstockGroupGiftService: WoodstockGroupGiftService,
     private readonly snackBar: MatSnackBar,
     backgroundJobService: BackgroundJobService,
     store: Store,
@@ -167,12 +169,12 @@ export class WoodstockGiftBasketComponent
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.woodstockService.postGiftPlayersUsingBackgroundTask$(groupGift);
+    return this.woodstockPlayersGiftService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
   /** Sends a woodstock gift to an LSP group. */
   public sendGiftToLspGroup$(gift: WoodstockGift): Observable<GiftResponse<BigNumber>> {
-    return this.woodstockService.postGiftLspGroup$(this.lspGroup, gift);
+    return this.woodstockGroupGiftService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */
