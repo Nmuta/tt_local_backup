@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -27,9 +28,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
 
             this.ApolloServices = new Lazy<ApolloProxyBundle>(() =>
             {
-                var apolloProxyBundle = this.HttpContext.RequestServices.GetService<ApolloProxyBundle>();
-                apolloProxyBundle.Endpoint = this.ApolloEndpoint.Value;
-                return apolloProxyBundle;
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var proxyBundle = componentContext.Resolve<ApolloProxyBundle>();
+                proxyBundle.Endpoint = this.ApolloEndpoint.Value;
+                return proxyBundle;
             });
         }
 

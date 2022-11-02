@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -97,6 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
+        [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, string externalProfileId, [FromBody] string[] gameTitles)
         {
             xuid.IsValidXuid();

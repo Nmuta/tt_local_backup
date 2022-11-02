@@ -10,35 +10,38 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 #pragma warning disable SA1600 // Elements should be documented
     public static class UserAttribute
     {
-        public const string AddLocalizedString = "AddLocalizedString";
-        public const string AddProfileNote = "AddProfileNote";
-        public const string AdminFeature = "AdminFeature";
-        public const string BanConsole = "BanConsole";
-        public const string BanPlayer = "BanPlayer";
-        public const string CreateUserGroup = "CreateUserGroup";
-        public const string DeleteAuction = "DeleteAuction";
-        public const string DeleteBan = "DeleteBan";
-        public const string DeleteLeaderboardScores = "DeleteLeaderboardScores";
-        public const string FeatureUgc = "FeatureUgc";
-        public const string GroupGifting = "GroupGifting";
-        public const string GroupLiveryGifting = "GroupLiveryGifting";
-        public const string GroupMessaging = "GroupMessaging";
-        public const string HideUgc = "HideUgc";
-        public const string OverrideCms = "OverrideCms";
-        public const string PlayerGifting = "PlayerGifting";
-        public const string PlayerLiveryGifting = "PlayerLiveryGifting";
-        public const string PlayerMessaging = "PlayerMessaging";
-        public const string ReportUgc = "ReportUgc";
-        public const string SendLoyaltyRewards = "SendLoyaltyRewards";
-        public const string ServicesFeature = "ServicesFeature";
-        public const string SetReportWeight = "SetReportWeight";
-        public const string SetUgcGeoFlag = "SetUgcGeoFlag";
-        public const string UpdateAuctionBlocklist = "UpdateAuctionBlocklist";
-        public const string UpdateObligationPipeline = "UpdateObligationPipeline";
-        public const string UpdateProfile = "UpdateProfile";
-        public const string UpdateUserGroup = "UpdateUserGroup";
-        public const string UpdateMessageOfTheDay = "UpdateMessageOfTheDay";
-        public const string UpdateWelcomeCenterTiles = "UpdateWelcomeCenterTiles";
+        public const string AddLocalizedString = nameof(AddLocalizedString);
+        public const string AddProfileNote = nameof(AddProfileNote);
+        public const string AdminFeature = nameof(AdminFeature);
+        public const string BanConsole = nameof(BanConsole);
+        public const string BanPlayer = nameof(BanPlayer);
+        public const string CreateUserGroup = nameof(CreateUserGroup);
+        public const string DeleteAuction = nameof(DeleteAuction);
+        public const string DeleteBan = nameof(DeleteBan);
+        public const string DeleteLeaderboardScores = nameof(DeleteLeaderboardScores);
+        public const string FeatureUgc = nameof(FeatureUgc);
+        public const string GiftGroup = nameof(GiftGroup);
+        public const string GiftGroupLivery = nameof(GiftGroupLivery);
+        public const string GiftPlayer = nameof(GiftPlayer);
+        public const string GiftPlayerLivery = nameof(GiftPlayerLivery);
+        public const string HideUgc = nameof(HideUgc);
+        public const string MessageGroup = nameof(MessageGroup);
+        public const string MessagePlayer = nameof(MessagePlayer);
+        public const string OverrideCms = nameof(OverrideCms);
+        public const string ReportUgc = nameof(ReportUgc);
+        public const string RemoveAllUsersFromGroup = nameof(RemoveAllUsersFromGroup);
+        public const string SendLoyaltyRewards = nameof(SendLoyaltyRewards);
+        public const string ServicesFeature = nameof(ServicesFeature);
+        public const string SetReportWeight = nameof(SetReportWeight);
+        public const string SetUgcGeoFlag = nameof(SetUgcGeoFlag);
+        public const string UnhideUgc = nameof(UnhideUgc);
+        public const string UpdateAuctionBlocklist = nameof(UpdateAuctionBlocklist);
+        public const string UpdateObligationPipeline = nameof(UpdateObligationPipeline);
+        public const string UpdateProfile = nameof(UpdateProfile);
+        public const string UpdateUserGroup = nameof(UpdateUserGroup);
+        public const string UpdateUserFlags = nameof(UpdateUserFlags);
+        public const string UpdateMessageOfTheDay = nameof(UpdateMessageOfTheDay);
+        public const string UpdateWelcomeCenterTiles = nameof(UpdateWelcomeCenterTiles);
 
         public static IEnumerable<string> AllAttributes()
         {

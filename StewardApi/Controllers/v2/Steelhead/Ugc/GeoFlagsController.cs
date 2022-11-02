@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Bond;
 using Forza.UserInventory.FM8.Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -46,6 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UgcGeoFlags)]
+        [Authorize(Policy = UserAttribute.SetUgcGeoFlag)]
         public async Task<IActionResult> SetGeoFlags(string ugcId, [FromBody] IList<int> geoFlags)
         {
             if (!Guid.TryParse(ugcId, out var parsedUgcId))
