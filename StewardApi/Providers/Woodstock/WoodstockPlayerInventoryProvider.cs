@@ -165,9 +165,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     : 0;
                 var hasExpiration = gift.ExpireTimeSpanInDays > 0;
 
-                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await proxyService.GiftingManagementService.AdminSendItemGiftV3(xuid, inventoryItemType.ToString(), itemId, quantity, hasExpiration, gift.ExpireTimeSpanInDays)
+                    await proxyService.GiftingManagementService.AdminSendItemGiftV2(xuid, inventoryItemType.ToString(), itemId, hasExpiration, gift.ExpireTimeSpanInDays)
                         .ConfigureAwait(false);
                 }
 
@@ -246,7 +246,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
                 var hasExpiration = gift.ExpireTimeSpanInDays > 0;
 
-                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
                     await proxyService.GiftingManagementService.AdminSendItemGroupGiftV2(
                         groupId,
@@ -393,7 +393,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         private async Task<IList<StewardError>> SendGiftsAsync(
-            Func<InventoryItemType, int, uint, Task> serviceCall,
+            Func<InventoryItemType, int, Task> serviceCall,
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)
         {
@@ -404,11 +404,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 {
                     try
                     {
-                        await serviceCall(key, item.Id, (uint)item.Quantity).ConfigureAwait(false);
+                        for (var i = 0; i < item.Quantity; i++)
+                        {
+                            await serviceCall(key, item.Id).ConfigureAwait(false);
+                        }
                     }
                     catch
                     {
-                        var error = new FailedToSendStewardError($"Failed to gift item. (type: {key}) (itemId: {item.Id}) (quantity: {item.Quantity})");
+                        var error = new FailedToSendStewardError($"Failed to send item of type: {key} with ID: {item.Id}");
                         item.Error = error;
                         errors.Add(error);
                     }
@@ -432,7 +435,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     try
                     {
                         remainingCurrencyToSend -= creditsToSend;
-                        await serviceCall(key, 0, (uint)creditsToSend).ConfigureAwait(false);
+                        await serviceCall(key, creditsToSend).ConfigureAwait(false);
                     }
                     catch
                     {

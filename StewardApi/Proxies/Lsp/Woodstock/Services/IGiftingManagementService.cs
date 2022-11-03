@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <summary>
         ///     Sends a quantity of an item to a player.
         /// </summary>
-        Task<GiftingManagementService.AdminSendItemGiftV3Output> AdminSendItemGiftV3(ulong recipientXuid, string itemType, int itemId, uint quantity, bool hasExpiration, uint timeSpanInDays);
+        Task AdminSendItemGiftV2(ulong recipientXuid, string itemType, int itemValue, bool hasExpiration, uint timeSpanInDays);
 
         /// <summary>
         ///     Sends a quantity of an item to an LSP user group.
