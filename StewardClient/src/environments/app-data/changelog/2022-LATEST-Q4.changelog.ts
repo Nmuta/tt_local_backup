@@ -8,6 +8,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
+      uuid: 'e77d56a4-343d-430f-a383-7ff33255267e',
+      shortText: 'Gifting now uses live-steward CMS slot',
+      longText: [
+        'This change should allow all gifts to succeed no matter what CMS version the player is on.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserGroupManagement },
       uuid: '71de15af-da30-4e1e-b05f-9eeaf4de9645',
       shortText: 'Implement failed users response and sending large amount of users',
