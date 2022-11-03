@@ -42,7 +42,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.PegasusCmsDefaultSteelhead
+            ConfigurationKeyConstants.PegasusCmsDefaultSteelhead,
+            ConfigurationKeyConstants.SteelheadMessageOfTheDayPath,
+            ConfigurationKeyConstants.SteelheadWorldOfForzaPath,
+            ConfigurationKeyConstants.KeyVaultUrl,
+            ConfigurationKeyConstants.SteelheadContentAccessToken,
+            ConfigurationKeyConstants.SteelheadContentOrganizationUrl,
+            ConfigurationKeyConstants.SteelheadContentProjectId,
+            ConfigurationKeyConstants.SteelheadContentRepoId,
         };
 
         private readonly string cmsEnvironment;

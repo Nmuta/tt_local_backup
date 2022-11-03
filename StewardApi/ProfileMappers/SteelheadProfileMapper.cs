@@ -334,10 +334,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
             // Welcome Center
             this.CreateMap<MotdEntry, MotdBridge>()
-                .ForMember(dest => dest.FriendlyMessageName, act => act.MapFrom(src => src.FriendlyMessageName))
-                .ForMember(dest => dest.ContentImagePath, act => act.MapFrom(src => src.ContentImagePath))
-                .ForMember(dest => dest.Date, act => act.MapFrom(src => src.Date))
-                .ForMember(dest => dest.ContentBody, act => act.MapFrom(src => src.ContentBody))
                 .ReverseMap();
             this.CreateMap<LocTextMotdNoDesc, LocTextBridge>()
                 .ForMember(dest => dest.Description, act => act.Ignore())
@@ -345,15 +341,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LocTextMotd, LocTextBridge>()
                 .ReverseMap();
             this.CreateMap<WofEntry, WofBridge>()
-                .ForMember(dest => dest.FriendlyName, act => act.MapFrom(src => src.FriendlyName))
-                .ForMember(dest => dest.Size, act => act.MapFrom(src => src.Size))
-                .ForMember(dest => dest.TileTitle, act => act.MapFrom(src => src.TileTitle))
-                .ForMember(dest => dest.TileType, act => act.MapFrom(src => src.TileType))
-                .ForMember(dest => dest.TileDescription, act => act.MapFrom(src => src.TileDescription))
-                .ForMember(dest => dest.ContentImagePath, act => act.MapFrom(src => src.ContentImagePath))
-                .ForMember(dest => dest.TileImagePath, act => act.MapFrom(src => src.TileImagePath))
-                .ReverseMap()
-                .ForAllOtherMembers(act => act.Ignore());
+                .ReverseMap();
             this.CreateMap<LocTextWof, LocTextBridge>()
                 .ReverseMap();
             this.CreateMap<WofTimer, TimerBridge>()
@@ -365,7 +353,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ToPoints, act => act.MapFrom(src => src.To))
                 .ReverseMap();
             this.CreateMap<WofRangePoint, TimerCustomRangePoint>()
-                .ForMember(dest => dest.Text, act => act.MapFrom(src => src.Text))
                 .ReverseMap();
         }
     }

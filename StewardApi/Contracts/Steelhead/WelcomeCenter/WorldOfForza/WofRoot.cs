@@ -124,8 +124,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WofTimerCustomRange
     {
-        [XmlElement("From")]
         [PegEdit]
+        [XmlElement("From")]
         public WofRangePoint[] From { get; set; }
 
         [PegEdit]

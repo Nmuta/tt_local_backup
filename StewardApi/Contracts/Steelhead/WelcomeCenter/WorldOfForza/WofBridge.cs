@@ -1,8 +1,12 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
     /// <summary>
     ///     Tile sizes.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TileSize
     {
         Medium,

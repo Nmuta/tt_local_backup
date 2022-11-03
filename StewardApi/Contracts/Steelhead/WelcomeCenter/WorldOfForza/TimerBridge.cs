@@ -1,12 +1,15 @@
 ﻿#pragma warning disable SA1402 // File may only contain a single type
 
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
     /// <summary>
     ///     Timer types.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TimerType
     {
         ToStartOrToEnd,
@@ -56,5 +59,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         ///     should be marked anonymous in the model.
         /// </summary>
         public string Text { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the when attribute from the model.
+        /// </summary>
+        public string When { get; set; }
     }
 }
