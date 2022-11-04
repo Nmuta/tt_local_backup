@@ -62,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [PegEdit]
         public LocTextMotdNoDesc ContentBody { get; set; }
 
+        [PegEdit]
         public string ContentImagePath { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]

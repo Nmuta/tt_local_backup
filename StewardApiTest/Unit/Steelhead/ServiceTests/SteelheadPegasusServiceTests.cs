@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingMessagePartial}{ConfigurationKeyConstants.PegasusCmsDefaultSteelhead}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.PegasusCmsDefaultSteelhead},{ConfigurationKeyConstants.SteelheadMessageOfTheDayPath},{ConfigurationKeyConstants.SteelheadWorldOfForzaPath},{ConfigurationKeyConstants.KeyVaultUrl},{ConfigurationKeyConstants.SteelheadContentAccessToken},{ConfigurationKeyConstants.SteelheadContentOrganizationUrl},{ConfigurationKeyConstants.SteelheadContentProjectId},{ConfigurationKeyConstants.SteelheadContentRepoId}");
         }
 
         [TestMethod]
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
         {
             public Dependencies(bool validConfiguration = true)
             {
-                this.PegasusCmsProvider.Helpers.Add(TitleConstants.SteelheadCodeName, new CMSRetrievalHelper("", new Dictionary<String, IAzureBlobProvider>()));
+                this.PegasusCmsProvider.Helpers.Add(TitleConstants.SteelheadCodeName, new CMSRetrievalHelper("", new Dictionary<string, IAzureBlobProvider>()));
 
                 if (validConfiguration)
                 {
