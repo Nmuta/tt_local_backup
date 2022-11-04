@@ -64,6 +64,7 @@ export class SteelheadGiftBasketComponent
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+    super.ngOnInit();
     this.isLoading = true;
     this.store.dispatch(new GetSteelheadMasterInventoryList()).subscribe(() => {
       this.isLoading = false;

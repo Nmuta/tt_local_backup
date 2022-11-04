@@ -59,6 +59,7 @@ export class WoodstockGiftBasketComponent
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+    super.ngOnInit();
     this.isLoading = true;
     this.store.dispatch(new GetWoodstockMasterInventoryList()).subscribe(() => {
       this.isLoading = false;
