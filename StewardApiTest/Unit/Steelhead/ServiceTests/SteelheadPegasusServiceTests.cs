@@ -146,12 +146,22 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
                     this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].Returns("1234567890");
                     this.Configuration[ConfigurationKeyConstants.SteelheadContentProjectId].Returns("12345678-1234-1234-1234-123456789012");
                     this.Configuration[ConfigurationKeyConstants.SteelheadContentRepoId].Returns("12345678-1234-1234-1234-123456789012");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath].Returns("Test/Path");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath].Returns("Test/Path");
+                    this.Configuration[ConfigurationKeyConstants.KeyVaultUrl].Returns("1234567890");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentAccessToken].Returns("1234567890");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl].Returns("1234567890");
                 }
                 else
                 {
                     this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].ReturnsNull();
                     this.Configuration[ConfigurationKeyConstants.SteelheadContentProjectId].ReturnsNull();
                     this.Configuration[ConfigurationKeyConstants.SteelheadContentRepoId].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.KeyVaultUrl].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentAccessToken].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl].ReturnsNull();
                 }
             }
 
