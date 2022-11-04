@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             var objectId = context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimConstants.ObjectId);
             if (objectId == null)
             {
-                throw new BadHeaderStewardException("Invalid user claim.");
+                throw new UnauthorizedAccessException("Invalid user claim.");
             }
 
             var user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
