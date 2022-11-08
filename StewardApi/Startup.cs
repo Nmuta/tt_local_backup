@@ -231,6 +231,7 @@ namespace Turn10.LiveOps.StewardApi
             this.RegisterGravityTypes(builder);
 
             // Prepare LogSink
+            /*
             var ifxLogSink = new IfxLogSink(
                 this.configuration[ConfigurationKeyConstants.GenevaTenantId],
                 this.configuration[ConfigurationKeyConstants.GenevaRoleId],
@@ -243,6 +244,7 @@ namespace Turn10.LiveOps.StewardApi
                 this.configuration[ConfigurationKeyConstants.GenevaMdmNamespace],
                 GetRoleInstanceName());
             builder.Register(c => new MetricsManager(new List<IMetricsSink> { ifxMetricsSink })).As<MetricsManager>().SingleInstance();
+            */
 
             // Kusto
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
