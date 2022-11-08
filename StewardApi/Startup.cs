@@ -244,12 +244,13 @@ namespace Turn10.LiveOps.StewardApi
                 this.configuration[ConfigurationKeyConstants.GenevaMdmNamespace],
                 GetRoleInstanceName());
             builder.Register(c => new MetricsManager(new List<IMetricsSink> { ifxMetricsSink })).As<MetricsManager>().SingleInstance();
-            */
+            
 
             // Kusto
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 
             var kustoLoggerConfiguration = new KustoConfiguration();
+            
 
             this.configuration.Bind("KustoLoggerConfiguration", kustoLoggerConfiguration);
             kustoLoggerConfiguration.ClientSecret = kustoClientSecret;
@@ -261,6 +262,7 @@ namespace Turn10.LiveOps.StewardApi
             kustoConfiguration.ClientSecret = kustoClientSecret;
             var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
             builder.Register(c => kustoProvider).As<IKustoProvider>().SingleInstance();
+            */
 
             builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
             builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
@@ -296,9 +298,11 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<NotificationHistoryProvider>().As<INotificationHistoryProvider>().SingleInstance();
             builder.RegisterType<BlobStorageProvider>().As<IBlobStorageProvider>().SingleInstance();
 
+            /*
             var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
             var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString));
             builder.Register(c => blobRepo).As<IBlobRepository>().SingleInstance();
+            */
 
             builder.RegisterType<HubManager>().SingleInstance();
             builder.RegisterType<JobTracker>().As<IJobTracker>().SingleInstance();
