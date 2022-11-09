@@ -33,7 +33,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/localization")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.Localization, Target.Details, Dev.ReviseTags)]
     public class LocalizationController : V2SteelheadControllerBase
