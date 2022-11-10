@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'c9f754d0-1344-4636-bc29-a5cc804d62c6',
+      shortText: 'Create Welcome Center Calendar UI, more coming soon',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
       uuid: '179ef494-cac6-47af-b9d9-e7695ed699df',
       shortText: 'Give Media Team permission to localized Pegasus strings',

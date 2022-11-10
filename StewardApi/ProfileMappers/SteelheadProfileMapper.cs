@@ -10,6 +10,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -329,6 +332,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
             this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
+
+            this.CreateMap<(WelcomeCenterTileConfig tile, WelcomeCenterTileCmsBase tileInfo), WelcomeCenterTileOutput>()
+                .ForMember(dest => dest.TileTypeV3, opt => opt.MapFrom(src => src.tile.TileTypeV3))
+                .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.tile.Priority))
+                .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.tile.Size))
+                .ForMember(dest => dest.DisplayConditionDataList, opt => opt.MapFrom(src => src.tile.DisplayConditionDataList))
+                .ForMember(dest => dest.TileFriendlyName, opt => opt.MapFrom(src => src.tileInfo.FriendlyName))
+                .ForMember(dest => dest.TileTitle, opt => opt.MapFrom(src => src.tileInfo.TileTitle))
+                .ForMember(dest => dest.TileType, opt => opt.MapFrom(src => src.tileInfo.TileType))
+                .ForMember(dest => dest.TileDescription, opt => opt.MapFrom(src => src.tileInfo.TileDescription))
+                .ForMember(dest => dest.TileImagePath, opt => opt.MapFrom(src => src.tileInfo.TileImagePath))
+                .ForMember(dest => dest.TileTelemetryTag, opt => opt.MapFrom(src => src.tileInfo.TelemetryTag));
         }
     }
 }

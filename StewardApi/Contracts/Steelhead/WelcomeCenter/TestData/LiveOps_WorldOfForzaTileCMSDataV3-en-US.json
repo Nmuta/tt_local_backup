@@ -1,0 +1,125 @@
+{
+  "TileCMSCollection": [
+    {
+      "FriendlyName": "Steelhead Welcome Message",
+      "Timer": null,
+      "CMSTileID": "96942a80-d716-4149-adf4-2e13f00d1702",
+      "TileTitle": "Welcome to Forza Motorsport!",
+      "TileType": "News",
+      "TileDescription": "Check out new Steelhead features:\r\n\r\n-Builder’s Cup – Solo Career Experience!\r\n-Racer's Cup - Competitive Online Racing!\r\n-Freeplay - Build your own race!\r\n",
+      "TileImagePath": "web-asset://WoF_Tall_01_796f501629c8a930471e3bea63bc2846.png",
+      "TelemetryTag": "SteelheadWelcomeTile",
+      "Type": "WoFTileImageText"
+    },
+    {
+      "FriendlyName": "DEFAULT TILE - Column 1 - Generic Popup",
+      "Timer": null,
+      "CMSTileID": "2575cb0f-ba63-4a35-b639-7cbf7ed45394",
+      "TileTitle": "Generic Tile Title",
+      "TileType": "Generic Tile Subtitle",
+      "TileDescription": "Generic Tile Body Text",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\Placeholder_05_764_4k_Lrg.png",
+      "TelemetryTag": "Generic Popup",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "DEFAULT TILE - Column 1 - Generic Popup",
+      "Timer": null,
+      "CMSTileID": "a32f4e4f-1e9d-4e9d-9925-12d99e898c14",
+      "TileTitle": "Generic Tile Title",
+      "TileType": "Generic Tile Subtitle",
+      "TileDescription": "Generic Tile Body Text",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\Placeholder_09_376_4k_Med.png",
+      "TelemetryTag": "Generic Popup",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "Placeholder - Promotional Content",
+      "Timer": null,
+      "CMSTileID": "0b4f00ad-3f4e-44d7-b3ce-11a5fe2e0923",
+      "TileTitle": "Car Pass",
+      "TileType": "Promotional Content",
+      "TileDescription": "VW Golf GTI '83\r\nVW Golf '98\r\nVW Golf R '10\r\nVW Golf R '14\r\nVW Golf R '19\r\nGolf Gti 16v Mk2\r\nGolf R32",
+      "TileImagePath": "web-asset://WoF_Wide_01_86eb85841047e41a70e22b706bf5af15.png",
+      "TelemetryTag": "Placeholder_StoreDeeplink",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "DEFAULT TILE - Column 2 - Generic Popup",
+      "Timer": null,
+      "CMSTileID": "f217899b-d34a-46f0-9b75-d5df18377a25",
+      "TileTitle": "Generic Tile Title",
+      "TileType": "Generic Tile Subtitle",
+      "TileDescription": "Generic Tile Body Text",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\Placeholder_05_764_4k_Lrg.png",
+      "TelemetryTag": "Generic Popup",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "DEFAULT TILE - Column 2 - Generic Popup",
+      "Timer": null,
+      "CMSTileID": "6493ac96-200e-4530-ac1b-c1acc8c7ade1",
+      "TileTitle": "Generic Tile Title",
+      "TileType": "Generic Tile Subtitle",
+      "TileDescription": "Generic Tile Body Text",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\Placeholder_09_376_4k_Med.png",
+      "TelemetryTag": "Generic Popup",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "Placeholder - Elder Forza Player",
+      "Timer": null,
+      "CMSTileID": "9b619dda-fb39-48a2-8b13-52a0006f82bd",
+      "TileTitle": "Calling all Forza Veterans!",
+      "TileType": "A Thank You...",
+      "TileDescription": "We've noticed you've played 5 sessions and just wanted to say thanks for playing!",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\WoF_Wide_04.png",
+      "TelemetryTag": "Placeholder_5Sessions",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "Placeholder - Patch Notes - September 2022",
+      "Timer": null,
+      "CMSTileID": "c52abda3-698b-4232-a1ba-c29d8cdc0b2f",
+      "TileTitle": "Patch Notes",
+      "TileType": "September Update",
+      "TileDescription": "TODO: Deeplink to Patch Notes in Message Center. This popup won't exist.",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\WoF_Wide_04.png",
+      "TelemetryTag": "PatchNotes_September2022",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "Placeholder - QR Code - Forza.net",
+      "Timer": null,
+      "CMSTileID": "b1341039-313f-4f6a-a261-b7185f7177a0",
+      "TileTitle": "Forza.net",
+      "TileType": "Support",
+      "TileDescription": "Check out the new Forza website!",
+      "TileImagePath": "web-asset://WOF_Temp_Inside_bf602a5a871a0cab6aa73d5d1d0b9f33.png",
+      "TelemetryTag": "ForzaNetQRCode",
+      "Type": "WoFTileImageText"
+    },
+    {
+      "FriendlyName": "DEFAULT TILE - Column 3 - Generic Popup",
+      "Timer": null,
+      "CMSTileID": "dd1de6fc-e32f-491f-8553-ced8d71d5b48",
+      "TileTitle": "Generic Tile Title",
+      "TileType": "Generic Tile Subtitle",
+      "TileDescription": "Generic Tile Body Text",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\Placeholder_05_764_4k_Lrg.png",
+      "TelemetryTag": "Generic Popup",
+      "Type": "WoFTileGenericPopup"
+    },
+    {
+      "FriendlyName": "DEFAULT TILE - Column 3 - Generic Popup",
+      "Timer": null,
+      "CMSTileID": "574c2f2e-884c-4914-8735-8f216ef19c8f",
+      "TileTitle": "Generic Tile Title",
+      "TileType": "Generic Tile Subtitle",
+      "TileDescription": "Generic Tile Body Text",
+      "TileImagePath": "GAME:\\Media\\UI\\Textures\\Data_Bound\\WorldOfForza\\Placeholder_09_376_4k_Med.png",
+      "TelemetryTag": "Generic Popup",
+      "Type": "WoFTileGenericPopup"
+    }
+  ]
+}
