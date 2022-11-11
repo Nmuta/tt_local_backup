@@ -501,4 +501,23 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<GravityGiftHistoryProvider>().As<IGravityGiftHistoryProvider>().SingleInstance();
         }
     }
+
+    /// <summary>
+    /// Startup used for testing.
+    /// </summary>
+    public sealed class ControllerTestStartup
+    {
+        /// <summary>
+        ///     Configures the services.
+        /// </summary>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+        }
+
+        /// <summary>
+        ///     Configures the app.
+        /// </summary>
+        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment, IApiVersionDescriptionProvider provider) { }
+    }
 }
