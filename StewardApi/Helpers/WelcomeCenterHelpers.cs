@@ -150,18 +150,25 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                             FillXml(descend.Descendants(c.Path).ElementAt(c.Index), c);
                         }
                     }
-                    else if (child.Children.Count == 0 && child.IsAnonymousField)
+                    else if (child.IsAnonymousField && child.Children.Count == 0)
                     {
                         SetElementValue(el, child);
                     }
                     else if (child.IsAttributeField)
                     {
-                        if (child.Value != null)
+                        if (child.Path.LocalName == "loc-ref" || child.Path.LocalName == "loc-def")
                         {
-                            // Null check ignores the non-existant loc-ref or loc-def.
-                            // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
-                            el.SetAttributeValue(child.Path, null);
-                            el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
+                            if (child.Value != null)
+                            {
+                                // Null check ignores the non-existant loc-ref or loc-def.
+                                // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
+                                el.SetAttributeValue(child.Path, null);
+                                el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
+                            }
+                        }
+                        else
+                        {
+                            el.SetAttributeValue(child.Path, child.Value);
                         }
                     }
                     else
