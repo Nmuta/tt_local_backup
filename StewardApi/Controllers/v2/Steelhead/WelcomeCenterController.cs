@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var welcomeCenterData = System.IO.File.ReadAllText(".\\Contracts\\Steelhead\\WelcomeCenter\\TestData\\LiveOps_WorldOfForzaConfigV3.json");
             var welcomeCenterTileData = System.IO.File.ReadAllText(".\\Contracts\\Steelhead\\WelcomeCenter\\TestData\\LiveOps_WorldOfForzaTileCMSDataV3-en-US.json");
 
-            var welcomeCenter = Newtonsoft.Json.JsonConvert.DeserializeObject<WelcomeCenter>(welcomeCenterData);
+            var welcomeCenter = Newtonsoft.Json.JsonConvert.DeserializeObject<Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WelcomeCenter>(welcomeCenterData);
             var welcomeCenterTiles = Newtonsoft.Json.JsonConvert.DeserializeObject<WelcomeCenterTiles>(welcomeCenterTileData);
 
             var response = new WelcomeCenterOutput

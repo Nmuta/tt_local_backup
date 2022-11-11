@@ -6,7 +6,6 @@ using System.Xml.Linq;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
