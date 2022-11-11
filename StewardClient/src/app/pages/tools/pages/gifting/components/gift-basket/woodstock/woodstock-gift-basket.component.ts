@@ -88,7 +88,7 @@ export class WoodstockGiftBasketComponent
     const giftBasketItems = this.giftBasket.data;
     return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
-      expireTimeSpanInDays: this.getExpireDateInDays(),
+      expireAfterDays: this.getExpireDateInDays(),
       inventory: {
         creditRewards: giftBasketItems
           .filter(item => item.itemType === 'creditRewards')

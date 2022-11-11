@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
@@ -27,6 +28,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
+using StewardGitApi;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
@@ -79,7 +81,7 @@ using Turn10.Services.MessageEncryption;
 using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
-using static Turn10.LiveOps.StewardApi.Helpers.AutofactHelpers;
+using static Turn10.LiveOps.StewardApi.Helpers.AutofacHelpers;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 
 namespace Turn10.LiveOps.StewardApi
@@ -94,8 +96,6 @@ namespace Turn10.LiveOps.StewardApi
 
         private IServiceCollection allServices;
 
-        public ILifetimeScope AutofacContainer { get; private set; }
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -103,6 +103,11 @@ namespace Turn10.LiveOps.StewardApi
         {
             this.configuration = configuration;
         }
+
+        /// <summary>
+        ///     Gets the autofac container.
+        /// </summary>
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         /// <summary>
         ///     Configures the services.
@@ -293,6 +298,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<TableStorageClientFactory>().As<ITableStorageClientFactory>().SingleInstance();
             builder.RegisterType<NotificationHistoryProvider>().As<INotificationHistoryProvider>().SingleInstance();
             builder.RegisterType<BlobStorageProvider>().As<IBlobStorageProvider>().SingleInstance();
+            builder.RegisterType<AzureDevOpsFactory>().As<IAzureDevOpsFactory>().SingleInstance();
 
             var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
             var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString));
@@ -499,5 +505,24 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<GravityGiftRequestValidator>().As<IRequestValidator<GravityGift>>().SingleInstance();
             builder.RegisterType<GravityGiftHistoryProvider>().As<IGravityGiftHistoryProvider>().SingleInstance();
         }
+    }
+
+    /// <summary>
+    /// Startup used for testing.
+    /// </summary>
+    public sealed class ControllerTestStartup
+    {
+        /// <summary>
+        ///     Configures the services.
+        /// </summary>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+        }
+
+        /// <summary>
+        ///     Configures the app.
+        /// </summary>
+        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment, IApiVersionDescriptionProvider provider) { }
     }
 }

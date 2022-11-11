@@ -90,7 +90,7 @@ describe('WoodstockGiftLiveryComponent', () => {
   describe('Method: giftLiveriesToPlayers$', () => {
     const xuids = [fakeBigNumber(), fakeBigNumber(), fakeBigNumber()];
     const giftReason = faker.random.words(5);
-    const expireTimeSpanInDays = fakeBigNumber();
+    const expireAfterDays = fakeBigNumber();
 
     beforeEach(() => {
       mockPlayerGiftService.giftLiveriesByXuids$ = jasmine
@@ -101,7 +101,7 @@ describe('WoodstockGiftLiveryComponent', () => {
     describe('If xuid list provided is null', () => {
       it('should throw error', () => {
         component.service
-          .giftLiveriesToPlayers$(liveryIds, null, giftReason, expireTimeSpanInDays)
+          .giftLiveriesToPlayers$(liveryIds, null, giftReason, expireAfterDays)
           .pipe(
             take(1),
             catchError(_error => {
@@ -120,7 +120,7 @@ describe('WoodstockGiftLiveryComponent', () => {
     describe('If xuid list provided length is 0', () => {
       it('should throw error', () => {
         component.service
-          .giftLiveriesToPlayers$(liveryIds, [], giftReason, expireTimeSpanInDays)
+          .giftLiveriesToPlayers$(liveryIds, [], giftReason, expireAfterDays)
           .pipe(
             take(1),
             catchError(_error => {
@@ -138,18 +138,13 @@ describe('WoodstockGiftLiveryComponent', () => {
 
     describe('If playerIdentities is valid', () => {
       it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
-        component.service.giftLiveriesToPlayers$(
-          liveryIds,
-          xuids,
-          giftReason,
-          expireTimeSpanInDays,
-        );
+        component.service.giftLiveriesToPlayers$(liveryIds, xuids, giftReason, expireAfterDays);
 
         expect(mockPlayerGiftService.giftLiveriesByXuids$).toHaveBeenCalledWith(
           giftReason,
           liveryIds,
           xuids,
-          expireTimeSpanInDays,
+          expireAfterDays,
         );
       });
     });
@@ -158,7 +153,7 @@ describe('WoodstockGiftLiveryComponent', () => {
   describe('Method: giftLiveriesToLspGroup$', () => {
     const lspGroup = { id: fakeBigNumber(), name: faker.random.words(2) } as LspGroup;
     const giftReason = faker.random.words(5);
-    const expireTimeSpanInDays = fakeBigNumber();
+    const expireAfterDays = fakeBigNumber();
 
     beforeEach(() => {
       mockGroupGiftService.giftLiveriesByUserGroup$ = jasmine
@@ -169,7 +164,7 @@ describe('WoodstockGiftLiveryComponent', () => {
     describe('If lsp group provided is null', () => {
       it('should throw error', () => {
         component.service
-          .giftLiveriesToLspGroup$(liveryIds, null, giftReason, expireTimeSpanInDays)
+          .giftLiveriesToLspGroup$(liveryIds, null, giftReason, expireAfterDays)
           .pipe(
             take(1),
             catchError(_error => {
@@ -187,18 +182,13 @@ describe('WoodstockGiftLiveryComponent', () => {
 
     describe('If lsp group provided is valid', () => {
       it('should call GroupGiftService.giftLiveriesByUserGroup with correct parmas', () => {
-        component.service.giftLiveriesToLspGroup$(
-          liveryIds,
-          lspGroup,
-          giftReason,
-          expireTimeSpanInDays,
-        );
+        component.service.giftLiveriesToLspGroup$(liveryIds, lspGroup, giftReason, expireAfterDays);
 
         expect(mockGroupGiftService.giftLiveriesByUserGroup$).toHaveBeenCalledWith(
           giftReason,
           liveryIds,
           lspGroup.id,
-          expireTimeSpanInDays,
+          expireAfterDays,
         );
       });
     });

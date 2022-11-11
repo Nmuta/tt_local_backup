@@ -163,11 +163,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var backstagePassDelta = backstagePasses != default(MasterInventoryItem)
                     ? backstagePasses.Quantity
                     : 0;
-                var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+                var hasExpiration = gift.ExpireAfterDays > 0;
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await proxyService.GiftingManagementService.AdminSendItemGiftV2(xuid, inventoryItemType.ToString(), itemId, hasExpiration, gift.ExpireTimeSpanInDays)
+                    await proxyService.GiftingManagementService.AdminSendItemGiftV2(xuid, inventoryItemType.ToString(), itemId, hasExpiration, gift.ExpireAfterDays)
                         .ConfigureAwait(false);
                 }
 
@@ -244,7 +244,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
                 this.SetCurrencySendLimits(currencyGifts, useAdminCreditLimit);
-                var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+                var hasExpiration = gift.ExpireAfterDays > 0;
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
@@ -253,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         inventoryItemType.ToString(),
                         itemId,
                         hasExpiration,
-                        gift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                        gift.ExpireAfterDays).ConfigureAwait(false);
                 }
 
                 giftResponse.Errors = await this.SendGiftsAsync(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -282,8 +282,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             // TODO: Log gift to gift history
             var xuids = groupGift.Xuids.ToArray();
-            var hasExpiration = groupGift.ExpireTimeSpanInDays > 0;
-            var result = await proxyService.GiftingManagementService.AdminSendLiveryGift(xuids, xuids.Length, livery.Id, hasExpiration, groupGift.ExpireTimeSpanInDays).ConfigureAwait(false);
+            var hasExpiration = groupGift.ExpireAfterDays > 0;
+            var result = await proxyService.GiftingManagementService.AdminSendLiveryGift(xuids, xuids.Length, livery.Id, hasExpiration, groupGift.ExpireAfterDays).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -343,11 +343,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             };
 
             Guid? notificationId = null;
-            var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+            var hasExpiration = gift.ExpireAfterDays > 0;
             try
             {
                 // TODO: Log gift to gift history
-                var response = await proxyService.GiftingManagementService.AdminSendGroupLiveryGift(groupId, livery.Id, hasExpiration, gift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                var response = await proxyService.GiftingManagementService.AdminSendGroupLiveryGift(groupId, livery.Id, hasExpiration, gift.ExpireAfterDays).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)

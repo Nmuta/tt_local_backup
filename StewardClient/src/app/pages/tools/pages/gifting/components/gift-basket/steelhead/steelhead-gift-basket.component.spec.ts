@@ -157,7 +157,7 @@ describe('SteelheadGiftBasketComponent', () => {
       component.sendGiftToPlayers$({
         titleMessageId: faker.datatype.uuid(),
         bodyMessageId: faker.datatype.uuid(),
-        expireTimeSpanInDays: new BigNumber(faker.datatype.number()),
+        expireAfterDays: new BigNumber(faker.datatype.number()),
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
@@ -178,7 +178,7 @@ describe('SteelheadGiftBasketComponent', () => {
       component.sendGiftToLspGroup$({
         titleMessageId: faker.datatype.uuid(),
         bodyMessageId: faker.datatype.uuid(),
-        expireTimeSpanInDays: new BigNumber(faker.datatype.number()),
+        expireAfterDays: new BigNumber(faker.datatype.number()),
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });

@@ -107,7 +107,7 @@ export class SteelheadGiftBasketComponent
     return {
       titleMessageId: this.formControls.localizedTitleMessageInfo.value?.id,
       bodyMessageId: this.formControls.localizedBodyMessageInfo.value?.id,
-      expireTimeSpanInDays: this.getExpireDateInDays(),
+      expireAfterDays: this.getExpireDateInDays(),
       giftReason: this.sendGiftForm.controls['giftReason'].value,
       inventory: {
         creditRewards: giftBasketItems

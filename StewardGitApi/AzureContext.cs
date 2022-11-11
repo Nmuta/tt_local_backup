@@ -58,7 +58,7 @@ namespace StewardGitApi
             get => this.connection;
             private set
             {
-                this.connection.Disconnect();
+                this.connection?.Disconnect();
                 this.connection = value;
             }
         }

@@ -24,7 +24,7 @@ export interface LocalizedMessageGroupGift extends LocalizedMessageGift {
 
 /** Model for a single player gift that can expire. */
 export interface ExpirableGift extends Gift {
-  expireTimeSpanInDays: BigNumber;
+  expireAfterDays: BigNumber;
 }
 
 /** Model for a multi-player gift that can expire. */
@@ -34,7 +34,7 @@ export interface ExpirableGroupGift extends ExpirableGift {
 
 /** A localized message single player gift that can expire. */
 export interface LocalizedMessageExpirableGift extends LocalizedMessageGift {
-  expireTimeSpanInDays: BigNumber;
+  expireAfterDays: BigNumber;
 }
 
 /** A localized message multi-player gift that can expire. */

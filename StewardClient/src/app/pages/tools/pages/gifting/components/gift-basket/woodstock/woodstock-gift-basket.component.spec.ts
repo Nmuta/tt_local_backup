@@ -197,7 +197,7 @@ describe('WoodstockGiftBasketComponent', () => {
           quickChatLines: [],
           emotes: [],
         },
-        expireTimeSpanInDays: fakeBigNumber(),
+        expireAfterDays: fakeBigNumber(),
       });
 
       expect(
@@ -222,7 +222,7 @@ describe('WoodstockGiftBasketComponent', () => {
           quickChatLines: [],
           emotes: [],
         },
-        expireTimeSpanInDays: fakeBigNumber(),
+        expireAfterDays: fakeBigNumber(),
       });
 
       expect(mockWoodstockGroupGiftService.postGiftLspGroup$).toHaveBeenCalled();

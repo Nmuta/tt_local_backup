@@ -8,12 +8,28 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+<<<<<<< HEAD
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
       uuid: 'e77d56a4-343d-430f-a383-7ff33255267e',
       shortText: 'Gifting now uses live-steward CMS slot',
       longText: [
         'This change should allow all gifts to succeed no matter what CMS version the player is on.',
       ],
+=======
+      tag: ChangelogTag.Internal,
+      uuid: '4fe92558-72c7-4471-a2c6-5d3a8469267a',
+      shortText: 'Cleanup naming conventions',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'c9f754d0-1344-4636-bc29-a5cc804d62c6',
+      shortText: 'Create Welcome Center Calendar UI, more coming soon',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
+      uuid: '179ef494-cac6-47af-b9d9-e7695ed699df',
+      shortText: 'Give Media Team permission to localized Pegasus strings',
+>>>>>>> 0e1087813c86a3941be9969cdda00dde09ae3edf
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserGroupManagement },

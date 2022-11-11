@@ -259,5 +259,35 @@
         ///     The Steward environment.
         /// </summary>
         public const string StewardEnvironment = "StewardEnvironment";
+
+        /// <summary>
+        ///     The Steelhead Content PAT.
+        /// </summary>
+        public const string SteelheadContentAccessToken = "Git:SteelheadContentAccessToken";
+
+        /// <summary>
+        ///     The Steelhead Content project id.
+        /// </summary>
+        public const string SteelheadContentProjectId = "Git:SteelheadContentProjectId";
+
+        /// <summary>
+        ///     The Steelhead Content repo id.
+        /// </summary>
+        public const string SteelheadContentRepoId = "Git:SteelheadContentRepoId";
+
+        /// <summary>
+        ///     The Steelhead Content organization URL.
+        /// </summary>
+        public const string SteelheadContentOrganizationUrl = "Git:SteelheadContentOrganizationUrl";
+
+        /// <summary>
+        ///     The Steelhead Message of the Day Path in the Steelhead Content repo.
+        /// </summary>
+        public const string SteelheadMessageOfTheDayPath = "Git:SteelheadMessageOfTheDayPath";
+
+        /// <summary>
+        ///     The Steelhead World of Forza path in the Steelhead Content repo.
+        /// </summary>
+        public const string SteelheadWorldOfForzaPath = "Git:SteelheadWorldOfForzaPath";
     }
 }

@@ -76,7 +76,6 @@ namespace StewardGitApi
         public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy changeToPush, Action<bool> onSuccess = null)
         {
             _ = changeToPush.CheckForNull(nameof(changeToPush));
-            changeToPush.VersionControlChangeType = VersionControlChangeType.Add;
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             GitPush gitPush = await GitHelper.CommitAndPushAsync(this.AzureContext, new CommitRefProxy[] { changeToPush }).ConfigureAwait(false);
             onSuccess?.Invoke(gitPush != null);

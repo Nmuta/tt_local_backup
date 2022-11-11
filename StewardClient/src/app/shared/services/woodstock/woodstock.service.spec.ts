@@ -315,6 +315,99 @@ describe('WoodstockService', () => {
     });
   });
 
+<<<<<<< HEAD
+=======
+  describe('Method: postGiftPlayers', () => {
+    const gift: WoodstockGroupGift = {
+      xuids: [new BigNumber(123456789)],
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+        carHorns: [],
+        quickChatLines: [],
+        emotes: [],
+      },
+      expireAfterDays: fakeBigNumber(),
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest$ with the expected params', done => {
+      service.postGiftPlayers$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/players`,
+          gift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
+    const gift: WoodstockGroupGift = {
+      xuids: [new BigNumber(123456789)],
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+        carHorns: [],
+        quickChatLines: [],
+        emotes: [],
+      },
+      expireAfterDays: fakeBigNumber(),
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest$ with the expected params', done => {
+      service.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/players/useBackgroundProcessing`,
+          gift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftLspGroup', () => {
+    const lspGroup: LspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
+    const gift: WoodstockGift = {
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+        carHorns: [],
+        quickChatLines: [],
+        emotes: [],
+      },
+      expireAfterDays: fakeBigNumber(),
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest$ with the expected params', done => {
+      service.postGiftLspGroup$(lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/groupId(${lspGroup.id})`,
+          gift,
+        );
+        done();
+      });
+    });
+  });
+
+>>>>>>> 0e1087813c86a3941be9969cdda00dde09ae3edf
   describe('Method: getPlayerAuctionsByXuid$', () => {
     const xuid = fakeXuid();
     const filters = DefaultAuctionFilters;
