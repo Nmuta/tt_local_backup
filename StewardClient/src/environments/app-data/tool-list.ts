@@ -23,6 +23,7 @@ export enum NavbarTool {
   Zendesk = 'zendesk',
   Sprinklr = 'sprinklr',
   Pegasus = 'pegasus',
+  WelcomeCenterCalendar = 'welcome-center-calendar',
 
   AdminPagesSelector = 'admin-selector',
 
@@ -141,6 +142,7 @@ export enum AppIcon {
   DevEnvironment = 'admin_panel_settings',
   Endpoints = 'explore',
   CarDetails = 'minor_crash',
+  WelcomeCenterCalendar = 'calendar_today',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -553,6 +555,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/racers-cup/racers-cup.module').then(
         m => m.RacersCupModule,
       ),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.WelcomeCenterCalendar,
+    tool: NavbarTool.WelcomeCenterCalendar,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Welcome Center Calendar',
+    subtitle: 'View Welcome Center tiles on a day-by-day basis',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View and validate Welcome Center tiles.',
+    shortDescription: ['Tool for visualizing Welcome Center tiles on a day-by-day basis.'],
+    loadChildren: () =>
+      import(
+        '../../app/pages/tools/pages/welcome-center-calendar/welcome-center-calendar.module'
+      ).then(m => m.WelcomeCenterCalendarModule),
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.UserGroupManagement,

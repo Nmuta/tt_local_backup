@@ -15,13 +15,13 @@ namespace Turn10.LiveOps.StewardApi
         /// </summary>
         public static void Main(string[] arguments)
         {
-            CreateHostBuilder(arguments).Build().Run();
+            CreateHostBuilder<Startup>(arguments).Build().Run();
         }
 
         /// <summary>
         ///     Creates an instance of <see cref="IHostBuilder"/>.
         /// </summary>
-        public static IHostBuilder CreateHostBuilder(string[] arguments) =>
+        public static IHostBuilder CreateHostBuilder<T>(string[] arguments) where T : class =>
             Host.CreateDefaultBuilder(arguments)
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureWebHostDefaults(webHostBuilder =>
@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi
                 webHostBuilder
                   .UseContentRoot(Directory.GetCurrentDirectory())
                   .UseIISIntegration()
-                  .UseStartup<Startup>();
+                  .UseStartup<T>();
             });
     }
 }

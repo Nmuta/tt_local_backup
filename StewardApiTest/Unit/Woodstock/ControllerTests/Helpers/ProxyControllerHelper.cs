@@ -74,6 +74,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             mockUserManagementService.CreateUserGroup(Arg.Any<string>()).Returns(Fixture.Create<CreateUserGroupOutput>());
             mockUserManagementService.CreateUserGroupBulkOperation(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserIds[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationOutput>());
             mockUserManagementService.GetUserGroupBulkOperationStatus(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<Guid>()).Returns(Fixture.Create<GetUserGroupBulkOperationStatusOutput>());
+            mockUserManagementService.CreateUserGroupBulkOperationV2(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserGroupOperationPage[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationV2Output>());
 
             return mockUserManagementService;
         }

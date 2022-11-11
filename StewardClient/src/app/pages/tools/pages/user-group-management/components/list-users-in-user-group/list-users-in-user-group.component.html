@@ -103,13 +103,12 @@
       </div>
     </form>
 
-    <!-- TODO: Uncomment and adapt once endpoint are returning failed users PBI #1356130 -->
-    <!-- <div class="failed-action-for-users" *ngIf="failedActionForUsers?.players?.length > 0">
+    <div class="failed-action-for-users" *ngIf="failedActionForUsers?.players?.length > 0">
       <standard-copy [text]="failedActionForUsers.copyToClipboard" [alwaysShowIcon]="true">
         Failed to {{ failedActionForUsers?.action }}
         {{ failedActionForUsers?.players?.length }} player(s)
       </standard-copy>
-    </div> -->
+    </div>
 
     <div class="failed-action-for-users" *ngIf="failedActionForUsers?.count > 0">
       Failed to {{ failedActionForUsers?.action }} {{ failedActionForUsers?.count }} player(s)

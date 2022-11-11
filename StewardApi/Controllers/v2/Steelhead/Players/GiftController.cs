@@ -45,7 +45,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
-        UserRole.CommunityManager)]
+        UserRole.CommunityManager,
+        UserRole.MediaTeam)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Target.Players, Topic.Gifting)]
     public class GiftController : V2SteelheadControllerBase

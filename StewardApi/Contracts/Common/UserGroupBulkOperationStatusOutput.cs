@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -20,5 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public UserGroupBulkOperationType? BulkOperationType { get; set; }
 
         public UserGroupBulkOperationStatus? Status { get; set; }
+
+        public IEnumerable<BasicPlayer> FailedUsers { get; set; }
     }
 }

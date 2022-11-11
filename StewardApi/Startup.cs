@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
@@ -504,5 +505,24 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<GravityGiftRequestValidator>().As<IRequestValidator<GravityGift>>().SingleInstance();
             builder.RegisterType<GravityGiftHistoryProvider>().As<IGravityGiftHistoryProvider>().SingleInstance();
         }
+    }
+
+    /// <summary>
+    /// Startup used for testing.
+    /// </summary>
+    public sealed class ControllerTestStartup
+    {
+        /// <summary>
+        ///     Configures the services.
+        /// </summary>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+        }
+
+        /// <summary>
+        ///     Configures the app.
+        /// </summary>
+        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment, IApiVersionDescriptionProvider provider) { }
     }
 }

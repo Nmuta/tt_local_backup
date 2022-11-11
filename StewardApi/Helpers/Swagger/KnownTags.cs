@@ -140,6 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string ProfileTemplates = "Topic: Profile Templates";
             public const string Calendar = "Topic: Calendar";
             public const string RacersCup = "Topic: Racers Cup";
+            public const string WelcomeCenter = "Topic: Welcome Center";
             public const string CmsOverride = "Topic: Cms Override";
             public const string Permissions = "Topic: Permissions";
             public const string Pegasus = "Topic: Pegasus";
