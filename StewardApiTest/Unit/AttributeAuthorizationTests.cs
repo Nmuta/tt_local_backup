@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
         [TestCategory("Unit")]
         public void AllActionsHaveAttributes()
         {
-            var builder = Program.CreateHostBuilder<ControllerOnlyStartup>(Array.Empty<string>());
+            var builder = Program.CreateHostBuilder<ControllerTestStartup>(Array.Empty<string>());
             var host = builder.Build();
             var collection = host.Services.GetService(typeof(IActionDescriptorCollectionProvider)) as ActionDescriptorCollectionProvider;
 

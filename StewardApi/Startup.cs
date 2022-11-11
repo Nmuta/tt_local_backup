@@ -504,7 +504,7 @@ namespace Turn10.LiveOps.StewardApi
     /// <summary>
     /// Startup used for testing.
     /// </summary>
-    public sealed class ControllerOnlyStartup
+    public sealed class ControllerTestStartup
     {
         /// <summary>
         ///     Configures the services.
