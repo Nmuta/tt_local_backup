@@ -81,7 +81,7 @@ using Turn10.Services.MessageEncryption;
 using Turn10.Services.Storage.Blob;
 using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
-using static Turn10.LiveOps.StewardApi.Helpers.AutofactHelpers;
+using static Turn10.LiveOps.StewardApi.Helpers.AutofacHelpers;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 
 namespace Turn10.LiveOps.StewardApi

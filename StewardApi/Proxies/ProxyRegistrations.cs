@@ -8,7 +8,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.Services.ForzaClient;
-using static Turn10.LiveOps.StewardApi.Helpers.AutofactHelpers;
+using static Turn10.LiveOps.StewardApi.Helpers.AutofacHelpers;
 
 namespace Turn10.LiveOps.StewardApi.Proxies
 {

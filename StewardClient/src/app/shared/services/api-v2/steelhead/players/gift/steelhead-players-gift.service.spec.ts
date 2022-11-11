@@ -32,7 +32,7 @@ describe('SteelheadPlayersGiftService', () => {
     const gift: SteelheadGroupGift = {
       titleMessageId: faker.datatype.uuid(),
       bodyMessageId: faker.datatype.uuid(),
-      expireTimeSpanInDays: new BigNumber(faker.datatype.number()),
+      expireAfterDays: new BigNumber(faker.datatype.number()),
       xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
       inventory: {

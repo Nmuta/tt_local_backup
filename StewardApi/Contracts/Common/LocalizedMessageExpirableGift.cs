@@ -10,6 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the timespan in days after which the gift will expire.
         /// </summary>
-        public uint ExpireTimeSpanInDays { get; set; }
+        public uint ExpireAfterDays { get; set; }
     }
 }

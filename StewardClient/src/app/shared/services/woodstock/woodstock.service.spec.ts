@@ -329,7 +329,7 @@ describe('WoodstockService', () => {
         quickChatLines: [],
         emotes: [],
       },
-      expireTimeSpanInDays: fakeBigNumber(),
+      expireAfterDays: fakeBigNumber(),
     };
 
     beforeEach(() => {
@@ -359,7 +359,7 @@ describe('WoodstockService', () => {
         quickChatLines: [],
         emotes: [],
       },
-      expireTimeSpanInDays: fakeBigNumber(),
+      expireAfterDays: fakeBigNumber(),
     };
 
     beforeEach(() => {
@@ -389,7 +389,7 @@ describe('WoodstockService', () => {
         quickChatLines: [],
         emotes: [],
       },
-      expireTimeSpanInDays: fakeBigNumber(),
+      expireAfterDays: fakeBigNumber(),
     };
 
     beforeEach(() => {
