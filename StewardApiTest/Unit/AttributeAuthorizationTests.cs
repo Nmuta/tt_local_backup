@@ -7,7 +7,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Turn10.LiveOps.StewardApi;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Autofac;
+using Microsoft.Extensions.Configuration;
+
 using static System.Net.WebRequestMethods;
+using Microsoft.Extensions.Hosting;
+using Autofac.Extensions.DependencyInjection;
+using System.IO;
 
 namespace Turn10.LiveOps.StewardTest.Unit
 {
@@ -18,7 +28,8 @@ namespace Turn10.LiveOps.StewardTest.Unit
         [TestCategory("Unit")]
         public void AllActionsHaveAttributes()
         {
-            var host = Program.CreateHostBuilder(Array.Empty<string>()).Build();
+            var builder = Program.CreateHostBuilder<ControllerOnlyStartup>(Array.Empty<string>());
+            var host = builder.Build();
             var collection = host.Services.GetService(typeof(IActionDescriptorCollectionProvider)) as ActionDescriptorCollectionProvider;
 
             var errors = new List<string>();
@@ -71,4 +82,5 @@ namespace Turn10.LiveOps.StewardTest.Unit
             Assert.IsTrue(!errors.Any(), string.Join("\n", errors));
         }
     }
+
 }
