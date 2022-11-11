@@ -11,8 +11,10 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -332,7 +334,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
             this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
-
             this.CreateMap<(WelcomeCenterTileConfig tile, WelcomeCenterTileCmsBase tileInfo), WelcomeCenterTileOutput>()
                 .ForMember(dest => dest.TileTypeV3, opt => opt.MapFrom(src => src.tile.TileTypeV3))
                 .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.tile.Priority))
@@ -344,6 +345,27 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TileDescription, opt => opt.MapFrom(src => src.tileInfo.TileDescription))
                 .ForMember(dest => dest.TileImagePath, opt => opt.MapFrom(src => src.tileInfo.TileImagePath))
                 .ForMember(dest => dest.TileTelemetryTag, opt => opt.MapFrom(src => src.tileInfo.TelemetryTag));
+            this.CreateMap<MotdEntry, MotdBridge>()
+                .ReverseMap();
+            this.CreateMap<LocTextMotdNoDesc, LocTextBridge>()
+                .ForMember(dest => dest.Description, act => act.Ignore())
+                .ReverseMap();
+            this.CreateMap<LocTextMotd, LocTextBridge>()
+                .ReverseMap();
+            this.CreateMap<WofEntry, WofBridge>()
+                .ReverseMap();
+            this.CreateMap<LocTextWof, LocTextBridge>()
+                .ReverseMap();
+            this.CreateMap<WofTimer, TimerBridge>()
+                .ForMember(dest => dest.TimerType, opt => opt.MapFrom(src => src.TimerType))
+                .ForMember(dest => dest.TimerCustomRange, opt => opt.MapFrom(src => src.CustomRange))
+                .ReverseMap();
+            this.CreateMap<WofTimerCustomRange, TimerCustomRange>()
+                .ForMember(dest => dest.FromPoints, opt => opt.MapFrom(src => src.From))
+                .ForMember(dest => dest.ToPoints, opt => opt.MapFrom(src => src.To))
+                .ReverseMap();
+            this.CreateMap<WofRangePoint, TimerCustomRangePoint>()
+                .ReverseMap();
         }
     }
 }

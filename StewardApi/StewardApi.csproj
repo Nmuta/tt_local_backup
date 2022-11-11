@@ -138,6 +138,10 @@
     <PackageReference Include="WoodstockLiveOpsContent" Version="2.6.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\StewardGitApi\StewardGitApi.csproj" />
+  </ItemGroup>
+
   <Target Name="RealClean" AfterTargets="Clean">
     <RemoveDir Directories="$(OutDir)" ContinueOnError="true" />
   </Target>
