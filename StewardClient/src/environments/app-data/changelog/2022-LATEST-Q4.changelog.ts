@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.MessageOfTheDay },
+      uuid: 'd8e91341-536a-480f-b975-1d0c99138a2a',
+      shortText: 'Add new tool to manage Messages of the Day',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '5953bc34-2791-4a66-a9f4-9caf219efa10',
       shortText: 'Add admin-only dev tool for testing',

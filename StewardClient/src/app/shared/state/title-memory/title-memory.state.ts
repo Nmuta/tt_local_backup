@@ -24,6 +24,7 @@ import { TitleMemoryModel } from './title-memory.model';
     userGroupManagement: GameTitleCodeName.FH5,
     carDetails: GameTitleCodeName.FH5,
     welcomeCenterCalendar: GameTitleCodeName.FM8,
+    messageOfTheDay: GameTitleCodeName.FM8,
   },
 })
 @Injectable()

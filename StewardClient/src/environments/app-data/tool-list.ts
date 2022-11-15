@@ -38,6 +38,7 @@ export enum NavbarTool {
   CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
+  MessageOfTheDay = 'message-of-the-day',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -143,6 +144,7 @@ export enum AppIcon {
   Endpoints = 'explore',
   CarDetails = 'minor_crash',
   WelcomeCenterCalendar = 'calendar_today',
+  MessageOfTheDay = 'waving_hand',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -442,6 +444,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
     loadChildren: () =>
       import('../../app/pages/tools/pages/car-details/car-details.module').then(
         m => m.CarDetailsModule,
+      ),
+    hideFromUnauthorized: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.MessageOfTheDay,
+    tool: NavbarTool.MessageOfTheDay,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Message Of The Day',
+    subtitle: 'Manage messages of the day',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View and edit messages of the day.',
+    shortDescription: [`View and edit messages of the day.`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/message-of-the-day/message-of-the-day.module').then(
+        m => m.MessageOfTheDayModule,
       ),
     hideFromUnauthorized: true,
   },
