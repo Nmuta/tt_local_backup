@@ -81,11 +81,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task DeleteNotificationAsync(Guid notificationId, ulong xuid, string requesterObjectId, string endpoint);
 
         /// <summary>
-        ///     Deletes all of a user's notifications.
-        /// </summary>
-        Task DeleteAllUserNotificationsAsync(ulong xuid, string endpoint);
-
-        /// <summary>
         ///     Deletes group notification.
         /// </summary>
         Task DeleteGroupNotificationAsync(Guid notificationId, string requesterObjectId, string endpoint);

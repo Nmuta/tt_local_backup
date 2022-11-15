@@ -577,17 +577,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task DeleteAllUserNotificationAsync(
-            ulong xuid,
-            string endpoint)
-        {
-            var notificationsManagementService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            await notificationsManagementService.DeleteNotificationsForUser(xuid)
-                .ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
         public async Task<ServicesLiveOps.AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctionsAsync(
             ServicesLiveOps.ForzaAuctionFilters filters,
             string endpoint)

@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Clipboard } from '@helpers/clipboard';
-import { UserRole } from '@models/enums';
+import { GameTitle, UserRole } from '@models/enums';
 import { Select, Store } from '@ngxs/store';
+import { WoodstockPlayerNotificationsService } from '@services/api-v2/woodstock/player/notifications/woodstock-player-notifications.service';
 import { UserModel } from '@shared/models/user.model';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { WindowService } from '@shared/services/window';
 import { BreakAccessToken, LogoutUser, RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 /** Defines the profile component. */
 @Component({
@@ -29,11 +32,18 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
   public syncAuthUrl: string;
 
+  public deleteNotificationsActionMonitor = new ActionMonitor('DELETE player notifications');
+  public deleteNotificationsFormControls = {
+    xuid: new FormControl(null, Validators.required),
+  };
+  public deleteNotificationsFormGroup = new FormGroup(this.deleteNotificationsFormControls);
+
   constructor(
     private readonly router: Router,
     private readonly store: Store,
     private readonly windowService: WindowService,
     private readonly clipboard: Clipboard,
+    private readonly woodstockPlayerNotificationsService: WoodstockPlayerNotificationsService,
   ) {
     super();
   }
@@ -96,6 +106,37 @@ export class ProfileComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(_ => {
         this.user = this.store.selectSnapshot<UserModel>(UserState.profile);
+      });
+  }
+
+  /** Delete a player's notifications. */
+  public deletePlayerNotifications(): void {
+    if (!this.deleteNotificationsFormGroup.valid) {
+      return;
+    }
+
+    this.deleteNotificationsActionMonitor = this.deleteNotificationsActionMonitor.repeat();
+    const failedTitles: GameTitle[] = [];
+    const woodstock = this.woodstockPlayerNotificationsService
+      .deleteAllPlayerNotifications$(this.deleteNotificationsFormControls.xuid.value)
+      .pipe(
+        catchError(e => {
+          failedTitles.push(GameTitle.FH5);
+          throw e;
+        }),
+      );
+
+    combineLatest([woodstock])
+      .pipe(this.deleteNotificationsActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        if (failedTitles.length > 0) {
+          this.deleteNotificationsActionMonitor.status.error = `Failed to delete notifications for titles: ${failedTitles.join(
+            ', ',
+          )}`;
+          return;
+        }
+
+        this.deleteNotificationsFormControls.xuid.setValue(null);
       });
   }
 }

@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { jordan, emerson } from '@support/steward/common/account-info';
+import { jordan, luke } from '@support/steward/common/account-info';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
 context('Steward / Tools / Ban Review', () => {
@@ -58,7 +58,7 @@ context('Steward / Tools / Ban Review', () => {
   context('Search', () => {
     context('When XUIDs input is filled out', () => {
       beforeEach(() => {
-        cy.get('textarea').click().type(`${jordan.xuid}\n${emerson.xuid}`);
+        cy.get('textarea').click().type(`${jordan.xuid}\n${luke.xuid}`);
       });
 
       it('should activate the lookup button', () => {

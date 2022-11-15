@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '5953bc34-2791-4a66-a9f4-9caf219efa10',
+      shortText: 'Add admin-only dev tool for testing',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '4fe92558-72c7-4471-a2c6-5d3a8469267a',
       shortText: 'Cleanup naming conventions',
     },
