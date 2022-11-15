@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Turn10.Services.LiveOps.FH5_main.Generated;
-using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
+using StorefrontManagementService = Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 #pragma warning disable SA1516 // Blank lines
@@ -10,6 +9,9 @@ using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="StorefrontManagementService"/>.
+    /// </summary>
     public interface IStorefrontManagementService
     {
         /// <summary>

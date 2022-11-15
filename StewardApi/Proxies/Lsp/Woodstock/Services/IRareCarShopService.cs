@@ -9,6 +9,9 @@ using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopServi
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="RareCarShopService"/>.
+    /// </summary>
     public interface IRareCarShopService
     {
         Task<RareCarShopService.AdminGetTokenBalanceOutput> AdminGetTokenBalance(ulong xuid);

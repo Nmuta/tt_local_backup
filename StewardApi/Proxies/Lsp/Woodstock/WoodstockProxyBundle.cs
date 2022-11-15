@@ -39,34 +39,29 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         }
 
         /// <summary>
-        ///     Gets user inventory service.
+        ///     Gets a <see cref="IUserInventoryManagementService" />.
         /// </summary>
         public IUserInventoryManagementService UserInventoryManagementService => this.WoodstockFactory.PrepareUserInventoryManagementService(this.Endpoint);
 
         /// <summary>
-        ///     Gets storefront service.
+        ///     Gets a <see cref="IStorefrontManagementService" />.
         /// </summary>
-        public IStorefrontManagementService Storefront => this.WoodstockFactory.PrepareStorefrontManagementService(this.Endpoint);
+        public IStorefrontManagementService StorefrontManagementService => this.WoodstockFactory.PrepareStorefrontManagementService(this.Endpoint);
 
         /// <summary>
-        ///     Gets live ops service.
+        ///     Gets a <see cref="ILiveOpsService" />.
         /// </summary>
         public ILiveOpsService LiveOpsService => this.WoodstockFactory.PrepareLiveOpsService(this.Endpoint);
 
         /// <summary>
-        ///     Gets user management service.
+        ///     Gets a <see cref="IUserManagementService" />.
         /// </summary>
         public IUserManagementService UserManagementService => this.WoodstockFactory.PrepareUserManagementService(this.Endpoint);
 
         /// <summary>
-        ///     Gets permissions management service.
+        ///     Gets a <see cref="IPermissionsManagementService" />.
         /// </summary>
         public IPermissionsManagementService PermissionsManagementService => this.WoodstockFactory.PreparePermissionsManagementService(this.Endpoint);
-
-        /// <summary>
-        ///     Gets a <see cref="IStorefrontManagementService" />.
-        /// </summary>
-        public IStorefrontManagementService StorefrontManagement => this.WoodstockFactory.PrepareStorefrontManagementService(this.Endpoint);
 
         /// <summary>
         ///     Gets a <see cref="IGiftingManagementService" />.

@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.StorefrontManagement, "StorefrontManagement", out exception))
+            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagement", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         {
             var services = this.WoodstockServices.Value;
 
-            if (!this.VerifyServiceProxy(() => services.StorefrontManagement, "StorefrontManagement", out var exception))
+            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagement", out var exception))
             {
                 throw exception;
             }

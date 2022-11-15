@@ -260,7 +260,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             try
             {
-                livery = await this.Services.StorefrontManagement.GetUGCLivery(liveryGuid).ConfigureAwait(true);
+                livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryGuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

@@ -30,20 +30,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Woodstock")]
-    public class GeoFlagsController : V2ControllerBase
+    public class GeoFlagsController : V2WoodstockControllerBase
     {
-        private readonly IWoodstockStorefrontProvider storefrontProvider;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="GeoFlagsController"/> class.
-        /// </summary>
-        public GeoFlagsController(IWoodstockStorefrontProvider storefrontProvider)
-        {
-            storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
-
-            this.storefrontProvider = storefrontProvider;
-        }
-
         /// <summary>
         ///    Set GeoFlags for a specific UGC Item.
         /// </summary>
@@ -66,8 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 
             var typedGeoFlags = geoFlags.Cast<int>().ToArray();
 
-            var storefront = this.WoodstockServices.Value.Storefront;
-            await storefront.SetUGCGeoFlag(ugcId, typedGeoFlags).ConfigureAwait(true);
+            await this.Services.StorefrontManagementService.SetUGCGeoFlag(ugcId, typedGeoFlags).ConfigureAwait(true);
 
             return this.Ok();
         }

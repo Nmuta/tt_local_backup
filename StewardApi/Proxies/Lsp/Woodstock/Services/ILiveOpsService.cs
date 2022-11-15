@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
+using LiveOpsService = Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 #pragma warning disable SA1516 // Blank lines
@@ -9,21 +9,24 @@ using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="LiveOpsService"/>.
+    /// </summary>
     public interface ILiveOpsService
     {
         /// <summary>
         ///     Gets the loyalty rewards 'Has Played' record.
         /// </summary>
-        Task<GetHasPlayedRecordOutput> GetHasPlayedRecord(ulong xuid, Guid externalProfileId);
+        Task<LiveOpsService.GetHasPlayedRecordOutput> GetHasPlayedRecord(ulong xuid, Guid externalProfileId);
 
         /// <summary>
         ///     Gets player inventory by XUID.
         /// </summary>
-        Task<GetAdminUserInventoryOutput> GetAdminUserInventory(ulong xuid);
+        Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventory(ulong xuid);
 
         /// <summary>
         ///     Gets player inventory by profile id.
         /// </summary>
-        Task<GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
+        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
     }
 }
