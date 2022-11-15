@@ -14,8 +14,14 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
     /// </summary>
     public interface IRareCarShopService
     {
+        /// <summary>
+        ///     Gets the backstage pass token balance.
+        /// </summary>
         Task<RareCarShopService.AdminGetTokenBalanceOutput> AdminGetTokenBalance(ulong xuid);
 
+        /// <summary>
+        ///     Sets the backstage pass token balance.
+        /// </summary>
         Task AdminSetBalance(ulong xuid, uint newBalance);
     }
 }
