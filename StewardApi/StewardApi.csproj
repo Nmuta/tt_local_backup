@@ -149,6 +149,4 @@
   <Target Name="RealClean" AfterTargets="Clean">
     <RemoveDir Directories="$(OutDir)" ContinueOnError="true" />
   </Target>
-
-  <ProjectExtensions><VisualStudio><UserProperties content_4permattributes_1json__JsonSchema="https://carafe.fm/schema/draft-02/bundle.schema.json" /></VisualStudio></ProjectExtensions>
 </Project>
