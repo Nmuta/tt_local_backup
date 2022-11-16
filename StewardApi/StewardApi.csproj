@@ -118,7 +118,7 @@
     <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.5.4">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.1.22" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.1.26" />
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.13.4">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
@@ -138,7 +138,17 @@
     <PackageReference Include="WoodstockLiveOpsContent" Version="2.6.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\StewardGitApi\StewardGitApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="JSON\" />
+  </ItemGroup>
+
   <Target Name="RealClean" AfterTargets="Clean">
     <RemoveDir Directories="$(OutDir)" ContinueOnError="true" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties content_4permattributes_1json__JsonSchema="https://carafe.fm/schema/draft-02/bundle.schema.json" /></VisualStudio></ProjectExtensions>
 </Project>

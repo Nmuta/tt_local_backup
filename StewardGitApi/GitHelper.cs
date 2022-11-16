@@ -79,16 +79,16 @@ namespace StewardGitApi
             TeamProjectReference project = await GetProjectAsync(context).ConfigureAwait(false);
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
 
-            // get a filename we know exists
+            // get a filepath we know exists
             List<GitItem> gitItems = await gitClient.GetItemsAsync(
                 repo.Id,
                 scopePath: path,
                 recursionLevel: VersionControlRecursionType.OneLevel).ConfigureAwait(false);
 
-            string filename = gitItems.Where(o => o.GitObjectType == gitObjectType).FirstOrDefault().Path;
+            string filepath = gitItems.Where(o => o.GitObjectType == gitObjectType).FirstOrDefault().Path;
 
             // retrieve the contents of the file
-            GitItem item = await gitClient.GetItemAsync(repo.Id, filename, includeContent: true).ConfigureAwait(false);
+            GitItem item = await gitClient.GetItemAsync(repo.Id, filepath, includeContent: true).ConfigureAwait(false);
 
             return item;
         }
@@ -249,7 +249,7 @@ namespace StewardGitApi
                 new GitPush()
                 {
                     RefUpdates = new GitRefUpdate[] { newBranch },
-                    Commits = gitChanges, // GitCommitRef[]
+                    Commits = gitChanges,
                 }, repo.Id).ConfigureAwait(false);
 
             return push;
@@ -359,7 +359,7 @@ namespace StewardGitApi
             {
                 commitRefs.Add(new GitCommitRef
                 {
-                    Comment = $"{c.CommitComment}",
+                    Comment = c.CommitComment,
                     Changes = new GitChange[]
                     {
                         new GitChange()
@@ -367,11 +367,11 @@ namespace StewardGitApi
                             ChangeType = c.VersionControlChangeType,
                             Item = new GitItem()
                             {
-                                Path = $"/{c.PathToFile}",
+                                Path = c.PathToFile,
                             },
                             NewContent = new ItemContent()
                             {
-                                Content = $"{c.NewFileContent}",
+                                Content = c.NewFileContent,
                                 ContentType = ItemContentType.RawText,
                             },
                         },

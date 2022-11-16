@@ -54,7 +54,7 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
         liveryIds: string[],
         xuids: BigNumber[],
         giftReason: string,
-        expireTimeSpanInDays: BigNumber,
+        expireAfterDays: BigNumber,
       ): Observable<BackgroundJob<unknown>> {
         if (!xuids || xuids.length <= 0) {
           return throwError(
@@ -66,7 +66,7 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
           giftReason,
           liveryIds,
           xuids,
-          expireTimeSpanInDays,
+          expireAfterDays,
         );
       },
       /** Gifts liveries to a LSP user group. */
@@ -74,7 +74,7 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
         liveryIds: string[],
         lspGroup: LspGroup,
         giftReason: string,
-        expireTimeSpanInDays: BigNumber,
+        expireAfterDays: BigNumber,
       ): Observable<GiftResponse<BigNumber>> {
         if (!lspGroup) {
           return throwError(new Error('Failed to gift livery: user group was not provided'));
@@ -84,7 +84,7 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
           giftReason,
           liveryIds,
           lspGroup.id,
-          expireTimeSpanInDays,
+          expireAfterDays,
         );
       },
     };

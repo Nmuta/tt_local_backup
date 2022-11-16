@@ -8,7 +8,6 @@ import {
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
-  Validators,
 } from '@angular/forms';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -69,6 +68,8 @@ export class SelectLocalizedStringComponent
   @Input() label: string = 'Select localized message';
   /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;
+  /** Determines if the dropdown is disabled. */
+  @Input() isDisabled: boolean = false;
 
   public localizedStringLookup: LocalizedStringsMap = new Map();
   public localizedStringDetails: LocalizationOptions[] = [];
@@ -77,7 +78,7 @@ export class SelectLocalizedStringComponent
   public selectedLanguageLocalizedString: LocalizedString = null;
 
   public formControls = {
-    selectedLocalizedStringInfo: new FormControl({}, [Validators.required]),
+    selectedLocalizedStringInfo: new FormControl({}),
   };
 
   public formGroup = new FormGroup(this.formControls);

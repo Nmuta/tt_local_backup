@@ -80,6 +80,8 @@
 
     //Full width
     @include _mat-form-field-horizontal-sizing('full-width', 100%);
+
+    @include _mat-form-field-horizontal-sizing('simple-date', 20em);
   }
 
   .sf-vertical {

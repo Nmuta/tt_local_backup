@@ -11,7 +11,7 @@ import { SteelheadUserFlags } from '@models/steelhead';
 import { SunriseUserFlags } from '@models/sunrise';
 import { ApolloUserFlags } from '@models/apollo';
 import { VerifyActionButtonComponent } from '@components/verify-action-button/verify-action-button.component';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
 
 export type UserFlagsUnion =
   | WoodstockUserFlags
@@ -66,7 +66,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public abstract formControls: unknown;
   public abstract formGroup: FormGroup;
 
-  constructor(private readonly permissionsService: PermissionsService) {
+  constructor(private readonly permissionsService: OldPermissionsService) {
     super();
   }
 

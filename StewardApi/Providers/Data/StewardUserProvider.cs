@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -159,6 +160,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             catch
             {
                 await this.CreateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<StewardUserInternal>> GetAllStewardUsersAsync()
+        {
+            var allStewardUsersCacheKey = "AllStewardUserIds";
+            async Task<IEnumerable<StewardUserId>> QueryUserIds()
+            {
+                var tableQuery = new TableQuery<StewardUserId>().Select(new List<string>() { "ObjectId" });
+                var result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+                this.refreshableCacheStore.PutItem(allStewardUsersCacheKey, TimeSpan.FromDays(1), result);
+
+                return result;
+            }
+
+            try
+            {
+                var userIds = this.refreshableCacheStore.GetItem<IEnumerable<StewardUserId>>(allStewardUsersCacheKey) ?? await QueryUserIds().ConfigureAwait(false);
+                var tasks = userIds.Select(u => this.GetStewardUserAsync(u.ObjectId));
+                await Task.WhenAll(tasks).ConfigureAwait(false);
+                var allUsers = tasks.Select(t => t.GetAwaiter().GetResult()).ToList();
+
+                return allUsers;
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to lookup all users in Steward.", ex);
             }
         }
     }

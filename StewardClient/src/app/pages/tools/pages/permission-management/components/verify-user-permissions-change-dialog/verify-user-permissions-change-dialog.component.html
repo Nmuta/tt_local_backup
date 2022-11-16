@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>Verify Permission Changes</h1>
+<p class="subtitle">{{ user.name }} | {{ user.emailAddress }}</p>
+<div mat-dialog-content>
+  <div class="sf-wrapper">
+    <div class="sf-horizontal align-top">
+      <div>
+        <h2 class="added-color">Permissions Added</h2>
+        <div class="change-entry" *ngFor="let perm of addedPermissions">
+          <span class="attribute-name">{{ perm.attribute | humanize }}</span>
+          <div *ngFor="let title of perm.titles">
+            {{ title.title | humanize }} -
+            <span *ngFor="let env of title.environments; let i = index">
+              <span *ngIf="i !== 0">, </span><span>{{ env }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="removed-color">Permissions Removed</h2>
+        <div class="change-entry" *ngFor="let perm of removedPermissions">
+          <span class="attribute-name">{{ perm.attribute | humanize }}</span>
+          <div *ngFor="let title of perm.titles">
+            {{ title.title | humanize }} -
+            <span *ngFor="let env of title.environments; let i = index">
+              <span *ngIf="i !== 0">, </span><span>{{ env }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="null">Go Back</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!verifySave.checked"
+    cdkFocusInitial
+    (click)="saveUpdatedPermissions()"
+  >
+    <button-spinner [monitor]="savePermissionsMonitor" defaultIcon="save"></button-spinner>
+    Save Permissions
+  </button>
+  <mat-checkbox #verifySave matTooltip="Verify changes" aria-label="Verify changes"
+    >Verify</mat-checkbox
+  >
+</div>

@@ -4,10 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 
-import { PermissionsService } from './permissions.service';
+import { OldPermissionsService } from './permissions.service';
 
-describe('PermissionsService', () => {
-  let service: PermissionsService;
+describe('OldPermissionsService', () => {
+  let service: OldPermissionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,7 +20,7 @@ describe('PermissionsService', () => {
       schemas: [NO_ERRORS_SCHEMA],
     });
 
-    service = TestBed.inject(PermissionsService);
+    service = TestBed.inject(OldPermissionsService);
   });
 
   it('should be created', () => {

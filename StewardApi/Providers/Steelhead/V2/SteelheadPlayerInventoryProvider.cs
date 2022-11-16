@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+                    var hasExpiration = gift.ExpireAfterDays > 0;
 
                     // Cars are a special item type in FM8 and requires its own gifting endpoint.
                     if (inventoryItemType == InventoryItemType.Car)
@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                             gift.BodyMessageId,
                             gift.TitleMessageId,
                             hasExpiration,
-                            gift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                            gift.ExpireAfterDays).ConfigureAwait(false);
                     }
                 }
 
@@ -208,7 +208,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId, uint quantity)
                 {
-                    var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+                    var hasExpiration = gift.ExpireAfterDays > 0;
 
                     // Cars are a special item type in FM8 and requires its own gifting endpoint.
                     if (inventoryItemType == InventoryItemType.Car)
@@ -227,7 +227,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                             gift.BodyMessageId,
                             gift.TitleMessageId,
                             hasExpiration,
-                            gift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                            gift.ExpireAfterDays).ConfigureAwait(false);
                     }
                 }
 
@@ -257,7 +257,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 
             // TODO: Log gift to gift history
             var xuids = groupGift.Xuids.ToArray();
-            var hasExpiration = groupGift.ExpireTimeSpanInDays > 0;
+            var hasExpiration = groupGift.ExpireAfterDays > 0;
             var result = await service.GiftingManagementService.AdminSendLiveryGiftV2(
                 xuids,
                 xuids.Length,
@@ -265,7 +265,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                 groupGift.BodyMessageId,
                 groupGift.TitleMessageId,
                 hasExpiration,
-                groupGift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                groupGift.ExpireAfterDays).ConfigureAwait(false);
 
             var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
@@ -328,14 +328,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             try
             {
                 // TODO: Log gift to gift history
-                var hasExpiration = gift.ExpireTimeSpanInDays > 0;
+                var hasExpiration = gift.ExpireAfterDays > 0;
                 var response = await service.GiftingManagementService.AdminSendGroupLiveryGiftV2(
                     groupId,
                     livery.Id,
                     gift.BodyMessageId,
                     gift.TitleMessageId,
                     hasExpiration,
-                    gift.ExpireTimeSpanInDays).ConfigureAwait(false);
+                    gift.ExpireAfterDays).ConfigureAwait(false);
                 notificationId = response.notificationId;
             }
             catch (Exception ex)

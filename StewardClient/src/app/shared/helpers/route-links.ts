@@ -51,3 +51,8 @@ export function getUgcDetailsRoute(gameTitle: GameTitle, ugcId: string, ugcType?
 export function getMessagingRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.Messaging, gameTitle);
 }
+
+/** Make message of the day route. */
+export function getMessageOfTheDayRoute(gameTitle: GameTitle) {
+  return getComponentBaseRoute(NavbarTool.MessageOfTheDay, gameTitle);
+}

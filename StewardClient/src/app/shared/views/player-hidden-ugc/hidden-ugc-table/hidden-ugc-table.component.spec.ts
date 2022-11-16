@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
@@ -26,7 +26,7 @@ class TestHiddenUgcService implements HiddenUgcServiceContract {
 describe('HiddenUgcTableComponent', () => {
   let component: HiddenUgcTableComponent;
   let fixture: ComponentFixture<HiddenUgcTableComponent>;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   const mockService: TestHiddenUgcService = new TestHiddenUgcService();
 
@@ -40,7 +40,7 @@ describe('HiddenUgcTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HiddenUgcTableComponent);
     component = fixture.componentInstance;
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

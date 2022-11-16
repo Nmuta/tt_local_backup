@@ -389,21 +389,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task DeleteAllUserNotificationsAsync(ulong xuid, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                await this.woodstockService.DeleteAllUserNotificationAsync(xuid, endpoint).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"LSP failed to delete all user's messages: {xuid}", ex);
-            }
-        }
-
-        /// <inheritdoc />
         public async Task DeleteNotificationAsync(
             Guid notificationId,
             ulong xuid,

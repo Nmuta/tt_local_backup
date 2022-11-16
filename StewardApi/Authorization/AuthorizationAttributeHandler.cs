@@ -6,7 +6,7 @@ using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Identity.Web;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Authorization
@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         private readonly IScopedStewardUserProvider stewardUserProvider;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AttributeAuthorizationHandler"/> class.
+        ///     Initializes a new instance of the <see cref="AuthorizationAttributeHandler"/> class.
         /// </summary>
         public AuthorizationAttributeHandler(IScopedStewardUserProvider stewardUserProvider)
         {
@@ -30,23 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         /// <inheritdoc/>
         protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context, AttributeRequirement requirement)
         {
-            if (context == null)
-            {
-                throw new InvalidArgumentsStewardException($"Null {nameof(context)} provided.");
-            }
-
-            if (requirement == null)
-            {
-                throw new InvalidArgumentsStewardException($"Null {nameof(requirement)} provided.");
-            }
-
-            // Another policy has already failed
-            if (context.HasFailed)
-            {
-                return Task.CompletedTask;
-            }
-
-            if (!(context.Resource is HttpContext httpContext))
+            if (context == null || requirement == null || context.HasFailed || !(context.Resource is HttpContext httpContext))
             {
                 return Task.CompletedTask;
             }
@@ -60,15 +44,27 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 return Task.CompletedTask;
             }
 
-            EnvironmentAndTitle(httpContext, out string title, out string environment);
+            if (!EnvironmentAndTitle(httpContext, out string title, out string environment))
+            {
+                return Task.CompletedTask;
+            }
 
             var objectId = context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimConstants.ObjectId);
             if (objectId == null)
             {
-                throw new BadHeaderStewardException("Invalid user claim.");
+                return Task.CompletedTask;
             }
 
-            var user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
+            StewardUserInternal user = null;
+
+            try
+            {
+                user = await this.stewardUserProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
+            }
+            catch
+            {
+                return Task.CompletedTask;
+            }
 
             var authorized = user.AuthorizationAttributes().Where(authAttr =>
                     Equals(authAttr.Environment, environment) &&
@@ -90,15 +86,15 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 return str.Equals(attr, StringComparison.OrdinalIgnoreCase);
             }
 
-            void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
+            bool EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
             {
                 title = RequestPathSegment(httpContext.Request.Path, "title", true);
                 var api = RequestPathSegment(httpContext.Request.Path, "api");
+                environment = string.Empty;
 
                 if (string.IsNullOrEmpty(title))
                 {
-                    environment = string.Empty;
-                    return;
+                    return true;
                 }
 
                 // v1 apis use endpointKey, value is Title|environment
@@ -107,15 +103,17 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
                 if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
                 {
-                    throw new BadHeaderStewardException("No environment provided.");
+                    return false;
                 }
 
                 if (env.IsNullOrEmpty())
                 {
-                    throw new BadHeaderStewardException("No environment provided.");
+                    return false;
                 }
 
                 environment = env.ToString().Contains("|") ? env.ToString().Split("|")[1] : env;
+
+                return true;
             }
 
             string RequestPathSegment(PathString path, string key, bool capitalize = false)
@@ -128,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 var segments = path.ToUriComponent().Split("/");
 
                 var index = segments.IndexOf(segment => string.Equals(segment, key, StringComparison.OrdinalIgnoreCase)) + 1;
-                if (index >= segments.Length)
+                if (index >= segments.Length || index == 0)
                 {
                     return string.Empty;
                 }

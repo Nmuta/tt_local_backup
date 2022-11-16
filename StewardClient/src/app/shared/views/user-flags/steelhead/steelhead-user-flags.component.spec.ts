@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { SteelheadUserFlagsComponent } from './steelhead-user-flags.component';
 import faker from '@faker-js/faker';
 import { SteelheadUserFlags } from '@models/steelhead';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
 import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service';
 import { createMockSteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service.mock';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -15,7 +15,7 @@ describe('SteelheadUserFlagsComponent', () => {
   let fixture: ComponentFixture<SteelheadUserFlagsComponent>;
 
   let mockSteelheadPlayerFlagsService: SteelheadPlayerFlagsService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,7 +30,7 @@ describe('SteelheadUserFlagsComponent', () => {
     fixture = TestBed.createComponent(SteelheadUserFlagsComponent);
     component = fixture.componentInstance;
     mockSteelheadPlayerFlagsService = TestBed.inject(SteelheadPlayerFlagsService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

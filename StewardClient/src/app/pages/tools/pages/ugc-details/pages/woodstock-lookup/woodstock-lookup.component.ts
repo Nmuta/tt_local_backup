@@ -8,7 +8,7 @@ import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-it
 import { UgcType } from '@models/ugc-filters';
 import { UgcReportReason } from '@models/ugc-report-reason';
 import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-report.service';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
@@ -61,7 +61,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly service: WoodstockService,
-    private readonly permissionsService: PermissionsService,
+    private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: WoodstockUgcReportService,
     private readonly dialog: MatDialog,
   ) {

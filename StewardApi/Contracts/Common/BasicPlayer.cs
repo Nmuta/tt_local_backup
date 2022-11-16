@@ -9,7 +9,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     public sealed class BasicPlayer
     {
         /// <summary>
-        ///     Gets or sets the Xuid of the player. Optional if a Gamertag is set. 
+        ///     Gets or sets the Xuid of the player. Optional if a Gamertag is set.
         /// </summary>
         public ulong? Xuid { get; set; }
 

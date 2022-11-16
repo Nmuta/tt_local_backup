@@ -8,8 +8,8 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { find, includes } from 'lodash';
-import { BehaviorSubject, filter, Observable, take, takeUntil } from 'rxjs';
+import { find, has, includes } from 'lodash';
+import { Observable, ReplaySubject, take, takeUntil } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -40,15 +40,11 @@ export class PermAttributesService extends BaseService {
     [GameTitle.FH4]: null,
   };
 
-  private isInitialized$ = new BehaviorSubject<boolean>(false);
+  private isInitialized$ = new ReplaySubject<void>(1);
 
   /** Helper function that timeouts state checks for user profile. */
-  public get initializationGuard$(): Observable<boolean> {
-    return this.isInitialized$.pipe(
-      filter(v => !!v),
-      take(1),
-      takeUntil(this.onDestroy$),
-    );
+  public get initializationGuard$(): Observable<void> {
+    return this.isInitialized$.pipe(take(1), takeUntil(this.onDestroy$));
   }
 
   public get isUsingV1Auth(): boolean {
@@ -135,7 +131,7 @@ export class PermAttributesService extends BaseService {
       }
     }
 
-    this.isInitialized$.next(true);
+    this.isInitialized$.next();
   }
 
   /** Returns true if user has permission to feature attribute. */
@@ -156,6 +152,6 @@ export class PermAttributesService extends BaseService {
   }
 
   private isValidTitle(title: string): boolean {
-    return !!title && title in this.availableTitlesAndEnvironments;
+    return !!title && has(this.availableTitlesAndEnvironments, title);
   }
 }

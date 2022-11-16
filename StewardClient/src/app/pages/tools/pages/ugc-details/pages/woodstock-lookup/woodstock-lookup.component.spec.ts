@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
-import { PermissionsService, createMockPermissionsService } from '@services/permissions';
+import { OldPermissionsService, createMockPermissionsService } from '@services/permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { WoodstockLookupComponent } from './woodstock-lookup.component';
@@ -12,7 +12,7 @@ import { WoodstockLookupComponent } from './woodstock-lookup.component';
 describe('WoodstockLookupComponent', () => {
   let component: WoodstockLookupComponent;
   let fixture: ComponentFixture<WoodstockLookupComponent>;
-  let mockPermissionService: PermissionsService;
+  let mockPermissionService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,7 +32,7 @@ describe('WoodstockLookupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WoodstockLookupComponent);
     component = fixture.componentInstance;
-    mockPermissionService = TestBed.inject(PermissionsService);
+    mockPermissionService = TestBed.inject(OldPermissionsService);
   });
 
   it('should create', () => {

@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
@@ -51,7 +52,8 @@ namespace Turn10.LiveOps.StewardApi.Filters
 
         private async Task LogSetupAsync(ActionExecutingContext context)
         {
-            var actionData = context.HttpContext.RequestServices.GetService<ActionData>();
+            var componentContext = context.HttpContext.RequestServices.GetService<IComponentContext>();
+            var actionData = componentContext.Resolve<ActionData>();
             actionData.ShouldNotBeNull(nameof(actionData));
 
             var routeDictionary = context.HttpContext.GetRouteData().Values;
@@ -86,7 +88,8 @@ namespace Turn10.LiveOps.StewardApi.Filters
 
         private async Task LogResultAsync(ActionExecutedContext context)
         {
-            var actionLogger = context.HttpContext.RequestServices.GetService<IActionLogger>();
+            var componentContext = context.HttpContext.RequestServices.GetService<IComponentContext>();
+            var actionLogger = componentContext.Resolve<IActionLogger>();
 
             if (this.logOnCompletion && context.ModelState.IsValid && context.Exception == null)
             {

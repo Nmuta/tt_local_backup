@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -27,9 +28,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
 
             this.SunriseServices = new Lazy<SunriseProxyBundle>(() =>
             {
-                var sunriseProxyBundle = this.HttpContext.RequestServices.GetService<SunriseProxyBundle>();
-                sunriseProxyBundle.Endpoint = this.SunriseEndpoint.Value;
-                return sunriseProxyBundle;
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var proxyBundle = componentContext.Resolve<SunriseProxyBundle>();
+                proxyBundle.Endpoint = this.SunriseEndpoint.Value;
+                return proxyBundle;
             });
         }
 

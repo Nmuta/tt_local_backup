@@ -8,6 +8,36 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.MessageOfTheDay },
+      uuid: 'd8e91341-536a-480f-b975-1d0c99138a2a',
+      shortText: 'Add new tool to manage Messages of the Day',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5953bc34-2791-4a66-a9f4-9caf219efa10',
+      shortText: 'Add admin-only dev tool for testing',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '4fe92558-72c7-4471-a2c6-5d3a8469267a',
+      shortText: 'Cleanup naming conventions',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'c9f754d0-1344-4636-bc29-a5cc804d62c6',
+      shortText: 'Create Welcome Center Calendar UI, more coming soon',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
+      uuid: '179ef494-cac6-47af-b9d9-e7695ed699df',
+      shortText: 'Give Media Team permission to localized Pegasus strings',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserGroupManagement },
+      uuid: '71de15af-da30-4e1e-b05f-9eeaf4de9645',
+      shortText: 'Implement failed users response and sending large amount of users',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
       uuid: '517383d9-b9b6-44b2-90ef-27c18779a696',
       shortText: 'Update group gifting to not support cars until LSP is ready',

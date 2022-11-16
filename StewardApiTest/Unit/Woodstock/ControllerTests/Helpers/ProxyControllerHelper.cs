@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using static Turn10.Services.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
@@ -61,6 +62,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var mockUserManagementService = GenerateUserManagementService(Fixture); //Can't pass method directly as Returns parameter.
             proxyFactory.PrepareUserManagementService(Arg.Any<string>()).Returns(mockUserManagementService);
 
+            var mockNotificationsManagementService = GenerateNotificationsManagementService(Fixture);
+            proxyFactory.PrepareNotificationsManagementService(Arg.Any<string>()).Returns(mockNotificationsManagementService);
+
             //Add more services as needed for testing. Each should be constrained in it's own method to make organization simple.
 
             return proxyFactory;
@@ -74,8 +78,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             mockUserManagementService.CreateUserGroup(Arg.Any<string>()).Returns(Fixture.Create<CreateUserGroupOutput>());
             mockUserManagementService.CreateUserGroupBulkOperation(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserIds[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationOutput>());
             mockUserManagementService.GetUserGroupBulkOperationStatus(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<Guid>()).Returns(Fixture.Create<GetUserGroupBulkOperationStatusOutput>());
+            mockUserManagementService.CreateUserGroupBulkOperationV2(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserGroupOperationPage[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationV2Output>());
 
             return mockUserManagementService;
+        }
+
+        private static INotificationsManagementService GenerateNotificationsManagementService(Fixture Fixture)
+        {
+            var mockNotificationsManagementService = Substitute.For<INotificationsManagementService>();
+            mockNotificationsManagementService.DeleteNotificationsForUser(Arg.Any<ulong>()).Returns(Fixture.Create<DeleteNotificationsForUserOutput>());
+            
+            return mockNotificationsManagementService;
         }
     }
 }

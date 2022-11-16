@@ -7,7 +7,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({
@@ -28,7 +28,7 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
   public abstract gameTitle: GameTitleCodeName;
   public abstract supportsConsoleBanning: boolean;
 
-  constructor(private readonly permissionsService: PermissionsService) {
+  constructor(private readonly permissionsService: OldPermissionsService) {
     super();
   }
 

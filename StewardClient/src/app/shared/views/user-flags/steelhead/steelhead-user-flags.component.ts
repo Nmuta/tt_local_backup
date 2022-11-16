@@ -5,7 +5,7 @@ import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
 import { SteelheadUserFlags } from '@models/steelhead';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/permissions';
 import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
@@ -31,7 +31,7 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
 
   constructor(
     private readonly steelheadPlayerFlagsService: SteelheadPlayerFlagsService,
-    permissionsService: PermissionsService,
+    permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
   }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { LiveOpsBanDescription } from '@models/sunrise';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
-import { PermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/permissions';
 import { SteelheadBanHistoryService } from '@services/api-v2/steelhead/player/ban-history/steelhead-ban-history.service';
 import { SteelheadBanService } from '@services/api-v2/steelhead/ban/steelhead-ban.service';
 
@@ -30,7 +30,7 @@ export class SteelheadBanHistoryComponent extends BanHistoryBaseComponent {
   constructor(
     private readonly steelheadBanHistoryService: SteelheadBanHistoryService,
     private readonly steelheadBanService: SteelheadBanService,
-    permissionsService: PermissionsService,
+    permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
   }

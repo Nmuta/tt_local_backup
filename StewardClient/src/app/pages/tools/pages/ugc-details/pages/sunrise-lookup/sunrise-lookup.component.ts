@@ -5,7 +5,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
 import { SunriseService } from '@services/sunrise';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { SunriseFeatureUgcModalComponent } from '@views/feature-ugc-modal/sunrise/sunrise-feature-ugc-modal.component';
@@ -42,7 +42,7 @@ export class SunriseLookupComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly service: SunriseService,
-    private readonly permissionsService: PermissionsService,
+    private readonly permissionsService: OldPermissionsService,
     private readonly dialog: MatDialog,
   ) {
     super();

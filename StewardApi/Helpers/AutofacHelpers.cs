@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// <summary>
     ///     Useful extensions for dealing with Autofac.
     /// </summary>
-    public static class AutofactHelpers
+    public static class AutofacHelpers
     {
         /// <summary>
         ///     Produces a <see cref="ResolvedParameter"/> predicate that matches by name.

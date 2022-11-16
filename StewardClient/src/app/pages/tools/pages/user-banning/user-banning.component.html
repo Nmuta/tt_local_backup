@@ -4,12 +4,8 @@
     [routerLink]="link.route"
     mat-button
     routerLinkActive="mat-stroked-button"
-    [disabled]="link.disabled"
-    ><span [matTooltip]="link?.disabled ? disabledRouteTooltip : null">{{ link.name }}</span>
-    <endpoint-selection
-      *ngIf="!link?.disabled"
-      [titleCodeName]="link.codename"
-    ></endpoint-selection>
+    ><span>{{ link.name }}</span>
+    <endpoint-selection [titleCodeName]="link.codename"></endpoint-selection>
   </a>
   <span class="spacer"></span>
 </mat-toolbar>

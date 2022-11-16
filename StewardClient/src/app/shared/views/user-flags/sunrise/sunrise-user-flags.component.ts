@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/permissions';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
@@ -30,7 +30,7 @@ export class SunriseUserFlagsComponent extends UserFlagsBaseComponent<SunriseUse
 
   constructor(
     private readonly sunriseService: SunriseService,
-    permissionsService: PermissionsService,
+    permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
   }

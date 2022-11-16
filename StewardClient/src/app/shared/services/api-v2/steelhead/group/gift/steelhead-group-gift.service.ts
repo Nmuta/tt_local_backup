@@ -29,11 +29,11 @@ export class SteelheadGroupGiftService {
     giftReason: string,
     liveryIds: string[],
     userGroupId: BigNumber,
-    expireTimeSpanInDays: BigNumber,
+    expireAfterDays: BigNumber,
   ): Observable<GiftResponse<BigNumber>> {
     const model: SteelheadUserGroupBulkLiveryGift = {
       liveryIds,
-      target: { giftReason, expireTimeSpanInDays },
+      target: { giftReason, expireAfterDays },
     };
 
     return this.api.postRequest$(`${this.basePath}/${userGroupId}/gift/livery`, model);

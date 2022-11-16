@@ -8,7 +8,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.Services.ForzaClient;
-using static Turn10.LiveOps.StewardApi.Helpers.AutofactHelpers;
+using static Turn10.LiveOps.StewardApi.Helpers.AutofacHelpers;
 
 namespace Turn10.LiveOps.StewardApi.Proxies
 {
@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies
         public static void Register(ContainerBuilder builder)
         {
             builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().SingleInstance();
-            builder.RegisterType<SteelheadProxyBundle>();
+            builder.RegisterType<SteelheadProxyBundle>().SingleInstance();
 
             builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().Named<IWoodstockProxyFactory>("woodstockProdLiveFactory")
                 .WithParameter(Named("client"), With<Client>("woodstockClientProdLive")).SingleInstance();
@@ -36,10 +36,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies
                     .WithParameter(Named("woodstockFactory"), With<IWoodstockProxyFactory>("woodstockProdLiveStewardFactory")).SingleInstance();
 
             builder.RegisterType<ApolloProxyFactory>().As<IApolloProxyFactory>().SingleInstance();
-            builder.RegisterType<ApolloProxyBundle>();
+            builder.RegisterType<ApolloProxyBundle>().SingleInstance();
 
             builder.RegisterType<SunriseProxyFactory>().As<ISunriseProxyFactory>().SingleInstance();
-            builder.RegisterType<SunriseProxyBundle>();
+            builder.RegisterType<SunriseProxyBundle>().SingleInstance();
         }
     }
 }

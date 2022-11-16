@@ -5,6 +5,7 @@
       <mat-select
         [formControl]="formControls.selectedLocalizedStringInfo"
         [compareWith]="comparisonFunction"
+        [disabled]="isDisabled"
       >
         <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails">
           {{ stringDetails.englishText | deppoh }}

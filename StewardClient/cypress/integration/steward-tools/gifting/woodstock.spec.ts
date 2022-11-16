@@ -11,8 +11,18 @@ import {
 import { luke } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
+import { cleanUpTestAccounts } from '@support/steward/common/clear-up-test-accounts';
 
 context('Steward / Tools / Gifting / Woodstock', () => {
+  before(() => {
+    login();
+    cleanUpTestAccounts();
+  });
+
+  after(() => {
+    cleanUpTestAccounts();
+  });
+
   beforeEach(() => {
     login();
 

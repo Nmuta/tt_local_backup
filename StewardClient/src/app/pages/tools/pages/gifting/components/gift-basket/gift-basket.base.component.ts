@@ -87,8 +87,8 @@ export abstract class GiftBasketBaseComponent<
 
   /** Send form gift */
   public formControls = {
-    localizedTitleMessageInfo: new FormControl({}, [Validators.required]),
-    localizedBodyMessageInfo: new FormControl({}, [Validators.required]),
+    localizedTitleMessageInfo: new FormControl(null, [Validators.required]),
+    localizedBodyMessageInfo: new FormControl(null, [Validators.required]),
     giftReason: new FormControl('', [Validators.required]),
     expireDate: new FormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
     hasExpirationDate: new FormControl(false),

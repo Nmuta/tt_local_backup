@@ -8,7 +8,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { WoodstockUserFlagsComponent } from './woodstock-user-flags.component';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockUserFlagsComponent', () => {
@@ -16,7 +16,7 @@ describe('WoodstockUserFlagsComponent', () => {
   let fixture: ComponentFixture<WoodstockUserFlagsComponent>;
 
   let mockWoodstockService: WoodstockService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,7 +31,7 @@ describe('WoodstockUserFlagsComponent', () => {
     fixture = TestBed.createComponent(WoodstockUserFlagsComponent);
     component = fixture.componentInstance;
     mockWoodstockService = TestBed.inject(WoodstockService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

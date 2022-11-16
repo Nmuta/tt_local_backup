@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
@@ -52,30 +53,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
 
             this.SteelheadServices = new Lazy<SteelheadProxyBundle>(() =>
             {
-                var steelheadProxyBundle = this.HttpContext.RequestServices.GetService<SteelheadProxyBundle>();
-                steelheadProxyBundle.Endpoint = this.SteelheadEndpoint.Value;
-                return steelheadProxyBundle;
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var proxyBundle = componentContext.Resolve<SteelheadProxyBundle>();
+                proxyBundle.Endpoint = this.SteelheadEndpoint.Value;
+                return proxyBundle;
             });
 
             this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() =>
             {
-                var woodstockProxyBundle = this.HttpContext.RequestServices.GetService<WoodstockProxyBundle>();
-                woodstockProxyBundle.Endpoint = this.WoodstockEndpoint.Value;
-                return woodstockProxyBundle;
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var proxyBundle = componentContext.Resolve<WoodstockProxyBundle>();
+                proxyBundle.Endpoint = this.WoodstockEndpoint.Value;
+                return proxyBundle;
             });
 
             this.ApolloServices = new Lazy<ApolloProxyBundle>(() =>
             {
-                var apolloProxyBundle = this.HttpContext.RequestServices.GetService<ApolloProxyBundle>();
-                apolloProxyBundle.Endpoint = this.ApolloEndpoint.Value;
-                return apolloProxyBundle;
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var proxyBundle = componentContext.Resolve<ApolloProxyBundle>();
+                proxyBundle.Endpoint = this.ApolloEndpoint.Value;
+                return proxyBundle;
             });
 
             this.SunriseServices = new Lazy<SunriseProxyBundle>(() =>
             {
-                var sunriseProxyBundle = this.HttpContext.RequestServices.GetService<SunriseProxyBundle>();
-                sunriseProxyBundle.Endpoint = this.SunriseEndpoint.Value;
-                return sunriseProxyBundle;
+                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                var proxyBundle = componentContext.Resolve<SunriseProxyBundle>();
+                proxyBundle.Endpoint = this.SunriseEndpoint.Value;
+                return proxyBundle;
             });
         }
 

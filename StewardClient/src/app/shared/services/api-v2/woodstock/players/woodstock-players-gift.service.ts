@@ -18,11 +18,11 @@ export class WoodstockPlayersGiftService {
     giftReason: string,
     liveryIds: string[],
     xuids: BigNumber[],
-    expireTimeSpanInDays: BigNumber,
+    expireAfterDays: BigNumber,
   ): Observable<BackgroundJob<unknown>> {
     const model: WoodstockBulkPlayerBulkLiveryGift = {
       liveryIds,
-      target: { xuids, giftReason, expireTimeSpanInDays },
+      target: { xuids, giftReason, expireAfterDays },
     };
 
     return this.api.postRequest$(`${this.basePath}/livery/useBackgroundProcessing`, model);

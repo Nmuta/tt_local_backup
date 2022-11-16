@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using StewardGitApi;
 using Turn10.Data.Common;
+using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -101,7 +103,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingMessagePartial}{ConfigurationKeyConstants.PegasusCmsDefaultSteelhead}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.PegasusCmsDefaultSteelhead},{ConfigurationKeyConstants.SteelheadMessageOfTheDayPath},{ConfigurationKeyConstants.SteelheadWorldOfForzaPath},{ConfigurationKeyConstants.KeyVaultUrl},{ConfigurationKeyConstants.SteelheadContentAccessToken},{ConfigurationKeyConstants.SteelheadContentOrganizationUrl},{ConfigurationKeyConstants.SteelheadContentProjectId},{ConfigurationKeyConstants.SteelheadContentRepoId}");
         }
 
         [TestMethod]
@@ -118,19 +120,48 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "loggingService"));
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenAzureDevOpsFactoryNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { AzureDevOpsFactory = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "azureDevOpsFactory"));
+        }
+
+
         private sealed class Dependencies
         {
             public Dependencies(bool validConfiguration = true)
             {
-                this.PegasusCmsProvider.Helpers.Add(TitleConstants.SteelheadCodeName, new CMSRetrievalHelper("", new Dictionary<String, IAzureBlobProvider>()));
+                this.PegasusCmsProvider.Helpers.Add(TitleConstants.SteelheadCodeName, new CMSRetrievalHelper("", new Dictionary<string, IAzureBlobProvider>()));
 
                 if (validConfiguration)
                 {
                     this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].Returns("1234567890");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentProjectId].Returns("12345678-1234-1234-1234-123456789012");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentRepoId].Returns("12345678-1234-1234-1234-123456789012");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath].Returns("Test/Path");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath].Returns("Test/Path");
+                    this.Configuration[ConfigurationKeyConstants.KeyVaultUrl].Returns("1234567890");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentAccessToken].Returns("1234567890");
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl].Returns("1234567890");
                 }
                 else
                 {
                     this.Configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentProjectId].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentRepoId].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.KeyVaultUrl].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentAccessToken].ReturnsNull();
+                    this.Configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl].ReturnsNull();
                 }
             }
 
@@ -139,8 +170,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+            public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
+            public IAzureDevOpsFactory AzureDevOpsFactory { get; set; } = Substitute.For<IAzureDevOpsFactory>();
 
-            public SteelheadPegasusService Build() => new SteelheadPegasusService(this.PegasusCmsProvider, this.RefreshableCacheStore, this.Mapper, this.Configuration, this.LoggingService);
+            public SteelheadPegasusService Build() => new SteelheadPegasusService(this.PegasusCmsProvider, this.AzureDevOpsFactory, this.KeyVaultProvider, this.RefreshableCacheStore, this.Mapper, this.Configuration, this.LoggingService);
         }
     }
 }

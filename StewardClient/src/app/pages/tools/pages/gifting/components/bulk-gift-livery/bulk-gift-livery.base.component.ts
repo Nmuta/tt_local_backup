@@ -40,7 +40,7 @@ export interface BulkGiftLiveryContract {
     liveryIds: string[],
     xuids: BigNumber[],
     giftReason: string,
-    expireTimeSpanInDays: BigNumber,
+    expireAfterDays: BigNumber,
   ): Observable<BackgroundJob<unknown>>;
 
   /** API for gifting liveries to an LSP group. */
@@ -48,7 +48,7 @@ export interface BulkGiftLiveryContract {
     liveryIds: string[],
     lspGroup: LspGroup,
     giftReason: string,
-    expireTimeSpanInDays: BigNumber,
+    expireAfterDays: BigNumber,
   ): Observable<GiftResponse<BigNumber>>;
 }
 

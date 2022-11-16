@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { SteelheadConsolesComponent } from './steelhead-consoles.component';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
 import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
 import { createMockSteelheadConsolesService } from '@services/api-v2/steelhead/consoles/steelhead-consoles.service.mock';
 import { createMockSteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service.mock';
@@ -19,7 +19,7 @@ describe('SteelheadConsolesComponent', () => {
   let fixture: ComponentFixture<SteelheadConsolesComponent>;
 
   let mockSteelheadPlayerConsolesService: SteelheadPlayerConsolesService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,7 +37,7 @@ describe('SteelheadConsolesComponent', () => {
     fixture = TestBed.createComponent(SteelheadConsolesComponent);
     component = fixture.componentInstance;
     mockSteelheadPlayerConsolesService = TestBed.inject(SteelheadPlayerConsolesService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

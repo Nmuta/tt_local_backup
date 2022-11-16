@@ -10,14 +10,14 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { ApolloConsolesComponent } from './apollo-consoles.component';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { ApolloService, createMockApolloService } from '@services/apollo';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
 
 describe('ApolloConsolesComponent', () => {
   let component: ApolloConsolesComponent;
   let fixture: ComponentFixture<ApolloConsolesComponent>;
 
   let mockApolloService: ApolloService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,7 +31,7 @@ describe('ApolloConsolesComponent', () => {
     fixture = TestBed.createComponent(ApolloConsolesComponent);
     component = fixture.componentInstance;
     mockApolloService = TestBed.inject(ApolloService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')
