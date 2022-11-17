@@ -5,7 +5,7 @@ import { ToolsAppComponent } from './tools-app.component';
 import { ToolsAppRouterModule } from './tools-app.routing';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,10 +27,19 @@ import { ThemeModule } from '@shared/modules/theme/theme.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NavModule } from '@shared/modules/nav/nav.module';
 import { EndpointsModule } from '@shared/modules/endpoints/endpoints.module';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ToolsAppHomeTileGridComponent } from './pages/home/components/home-tile-grid/home-tile-grid.component';
 
 /** A module for all tools, with a configurable navbar. */
 @NgModule({
-  declarations: [ToolsAppHomeComponent, ToolsAppComponent, NavbarComponent],
+  declarations: [
+    ToolsAppHomeComponent,
+    ToolsAppHomeTileGridComponent,
+    ToolsAppComponent,
+    NavbarComponent,
+  ],
   imports: [
     ToolsAppRouterModule,
     NavModule,
@@ -60,6 +69,11 @@ import { EndpointsModule } from '@shared/modules/endpoints/endpoints.module';
     MatFormFieldModule,
     ThemeModule,
     EndpointsModule,
+    MatChipsModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
 })
 export class ToolsAppModule {}

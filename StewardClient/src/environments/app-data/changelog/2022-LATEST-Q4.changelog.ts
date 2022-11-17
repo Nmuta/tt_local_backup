@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'c9d7076c-9c12-40d1-a1d5-d5e842752e10',
+      shortText: 'Add tile search filters to home page',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
       shortText: 'Add and modify color-coding in Racers Cup',

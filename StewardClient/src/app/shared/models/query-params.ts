@@ -8,6 +8,8 @@ export enum QueryParam {
   Xuid = 'xuid',
   Gamertag = 'gamertag',
   T10Id = 't10Id',
+  TitleFilters = 'titleFilters',
+  TextFilters = 'textFilters',
 }
 
 /** Functions that parse query params to their expected type. Else returns null. */
