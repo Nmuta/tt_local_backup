@@ -4,8 +4,8 @@ import { BaseDirective } from '@components/base-component/base.directive';
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
-import { STEWARD_DISABLE_STATE_PROVIDER } from '@shared/modules/state-managers/injection-tokens';
-import { Subject } from 'rxjs';
+import { DisableStateProvider, STEWARD_DISABLE_STATE_PROVIDER } from '@shared/modules/state-managers/injection-tokens';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 /** A directive that toggles the enabled state of the host button with the provided mat-checkbox. */
@@ -21,7 +21,10 @@ import { switchMap, takeUntil } from 'rxjs/operators';
     },
   ],
 })
-export class PermissionAttributeButtonDirective extends BaseDirective {
+export class PermissionAttributeButtonDirective extends BaseDirective implements DisableStateProvider {
+  public overrideDisable: boolean = undefined;
+  public overrideDisable$ = new BehaviorSubject<boolean | undefined>(this.overrideDisable);
+  
   /** Test */
   @Input() public set permissionAttribute(attribute: PermAttributeName) {
     this.attributeName = attribute;
@@ -47,17 +50,21 @@ export class PermissionAttributeButtonDirective extends BaseDirective {
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
-        // console.log(this.attributeName)
-        // console.log(this.gameTitle)
         const hasPerm = permAttributesService.hasFeaturePermission(
           this.attributeName,
           this.gameTitle,
         );
 
-        host.disabled = !hasPerm;
-        if (host.disabled) {
-          // TODO: What do we want to do here?
+        this.updateHostState(!hasPerm);
+        
+        if (!hasPerm) {
+            // TODO: What do we want to do here?
         }
       });
+  }
+
+  private updateHostState(disabled: boolean): void {
+    this.overrideDisable = disabled;
+    this.overrideDisable$.next(this.overrideDisable);
   }
 }

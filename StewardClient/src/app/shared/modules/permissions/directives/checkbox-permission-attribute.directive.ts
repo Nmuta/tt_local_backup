@@ -1,12 +1,12 @@
-import { Directive, forwardRef, HostBinding, Input, Optional } from '@angular/core';
+import { Directive, forwardRef, Input, Optional } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
 import { BaseDirective } from '@components/base-component/base.directive';
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
-import { STEWARD_DISABLE_STATE_PROVIDER } from '@shared/modules/state-managers/injection-tokens';
-import { Subject } from 'rxjs';
+import { DisableStateProvider, STEWARD_DISABLE_STATE_PROVIDER } from '@shared/modules/state-managers/injection-tokens';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 /** A directive that toggles the enabled state of the host button with the provided mat-checkbox. */
@@ -20,8 +20,10 @@ import { switchMap, takeUntil } from 'rxjs/operators';
     },
   ],
 })
-export class PermissionAttributeCheckboxDirective extends BaseDirective {
-  @HostBinding('attr.matTooltip') matTooltip;
+export class PermissionAttributeCheckboxDirective extends BaseDirective implements DisableStateProvider {
+  public overrideDisable: boolean = undefined;
+  public overrideDisable$ = new BehaviorSubject<boolean | undefined>(this.overrideDisable);
+
   /** Test */
   @Input() public set permissionAttribute(attribute: PermAttributeName) {
     this.attributeName = attribute;
@@ -62,28 +64,18 @@ export class PermissionAttributeCheckboxDirective extends BaseDirective {
           this.gameTitle,
         );
 
-        host.disabled = !hasPerm;
-        if (host.disabled) {
+        this.updateHostState(!hasPerm);
+        
+        if (!hasPerm) {
           if (!!tooltip) {
             tooltip.message = this.invalidPermsMessage;
           }
         }
       });
+  }
 
-    // permAttributesService.initializationGuard$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-    //   console.log(this.permissionAttribute);
-    //   console.log(this.permissionTitle);
-
-    //   const hasPerm = permAttributesService.hasFeaturePermission(
-    //     this.permissionAttribute,
-    //     this.permissionTitle,
-    //   );
-
-    //   host.disabled = !hasPerm;
-    //   console.log(host)
-    //   if(host.disabled) {
-    //     this.matTooltip = 'Bloah blah ablha';
-    //   }
-    // });
+  private updateHostState(disabled: boolean): void {
+    this.overrideDisable = disabled;
+    this.overrideDisable$.next(this.overrideDisable);
   }
 }
