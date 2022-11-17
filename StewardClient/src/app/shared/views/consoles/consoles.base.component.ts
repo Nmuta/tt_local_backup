@@ -7,7 +7,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({

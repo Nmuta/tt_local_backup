@@ -7,6 +7,9 @@ import { BeforeDateDirective } from './validators/before-date.directive';
 import { AfterDateDirective } from './validators/after-date.directive';
 import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
 import { MatBadgeIconDirective } from './mat-badge-icon.directive';
+import { PermissionAttributeButtonDirective } from './permissions/button-permission-attribute.directive';
+import { PermissionAttributeCheckboxDirective } from './permissions/checkbox-permission-attribute.directive';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /**
  * Module containing various utility directives.
@@ -20,8 +23,10 @@ import { MatBadgeIconDirective } from './mat-badge-icon.directive';
     AfterDateDirective,
     ClickEnlargeImageDirective,
     MatBadgeIconDirective,
+    PermissionAttributeButtonDirective,
+    PermissionAttributeCheckboxDirective,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, MatTooltipModule],
   exports: [
     ClickStopDirective,
     DownloadCsvDirective,
@@ -30,6 +35,8 @@ import { MatBadgeIconDirective } from './mat-badge-icon.directive';
     AfterDateDirective,
     ClickEnlargeImageDirective,
     MatBadgeIconDirective,
+    PermissionAttributeButtonDirective,
+    PermissionAttributeCheckboxDirective,
   ],
 })
 export class DirectivesModule {}

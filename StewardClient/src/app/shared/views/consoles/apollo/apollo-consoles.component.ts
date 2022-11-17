@@ -5,7 +5,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { ApolloService } from '@services/apollo';
 import { Observable, throwError } from 'rxjs';
 import { ConsolesBaseComponent } from '../consoles.base.component';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({

@@ -11,7 +11,7 @@ import { SteelheadUserFlags } from '@models/steelhead';
 import { SunriseUserFlags } from '@models/sunrise';
 import { ApolloUserFlags } from '@models/apollo';
 import { VerifyActionButtonComponent } from '@components/verify-action-button/verify-action-button.component';
-import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 
 export type UserFlagsUnion =
   | WoodstockUserFlags

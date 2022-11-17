@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('SunriseConsolesComponent', () => {
   let component: SunriseConsolesComponent;

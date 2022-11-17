@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { ApolloUserFlagsComponent } from './apollo-user-flags.component';
 import faker from '@faker-js/faker';
 import { ApolloUserFlags } from '@models/apollo';
-import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('ApolloUserFlagsComponent', () => {

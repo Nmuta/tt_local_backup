@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 import { WoodstockConsolesComponent } from './woodstock-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('WoodstockConsolesComponent', () => {
   let component: WoodstockConsolesComponent;

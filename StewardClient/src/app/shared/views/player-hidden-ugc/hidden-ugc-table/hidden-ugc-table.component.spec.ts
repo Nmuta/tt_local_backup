@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
-import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 

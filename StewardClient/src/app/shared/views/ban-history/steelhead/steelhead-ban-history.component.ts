@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { LiveOpsBanDescription } from '@models/sunrise';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 import { SteelheadBanHistoryService } from '@services/api-v2/steelhead/player/ban-history/steelhead-ban-history.service';
 import { SteelheadBanService } from '@services/api-v2/steelhead/ban/steelhead-ban.service';
 

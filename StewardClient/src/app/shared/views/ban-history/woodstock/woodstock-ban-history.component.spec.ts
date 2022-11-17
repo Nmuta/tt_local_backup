@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockWoodstockService } from '@services/woodstock/woodstock.service.mock';
 import { WoodstockBanHistoryComponent } from './woodstock-ban-history.component';
-import { createMockPermissionsService } from '@services/permissions';
+import { createMockPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockBanHistoryComponent', () => {

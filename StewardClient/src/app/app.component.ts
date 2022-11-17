@@ -11,7 +11,7 @@ import { RefreshEndpointKeys } from '@shared/state/user-settings/user-settings.a
 import { ThemeService } from '@shared/modules/theme/theme.service';
 import { SyncChangelog } from '@shared/state/changelog/changelog.actions';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
-import { PermissionsService } from '@services/api-v2/permission.service.ts/permissions.service';
+import { PermissionsService } from '@services/api-v2/permissions/permissions.service';
 
 /** Defines the app component. */
 @Component({

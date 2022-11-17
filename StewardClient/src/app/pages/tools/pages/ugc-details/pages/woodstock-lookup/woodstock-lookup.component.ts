@@ -8,7 +8,7 @@ import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-it
 import { UgcType } from '@models/ugc-filters';
 import { UgcReportReason } from '@models/ugc-report-reason';
 import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-report.service';
-import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
@@ -27,6 +27,8 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
+import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -57,6 +59,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public selectedReason: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
+
+  public permAttribute = PermAttributeName.FeatureUGC;
+  public gameTitle = GameTitle.FH5;
 
   constructor(
     private readonly route: ActivatedRoute,

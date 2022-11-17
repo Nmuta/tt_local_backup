@@ -35,7 +35,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.v2
 {
     /// <summary>
-    ///     Handles requests for woodstock car items.
+    ///     Handles requests for woodstock permission management.
     /// </summary>
     [Route("api/v{version:apiVersion}/permissions")]
     [LogTagTitle(TitleLogTags.TitleAgnostic)]

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
 import { FormControl, FormGroup } from '@angular/forms';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Woodstock User Flags by XUID. */
 @Component({

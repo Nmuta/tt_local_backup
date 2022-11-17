@@ -35,6 +35,8 @@
               mat-raised-button
               color="primary"
               (click)="featureUgcItem()"
+              [permissionAttribute]="permAttribute"
+              [permissionTitle]="gameTitle"
             >
               <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
                 ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'

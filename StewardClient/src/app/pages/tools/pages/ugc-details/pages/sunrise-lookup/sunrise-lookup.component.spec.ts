@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
-import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { SunriseLookupComponent } from './sunrise-lookup.component';

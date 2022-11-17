@@ -16,7 +16,7 @@ import { Select } from '@ngxs/store';
 import {
   PermissionAttributeList,
   PermissionsService,
-} from '@services/api-v2/permission.service.ts/permissions.service';
+} from '@services/api-v2/permissions/permissions.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { UserService } from '@services/user';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -81,7 +81,7 @@ enum TreeView {
     },
   ],
 })
-export class PermisisionManagementComponent extends BaseComponent implements OnInit {
+export class PermissionManagementComponent extends BaseComponent implements OnInit {
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
   public allPermAttributes = keys(PermAttributeName);
 

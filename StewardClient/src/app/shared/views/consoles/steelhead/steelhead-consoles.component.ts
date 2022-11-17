@@ -5,7 +5,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { Observable, tap } from 'rxjs';
 import _ from 'lodash';
 import { ConsolesBaseComponent } from '../consoles.base.component';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
 import { SteelheadConsolesService } from '@services/api-v2/steelhead/consoles/steelhead-consoles.service';
 

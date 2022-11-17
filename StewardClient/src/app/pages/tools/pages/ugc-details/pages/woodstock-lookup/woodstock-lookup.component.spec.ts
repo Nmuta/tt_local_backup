@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
-import { OldPermissionsService, createMockPermissionsService } from '@services/permissions';
+import { OldPermissionsService, createMockPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { WoodstockLookupComponent } from './woodstock-lookup.component';

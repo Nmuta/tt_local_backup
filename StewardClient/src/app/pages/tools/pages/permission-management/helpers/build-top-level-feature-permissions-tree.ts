@@ -1,5 +1,5 @@
 import { GameTitle } from '@models/enums';
-import { PermissionAttributeList } from '@services/api-v2/permission.service.ts/permissions.service';
+import { PermissionAttributeList } from '@services/api-v2/permissions/permissions.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { AttributeTreeNode, TitleEnvironments } from '../permission-management.component';
 

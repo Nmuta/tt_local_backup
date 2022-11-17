@@ -7,7 +7,7 @@ import { BanHistoryBaseComponent } from '../ban-history.base.component';
 import { Observable } from 'rxjs';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Woodstock Ban history by XUID. */
 @Component({

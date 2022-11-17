@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermisisionManagementComponent } from './permission-management.component';
+import { PermissionManagementComponent } from './permission-management.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PermisisionManagementComponent,
+    component: PermissionManagementComponent,
   },
 ];
 

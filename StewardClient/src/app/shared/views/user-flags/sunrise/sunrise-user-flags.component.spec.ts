@@ -8,7 +8,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { SunriseUserFlagsComponent } from './sunrise-user-flags.component';
-import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SunriseUserFlagsComponent', () => {

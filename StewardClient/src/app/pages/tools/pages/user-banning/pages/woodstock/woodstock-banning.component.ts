@@ -14,7 +14,6 @@ import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { GameTitle } from '@models/enums';
-import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -46,10 +45,9 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
 
   constructor(
     backgroundJobService: BackgroundJobService,
-    permAttributesService: PermAttributesService,
     private readonly woodstock: WoodstockService,
   ) {
-    super(backgroundJobService, permAttributesService);
+    super(backgroundJobService);
 
     const summaries$ = new ReplaySubject<WoodstockBanSummary[]>(1);
     const summaryLookup$ = new ReplaySubject<Dictionary<WoodstockBanSummary>>(1);
@@ -135,7 +133,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
 
   /** True when the form can be submitted. */
   public canBan(): boolean {
-    return this.formGroup.valid && this.playerIdentities.length > 0 && this.hasBanPerm;
+    return this.formGroup.valid && this.playerIdentities.length > 0;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

@@ -8,7 +8,7 @@ import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { LiveOpsExtendedBanDescription } from '@models/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 
 /** Extended type from LiveOpsExtendedBanDescription. */
 type BanHistoryTableEntry = LiveOpsExtendedBanDescription & {

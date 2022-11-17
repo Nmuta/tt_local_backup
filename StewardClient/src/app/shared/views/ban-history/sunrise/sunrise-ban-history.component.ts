@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { BanHistoryBaseComponent } from '../ban-history.base.component';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Sunrise Ban history by XUID. */
 @Component({

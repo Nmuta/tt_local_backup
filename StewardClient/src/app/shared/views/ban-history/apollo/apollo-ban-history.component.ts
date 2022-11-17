@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { LiveOpsBanDescription } from '@models/sunrise';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Apollo Ban history by XUID. */
 @Component({

@@ -5,8 +5,6 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GameTitle } from '@models/enums';
 import { SunriseBanResult } from '@models/sunrise';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { EMPTY, timer } from 'rxjs';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 
@@ -24,23 +22,10 @@ export abstract class UserBanningBaseComponent extends BaseComponent {
   /** The error received while loading. */
   public loadError: unknown;
 
-  /** Perm attribute check. */
-  public hasBanPerm: boolean = false;
-
   public abstract gameTitle: GameTitle;
 
-  constructor(
-    private readonly backgroundJobService: BackgroundJobService,
-    private readonly permAttributesService: PermAttributesService,
-  ) {
+  constructor(private readonly backgroundJobService: BackgroundJobService) {
     super();
-
-    permAttributesService.initializationGuard$.subscribe(() => {
-      this.hasBanPerm = this.permAttributesService.hasFeaturePermission(
-        PermAttributeName.BanPlayer,
-        this.gameTitle,
-      );
-    });
   }
 
   /** Waits for a background job to complete. */

@@ -6,7 +6,7 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { SteelheadUgcReportService } from '@services/api-v2/steelhead/ugc/report/steelhead-ugc-report.service';
-import { PermissionServiceTool, OldPermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { first, keys } from 'lodash';
 import {

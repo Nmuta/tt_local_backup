@@ -10,7 +10,7 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { ApolloConsolesComponent } from './apollo-consoles.component';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { ApolloService, createMockApolloService } from '@services/apollo';
-import { createMockPermissionsService, OldPermissionsService } from '@services/permissions';
+import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('ApolloConsolesComponent', () => {
   let component: ApolloConsolesComponent;

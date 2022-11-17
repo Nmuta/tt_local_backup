@@ -13,7 +13,7 @@ import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { GameTitle } from '@models/enums';
-import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
+
 /** Routed Component; Apollo Banning Tool. */
 @Component({
   templateUrl: './apollo-banning.component.html',
@@ -41,12 +41,8 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
     identities: AugmentedCompositeIdentity[],
   ) => Observable<AugmentedCompositeIdentity[]> = null;
 
-  constructor(
-    backgroundJobService: BackgroundJobService,
-    permAttributesService: PermAttributesService,
-    private readonly apollo: ApolloService,
-  ) {
-    super(backgroundJobService, permAttributesService);
+  constructor(backgroundJobService: BackgroundJobService, private readonly apollo: ApolloService) {
+    super(backgroundJobService);
 
     const summaries$ = new ReplaySubject<ApolloBanSummary[]>(1);
     const summaryLookup$ = new ReplaySubject<Dictionary<ApolloBanSummary>>(1);
@@ -137,7 +133,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
 
   /** True when the form can be submitted. */
   public canBan(): boolean {
-    return this.formGroup.valid && this.playerIdentities.length > 0 && this.hasBanPerm;
+    return this.formGroup.valid && this.playerIdentities.length > 0;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

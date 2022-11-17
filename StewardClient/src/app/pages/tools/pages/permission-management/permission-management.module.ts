@@ -12,7 +12,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
-import { PermisisionManagementComponent } from './permission-management.component';
+import { PermissionManagementComponent } from './permission-management.component';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -33,7 +33,7 @@ import { VerifyUserPermissionChangeDialogComponent } from './components/verify-u
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
   declarations: [
-    PermisisionManagementComponent,
+    PermissionManagementComponent,
     VerifyUserSwitchDialogComponent,
     VerifyUserPermissionChangeDialogComponent,
   ],

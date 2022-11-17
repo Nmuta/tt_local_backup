@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { UserModel } from '@models/user.model';
-import { PermissionsService } from '@services/api-v2/permission.service.ts/permissions.service';
+import { PermissionsService } from '@services/api-v2/permissions/permissions.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { find } from 'lodash';

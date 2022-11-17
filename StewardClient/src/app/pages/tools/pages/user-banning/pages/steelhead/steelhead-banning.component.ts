@@ -13,7 +13,7 @@ import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
 import { GameTitle } from '@models/enums';
-import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
+
 /** Routed Component; Steelhead Banning Tool. */
 @Component({
   templateUrl: './steelhead-banning.component.html',
@@ -43,10 +43,9 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
 
   constructor(
     backgroundJobService: BackgroundJobService,
-    permAttributesService: PermAttributesService,
     private readonly steelheadPlayersService: SteelheadPlayersService,
   ) {
-    super(backgroundJobService, permAttributesService);
+    super(backgroundJobService);
 
     const summaries$ = new ReplaySubject<SteelheadBanSummary[]>(1);
     const summaryLookup$ = new ReplaySubject<Dictionary<SteelheadBanSummary>>(1);
@@ -137,7 +136,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
 
   /** True when the form can be submitted. */
   public canBan(): boolean {
-    return this.formGroup.valid && this.playerIdentities.length > 0 && this.hasBanPerm;
+    return this.formGroup.valid && this.playerIdentities.length > 0;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

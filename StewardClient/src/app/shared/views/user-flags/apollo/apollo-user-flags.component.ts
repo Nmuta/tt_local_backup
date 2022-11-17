@@ -6,7 +6,7 @@ import { GameTitle } from '@models/enums';
 import { ApolloService } from '@services/apollo';
 import { ApolloUserFlags } from '@models/apollo';
 import { FormControl, FormGroup } from '@angular/forms';
-import { OldPermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({

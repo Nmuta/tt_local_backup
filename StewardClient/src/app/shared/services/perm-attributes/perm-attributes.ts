@@ -15,7 +15,6 @@ export enum PermAttributeName {
   GroupMessaging = 'GroupMessaging',
   HideUGC = 'HideUGC',
   OverrideCMS = 'OverrideCMS',
-  PlayerGifitng = 'PlayerGifitng',
   PlayerGifting = 'PlayerGifting',
   PlayerLiveryGifting = 'PlayerLiveryGifting',
   PlayerMessaging = 'PlayerMessaging',

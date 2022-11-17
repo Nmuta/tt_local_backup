@@ -1,6 +1,6 @@
 import { Injectable, Provider } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { OldPermissionsService } from './permissions.service';
+import { OldPermissionsService } from './old-permissions.service';
 
 /** Defines the mock for the Permissions Service. */
 @Injectable()
