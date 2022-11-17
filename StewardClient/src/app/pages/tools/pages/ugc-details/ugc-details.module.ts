@@ -37,6 +37,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
 import { MatSelectModule } from '@angular/material/select';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -84,6 +85,7 @@ import { MatSelectModule } from '@angular/material/select';
     StateManagersModule,
     StandardFormModule,
     MatSelectModule,
+    PermissionsModule,
   ],
 })
 export class UgcDetailsModule {}

@@ -1,5 +1,4 @@
-import { Directive, forwardRef, Input, Renderer2 } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { Directive, ElementRef, forwardRef, Input, Renderer2, ViewContainerRef } from '@angular/core';
 import { BaseDirective } from '@components/base-component/base.directive';
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
@@ -7,6 +6,7 @@ import { PermAttributesService } from '@services/perm-attributes/perm-attributes
 import { DisableStateProvider, STEWARD_DISABLE_STATE_PROVIDER } from '@shared/modules/state-managers/injection-tokens';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
+import { InvalidPermissionsComponent } from '../components/invalid-permissions/invalid-permissions.component';
 
 /** A directive that toggles the enabled state of the host button with the provided mat-checkbox. */
 @Directive({
@@ -41,7 +41,11 @@ export class PermissionAttributeButtonDirective extends BaseDirective implements
   private gameTitle: GameTitle;
   private readonly invalidPermsMessage = 'You do not have the permissions to use this feature';
 
-  constructor(host: MatButton, renderer: Renderer2, permAttributesService: PermAttributesService) {
+  constructor(
+    element: ElementRef, 
+    renderer: Renderer2,
+    permAttributesService: PermAttributesService,  
+    viewContainerRef: ViewContainerRef) {
     super();
 
     this.checkPermission$
@@ -57,8 +61,11 @@ export class PermissionAttributeButtonDirective extends BaseDirective implements
 
         this.updateHostState(!hasPerm);
         
-        if (!hasPerm) {
-            // TODO: What do we want to do here?
+        const host = element.nativeElement;
+        if (!hasPerm && host.firstChild.localName !== 'invalid-permissions') {
+          const invalidPermissionComponent = viewContainerRef.createComponent(InvalidPermissionsComponent);
+          const host = element.nativeElement;
+          host.insertBefore(invalidPermissionComponent.location.nativeElement, host.firstChild)
         }
       });
   }
