@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'd6730fcb-e145-4a4d-a11f-011363103587',
+      shortText: 'Special Xuid 1 can now be used with limited feature access',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'ccd8f14b-1c53-4906-9e4d-745894f77cf7',
       shortText: 'Fix localized string dropdown validation',

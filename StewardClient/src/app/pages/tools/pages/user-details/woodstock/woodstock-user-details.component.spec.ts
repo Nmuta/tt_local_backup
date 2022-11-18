@@ -4,6 +4,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
+import { Subject } from 'rxjs';
 import { UserDetailsComponent } from '../user-details.component';
 
 import { WoodstockUserDetailsComponent } from './woodstock-user-details.component';
@@ -21,7 +23,15 @@ describe('WoodstockUserDetailsComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot(),
       ],
-      providers: [{ provide: UserDetailsComponent, useValue: {} }],
+      providers: [
+        {
+          provide: UserDetailsComponent,
+          useValue: {
+            specialIdentitiesAllowed: [],
+            identity$: new Subject<AugmentedCompositeIdentity>(),
+          },
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

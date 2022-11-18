@@ -9,14 +9,19 @@ import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodst
 import { LoyaltyRewardsServiceContract } from '@views/loyalty-rewards/loyalty-rewards.component';
 import { GameTitle } from '@models/enums';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
+import { SpecialXuid1 } from '@models/special-identity';
+import { takeUntil } from 'rxjs';
+import { BaseComponent } from '@components/base-component/base.component';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
   templateUrl: './woodstock-user-details.component.html',
   styleUrls: ['./woodstock-user-details.component.scss'],
 })
-export class WoodstockUserDetailsComponent {
+export class WoodstockUserDetailsComponent extends BaseComponent {
   public profileId: BigNumber;
+  /** Used to hide unwanted tab when dealing with a special xuid. */
+  public isSpecialXuid: boolean;
 
   public readonly UgcType = UgcType;
 
@@ -47,7 +52,16 @@ export class WoodstockUserDetailsComponent {
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
     private woodstockPlayerService: WoodstockPlayerService,
-  ) {}
+  ) {
+    super();
+
+    this.parent.specialIdentitiesAllowed = [SpecialXuid1];
+    this.parent.identity$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+      this.isSpecialXuid = this.parent.specialIdentitiesAllowed.some(x =>
+        x.xuid.isEqualTo(this.identity.xuid),
+      );
+    });
+  }
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: WoodstockPlayerInventoryProfile): void {

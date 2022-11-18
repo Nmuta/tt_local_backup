@@ -2,7 +2,7 @@
   <h1><player-identity-results [identity]="identity"></player-identity-results></h1>
   <section>
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)">
-      <mat-tab label="User Details">
+      <mat-tab *ngIf="!isSpecialXuid" label="User Details">
         <div class="tab-container sf-wrapper">
           <div class="sf-horizontal">
             <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
@@ -16,7 +16,7 @@
           <woodstock-consoles [identity]="identity"></woodstock-consoles>
         </div>
       </mat-tab>
-      <mat-tab label="Deep Dive">
+      <mat-tab *ngIf="!isSpecialXuid" label="Deep Dive">
         <div class="tab-container">
           <woodstock-overview [identity]="identity"></woodstock-overview>
           <!-- TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818) -->
@@ -26,7 +26,7 @@
           <woodstock-credit-history [identity]="identity"></woodstock-credit-history>
         </div>
       </mat-tab>
-      <mat-tab label="Inventory">
+      <mat-tab *ngIf="!isSpecialXuid" label="Inventory">
         <div class="tab-container">
           <mat-card>
             <mat-card-header>
@@ -50,17 +50,17 @@
           </mat-card>
         </div>
       </mat-tab>
-      <mat-tab label="Notifications">
+      <mat-tab *ngIf="!isSpecialXuid" label="Notifications">
         <div class="tab-container">
           <woodstock-player-notifications [identity]="identity"></woodstock-player-notifications>
         </div>
       </mat-tab>
-      <mat-tab label="Auctions">
+      <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
         <div class="tab-container">
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
         </div>
       </mat-tab>
-      <mat-tab>
+      <mat-tab *ngIf="!isSpecialXuid">
         <div class="tab-container">
           <ng-template mat-tab-label>
             Auction Log
@@ -161,14 +161,14 @@
           </mat-tab>
         </mat-tab-group>
       </mat-tab>
-      <mat-tab label="Loyalty">
+      <mat-tab *ngIf="!isSpecialXuid" label="Loyalty">
         <div class="tab-container">
           <loyalty-rewards [identity]="identity" [serviceContract]="loyaltyRewardsServiceContract">
           </loyalty-rewards>
           <entitlements [identity]="identity"></entitlements>
         </div>
       </mat-tab>
-      <mat-tab label="JSON">
+      <mat-tab *ngIf="!isSpecialXuid" label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>
         </div>

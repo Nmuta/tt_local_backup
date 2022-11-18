@@ -79,4 +79,9 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
       });
     });
   }
+
+  /** Special Identity are not supported on bulk selection */
+  public handleSpecialIdentity(): boolean {
+    return false;
+  }
 }
