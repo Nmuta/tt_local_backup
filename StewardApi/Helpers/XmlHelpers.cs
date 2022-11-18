@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
@@ -10,6 +12,17 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// </summary>
     public static class XmlHelpers
     {
+        /// <summary>
+        ///     Creates xml string with declaration.
+        /// </summary>
+        public static string ToXmlString(this XDocument xdoc, SaveOptions options = SaveOptions.None)
+        {
+            var newLine = (options & SaveOptions.DisableFormatting) == SaveOptions.DisableFormatting ? string.Empty : Environment.NewLine;
+            return xdoc.Declaration == null
+                ? new XDocument(new XDeclaration("1.0", "utf-8", null), xdoc.Root.Elements()).ToString(options)
+                : xdoc.Declaration + newLine + xdoc.ToString(options);
+        }
+
         /// <summary>
         ///     Serializes object into an xml string and writes to file.
         /// </summary>

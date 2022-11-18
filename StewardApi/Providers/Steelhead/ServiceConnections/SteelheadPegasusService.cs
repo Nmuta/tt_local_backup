@@ -321,7 +321,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            string newXml = element.Document.ToString(SaveOptions.None);
+            string newXml = element.Document.ToXmlString();
 
             var change = new CommitRefProxy()
             {
@@ -388,7 +388,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            string newXml = element.Document.ToString(SaveOptions.None);
+            string newXml = element.Document.ToXmlString();
 
             var change = new CommitRefProxy()
             {
