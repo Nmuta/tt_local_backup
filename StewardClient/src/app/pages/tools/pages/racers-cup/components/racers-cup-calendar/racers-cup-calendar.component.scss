@@ -1,5 +1,6 @@
 @import 'angular-calendar/css/angular-calendar.css';
 @import '/src/styles/mixins';
+@import '../../styles/racers-cup-series-colors.scss';
 
 mat-card {
   max-height: unset;
@@ -99,109 +100,4 @@ div.calendar-control-panel {
     padding-left: 0.5em;
     cursor: pointer;
   }
-}
-
-.badge {
-  border-left: 4px solid;
-  margin-bottom: 1px;
-
-  &.day-event-badge {
-    background-color: app-color-darker($app-background);
-  }
-
-  &.badge-0 {
-    border-color: #5a0a33;
-  }
-
-  &.badge-1 {
-    border-color: #ff66fd;
-  }
-
-  &.badge-2 {
-    border-color: #ff8735;
-  }
-
-  &.badge-3 {
-    border-color: #8e06cd;
-  }
-
-  &.badge-4 {
-    border-color: #ffb935;
-  }
-
-  &.badge-5 {
-    border-color: #ff4235;
-  }
-
-  &.badge-6 {
-    border-color: #ab0d61;
-  }
-
-  &.badge-7 {
-    border-color: #00c2f9;
-  }
-
-  &.badge-8 {
-    border-color: #ed0dfd;
-  }
-
-  &.badge-9 {
-    border-color: #004002;
-  }
-
-  &.badge-10 {
-    border-color: #de0d2e;
-  }
-
-  &.badge-11 {
-    border-color: #00b408;
-  }
-}
-
-:host ::ng-deep .event-type-0 .week-view-event {
-  background-color: #5a0a33;
-}
-
-:host ::ng-deep .event-type-1 .week-view-event {
-  background-color: #ff66fd;
-}
-
-:host ::ng-deep .event-type-2 .week-view-event {
-  background-color: #ff8735;
-}
-
-:host ::ng-deep .event-type-3 .week-view-event {
-  background-color: #8e06cd;
-}
-
-:host ::ng-deep .event-type-4 .week-view-event {
-  background-color: #ffb935;
-}
-
-:host ::ng-deep .event-type-5 .week-view-event {
-  background-color: #ff4235;
-}
-
-:host ::ng-deep .event-type-6 .week-view-event {
-  background-color: #ab0d61;
-}
-
-:host ::ng-deep .event-type-7 .week-view-event {
-  background-color: #00c2f9;
-}
-
-:host ::ng-deep .event-type-8 .week-view-event {
-  background-color: #ed0dfd;
-}
-
-:host ::ng-deep .event-type-9 .week-view-event {
-  background-color: #004002;
-}
-
-:host ::ng-deep .event-type-10 .week-view-event {
-  background-color: #de0d2e;
-}
-
-:host ::ng-deep .event-type-11 .week-view-event {
-  background-color: #00b408;
 }

@@ -155,6 +155,8 @@ export abstract class PlayerSelectionBaseComponent
   /** Called when a new set of results is selected. */
   public abstract onSelect(change: MatChipListChange): void;
 
+  public abstract handleSpecialIdentity(): boolean;
+
   /** A processing function that may re-order, but not add or remove, identitites. */
   @Input() public sortFn: (
     identities: AugmentedCompositeIdentity[],
@@ -329,6 +331,13 @@ export abstract class PlayerSelectionBaseComponent
     }
 
     this.foundIdentities$.next(this.foundIdentities);
+
+    // Handle special identity situation
+    // If a special identity was requested (Xuid 1), getPlayerIdentities will not be called and a predefined AugmentedCompositeIdentity will be used instead
+    if (this.handleSpecialIdentity()) {
+      this.foundIdentities$.next(this.foundIdentities);
+      return;
+    }
 
     this.multi
       .getPlayerIdentities$(this.lookupType, newQueries as AnyIdentityQuery[])

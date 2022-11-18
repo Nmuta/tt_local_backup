@@ -8,6 +8,7 @@ import {
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -70,6 +71,8 @@ export class SelectLocalizedStringComponent
   @Input() disableLanguagePreview: boolean = false;
   /** Determines if the dropdown is disabled. */
   @Input() isDisabled: boolean = false;
+  /** Determines if a value is required. Default to true with the formControl also having the validator. */
+  @Input() isRequired: boolean = true;
 
   public localizedStringLookup: LocalizedStringsMap = new Map();
   public localizedStringDetails: LocalizationOptions[] = [];
@@ -78,7 +81,7 @@ export class SelectLocalizedStringComponent
   public selectedLanguageLocalizedString: LocalizedString = null;
 
   public formControls = {
-    selectedLocalizedStringInfo: new FormControl({}),
+    selectedLocalizedStringInfo: new FormControl({}, [Validators.required]),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -92,6 +95,11 @@ export class SelectLocalizedStringComponent
   public ngOnInit(): void {
     if (!this.service) {
       throw new Error('No service defined for Select Localized String component.');
+    }
+
+    // If isRequired was specified as false, remove the required validator from the formControl
+    if (!this.isRequired) {
+      this.formControls.selectedLocalizedStringInfo.removeValidators([Validators.required]);
     }
 
     this.getLocalizedStrings$

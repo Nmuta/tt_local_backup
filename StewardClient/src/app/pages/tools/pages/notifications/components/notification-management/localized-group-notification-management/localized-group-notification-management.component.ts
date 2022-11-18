@@ -217,7 +217,7 @@ export class LocalizedGroupNotificationManagementComponent
   private prepareNotifications(groupNotification: GroupNotification): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), groupNotification.sentDateUtc]);
     const formControls = {
-      localizedMessageInfo: new FormControl(null, [Validators.required]),
+      localizedMessageInfo: new FormControl({}, [Validators.required]),
       deviceType: new FormControl(groupNotification.deviceType),
       expireDateUtc: new FormControl(groupNotification.expirationDateUtc, [
         Validators.required,

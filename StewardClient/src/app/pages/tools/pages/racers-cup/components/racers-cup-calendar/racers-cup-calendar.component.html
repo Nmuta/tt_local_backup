@@ -117,11 +117,13 @@
     <div class="shrink-wrap">
       <div
         *ngFor="let group of day.eventGroups"
-        class="badge badge-{{ getGroupIndex(group[0]) }}"
+        class="badge unique-left-border-color-{{ group.seriesColorIndex }}-of-{{
+          uniqueSeries.length
+        }}"
         (click)="groupClicked(group)"
-        matTooltip="{{ group[0] }}"
+        matTooltip="{{ group.name }}"
       >
-        {{ group[0] }}: {{ group[1].length }}
+        {{ group.name }}: {{ group.events.length }}
       </div>
     </div>
   </div>
@@ -150,7 +152,11 @@
     [tooltipAppendToBody]="tooltipAppendToBody"
     [tooltipDelay]="tooltipDelay"
   >
-    <div class="badge day-event-badge badge-{{ getGroupIndex(dayEvent.event.meta.seriesName) }}">
+    <div
+      class="badge day-event-badge unique-left-border-color-{{
+        dayEvent.event.meta.seriesColorIndex
+      }}-of-{{ uniqueSeries.length }}"
+    >
       {{ dayEvent.event.meta.eventNameClean }}
     </div>
   </div>
@@ -170,7 +176,11 @@
   let-locale="locale"
 >
   <div
-    class="cal-event week-view-event"
+    class="cal-event
+      week-view-event
+      unique-event-background-color-{{ weekEvent.event.meta.seriesColorIndex }}-of-{{
+      uniqueSeries.length
+    }}"
     [mwlCalendarTooltip]="!tooltipDisabled ? weekEvent.event.meta.weekTooltip : ''"
     [tooltipPlacement]="tooltipPlacement"
     [tooltipEvent]="weekEvent.event"

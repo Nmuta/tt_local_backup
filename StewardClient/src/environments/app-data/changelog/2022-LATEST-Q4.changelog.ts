@@ -8,6 +8,26 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'd6730fcb-e145-4a4d-a11f-011363103587',
+      shortText: 'Special Xuid 1 can now be used with limited feature access',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ccd8f14b-1c53-4906-9e4d-745894f77cf7',
+      shortText: 'Fix localized string dropdown validation',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c9d7076c-9c12-40d1-a1d5-d5e842752e10',
+      shortText: 'Add tile search filters to home page',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
+      shortText: 'Add and modify color-coding in Racers Cup',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.MessageOfTheDay },
       uuid: 'd8e91341-536a-480f-b975-1d0c99138a2a',
       shortText: 'Add new tool to manage Messages of the Day',
