@@ -21,18 +21,16 @@ import { InvalidPermissionsComponent } from '../components/invalid-permissions/i
 
 /** A directive that toggles the enabled state of the host button with the provided mat-checkbox. */
 @Directive({
-  selector: `mat-checkbox[stateManager][permissionAttribute] button[mat-button][stateManager][permissionAttribute], button[mat-raised-button][stateManager][permissionAttribute], button[mat-icon-button][stateManager][permissionAttribute],
-  button[mat-fab][stateManager][permissionAttribute], button[mat-mini-fab][stateManager][permissionAttribute], button[mat-stroked-button][stateManager][permissionAttribute],
-  button[mat-flat-button][stateManager][permissionAttribute]`,
+  selector: `mat-checkbox[stateManager][permissionAttribute]`,
   providers: [
     {
       provide: STEWARD_DISABLE_STATE_PROVIDER,
-      useExisting: forwardRef(() => PermissionAttributeDirective),
+      useExisting: forwardRef(() => CheckboxPermissionAttributeDirective),
       multi: true,
     },
   ],
 })
-export class PermissionAttributeDirective
+export class CheckboxPermissionAttributeDirective
   extends BaseDirective
   implements DisableStateProvider
 {
@@ -80,6 +78,7 @@ export class PermissionAttributeDirective
           const invalidPermissionComponent = viewContainerRef.createComponent(
             InvalidPermissionsComponent,
           );
+          invalidPermissionComponent.instance.setPermAttributeName(this.attributeName);
           const host = element.nativeElement;
           host.insertBefore(invalidPermissionComponent.location.nativeElement, host.firstChild);
         }

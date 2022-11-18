@@ -99,8 +99,6 @@
           (click)="deleteScores(selectedScores)"
           clickStop
           stateManager
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
           [monitor]="deleteLeaderboardScoresMonitor"
           monitorDisable
           monitorWarn
@@ -111,16 +109,6 @@
             <ng-template ngPluralCase="=1">score</ng-template>
             <ng-template ngPluralCase="other">scores</ng-template>
           </span>
-        </button>
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="disableExport"
-          matTooltip="Export Scores"
-          [downloadCsv]="exportableScores"
-          [filename]="exportFileName"
-        >
-          Export
         </button>
         <mat-checkbox
           clickStop
@@ -134,6 +122,16 @@
         >
           Verify Multi-Delete
         </mat-checkbox>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="disableExport"
+          matTooltip="Export Scores"
+          [downloadCsv]="exportableScores"
+          [filename]="exportFileName"
+        >
+          Export
+        </button>
       </div>
     </div>
     <div class="paginator-actions">
@@ -245,8 +243,6 @@
                   (click)="deleteScores([entry])"
                   clickStop
                   stateManager
-                  [permissionAttribute]="permAttribute"
-                  [permissionTitle]="gameTitle"
                   [monitor]="deleteLeaderboardScoresMonitor"
                   monitorDisable
                   monitorWarn
