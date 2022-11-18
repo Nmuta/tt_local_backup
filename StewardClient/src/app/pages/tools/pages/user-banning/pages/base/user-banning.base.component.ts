@@ -13,7 +13,7 @@ export type BanResultsUnion = SunriseBanResult | ApolloBanResult;
 @Component({
   template: '',
 })
-export abstract class UserBanningBaseComponent extends BaseComponent {
+export class UserBanningBaseComponent extends BaseComponent {
   /** True while waiting on a request. */
   public banResults: BanResultsUnion[];
   /** True while waiting on a request. */
