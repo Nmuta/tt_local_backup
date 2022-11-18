@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'ccd8f14b-1c53-4906-9e4d-745894f77cf7',
+      shortText: 'Fix localized string dropdown validation',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'c9d7076c-9c12-40d1-a1d5-d5e842752e10',
       shortText: 'Add tile search filters to home page',
