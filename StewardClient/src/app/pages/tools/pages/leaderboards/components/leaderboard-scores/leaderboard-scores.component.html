@@ -99,6 +99,8 @@
           (click)="deleteScores(selectedScores)"
           clickStop
           stateManager
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
           [monitor]="deleteLeaderboardScoresMonitor"
           monitorDisable
           monitorWarn
@@ -125,6 +127,7 @@
           #verifyCheckboxMultiDelete
           [(ngModel)]="isMultiDeleteActive"
           ngDefaultControl
+          stateManager
           [permissionAttribute]="permAttribute"
           [permissionTitle]="gameTitle"
           matTooltip="Check to enable deletion"
@@ -242,6 +245,8 @@
                   (click)="deleteScores([entry])"
                   clickStop
                   stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
                   [monitor]="deleteLeaderboardScoresMonitor"
                   monitorDisable
                   monitorWarn
@@ -250,6 +255,7 @@
                   Delete
                 </button>
                 <mat-checkbox
+                  stateManager
                   [permissionAttribute]="permAttribute"
                   [permissionTitle]="gameTitle"
                   clickStop

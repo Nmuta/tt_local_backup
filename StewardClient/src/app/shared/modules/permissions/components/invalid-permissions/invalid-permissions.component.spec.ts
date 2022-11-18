@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InvalidPermissionsComponent } from './invalid-permissions.component';
 
-
 describe('InvalidPermissionsComponent', () => {
   let component: InvalidPermissionsComponent;
   let fixture: ComponentFixture<InvalidPermissionsComponent>;
@@ -13,7 +12,7 @@ describe('InvalidPermissionsComponent', () => {
 
     fixture = TestBed.createComponent(InvalidPermissionsComponent);
     component = fixture.componentInstance;
-    
+
     fixture.detectChanges();
   });
 

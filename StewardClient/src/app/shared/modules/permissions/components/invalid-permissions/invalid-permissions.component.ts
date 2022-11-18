@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './invalid-permissions.component.html',
   styleUrls: ['./invalid-permissions.component.scss'],
 })
-export class InvalidPermissionsComponent {
-}
+export class InvalidPermissionsComponent {}

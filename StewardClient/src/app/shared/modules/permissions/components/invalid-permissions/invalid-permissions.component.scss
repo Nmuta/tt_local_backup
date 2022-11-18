@@ -3,3 +3,15 @@
 .mat-icon {
   color: app-color-default($app-warn);
 }
+
+::ng-deep mat-checkbox > invalid-permissions {
+  position: relative;
+
+  > mat-icon {
+    position: absolute;
+    overflow: hidden;
+    transform: scale(1.5);
+    z-index: 2;
+    left: -3px;
+  }
+}

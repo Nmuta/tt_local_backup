@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
+import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { SteelheadUgcReportService } from '@services/api-v2/steelhead/ugc/report/steelhead-ugc-report.service';
 import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { first, keys } from 'lodash';
 import {
@@ -38,6 +40,9 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public featureMatToolip: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
+
+  public permAttribute = PermAttributeName.FeatureUGC;
+  public gameTitle = GameTitle.FM8;
 
   constructor(
     private readonly route: ActivatedRoute,
