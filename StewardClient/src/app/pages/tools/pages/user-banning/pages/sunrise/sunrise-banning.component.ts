@@ -13,7 +13,6 @@ import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
-import { GameTitle } from '@models/enums';
 
 /** Routed Component; Sunrise Banning Tool. */
 @Component({
@@ -23,7 +22,6 @@ import { GameTitle } from '@models/enums';
 export class SunriseBanningComponent extends UserBanningBaseComponent {
   @ViewChildren('sunrise-ban-history')
   public banHistoryComponents: SunriseBanHistoryComponent[] = [];
-  public gameTitle = GameTitle.FH4;
 
   public playerIdentities$ = new Subject<IdentityResultAlpha[]>();
   public playerIdentities: IdentityResultAlpha[] = [];

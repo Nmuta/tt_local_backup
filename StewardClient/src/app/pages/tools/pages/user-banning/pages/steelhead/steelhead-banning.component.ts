@@ -12,7 +12,6 @@ import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
-import { GameTitle } from '@models/enums';
 
 /** Routed Component; Steelhead Banning Tool. */
 @Component({
@@ -20,7 +19,6 @@ import { GameTitle } from '@models/enums';
   styleUrls: ['./steelhead-banning.component.scss'],
 })
 export class SteelheadBanningComponent extends UserBanningBaseComponent {
-  public gameTitle = GameTitle.FM8;
   public formControls = {
     banOptions: new FormControl('', [Validators.required]),
   };

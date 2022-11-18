@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloBanResult } from '@models/apollo';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import { GameTitle } from '@models/enums';
 import { SunriseBanResult } from '@models/sunrise';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { EMPTY, timer } from 'rxjs';
@@ -21,8 +20,6 @@ export abstract class UserBanningBaseComponent extends BaseComponent {
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
-
-  public abstract gameTitle: GameTitle;
 
   constructor(private readonly backgroundJobService: BackgroundJobService) {
     super();

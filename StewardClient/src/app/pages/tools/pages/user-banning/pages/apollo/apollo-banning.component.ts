@@ -12,7 +12,6 @@ import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
-import { GameTitle } from '@models/enums';
 
 /** Routed Component; Apollo Banning Tool. */
 @Component({
@@ -20,7 +19,6 @@ import { GameTitle } from '@models/enums';
   styleUrls: ['./apollo-banning.component.scss'],
 })
 export class ApolloBanningComponent extends UserBanningBaseComponent {
-  public gameTitle = GameTitle.FM7;
   public formControls = {
     banOptions: new FormControl('', [Validators.required]),
   };
