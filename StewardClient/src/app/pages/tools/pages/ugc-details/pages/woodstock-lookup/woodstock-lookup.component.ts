@@ -60,7 +60,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
 
-  public permAttribute = PermAttributeName.FeatureUGC;
+  public permAttribute = PermAttributeName.FeatureUgc;
   public gameTitle = GameTitle.FH5;
 
   constructor(

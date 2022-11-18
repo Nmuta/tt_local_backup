@@ -54,22 +54,30 @@ export class PermAttributesService extends BaseService {
   }
 
   public get hasSteelheadAccess(): boolean {
-    if (this.isUsingV1Auth) { return true; }
+    if (this.isUsingV1Auth) {
+      return true;
+    }
     return this.availableTitlesAndEnvironments[GameTitle.FM8].length > 0;
   }
 
   public get hasApolloAccess(): boolean {
-    if (this.isUsingV1Auth) { return true; }
+    if (this.isUsingV1Auth) {
+      return true;
+    }
     return this.availableTitlesAndEnvironments[GameTitle.FM7].length > 0;
   }
 
   public get hasWoodstockAccess(): boolean {
-    if (this.isUsingV1Auth) { return true; }
+    if (this.isUsingV1Auth) {
+      return true;
+    }
     return this.availableTitlesAndEnvironments[GameTitle.FH5].length > 0;
   }
 
   public get hasSunriseAccess(): boolean {
-    if (this.isUsingV1Auth) { return true; }
+    if (this.isUsingV1Auth) {
+      return true;
+    }
     return this.availableTitlesAndEnvironments[GameTitle.FH4].length > 0;
   }
 

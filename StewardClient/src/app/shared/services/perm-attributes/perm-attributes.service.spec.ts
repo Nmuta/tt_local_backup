@@ -1,12 +1,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
+import { GameTitle } from '@models/enums';
 import { NgxsModule } from '@ngxs/store';
-import { ChangelogState } from '@shared/state/changelog/changelog.state';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import { UserState } from '@shared/state/user/user.state';
+import { throwError, timeout, catchError, EMPTY } from 'rxjs';
+import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 import { PermAttributesService } from './perm-attributes.service';
-import { createMockPermAttributesService } from './perm-attributes.service.mock';
 
 describe('PermAttributesService', () => {
   let service: PermAttributesService;
@@ -14,11 +19,11 @@ describe('PermAttributesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
-        NgxsModule.forRoot([ChangelogState]),
+        NgxsModule.forRoot([UserState, UserSettingsState]),
+        MatSnackBarModule,
       ],
-      providers: [createMockPermAttributesService()],
+      providers: [createMockMsalServices(), createMockLoggerService()],
       schemas: [NO_ERRORS_SCHEMA],
     });
 
@@ -26,7 +31,68 @@ describe('PermAttributesService', () => {
     service = injector.inject(PermAttributesService);
   });
 
-  it('should be created', waitForAsync(() => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
+
+  describe('Method: initialize', () => {
+    const pemrs: PermAttribute[] = [
+      {
+        attribute: PermAttributeName.GiftPlayer,
+        title: GameTitle.FH5,
+        environment: 'Retail',
+      },
+      {
+        attribute: PermAttributeName.GiftPlayer,
+        title: GameTitle.FH5,
+        environment: 'Studio',
+      },
+      {
+        attribute: PermAttributeName.GiftPlayer,
+        title: GameTitle.FH4,
+        environment: 'Retail',
+      },
+    ];
+
+    beforeEach(() => {
+      Object.defineProperty(service, 'isUsingV1Auth', {
+        get() {
+          return false;
+        },
+      });
+
+      service.initialize(pemrs);
+    });
+
+    it('should fire initializationGuard after', done => {
+      service.initializationGuard$
+        .pipe(
+          timeout({
+            each: 2000,
+            with: () => throwError(() => new Error('Fake error')),
+          }),
+          catchError(_error => {
+            expect(false).toBeTruthy();
+            done();
+            return EMPTY;
+          }),
+        )
+        .subscribe(() => {
+          expect(true).toBeTruthy();
+          done();
+        });
+    });
+
+    it('should set availableTitlesAndEnvironments correctly', () => {
+      expect(service.hasSteelheadAccess).toBeFalsy();
+      // expect(service.hasApolloAccess).toBeFalsy();
+      // expect(service.hasWoodstockAccess).toBeTruthy();
+      // expect(service.hasSunriseAccess).toBeTruthy();
+
+      // expect(service.steelheadEnvironments).toEqual([]);
+      // expect(service.apolloEnvironments).toEqual([]);
+      // expect(service.woodstockEnvironments).toEqual(['Retail', 'Studio']);
+      // expect(service.sunriseEnvironments).toEqual(['Retail']);
+    });
+  });
 });
