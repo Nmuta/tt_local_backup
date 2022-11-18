@@ -156,20 +156,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     }
                     else if (child.IsAttributeField)
                     {
-                        if (child.Path.LocalName == "loc-ref" || child.Path.LocalName == "loc-def")
-                        {
-                            if (child.Value != null)
-                            {
-                                // Null check ignores the non-existant loc-ref or loc-def.
-                                // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
-                                el.SetAttributeValue(child.Path, null);
-                                el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
-                            }
-                        }
-                        else
-                        {
-                            el.SetAttributeValue(child.Path, child.Value);
-                        }
+                        HandleAttribute(el, child);
                     }
                     else
                     {
@@ -180,6 +167,27 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             else
             {
                 SetElementValue(el, root);
+            }
+        }
+
+        private static void HandleAttribute(XElement el, Node child)
+        {
+            if (child.Path.LocalName == "loc-ref" || child.Path.LocalName == "loc-def")
+            {
+                if (child.Value != null)
+                {
+                    // Null check ignores the non-existant loc-ref or loc-def.
+                    // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
+                    el.SetAttributeValue(child.Path, null);
+                    el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
+
+                    // remove nodes from loc-refs: (description, base, skiploc)
+                    el.RemoveNodes();
+                }
+            }
+            else
+            {
+                el.SetAttributeValue(child.Path, child.Value);
             }
         }
 
