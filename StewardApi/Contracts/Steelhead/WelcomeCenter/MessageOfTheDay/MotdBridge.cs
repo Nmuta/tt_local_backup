@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay
 {
@@ -7,6 +8,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     /// </summary>
     public class MotdBridge
     {
+        private DateTime internalDateTime;
+
         /// <summary>
         ///     Gets or sets the friendly message name.
         /// </summary>
@@ -35,6 +38,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         /// <summary>
         ///     Gets or sets the date.
         /// </summary>
-        public string Date { get; set; }
+        public string Date
+        {
+            get => this.internalDateTime.ToString("O");
+            set => this.internalDateTime = DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();
+        }
     }
 }
