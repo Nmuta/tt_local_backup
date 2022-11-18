@@ -21,6 +21,7 @@ using Turn10.LiveOps;
 using Turn10.LiveOps.StewardApi;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Controllers.v2;
@@ -97,6 +98,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         /// </summary>
         [HttpPost("user/{userId}")]
         [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttribute>))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
+        [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserPermissions)]
+        [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] IEnumerable<AuthorizationAttribute> attributes)
         {
             var internalUser = await this.userProvider.GetStewardUserAsync(userId).ConfigureAwait(true);

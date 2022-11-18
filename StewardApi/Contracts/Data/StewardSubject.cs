@@ -28,5 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         UgcGeoFlags,
         UgcReport,
         WelcomeCenter,
+        UserPermissions,
     }
 }
