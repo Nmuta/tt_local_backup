@@ -1,1 +1,5 @@
+@import '/src/styles/mixins';
 
+.mat-icon {
+  color: app-color-default($app-warn);
+}
