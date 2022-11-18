@@ -48,46 +48,44 @@ export class PermAttributesService extends BaseService {
   }
 
   public get isUsingV1Auth(): boolean {
-    return this.userRole !== UserRole.V2Role;
+    // TODO: Utilize the new V2 auth role once it is created.
+    // return this.userRole !== UserRole.V2Role;
+    return true;
   }
 
   public get hasSteelheadAccess(): boolean {
-    return !this.isUsingV1Auth
-      ? this.availableTitlesAndEnvironments[GameTitle.FM8].length > 0
-      : true;
+    if (this.isUsingV1Auth) { return true; }
+    return this.availableTitlesAndEnvironments[GameTitle.FM8].length > 0;
   }
 
   public get hasApolloAccess(): boolean {
-    return !this.isUsingV1Auth
-      ? this.availableTitlesAndEnvironments[GameTitle.FM7].length > 0
-      : true;
+    if (this.isUsingV1Auth) { return true; }
+    return this.availableTitlesAndEnvironments[GameTitle.FM7].length > 0;
   }
 
   public get hasWoodstockAccess(): boolean {
-    return !this.isUsingV1Auth
-      ? this.availableTitlesAndEnvironments[GameTitle.FH5].length > 0
-      : true;
+    if (this.isUsingV1Auth) { return true; }
+    return this.availableTitlesAndEnvironments[GameTitle.FH5].length > 0;
   }
 
   public get hasSunriseAccess(): boolean {
-    return !this.isUsingV1Auth
-      ? this.availableTitlesAndEnvironments[GameTitle.FH4].length > 0
-      : true;
+    if (this.isUsingV1Auth) { return true; }
+    return this.availableTitlesAndEnvironments[GameTitle.FH4].length > 0;
   }
 
   public get steelheadEnvironments(): string[] {
     return this.availableTitlesAndEnvironments[GameTitle.FM8];
   }
 
-  public get apollonvironments(): string[] {
+  public get apolloEnvironments(): string[] {
     return this.availableTitlesAndEnvironments[GameTitle.FM7];
   }
 
-  public get woodstocknvironments(): string[] {
+  public get woodstockEnvironments(): string[] {
     return this.availableTitlesAndEnvironments[GameTitle.FH5];
   }
 
-  public get sunrisenvironments(): string[] {
+  public get sunriseEnvironments(): string[] {
     return this.availableTitlesAndEnvironments[GameTitle.FH4];
   }
 
@@ -106,8 +104,6 @@ export class PermAttributesService extends BaseService {
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(profile => {
-        // REMOVE - this is just for testing
-        profile.role = UserRole.V2Role;
         this.userRole = profile.role;
       });
   }

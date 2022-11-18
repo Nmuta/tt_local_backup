@@ -70,7 +70,6 @@ export enum UserRole {
   HorizonDesigner = 'HorizonDesigner',
   MotorsportDesigner = 'MotorsportDesigner',
   MediaTeam = 'MediaTeam',
-  V2Role = 'V2Role', // REMOVE - this is just for testing
 }
 
 export enum NotificationHubEvents {
