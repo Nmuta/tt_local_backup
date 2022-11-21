@@ -13,14 +13,27 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class XmlHelpers
     {
         /// <summary>
-        ///     Creates xml string with declaration.
+        ///     Returns string representation of xml,
+        ///     including the declaration if it exists.
         /// </summary>
-        public static string ToXmlString(this XDocument xdoc, SaveOptions options = SaveOptions.None)
+        public static string ToXmlString(this XDocument xdoc, bool forceDeclaration = false, SaveOptions options = SaveOptions.None)
         {
             var newLine = (options & SaveOptions.DisableFormatting) == SaveOptions.DisableFormatting ? string.Empty : Environment.NewLine;
-            return xdoc.Declaration == null
-                ? new XDocument(new XDeclaration("1.0", "utf-8", null), xdoc.Root.Elements()).ToString(options)
-                : xdoc.Declaration + newLine + xdoc.ToString(options);
+
+            if (xdoc.Declaration == null)
+            {
+                if (forceDeclaration)
+                {
+                    xdoc = new XDocument(new XDeclaration("1.0", "utf-8", null), xdoc.Root);
+                    return xdoc.Declaration + newLine + xdoc.ToString(options);
+                }
+
+                return xdoc.ToString(options);
+            }
+            else
+            {
+                return xdoc.Declaration + newLine + xdoc.ToString(options);
+            }
         }
 
         /// <summary>
