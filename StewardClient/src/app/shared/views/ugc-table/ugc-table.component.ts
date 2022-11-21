@@ -31,7 +31,7 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { GuidLikeString } from '@models/extended-types';
 import { saveAs } from 'file-saver';
 import { chunk, cloneDeep, flatten } from 'lodash';
-import { getUgcDetailsRoute } from '@helpers/route-links';
+import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -84,6 +84,7 @@ export abstract class UgcTableBaseComponent
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcType = UgcType;
+  public liveryGiftingRoute: string[];
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
@@ -111,6 +112,8 @@ export abstract class UgcTableBaseComponent
       .subscribe(_event => {
         this.useExpandoColumnDef = this.shouldUseCondensedTableView();
       });
+
+    this.liveryGiftingRoute = getGiftRoute(this.gameTitle);
   }
 
   /** Angular hook. */

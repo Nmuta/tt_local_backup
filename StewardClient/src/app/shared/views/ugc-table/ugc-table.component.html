@@ -105,26 +105,38 @@
         </button>
         <ugc-download-button [item]="entry"></ugc-download-button>
       </div>
-
-      <a
-        mat-stroked-button
-        color="primary"
-        clickStop
-        [routerLink]="entry.ugcDetailsLink"
-        [disabled]="!ugcDetailsLinkSupported || !entry.ugcDetailsLink"
-      >
-        <help-popover-icon cardTitle="Ugc Details">
-          <span>You can hide, feature, report, and more by going to the UGC Details!</span>
-        </help-popover-icon>
-        <span
-          [matTooltip]="
-            ugcDetailsLinkSupported
-              ? 'Go to UGC details page for this item'
-              : 'UGC details page is not supported for this title'
-          "
-          >View Full Details</span
+      <div class="inline-buttons">
+        <a
+          mat-stroked-button
+          color="primary"
+          clickStop
+          [routerLink]="entry.ugcDetailsLink"
+          [disabled]="!ugcDetailsLinkSupported || !entry.ugcDetailsLink"
         >
-      </a>
+          <help-popover-icon cardTitle="Ugc Details">
+            <span>You can hide, feature, report, and more by going to the UGC Details!</span>
+          </help-popover-icon>
+          <span
+            [matTooltip]="
+              ugcDetailsLinkSupported
+                ? 'Go to UGC details page for this item'
+                : 'UGC details page is not supported for this title'
+            "
+            >View Full Details</span
+          >
+        </a>
+      </div>
+      <div *ngIf="entry.type === ugcType.Livery" class="inline-buttons">
+        <a
+          mat-stroked-button
+          color="default"
+          clickStop
+          [routerLink]="liveryGiftingRoute"
+          [queryParams]="{ liveryId: entry.id }"
+        >
+          <span matTooltip="Go to Gifting page with this livery pre-loaded">Gift Livery</span>
+        </a>
+      </div>
     </td>
   </ng-container>
 

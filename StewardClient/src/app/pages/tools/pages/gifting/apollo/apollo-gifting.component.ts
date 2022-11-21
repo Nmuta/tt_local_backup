@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import {
   SetApolloGiftingMatTabIndex,
   SetApolloGiftingSelectedPlayerIdentities,
@@ -14,6 +14,8 @@ import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
+import { ActivatedRoute } from '@angular/router';
+import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -32,13 +34,26 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
   public selectedPlayerInventoryProfile: ApolloPlayerInventoryProfile;
   public selectedPlayerInventory: ApolloMasterInventory;
 
-  constructor(protected readonly store: Store) {
+  public giftingTypeMatTabSelectedIndex: number = 0;
+
+  constructor(protected readonly store: Store, private readonly route: ActivatedRoute) {
     super(store);
   }
 
   /** Initialization hook */
   public ngOnInit(): void {
     super.ngOnInit();
+
+    this.route.queryParams
+      .pipe(
+        map(() => ParsePathParamFunctions[PathParams.LiveryId](this.route)),
+        filter(liveryId => !!liveryId),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.giftingTypeMatTabSelectedIndex = 1;
+      });
+
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       ApolloGiftingState.selectedMatTabIndex,
     );

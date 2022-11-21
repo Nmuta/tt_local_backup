@@ -8,6 +8,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '86423c69-64cb-4467-97fd-752183fdd74d',
+      shortText: 'New button to gift livery in UGC table',
+      longText: [
+        'Clicking the new "Gift Livery" link will redirect the user to the gifting tool with the livery pre-loaded.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'd6730fcb-e145-4a4d-a11f-011363103587',
       shortText: 'Special Xuid 1 can now be used with limited feature access',

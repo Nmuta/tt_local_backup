@@ -1,10 +1,18 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { catchError, delayWhen, map, retryWhen, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  catchError,
+  delayWhen,
+  filter,
+  map,
+  retryWhen,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
 import { NEVER, Observable, of, throwError, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { LspGroup } from '@models/lsp-group';
@@ -14,6 +22,8 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GiftReason } from '../gift-basket/gift-basket.base.component';
 import { HCI } from '@environments/environment';
+import { ActivatedRoute } from '@angular/router';
+import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
@@ -24,14 +34,15 @@ enum BackgroundJobRetryStatus {
 @Component({
   template: '',
 })
-export abstract class GiftLiveryBaseComponent<
-  IdentityT extends IdentityResultUnion,
-> extends BaseComponent {
-  /** REVIEW-COMMENT: Player identities. */
+export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
+  extends BaseComponent
+  implements OnInit
+{
+  /** Player identities to gift the livery to. */
   @Input() public playerIdentities: IdentityT[];
-  /** REVIEW-COMMENT: Lsp Group. */
+  /** Lsp Group to gift the livery to. */
   @Input() public lspGroup: LspGroup;
-  /** REVIEW-COMMENT: Component is using player identities. */
+  /** Whether component is using player identities. False means LSP group. */
   @Input() public usingPlayerIdentities: boolean;
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
@@ -65,7 +76,10 @@ export abstract class GiftLiveryBaseComponent<
   /** Game title */
   public abstract gameTitle: GameTitleCodeName;
 
-  constructor(private readonly backgroundJobService: BackgroundJobService) {
+  constructor(
+    private readonly backgroundJobService: BackgroundJobService,
+    private readonly route: ActivatedRoute,
+  ) {
     super();
   }
 
@@ -102,6 +116,20 @@ export abstract class GiftLiveryBaseComponent<
       )
       .subscribe(livery => {
         this.formControls.livery.setValue(livery);
+      });
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    this.route.queryParams
+      .pipe(
+        map(() => ParsePathParamFunctions[PathParams.LiveryId](this.route)),
+        filter(liveryId => !!liveryId),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(liveryId => {
+        this.resetTool(true);
+        this.onLiveryIdChange(liveryId);
       });
   }
 

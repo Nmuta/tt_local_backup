@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
-import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import { RouteMemoryRedirectGuard } from 'app/route-guards/route-memory/route-memory-redirect.guard';
+import { RouteMemorySetGuard } from 'app/route-guards/route-memory/route-memory-set.guard';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 import { GiftingComponent } from './gifting.component';
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
@@ -16,30 +16,38 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        canActivate: [TitleMemoryRedirectGuard],
+        canActivate: [RouteMemoryRedirectGuard],
         pathMatch: 'full',
       },
       {
         path: 'woodstock',
-        canActivate: [TitleMemorySetGuard],
+        canActivate: [RouteMemorySetGuard],
         component: WoodstockGiftingComponent,
         pathMatch: 'full',
+        children: [
+          {
+            path: ':liveryId',
+            canActivate: [RouteMemorySetGuard],
+            component: WoodstockGiftingComponent,
+            pathMatch: 'full',
+          },
+        ],
       },
       {
         path: 'steelhead',
-        canActivate: [TitleMemorySetGuard],
+        canActivate: [RouteMemorySetGuard],
         component: SteelheadGiftingComponent,
         pathMatch: 'full',
       },
       {
         path: 'sunrise',
-        canActivate: [TitleMemorySetGuard],
+        canActivate: [RouteMemorySetGuard],
         component: SunriseGiftingComponent,
         pathMatch: 'full',
       },
       {
         path: 'apollo',
-        canActivate: [TitleMemorySetGuard],
+        canActivate: [RouteMemorySetGuard],
         component: ApolloGiftingComponent,
         pathMatch: 'full',
       },

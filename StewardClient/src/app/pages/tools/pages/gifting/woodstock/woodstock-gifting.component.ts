@@ -6,7 +6,7 @@ import { WoodstockMasterInventory, WoodstockPlayerInventoryProfile } from '@mode
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
 import { Observable, throwError } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { WoodstockGiftingState } from './state/woodstock-gifting.state';
 import {
   SetWoodstockGiftingMatTabIndex,
@@ -25,6 +25,8 @@ import { chain } from 'lodash';
 import { DateTime } from 'luxon';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
 import { DefaultGiftExpireTimeSpanInDays } from '@helpers/bignumbers';
+import { ActivatedRoute } from '@angular/router';
+import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 
 /**
  * List of special liveries from Community team.
@@ -73,10 +75,13 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
   public specialLiveriesContract: GiftSpecialLiveriesContract;
 
+  public giftingTypeMatTabSelectedIndex: number = 0;
+
   constructor(
     protected readonly store: Store,
     private readonly service: WoodstockService,
     private readonly giftService: WoodstockPlayersGiftService,
+    private readonly route: ActivatedRoute,
   ) {
     super(store);
   }
@@ -84,6 +89,16 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
   /** Initialization hook */
   public ngOnInit(): void {
     super.ngOnInit();
+
+    this.route.queryParams
+      .pipe(
+        map(() => ParsePathParamFunctions[PathParams.LiveryId](this.route)),
+        filter(liveryId => !!liveryId),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.giftingTypeMatTabSelectedIndex = 1;
+      });
 
     this.specialLiveriesContract = {
       liveries: chain(SPECIAL_LIVERY_TABLE)

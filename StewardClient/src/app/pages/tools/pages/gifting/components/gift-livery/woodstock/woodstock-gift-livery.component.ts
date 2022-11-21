@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { Gift, GroupGift } from '@models/gift';
@@ -33,8 +34,9 @@ export class WoodstockGiftLiveryComponent extends GiftLiveryBaseComponent<Identi
   constructor(
     private readonly woodstockService: WoodstockService,
     backgroundJobService: BackgroundJobService,
+    route: ActivatedRoute,
   ) {
-    super(backgroundJobService);
+    super(backgroundJobService, route);
   }
 
   /** Gets a player's livery. */
