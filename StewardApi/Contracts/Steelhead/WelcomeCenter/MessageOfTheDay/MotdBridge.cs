@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     /// </summary>
     public class MotdBridge
     {
-        private DateTime internalDateTime;
+        private DateTime internalDateUtc;
 
         /// <summary>
         ///     Gets or sets the friendly message name.
@@ -40,8 +40,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         /// </summary>
         public string Date
         {
-            get => this.internalDateTime.ToString("O");
-            set => this.internalDateTime = DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();
+            get => this.internalDateUtc.ToString("O");
+            set => this.internalDateUtc = DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();
         }
     }
 }

@@ -117,6 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
 
             GitPullRequest pullrequest = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(true);
             var uri = new Uri($"{pullrequest.Repository.WebUrl}/pullrequest/{pullrequest.PullRequestId}");
+
             return this.Ok(uri);
         }
     }
