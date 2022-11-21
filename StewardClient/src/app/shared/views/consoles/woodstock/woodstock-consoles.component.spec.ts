@@ -13,8 +13,9 @@ import { Subject } from 'rxjs';
 import { WoodstockConsolesComponent } from './woodstock-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('WoodstockConsolesComponent', () => {
+fdescribe('WoodstockConsolesComponent', () => {
   let component: WoodstockConsolesComponent;
   let fixture: ComponentFixture<WoodstockConsolesComponent>;
 
@@ -23,7 +24,7 @@ describe('WoodstockConsolesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WoodstockConsolesComponent, BigJsonPipe],
+      declarations: [WoodstockConsolesComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockWoodstockService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -50,13 +51,11 @@ describe('WoodstockConsolesComponent', () => {
     let consoleDetailsValue: WoodstockConsoleDetailsEntry[] = undefined;
     let banStatus$: Subject<void> = undefined;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(waitForAsync(() => {      
       // console details prep
       consoleDetails$ = new Subject<WoodstockConsoleDetailsEntry[]>();
-      consoleDetailsValue =
-        WoodstockPlayerXuidConsolesFakeApi.makeMany() as WoodstockConsoleDetailsEntry[];
-      mockWoodstockService.getConsoleDetailsByXuid$ = jasmine
-        .createSpy('getConsoleDetailsByXuid')
+      consoleDetailsValue = WoodstockPlayerXuidConsolesFakeApi.makeMany() as WoodstockConsoleDetailsEntry[];
+      mockWoodstockService.getConsoleDetailsByXuid$ = jasmine.createSpy('getConsoleDetailsByXuid')
         .and.returnValue(consoleDetails$);
 
       // ban status prep
@@ -159,8 +158,7 @@ describe('WoodstockConsolesComponent', () => {
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          banAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();
@@ -174,14 +172,13 @@ describe('WoodstockConsolesComponent', () => {
       describe('makeUnbanAction$', () => {
         it('should unban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeUnbanAction$(firstBanned.consoleId);
-          expect(banAction).toBeTruthy();
+          const unbanAction = component.makeUnbanAction$(firstBanned.consoleId);
+          expect(unbanAction).toBeTruthy();
           await fixture.whenStable();
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          unbanAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();

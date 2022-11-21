@@ -5,7 +5,6 @@ import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
 import { SunrisePlayerUgcComponent } from './sunrise/sunrise-player-ugc.component';
@@ -41,7 +40,7 @@ import { SteelheadPlayerUgcComponent } from './steelhead/steelhead-player-ugc.co
     MatTooltipModule,
     FontAwesomeModule,
     PipesModule,
-    VerifyActionButtonModule,
+
     ErrorSpinnerModule,
     JsonDumpModule,
     MatIconModule,

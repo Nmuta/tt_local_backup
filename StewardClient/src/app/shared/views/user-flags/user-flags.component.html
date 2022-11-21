@@ -1,40 +1,61 @@
 <form [formGroup]="formGroup">
   <mat-card>
-    <mat-card-title-group>
-      <mat-card-title> Player Flags </mat-card-title>
-      <mat-card-subtitle>
-        <div>{{ gameTitle | humanize }}</div>
-      </mat-card-subtitle>
+    <mat-card-header class="sf-header">
+      <mat-card-title>Player Flags</mat-card-title>
+      <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+      <ng-container *ngIf="getFlagsActionMonitor.isSuccess">
+        <button
+          [disabled]="!formGroup.dirty"
+          mat-mini-fab
+          color="warn"
+          class="reset-button"
+          (click)="setFlagsToCurrent()"
+          matTooltip="Clear Changes"
+          stateManager
+          monitorDisable
+          [monitor]="setFlagsActionMonitor"
+        >
+          <mat-icon svgIcon="steward-undo"></mat-icon>
+        </button>
+        <div class="sf-spacer"></div>
 
-      <button
-        *ngIf="formGroup.dirty && !submit.isSubmitting"
-        mat-mini-fab
-        color="warn"
-        class="reset-button"
-        (click)="setFlagsToCurrent()"
-        matTooltip="Clear Changes"
-      >
-        <mat-icon svgIcon="steward-undo"></mat-icon>
-      </button>
+        <mat-checkbox
+          #verifyApply
+          stateManager
+          monitorDisable
+          [monitor]="setFlagsActionMonitor"
+          [disabled]="!formGroup.dirty"
+          >Verify</mat-checkbox
+        >
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="applyFlags()"
+          clickStop
+          stateManager
+          monitorDisable
+          [monitor]="setFlagsActionMonitor"
+          [disabled]="!formGroup.dirty"
+          [verifyWith]="verifyApply"
+        >
+          Apply
+          <button-spinner [monitor]="setFlagsActionMonitor" defaultIcon="save"></button-spinner>
+        </button>
 
-      <verify-action-button #submit [canSubmit]="formGroup.dirty" [action]="makeAction$.bind(this)"
-        >Apply
-      </verify-action-button>
-
-      <help-popover-icon cardTitle="Player Flags" confluenceName="Player Flags Card">
-        <p>
-          Player Flags are user groups and other "on/off"-style user features presented as
-          checkboxes.
-        </p>
-      </help-popover-icon>
-    </mat-card-title-group>
+        <help-popover-icon cardTitle="Player Flags" confluenceName="Player Flags Card">
+          <p>
+            Player Flags are user groups and other "on/off"-style user features presented as
+            checkboxes.
+          </p>
+        </help-popover-icon>
+      </ng-container>
+    </mat-card-header>
     <mat-card-content>
-      <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <ng-container *waitForMonitor="getFlagsActionMonitor">
         <section class="checkboxes">
           <mat-checkbox
             *ngFor="let control of formControls | keyvalue: keepOrder"
             [formControl]="formControls[control.key]"
-            [disabled]="submit.isSubmitting"
             (change)="verifyDirtyStatus()"
           >
             <ng-container *ngIf="alteredLabels[control.key]">
@@ -49,8 +70,3 @@
     </mat-card-content>
   </mat-card>
 </form>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
-</ng-template>

@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SunriseConsolesComponent', () => {
   let component: SunriseConsolesComponent;
@@ -23,7 +24,7 @@ describe('SunriseConsolesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SunriseConsolesComponent, BigJsonPipe],
+      declarations: [SunriseConsolesComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockSunriseService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -159,8 +160,7 @@ describe('SunriseConsolesComponent', () => {
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          banAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();
@@ -174,14 +174,13 @@ describe('SunriseConsolesComponent', () => {
       describe('makeUnbanAction', () => {
         it('should unban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeUnbanAction$(firstBanned.consoleId);
-          expect(banAction).toBeTruthy();
+          const unbanAction = component.makeUnbanAction$(firstBanned.consoleId);
+          expect(unbanAction).toBeTruthy();
           await fixture.whenStable();
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          unbanAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();

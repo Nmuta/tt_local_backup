@@ -52,16 +52,19 @@
           <ng-container *ngIf="!banResults; else banResultsState">
             <form [formGroup]="formGroup">
               <ban-options [formControl]="formControls.banOptions"></ban-options>
-              <verify-action-button
-                #submitButton
-                [action]="submit$"
-                [alwaysShow]="true"
-                [canSubmit]="canBan()"
-                [canSubmitDisabledReason]="'Form is invalid'"
-                checkboxText="Check to verify ban"
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="submitBan()"
+                clickStop
+                stateManager
+                [disabled]="!canBan()"
+                [verifyWith]="confirmBan"
+                matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
               >
-                Submit ban
-              </verify-action-button>
+                POST
+              </button>
+              <mat-checkbox #confirmBan stateManager>Check to verify ban</mat-checkbox>
             </form>
           </ng-container>
         </ng-container>

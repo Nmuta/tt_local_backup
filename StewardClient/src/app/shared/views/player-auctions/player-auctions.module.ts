@@ -6,7 +6,6 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
 import { SunrisePlayerAuctionsComponent } from './sunrise/sunrise-player-auctions.component';
@@ -30,7 +29,7 @@ import { WoodstockPlayerAuctionsComponent } from './woodstock/woodstock-player-a
     MatTooltipModule,
     FontAwesomeModule,
     PipesModule,
-    VerifyActionButtonModule,
+
     ErrorSpinnerModule,
     JsonDumpModule,
     MatIconModule,

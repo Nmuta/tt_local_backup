@@ -11,6 +11,7 @@ import { ApolloConsolesComponent } from './apollo-consoles.component';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('ApolloConsolesComponent', () => {
   let component: ApolloConsolesComponent;
@@ -21,7 +22,7 @@ describe('ApolloConsolesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ApolloConsolesComponent, BigJsonPipe],
+      declarations: [ApolloConsolesComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockApolloService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

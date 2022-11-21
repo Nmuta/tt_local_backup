@@ -34,7 +34,6 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -77,7 +76,7 @@ import { MatSelectModule } from '@angular/material/select';
     FeatureUgcModalModule,
     PipesModule,
     UgcDownloadButtonModule,
-    VerifyActionButtonModule,
+
     VerifyCheckboxModule,
     MatCheckboxModule,
     DirectivesModule,

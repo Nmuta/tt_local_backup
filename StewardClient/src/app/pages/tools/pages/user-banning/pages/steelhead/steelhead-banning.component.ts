@@ -85,10 +85,8 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
     this.selectedPlayer = identity;
   }
 
-  public submit$ = (): Observable<unknown> => this.submitInternal$();
-
   /** Submit the form. */
-  public submitInternal$(): Observable<unknown> {
+  public submitBan(): void {
     this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
@@ -105,18 +103,21 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.steelheadPlayersService.postBanPlayersWithBackgroundProcessing$(bans).pipe(
-      catchError(error => {
-        this.loadError = error;
-        this.isLoading = false;
-        return EMPTY;
-      }),
-      take(1),
-      tap((backgroundJob: BackgroundJob<void>) => {
-        this.waitForBackgroundJobToComplete(backgroundJob);
-      }),
-      takeUntil(this.onDestroy$),
-    );
+    this.steelheadPlayersService
+      .postBanPlayersWithBackgroundProcessing$(bans)
+      .pipe(
+        catchError(error => {
+          this.loadError = error;
+          this.isLoading = false;
+          return EMPTY;
+        }),
+        take(1),
+        tap((backgroundJob: BackgroundJob<void>) => {
+          this.waitForBackgroundJobToComplete(backgroundJob);
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe();
   }
 
   /** Logic when player selection outputs identities. */

@@ -9,7 +9,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { SunriseService } from '@services/sunrise';
 import { SunriseBanHistoryComponent } from '@shared/views/ban-history/sunrise/sunrise-ban-history.component';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
-import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { EMPTY, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
@@ -83,10 +83,8 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
     };
   }
 
-  public submit$ = (): Observable<unknown> => this.submitInternal$();
-
   /** Submit the form. */
-  public submitInternal$(): Observable<unknown> {
+  public submitBan(): void {
     this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
@@ -103,18 +101,21 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.sunrise.postBanPlayersWithBackgroundProcessing$(bans).pipe(
-      catchError(error => {
-        this.loadError = error;
-        this.isLoading = false;
-        return EMPTY;
-      }),
-      take(1),
-      tap((backgroundJob: BackgroundJob<void>) => {
-        this.waitForBackgroundJobToComplete(backgroundJob);
-      }),
-      takeUntil(this.onDestroy$),
-    );
+    this.sunrise
+      .postBanPlayersWithBackgroundProcessing$(bans)
+      .pipe(
+        catchError(error => {
+          this.loadError = error;
+          this.isLoading = false;
+          return EMPTY;
+        }),
+        take(1),
+        tap((backgroundJob: BackgroundJob<void>) => {
+          this.waitForBackgroundJobToComplete(backgroundJob);
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe();
   }
 
   /** Logic when player selection outputs identities. */

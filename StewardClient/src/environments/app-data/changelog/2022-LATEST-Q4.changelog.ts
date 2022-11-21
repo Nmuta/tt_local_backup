@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'd5121718-586d-4cfd-a9ef-4655af2486da',
+      shortText: 'Remove use of verify action button component',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '86423c69-64cb-4467-97fd-752183fdd74d',
       shortText: 'New button to gift livery in UGC table',
