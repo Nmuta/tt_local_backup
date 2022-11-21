@@ -4,8 +4,8 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { Observable } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, take, takeUntil } from 'rxjs/operators';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
@@ -73,7 +73,12 @@ export abstract class ConsolesBaseComponent<T extends ConsoleDetailsTitleIntersp
     this.getConsoles = this.getConsoles.repeat();
     const getConsoleDetailsByXuid$ = this.getConsoleDetailsByXuid$(this.identity.xuid);
     getConsoleDetailsByXuid$
-      .pipe(take(1), this.getConsoles.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(
+        take(1),
+        this.getConsoles.monitorSingleFire(),
+        catchError(() => EMPTY),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe(consoleDetails => {
         this.consoleDetails.data = consoleDetails.map(console => {
           return {

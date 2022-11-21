@@ -15,7 +15,7 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-fdescribe('WoodstockConsolesComponent', () => {
+describe('WoodstockConsolesComponent', () => {
   let component: WoodstockConsolesComponent;
   let fixture: ComponentFixture<WoodstockConsolesComponent>;
 
@@ -51,11 +51,13 @@ fdescribe('WoodstockConsolesComponent', () => {
     let consoleDetailsValue: WoodstockConsoleDetailsEntry[] = undefined;
     let banStatus$: Subject<void> = undefined;
 
-    beforeEach(waitForAsync(() => {      
+    beforeEach(waitForAsync(() => {
       // console details prep
       consoleDetails$ = new Subject<WoodstockConsoleDetailsEntry[]>();
-      consoleDetailsValue = WoodstockPlayerXuidConsolesFakeApi.makeMany() as WoodstockConsoleDetailsEntry[];
-      mockWoodstockService.getConsoleDetailsByXuid$ = jasmine.createSpy('getConsoleDetailsByXuid')
+      consoleDetailsValue =
+        WoodstockPlayerXuidConsolesFakeApi.makeMany() as WoodstockConsoleDetailsEntry[];
+      mockWoodstockService.getConsoleDetailsByXuid$ = jasmine
+        .createSpy('getConsoleDetailsByXuid')
         .and.returnValue(consoleDetails$);
 
       // ban status prep
@@ -152,7 +154,7 @@ fdescribe('WoodstockConsolesComponent', () => {
       describe('makeBanAction$', () => {
         it('should ban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeBanAction$(firstUnbanned.consoleId);
+          const banAction = component.makeBanAction$(firstBanned.consoleId);
           expect(banAction).toBeTruthy();
           await fixture.whenStable();
 
@@ -165,7 +167,7 @@ fdescribe('WoodstockConsolesComponent', () => {
           banStatus$.complete();
           await fixture.whenStable();
           expect(isDone).toBe(true);
-          expect(firstUnbanned.isBanned).toBe(true);
+          expect(firstBanned.isBanned).toBe(true);
         }));
       });
 

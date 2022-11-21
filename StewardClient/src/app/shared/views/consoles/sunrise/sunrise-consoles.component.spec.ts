@@ -154,7 +154,7 @@ describe('SunriseConsolesComponent', () => {
       describe('makeBanAction', () => {
         it('should ban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeBanAction$(firstUnbanned.consoleId);
+          const banAction = component.makeBanAction$(firstBanned.consoleId);
           expect(banAction).toBeTruthy();
           await fixture.whenStable();
 
@@ -167,14 +167,14 @@ describe('SunriseConsolesComponent', () => {
           banStatus$.complete();
           await fixture.whenStable();
           expect(isDone).toBe(true);
-          expect(firstUnbanned.isBanned).toBe(true);
+          expect(firstBanned.isBanned).toBe(true);
         }));
       });
 
       describe('makeUnbanAction', () => {
         it('should unban', waitForAsync(async () => {
           // create the ban action
-          const unbanAction = component.makeUnbanAction$(firstBanned.consoleId);
+          const unbanAction = component.makeUnbanAction$(firstUnbanned.consoleId);
           expect(unbanAction).toBeTruthy();
           await fixture.whenStable();
 

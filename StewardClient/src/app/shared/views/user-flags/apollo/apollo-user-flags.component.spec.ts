@@ -111,7 +111,7 @@ describe('ApolloUserFlagsComponent', () => {
           component.ngOnChanges({});
 
           expect(component.currentFlags).toBeUndefined();
-          expect(component.setFlagsActionMonitor.status.error).toEqual(error);
+          expect(component.getFlagsActionMonitor.status.error).toEqual(error);
         });
       });
     });

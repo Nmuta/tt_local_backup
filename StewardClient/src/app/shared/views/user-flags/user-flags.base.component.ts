@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { Observable } from 'rxjs';
-import { take, takeUntil, tap } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { FormGroup } from '@angular/forms';
@@ -87,7 +87,12 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
     this.getFlagsActionMonitor = this.getFlagsActionMonitor.repeat();
     const getFlagsByXuid$ = this.getFlagsByXuid$(this.identity.xuid);
     getFlagsByXuid$
-      .pipe(take(1), this.getFlagsActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(
+        take(1),
+        this.getFlagsActionMonitor.monitorSingleFire(),
+        catchError(() => EMPTY),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe(flags => {
         this.currentFlags = flags;
         this.setFlagsToCurrent();
