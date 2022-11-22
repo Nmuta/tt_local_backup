@@ -1,5 +1,6 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { QueryParam } from '@models/query-params';
+import { cloneDeep } from 'lodash';
 
 /** The XUID-based player selection query param. */
 export interface XuidPlayerSelectionQueryParam {
@@ -99,20 +100,34 @@ export function addToPlayerSelectionQueryParams(
     updatedQueryParams = updatedQueryParams.slice(0, maxIdentities);
   }
 
-  routeToUpdatedPlayerSelectionQueryParams(lookupType, updatedQueryParams.join(','), router);
+  routeToUpdatedPlayerSelectionQueryParams(
+    route.snapshot.queryParams,
+    lookupType,
+    updatedQueryParams.join(','),
+    router,
+  );
   return cutLookupList;
 }
 
 /** Navigates route with update player selection query params. */
 export function routeToUpdatedPlayerSelectionQueryParams(
+  currentParams: Params,
   lookupType: string,
   lookupNames: string,
   router: Router,
 ): void {
+  const updatedParams = cloneDeep(currentParams);
+
+  // Clear any old player selection params
+  updatedParams[QueryParam.Xuid] = undefined;
+  updatedParams[QueryParam.Gamertag] = undefined;
+  updatedParams[QueryParam.T10Id] = undefined;
+
+  // Set new param
+  updatedParams[lookupType] = lookupNames;
+
   router.navigate([], {
-    queryParams: {
-      [lookupType]: lookupNames,
-    },
+    queryParams: updatedParams,
   });
 }
 

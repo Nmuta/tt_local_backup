@@ -58,7 +58,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
     this.parent.specialIdentitiesAllowed = [SpecialXuid1];
     this.parent.identity$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
       this.isSpecialXuid = this.parent.specialIdentitiesAllowed.some(x =>
-        x.xuid.isEqualTo(this.identity.xuid),
+        x.xuid.isEqualTo(this.identity?.xuid),
       );
     });
   }

@@ -277,7 +277,12 @@ export abstract class PlayerSelectionBaseComponent
         .map(identity => identity.general[this.lookupType])
         .join(',');
 
-      routeToUpdatedPlayerSelectionQueryParams(this.lookupType, updatedQueryParams, this.router);
+      routeToUpdatedPlayerSelectionQueryParams(
+        this.route.snapshot.queryParams,
+        this.lookupType,
+        updatedQueryParams,
+        this.router,
+      );
     }
   }
 
@@ -474,6 +479,7 @@ export abstract class PlayerSelectionBaseComponent
       .map(currentTypeIdentity => currentTypeIdentity.toString()); // Handle XUIDs
 
     routeToUpdatedPlayerSelectionQueryParams(
+      this.route.snapshot.queryParams,
       currentType,
       updatedQueryParams.join(','),
       this.router,

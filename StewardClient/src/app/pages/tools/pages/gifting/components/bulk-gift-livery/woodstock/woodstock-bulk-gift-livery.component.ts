@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -39,8 +40,9 @@ export class WoodstockBulkGiftLiveryComponent extends BulkGiftLiveryBaseComponen
     backgroundJobService: BackgroundJobService,
     playersGiftService: WoodstockPlayersGiftService,
     groupGiftService: WoodstockGroupGiftService,
+    route: ActivatedRoute,
   ) {
-    super(backgroundJobService);
+    super(backgroundJobService, route);
 
     this.service = {
       gameTitle: GameTitle.FH5,
