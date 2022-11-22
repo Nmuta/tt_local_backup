@@ -10,7 +10,7 @@ import faker from '@faker-js/faker';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
 import { toDateTime } from '@helpers/luxon';
 
-describe('UserBanningBaseComponent', () => {
+fdescribe('UserBanningBaseComponent', () => {
   let component: UserBanningBaseComponent;
   let fixture: ComponentFixture<UserBanningBaseComponent>;
 
@@ -71,11 +71,11 @@ describe('UserBanningBaseComponent', () => {
             .and.returnValue(throwError(error));
         });
 
-        it('should set loadError on component', () => {
+        it('should set error on action monitor', () => {
           component.waitForBackgroundJobToComplete(testJob);
 
-          expect(component.loadError).toEqual(error);
-          expect(component.isLoading).toBeFalsy();
+          expect(component.banActionMonitor.status.error).toEqual(error);
+          expect(component.banActionMonitor.isActive).toBeFalsy();
         });
       });
 
@@ -122,16 +122,15 @@ describe('UserBanningBaseComponent', () => {
   describe('Method: resetBanningToolUI', () => {
     beforeEach(() => {
       component.banResults = [];
-      component.loadError = {};
-      component.isLoading = true;
+      component.banActionMonitor = component.banActionMonitor.repeat();
     });
 
     it('should reset UI', () => {
       component.resetBanningToolUI();
 
       expect(component.banResults).toBeUndefined();
-      expect(component.loadError).toBeUndefined();
-      expect(component.isLoading).toBeFalsy();
+      expect(component.banActionMonitor.status.error).toBeUndefined();
+      expect(component.banActionMonitor.isActive).toBeFalsy();
     });
   });
 });

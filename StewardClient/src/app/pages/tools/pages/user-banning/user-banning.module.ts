@@ -34,6 +34,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -76,6 +77,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
     MatAutocompleteModule,
     VerifyCheckboxModule,
     StateManagersModule,
+    MonitorActionModule,
   ],
 })
 export class UserBanningModule {}

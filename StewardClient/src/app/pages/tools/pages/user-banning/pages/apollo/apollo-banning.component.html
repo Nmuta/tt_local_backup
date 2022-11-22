@@ -48,23 +48,30 @@
         <mat-card-subtitle>Apollo</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <ng-container *ngIf="!isLoading && !loadError; else failState">
+        <ng-container *waitForMonitor="banActionMonitor">
           <ng-container *ngIf="!banResults; else banResultsState">
             <form [formGroup]="formGroup">
               <ban-options [formControl]="formControls.banOptions"></ban-options>
-              <button
-                mat-raised-button
-                color="warn"
-                (click)="submitBan()"
-                clickStop
-                stateManager
-                [disabled]="!canBan()"
-                [verifyWith]="confirmBan"
-                matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
-              >
-                POST
-              </button>
-              <mat-checkbox #confirmBan stateManager>Check to verify ban</mat-checkbox>
+              <div class="ban-action-container">
+                <button
+                  mat-raised-button
+                  color="warn"
+                  (click)="submitBan()"
+                  clickStop
+                  stateManager
+                  monitorDisable
+                  [monitor]="banActionMonitor"
+                  [disabled]="!canBan()"
+                  [verifyWith]="confirmBan"
+                  matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
+                >
+                  Ban
+                  <button-spinner [monitor]="banActionMonitor" defaultIcon="gavel"></button-spinner>
+                </button>
+                <mat-checkbox #confirmBan stateManager [monitor]="banActionMonitor" monitorDisable
+                  >Verify ban</mat-checkbox
+                >
+              </div>
             </form>
           </ng-container>
         </ng-container>
@@ -73,11 +80,9 @@
   </div>
 </div>
 
-<ng-template #failState>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+<ng-container *ngIf="!banActionMonitor?.isActive">
   <button
-    *ngIf="loadError"
+    *ngIf="!!banActionMonitor.status.error"
     class="reset-state"
     mat-raised-button
     color="accent"
@@ -87,7 +92,7 @@
   >
     Reset Tool
   </button>
-</ng-template>
+</ng-container>
 
 <ng-template #banResultsState>
   <ban-results [banResults]="banResults"></ban-results>

@@ -8,7 +8,7 @@ import { BackgroundJob } from '@models/background-job';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
 import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
@@ -87,7 +87,6 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
 
   /** Submit the form. */
   public submitBan(): void {
-    this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
     const bans: SteelheadBanRequest[] = identities.map(identity => {
@@ -103,18 +102,16 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
       };
     });
 
+    this.banActionMonitor = this.banActionMonitor.repeat();
     this.steelheadPlayersService
       .postBanPlayersWithBackgroundProcessing$(bans)
       .pipe(
-        catchError(error => {
-          this.loadError = error;
-          this.isLoading = false;
-          return EMPTY;
-        }),
         take(1),
-        tap((backgroundJob: BackgroundJob<void>) => {
-          this.waitForBackgroundJobToComplete(backgroundJob);
-        }),
+        switchMap((backgroundJob: BackgroundJob<void>) =>
+          this.waitForBackgroundJobToComplete(backgroundJob),
+        ),
+        this.banActionMonitor.monitorSingleFire(),
+        catchError(() => EMPTY),
         takeUntil(this.onDestroy$),
       )
       .subscribe();
