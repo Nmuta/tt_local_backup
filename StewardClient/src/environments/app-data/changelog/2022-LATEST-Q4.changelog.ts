@@ -16,6 +16,44 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '86423c69-64cb-4467-97fd-752183fdd74d',
+      shortText: 'New button to gift livery in UGC table',
+      longText: [
+        'Clicking the new "Gift Livery" link will redirect the user to the gifting tool with the livery pre-loaded.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'd6730fcb-e145-4a4d-a11f-011363103587',
+      shortText: 'Special Xuid 1 can now be used with limited feature access',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ccd8f14b-1c53-4906-9e4d-745894f77cf7',
+      shortText: 'Fix localized string dropdown validation',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c9d7076c-9c12-40d1-a1d5-d5e842752e10',
+      shortText: 'Add tile search filters to home page',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
+      shortText: 'Add and modify color-coding in Racers Cup',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.MessageOfTheDay },
+      uuid: 'd8e91341-536a-480f-b975-1d0c99138a2a',
+      shortText: 'Add new tool to manage Messages of the Day',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5953bc34-2791-4a66-a9f4-9caf219efa10',
+      shortText: 'Add admin-only dev tool for testing',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '4fe92558-72c7-4471-a2c6-5d3a8469267a',
       shortText: 'Cleanup naming conventions',

@@ -14,6 +14,7 @@ import BigNumber from 'bignumber.js';
 import { Observable, throwError } from 'rxjs';
 import { GiftLiveryBaseComponent } from '../gift-livery.base.component';
 import { ApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/apollo-gifting.service';
+import { ActivatedRoute } from '@angular/router';
 
 /** Apollo gift livery. */
 @Component({
@@ -35,8 +36,9 @@ export class ApolloGiftLiveryComponent extends GiftLiveryBaseComponent<IdentityR
     private readonly apolloService: ApolloService,
     private readonly apolloGiftingService: ApolloGiftingService,
     backgroundJobService: BackgroundJobService,
+    route: ActivatedRoute,
   ) {
-    super(backgroundJobService);
+    super(backgroundJobService, route);
   }
 
   /** Gets a player's livery. */

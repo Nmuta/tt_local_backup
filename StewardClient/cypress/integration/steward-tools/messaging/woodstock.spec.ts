@@ -7,6 +7,15 @@ import { DateTime } from 'luxon';
 import { stewardUrls } from '@support/steward/urls';
 
 context('Steward / Tools / Messaging / Woodstock', () => {
+  before(() => {
+    login();
+    cleanUpTestAccounts();
+  });
+
+  after(() => {
+    cleanUpTestAccounts();
+  });
+
   beforeEach(() => {
     login();
 
@@ -116,4 +125,7 @@ function verifyMessageSent(): void {
     waitForProgressSpinners();
     cy.contains('button', 'Send Another Message', { matchCase: false }).should('exist');
   });
+}
+function cleanUpTestAccounts() {
+  throw new Error('Function not implemented.');
 }

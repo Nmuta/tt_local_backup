@@ -12,20 +12,6 @@ export interface AccountInfo {
   hasAccount: boolean;
 }
 
-export const emerson: KnownUser = {
-  gtag: 'SublimeEther',
-  xuid: '2533274814787919',
-  t10Id: undefined,
-  accountInfo: [
-    { title: 'Woodstock', hasAccount: false },
-    { title: 'Steelhead', hasAccount: false },
-    { title: 'Gravity', hasAccount: true },
-    { title: 'Sunrise', hasAccount: true },
-    { title: 'Apollo', hasAccount: true },
-    { title: 'Opus', hasAccount: true },
-  ],
-};
-
 export const jordan: KnownUser = {
   gtag: 'FuriKuriFan5',
   xuid: '2535435129485725',
@@ -53,3 +39,5 @@ export const luke: KnownUser = {
     { title: 'Opus', hasAccount: false },
   ],
 };
+
+export const AllKnownUsers: KnownUser[] = [jordan, luke];

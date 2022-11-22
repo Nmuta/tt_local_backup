@@ -69,6 +69,10 @@ export class SelectLocalizedStringComponent
   @Input() label: string = 'Select localized message';
   /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;
+  /** Determines if the dropdown is disabled. */
+  @Input() isDisabled: boolean = false;
+  /** Determines if a value is required. Default to true with the formControl also having the validator. */
+  @Input() isRequired: boolean = true;
 
   public localizedStringLookup: LocalizedStringsMap = new Map();
   public localizedStringDetails: LocalizationOptions[] = [];
@@ -91,6 +95,11 @@ export class SelectLocalizedStringComponent
   public ngOnInit(): void {
     if (!this.service) {
       throw new Error('No service defined for Select Localized String component.');
+    }
+
+    // If isRequired was specified as false, remove the required validator from the formControl
+    if (!this.isRequired) {
+      this.formControls.selectedLocalizedStringInfo.removeValidators([Validators.required]);
     }
 
     this.getLocalizedStrings$

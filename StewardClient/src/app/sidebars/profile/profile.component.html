@@ -26,6 +26,33 @@
     <button mat-raised-button color="primary" (click)="copyAccessToken()">Copy Access Token</button>
     <button mat-raised-button color="primary" (click)="break()">Break Access Token</button>
     <button mat-raised-button color="primary" (click)="copySyncPath()">Copy Sync Path</button>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Player Xuid</mat-label>
+        <input
+          id="delete-notifications-input"
+          matInput
+          [formControl]="deleteNotificationsFormControls.xuid"
+          type="number"
+        />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        id="delete-notifications-button"
+        [disabled]="
+          !deleteNotificationsFormGroup.valid || deleteNotificationsActionMonitor.isActive
+        "
+        (click)="deletePlayerNotifications()"
+      >
+        Delete Player Notifications
+        <button-spinner
+          [monitor]="deleteNotificationsActionMonitor"
+          defaultIcon="delete"
+          clickStop
+        ></button-spinner>
+      </button>
+    </div>
   </mat-card-content>
 </mat-card>
 

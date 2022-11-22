@@ -1,10 +1,20 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { catchError, delayWhen, map, retryWhen, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  catchError,
+  delayWhen,
+  filter,
+  map,
+  pairwise,
+  retryWhen,
+  startWith,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
 import { NEVER, Observable, of, throwError, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { LspGroup } from '@models/lsp-group';
@@ -17,8 +27,10 @@ import { HCI } from '@environments/environment';
 import { PastableSingleInputComponent } from '@views/pastable-single-input/pastable-single-input.component';
 import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
-import _ from 'lodash';
 import { tryParseBigNumber } from '@helpers/bignumbers';
+import { ActivatedRoute } from '@angular/router';
+import { ParsePathParamFunctions, PathParams } from '@models/path-params';
+import { max, round } from 'lodash';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
@@ -58,18 +70,19 @@ export interface BulkGiftLiveryContract {
   templateUrl: './bulk-gift-livery.component.html',
   styleUrls: ['./bulk-gift-livery.component.scss'],
 })
-export class BulkGiftLiveryBaseComponent<
-  IdentityT extends IdentityResultUnion,
-> extends BaseComponent {
+export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
+  extends BaseComponent
+  implements OnInit
+{
   @ViewChild(PastableSingleInputComponent) liveryInput: PastableSingleInputComponent;
 
-  /** REVIEW-COMMENT: Player identities. */
+  /** Player identities to gift the liveries to. */
   @Input() public playerIdentities: IdentityT[];
-  /** REVIEW-COMMENT: Lsp Group. */
+  /** Lsp Group to gift the liveries to. */
   @Input() public lspGroup: LspGroup;
-  /** REVIEW-COMMENT: Component is using player identities. */
+  /** Whether component is using player identities. False means LSP group. */
   @Input() public usingPlayerIdentities: boolean;
-  /** REVIEW-COMMENT: The livery gifting service. */
+  /** Service contract for bulk gifting. */
   @Input() public service: BulkGiftLiveryContract;
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
@@ -100,8 +113,31 @@ export class BulkGiftLiveryBaseComponent<
     return this.formControls.livery.hasError('invalidId');
   }
 
-  constructor(private readonly backgroundJobService: BackgroundJobService) {
+  constructor(
+    private readonly backgroundJobService: BackgroundJobService,
+    private readonly route: ActivatedRoute,
+  ) {
     super();
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    this.route.queryParams
+      .pipe(
+        map(() => ParsePathParamFunctions[PathParams.LiveryId](this.route)),
+        filter(liveryId => !!liveryId),
+        startWith(''),
+        pairwise(),
+        filter(([prev, cur]) => {
+          return prev?.trim() !== cur?.trim();
+        }),
+        map(([_prev, cur]) => cur),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(liveryId => {
+        this.resetTool(true);
+        this.onLiveryIdChange(liveryId);
+      });
   }
 
   /** Filter for the expire date date time component */
@@ -221,9 +257,9 @@ export class BulkGiftLiveryBaseComponent<
     if (!this.formControls.hasExpirationDate.value) {
       return new BigNumber(0);
     }
-    let numberOfDays = _.round(this.formControls.expireDate.value.diffNow('days').days);
+    let numberOfDays = round(this.formControls.expireDate.value.diffNow('days').days);
     // Replace negative values by 0 to avoid sending negative values to API which takes a uint
-    numberOfDays = _.max([0, numberOfDays]);
+    numberOfDays = max([0, numberOfDays]);
     return tryParseBigNumber(numberOfDays).integerValue();
   }
 

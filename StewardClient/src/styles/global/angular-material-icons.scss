@@ -19,7 +19,8 @@ mat-icon {
 
 // Default sizing to match the matChipRemove directive
 mat-chip {
-  .mat-icon.mat-icon.mat-icon:not(.mat-chip-remove) {
+  // Angular applies the mat-chip-remove class to the button, not the icon
+  :not(button.mat-chip-remove) > .mat-icon.mat-icon.mat-icon {
     width: $mat-icon-width;
     height: $mat-icon-height;
     text-align: center;

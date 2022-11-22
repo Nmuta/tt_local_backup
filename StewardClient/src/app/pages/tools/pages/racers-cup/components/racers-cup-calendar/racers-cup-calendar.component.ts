@@ -29,8 +29,13 @@ import {
   buildOutlookTimeString,
   getOutlookCalendarHeaders,
 } from '@helpers/outlook-calendar-exporter';
+import { keys } from 'lodash';
 
-export type EventGroup<T> = [string, CalendarEvent<T>[]];
+export type EventGroup<T> = {
+  name: string;
+  seriesColorIndex: number;
+  events: CalendarEvent<T>[];
+};
 
 export type StewardCalendarMonthViewDay<T> = CalendarMonthViewDay<T> & {
   eventGroups: EventGroup<T>[];
@@ -38,6 +43,7 @@ export type StewardCalendarMonthViewDay<T> = CalendarMonthViewDay<T> & {
 
 export interface RacersCupMeta {
   seriesName: string;
+  seriesColorIndex: number;
   playlistName: string;
   eventNameRaw: string;
   eventNameClean: string;
@@ -174,7 +180,7 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
 
   /** Get group index by series name. */
   public getGroupIndex(name: string): number {
-    return indexOf(this.uniqueSeries, name);
+    return indexOf(this.uniqueSeries, name) + 1; //+1 required here to align with scss indexing :(
   }
 
   /** Angular Calendar hook to group events by name. */
@@ -188,8 +194,20 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
         groups[event.meta.seriesName].push(event);
       });
 
-      //Ensure that the series group ordering doesn't change based on order of events that occur that day.
-      cell.eventGroups = this.sortDayGroups(Object.entries(groups) as EventGroup<RacersCupMeta>[]);
+      keys(groups).forEach(key => {
+        const group = groups[key];
+        group;
+      });
+
+      const eventGroups = Object.entries(groups).map(entry => {
+        return {
+          name: entry[0],
+          events: entry[1],
+          seriesColorIndex: this.getGroupIndex(entry[0]),
+        } as EventGroup<RacersCupMeta>;
+      });
+
+      cell.eventGroups = eventGroups;
     });
   }
 
@@ -279,6 +297,7 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
               cssClass: `event-type-${this.getGroupIndex(series.name)}`,
               meta: {
                 seriesName: series.name,
+                seriesColorIndex: this.getGroupIndex(series.name),
                 playlistName: event.playlistName,
                 eventNameRaw: event.name,
                 eventNameClean: `${eventInfo.courseName}-${eventInfo.circuitName}`,
@@ -320,13 +339,6 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
   private sortEvents(events: CalendarEvent<RacersCupMeta>[]): CalendarEvent<RacersCupMeta>[] {
     return sortBy(events, o => {
       return o.start;
-    });
-  }
-
-  /** Sorts Racer's Cup event groups by unique series index. */
-  private sortDayGroups(groups: EventGroup<RacersCupMeta>[]): EventGroup<RacersCupMeta>[] {
-    return sortBy(groups, o => {
-      return this.getGroupIndex(o[0]);
     });
   }
 

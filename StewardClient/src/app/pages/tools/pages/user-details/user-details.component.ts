@@ -8,6 +8,8 @@ import { first } from 'lodash';
 import { filter, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
 import { renderDelay } from '@helpers/rxjs';
+import { SpecialIdentity } from '@models/special-identity';
+import { Subject } from 'rxjs';
 
 /** User Details page. */
 @Component({
@@ -18,8 +20,12 @@ export class UserDetailsComponent extends BaseComponent {
   public lookupType: keyof IdentityQueryBetaIntersection;
   public lookupList: string[] = [];
   public identity: AugmentedCompositeIdentity;
+  public specialIdentitiesAllowed: SpecialIdentity[];
 
   public gameTitleCodeName = GameTitleCodeName;
+
+  /** Emitted when the identity changes. */
+  public identity$ = new Subject<AugmentedCompositeIdentity>();
 
   /** The only lookup name. */
   public get lookupName(): string {
@@ -119,5 +125,6 @@ export class UserDetailsComponent extends BaseComponent {
   /** Handles the identity-found */
   public found(compositeIdentity: AugmentedCompositeIdentity): void {
     this.identity = compositeIdentity;
+    this.identity$.next(compositeIdentity);
   }
 }

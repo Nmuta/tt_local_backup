@@ -73,6 +73,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         /// </summary>
         public IRareCarShopService RareCarShopService => this.WoodstockFactory.PrepareRareCarShopService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets a <see cref="INotificationsManagementService" />.
+        /// </summary>
+        public INotificationsManagementService NotificationsManagementService => this.WoodstockFactory.PrepareNotificationsManagementService(this.Endpoint);
+
         private IWoodstockProxyFactory WoodstockFactory { get; }
     }
 }
