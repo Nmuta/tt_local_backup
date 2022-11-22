@@ -106,7 +106,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
       .pipe(
         take(1),
         switchMap((backgroundJob: BackgroundJob<void>) =>
-          this.waitForBackgroundJobToComplete(backgroundJob),
+          this.waitForBackgroundJobToComplete$(backgroundJob),
         ),
         this.banActionMonitor.monitorSingleFire(),
         catchError(() => EMPTY),

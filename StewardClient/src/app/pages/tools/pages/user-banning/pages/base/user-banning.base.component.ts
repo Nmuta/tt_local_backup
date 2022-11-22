@@ -25,7 +25,7 @@ export class UserBanningBaseComponent extends BaseComponent {
   }
 
   /** Waits for a background job to complete. */
-  public waitForBackgroundJobToComplete(
+  public waitForBackgroundJobToComplete$(
     job: BackgroundJob<void>,
   ): Observable<void | BackgroundJob<BanResultsUnion[]>> {
     return this.backgroundJobService.getBackgroundJob$<BanResultsUnion[]>(job.jobId).pipe(
