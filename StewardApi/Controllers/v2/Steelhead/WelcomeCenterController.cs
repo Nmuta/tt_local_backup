@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/welcomeCenter")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.Calendar, Topic.WelcomeCenter, Target.Details)]
     public class WelcomeCenterController : V2SteelheadControllerBase

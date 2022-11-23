@@ -23,6 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
     /// </summary>
     [Route("api/v{version:apiVersion}/title/sunrise/player")]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,

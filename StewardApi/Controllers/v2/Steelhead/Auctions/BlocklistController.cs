@@ -30,6 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
     [Route("api/v{version:apiVersion}/title/steelhead/auctions/blocklist")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -105,6 +106,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         /// </summary>
         [HttpPost]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]
@@ -138,6 +141,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         /// </summary>
         [HttpDelete("car/{carId}")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]

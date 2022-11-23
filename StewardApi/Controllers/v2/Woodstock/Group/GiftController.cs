@@ -42,6 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.CommunityManager)]
@@ -88,6 +89,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         ///     Gifts items to a user group.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]

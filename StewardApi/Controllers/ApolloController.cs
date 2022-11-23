@@ -39,6 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/title/Apollo")]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -246,6 +247,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Bans players.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -325,6 +328,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Bans players.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -375,6 +380,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Expire ban.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]
@@ -405,6 +412,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Delete ban.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]
@@ -503,6 +512,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Sets consoles ban status.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -585,6 +596,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Sets user flags.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -873,6 +886,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Updates group inventories.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]

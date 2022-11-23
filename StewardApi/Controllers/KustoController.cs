@@ -22,6 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/Kusto")]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -66,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Saves a Kusto query.
         /// </summary>
         [HttpPost("queries")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> SaveQueries([FromBody] IList<KustoQuery> queries)
@@ -85,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Edit a Kusto query.
         /// </summary>
         [HttpPut("queries/id({queryId})")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> ReplaceQuery(string queryId, [FromBody] KustoQuery query)
@@ -113,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Deletes a Kusto query.
         /// </summary>
         [HttpDelete("queries/id({queryId})")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> DeleteQuery(string queryId)
@@ -130,6 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/{xuid}/entitlements")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.CommunityManager,
             UserRole.SupportAgentAdmin,

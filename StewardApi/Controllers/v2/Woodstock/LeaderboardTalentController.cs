@@ -32,6 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/leaderboard/talent")]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.CommunityManager,
@@ -61,6 +62,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         /// </summary>
         [HttpGet]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager,

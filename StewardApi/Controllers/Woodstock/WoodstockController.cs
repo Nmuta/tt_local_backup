@@ -45,6 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/title/woodstock")]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -285,6 +286,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Sets consoles ban status.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -360,6 +363,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -446,6 +451,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Adds a profile note to a user's profile.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
         [HttpPost("player/xuid({xuid})/profileNotes")] // TODO: This should be /profileNotes/add
@@ -942,6 +949,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Hides UGC.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -967,6 +976,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Unhides player UGC content.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -1025,6 +1036,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Bans players.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -1101,6 +1114,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Bans players.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,
@@ -1154,6 +1169,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Expire ban.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]
@@ -1184,6 +1201,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Delete ban.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]
@@ -1576,6 +1595,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Updates inventories for an LSP group.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1626,6 +1647,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gift players a car livery.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager,
@@ -1702,6 +1725,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Updates inventories for an LSP group.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1858,6 +1883,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("notifications/send")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1917,6 +1944,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("notifications/send/groupId({groupId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1962,6 +1991,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -2010,6 +2041,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -2056,6 +2089,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -2092,6 +2127,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -2119,6 +2156,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("leaderboards")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager,
@@ -2140,6 +2179,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("leaderboard/metadata")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager,
@@ -2177,6 +2218,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("leaderboard/scores/top")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager,
@@ -2213,6 +2256,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("leaderboard/scores/near-player/{xuid}")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager,
@@ -2251,6 +2296,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("leaderboard/scores/delete")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
+        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager,
