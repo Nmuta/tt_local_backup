@@ -93,7 +93,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [SwaggerResponse(200)]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,

@@ -175,7 +175,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [HttpPost("{userGroupName}")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.CommunityManager,
             UserRole.MediaTeam,
@@ -211,7 +210,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [HttpPost("{userGroupId}/add")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.CommunityManager,
             UserRole.MediaTeam,
@@ -246,7 +244,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [HttpPost("{userGroupId}/remove")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.CommunityManager,
             UserRole.MediaTeam,

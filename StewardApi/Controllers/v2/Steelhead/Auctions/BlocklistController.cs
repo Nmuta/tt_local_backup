@@ -107,7 +107,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         [HttpPost]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]
@@ -142,7 +141,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         [HttpDelete("car/{carId}")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]

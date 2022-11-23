@@ -108,7 +108,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [HttpPost]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -210,7 +209,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [HttpPost("{messageId}")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -308,7 +306,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [HttpDelete("{messageId}")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]

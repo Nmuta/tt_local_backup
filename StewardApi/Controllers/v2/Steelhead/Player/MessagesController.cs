@@ -163,7 +163,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [HttpPost("{messageId}")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -227,7 +226,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [HttpDelete("{messageId}")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-        UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
