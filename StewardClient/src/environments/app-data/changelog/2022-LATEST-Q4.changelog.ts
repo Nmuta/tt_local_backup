@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '5a0eb482-9e44-45b5-ac57-fa296e859257',
+      shortText: 'Add support for new V2 user role',
+    },
+    {
       tag: {
         title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
         tool: NavbarTool.UserGroupManagement,
