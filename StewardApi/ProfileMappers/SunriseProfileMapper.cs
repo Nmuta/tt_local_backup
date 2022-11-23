@@ -341,7 +341,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
             this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
-            this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>().ReverseMap();
+
+            this.CreateMap<ForzaUserIds, BasicPlayer>()
+                // Map empty string to null
+                .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => string.IsNullOrEmpty(src.gamertag) ? null : src.gamertag))
+                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.xuid));
+            this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>()
+                .ForMember(dest => dest.FailedUsers, opt => opt.MapFrom(src => src.failedUsers.SelectMany(x => x.userIds).ToList()));
         }
 
         private string PrepareDeviceType(string deviceType)

@@ -221,12 +221,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             var userIdsFromGtags = this.mapper.SafeMap<ForzaUserIds[]>(userList.Gamertags) ?? Array.Empty<ForzaUserIds>();
             var userIds = userIdsFromXuids.Concat(userIdsFromGtags).ToArray();
 
-            var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperation(bulkOperationType, userGroupId, userIds).ConfigureAwait(false);
+            // Split the userIds into chunk of 8000 and project them to a list of ForzaUserGroupOperationPage.
+            // This is done because the API serializer has a limit of 8192 items in an array.
+            var userIdsPages = userIds.Chunk(8000).Select(x => new ForzaUserGroupOperationPage() { userIds = x });
+
+            var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperationV2(bulkOperationType, userGroupId, userIdsPages.ToArray()).ConfigureAwait(false);
 
             return new UserGroupBulkOperationStatusOutput()
             {
                 Completed = bulkOperationOutput.changed,
-                Remaining = userIds.Length - bulkOperationOutput.changed
+                Remaining = userIds.Length - bulkOperationOutput.changed,
+                FailedUsers = this.mapper.SafeMap<IEnumerable<BasicPlayer>>(bulkOperationOutput.failedUsers.SelectMany(x => x.userIds)),
             };
         }
 

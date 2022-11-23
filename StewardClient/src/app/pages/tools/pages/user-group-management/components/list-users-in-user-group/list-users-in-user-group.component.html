@@ -110,10 +110,6 @@
       </standard-copy>
     </div>
 
-    <div class="failed-action-for-users" *ngIf="failedActionForUsers?.count > 0">
-      Failed to {{ failedActionForUsers?.action }} {{ failedActionForUsers?.count }} player(s)
-    </div>
-
     <table *ngIf="!!userGroup && getMonitor.isSuccess" class="info-table">
       <tr>
         <th>Group Name</th>
