@@ -56,13 +56,6 @@ describe('UserBanningBaseComponent', () => {
         .and.returnValue(of({}));
     });
 
-    it('should call BackgroundJobService.getBackgroundJob with correct job id', (done) => {
-      component.waitForBackgroundJobToComplete$(testJob).subscribe(() => {
-        expect(mockBackgroundJobService.getBackgroundJob$).toHaveBeenCalledWith(testJob.jobId);
-        done();
-      });
-    });
-
     describe('When subscribing to the send gift observable', () => {
       describe('And a BackgroundJob is returned', () => {
         const testBackgroundJobResp: BackgroundJob<BanResultsUnion[]> = {
@@ -93,7 +86,7 @@ describe('UserBanningBaseComponent', () => {
         });
 
         describe('with a status of complete', () => {
-          it('should set gift response', (done) => {
+          it('should set gift response', done => {
             testBackgroundJobResp.status = BackgroundJobStatus.Completed;
             component.waitForBackgroundJobToComplete$(testJob).subscribe(() => {
               expect(component.banResults).toEqual(testBackgroundJobResp.result);
