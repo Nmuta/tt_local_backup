@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
     [Route("api/v{version:apiVersion}/title/apollo/test/proxies")]
     [LogTagTitle(TitleLogTags.Apollo)]
     [ApiController]
-    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Dev.ApolloTest)]
     public class TestProxiesController : V2ControllerBase
