@@ -70,7 +70,7 @@ enum TreeView {
   TitleTopLevel = 'TitleTopLevel',
 }
 
-/** Displays the Steward permisision management tool. */
+/** Displays the Steward permission management tool. */
 @Component({
   templateUrl: './permission-management.component.html',
   styleUrls: ['./permission-management.component.scss'],
@@ -194,7 +194,6 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
   public savePermissionChanges(): void {
     if (!this.selectedUser) return;
 
-    // For some reason this doesnt have the updated isChecked value
     const updatedPerms = this.getSelectedPermsFromFlatTree();
     const dialogRef = this.dialog.open(VerifyUserPermissionChangeDialogComponent, {
       data: {
@@ -203,17 +202,11 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
         user: this.selectedUser,
       } as VerifyUserPermissionChangeDialogData,
     });
-    dialogRef
-      .afterClosed()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        // This should return updated perms and setup tree with those perms
-      });
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe();
   }
 
   /** Sets the attribute key to current user perms. */
   public setTreesSelectedAttributes(selectedAttributes: PermAttribute[]): void {
-    // let attributeTree = cloneDeep(this.defaultFeatureTopLevelTreeNodes);
     let attributeTree: AttributeTreeNode[] = [];
     switch (this.selectedTreeView) {
       case TreeView.FeatureTopLevel:

@@ -40,3 +40,11 @@ export interface PermAttribute {
   title: string;
   environment: string;
 }
+
+/**
+ * Take a JSON key param and tries to convert it to a PermAttributeName.
+ * Used with permission management tooling models.
+ */
+export function getPermAttributeNameFromKey(key: string): PermAttributeName {
+  return (key[0].toUpperCase() + key.substring(1)) as PermAttributeName;
+}

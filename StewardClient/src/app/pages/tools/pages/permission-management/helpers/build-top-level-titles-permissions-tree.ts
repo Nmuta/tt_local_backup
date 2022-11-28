@@ -1,6 +1,9 @@
 import { GameTitle } from '@models/enums';
 import { PermissionAttributeList } from '@services/api-v2/permissions/permissions.service';
-import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import {
+  getPermAttributeNameFromKey,
+  PermAttributeName,
+} from '@services/perm-attributes/perm-attributes';
 import { includes, keys } from 'lodash';
 import { AttributeTreeNode, TitleEnvironments } from '../permission-management.component';
 
@@ -75,10 +78,6 @@ function generateAttributeTreeNodes(
       children: [],
     } as AttributeTreeNode;
   });
-}
-
-function getPermAttributeNameFromKey(key: string): PermAttributeName {
-  return (key[0].toUpperCase() + key.substring(1)) as PermAttributeName;
 }
 
 function getAvailableTitlesFromAttributesList(permList: PermissionAttributeList): GameTitle[] {

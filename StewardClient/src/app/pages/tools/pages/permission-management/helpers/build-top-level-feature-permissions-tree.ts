@@ -1,6 +1,10 @@
 import { GameTitle } from '@models/enums';
 import { PermissionAttributeList } from '@services/api-v2/permissions/permissions.service';
-import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import {
+  getPermAttributeNameFromKey,
+  PermAttribute,
+  PermAttributeName,
+} from '@services/perm-attributes/perm-attributes';
 import { AttributeTreeNode, TitleEnvironments } from '../permission-management.component';
 
 /**
@@ -60,8 +64,4 @@ function generateEnvironmentTreeNodes(
       children: [],
     } as AttributeTreeNode;
   });
-}
-
-function getPermAttributeNameFromKey(key: string): PermAttributeName {
-  return (key[0].toUpperCase() + key.substring(1)) as PermAttributeName;
 }

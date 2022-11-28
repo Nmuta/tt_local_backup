@@ -26,9 +26,8 @@
             <mat-divider></mat-divider>
             <div class="user-container" (click)="selectUserToManage$.next(user)">
               <div class="selected-icon">
-                <mat-icon *ngIf="user.objectId === selectedUserId">check_box</mat-icon>
-                <mat-icon *ngIf="user.objectId !== selectedUserId"
-                  >check_box_outline_blank</mat-icon
+                <mat-icon *ngIf="user.objectId === selectedUserId; else notSelectedCheckboxTemplate"
+                  >check_box</mat-icon
                 >
               </div>
               <div>
@@ -115,4 +114,6 @@
   </div>
 </div>
 
-<ng-template #noUserSelectedTemplate> Select a user to manage their permissions </ng-template>
+<ng-template #notSelectedCheckboxTemplate>
+  <mat-icon>check_box_outline_blank</mat-icon>
+</ng-template>

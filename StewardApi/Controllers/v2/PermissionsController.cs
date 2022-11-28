@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             user.Attributes = attributes;
             await this.userProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
-            return this.Ok(attributes);
+            return await this.GetUserPermissionsAsync(userId).ConfigureAwait(true);
         }
 
         private Dictionary<string, IList<string>> GetPermissionAttributes()
