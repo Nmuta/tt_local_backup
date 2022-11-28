@@ -53,8 +53,14 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
   public ngOnInit(): void {
     this.user = this.data.user;
     this.newPermsList = this.data.updatedPerms;
-    this.addedPermissions = this.findPermDifferences(this.data.currentPerms, this.data.updatedPerms);
-    this.removedPermissions = this.findPermDifferences(this.data.updatedPerms, this.data.currentPerms);
+    this.addedPermissions = this.findPermDifferences(
+      this.data.currentPerms,
+      this.data.updatedPerms,
+    );
+    this.removedPermissions = this.findPermDifferences(
+      this.data.updatedPerms,
+      this.data.currentPerms,
+    );
   }
 
   /** Sets featured status. */

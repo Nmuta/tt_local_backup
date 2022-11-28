@@ -13,6 +13,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Integrate auth v2',
     },
     {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserGroupManagement,
+      },
+      uuid: 'f6cfbe14-052e-4901-b698-0a9782fad681',
+      shortText: 'Implement failed users response and sending large amount of users',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '86423c69-64cb-4467-97fd-752183fdd74d',
       shortText: 'New button to gift livery in UGC table',
