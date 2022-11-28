@@ -31,7 +31,8 @@ mat-card {
   .multi-select-options {
     margin-left: auto;
 
-    button {
+    button,
+    mat-checkbox {
       width: 100%;
       display: block;
       margin-bottom: $gap-small;
@@ -77,7 +78,7 @@ td.mat-column-actions {
 }
 
 .mat-column-actions {
-  width: 200px;
+  width: 220px;
 }
 
 .mat-column-position {

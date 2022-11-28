@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { ApolloUserFlagsComponent } from './apollo-user-flags.component';
 import faker from '@faker-js/faker';
 import { ApolloUserFlags } from '@models/apollo';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('ApolloUserFlagsComponent', () => {
@@ -14,13 +14,13 @@ describe('ApolloUserFlagsComponent', () => {
   let fixture: ComponentFixture<ApolloUserFlagsComponent>;
 
   let mockApolloService: ApolloService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloUserFlagsComponent],
       imports: [PipesModule],
-      providers: [createMockApolloService(), createMockPermissionsService()],
+      providers: [createMockApolloService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -29,7 +29,7 @@ describe('ApolloUserFlagsComponent', () => {
     fixture = TestBed.createComponent(ApolloUserFlagsComponent);
     component = fixture.componentInstance;
     mockApolloService = TestBed.inject(ApolloService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

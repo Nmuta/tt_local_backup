@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '0e5d6089-d380-4278-997c-408115f5e5f8',
+      shortText: 'Integrate auth v2',
+    },
+    {
       tag: {
         title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
         tool: NavbarTool.UserGroupManagement,

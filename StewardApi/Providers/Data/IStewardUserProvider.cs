@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
@@ -42,5 +43,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Ensures user updated.
         /// </summary>
         Task EnsureStewardUserAsync(string id, string name, string email, string role, string attributes);
+
+        /// <summary>
+        ///     Gets all Steward users.
+        /// </summary>
+        Task<IEnumerable<StewardUserInternal>> GetAllStewardUsersAsync();
     }
 }

@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { SunriseLookupComponent } from './sunrise-lookup.component';
@@ -12,7 +12,7 @@ import { SunriseLookupComponent } from './sunrise-lookup.component';
 describe('SunriseLookupComponent', () => {
   let component: SunriseLookupComponent;
   let fixture: ComponentFixture<SunriseLookupComponent>;
-  let mockPermissionService: PermissionsService;
+  let mockPermissionService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,14 +25,14 @@ describe('SunriseLookupComponent', () => {
         MatDialogModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockPermissionsService()],
+      providers: [createMockOldPermissionsService()],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SunriseLookupComponent);
     component = fixture.componentInstance;
-    mockPermissionService = TestBed.inject(PermissionsService);
+    mockPermissionService = TestBed.inject(OldPermissionsService);
   });
 
   it('should create', () => {

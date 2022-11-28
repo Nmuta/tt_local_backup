@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockApolloService } from '@services/apollo/apollo.service.mock';
 import { ApolloBanHistoryComponent } from './apollo-ban-history.component';
-import { createMockPermissionsService } from '@services/permissions';
+import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('ApolloBanHistoryComponent', () => {
@@ -14,7 +14,7 @@ describe('ApolloBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockApolloService(), createMockPermissionsService()],
+      providers: [createMockApolloService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

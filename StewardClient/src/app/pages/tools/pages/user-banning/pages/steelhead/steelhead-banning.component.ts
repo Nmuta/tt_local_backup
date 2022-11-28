@@ -12,6 +12,7 @@ import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
+
 /** Routed Component; Steelhead Banning Tool. */
 @Component({
   templateUrl: './steelhead-banning.component.html',

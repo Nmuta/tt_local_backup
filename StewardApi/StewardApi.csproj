@@ -142,6 +142,10 @@
     <ProjectReference Include="..\StewardGitApi\StewardGitApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="JSON\" />
+  </ItemGroup>
+
   <Target Name="RealClean" AfterTargets="Clean">
     <RemoveDir Directories="$(OutDir)" ContinueOnError="true" />
   </Target>

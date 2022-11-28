@@ -1,3 +1,6 @@
+# Steward specific files
+**/JSON/all-attributes.json
+
 # Asp.net
 .vs/
 bin/

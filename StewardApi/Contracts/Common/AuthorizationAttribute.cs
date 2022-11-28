@@ -3,8 +3,8 @@ using Turn10.LiveOps.StewardApi.Authorization;
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    /// Represents a Steward User Authorization Attribute
-    /// <see cref="UserAttribute"/>.
+    ///     Represents a Steward User Authorization Attribute.
+    ///     See <see cref="UserAttribute"/>.
     /// </summary>
     public class AuthorizationAttribute
     {
