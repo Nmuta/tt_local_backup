@@ -5,7 +5,7 @@ import { PermAttributesService } from './perm-attributes.service';
 @Injectable()
 export class MockPermAttributesService {}
 
-/** Creates an injectable mock for Blob Storage Service. */
+/** Creates an injectable mock for PermA ttribute Service. */
 export function createMockPermAttributesService(): Provider {
   return {
     provide: PermAttributesService,

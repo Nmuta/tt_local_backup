@@ -85,14 +85,14 @@ describe('PermAttributesService', () => {
 
     it('should set availableTitlesAndEnvironments correctly', () => {
       expect(service.hasSteelheadAccess).toBeFalsy();
-      // expect(service.hasApolloAccess).toBeFalsy();
-      // expect(service.hasWoodstockAccess).toBeTruthy();
-      // expect(service.hasSunriseAccess).toBeTruthy();
+      expect(service.hasApolloAccess).toBeFalsy();
+      expect(service.hasWoodstockAccess).toBeTruthy();
+      expect(service.hasSunriseAccess).toBeTruthy();
 
-      // expect(service.steelheadEnvironments).toEqual([]);
-      // expect(service.apolloEnvironments).toEqual([]);
-      // expect(service.woodstockEnvironments).toEqual(['Retail', 'Studio']);
-      // expect(service.sunriseEnvironments).toEqual(['Retail']);
+      expect(service.steelheadEnvironments).toEqual([]);
+      expect(service.apolloEnvironments).toEqual([]);
+      expect(service.woodstockEnvironments).toEqual(['Retail', 'Studio']);
+      expect(service.sunriseEnvironments).toEqual(['Retail']);
     });
   });
 });

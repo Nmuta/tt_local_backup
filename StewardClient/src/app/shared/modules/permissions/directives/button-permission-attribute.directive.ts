@@ -2,7 +2,7 @@ import { Directive, ElementRef, forwardRef, Optional, ViewContainerRef } from '@
 import { MatTooltip } from '@angular/material/tooltip';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { STEWARD_DISABLE_STATE_PROVIDER } from '@shared/modules/state-managers/injection-tokens';
-import { BasePermissionAttributeDirective } from './permission-attribute.bae.directive';
+import { BasePermissionAttributeDirective } from './permission-attribute.base.directive';
 
 /** A directive that toggles the enabled state of the host button with the provided mat-checkbox. */
 @Directive({
