@@ -52,7 +52,6 @@ import { PlayerSelectionModule } from '@views/player-selection/player-selection.
 import { MatMenuModule } from '@angular/material/menu';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
-import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -119,7 +118,6 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     PlayerSelectionModule,
     MatMenuModule,
     StandardFlagModule,
-    PermissionsModule,
   ],
   exports: [],
 })

@@ -258,6 +258,12 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
     this.setTreesSelectedAttributes(this.getSelectedPermsFromFlatTree());
   }
 
+  /** Undo permission changes. */
+  public undoChanges(): void {
+    this.selectedUserHasPermChanges = false;
+    this.setTreesSelectedAttributes(this.selectedUser.attributes);
+  }
+
   /** Whether the node has a child */
   public hasChild = (_: number, _nodeData: AttributeTreeFlatNode) => _nodeData.expandable;
 

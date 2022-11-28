@@ -52,7 +52,7 @@
           mat-raised-button
           color="basic"
           [disabled]="!selectedUserHasPermChanges"
-          (click)="setTreesSelectedAttributes(this.selectedUser.attributes)"
+          (click)="undoChanges()"
         >
           Undo Changes
         </button>

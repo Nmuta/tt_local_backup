@@ -21,14 +21,8 @@ h2 {
 .sf-wrapper {
   min-height: $dialog-min-height;
 
-  .sf-horizontal {
-    &.align-top {
-      align-items: unset;
-    }
-
-    > div {
-      padding: 0 $gap-small;
-    }
+  .sf-horizontal > div {
+    padding: 0 $gap-small;
   }
 }
 
