@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
-import { createMockPermissionsService } from '@services/old-permissions';
+import { createMockOldPermissionsService } from '@services/old-permissions';
 import { createMockUserService } from '@services/user';
 import { PermissionManagementComponent } from './permission-management.component';
 
@@ -26,7 +26,7 @@ describe('PermissionManagementComponent', () => {
       providers: [
         createMockBackgroundJobService(),
         createMockUserService(),
-        createMockPermissionsService(),
+        createMockOldPermissionsService(),
       ],
     }).compileComponents();
 

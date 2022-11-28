@@ -8,7 +8,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { WoodstockUserFlagsComponent } from './woodstock-user-flags.component';
-import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockUserFlagsComponent', () => {
@@ -22,7 +22,7 @@ describe('WoodstockUserFlagsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockUserFlagsComponent],
       imports: [PipesModule],
-      providers: [createMockWoodstockService(), createMockPermissionsService()],
+      providers: [createMockWoodstockService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

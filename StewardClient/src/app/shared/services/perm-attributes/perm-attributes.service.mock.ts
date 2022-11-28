@@ -5,7 +5,7 @@ import { PermAttributesService } from './perm-attributes.service';
 @Injectable()
 export class MockPermAttributesService {}
 
-/** Creates an injectable mock for PermA ttribute Service. */
+/** Creates an injectable mock for Perm Attribute Service. */
 export function createMockPermAttributesService(): Provider {
   return {
     provide: PermAttributesService,

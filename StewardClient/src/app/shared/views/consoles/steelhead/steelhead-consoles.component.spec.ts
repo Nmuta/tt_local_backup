@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { SteelheadConsolesComponent } from './steelhead-consoles.component';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
-import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
 import { createMockSteelheadConsolesService } from '@services/api-v2/steelhead/consoles/steelhead-consoles.service.mock';
 import { createMockSteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service.mock';
@@ -27,7 +27,7 @@ describe('SteelheadConsolesComponent', () => {
       providers: [
         createMockSteelheadPlayerConsolesService(),
         createMockSteelheadConsolesService(),
-        createMockPermissionsService(),
+        createMockOldPermissionsService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

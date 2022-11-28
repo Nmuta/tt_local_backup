@@ -13,7 +13,7 @@ export class MockPermissionsService {
     .and.returnValue(true);
 }
 /** Creates an injectable mock for Permissions Service. */
-export function createMockPermissionsService(): Provider {
+export function createMockOldPermissionsService(): Provider {
   return {
     provide: OldPermissionsService,
     useValue: new MockPermissionsService(),

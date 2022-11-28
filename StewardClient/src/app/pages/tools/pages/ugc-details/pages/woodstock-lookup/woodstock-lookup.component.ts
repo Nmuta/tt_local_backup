@@ -48,7 +48,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
-  public featureMatToolip: string = null;
+  public featureMatTooltip: string = null;
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
     order: GEO_FLAGS_ORDER,
@@ -143,9 +143,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         this.canHideUgc = this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
-          this.featureMatToolip = this.incorrectPermsTooltip;
+          this.featureMatTooltip = this.incorrectPermsTooltip;
         } else if (!this.ugcItem?.isPublic) {
-          this.featureMatToolip = this.privateUgcTooltip;
+          this.featureMatTooltip = this.privateUgcTooltip;
         }
       });
 

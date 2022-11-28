@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 import { WoodstockConsolesComponent } from './woodstock-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('WoodstockConsolesComponent', () => {
   let component: WoodstockConsolesComponent;
@@ -24,7 +24,7 @@ describe('WoodstockConsolesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockConsolesComponent, BigJsonPipe],
-      providers: [createMockWoodstockService(), createMockPermissionsService()],
+      providers: [createMockWoodstockService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

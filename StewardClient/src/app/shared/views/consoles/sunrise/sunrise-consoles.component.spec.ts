@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('SunriseConsolesComponent', () => {
   let component: SunriseConsolesComponent;
@@ -24,7 +24,7 @@ describe('SunriseConsolesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseConsolesComponent, BigJsonPipe],
-      providers: [createMockSunriseService(), createMockPermissionsService()],
+      providers: [createMockSunriseService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

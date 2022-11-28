@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { SteelheadUserFlagsComponent } from './steelhead-user-flags.component';
 import faker from '@faker-js/faker';
 import { SteelheadUserFlags } from '@models/steelhead';
-import { createMockPermissionsService, OldPermissionsService } from '@services/old-permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service';
 import { createMockSteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service.mock';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -21,7 +21,7 @@ describe('SteelheadUserFlagsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadUserFlagsComponent],
       imports: [PipesModule],
-      providers: [createMockSteelheadPlayerFlagsService(), createMockPermissionsService()],
+      providers: [createMockSteelheadPlayerFlagsService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
