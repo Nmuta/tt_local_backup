@@ -57,7 +57,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     Gets all Message of the Day entries to select.
         /// </summary>
         [HttpGet("options")]
-        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
@@ -73,7 +72,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     with matching id.
         /// </summary>
         [HttpGet("{id}")]
-        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(MotdBridge))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
@@ -93,7 +91,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     Edits and submit Message of the Day.
         /// </summary>
         [HttpPost("{id}")]
-        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(GitPullRequest))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]

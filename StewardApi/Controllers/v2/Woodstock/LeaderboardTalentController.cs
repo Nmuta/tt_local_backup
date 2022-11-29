@@ -61,12 +61,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         ///     Retrieves talented leaderboard players.
         /// </summary>
         [HttpGet]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager,
-            UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(IList<IdentityResultAlpha>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Lookup)]
