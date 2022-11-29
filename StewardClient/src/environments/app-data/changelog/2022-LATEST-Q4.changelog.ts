@@ -8,6 +8,17 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'edfd620a-eb33-4c53-adf7-8f36759462f1',
+      shortText: 'Player selection filter no longer overlaps other UGC filters',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'd32a2e5f-fe11-47d8-bd0f-720ca1658d0b',
+      shortText:
+        'Backing out of UGC selection no longer traps user in redirect loop back to the selection',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '0e5d6089-d380-4278-997c-408115f5e5f8',
       shortText: 'Integrate auth v2',
