@@ -24,6 +24,7 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
   };
 
   public GameTitleCodeName = GameTitleCodeName;
+  public navigationFailedId: string;
 
   public steelheadRouterLink = ['.', 'steelhead'];
   public woodstockRouterLink = ['.', 'woodstock'];
@@ -53,7 +54,10 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
         this.steelheadRouterLink = ['.', 'steelhead', id];
         this.woodstockRouterLink = ['.', 'woodstock', id];
         this.sunriseRouterLink = ['.', 'sunrise', id];
-        this.controls.sharecode.setValue(id);
+
+        this.controls.sharecode.setValue('');
+        this.navigationFailedId = undefined;
+
         this.sharedLookupService.doLookup(id);
       });
 
@@ -75,8 +79,16 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
         this.steelheadRouterLink = ['.', 'steelhead', id];
         this.woodstockRouterLink = ['.', 'woodstock', id];
         this.sunriseRouterLink = ['.', 'sunrise', id];
+
+        this.controls.sharecode.setValue('');
+        this.navigationFailedId = undefined;
+
         this.sharedLookupService.doLookup(id);
-        this.router.navigate([id], { relativeTo: this.route.children[0] });
+
+        this.router.navigate([id], {
+          relativeTo: this.route.children[0],
+          skipLocationChange: true,
+        });
       });
   }
 
@@ -100,6 +112,9 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
       this.router.navigate(this.woodstockRouterLink, { relativeTo: this.route });
     } else if (onlyTrueKey(titleLookup, 'fm8')) {
       this.router.navigate(this.steelheadRouterLink, { relativeTo: this.route });
+    } else {
+      // No navigation
+      this.navigationFailedId = this.sharedLookupService.locations.shareCodeOrId;
     }
   }
 }

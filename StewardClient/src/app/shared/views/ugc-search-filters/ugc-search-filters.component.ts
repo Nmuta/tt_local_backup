@@ -74,6 +74,8 @@ export class UgcSearchFiltersComponent
     identity: new FormControl(null),
   };
 
+  public playerNotFound: boolean = false;
+
   /** UGC filters form group. */
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
@@ -216,7 +218,7 @@ export class UgcSearchFiltersComponent
   /** Player identity selected */
   public playerIdentityFound(newIdentity: AugmentedCompositeIdentity): void {
     const titleSpecificIdentity = this.serviceContract.foundFn(newIdentity);
-
+    this.playerNotFound = !!newIdentity?.result && !titleSpecificIdentity;
     this.formControls.identity.setValue(titleSpecificIdentity);
   }
 

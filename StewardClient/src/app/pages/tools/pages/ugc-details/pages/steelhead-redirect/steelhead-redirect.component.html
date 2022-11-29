@@ -1,2 +1,9 @@
-<p>Lookup should redirect shortly. If it doesn't, select option above.</p>
+<p *ngIf="!parent?.navigationFailedId; else navigationFailedTemplate">
+  Lookup should redirect shortly. If it doesn't, select option above.
+</p>
+
 <!-- TODO: Add found types in case redirect fails (happens when there are multiple types) -->
+
+<ng-template #navigationFailedTemplate class="sf-text-warn">
+  Lookup failed, {{ parent.navigationFailedId }} is not a valid UGC ID / Sharecode.
+</ng-template>

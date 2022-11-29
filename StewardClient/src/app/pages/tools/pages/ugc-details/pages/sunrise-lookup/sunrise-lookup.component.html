@@ -1,3 +1,4 @@
+<p *ngIf="ugcItem?.id" class="result-tag">Lookup results for {{ ugcItem?.id }}</p>
 <ng-container *waitForMonitor="getMonitor">
   <model-dump #source [model]="ugcItem" *ngIf="ugcItem; else noItem">
     <mat-card>
