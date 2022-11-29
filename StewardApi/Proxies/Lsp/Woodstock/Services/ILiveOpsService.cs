@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
@@ -25,5 +26,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Gets player inventory by profile id.
         /// </summary>
         Task<GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
+
+        Task PersistUgcFile(Guid fileId);
+
+        Task CloneUgcFile(Guid fileId, string shareCode, ForzaUGCContentType contentType, bool isSearchable, bool keepGuid);
     }
 }

@@ -19,16 +19,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
     public class V2ControllerBase : ControllerBase
     {
         /// <summary>Gets (lazily) the Woodstock Endpoint passed to this call.</summary>
-        protected Lazy<string> WoodstockEndpoint { get; }
+        protected Lazy<string> WoodstockEndpoint { get; set; }
 
         /// <summary>Gets (lazily) the Sunrise Endpoint passed to this call.</summary>
-        protected Lazy<string> SunriseEndpoint { get; }
+        protected Lazy<string> SunriseEndpoint { get; set; }
 
         /// <summary>Gets (lazily) the Apollo Endpoint passed to this call.</summary>
-        protected Lazy<string> ApolloEndpoint { get; }
+        protected Lazy<string> ApolloEndpoint { get; set; }
 
         /// <summary>Gets (lazily) the Steelhead Endpoint passed to this call.</summary>
-        protected Lazy<string> SteelheadEndpoint { get; }
+        protected Lazy<string> SteelheadEndpoint { get; set; }
 
         // TODO: Find better way to reference services below. Ideally one that doesn't require a `.Value` on each reference call.
 
