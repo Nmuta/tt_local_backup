@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
+import { HCI } from '@environments/environment';
 import { ApolloBanResult } from '@models/apollo';
-import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import {
+  BackgroundJob,
+  BackgroundJobRetryStatus,
+  BackgroundJobStatus,
+} from '@models/background-job';
 import { SunriseBanResult } from '@models/sunrise';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { Observable, timer } from 'rxjs';
-import { delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
+import { Observable, of, throwError, timer } from 'rxjs';
+import { delayWhen, retryWhen, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 export type BanResultsUnion = SunriseBanResult | ApolloBanResult;
 
@@ -38,13 +43,23 @@ export class UserBanningBaseComponent extends BaseComponent {
             this.banResults = Array.isArray(result) ? result : [result];
             break;
           case BackgroundJobStatus.InProgress:
-            throw new Error('in progress');
+            throw new Error(BackgroundJobRetryStatus.InProgress);
           default:
-            this.banActionMonitor.status.error =
-              job.result || 'Background job failed unexpectedly.';
+            throw new Error(BackgroundJobRetryStatus.UnexpectedError);
         }
       }),
-      retryWhen(errors$ => errors$.pipe(delayWhen(() => timer(3_000)))),
+      retryWhen(errors$ =>
+        errors$.pipe(
+          switchMap((error: Error) => {
+            if (error.message !== BackgroundJobRetryStatus.InProgress) {
+              return throwError(() => error);
+            }
+
+            return of(error);
+          }),
+          delayWhen(() => timer(HCI.AutoRetryMillis)),
+        ),
+      ),
       takeUntil(this.onDestroy$),
     );
   }

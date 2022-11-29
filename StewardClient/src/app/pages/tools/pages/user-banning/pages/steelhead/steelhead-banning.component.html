@@ -75,24 +75,24 @@
             </form>
           </ng-container>
         </ng-container>
+
+        <ng-container *ngIf="!banActionMonitor?.isActive">
+          <button
+            *ngIf="!!banActionMonitor.status.error"
+            class="reset-state"
+            mat-raised-button
+            color="accent"
+            matTooltip="Reset the failed tool."
+            (click)="resetBanningToolUI()"
+            clickStop
+          >
+            Reset Tool
+          </button>
+        </ng-container>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
-
-<ng-container *ngIf="!banActionMonitor?.isActive">
-  <button
-    *ngIf="!!banActionMonitor.status.error"
-    class="reset-state"
-    mat-raised-button
-    color="accent"
-    matTooltip="Reset the failed tool."
-    (click)="resetBanningToolUI()"
-    clickStop
-  >
-    Reset Tool
-  </button>
-</ng-container>
 
 <ng-template #banResultsState>
   <ban-results [banResults]="banResults"></ban-results>
