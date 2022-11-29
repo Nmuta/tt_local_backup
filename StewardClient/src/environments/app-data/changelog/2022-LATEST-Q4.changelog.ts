@@ -20,6 +20,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '5a0eb482-9e44-45b5-ac57-fa296e859257',
+      shortText: 'Add support for new V2 user role',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '0e5d6089-d380-4278-997c-408115f5e5f8',
       shortText: 'Integrate auth v2',
     },

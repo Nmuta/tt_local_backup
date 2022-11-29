@@ -36,6 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -90,7 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Get bulk operation status.
         /// </summary>
         [HttpGet("{userGroupId}/bulkOperationStatus/{operationId}")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(UserGroupBulkOperationStatusOutput))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         public async Task<IActionResult> GetBulkOperationStatus(int userGroupId, string operationId, ForzaBulkOperationType bulkOperationType)
@@ -173,6 +174,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpPost("{userGroupName}")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.CommunityManager,
             UserRole.MediaTeam,
@@ -207,6 +209,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpPost("{userGroupId}/add")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.CommunityManager,
             UserRole.MediaTeam,
@@ -240,6 +243,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpPost("{userGroupId}/remove")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.CommunityManager,
             UserRole.MediaTeam,
@@ -272,7 +276,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Remove every users from a user group.
         /// </summary>
         [HttpPost("{userGroupId}/removeAllUsers")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]

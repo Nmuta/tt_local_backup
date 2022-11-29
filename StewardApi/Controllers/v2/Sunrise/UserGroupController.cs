@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
     ///     Handles requests for Sunrise user groups.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/sunrise/usergroup")]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Sunrise)]
     [ApiController]
     [ApiVersion("2.0")]
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
         ///    Get bulk operation status.
         /// </summary>
         [HttpGet("{userGroupId}/bulkOperationStatus/{operationId}")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(UserGroupBulkOperationStatusOutput))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         public async Task<IActionResult> GetBulkOperationStatus(int userGroupId, string operationId, ForzaBulkOperationType bulkOperationType)

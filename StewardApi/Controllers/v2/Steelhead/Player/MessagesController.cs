@@ -37,6 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -102,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Deletes all player notifications.
         /// </summary>
         [HttpDelete]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
@@ -161,6 +162,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         /// </summary>
         [HttpPost("{messageId}")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -223,6 +225,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         /// </summary>
         [HttpDelete("{messageId}")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]

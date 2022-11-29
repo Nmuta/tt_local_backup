@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Services
     [Route("api/v{version:apiVersion}/title/woodstock/services/apiPermissions")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [DangerousTags(Title.Woodstock, Target.Lsp, Topic.Permissions)]
     public class ApiPermissions : V2WoodstockControllerBase

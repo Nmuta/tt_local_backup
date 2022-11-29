@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
     ///     Handles requests for Apollo user groups.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/apollo/usergroup")]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Apollo)]
     [ApiController]
     [ApiVersion("2.0")]

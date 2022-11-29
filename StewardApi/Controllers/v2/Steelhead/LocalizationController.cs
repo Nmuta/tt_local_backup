@@ -34,6 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -75,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Add string for localization.
         /// </summary>
         [HttpPost]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Guid))]
         [Authorize(Policy = UserAttribute.AddLocalizedString)]
         public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)

@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/ugc/{ugcId}/geoFlags")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.Ugc, Target.Details)]
     public class GeoFlagsController : V2SteelheadControllerBase

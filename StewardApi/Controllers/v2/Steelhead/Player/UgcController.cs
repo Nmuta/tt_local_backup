@@ -29,6 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/ugc")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
