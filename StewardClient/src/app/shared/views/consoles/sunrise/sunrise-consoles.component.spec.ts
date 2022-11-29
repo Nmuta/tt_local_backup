@@ -12,20 +12,20 @@ import { Subject } from 'rxjs';
 
 import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('SunriseConsolesComponent', () => {
   let component: SunriseConsolesComponent;
   let fixture: ComponentFixture<SunriseConsolesComponent>;
 
   let mockSunriseService: SunriseService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseConsolesComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockSunriseService(), createMockPermissionsService()],
+      providers: [createMockSunriseService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -34,7 +34,7 @@ describe('SunriseConsolesComponent', () => {
     fixture = TestBed.createComponent(SunriseConsolesComponent);
     component = fixture.componentInstance;
     mockSunriseService = TestBed.inject(SunriseService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

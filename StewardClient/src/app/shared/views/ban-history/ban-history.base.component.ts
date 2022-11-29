@@ -8,7 +8,7 @@ import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { LiveOpsExtendedBanDescription } from '@models/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 
 /** Extended type from LiveOpsExtendedBanDescription. */
 type BanHistoryTableEntry = LiveOpsExtendedBanDescription & {
@@ -45,7 +45,7 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
 
   public abstract gameTitle: GameTitle;
 
-  constructor(private readonly permissionsService: PermissionsService) {
+  constructor(private readonly permissionsService: OldPermissionsService) {
     super();
   }
 

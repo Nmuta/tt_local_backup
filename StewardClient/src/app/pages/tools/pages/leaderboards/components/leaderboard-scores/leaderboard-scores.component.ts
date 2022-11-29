@@ -20,7 +20,7 @@ import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime
 import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
-import { DeviceType } from '@models/enums';
+import { DeviceType, GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import {
   Leaderboard,
@@ -33,6 +33,7 @@ import {
   getDeviceTypesFromQuery,
   getLspEndpointFromLeaderboardEnvironment,
 } from '@models/leaderboards';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
@@ -112,6 +113,8 @@ export class LeaderboardScoresComponent
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   /** REVIEW-COMMENT: Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** The game title. */
+  @Input() gameTitle: GameTitle;
   /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
@@ -194,6 +197,8 @@ export class LeaderboardScoresComponent
       helpText: "Uses Forza's artificial intelligence to handle the shifting for the player.",
     },
   };
+
+  public readonly permAttribute = PermAttributeName.DeleteLeaderboardScores;
 
   public BooleanFilterToggle = BooleanFilterToggle;
 

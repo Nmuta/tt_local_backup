@@ -7,12 +7,12 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { WoodstockConsoleDetailsEntry } from '@models/woodstock';
 import { SunriseConsoleDetailsEntry } from '@models/sunrise';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 
 type ConsoleActionMonitors = {
   banActionMonitor: ActionMonitor;
@@ -46,7 +46,7 @@ export abstract class ConsolesBaseComponent<T extends ConsoleDetailsTitleIntersp
   public abstract gameTitle: GameTitle;
   public abstract supportsConsoleBanning: boolean;
 
-  constructor(private readonly permissionsService: PermissionsService) {
+  constructor(private readonly permissionsService: OldPermissionsService) {
     super();
   }
 

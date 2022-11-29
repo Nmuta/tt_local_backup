@@ -12,6 +12,7 @@ import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
+
 /** Routed Component; Apollo Banning Tool. */
 @Component({
   templateUrl: './apollo-banning.component.html',

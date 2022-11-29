@@ -5,7 +5,7 @@ import { GameTitle } from '@models/enums';
 import { Observable, tap, takeUntil } from 'rxjs';
 import _ from 'lodash';
 import { ConsolesBaseComponent } from '../consoles.base.component';
-import { PermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
 import { SteelheadConsolesService } from '@services/api-v2/steelhead/consoles/steelhead-consoles.service';
 
@@ -22,7 +22,7 @@ export class SteelheadConsolesComponent extends ConsolesBaseComponent<SteelheadC
   constructor(
     private readonly steelheadPlayerConsolesService: SteelheadPlayerConsolesService,
     private readonly steelheadConsolesService: SteelheadConsolesService,
-    permissionsService: PermissionsService,
+    permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
   }

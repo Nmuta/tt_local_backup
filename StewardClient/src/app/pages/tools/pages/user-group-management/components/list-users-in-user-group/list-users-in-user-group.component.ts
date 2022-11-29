@@ -28,7 +28,6 @@ import {
 } from '@models/user-group-bulk-operation';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
-import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
@@ -73,7 +72,6 @@ interface UserGroupManagementFailures {
   players: BasicPlayerActionResult[];
   action: UserGroupManagementAction;
   copyToClipboard?: string;
-  count: number;
 }
 
 /** A player object within a user group. */
@@ -127,10 +125,7 @@ export class ListUsersInGroupComponent
   public isAllUsersGroup: boolean = false;
   public disallowDeleteAllUsers: boolean = false;
 
-  constructor(
-    private readonly backgroundJobService: BackgroundJobService,
-    private readonly store: Store,
-  ) {
+  constructor(private readonly store: Store) {
     super();
   }
 
@@ -257,7 +252,6 @@ export class ListUsersInGroupComponent
     this.failedActionForUsers = {
       players: [],
       action: action,
-      count: null,
     };
 
     const playerList = this.getBasicPlayerList(
@@ -324,11 +318,6 @@ export class ListUsersInGroupComponent
           this.failedActionForUsers.copyToClipboard = response.failedUsers
             .map(player => player.gamertag ?? player.xuid)
             .join('\n');
-        }
-        // For Steelhead, Sunrise and Apollo the list of failedUsers is not returned.
-        // If any user do fail the "remaining" count of the response will be greater than 0
-        else if (response.remaining > 0) {
-          this.failedActionForUsers.count = response.remaining;
         }
 
         this.clearCheckboxes();

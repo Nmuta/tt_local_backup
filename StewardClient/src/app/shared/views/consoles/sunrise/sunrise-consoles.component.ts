@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { ConsolesBaseComponent } from '../consoles.base.component';
-import { PermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({
@@ -24,7 +24,7 @@ export class SunriseConsolesComponent
 
   constructor(
     private readonly sunriseSerice: SunriseService,
-    permissionsService: PermissionsService,
+    permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
   }

@@ -10,20 +10,20 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { ApolloConsolesComponent } from './apollo-consoles.component';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { ApolloService, createMockApolloService } from '@services/apollo';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('ApolloConsolesComponent', () => {
   let component: ApolloConsolesComponent;
   let fixture: ComponentFixture<ApolloConsolesComponent>;
 
   let mockApolloService: ApolloService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloConsolesComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockApolloService(), createMockPermissionsService()],
+      providers: [createMockApolloService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -32,7 +32,7 @@ describe('ApolloConsolesComponent', () => {
     fixture = TestBed.createComponent(ApolloConsolesComponent);
     component = fixture.componentInstance;
     mockApolloService = TestBed.inject(ApolloService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

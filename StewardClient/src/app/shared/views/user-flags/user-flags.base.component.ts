@@ -10,8 +10,8 @@ import { WoodstockUserFlags } from '@models/woodstock';
 import { SteelheadUserFlags } from '@models/steelhead';
 import { SunriseUserFlags } from '@models/sunrise';
 import { ApolloUserFlags } from '@models/apollo';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { OldPermissionsService, PermissionServiceTool } from '@services/old-permissions';
 
 export type UserFlagsUnion =
   | WoodstockUserFlags
@@ -62,7 +62,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public abstract formControls: unknown;
   public abstract formGroup: FormGroup;
 
-  constructor(private readonly permissionsService: PermissionsService) {
+  constructor(private readonly permissionsService: OldPermissionsService) {
     super();
   }
 
