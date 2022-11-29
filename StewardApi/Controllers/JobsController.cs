@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.Pipelines;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,7 +9,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -171,12 +169,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetStatusAsync(string jobId)
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
-
-            return this.Ok(new BackgroundJob()
-            {
-                JobId = jobId,
-                Status = BackgroundJobStatus.Failed,
-            });
 
             var status = await this.jobTracker.GetJobStatusAsync(jobId).ConfigureAwait(true);
 
