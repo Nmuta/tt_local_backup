@@ -28,6 +28,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
         title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
         tool: NavbarTool.UserGroupManagement,
       },
+      uuid: '90b568a4-5b61-443d-947c-ce7b59141c83',
+      shortText: 'Enable all titles in production',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserGroupManagement,
+      },
       uuid: 'f6cfbe14-052e-4901-b698-0a9782fad681',
       shortText: 'Implement failed users response and sending large amount of users',
     },
