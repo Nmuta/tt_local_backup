@@ -1,4 +1,5 @@
 import { Without } from '@helpers/types';
+import { PermAttribute } from '@services/perm-attributes/perm-attributes';
 import { UserRole } from './enums';
 import { GuidLikeString } from './extended-types';
 
@@ -26,4 +27,9 @@ export type UserModelOverrides = Without<
 export interface UserModel extends ExtendedUserModel {
   /** A partial profile that overrides given settings on the source profile. Any provided key will be overridden. */
   overrides?: UserModelOverrides;
+}
+
+/** User model with permission attributes. */
+export interface UserModelWithPermissions extends UserModel {
+  attributes?: PermAttribute[];
 }

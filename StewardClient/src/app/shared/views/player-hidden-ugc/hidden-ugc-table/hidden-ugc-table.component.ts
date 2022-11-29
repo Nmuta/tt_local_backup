@@ -5,7 +5,7 @@ import { renderGuard } from '@helpers/rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { pull } from 'lodash';
@@ -48,7 +48,7 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
 
   public disableUnhide: boolean;
 
-  constructor(private readonly permissionsService: PermissionsService) {
+  constructor(private readonly permissionsService: OldPermissionsService) {
     super();
   }
 

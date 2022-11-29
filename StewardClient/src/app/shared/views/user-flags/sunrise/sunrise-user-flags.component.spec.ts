@@ -8,7 +8,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { SunriseUserFlagsComponent } from './sunrise-user-flags.component';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SunriseUserFlagsComponent', () => {
@@ -16,13 +16,13 @@ describe('SunriseUserFlagsComponent', () => {
   let fixture: ComponentFixture<SunriseUserFlagsComponent>;
 
   let mockSunriseService: SunriseService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseUserFlagsComponent],
       imports: [PipesModule],
-      providers: [createMockSunriseService(), createMockPermissionsService()],
+      providers: [createMockSunriseService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -31,7 +31,7 @@ describe('SunriseUserFlagsComponent', () => {
     fixture = TestBed.createComponent(SunriseUserFlagsComponent);
     component = fixture.componentInstance;
     mockSunriseService = TestBed.inject(SunriseService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')

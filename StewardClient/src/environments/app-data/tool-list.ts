@@ -30,7 +30,6 @@ export enum NavbarTool {
   BanReview = 'ban-review',
   Messaging = 'messaging',
   AuctionDetails = 'auction-details',
-  StewardManagement = 'steward-management',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
   Endpoints = 'endpoints',
@@ -38,6 +37,8 @@ export enum NavbarTool {
   CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
+  PermissionManagement = 'permission-management',
+  StewardManagement = 'steward-management',
   MessageOfTheDay = 'message-of-the-day',
 }
 
@@ -143,6 +144,7 @@ export enum AppIcon {
   DevEnvironment = 'admin_panel_settings',
   Endpoints = 'explore',
   CarDetails = 'minor_crash',
+  PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
   MessageOfTheDay = 'waving_hand',
 }
@@ -559,26 +561,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
     hideFromUnauthorized: false,
   },
   <HomeTileInfoInternal>{
-    icon: AppIcon.StewardManagement,
-    tool: NavbarTool.StewardManagement,
-    accessList: [UserRole.LiveOpsAdmin],
-    title: 'Meta Tools',
-    subtitle: 'Manage Steward',
-    supportedTitles: [],
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'Manage high-level Kusto and Release features within Steward',
-    shortDescription: [
-      'Tools for managing aspects of steward itself',
-      'Manage high-level Kusto and Release features within Steward',
-    ],
-    loadChildren: () =>
-      import('../../app/pages/tools/pages/steward-management/steward-management.module').then(
-        m => m.StewardManagementModule,
-      ),
-    hideFromUnauthorized: true,
-  },
-  <HomeTileInfoInternal>{
     icon: AppIcon.RacersCup,
     tool: NavbarTool.RacersCup,
     accessList: CommonAccessLevels.RacersCup,
@@ -792,6 +774,41 @@ export const unprocessedToolList: HomeTileInfo[] = [
         '../../app/shared/modules/endpoints/endpoints-nav-tool/endpoints-nav-tool.component'
       ).then(m => m.EndpointsNavToolComponent),
     hideLink: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.PermissionManagement,
+    tool: NavbarTool.PermissionManagement,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Permission Management',
+    subtitle: 'Manage Steward permissions',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Micro-manage permissions within Steward for all users',
+    shortDescription: [],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/permission-management/permission-management.module').then(
+        m => m.PermisisionManagementModule,
+      ),
+    hideFromUnauthorized: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.StewardManagement,
+    tool: NavbarTool.StewardManagement,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Meta Tools',
+    subtitle: 'Manage Steward',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Manage high-level Kusto and Release features within Steward',
+    shortDescription: [
+      'Tools for managing aspects of steward itself',
+      'Manage high-level Kusto and Release features within Steward',
+    ],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/steward-management/steward-management.module').then(
+        m => m.StewardManagementModule,
+      ),
+    hideFromUnauthorized: true,
   },
 ];
 

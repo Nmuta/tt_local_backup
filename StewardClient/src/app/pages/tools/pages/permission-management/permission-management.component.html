@@ -1,0 +1,119 @@
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Steward Users</mat-card-title>
+          <mat-card-subtitle>List of all non-admin users</mat-card-subtitle>
+        </mat-card-header>
+
+        <ng-container *waitForMonitor="getUsersActionMonitor">
+          <mat-form-field class="name-filter">
+            <mat-label>Name Filter</mat-label>
+            <input matInput [formControl]="nameFilterFormControl" />
+            <button
+              type="button"
+              mat-button
+              matSuffix
+              mat-icon-button
+              aria-label="Clear name filter"
+              (click)="nameFilterFormControl.setValue('')"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <ng-container *ngFor="let user of filteredUsers">
+            <mat-divider></mat-divider>
+            <div class="user-container" (click)="selectUserToManage$.next(user)">
+              <div class="selected-icon">
+                <mat-icon *ngIf="user.objectId === selectedUserId; else notSelectedCheckboxTemplate"
+                  >check_box</mat-icon
+                >
+              </div>
+              <div>
+                <span class="name">{{ user.name }}</span
+                ><br />
+                <span class="email">{{ user.emailAddress }}</span>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="steward-layout-pane steward-layout-fill reference-inventory">
+    <mat-card class="steward-layout-sticky-scroll">
+      <mat-card-header class="sf-header">
+        <mat-card-title>Manage Permissions</mat-card-title>
+        <mat-card-subtitle>{{ managePermissionCardSubtitle }}</mat-card-subtitle>
+        <div class="sf-spacer"></div>
+        <button
+          mat-raised-button
+          color="basic"
+          [disabled]="!selectedUserHasPermChanges"
+          (click)="undoChanges()"
+        >
+          Undo Changes
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!selectedUserHasPermChanges"
+          (click)="savePermissionChanges()"
+        >
+          Save Permissions
+        </button>
+      </mat-card-header>
+
+      <mat-form-field *ngIf="!!selectedUser" appearance="fill" class="select-tree-view">
+        <mat-label>Tree View</mat-label>
+        <mat-select [(value)]="selectedTreeView" (selectionChange)="treeViewChange($event)">
+          <mat-option *ngFor="let view of treeViews" [value]="view">
+            {{ view | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <ng-container *waitForMonitor="getPermissionsActionMonitor">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+          <mat-tree-node
+            *matTreeNodeDef="let node"
+            matTreeNodePadding
+            [matTreeNodePaddingIndent]="20"
+          >
+            <button mat-icon-button disabled></button>
+            <mat-checkbox
+              class="checklist-leaf-node"
+              [checked]="node.isChecked"
+              (click)="todoLeafItemSelectionToggle(node)"
+              >{{ node.name | humanize }}</mat-checkbox
+            >
+          </mat-tree-node>
+          <mat-tree-node
+            *matTreeNodeDef="let node; when: hasChild"
+            matTreeNodePadding
+            [matTreeNodePaddingIndent]="20"
+          >
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+              </mat-icon>
+            </button>
+            <mat-checkbox
+              [checked]="node.isChecked"
+              [indeterminate]="descendantsPartiallySelected(node)"
+              (click)="todoItemSelectionToggle(node)"
+              >{{ node.name | humanize }}</mat-checkbox
+            >
+          </mat-tree-node>
+        </mat-tree>
+      </ng-container>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #notSelectedCheckboxTemplate>
+  <mat-icon>check_box_outline_blank</mat-icon>
+</ng-template>

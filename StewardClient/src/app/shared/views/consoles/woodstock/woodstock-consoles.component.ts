@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ConsolesBaseComponent } from '../consoles.base.component';
-import { PermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays related Woodstock consoles by XUID. */
 @Component({
@@ -24,7 +24,7 @@ export class WoodstockConsolesComponent
 
   constructor(
     private readonly woodstockSerice: WoodstockService,
-    permissionsService: PermissionsService,
+    permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
   }

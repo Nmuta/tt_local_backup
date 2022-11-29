@@ -12,19 +12,19 @@ import { Subject } from 'rxjs';
 
 import { WoodstockConsolesComponent } from './woodstock-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('WoodstockConsolesComponent', () => {
   let component: WoodstockConsolesComponent;
   let fixture: ComponentFixture<WoodstockConsolesComponent>;
 
   let mockWoodstockService: WoodstockService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockConsolesComponent, BigJsonPipe],
-      providers: [createMockWoodstockService(), createMockPermissionsService()],
+      providers: [createMockWoodstockService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -33,7 +33,7 @@ describe('WoodstockConsolesComponent', () => {
     fixture = TestBed.createComponent(WoodstockConsolesComponent);
     component = fixture.componentInstance;
     mockWoodstockService = TestBed.inject(WoodstockService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')
