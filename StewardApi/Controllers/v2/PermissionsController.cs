@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {userId})");
             }
 
-            return this.Ok(user.AuthorizationAttributes() ?? Array.Empty<AuthorizationAttribute>());
+            return this.Ok(user.AuthorizationAttributes());
         }
 
         /// <summary>
