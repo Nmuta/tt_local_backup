@@ -39,6 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     {
         private const string PegasusBaseCacheKey = "SteelheadPegasus_";
         private const string LocalizationFileAntecedent = "LiveOps_LocalizationStrings-";
+        private const string LocalizationStringIdsMappings = "LiveOps_LocalizationStringMappings";
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -125,6 +126,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
+            var localizationIdsMapping = await this.cmsRetrievalHelper
+                .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
+                    LocalizationStringIdsMappings,
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
             var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
             foreach (var supportedLocale in supportedLocales)
             {
@@ -158,7 +165,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 }
             }
 
-            return results;
+            // Remap the ids to the right ids from the mapping file
+            return results
+                .Where(p => localizationIdsMapping.ContainsKey(p.Key))
+                .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
         }
 
         /// <inheritdoc />
