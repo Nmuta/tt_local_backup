@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '5131843c-5103-47b0-b97d-7003a5df08ef',
+      shortText: 'Refactor localized string dropdown',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '806b74b4-6cfa-43dc-84af-51bbf95bd53c',
       shortText: 'Remove Geneva middleware and IFX sinks',
     },

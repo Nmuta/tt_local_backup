@@ -26,6 +26,7 @@
                 *ngIf="entry.edit"
                 [service]="service?.selectLocalizedStringService"
                 [formControl]="entry.formControls.localizedMessageInfo"
+                formControlName="localizedMessageInfo"
                 [disableLanguagePreview]="true"
               ></select-localized-string>
             </div>
