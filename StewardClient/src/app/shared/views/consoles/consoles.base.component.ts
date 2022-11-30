@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable } from 'rxjs';
@@ -40,8 +39,6 @@ export abstract class ConsolesBaseComponent<T extends ConsoleDetailsTitleIntersp
   public consoleDetails = new BetterMatTableDataSource<T & ConsoleActionMonitors>();
   public columnsToDisplay = ['isBanned', 'consoleId', 'deviceType', 'actions'];
   public getConsoles = new ActionMonitor('Get consoles');
-
-  public bannedIcon = faGavel;
 
   public abstract gameTitle: GameTitle;
   public abstract supportsConsoleBanning: boolean;
