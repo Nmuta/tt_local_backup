@@ -39,7 +39,6 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
 
   /** True if form control flags do not match current flags. */
   public hasChanges: boolean = false;
-  w;
   /** The flags currently applied to the user. */
   public currentFlags: T;
   /** True when the "I have verified this" checkbox is ticked. Reset on model change. */
