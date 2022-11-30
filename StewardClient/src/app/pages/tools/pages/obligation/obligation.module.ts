@@ -81,7 +81,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     ReactiveFormsModule,
     RouterModule,
     TextFieldModule,
-
     VerifyCheckboxModule,
   ],
   exports: [DataPipelineObligationComponent],

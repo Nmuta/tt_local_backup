@@ -57,7 +57,6 @@ import { SteelheadSearchUgcComponent } from './pages/steelhead/steelhead-search-
     ReactiveFormsModule,
     UgcRoutingModule,
     PlayerSelectionModule,
-
     MatCheckboxModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,

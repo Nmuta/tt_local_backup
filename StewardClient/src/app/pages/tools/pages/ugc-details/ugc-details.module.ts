@@ -77,7 +77,6 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     FeatureUgcModalModule,
     PipesModule,
     UgcDownloadButtonModule,
-
     VerifyCheckboxModule,
     MatCheckboxModule,
     DirectivesModule,

@@ -37,7 +37,6 @@ import { LocalizationModule } from '@components/localization/localization.module
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
     MatToolbarModule,
     MatButtonModule,
     MatCardModule,

@@ -40,7 +40,6 @@ import { SteelheadPlayerUgcComponent } from './steelhead/steelhead-player-ugc.co
     MatTooltipModule,
     FontAwesomeModule,
     PipesModule,
-
     ErrorSpinnerModule,
     JsonDumpModule,
     MatIconModule,

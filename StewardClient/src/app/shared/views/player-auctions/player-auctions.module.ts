@@ -29,7 +29,6 @@ import { WoodstockPlayerAuctionsComponent } from './woodstock/woodstock-player-a
     MatTooltipModule,
     FontAwesomeModule,
     PipesModule,
-
     ErrorSpinnerModule,
     JsonDumpModule,
     MatIconModule,
