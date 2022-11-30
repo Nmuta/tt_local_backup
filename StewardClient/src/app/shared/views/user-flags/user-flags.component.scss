@@ -1,18 +1,13 @@
 @import '/src/styles/mixins';
+mat-card-header {
+  > mat-checkbox {
+    margin-top: $gap-small;
+  }
+}
 
 section.checkboxes {
   > mat-checkbox {
     display: block;
-  }
-}
-
-h2 {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: flex-start;
-  height: 1.5em;
-  verify-action-button {
-    font-size: $font-size-subnavbar;
   }
 }
 

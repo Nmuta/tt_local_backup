@@ -21,7 +21,6 @@ import { GiftResponse } from '@models/gift-response';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 describe('WoodstockGiftLiveryComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftLiveryComponent>;
@@ -324,11 +323,7 @@ describe('WoodstockGiftLiveryComponent', () => {
       reason: 'test',
     };
 
-    let testMonitor: ActionMonitor;
-
     beforeEach(() => {
-      testMonitor = new ActionMonitor('test monitor');
-
       mockBackgroundJobService.getBackgroundJob$ = jasmine
         .createSpy('getBackgroundJob')
         .and.returnValue(of({}));
@@ -353,8 +348,8 @@ describe('WoodstockGiftLiveryComponent', () => {
           component
             .waitForBackgroundJobToComplete(testJob)
             .pipe(
-              catchError(error => {
-                expect(testMonitor.status.error).toEqual(error);
+              catchError(err => {
+                expect(err).toEqual(error);
                 return EMPTY;
               }),
             )

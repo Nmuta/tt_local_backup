@@ -105,14 +105,14 @@ describe('SteelheadUserFlagsComponent', () => {
         beforeEach(() => {
           component.getFlagsByXuid$ = jasmine
             .createSpy('getFlagsByXuid$')
-            .and.returnValue(throwError(error));
+            .and.returnValue(throwError(() => error));
         });
 
         it('should set error', () => {
           component.ngOnChanges({});
 
           expect(component.currentFlags).toBeUndefined();
-          expect(component.loadError).toEqual(error);
+          expect(component.getFlagsActionMonitor.status.error).toEqual(error);
         });
       });
     });

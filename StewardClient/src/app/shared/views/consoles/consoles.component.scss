@@ -1,3 +1,9 @@
+@import '/src/styles/mixins';
+
 table {
   width: 100%;
+}
+
+.mat-checkbox {
+  margin-left: $gap-small;
 }

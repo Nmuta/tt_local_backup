@@ -6,13 +6,17 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { ApolloConsolesComponent } from './apollo/apollo-consoles.component';
 import { SunriseConsolesComponent } from './sunrise/sunrise-consoles.component';
 import { SteelheadConsolesComponent } from './steelhead/steelhead-consoles.component';
 import { WoodstockConsolesComponent } from './woodstock/woodstock-consoles.component';
 import { MatIconModule } from '@angular/material/icon';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** A domain module for displaying related console lists. */
 @NgModule({
@@ -29,10 +33,14 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     FontAwesomeModule,
     PipesModule,
-    VerifyActionButtonModule,
     ErrorSpinnerModule,
     JsonDumpModule,
     MatIconModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    VerifyCheckboxModule,
+    StateManagersModule,
+    MonitorActionModule,
   ],
   exports: [
     WoodstockConsolesComponent,

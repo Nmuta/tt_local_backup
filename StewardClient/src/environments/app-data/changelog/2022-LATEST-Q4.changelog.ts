@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'd5121718-586d-4cfd-a9ef-4655af2486da',
+      shortText: 'Remove use of verify action button component',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '5131843c-5103-47b0-b97d-7003a5df08ef',
       shortText: 'Refactor localized string dropdown',
     },
