@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.service';
+import { UgcDetailsComponent } from '../../ugc-details.component';
 
 import { SteelheadRedirectComponent } from './steelhead-redirect.component';
 
@@ -21,7 +22,7 @@ describe('SteelheadRedirectComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot(),
       ],
-      providers: [ScopedSharedLookupService],
+      providers: [ScopedSharedLookupService, UgcDetailsComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

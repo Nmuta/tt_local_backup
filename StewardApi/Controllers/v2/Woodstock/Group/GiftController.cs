@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bond;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.CommunityManager)]
@@ -87,10 +87,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         /// <summary>
         ///     Gifts items to a user group.
         /// </summary>
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [HttpPost]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]

@@ -29,6 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/ugc")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -84,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 try
                 {
                     var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
-                    var results = await this.Services.StorefrontManagementService.GetUGCForUser(xuid, mappedContentType, false, this.ugcMaxResults).ConfigureAwait(false);
+                    var results = await this.Services.StorefrontManagementService.GetUGCForUser(xuid, mappedContentType, false, this.ugcMaxResults, false).ConfigureAwait(false);
 
                     return this.mapper.Map<IList<UgcItem>>(results.result);
                 }

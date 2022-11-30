@@ -1,6 +1,7 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Host, Input, OnInit, Optional, SkipSelf } from '@angular/core';
 import {
   AbstractControl,
+  ControlContainer,
   ControlValueAccessor,
   FormControl,
   FormGroup,
@@ -8,7 +9,6 @@ import {
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
-  Validators,
 } from '@angular/forms';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -63,16 +63,15 @@ export class SelectLocalizedStringComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor, Validator
 {
+  /** formControl name of parent form. Used to get the parent validator of the field. */
+  @Input() formControlName: string;
+
   /** The contract used to lookup and display localized strings. */
   @Input() service: SelectLocalizedStringContract;
   /** The dropdown mat label. */
   @Input() label: string = 'Select localized message';
   /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;
-  /** Determines if the dropdown is disabled. */
-  @Input() isDisabled: boolean = false;
-  /** Determines if a value is required. Default to true with the formControl also having the validator. */
-  @Input() isRequired: boolean = true;
 
   public localizedStringLookup: LocalizedStringsMap = new Map();
   public localizedStringDetails: LocalizationOptions[] = [];
@@ -81,7 +80,7 @@ export class SelectLocalizedStringComponent
   public selectedLanguageLocalizedString: LocalizedString = null;
 
   public formControls = {
-    selectedLocalizedStringInfo: new FormControl({}, [Validators.required]),
+    selectedLocalizedStringInfo: new FormControl(undefined),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -91,16 +90,19 @@ export class SelectLocalizedStringComponent
 
   private readonly getLocalizedStrings$ = new Subject<void>();
 
+  constructor(@Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
+    super();
+  }
+
   /** Lifecycle hook */
   public ngOnInit(): void {
     if (!this.service) {
       throw new Error('No service defined for Select Localized String component.');
     }
 
-    // If isRequired was specified as false, remove the required validator from the formControl
-    if (!this.isRequired) {
-      this.formControls.selectedLocalizedStringInfo.removeValidators([Validators.required]);
-    }
+    // Get the validators from the parent formControl and add them to this component validators
+    const parentControl = this.controlContainer?.control.get(this.formControlName);
+    this.formControls.selectedLocalizedStringInfo.setValidators(parentControl?.validator);
 
     this.getLocalizedStrings$
       .pipe(
@@ -183,6 +185,8 @@ export class SelectLocalizedStringComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe(fn);
+    // Call it once to force validation
+    fn(this.formControls.selectedLocalizedStringInfo.value);
   }
 
   /** Form control hook. */
@@ -200,8 +204,12 @@ export class SelectLocalizedStringComponent
   }
 
   /** Form control hook. */
-  public setDisabledState?(_isDisabled: boolean): void {
-    /** empty */
+  public setDisabledState?(isDisabled: boolean): void {
+    if (isDisabled) {
+      this.formGroup.disable();
+    } else {
+      this.formGroup.enable();
+    }
   }
 
   /** Handles selection change event for language chip list */

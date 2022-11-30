@@ -1,44 +1,56 @@
-<form [formGroup]="formGroup">
-  <player-selection-single
-    [disableLookupTypes]="['t10Id']"
-    [allowSelection]="false"
-    [rejectionFn]="serviceContract.rejectionFn"
-    (found)="playerIdentityFound($event)"
-  ></player-selection-single>
+<form [formGroup]="formGroup" class="sf-wrapper">
+  <div class="sf-vertical">
+    <div class="sf-horizontal">
+      <div class="sf-vertical">
+        <player-selection-single
+          class="player-selection-max-width"
+          [disableLookupTypes]="['t10Id']"
+          [allowSelection]="false"
+          [rejectionFn]="serviceContract.rejectionFn"
+          (found)="playerIdentityFound($event)"
+        ></player-selection-single>
+        <span *ngIf="playerNotFound" class="sf-text-warn player-not-found"
+          >{{ serviceContract.gameTitle | gameTitleFullName }} account not found, identity filter
+          ignored.</span
+        >
+      </div>
+    </div>
+    <div class="sf-horizontal do-not-align-items">
+      <!-- UGC Type Filter -->
+      <mat-form-field appearance="fill">
+        <mat-label>UGC Type</mat-label>
+        <mat-select matInput [formControl]="formControls.ugcType">
+          <mat-option *ngFor="let type of ugcTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <!-- UGC Type Filter -->
-  <mat-form-field appearance="fill">
-    <mat-label>UGC Type</mat-label>
-    <mat-select matInput [formControl]="formControls.ugcType">
-      <mat-option *ngFor="let type of ugcTypes" [value]="type">{{ type }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <!-- Car Make & Model Filter -->
+      <make-model-autocomplete
+        [formControl]="formControls.makeModelInput"
+        [makeOnlyOptions]="false"
+        [service]="this.serviceContract.makeModelAutocompleteServiceContract"
+      ></make-model-autocomplete>
 
-  <!-- Car Make & Model Filter -->
-  <make-model-autocomplete
-    [formControl]="formControls.makeModelInput"
-    [makeOnlyOptions]="false"
-    [service]="this.serviceContract.makeModelAutocompleteServiceContract"
-  ></make-model-autocomplete>
+      <!-- UGC Keyword Filter -->
+      <mat-form-field appearance="fill">
+        <mat-label>Keywords</mat-label>
+        <input type="text" matInput [formControl]="formControls.keywords" />
+        <button
+          type="button"
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearKeyword()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
 
-  <!-- UGC Keyword Filter -->
-  <mat-form-field appearance="fill">
-    <mat-label>Keywords</mat-label>
-    <input type="text" matInput [formControl]="formControls.keywords" />
-    <button
-      type="button"
-      mat-button
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="clearKeyword()"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-
-  <!-- UGC Featured Status Filter -->
-  <mat-checkbox class="featured-toggle" [formControl]="formControls.isFeatured">
-    Limit Search to Featured UGC
-  </mat-checkbox>
+      <!-- UGC Featured Status Filter -->
+      <mat-checkbox class="featured-toggle" [formControl]="formControls.isFeatured">
+        Limit Search to Featured UGC
+      </mat-checkbox>
+    </div>
+  </div>
 </form>

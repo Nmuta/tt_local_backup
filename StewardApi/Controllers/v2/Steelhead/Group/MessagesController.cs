@@ -38,6 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.CommunityManager)]
@@ -105,10 +106,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         ///     Sends user group message.
         /// </summary>
         [HttpPost]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
@@ -205,10 +202,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         ///     Edits group message.
         /// </summary>
         [HttpPost("{messageId}")]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
@@ -301,10 +294,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         ///     Deletes group message.
         /// </summary>
         [HttpDelete("{messageId}")]
-        [AuthorizeRoles(
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]

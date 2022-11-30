@@ -75,11 +75,9 @@ using Turn10.LiveOps.StewardApi.Validation.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation.Woodstock;
 using Turn10.Services.CMSRetrieval;
 using Turn10.Services.Diagnostics;
-using Turn10.Services.Diagnostics.Geneva;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using Turn10.Services.Storage.Blob;
-using Turn10.Services.WebApi.Core;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 using static Turn10.LiveOps.StewardApi.Helpers.AutofacHelpers;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -235,20 +233,6 @@ namespace Turn10.LiveOps.StewardApi
             this.RegisterApolloTypes(builder);
             this.RegisterGravityTypes(builder);
 
-            // Prepare LogSink
-            var ifxLogSink = new IfxLogSink(
-                this.configuration[ConfigurationKeyConstants.GenevaTenantId],
-                this.configuration[ConfigurationKeyConstants.GenevaRoleId],
-                GetRoleInstanceName());
-            builder.Register(c => new LogManager(new List<ILogSink> { ifxLogSink })).As<LogManager>().SingleInstance();
-
-            // Prepare Metrics Sink
-            var ifxMetricsSink = new IfxMetricsSink(
-                this.configuration[ConfigurationKeyConstants.GenevaMdmAccount],
-                this.configuration[ConfigurationKeyConstants.GenevaMdmNamespace],
-                GetRoleInstanceName());
-            builder.Register(c => new MetricsManager(new List<IMetricsSink> { ifxMetricsSink })).As<MetricsManager>().SingleInstance();
-
             // Kusto
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 
@@ -373,20 +357,6 @@ namespace Turn10.LiveOps.StewardApi
             });
 
             applicationBuilder.UseMiddleware<JournalMiddleware>();
-            applicationBuilder.UseMiddleware<RequestDiagnosticsMiddleware>();
-        }
-
-        private static string GetRoleInstanceName()
-        {
-            var addresses = Dns.GetHostAddresses(Environment.MachineName);
-            foreach (var address in addresses)
-            {
-                if (address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) { continue; }
-
-                return address.ToString();
-            }
-
-            return null;
         }
 
         private void RegisterForzaClients(ContainerBuilder builder)
