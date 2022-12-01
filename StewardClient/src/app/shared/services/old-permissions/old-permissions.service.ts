@@ -19,7 +19,7 @@ export enum PermissionServiceTool {
 @Injectable({
   providedIn: 'root',
 })
-export class PermissionsService {
+export class OldPermissionsService {
   private readonly writePermissions: Record<PermissionServiceTool, UserRole[]> = {
     [PermissionServiceTool.SetUserFlags]: [
       UserRole.LiveOpsAdmin,

@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/cmsOverride")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [DangerousTags(Title.Woodstock, Target.Player, Topic.CmsOverride)]
     public class CmsOverrideController : V2WoodstockControllerBase

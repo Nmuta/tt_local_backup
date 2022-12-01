@@ -61,7 +61,10 @@
   </div>
 
   <div class="steward-layout-pane steward-layout-main-group">
-    <mat-tab-group class="steward-layout-vertical-fill">
+    <mat-tab-group
+      [(selectedIndex)]="giftingTypeMatTabSelectedIndex"
+      class="steward-layout-vertical-fill"
+    >
       <mat-tab label="Gift Items">
         <sunrise-gift-basket
           [referenceInventory]="selectedPlayerInventory"

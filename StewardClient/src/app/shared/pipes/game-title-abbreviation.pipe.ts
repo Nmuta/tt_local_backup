@@ -8,8 +8,15 @@ import { GameTitle, GameTitleAbbreviation } from '@models/enums';
   name: 'gameTitleAbbreviation',
 })
 export class GameTitleAbbreviationPipe implements PipeTransform {
-  /** Transform hook. */
-  public transform(title: GameTitle): GameTitleAbbreviation {
+  /** Transform hook. string -> string */
+  public transform(title: string, shouldPassthruUnknownValues: true): string;
+  /** Transform hook. Title -> Title */
+  public transform(title: GameTitle): GameTitleAbbreviation;
+  /** Transform hook. Type Signature */
+  public transform(
+    title: GameTitle | string,
+    shouldPassthruUnknownValues: boolean = false,
+  ): GameTitleAbbreviation | string {
     switch (title) {
       case GameTitle.FH5:
         return GameTitleAbbreviation.FH5;
@@ -24,6 +31,9 @@ export class GameTitleAbbreviationPipe implements PipeTransform {
       case GameTitle.FH3:
         return GameTitleAbbreviation.FH3;
       default:
+        if (shouldPassthruUnknownValues) {
+          return title;
+        }
         throw new Error(`Invalid game title provided to abbreviation pipe: ${title}`);
     }
   }

@@ -1,0 +1,74 @@
+<main class="app-tiles-wrapper">
+  <div
+    class="tile-container"
+    *ngFor="let item of tiles; let i = index"
+    [class.activated]="isEnabled[item.tool]"
+    [class.no-access]="!hasAccess[item.tool]"
+  >
+    <div class="tile-aspect"></div>
+    <div class="tile-content">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
+          <mat-card-title>{{ item.title }}</mat-card-title>
+          <mat-card-subtitle [matTooltip]="item.subtitle">{{ item.subtitle }}</mat-card-subtitle>
+        </mat-card-header>
+        <img
+          *ngIf="item.imageUrl && item.imageAlt"
+          mat-card-image
+          [src]="item.imageUrl"
+          [alt]="item.imageAlt"
+        />
+        <mat-card-content>
+          <p *ngFor="let paragraph of item.shortDescription">{{ paragraph }}</p>
+          <div
+            *ngIf="item.tileContentComponent"
+            [navAnchor]="item.tileContentComponent"
+            [navAnchorDisabled]="!hasAccess[item.tool]"
+          ></div>
+          <div *ngIf="!hasAccess[item.tool]" class="no-access-warning">
+            <ng-container *ngIf="isLiveOpsAdmin; else noAccessTemplate">
+              <span><mat-icon>gpp_bad</mat-icon>Allowed Roles<mat-icon>gpp_bad</mat-icon></span>
+              <ul>
+                <li *ngFor="let role of item.accessList">{{ role | humanize }}</li>
+              </ul>
+            </ng-container>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <mat-checkbox
+            [matTooltip]="hasAccess[item.tool] ? 'Check to include in nav' : undefined"
+            [disabled]="!isEnabled[item.tool] && !hasAccess[item.tool]"
+            [ngModel]="isEnabled[item.tool]"
+            (ngModelChange)="onCheckboxChecked(item.tool, $event)"
+          >
+            In Nav
+          </mat-checkbox>
+          <div class="spacer"></div>
+          <a
+            *ngIf="!item.tileActionComponent && hasAccess[item.tool] && !item.hideLink"
+            mat-button
+            [routerLink]="parentRoute + item.tool"
+            [target]="item.target"
+          >
+            <mat-icon inline="true" *ngIf="!!item.extraIcon">{{ item.extraIcon }}</mat-icon>
+            Open
+          </a>
+          <span *ngIf="!!item.tileActionComponent">
+            <span
+              [navAnchor]="item.tileActionComponent"
+              [navItem]="item"
+              [navAnchorDisabled]="!hasAccess[item.tool]"
+            ></span>
+          </span>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</main>
+
+<ng-template #noAccessTemplate>
+  <span
+    ><mat-icon>gpp_bad</mat-icon>Role <b>{{ userRole }}</b> does not have access.</span
+  >
+</ng-template>

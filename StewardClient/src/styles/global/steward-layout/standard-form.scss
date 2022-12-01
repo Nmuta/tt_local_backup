@@ -16,7 +16,10 @@
   .sf-horizontal {
     display: flex;
     flex-flow: row wrap;
-    align-items: center;
+
+    &:not(.do-not-align-items) {
+      align-items: center;
+    }
 
     // get the spacing right
     margin: -1em;

@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
     ///     Handles requests for Sunrise user groups.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/sunrise/usergroup")]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Sunrise)]
     [ApiController]
     [ApiVersion("2.0")]
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
         ///    Get bulk operation status.
         /// </summary>
         [HttpGet("{userGroupId}/bulkOperationStatus/{operationId}")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.MediaTeam, UserRole.HorizonDesigner)]
         [SwaggerResponse(200, type: typeof(UserGroupBulkOperationStatusOutput))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         public async Task<IActionResult> GetBulkOperationStatus(int userGroupId, string operationId, ForzaBulkOperationType bulkOperationType)
@@ -259,7 +259,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
             var userIdsFromGtags = this.mapper.SafeMap<ForzaUserIds[]>(userList.Gamertags) ?? Array.Empty<ForzaUserIds>();
             var userIds = userIdsFromXuids.Concat(userIdsFromGtags).ToArray();
 
-            var bulkOperationOutput = await this.Services.UserService.CreateUserGroupBulkOperation(bulkOperationType, userGroupId, userIds).ConfigureAwait(false);
+            // Split the userIds into chunk of 8000 and project them to a list of ForzaUserGroupOperationPage.
+            // This is done because the API serializer has a limit of 8192 items in an array.
+            var userIdsPages = userIds.Chunk(8000).Select(x => new ForzaUserGroupOperationPage() { userIds = x });
+
+            var bulkOperationOutput = await this.Services.UserService.CreateUserGroupBulkOperationV2(bulkOperationType, userGroupId, userIdsPages.ToArray()).ConfigureAwait(false);
 
             return new UserGroupBulkOperationStatusOutput()
             {

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,6 +17,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { WoodstockUserFlagsComponent } from './woodstock/woodstock-user-flags.component';
 import { MatInputModule } from '@angular/material/input';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 
 /** A domain module for displaying user flags. */
 @NgModule({
@@ -32,7 +34,6 @@ import { HelpModule } from '@shared/modules/help/help.module';
     MatCardModule,
     MatProgressSpinnerModule,
     ErrorSpinnerModule,
-    VerifyActionButtonModule,
     PipesModule,
     MatButtonModule,
     MatTooltipModule,
@@ -45,6 +46,9 @@ import { HelpModule } from '@shared/modules/help/help.module';
     ReactiveFormsModule,
     MatInputModule,
     HelpModule,
+    VerifyCheckboxModule,
+    StateManagersModule,
+    MonitorActionModule,
   ],
   exports: [
     WoodstockUserFlagsComponent,

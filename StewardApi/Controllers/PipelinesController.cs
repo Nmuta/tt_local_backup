@@ -20,6 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1")]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.DataPipelineAdmin,
         UserRole.DataPipelineContributor,

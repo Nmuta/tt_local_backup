@@ -31,10 +31,10 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
 
   public formControls = {
     selectedMessageOfTheDay: new FormControl(null, [Validators.required]),
-    localizedTitleHeader: new FormControl(null, [Validators.required]),
+    localizedTitleHeader: new FormControl({ value: {}, disabled: true }, [Validators.required]),
     date: new FormControl({}, [Validators.required]),
-    localizedContentHeader: new FormControl(),
-    localizedContentBody: new FormControl(null, [Validators.required]),
+    localizedContentHeader: new FormControl({ value: {}, disabled: true }),
+    localizedContentBody: new FormControl({ value: {}, disabled: true }, [Validators.required]),
     contentImagePath: new FormControl(null, [Validators.required]),
   };
 
@@ -89,15 +89,21 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
         this.formControls.contentImagePath.setValue(messageOfTheDayDetail.contentImagePath);
         this.formControls.date.setValue(messageOfTheDayDetail.date);
         // Localization data
-        this.formControls.localizedTitleHeader.setValue({
-          id: messageOfTheDayDetail.titleHeader.locref,
-        });
-        this.formControls.localizedContentHeader.setValue({
-          id: messageOfTheDayDetail.contentHeader.locref,
-        });
-        this.formControls.localizedContentBody.setValue({
-          id: messageOfTheDayDetail.contentBody.locref,
-        });
+        if (messageOfTheDayDetail.titleHeader.locref) {
+          this.formControls.localizedTitleHeader.setValue({
+            id: messageOfTheDayDetail.titleHeader.locref,
+          });
+        }
+        if (messageOfTheDayDetail.contentHeader.locref) {
+          this.formControls.localizedContentHeader.setValue({
+            id: messageOfTheDayDetail.contentHeader.locref,
+          });
+        }
+        if (messageOfTheDayDetail.contentBody.locref) {
+          this.formControls.localizedContentBody.setValue({
+            id: messageOfTheDayDetail.contentBody.locref,
+          });
+        }
       });
   }
 
@@ -107,11 +113,11 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.currentMessageOfTheDay.date = this.formControls.date.value;
     // Localization data
     this.currentMessageOfTheDay.titleHeader.locref =
-      this.formControls.localizedTitleHeader.value.id;
+      this.formControls.localizedTitleHeader.value?.id;
     this.currentMessageOfTheDay.contentHeader.locref =
-      this.formControls.localizedContentHeader.value.id;
+      this.formControls.localizedContentHeader.value?.id;
     this.currentMessageOfTheDay.contentBody.locref =
-      this.formControls.localizedContentBody.value.id;
+      this.formControls.localizedContentBody.value?.id;
 
     this.steelheadMessageOfTheDayService
       .submitModification$(
@@ -122,6 +128,17 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
       .subscribe(() => {
         this.isInEditMode = false;
         this.verifyCheckbox.checked = false;
+        this.formControls.localizedTitleHeader.disable();
+        this.formControls.localizedContentHeader.disable();
+        this.formControls.localizedContentBody.disable();
       });
+  }
+
+  /** Toggle the form to edit mode, enabling all the fields. */
+  public toggleEditMode(): void {
+    this.isInEditMode = true;
+    this.formControls.localizedTitleHeader.enable();
+    this.formControls.localizedContentHeader.enable();
+    this.formControls.localizedContentBody.enable();
   }
 }

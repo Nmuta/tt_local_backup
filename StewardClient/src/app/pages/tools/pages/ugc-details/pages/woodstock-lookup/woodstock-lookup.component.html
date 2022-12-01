@@ -1,3 +1,4 @@
+<p *ngIf="ugcItem?.id" class="result-tag">Lookup results for {{ ugcItem?.id }}</p>
 <ng-container *waitForMonitor="getMonitor">
   <model-dump #source [model]="ugcItem" *ngIf="ugcItem; else noItem">
     <mat-card>
@@ -34,8 +35,11 @@
               mat-raised-button
               color="primary"
               (click)="featureUgcItem()"
+              stateManager
+              [permissionAttribute]="permAttribute"
+              [permissionTitle]="gameTitle"
             >
-              <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+              <span [matTooltip]="featureMatTooltip">{{
                 ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
               }}</span>
             </button>

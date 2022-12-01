@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
     [Route("api/v{version:apiVersion}/title/steelhead/services/apiPermissions")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [DangerousTags(Title.Steelhead, Target.Lsp, Topic.Permissions)]
     public class ApiPermissions : V2SteelheadControllerBase

@@ -31,6 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,

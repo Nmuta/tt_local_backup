@@ -8,7 +8,7 @@ import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-it
 import { UgcType } from '@models/ugc-filters';
 import { UgcReportReason } from '@models/ugc-report-reason';
 import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-report.service';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
@@ -27,6 +27,8 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
+import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -46,7 +48,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
-  public featureMatToolip: string = null;
+  public featureMatTooltip: string = null;
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
     order: GEO_FLAGS_ORDER,
@@ -58,10 +60,13 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
 
+  public permAttribute = PermAttributeName.FeatureUgc;
+  public gameTitle = GameTitle.FH5;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly service: WoodstockService,
-    private readonly permissionsService: PermissionsService,
+    private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: WoodstockUgcReportService,
     private readonly dialog: MatDialog,
   ) {
@@ -138,9 +143,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         this.canHideUgc = this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
-          this.featureMatToolip = this.incorrectPermsTooltip;
+          this.featureMatTooltip = this.incorrectPermsTooltip;
         } else if (!this.ugcItem?.isPublic) {
-          this.featureMatToolip = this.privateUgcTooltip;
+          this.featureMatTooltip = this.privateUgcTooltip;
         }
       });
 

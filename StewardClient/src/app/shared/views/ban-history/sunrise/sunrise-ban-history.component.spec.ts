@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { SunriseBanHistoryComponent } from './sunrise-ban-history.component';
-import { createMockPermissionsService } from '@services/permissions';
+import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('SunriseBanHistoryComponent', () => {
@@ -14,7 +14,7 @@ describe('SunriseBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockSunriseService(), createMockPermissionsService()],
+      providers: [createMockSunriseService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

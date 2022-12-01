@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/profileTemplates")]
     [LogTagTitle(TitleLogTags.Steelhead)]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [ApiController]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.ProfileTemplates, Target.Details, Dev.ReviseTags)]

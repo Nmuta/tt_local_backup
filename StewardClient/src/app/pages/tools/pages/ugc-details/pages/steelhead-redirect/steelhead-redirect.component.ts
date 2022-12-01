@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, forwardRef, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UgcType } from '@models/ugc-filters';
 import { first } from 'lodash';
 import { takeUntil } from 'rxjs';
 import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.service';
+import { UgcDetailsComponent } from '../../ugc-details.component';
 
 /** Routed component to handle automatic redirect to a specific type, if only one exists.*/
 @Component({
@@ -19,6 +20,7 @@ export class SteelheadRedirectComponent extends BaseComponent implements OnInit 
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     public readonly sharedLookupService: ScopedSharedLookupService,
+    @Inject(forwardRef(() => UgcDetailsComponent)) public parent: UgcDetailsComponent,
   ) {
     super();
   }

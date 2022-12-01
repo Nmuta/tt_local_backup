@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bond;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH4.Generated;
 using Forza.WebServices.FH5_main.Generated;
@@ -42,6 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,

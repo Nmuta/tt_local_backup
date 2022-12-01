@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
-import { ZendeskService } from '@services/zendesk';
 import { of } from 'rxjs';
 
 import { ToolsAppHomeComponent } from './home.component';
@@ -9,18 +9,16 @@ describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
   let fixture: ComponentFixture<ToolsAppHomeComponent>;
 
-  let mockZendeskService: ZendeskService;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadata({ declarations: [ToolsAppHomeComponent] }),
+      createStandardTestModuleMetadata({
+        imports: [MatAutocompleteModule],
+        declarations: [ToolsAppHomeComponent],
+      }),
     ).compileComponents();
 
     fixture = TestBed.createComponent(ToolsAppHomeComponent);
     component = fixture.componentInstance;
-
-    mockZendeskService = TestBed.inject(ZendeskService);
-    Object.defineProperty(mockZendeskService, 'inZendesk$', { value: of(false) });
 
     Object.defineProperty(component, 'profile$', { writable: true });
     component.profile$ = of();

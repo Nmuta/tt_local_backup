@@ -40,6 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/title/steelhead")]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.MotorsportDesigner,
         UserRole.CommunityManager,
@@ -791,6 +792,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Updates inventories for an LSP group.
         /// </summary>
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
@@ -952,6 +954,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("notifications/send")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1004,6 +1007,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("notifications/send/groupId({groupId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1046,6 +1050,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1085,6 +1090,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1120,6 +1126,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1149,6 +1156,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
@@ -1174,6 +1182,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("RacerCupSchedule")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.MotorsportDesigner,
             UserRole.CommunityManager)]
@@ -1215,6 +1224,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/{xuid}/RacerCupSchedule")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.MotorsportDesigner,
             UserRole.CommunityManager)]
@@ -1257,7 +1267,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Add string for localization.
         /// </summary>
         [HttpPost("localization")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Guid))]
         [Authorize(Policy = UserAttribute.AddLocalizedString)]
         public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)

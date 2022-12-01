@@ -8,6 +8,81 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'd5121718-586d-4cfd-a9ef-4655af2486da',
+      shortText: 'Remove use of verify action button component',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5131843c-5103-47b0-b97d-7003a5df08ef',
+      shortText: 'Refactor localized string dropdown',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '806b74b4-6cfa-43dc-84af-51bbf95bd53c',
+      shortText: 'Remove Geneva middleware and IFX sinks',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'edfd620a-eb33-4c53-adf7-8f36759462f1',
+      shortText: 'Player selection filter no longer overlaps other UGC filters',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'd32a2e5f-fe11-47d8-bd0f-720ca1658d0b',
+      shortText:
+        'Backing out of UGC selection no longer traps user in redirect loop back to the selection',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5a0eb482-9e44-45b5-ac57-fa296e859257',
+      shortText: 'Add support for new V2 user role',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '0e5d6089-d380-4278-997c-408115f5e5f8',
+      shortText: 'Integrate auth v2',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserGroupManagement,
+      },
+      uuid: '90b568a4-5b61-443d-947c-ce7b59141c83',
+      shortText: 'Enable all titles in production',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserGroupManagement,
+      },
+      uuid: 'f6cfbe14-052e-4901-b698-0a9782fad681',
+      shortText: 'Implement failed users response and sending large amount of users',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '86423c69-64cb-4467-97fd-752183fdd74d',
+      shortText: 'New button to gift livery in UGC table',
+      longText: [
+        'Clicking the new "Gift Livery" link will redirect the user to the gifting tool with the livery pre-loaded.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'd6730fcb-e145-4a4d-a11f-011363103587',
+      shortText: 'Special Xuid 1 can now be used with limited feature access',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ccd8f14b-1c53-4906-9e4d-745894f77cf7',
+      shortText: 'Fix localized string dropdown validation',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c9d7076c-9c12-40d1-a1d5-d5e842752e10',
+      shortText: 'Add tile search filters to home page',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
       shortText: 'Add and modify color-coding in Racers Cup',

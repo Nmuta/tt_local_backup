@@ -56,26 +56,6 @@
         public const string GroupGiftPasswordSecretName = "GroupGiftingPasswordSecretName";
 
         /// <summary>
-        ///     The Geneva tenant ID.
-        /// </summary>
-        public const string GenevaTenantId = "GenevaProperties:TenantId";
-
-        /// <summary>
-        ///     The Geneva tenant ID.
-        /// </summary>
-        public const string GenevaRoleId = "GenevaProperties:RoleId";
-
-        /// <summary>
-        ///     The Geneva MDM account.
-        /// </summary>
-        public const string GenevaMdmAccount = "GenevaProperties:MdmAccount";
-
-        /// <summary>
-        ///     The Geneva MDM namespace.
-        /// </summary>
-        public const string GenevaMdmNamespace = "GenevaProperties:MdmNamespace";
-
-        /// <summary>
         ///     The Apollo uri.
         /// </summary>
         public const string ApolloUri = "ApolloEnvironment:Uri";

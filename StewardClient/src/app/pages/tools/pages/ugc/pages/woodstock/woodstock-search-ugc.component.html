@@ -2,6 +2,7 @@
   <mat-card-header class="sf-header">
     <mat-card-title>Search Public UGC</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+
     <div class="sf-spacer"></div>
     <button
       mat-stroked-button
@@ -16,7 +17,7 @@
         </div>
       </help-popover-icon>
       <span>Looking for private UGC?</span>
-      <div class="player-details-link-with-xuid" *ngIf="!!filterXuid">XUID: {{ filterXuid }}</div>
+      <div *ngIf="!!filterXuid" class="player-details-link-with-xuid">XUID: {{ filterXuid }}</div>
     </button>
     <button
       class="filter-search"

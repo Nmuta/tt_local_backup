@@ -37,7 +37,6 @@ import { WoodstockSearchLeaderboardsComponent } from './components/search-leader
 import { WoodstockLeaderboardScoresComponent } from './components/leaderboard-scores/woodstock/woodstock-leaderboard-scores.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { LeaderboardStatsComponent } from './components/leaderboard-stats/leaderboard-stats.component';
 import { WoodstockLeaderboardStatsComponent } from './components/leaderboard-stats/woodstock/woodstock-leaderboard-stats.component';
@@ -52,6 +51,7 @@ import { PlayerSelectionModule } from '@views/player-selection/player-selection.
 import { MatMenuModule } from '@angular/material/menu';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -101,7 +101,6 @@ import { StandardFlagModule } from '@components/standard-flag/standard-flag.modu
     MatButtonToggleModule,
     TextFieldModule,
     JsonDumpModule,
-    VerifyActionButtonModule,
     MatProgressSpinnerModule,
     ErrorSpinnerModule,
     MonitorActionModule,
@@ -118,6 +117,7 @@ import { StandardFlagModule } from '@components/standard-flag/standard-flag.modu
     PlayerSelectionModule,
     MatMenuModule,
     StandardFlagModule,
+    PermissionsModule,
   ],
   exports: [],
 })

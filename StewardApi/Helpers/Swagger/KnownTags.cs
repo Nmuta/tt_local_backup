@@ -143,6 +143,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string WelcomeCenter = "Topic: Welcome Center";
             public const string CmsOverride = "Topic: Cms Override";
             public const string Permissions = "Topic: Permissions";
+            public const string StewardPermissions = "Topic: Steward Permissions";
             public const string Pegasus = "Topic: Pegasus";
         }
 

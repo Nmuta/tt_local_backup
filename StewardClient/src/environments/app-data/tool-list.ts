@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { LoadChildren } from '@angular/router';
-import { UserRole } from '@models/enums';
+import { GameTitle, UserRole } from '@models/enums';
 import { chain, values } from 'lodash';
 
 /**
@@ -30,7 +30,6 @@ export enum NavbarTool {
   BanReview = 'ban-review',
   Messaging = 'messaging',
   AuctionDetails = 'auction-details',
-  StewardManagement = 'steward-management',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
   Endpoints = 'endpoints',
@@ -38,6 +37,8 @@ export enum NavbarTool {
   CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
+  PermissionManagement = 'permission-management',
+  StewardManagement = 'steward-management',
   MessageOfTheDay = 'message-of-the-day',
 }
 
@@ -143,6 +144,7 @@ export enum AppIcon {
   DevEnvironment = 'admin_panel_settings',
   Endpoints = 'explore',
   CarDetails = 'minor_crash',
+  PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
   MessageOfTheDay = 'waving_hand',
 }
@@ -184,6 +186,9 @@ export interface HomeTileInfoBase {
 
   /** The displayed subtitle of the tool. As below the card title. Should be quite short. */
   readonly subtitle: string;
+
+  /** The game titles this tool supports. */
+  readonly supportedTitles: GameTitle[];
 
   /** A URL to an image that represents this tool. As displayed at the top of the card body. */
   readonly imageUrl?: string;
@@ -301,6 +306,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.PlayerDetails,
     title: 'Player Details',
     subtitle: 'Detailed player info',
+    supportedTitles: [GameTitle.FH3, GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'First stop for detailed player info',
@@ -316,6 +322,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldNavbarAppOnly,
     title: 'Banning',
     subtitle: 'Ban players',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Ban users by XUID or Gamertag',
@@ -332,6 +339,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
     title: 'Ban Review',
     subtitle: 'View past bans',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription:
@@ -350,6 +358,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.Gifting,
     title: 'Gifting',
     subtitle: 'Send gifts',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Send gifts, currency, etc. to individual players or groups of players',
@@ -363,6 +372,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
     title: 'Gift History',
     subtitle: 'View past gifts',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'View gifting history by player or LSP group',
@@ -379,6 +389,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.Gifting,
     title: 'UGC Search',
     subtitle: 'Search User Generated Content',
+    supportedTitles: [GameTitle.FH5, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Search public UGC by model, ugc type, and keywords.',
@@ -391,6 +402,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.PlayerDetails,
     title: 'UGC Details',
     subtitle: 'User Generated Content',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'View extended information about a single UGC item',
@@ -406,6 +418,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
     title: 'Auction Details',
     subtitle: 'Live auction data',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'View the current state of an auction',
@@ -422,6 +435,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldNavbarAppOnly,
     title: 'Auction Blocklist',
     subtitle: 'Ban cars from auction',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Manage the list of cars blocked on the Auction House',
@@ -437,6 +451,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: [UserRole.LiveOpsAdmin],
     title: 'Car Details',
     subtitle: 'View full car details',
+    supportedTitles: [GameTitle.FH5],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Search cars to view their full details.',
@@ -470,6 +485,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.CommunityManagersAndAdmins,
     title: 'Messaging',
     subtitle: 'Manage player messages',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Send, edit, and delete in-game messages.',
@@ -485,6 +501,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldNavbarAppOnly,
     title: 'Kusto',
     subtitle: 'Make kusto queries',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Perform stored and custom Kusto queries',
@@ -498,6 +515,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldNavbarAppAdminOnly,
     title: 'Job History',
     subtitle: 'Past actions',
+    supportedTitles: [],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'View your job history',
@@ -514,6 +532,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.DataPipelineAppOnly,
     title: 'Obligation',
     subtitle: 'A data pipeline tool',
+    supportedTitles: [],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Configure Data Activity processing',
@@ -530,6 +549,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.Leaderboards,
     title: 'Leaderboards',
     subtitle: 'Manage leaderboards',
+    supportedTitles: [GameTitle.FH5],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Review and delete leaderboard score.',
@@ -541,30 +561,12 @@ export const unprocessedToolList: HomeTileInfo[] = [
     hideFromUnauthorized: false,
   },
   <HomeTileInfoInternal>{
-    icon: AppIcon.StewardManagement,
-    tool: NavbarTool.StewardManagement,
-    accessList: [UserRole.LiveOpsAdmin],
-    title: 'Meta Tools',
-    subtitle: 'Manage Steward',
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'Manage high-level Kusto and Release features within Steward',
-    shortDescription: [
-      'Tools for managing aspects of steward itself',
-      'Manage high-level Kusto and Release features within Steward',
-    ],
-    loadChildren: () =>
-      import('../../app/pages/tools/pages/steward-management/steward-management.module').then(
-        m => m.StewardManagementModule,
-      ),
-    hideFromUnauthorized: true,
-  },
-  <HomeTileInfoInternal>{
     icon: AppIcon.RacersCup,
     tool: NavbarTool.RacersCup,
     accessList: CommonAccessLevels.RacersCup,
     title: 'Racers Cup',
     subtitle: 'Visualize when racing events occur',
+    supportedTitles: [GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Everything you need to know for upcoming Racers Cup events.',
@@ -596,6 +598,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.UserGroupManagement,
     title: 'User Group Management',
     subtitle: 'Create & Edit User Groups',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Management all operations for user groups.',
@@ -613,6 +616,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldNavbarAppOnly,
     title: 'Salus',
     subtitle: 'An external UGC moderation tool',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'External UGC Moderation Tool',
@@ -626,6 +630,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldNavbarAppOnly,
     title: 'Zendesk',
     subtitle: 'Tickets',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Ticket management and knowledge base',
@@ -639,6 +644,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.OldCommunityAppOnly,
     title: 'Sprinklr',
     subtitle: 'Social Media Tools',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Social Media Tools',
@@ -652,6 +658,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: [UserRole.LiveOpsAdmin],
     title: 'Pegasus',
     subtitle: 'Forza CMS',
+    supportedTitles: [GameTitle.FH5, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Web Services for CMS authoring, snapshotting and publishing',
@@ -665,6 +672,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.AdminPageAccess,
     title: 'Admin Pages',
     subtitle: 'Production / Flight / Dev',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Various Admin Pages',
@@ -693,6 +701,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
     title: 'Power BI',
     subtitle: 'Various Dashboards',
+    supportedTitles: [GameTitle.FH5],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Various Power BI Dashboards',
@@ -729,6 +738,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.Everyone,
     title: 'Theming',
     subtitle: 'Darkmode Toggle, etc',
+    supportedTitles: [],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Adjust your theme settings',
@@ -750,6 +760,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     accessList: CommonAccessLevels.Everyone,
     title: 'Current Endpoints',
     subtitle: 'Navbar widget',
+    supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription:
@@ -763,6 +774,41 @@ export const unprocessedToolList: HomeTileInfo[] = [
         '../../app/shared/modules/endpoints/endpoints-nav-tool/endpoints-nav-tool.component'
       ).then(m => m.EndpointsNavToolComponent),
     hideLink: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.PermissionManagement,
+    tool: NavbarTool.PermissionManagement,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Permission Management',
+    subtitle: 'Manage Steward permissions',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Micro-manage permissions within Steward for all users',
+    shortDescription: [],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/permission-management/permission-management.module').then(
+        m => m.PermisisionManagementModule,
+      ),
+    hideFromUnauthorized: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.StewardManagement,
+    tool: NavbarTool.StewardManagement,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Meta Tools',
+    subtitle: 'Manage Steward',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Manage high-level Kusto and Release features within Steward',
+    shortDescription: [
+      'Tools for managing aspects of steward itself',
+      'Manage high-level Kusto and Release features within Steward',
+    ],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/steward-management/steward-management.module').then(
+        m => m.StewardManagementModule,
+      ),
+    hideFromUnauthorized: true,
   },
 ];
 

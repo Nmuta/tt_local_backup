@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -30,7 +29,6 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
     MatProgressSpinnerModule,
     MatTooltipModule,
     PipesModule,
-    VerifyActionButtonModule,
     JsonDumpModule,
     MatIconModule,
     MatButtonModule,

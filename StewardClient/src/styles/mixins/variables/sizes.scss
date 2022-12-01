@@ -6,6 +6,8 @@ $full-screen-height-calc-basic: calc(
   100vh - 64px /*navbar*/ - 64px /*navbar*/ - 20px /*tasteful margin*/
 );
 
+$width-input-two-form-min: calc(436px /*2 selectors*/ + 2em /*2 selector margins*/);
+
 $button-min-size: 150px;
 
 $mat-icon-width: 32px;
