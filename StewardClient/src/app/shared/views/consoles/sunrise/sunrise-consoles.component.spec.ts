@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 
 import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('SunriseConsolesComponent', () => {
@@ -23,7 +24,7 @@ describe('SunriseConsolesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SunriseConsolesComponent, BigJsonPipe],
+      declarations: [SunriseConsolesComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockSunriseService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -153,35 +154,33 @@ describe('SunriseConsolesComponent', () => {
       describe('makeBanAction', () => {
         it('should ban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeBanAction$(firstUnbanned.consoleId);
+          const banAction = component.makeBanAction$(firstBanned.consoleId);
           expect(banAction).toBeTruthy();
           await fixture.whenStable();
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          banAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();
           banStatus$.complete();
           await fixture.whenStable();
           expect(isDone).toBe(true);
-          expect(firstUnbanned.isBanned).toBe(true);
+          expect(firstBanned.isBanned).toBe(true);
         }));
       });
 
       describe('makeUnbanAction', () => {
         it('should unban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeUnbanAction$(firstBanned.consoleId);
-          expect(banAction).toBeTruthy();
+          const unbanAction = component.makeUnbanAction$(firstUnbanned.consoleId);
+          expect(unbanAction).toBeTruthy();
           await fixture.whenStable();
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          unbanAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();

@@ -183,7 +183,7 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
       retryWhen(errors$ =>
         errors$.pipe(
           switchMap((error: Error) => {
-            if (error.message === BackgroundJobRetryStatus.UnexpectedError) {
+            if (error.message !== BackgroundJobRetryStatus.InProgress) {
               return throwError(error);
             }
 

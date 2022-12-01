@@ -10,6 +10,7 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { ApolloConsolesComponent } from './apollo-consoles.component';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { ApolloService, createMockApolloService } from '@services/apollo';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('ApolloConsolesComponent', () => {
@@ -21,7 +22,7 @@ describe('ApolloConsolesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ApolloConsolesComponent, BigJsonPipe],
+      declarations: [ApolloConsolesComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockApolloService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

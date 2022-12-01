@@ -38,7 +38,7 @@ describe('WoodstockBanningComponent', () => {
   });
 
   it('should submit', () => {
-    component.submitInternal();
+    component.submitBan();
   });
 
   it('should gather summaries', () => {

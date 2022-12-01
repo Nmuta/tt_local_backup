@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { BanResultsUnion, UserBanningBaseComponent } from './user-banning.base.component';
 import faker from '@faker-js/faker';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
@@ -37,7 +37,7 @@ describe('UserBanningBaseComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: waitForBackgroundJobToComplete', () => {
+  describe('Method: waitForBackgroundJobToComplete$', () => {
     const testJob: BackgroundJob<void> = {
       createdDateUtc: toDateTime(faker.date.past()),
       userId: faker.datatype.uuid(),
@@ -56,29 +56,7 @@ describe('UserBanningBaseComponent', () => {
         .and.returnValue(of({}));
     });
 
-    it('should call BackgroundJobService.getBackgroundJob with correct job id', () => {
-      component.waitForBackgroundJobToComplete(testJob);
-
-      expect(mockBackgroundJobService.getBackgroundJob$).toHaveBeenCalledWith(testJob.jobId);
-    });
-
     describe('When subscribing to the send gift observable', () => {
-      describe('And an error is caught', () => {
-        const error = { message: 'error-message' };
-        beforeEach(() => {
-          mockBackgroundJobService.getBackgroundJob$ = jasmine
-            .createSpy('getBackgroundJob')
-            .and.returnValue(throwError(error));
-        });
-
-        it('should set loadError on component', () => {
-          component.waitForBackgroundJobToComplete(testJob);
-
-          expect(component.loadError).toEqual(error);
-          expect(component.isLoading).toBeFalsy();
-        });
-      });
-
       describe('And a BackgroundJob is returned', () => {
         const testBackgroundJobResp: BackgroundJob<BanResultsUnion[]> = {
           createdDateUtc: toDateTime(faker.date.past()),
@@ -108,11 +86,12 @@ describe('UserBanningBaseComponent', () => {
         });
 
         describe('with a status of complete', () => {
-          it('should set gift response', () => {
+          it('should set gift response', done => {
             testBackgroundJobResp.status = BackgroundJobStatus.Completed;
-            component.waitForBackgroundJobToComplete(testJob);
-
-            expect(component.banResults).toEqual(testBackgroundJobResp.result);
+            component.waitForBackgroundJobToComplete$(testJob).subscribe(() => {
+              expect(component.banResults).toEqual(testBackgroundJobResp.result);
+              done();
+            });
           });
         });
       });
@@ -122,16 +101,13 @@ describe('UserBanningBaseComponent', () => {
   describe('Method: resetBanningToolUI', () => {
     beforeEach(() => {
       component.banResults = [];
-      component.loadError = {};
-      component.isLoading = true;
     });
 
     it('should reset UI', () => {
       component.resetBanningToolUI();
 
       expect(component.banResults).toBeUndefined();
-      expect(component.loadError).toBeUndefined();
-      expect(component.isLoading).toBeFalsy();
+      expect(component.banActionMonitor.isActive).toBeFalsy();
     });
   });
 });

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { ApolloService } from '@services/apollo';
 import { Observable, throwError } from 'rxjs';
 import { ConsolesBaseComponent } from '../consoles.base.component';
@@ -14,7 +14,7 @@ import { OldPermissionsService } from '@services/old-permissions';
   styleUrls: ['../consoles.component.scss'],
 })
 export class ApolloConsolesComponent extends ConsolesBaseComponent<ApolloConsoleDetailsEntry> {
-  public gameTitle = GameTitleCodeName.FM7;
+  public gameTitle = GameTitle.FM7;
   public supportsConsoleBanning = false;
 
   constructor(
@@ -30,12 +30,12 @@ export class ApolloConsolesComponent extends ConsolesBaseComponent<ApolloConsole
   }
 
   /** Generates a function that will *ban* the user and update the data when complete. */
-  public makeBanAction$(_consoleId: string): () => Observable<void> {
-    return () => throwError(new Error('Apollo does not support console banning.'));
+  public makeBanAction$(_consoleId: string): Observable<void> {
+    return throwError(() => new Error('Apollo does not support console banning.'));
   }
 
   /** Generates a function that will *unban* the user and update data when complete. */
-  public makeUnbanAction$(_consoleId: string): () => Observable<void> {
-    return () => throwError(new Error('Apollo does not support console banning.'));
+  public makeUnbanAction$(_consoleId: string): Observable<void> {
+    return throwError(() => new Error('Apollo does not support console banning.'));
   }
 }

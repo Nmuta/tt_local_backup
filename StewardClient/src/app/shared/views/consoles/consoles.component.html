@@ -1,10 +1,10 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Consoles</mat-card-title>
-    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngIf="!getConsoles?.isActive && !getConsoles?.status?.error; else failstate">
+    <ng-container *waitForMonitor="getConsoles">
       <table mat-table [dataSource]="consoleDetails">
         <ng-container matColumnDef="isBanned">
           <th mat-header-cell *matHeaderCellDef>Is Banned</th>
@@ -27,21 +27,61 @@
           <td mat-cell *matCellDef="let entry">
             <ng-container *ngIf="supportsConsoleBanning; else banUnsupportedTemplate">
               <ng-container *ngIf="!disabled; else banRestrictedTemplate">
-                <verify-action-button
-                  *ngIf="entry.isBannable && !entry.isBanned"
-                  [canSubmit]="true"
-                  checkboxText="Verify ban"
-                  [action]="makeBanAction$(entry.consoleId).bind(this)"
-                >
-                  <mat-icon svgIcon="steward-gavel"></mat-icon> Ban
-                </verify-action-button>
-                <verify-action-button
-                  *ngIf="entry.isBannable && entry.isBanned"
-                  [canSubmit]="true"
-                  checkboxText="Verify ban removal"
-                  [action]="makeUnbanAction$(entry.consoleId).bind(this)"
-                  >Unban</verify-action-button
-                >
+                <ng-container *ngIf="entry.isBannable && !entry.isBanned">
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="banAction(entry)"
+                    clickStop
+                    stateManager
+                    monitorDisable
+                    monitorWarnSnackbar
+                    monitorCompleteSnackbar
+                    [monitor]="entry.banActionMonitor"
+                    [verifyWith]="verifyBan"
+                  >
+                    Ban
+                    <button-spinner
+                      [monitor]="entry.banActionMonitor"
+                      defaultIcon="gavel"
+                    ></button-spinner>
+                  </button>
+                  <mat-checkbox
+                    #verifyBan
+                    stateManager
+                    monitorDisable
+                    [monitor]="entry.banActionMonitor"
+                    >Verify ban</mat-checkbox
+                  >
+                </ng-container>
+                <ng-container *ngIf="entry.isBannable && entry.isBanned">
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="unbanAction(entry)"
+                    clickStop
+                    stateManager
+                    monitorDisable
+                    monitorWarnSnackbar
+                    monitorCompleteSnackbar
+                    [monitor]="entry.unbanActionMonitor"
+                    [verifyWith]="verifyUnban"
+                  >
+                    Unban
+                    <button-spinner
+                      [monitor]="entry.unbanActionMonitor"
+                      defaultIcon="lock_open"
+                    ></button-spinner>
+                  </button>
+                  <mat-checkbox
+                    #verifyUnban
+                    stateManager
+                    monitorDisable
+                    [monitor]="entry.unbanActionMonitor"
+                    >Verify</mat-checkbox
+                  >
+                </ng-container>
+
                 <ng-container *ngIf="!entry.isBannable">Ban Locked.</ng-container>
               </ng-container>
             </ng-container>
@@ -57,10 +97,3 @@
 <ng-template #banUnsupportedTemplate> Banning is not supported. </ng-template>
 
 <ng-template #banRestrictedTemplate> Banning is restricted </ng-template>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="getConsoles?.isActive" mode="indeterminate"> </mat-progress-spinner>
-  <json-dump *ngIf="!!getConsoles?.status?.error" [input]="getConsoles?.status.error"
-    >Failed to load.</json-dump
-  >
-</ng-template>

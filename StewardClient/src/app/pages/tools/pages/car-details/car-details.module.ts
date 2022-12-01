@@ -20,7 +20,6 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
 import { WoodstockSelectCarDetailsComponent } from './components/select-car-details/woodstock/woodstock-select-car-details.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { LuxonModule } from 'luxon-angular';
@@ -56,7 +55,6 @@ import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
     MatSnackBarModule,
     MatButtonToggleModule,
     JsonDumpModule,
-    VerifyActionButtonModule,
     MatProgressSpinnerModule,
     ErrorSpinnerModule,
     MonitorActionModule,

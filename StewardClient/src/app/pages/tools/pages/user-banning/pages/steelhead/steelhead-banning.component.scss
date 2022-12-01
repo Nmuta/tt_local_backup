@@ -4,7 +4,10 @@
   @include flex-column-fill();
 }
 
-verify-action-button {
-  margin-top: $gap-large;
-  display: block;
+.ban-action-container {
+  margin-top: $gap-medium;
+
+  .mat-checkbox {
+    margin-left: $gap-small;
+  }
 }

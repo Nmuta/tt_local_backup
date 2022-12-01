@@ -22,7 +22,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { KustoDataActivitiesComponent } from './components/kusto-data-activities/kusto-data-activities.component';
 import { KustoFunctionComponent } from './components/kusto-data-activities/kusto-function/kusto-function.component';
 import { OptionalNumberModule } from '@components/optional-number/optional-number.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { MatDividerModule } from '@angular/material/divider';
@@ -82,7 +81,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     ReactiveFormsModule,
     RouterModule,
     TextFieldModule,
-    VerifyActionButtonModule,
     VerifyCheckboxModule,
   ],
   exports: [DataPipelineObligationComponent],

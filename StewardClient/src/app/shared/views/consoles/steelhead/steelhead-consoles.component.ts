@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
-import { GameTitleCodeName } from '@models/enums';
-import { Observable, tap } from 'rxjs';
+import { GameTitle } from '@models/enums';
+import { Observable, tap, takeUntil } from 'rxjs';
 import _ from 'lodash';
 import { ConsolesBaseComponent } from '../consoles.base.component';
 import { OldPermissionsService } from '@services/old-permissions';
@@ -16,7 +16,7 @@ import { SteelheadConsolesService } from '@services/api-v2/steelhead/consoles/st
   styleUrls: ['../consoles.component.scss'],
 })
 export class SteelheadConsolesComponent extends ConsolesBaseComponent<SteelheadConsoleDetailsEntry> {
-  public gameTitle = GameTitleCodeName.FM8;
+  public gameTitle = GameTitle.FM8;
   public supportsConsoleBanning = true;
 
   constructor(
@@ -33,26 +33,26 @@ export class SteelheadConsolesComponent extends ConsolesBaseComponent<SteelheadC
   }
 
   /** Generates a function that will *ban* the user and update the data when complete. */
-  public makeBanAction$(consoleId: string): () => Observable<void> {
-    return () =>
-      this.steelheadConsolesService.putBanStatusByConsoleId$(consoleId, true).pipe(
-        tap(() => {
-          _(this.consoleDetails)
-            .filter(d => d.consoleId === consoleId)
-            .first().isBanned = true;
-        }),
-      );
+  public makeBanAction$(consoleId: string): Observable<void> {
+    return this.steelheadConsolesService.putBanStatusByConsoleId$(consoleId, true).pipe(
+      tap(() => {
+        _(this.consoleDetails.data)
+          .filter(d => d.consoleId === consoleId)
+          .first().isBanned = true;
+      }),
+      takeUntil(this.onDestroy$),
+    );
   }
 
   /** Generates a function that will *unban* the user and update data when complete. */
-  public makeUnbanAction$(consoleId: string): () => Observable<void> {
-    return () =>
-      this.steelheadConsolesService.putBanStatusByConsoleId$(consoleId, false).pipe(
-        tap(() => {
-          _(this.consoleDetails)
-            .filter(d => d.consoleId === consoleId)
-            .first().isBanned = false;
-        }),
-      );
+  public makeUnbanAction$(consoleId: string): Observable<void> {
+    return this.steelheadConsolesService.putBanStatusByConsoleId$(consoleId, false).pipe(
+      tap(() => {
+        _(this.consoleDetails.data)
+          .filter(d => d.consoleId === consoleId)
+          .first().isBanned = false;
+      }),
+      takeUntil(this.onDestroy$),
+    );
   }
 }
