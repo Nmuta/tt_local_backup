@@ -99,6 +99,47 @@
               </button>
               <mat-checkbox #verifyHide matTooltip="Verify Deletion">Verify</mat-checkbox>
             </div>
+
+            <div class="sf-horizontal">
+              <button
+                class="sf-action-list-margins sf-grow-1"
+                mat-raised-button
+                color="accent"
+                [verifyWith]="verifyPersist"
+                (click)="persistUgcItem()"
+                stateManager
+                [monitor]="persistMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+                [disabled]="!canPersistUgc"
+              >
+                Persist UGC
+              </button>
+              <mat-checkbox #verifyPersist matTooltip="Verify Persist">Verify</mat-checkbox>
+            </div>
+
+            <div class="sf-horizontal">
+              <button
+                class="sf-action-list-margins sf-grow-1"
+                mat-raised-button
+                color="accent"
+                [verifyWith]="verifyClone"
+                (click)="cloneUgcItem()"
+                stateManager
+                [monitor]="cloneMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+                [disabled]="!canCloneUgc"
+              >
+                Clone UGC
+              </button>
+              <mat-checkbox #verifyClone matTooltip="Verify Clone">Verify</mat-checkbox>
+            </div>
+
           </div>
         </div>
       </div>

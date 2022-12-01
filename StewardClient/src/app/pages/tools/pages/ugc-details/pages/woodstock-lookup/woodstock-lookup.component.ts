@@ -32,6 +32,13 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
+interface Permissions {
+  write: boolean;
+  geoFlags: boolean;
+  feature: boolean;
+  hide: boolean;
+}
+
 /** Routed component that displays details about a woodstock UGC item. */
 @Component({
   templateUrl: './woodstock-lookup.component.html',
@@ -40,14 +47,18 @@ const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: WoodstockPlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
-  public hideMonitor = new ActionMonitor('Post Hide UGC');
-  public reportMonitor = new ActionMonitor('Post Report UGC');
+  public hideMonitor = new ActionMonitor('POST Hide UGC');
+  public reportMonitor = new ActionMonitor('POST Report UGC');
+  public persistMonitor = new ActionMonitor('POST Persist UGC');
+  public cloneMonitor = new ActionMonitor('POST Clone UGC');
   public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
 
   public userHasWritePerms: boolean = false;
   public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
+  public canCloneUgc: boolean = false;
+  public canPersistUgc: boolean = false;
   public featureMatTooltip: string = null;
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
@@ -82,6 +93,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     this.canChangeGeoFlags = !this.permissionsService.currentUserHasWritePermission(
       PermissionServiceTool.SetUgcGeoFlags,
     );
+
+    this.canPersistUgc = true;
+    this.canCloneUgc = true;
 
     mergedParamMap$(this.route)
       ?.pipe(
@@ -212,6 +226,36 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .pipe(this.reportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.selectedReason = null;
+      });
+  }
+
+  /** Persist a UGC item to the system user in Woodstock */
+  public persistUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.persistMonitor = this.persistMonitor.repeat();
+
+    this.service
+      .persistUgc$(this.ugcItem.id)
+      .pipe(this.persistMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(r => {
+        debugger;
+      });
+  }
+
+  /** Persist a UGC item to the system user in Woodstock */
+  public cloneUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.cloneMonitor = this.cloneMonitor.repeat();
+
+    this.service
+      .cloneUgc$(this.ugcItem.id)
+      .pipe(this.cloneMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(r => {
+        debugger;
       });
   }
 }
