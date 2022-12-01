@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
+      uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
+      shortText: 'Display pull request URL on submit and various visual improvements',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'd5121718-586d-4cfd-a9ef-4655af2486da',
       shortText: 'Remove use of verify action button component',
