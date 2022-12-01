@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Woodstock")]
-    public class PersistController : V2ControllerBase
+    public class PersistController : V2WoodstockControllerBase
     {
         private readonly IWoodstockStorefrontProvider storefrontProvider;
 

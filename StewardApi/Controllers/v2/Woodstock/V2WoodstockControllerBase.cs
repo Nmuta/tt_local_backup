@@ -65,13 +65,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         }
 
         /// <summary>Gets (lazily) the Woodstock Endpoint passed to this call.</summary>
-        protected Lazy<string> WoodstockEndpoint { get; }
+        protected Lazy<string> WoodstockEndpoint { get; set; }
 
         /// <summary>Gets (lazily) the Woodstock services.</summary>
-        private Lazy<WoodstockProxyBundle> WoodstockServices { get; }
+        protected Lazy<WoodstockProxyBundle> WoodstockServices { get; set; }
 
         /// <summary>Gets (lazily) the Woodstock services.</summary>
-        private Lazy<WoodstockProxyBundle> WoodstockServicesWithProdLiveStewardCms { get; }
+        protected Lazy<WoodstockProxyBundle> WoodstockServicesWithProdLiveStewardCms { get; set; }
 
         /// <summary>
         ///     Ensures all provided xuids are valid, else throws error.

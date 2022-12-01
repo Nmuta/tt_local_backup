@@ -62,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
             this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() =>
             {
                 var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+                // TODO: This, at least, is broken
                 var proxyBundle = componentContext.Resolve<WoodstockProxyBundle>();
                 proxyBundle.Endpoint = this.WoodstockEndpoint.Value;
                 return proxyBundle;

@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags("UGC", "Woodstock")]
-    public class CloneToDevController : V2ControllerBase
+    public class CloneToDevController : V2WoodstockControllerBase
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CloneToDevController"/> class.
