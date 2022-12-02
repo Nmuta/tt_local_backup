@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
+using Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
 {
@@ -84,5 +90,76 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         public IPermissionsManagementService PermissionsManagementService => this.SteelheadFactory.PreparePermissionsManagementService(this.Endpoint);
 
         private ISteelheadProxyFactory SteelheadFactory { get; }
+
+
+
+        /// <summary>
+        ///     Ensures all provided xuids are valid, else throws error.
+        /// </summary>
+        public Task EnsurePlayersExistAsync(IList<ulong> xuids)
+        {
+            var players = xuids.Select<ulong, ForzaPlayerLookupParameters>(xuid =>
+            {
+                return new ForzaPlayerLookupParameters()
+                {
+                    UserID = xuid.ToString(CultureInfo.InvariantCulture),
+                    UserIDType = ForzaUserIdType.Xuid,
+                };
+            });
+
+            return this.EnsurePlayerExistsInternalAsync(players);
+        }
+
+        /// <summary>
+        ///     Ensures provided xuid is valid, else throws error.
+        /// </summary>
+        public Task EnsurePlayerExistAsync(ulong xuid)
+        {
+            return this.EnsurePlayersExistAsync(new List<ulong>() { xuid });
+        }
+
+        /// <summary>
+        ///     Ensures all provided gamertags are valid, else throws error.
+        /// </summary>
+        public Task EnsurePlayersExistAsync(IList<string> gamertags)
+        {
+            var players = gamertags.Select<string, ForzaPlayerLookupParameters>(gamertag =>
+            {
+                return new ForzaPlayerLookupParameters()
+                {
+                    UserID = gamertag,
+                    UserIDType = ForzaUserIdType.Xuid,
+                };
+            });
+
+            return this.EnsurePlayerExistsInternalAsync(players);
+        }
+
+        /// <summary>
+        ///     Ensures provided gamertag is valid, else throws error.
+        /// </summary>
+        public Task EnsurePlayerExistAsync(string gamertag)
+        {
+            return this.EnsurePlayersExistAsync(new List<string>() { gamertag });
+        }
+
+        private async Task EnsurePlayerExistsInternalAsync(IEnumerable<ForzaPlayerLookupParameters> players)
+        {
+            var stringBuilder = new StringBuilder();
+            var playerLookupResults = await this.UserManagementService.GetUserIds(players.Count(), players.ToArray()).ConfigureAwait(false);
+
+            foreach (var player in playerLookupResults.playerLookupResult)
+            {
+                if (!player.PlayerExists)
+                {
+                    stringBuilder.Append($"{player.Xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid XUIDs were found: {stringBuilder}");
+            }
+        }
     }
 }
