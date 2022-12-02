@@ -34,7 +34,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         public string Size { get; set; }
 
-        [PegEdit]
         public WofTimer Timer { get; set; }
 
         public WofDisplayConditions DisplayConditions { get; set; }
@@ -81,14 +80,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         // This prop appears to be unused in the Pegasus xml.
         public object EndTextOverride { get; set; }
 
-        [PegEdit]
         public string TimerType { get; set; }
 
         public WofTimeDisplayFrom TimeDisplayFrom { get; set; }
 
         public WofTimeDisplayTo TimeDisplayTo { get; set; }
 
-        [PegEdit]
         [XmlElement("CustomRange")]
         public WofTimerCustomRange CustomRange { get; set; }
 

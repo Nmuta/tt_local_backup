@@ -223,8 +223,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     // remove nodes from loc-refs: (description, base, skiploc)
                     el.RemoveNodes();
 
-                    // to satisfy format requirement
-                    el.AddBeforeSelf(new XComment(child.Comment));
+                    // to satisfy format requirement.
+                    el.AddBeforeSelf(new XComment(child.Comment ?? string.Empty));
                 }
             }
             else
@@ -291,7 +291,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
             else
             {
-                return new XElement(root.Path, child.Value);
+                return new XElement(child.Path, child.Value);
             }
         }
     }
