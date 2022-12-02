@@ -324,8 +324,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<MotdEntry>(messageOfTheDayBridge);
-
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
+            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
             XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
@@ -391,8 +391,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofBridge wofTileBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<WofEntry>(wofTileBridge);
-
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
+            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
             XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
 
