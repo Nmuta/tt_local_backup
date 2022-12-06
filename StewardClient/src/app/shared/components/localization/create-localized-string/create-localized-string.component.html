@@ -65,6 +65,9 @@
           </button>
           <mat-checkbox
             #verifySubmission
+            stateManager
+            [permissionAttribute]="permAttribute"
+            [permissionTitle]="service?.gameTitle"
             matTooltip="Verify Submission"
             aria-label="Verify Submission"
             >Verify</mat-checkbox

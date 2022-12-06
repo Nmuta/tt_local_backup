@@ -70,6 +70,8 @@ export enum UserRole {
   HorizonDesigner = 'HorizonDesigner',
   MotorsportDesigner = 'MotorsportDesigner',
   MediaTeam = 'MediaTeam',
+  /** V2 User Role */
+  GeneralUser = 'GeneralUser',
 }
 
 export enum NotificationHubEvents {

@@ -13,7 +13,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
+import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
 import { BasicPlayerActionResult } from '@models/basic-player';
@@ -28,6 +28,7 @@ import {
 } from '@models/user-group-bulk-operation';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
@@ -125,6 +126,9 @@ export class ListUsersInGroupComponent
   public isAllUsersGroup: boolean = false;
   public disallowDeleteAllUsers: boolean = false;
 
+  public readonly updatePermAttribute = PermAttributeName.UpdateUserGroup;
+  public readonly removeAllPermAttribute = PermAttributeName.RemoveAllUsersFromGroup;
+
   constructor(private readonly store: Store) {
     super();
   }
@@ -132,13 +136,13 @@ export class ListUsersInGroupComponent
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.userHasWritePerms = hasAccessToRestrictedFeature(
-      RestrictedFeature.UserGroupWrite,
+    this.userHasWritePerms = hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.UserGroupWrite,
       this.service.gameTitle,
       user.role,
     );
-    this.userHasRemoveAllPerms = hasAccessToRestrictedFeature(
-      RestrictedFeature.UserGroupRemoveAll,
+    this.userHasRemoveAllPerms = hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.UserGroupRemoveAll,
       this.service.gameTitle,
       user.role,
     );

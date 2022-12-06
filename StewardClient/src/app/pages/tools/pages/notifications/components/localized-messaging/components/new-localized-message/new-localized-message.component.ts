@@ -1,11 +1,12 @@
-import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalizedMessage } from '@models/community-message';
 import { DateTime } from 'luxon';
-import { DeviceType, NotificationType } from '@models/enums';
+import { DeviceType, GameTitle, NotificationType } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { values } from 'lodash';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export type LocalizedMessageWithEnglishPreview = LocalizedMessage & { englishText: string };
 
@@ -25,6 +26,10 @@ export class NewLocalizedMessageComponent implements OnChanges {
   @Input() public service: SelectLocalizedStringContract;
   /** REVIEW-COMMENT: Is start time lock. */
   @Input() public lockStartTime: boolean = false;
+  /** The game title. */
+  @Input() public gameTitle: GameTitle;
+  /** True if component is using player identities. */
+  @Input() isUsingPlayerIdentities: boolean = true;
   /** REVIEW-COMMENT: Event when new localized message is created. */
   @Output() public emitNewLocalizedMessage = new EventEmitter<LocalizedMessageWithEnglishPreview>();
 
@@ -50,8 +55,16 @@ export class NewLocalizedMessageComponent implements OnChanges {
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
+  public activePermAttribute = PermAttributeName.MessagePlayer;
+
   /** Lifecycle hook. */
-  public ngOnChanges(): void {
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.usingPlayerIdentities) {
+      this.activePermAttribute = this.isUsingPlayerIdentities
+        ? PermAttributeName.MessagePlayer
+        : PermAttributeName.MessageGroup;
+    }
+
     if (!!this.pendingLocalizedMessage) {
       this.formControls.localizedMessageInfo.setValue({
         id: this.pendingLocalizedMessage.localizedMessageId,

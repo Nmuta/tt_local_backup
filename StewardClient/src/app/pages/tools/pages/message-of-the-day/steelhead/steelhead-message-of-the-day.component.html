@@ -28,6 +28,9 @@
                 <button
                   *ngIf="!isInEditMode"
                   mat-raised-button
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
                   color="accent"
                   (click)="toggleEditMode()"
                   [disabled]="!formControls.selectedMessageOfTheDay.value"
@@ -110,6 +113,9 @@
                 </button>
                 <mat-checkbox
                   #verifyModification
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
                   [disabled]="!isInEditMode"
                   matTooltip="Verify Modification"
                   >Verify Modification</mat-checkbox

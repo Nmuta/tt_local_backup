@@ -52,6 +52,7 @@
           (click)="onPutClick()"
           clickStop
           stateManager
+          [permissionAttribute]="permAttribute"
           [disabled]="!formGroup.valid"
           [monitor]="putMonitor"
           [waitOnMonitors]="allMonitors"
@@ -71,6 +72,7 @@
           (click)="onCreateClick()"
           clickStop
           stateManager
+          [permissionAttribute]="permAttribute"
           [disabled]="!formGroup.valid"
           [monitor]="createMonitor"
           [waitOnMonitors]="allMonitors"
@@ -108,6 +110,7 @@
         <mat-checkbox
           #confirmPost
           stateManager
+          [permissionAttribute]="permAttribute"
           [monitor]="deleteMonitor"
           [waitOnMonitors]="allMonitors"
           matTooltip="This operation is UNSAFE. It can force replace a pipeline into a bad state. Check to acknowledge."
@@ -136,6 +139,7 @@
         <mat-checkbox
           #confirmDelete
           stateManager
+          [permissionAttribute]="permAttribute"
           [monitor]="deleteMonitor"
           [waitOnMonitors]="allMonitors"
           matTooltip="This operation is UNSAFE. It permanently deletes a pipeline. Check to acknowledge."

@@ -44,8 +44,12 @@
       <mat-checkbox
         #verifyDelete
         matTooltip="Verify Submit"
+        stateManager
+        [permissionAttribute]="contract.permAttribute"
+        [permissionTitle]="contract.gameTitle"
         [disabled]="!!contract.error || formControl.disabled"
-      ></mat-checkbox>
+        >Verify</mat-checkbox
+      >
       <inline-spinner [monitor]="submitMonitor"></inline-spinner>
     </div>
   </mat-card-title-group>

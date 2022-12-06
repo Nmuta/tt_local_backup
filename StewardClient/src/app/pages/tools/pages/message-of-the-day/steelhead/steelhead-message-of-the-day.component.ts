@@ -9,6 +9,7 @@ import { LocalizedStringData, LocalizedStringsMap } from '@models/localization';
 import { MessageOfTheDay, MessagesOfTheDayMap } from '@models/message-of-the-day';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { SteelheadMessageOfTheDayService } from '@services/api-v2/steelhead/message-of-the-day/steelhead-message-of-the-day.service';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
 
@@ -41,6 +42,8 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
+
+  public readonly permAttribute = PermAttributeName.UpdateMessageOfTheDay;
 
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,

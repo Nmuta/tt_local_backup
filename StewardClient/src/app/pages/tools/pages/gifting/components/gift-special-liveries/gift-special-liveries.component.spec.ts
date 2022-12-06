@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { BigNumber } from 'bignumber.js';
 import { EMPTY } from 'rxjs';
@@ -19,6 +20,7 @@ describe('GiftSpecialLiveryComponent', () => {
     fixture = TestBed.createComponent(GiftSpecialLiveriesComponent);
     component = fixture.componentInstance;
     component.contract = {
+      gameTitle: GameTitle.FH5,
       getLivery$: (_giftReason: string) => EMPTY,
       giftLiveriesToLspGroup$: (_giftReason: string, _liveryIds: string[], _lspGroup: LspGroup) =>
         EMPTY,

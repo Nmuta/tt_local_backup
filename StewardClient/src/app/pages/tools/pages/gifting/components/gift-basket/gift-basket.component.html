@@ -222,6 +222,9 @@
             color="primary"
             type="submit"
             [disabled]="!isGiftBasketReady()"
+            stateManager
+            [permissionAttribute]="activePermAttribute"
+            [permissionTitle]="title"
           >
             Send Gift
             <span *ngIf="usingPlayerIdentities">To Player(s)</span>

@@ -64,6 +64,8 @@
   <div class="actions">
     <button
       mat-raised-button
+      stateManager
+      [permissionAttribute]="permAttribute"
       color="accent"
       (click)="addActivity()"
       clickStop

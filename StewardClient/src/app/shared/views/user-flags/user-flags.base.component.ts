@@ -11,7 +11,8 @@ import { SteelheadUserFlags } from '@models/steelhead';
 import { SunriseUserFlags } from '@models/sunrise';
 import { ApolloUserFlags } from '@models/apollo';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { OldPermissionsService, PermissionServiceTool } from '@services/old-permissions';
+import { OldPermissionsService, OldPermissionServiceTool } from '@services/old-permissions';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export type UserFlagsUnion =
   | WoodstockUserFlags
@@ -49,6 +50,8 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public getFlagsActionMonitor = new ActionMonitor('Get user flags');
   public setFlagsActionMonitor = new ActionMonitor('Set user flags');
 
+  public readonly permAttribute = PermAttributeName.UpdateUserFlags;
+
   /** Alternate text per key. */
   public readonly alteredLabels: { [key in keyof UserFlagsIntersection]?: string } = {
     isEarlyAccess: 'Is Early Access (Unbannable)',
@@ -73,7 +76,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
     // Ignore permission service if disabled input is set to true
     this.disabled =
       this.disabled ||
-      !this.permissionsService.currentUserHasWritePermission(PermissionServiceTool.SetUserFlags);
+      !this.permissionsService.currentUserHasWritePermission(OldPermissionServiceTool.SetUserFlags);
 
     if (this.disabled) {
       this.formGroup?.disable();

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
+import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { GameTitle } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
@@ -49,14 +49,14 @@ export abstract class GiftingBaseComponent<ProfileIdType extends BigNumber | str
   /** Lifecycle hook. */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = !hasAccessToRestrictedFeature(
-      RestrictedFeature.GroupGifting,
+    this.disableLspGroupSelection = !hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.GroupGifting,
       this.gameTitle,
       user.role,
     );
 
-    this.disableGiftingLiveries = !hasAccessToRestrictedFeature(
-      RestrictedFeature.GiftLivery,
+    this.disableGiftingLiveries = !hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.GiftLivery,
       this.gameTitle,
       user.role,
     );

@@ -20,6 +20,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** A domain module for displaying user flags. */
 @NgModule({
@@ -49,6 +50,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     VerifyCheckboxModule,
     StateManagersModule,
     MonitorActionModule,
+    PermissionsModule,
   ],
   exports: [
     WoodstockUserFlagsComponent,

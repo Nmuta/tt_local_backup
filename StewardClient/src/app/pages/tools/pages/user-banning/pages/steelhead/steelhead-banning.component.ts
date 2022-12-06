@@ -12,6 +12,7 @@ import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
+import { GameTitle } from '@models/enums';
 
 /** Routed Component; Steelhead Banning Tool. */
 @Component({
@@ -34,6 +35,8 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
   public summaryLookup: Dictionary<SteelheadBanSummary> = {};
   public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
+
+  public gameTitle = GameTitle.FM8;
 
   public identitySortFn: (
     identities: AugmentedCompositeIdentity[],

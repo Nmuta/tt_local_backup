@@ -16,6 +16,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import BigNumber from 'bignumber.js';
 import { renderDelay } from '@helpers/rxjs';
 import { DateValidators } from '@shared/validators/date-validators';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
@@ -59,6 +60,8 @@ export class IndividualNotificationManagementComponent
   public allMonitors = [this.getMonitor];
 
   public min = DateTime.utc();
+
+  public readonly permAttribute = PermAttributeName.MessagePlayer;
 
   /** Gets the game title */
   public get gameTitle(): GameTitle {

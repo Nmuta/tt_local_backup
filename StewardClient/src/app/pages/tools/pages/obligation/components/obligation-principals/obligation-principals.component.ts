@@ -14,6 +14,7 @@ import {
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { PrincipalRole, PrincipalType } from '@models/pipelines/obligation-principal';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { chain, cloneDeep, toPairs } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 
@@ -90,6 +91,8 @@ export class ObligationPrincipalsComponent
   public formGroup = new FormGroup({
     rows: this.rows,
   });
+
+  public readonly permAttribute = PermAttributeName.UpdateObligationPipeline;
 
   constructor() {
     super();

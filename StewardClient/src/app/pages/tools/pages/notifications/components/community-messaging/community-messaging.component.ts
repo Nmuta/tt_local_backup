@@ -29,7 +29,7 @@ export abstract class CommunityMessagingComponent extends BaseComponent {
   @Input() playerIdentities: IdentityResultAlpha[] = [];
   /** REVIEW-COMMENT: Selected Lsp Group. */
   @Input() selectedLspGroup: LspGroup;
-  /** REVIEW-COMMENT: If component is using player identities. */
+  /** True if component is using player identities. */
   @Input() isUsingPlayerIdentities: boolean = true;
 
   /** True while waiting for community message verification. */

@@ -48,9 +48,7 @@ export class PermAttributesService extends BaseService {
   }
 
   public get isUsingV1Auth(): boolean {
-    // TODO: Utilize the new V2 auth role once it is created.
-    // return this.userRole !== UserRole.V2Role;
-    return true;
+    return this.userRole !== UserRole.GeneralUser;
   }
 
   public get hasSteelheadAccess(): boolean {
@@ -140,12 +138,10 @@ export class PermAttributesService extends BaseService {
 
   /** Returns true if user has permission to feature attribute. */
   public hasFeaturePermission(attr: PermAttributeName, title?: GameTitle): boolean {
-    // TODO: Remove once all users have been switched to V2 auth
     if (this.isUsingV1Auth) {
       return true;
     }
 
-    // TODO: Handle if user is an admin (no attributes so always return true)
     const titleToCheck = title ?? '';
     const environmentToCheck = !!title ? this.selectedEndpoints[title] : '';
     return !!find(this.allPermAttributes, {

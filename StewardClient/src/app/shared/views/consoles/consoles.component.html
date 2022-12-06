@@ -51,6 +51,8 @@
                     stateManager
                     monitorDisable
                     [monitor]="entry.banActionMonitor"
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
                     >Verify ban</mat-checkbox
                   >
                 </ng-container>
@@ -78,6 +80,8 @@
                     stateManager
                     monitorDisable
                     [monitor]="entry.unbanActionMonitor"
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
                     >Verify</mat-checkbox
                   >
                 </ng-container>

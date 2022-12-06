@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
+      shortText: 'Setup auth V2 attributes on all Steward actions',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'a2e99456-2cd6-42f2-b70b-32fdcf7b2abb',
       shortText: 'Temporarily fix FM gifting and messaging loc bug',
     },

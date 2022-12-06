@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import {
@@ -24,6 +24,7 @@ import { GiftReason } from '../gift-basket/gift-basket.base.component';
 import { HCI } from '@environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
@@ -36,7 +37,7 @@ enum BackgroundJobRetryStatus {
 })
 export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
   extends BaseComponent
-  implements OnInit
+  implements OnInit, OnChanges
 {
   /** Player identities to gift the livery to. */
   @Input() public playerIdentities: IdentityT[];
@@ -63,6 +64,8 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
   ];
   public giftResponse: GiftResponse<BigNumber>[];
 
+  public activePermAttribute = PermAttributeName.GiftPlayerLivery;
+
   /** Gets the livery from form controls. */
   public get livery(): PlayerUgcItem {
     return this.formControls.livery.value;
@@ -74,7 +77,7 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
   }
 
   /** Game title */
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
 
   constructor(
     private readonly backgroundJobService: BackgroundJobService,
@@ -131,6 +134,15 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
         this.resetTool(true);
         this.onLiveryIdChange(liveryId);
       });
+  }
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.usingPlayerIdentities) {
+      this.activePermAttribute = this.usingPlayerIdentities
+        ? PermAttributeName.GiftPlayerLivery
+        : PermAttributeName.GiftGroupLivery;
+    }
   }
 
   /** Sends the gift basket. */

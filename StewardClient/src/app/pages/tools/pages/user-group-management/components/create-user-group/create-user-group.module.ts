@@ -15,6 +15,7 @@ import { ApolloCreateUserGroupComponent } from './apollo/apollo-create-user-grou
 import { SteelheadCreateUserGroupComponent } from './steelhead/steelhead-create-user-group.component';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** The create user group module. */
 @NgModule({
@@ -37,6 +38,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     ReactiveFormsModule,
     StateManagersModule,
     MonitorActionModule,
+    PermissionsModule,
   ],
   exports: [
     WoodstockCreateUserGroupComponent,

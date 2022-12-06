@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
+import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import { delay, Observable, takeUntil } from 'rxjs';
@@ -22,9 +23,9 @@ export interface CreateUserGroupServiceContract {
   styleUrls: ['./create-user-group.component.scss'],
 })
 export class CreateUserGroupComponent extends BaseComponent implements OnChanges, OnInit {
-  /** REVIEW-COMMENT: Service contract for create user group component. */
+  /** Service contract for create user group component. */
   @Input() service: CreateUserGroupServiceContract;
-  /** REVIEW-COMMENT: Outputs when a new user group is created. */
+  /** Outputs when a new user group is created. */
   @Output() newUserGroup = new EventEmitter<LspGroup>();
 
   public userHasWritePerms: boolean = false;
@@ -35,6 +36,8 @@ export class CreateUserGroupComponent extends BaseComponent implements OnChanges
   };
   public formGroup = new FormGroup(this.formControls);
 
+  public readonly permAttribute = PermAttributeName.CreateUserGroup;
+
   constructor(private readonly store: Store) {
     super();
   }
@@ -42,8 +45,8 @@ export class CreateUserGroupComponent extends BaseComponent implements OnChanges
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.userHasWritePerms = hasAccessToRestrictedFeature(
-      RestrictedFeature.UserGroupWrite,
+    this.userHasWritePerms = hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.UserGroupWrite,
       this.service.gameTitle,
       user.role,
     );

@@ -39,6 +39,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -85,6 +86,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatOptionModule,
     MatSelectModule,
     MatFormFieldModule,
+    PermissionsModule,
   ],
 })
 export class GiftingsModule {}

@@ -13,6 +13,7 @@ import { EMPTY, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
+import { GameTitle } from '@models/enums';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -40,6 +41,8 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
   public selectedPlayer: IdentityResultAlpha = null;
 
   public identitySortFn = null;
+
+  public gameTitle = GameTitle.FH5;
 
   constructor(
     backgroundJobService: BackgroundJobService,

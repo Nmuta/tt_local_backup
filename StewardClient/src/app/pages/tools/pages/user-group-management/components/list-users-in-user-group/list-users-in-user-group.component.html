@@ -25,6 +25,9 @@
         </button>
         <mat-checkbox
           #verifyDelete
+          stateManager
+          [permissionAttribute]="removeAllPermAttribute"
+          [permissionTitle]="service?.gameTitle"
           [disabled]="disallowDeleteAllUsers"
           [matTooltip]="disallowDeleteAllUsers ? 'Disabled for this User Group' : 'Verify Deletion'"
           >Verify</mat-checkbox
@@ -72,7 +75,14 @@
               <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
             </span>
           </button>
-          <mat-checkbox #verifyBulkAdd matTooltip="Verify Bulk Add">Verify</mat-checkbox>
+          <mat-checkbox
+            #verifyBulkAdd
+            stateManager
+            [permissionAttribute]="updatePermAttribute"
+            [permissionTitle]="service?.gameTitle"
+            matTooltip="Verify Bulk Add"
+            >Verify</mat-checkbox
+          >
         </div>
         <div class="action">
           <button
@@ -98,7 +108,14 @@
               ></button-spinner>
             </span>
           </button>
-          <mat-checkbox #verifyBulkDelete matTooltip="Verify Bulk Deletion">Verify</mat-checkbox>
+          <mat-checkbox
+            #verifyBulkDelete
+            stateManager
+            [permissionAttribute]="updatePermAttribute"
+            [permissionTitle]="service?.gameTitle"
+            matTooltip="Verify Bulk Deletion"
+            >Verify</mat-checkbox
+          >
         </div>
       </div>
     </form>
@@ -165,7 +182,14 @@
                     ></button-spinner>
                   </span>
                 </button>
-                <mat-checkbox #verifyDelete matTooltip="Verify Deletion">Verify</mat-checkbox>
+                <mat-checkbox
+                  #verifyDelete
+                  stateManager
+                  [permissionAttribute]="updatePermAttribute"
+                  [permissionTitle]="service?.gameTitle"
+                  matTooltip="Verify Deletion"
+                  >Verify</mat-checkbox
+                >
               </td>
             </ng-container>
 
