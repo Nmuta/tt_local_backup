@@ -122,7 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync()
+        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
             var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
@@ -166,9 +166,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             // Remap the ids to the right ids from the mapping file
-            return results
-                .Where(p => localizationIdsMapping.ContainsKey(p.Key))
-                .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+            if (useInternalIds)
+            {
+                return results
+                    .Where(p => localizationIdsMapping.ContainsKey(p.Key))
+                    .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+            }
+
+            return results;
         }
 
         /// <inheritdoc />

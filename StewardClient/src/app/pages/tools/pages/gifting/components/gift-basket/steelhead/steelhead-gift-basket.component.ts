@@ -57,7 +57,7 @@ export class SteelheadGiftBasketComponent
     this.selectLocalizedStringService = {
       gameTitle: this.title,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(false);
       },
     };
   }

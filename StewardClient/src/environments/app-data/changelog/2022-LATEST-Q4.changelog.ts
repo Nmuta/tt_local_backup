@@ -8,6 +8,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'a2e99456-2cd6-42f2-b70b-32fdcf7b2abb',
+      shortText: 'Temporarily fix FM gifting and messaging loc bug',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6e921f07-8574-4030-b0a0-963eb8da1dd6',
+      shortText: 'Move permissions management file to be stored in mem cache',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
       uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
       shortText: 'Display pull request URL on submit and various visual improvements',
