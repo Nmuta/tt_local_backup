@@ -31,6 +31,7 @@ import { GroupNotificationManagementComponent } from './group-notification-manag
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -71,6 +72,7 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     DateTimePickersModule,
     LuxonDateModule,
     StandardDateModule,
+    PermissionsModule,
   ],
   exports: [
     GroupNotificationManagementComponent,

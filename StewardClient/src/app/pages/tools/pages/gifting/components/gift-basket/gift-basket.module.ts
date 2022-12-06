@@ -26,6 +26,8 @@ import { HelpModule } from '@shared/modules/help/help.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LocalizationModule } from '@components/localization/localization.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** The gift basket module. */
 @NgModule({
@@ -61,6 +63,8 @@ import { LocalizationModule } from '@components/localization/localization.module
     MatDatepickerModule,
     MatCheckboxModule,
     LocalizationModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
   exports: [
     WoodstockGiftBasketComponent,

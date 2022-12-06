@@ -37,6 +37,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { BundleComponent } from './components/kusto-data-activities/bundle/bundle.component';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for displaying the data pipeline obligation page. */
 @NgModule({
@@ -82,6 +83,7 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
     RouterModule,
     TextFieldModule,
     VerifyCheckboxModule,
+    PermissionsModule,
   ],
   exports: [DataPipelineObligationComponent],
 })

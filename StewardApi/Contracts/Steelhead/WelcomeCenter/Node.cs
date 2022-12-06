@@ -60,6 +60,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public bool IsAttributeField { get; set; }
 
         /// <summary>
+        ///     Gets or sets the node's comment text.
+        /// </summary>
+        public string Comment { get; set; }
+
+        /// <summary>
         ///     The name of othe node.
         /// </summary>
         public override string ToString()

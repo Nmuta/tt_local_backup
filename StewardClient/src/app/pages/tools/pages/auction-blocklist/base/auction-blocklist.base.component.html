@@ -85,6 +85,9 @@
               <span class="editable" *ngIf="!asFormGroupBlocklistEntry(entry).edit">
                 <button
                   mat-raised-button
+                  stateManager
+                  [permissionAttribute]="updatePermAttribute"
+                  [permissionTitle]="gameTitle"
                   color="primary"
                   matTooltip="Edit expire date"
                   aria-label="Edit expire date"
@@ -110,7 +113,11 @@
                   Delete
                 </button>
                 <mat-checkbox
+                  class="sf-verify-checkbox"
                   #verifyDelete
+                  stateManager
+                  [permissionAttribute]="updatePermAttribute"
+                  [permissionTitle]="gameTitle"
                   matTooltip="Verify Deletion"
                   aria-label="Verify Deletion"
                   >Verify Deletion</mat-checkbox

@@ -40,6 +40,9 @@
     color="accent"
     (click)="createMessage()"
     [disabled]="!newCommunityMessageForm.valid"
+    stateManager
+    [permissionAttribute]="activePermAttribute"
+    [permissionTitle]="gameTitle"
   >
     Review <mat-icon svgIcon="steward-arrow-right"></mat-icon>
   </button>

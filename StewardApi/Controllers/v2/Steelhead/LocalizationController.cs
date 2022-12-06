@@ -66,9 +66,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, LiveOpsContracts.LocalizedString>))]
-        public async Task<IActionResult> GetLocalizedStrings()
+        public async Task<IActionResult> GetLocalizedStrings([FromQuery] bool useInternalIds = true)
         {
-            var locStrings = await this.pegasusService.GetLocalizedStringsAsync().ConfigureAwait(true);
+            var locStrings = await this.pegasusService.GetLocalizedStringsAsync(useInternalIds).ConfigureAwait(true);
             return this.Ok(locStrings);
         }
 

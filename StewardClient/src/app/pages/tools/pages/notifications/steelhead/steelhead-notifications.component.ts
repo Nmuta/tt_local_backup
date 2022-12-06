@@ -72,7 +72,7 @@ export class SteelheadNotificationsComponent {
     this.localizationSelectionServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(false);
       },
     };
 
@@ -100,7 +100,7 @@ export class SteelheadNotificationsComponent {
       selectLocalizedStringContract: {
         gameTitle: this.gameTitle,
         getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-          return steelheadLocalizationService.getLocalizedStrings$();
+          return steelheadLocalizationService.getLocalizedStrings$(false);
         },
       },
     };

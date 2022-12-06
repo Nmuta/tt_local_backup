@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle, LocalizationCategory } from '@models/enums';
 import { LocalizedStringData } from '@models/localization';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { catchError, EMPTY, Observable, takeUntil } from 'rxjs';
 
@@ -35,6 +36,8 @@ export class CreateLocalizedStringComponent extends BaseComponent {
   };
 
   public formGroup = new FormGroup(this.formControls);
+
+  public readonly permAttribute = PermAttributeName.AddLocalizedString;
 
   /** Create message */
   public createMessage(): void {

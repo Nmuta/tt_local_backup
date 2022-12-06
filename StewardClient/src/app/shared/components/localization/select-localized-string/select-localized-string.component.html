@@ -10,6 +10,7 @@
           {{ stringDetails.englishText | deppoh }}
         </mat-option>
       </mat-select>
+      <mat-hint *ngIf="hintMessage">{{ hintMessage }}</mat-hint>
       <mat-error *ngIf="formControls.selectedLocalizedStringInfo.hasError('required')"
         >Required</mat-error
       >

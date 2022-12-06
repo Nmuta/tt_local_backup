@@ -12,6 +12,8 @@
             [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
             [pendingLocalizedMessage]="newLocalizedMessage"
             [lockStartTime]="service?.lockStartTime"
+            [gameTitle]="service?.gameTitle"
+            [isUsingPlayerIdentities]="isUsingPlayerIdentities"
             (emitNewLocalizedMessage)="setNewLocalizedMessage($event)"
           ></new-localized-message>
         </ng-container>

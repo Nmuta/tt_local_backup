@@ -7,8 +7,10 @@ import {
   BackgroundJobRetryStatus,
   BackgroundJobStatus,
 } from '@models/background-job';
+import { GameTitle } from '@models/enums';
 import { SunriseBanResult } from '@models/sunrise';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, of, throwError, timer } from 'rxjs';
 import { delayWhen, retryWhen, switchMap, take, takeUntil, tap } from 'rxjs/operators';
@@ -19,11 +21,14 @@ export type BanResultsUnion = SunriseBanResult | ApolloBanResult;
 @Component({
   template: '',
 })
-export class UserBanningBaseComponent extends BaseComponent {
+export abstract class UserBanningBaseComponent extends BaseComponent {
   /** True while waiting on a request. */
   public banResults: BanResultsUnion[];
   /** The ban action monitor. */
   public banActionMonitor = new ActionMonitor('Ban players');
+
+  public readonly permAttribute = PermAttributeName.BanPlayer;
+  public abstract gameTitle: GameTitle;
 
   constructor(private readonly backgroundJobService: BackgroundJobService) {
     super();

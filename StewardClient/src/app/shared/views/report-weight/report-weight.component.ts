@@ -7,10 +7,11 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { keys } from 'lodash';
 import { Observable, takeUntil } from 'rxjs';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
+import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { Store } from '@ngxs/store';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export interface ReportWeightServiceContract {
   /** Game title the service contract is associated with. */
@@ -51,6 +52,8 @@ export class ReportWeightComponent extends BaseComponent implements OnInit, OnCh
   public canSetReportWeight: boolean = false;
   public featureDisabledText = `Feature is not supported for your user role`;
 
+  public readonly permAttribute = PermAttributeName.SetReportWeight;
+
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
     return this.service.gameTitle;
@@ -77,8 +80,8 @@ export class ReportWeightComponent extends BaseComponent implements OnInit, OnCh
     }
 
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.canSetReportWeight = hasAccessToRestrictedFeature(
-      RestrictedFeature.SetReportWeight,
+    this.canSetReportWeight = hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.SetReportWeight,
       this.gameTitle,
       user.role,
     );

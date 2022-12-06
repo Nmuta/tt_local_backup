@@ -47,17 +47,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
     public sealed class PermissionsController : V2ControllerBase
     {
         private readonly IStewardUserProvider userProvider;
+        private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PermissionsController"/> class.
         /// </summary>
-        public PermissionsController(IStewardUserProvider userProvider, IMapper mapper)
+        public PermissionsController(IStewardUserProvider userProvider, IRefreshableCacheStore refreshableCacheStore, IMapper mapper)
         {
             userProvider.ShouldNotBeNull(nameof(userProvider));
+            refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.userProvider = userProvider;
+            this.refreshableCacheStore = refreshableCacheStore;
             this.mapper = mapper;
         }
 
@@ -68,11 +71,64 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [SwaggerResponse(200, type: typeof(Dictionary<string, IList<string>>))]
         public async Task<IActionResult> GetAllPermissionsAsync()
         {
-            var permAttributesFilePath = $"{Environment.CurrentDirectory}/JSON/all-attributes.json";
-            var permAttributes = GetPermissionAttributes();
+            var permissionsKey = $"AllPermAttributes";
 
-            var permAttributesAsString = JsonConvert.SerializeObject(permAttributes);
-            System.IO.File.WriteAllText(permAttributesFilePath, permAttributesAsString);
+            Dictionary<string, IList<string>> GetPermissionAttributes()
+            {
+                var permissions = new Dictionary<string, IList<string>>();
+
+                var collection = this.HttpContext.RequestServices
+                    .GetService(typeof(IActionDescriptorCollectionProvider)) as ActionDescriptorCollectionProvider;
+
+                foreach (var descriptor in collection.ActionDescriptors.Items)
+                {
+                    var cad = descriptor as ControllerActionDescriptor;
+                    var allActions = cad.MethodInfo.GetCustomAttributes(typeof(AuthorizeAttribute), true)
+                            .Where(attr => (attr as AuthorizeAttribute).Policy != null)
+                        .Concat(cad.ControllerTypeInfo.GetCustomAttributes(typeof(AuthorizeAttribute), true)
+                            .Where(attr => (attr as AuthorizeAttribute).Policy != null))
+                        .Select(attr => (attr as AuthorizeAttribute).Policy);
+
+                    if (!allActions.Any())
+                    {
+                        continue;
+                    }
+
+                    // Title
+                    var segments = cad.AttributeRouteInfo.Template.Split("/");
+                    var titlePathIndex = segments.IndexOf(segment => string.Equals(segment, "title", StringComparison.OrdinalIgnoreCase));
+                    var titleIndex = titlePathIndex + 1;
+                    var hasTitle = titlePathIndex >= 0;
+#pragma warning disable CA1308 // Normalize strings to uppercase, UI string enum is expecting title lowercased
+                    var title = segments[titleIndex].ToLowerInvariant();
+
+                    foreach (var action in allActions)
+                    {
+                        if (!permissions.ContainsKey(action))
+                        {
+                            permissions.Add(action, new List<string>());
+                        }
+
+                        if (hasTitle && !permissions[action].Contains(title))
+                        {
+                            permissions[action].Add(title);
+                        }
+                    }
+                }
+
+                // Sort each action's titles
+                foreach (KeyValuePair<string, IList<string>> entry in permissions)
+                {
+                    permissions[entry.Key] = entry.Value.OrderByDescending(x => x).Reverse().ToList();
+                }
+
+                this.refreshableCacheStore.PutItem(permissionsKey, TimeSpan.FromDays(7), permissions);
+
+                return permissions;
+            }
+
+            var permAttributes = this.refreshableCacheStore.GetItem<Dictionary<string, IList<string>>>(permissionsKey)
+                   ?? GetPermissionAttributes();
 
             return this.Ok(permAttributes);
         }
@@ -117,56 +173,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             return await this.GetUserPermissionsAsync(userId).ConfigureAwait(true);
         }
 
-        private Dictionary<string, IList<string>> GetPermissionAttributes()
-        {
-            var permissions = new Dictionary<string, IList<string>>();
-
-            var collection = this.HttpContext.RequestServices
-                .GetService(typeof(IActionDescriptorCollectionProvider)) as ActionDescriptorCollectionProvider;
-
-            foreach (var descriptor in collection.ActionDescriptors.Items)
-            {
-                var cad = descriptor as ControllerActionDescriptor;
-                var allActions = cad.MethodInfo.GetCustomAttributes(typeof(AuthorizeAttribute), true)
-                        .Where(attr => (attr as AuthorizeAttribute).Policy != null)
-                    .Concat(cad.ControllerTypeInfo.GetCustomAttributes(typeof(AuthorizeAttribute), true)
-                        .Where(attr => (attr as AuthorizeAttribute).Policy != null))
-                    .Select(attr => (attr as AuthorizeAttribute).Policy);
-
-                if (!allActions.Any())
-                {
-                    continue;
-                }
-
-                // Title
-                var segments = cad.AttributeRouteInfo.Template.Split("/");
-                var titlePathIndex = segments.IndexOf(segment => string.Equals(segment, "title", StringComparison.OrdinalIgnoreCase));
-                var titleIndex = titlePathIndex + 1;
-                var hasTitle = titlePathIndex >= 0;
-#pragma warning disable CA1308 // Normalize strings to uppercase, UI string enum is expecting title lowercased
-                var title = segments[titleIndex].ToLowerInvariant();
-
-                foreach (var action in allActions)
-                {
-                    if (!permissions.ContainsKey(action))
-                    {
-                        permissions.Add(action, new List<string>());
-                    }
-
-                    if (hasTitle && !permissions[action].Contains(title))
-                    {
-                        permissions[action].Add(title);
-                    }
-                }
-            }
-
-            // Sort each action's titles
-            foreach (KeyValuePair<string, IList<string>> entry in permissions)
-            {
-                permissions[entry.Key] = entry.Value.OrderByDescending(x => x).Reverse().ToList();
-            }
-
-            return permissions;
-        }
+        
     }
 }

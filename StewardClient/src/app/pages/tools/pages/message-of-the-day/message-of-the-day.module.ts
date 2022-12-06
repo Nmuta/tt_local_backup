@@ -28,6 +28,7 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for displaying message of the day tool. */
 @NgModule({
@@ -61,6 +62,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     LuxonDateModule,
     StandardDateModule,
     MatDatepickerModule,
+    PermissionsModule,
   ],
   exports: [],
 })

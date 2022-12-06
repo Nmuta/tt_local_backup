@@ -28,6 +28,8 @@ import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-comm
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -64,6 +66,8 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     JsonTableResultsModule,
     DateTimePickersModule,
     StandardDateModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
   exports: [
     SunriseCommunityMessagingComponent,

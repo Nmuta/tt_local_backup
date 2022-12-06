@@ -42,6 +42,9 @@
       color="accent"
       (click)="createMessage()"
       [disabled]="!formGroup.valid"
+      stateManager
+      [permissionAttribute]="activePermAttribute"
+      [permissionTitle]="gameTitle"
     >
       Review <mat-icon>arrow_circle_right</mat-icon>
     </button>

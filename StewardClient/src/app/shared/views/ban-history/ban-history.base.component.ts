@@ -8,7 +8,8 @@ import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { LiveOpsExtendedBanDescription } from '@models/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Extended type from LiveOpsExtendedBanDescription. */
 type BanHistoryTableEntry = LiveOpsExtendedBanDescription & {
@@ -43,6 +44,8 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
 
   public actionsEnabled: boolean = false;
 
+  public readonly permAttribute = PermAttributeName.DeleteBan;
+
   public abstract gameTitle: GameTitle;
 
   constructor(private readonly permissionsService: OldPermissionsService) {
@@ -61,7 +64,7 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
     }
 
     this.allowActions = this.permissionsService.currentUserHasWritePermission(
-      PermissionServiceTool.Unban,
+      OldPermissionServiceTool.Unban,
     );
 
     if (this.actionsEnabled) {

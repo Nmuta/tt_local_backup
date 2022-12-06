@@ -8,7 +8,7 @@ import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-it
 import { UgcType } from '@models/ugc-filters';
 import { UgcReportReason } from '@models/ugc-report-reason';
 import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-report.service';
-import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
@@ -64,6 +64,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
     order: GEO_FLAGS_ORDER,
     title: 'Geo Flags',
+    gameTitle: GameTitle.FH5,
+    permAttribute: PermAttributeName.SetUgcGeoFlag,
     submitModel$: () => EMPTY,
   };
   public reportReasons: UgcReportReason[] = null;
@@ -71,7 +73,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
 
-  public permAttribute = PermAttributeName.FeatureUgc;
+  public featurePermAttribute = PermAttributeName.FeatureUgc;
+  public reportPermAttribute = PermAttributeName.ReportUgc;
+  public hidePermAttribute = PermAttributeName.HideUgc;
   public gameTitle = GameTitle.FH5;
 
   constructor(
@@ -87,11 +91,11 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.userHasWritePerms = this.permissionsService.currentUserHasWritePermission(
-      PermissionServiceTool.FeatureUgc,
+      OldPermissionServiceTool.FeatureUgc,
     );
 
     this.canChangeGeoFlags = !this.permissionsService.currentUserHasWritePermission(
-      PermissionServiceTool.SetUgcGeoFlags,
+      OldPermissionServiceTool.SetUgcGeoFlags,
     );
 
     this.canPersistUgc = true;

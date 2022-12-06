@@ -122,7 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync()
+        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
             var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
@@ -166,9 +166,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             // Remap the ids to the right ids from the mapping file
-            return results
-                .Where(p => localizationIdsMapping.ContainsKey(p.Key))
-                .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+            if (useInternalIds)
+            {
+                return results
+                    .Where(p => localizationIdsMapping.ContainsKey(p.Key))
+                    .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+            }
+
+            return results;
         }
 
         /// <inheritdoc />
@@ -324,8 +329,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<MotdEntry>(messageOfTheDayBridge);
-
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
+            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
             XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
@@ -391,8 +396,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofBridge wofTileBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<WofEntry>(wofTileBridge);
-
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
+            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
             XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
 

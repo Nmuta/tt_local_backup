@@ -70,6 +70,8 @@ export class SelectLocalizedStringComponent
   @Input() service: SelectLocalizedStringContract;
   /** The dropdown mat label. */
   @Input() label: string = 'Select localized message';
+  /** The dropdown mat hint label. (Optional) */
+  @Input() hintMessage: string;
   /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;
 
@@ -168,6 +170,11 @@ export class SelectLocalizedStringComponent
         this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value.id],
         x => !x.isTranslated,
       );
+    } else {
+      // This is done to be able to reset/empty the dropdown
+      // If null or {} or {id:null} is passed it will be set to null
+      this.selectedLocalizedStringCollection = [];
+      this.formControls.selectedLocalizedStringInfo.patchValue(null, { emitEvent: true });
     }
   }
 

@@ -1,7 +1,7 @@
 import { GameTitle, UserRole } from '@models/enums';
 
 /** Enum of restricted features. */
-export enum RestrictedFeature {
+export enum V1RestrictedFeature {
   GroupGifting = 'Group Gifting',
   GiftLivery = 'Gift Livery',
   SendLoyaltyRewards = 'Send Loyalty Rewards',
@@ -13,13 +13,13 @@ export enum RestrictedFeature {
 
 /** The role restrictions for tooling features. */
 export const RestrictedToolAccessLookup = {
-  [RestrictedFeature.GroupGifting]: {
+  [V1RestrictedFeature.GroupGifting]: {
     [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
     [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
   },
-  [RestrictedFeature.GiftLivery]: {
+  [V1RestrictedFeature.GiftLivery]: {
     [GameTitle.FH5]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
@@ -40,7 +40,7 @@ export const RestrictedToolAccessLookup = {
       UserRole.MediaTeam,
     ],
   },
-  [RestrictedFeature.SendLoyaltyRewards]: {
+  [V1RestrictedFeature.SendLoyaltyRewards]: {
     [GameTitle.FH5]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
@@ -51,7 +51,7 @@ export const RestrictedToolAccessLookup = {
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
-  [RestrictedFeature.SetReportWeight]: {
+  [V1RestrictedFeature.SetReportWeight]: {
     [GameTitle.FH5]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
@@ -77,13 +77,13 @@ export const RestrictedToolAccessLookup = {
       UserRole.CommunityManager,
     ],
   },
-  [RestrictedFeature.PlayerProfileManagement]: {
+  [V1RestrictedFeature.PlayerProfileManagement]: {
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
     [GameTitle.FH5]: [], // Unused
     [GameTitle.FH4]: [], // Unused
     [GameTitle.FM7]: [], // Unused
   },
-  [RestrictedFeature.UserGroupWrite]: {
+  [V1RestrictedFeature.UserGroupWrite]: {
     [GameTitle.FM8]: [
       UserRole.LiveOpsAdmin,
       UserRole.CommunityManager,
@@ -109,7 +109,7 @@ export const RestrictedToolAccessLookup = {
       UserRole.HorizonDesigner,
     ],
   },
-  [RestrictedFeature.UserGroupRemoveAll]: {
+  [V1RestrictedFeature.UserGroupRemoveAll]: {
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FH5]: [UserRole.LiveOpsAdmin],
     [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
@@ -118,11 +118,16 @@ export const RestrictedToolAccessLookup = {
 };
 
 /** Checks if user role has access to a title's restricted feature. */
-export function hasAccessToRestrictedFeature(
-  feature: RestrictedFeature,
+export function hasV1AccessToV1RestrictedFeature(
+  feature: V1RestrictedFeature,
   title: GameTitle,
   userRole: UserRole,
 ): boolean {
+  // If on V2 auth, this always returns true
+  if (userRole === UserRole.GeneralUser) {
+    return true;
+  }
+
   // If access list is not available, then the feature is not restricted to certain roles.
   const allowedList: string[] = RestrictedToolAccessLookup[feature][title];
   if (!allowedList) {

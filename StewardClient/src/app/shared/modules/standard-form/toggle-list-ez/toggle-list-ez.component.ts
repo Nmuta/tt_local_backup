@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { isEqual } from 'lodash';
 import { Observable, takeUntil } from 'rxjs';
@@ -12,6 +14,8 @@ export interface ToggleListEzContract {
   initialModel: ToggleListOptions;
   submitModel$(alteredModel: ToggleListOptions): Observable<void>;
   title: string;
+  gameTitle: GameTitle;
+  permAttribute?: PermAttributeName;
   error?: string;
 }
 

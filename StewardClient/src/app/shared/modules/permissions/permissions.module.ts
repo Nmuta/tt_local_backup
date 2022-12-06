@@ -5,6 +5,7 @@ import { InvalidPermissionsComponent } from './components/invalid-permissions/in
 import { MatIconModule } from '@angular/material/icon';
 import { ButtonPermissionAttributeDirective } from './directives/button-permission-attribute.directive';
 import { CheckboxPermissionAttributeDirective } from './directives/checkbox-permission-attribute.directive';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** A feature module that allows a verification checkbox to be bound to other components. */
 @NgModule({
@@ -13,7 +14,7 @@ import { CheckboxPermissionAttributeDirective } from './directives/checkbox-perm
     CheckboxPermissionAttributeDirective,
     InvalidPermissionsComponent,
   ],
-  imports: [CommonModule, MatTooltipModule, MatIconModule],
+  imports: [CommonModule, DirectivesModule, MatTooltipModule, MatIconModule],
   exports: [ButtonPermissionAttributeDirective, CheckboxPermissionAttributeDirective],
 })
 export class PermissionsModule {}

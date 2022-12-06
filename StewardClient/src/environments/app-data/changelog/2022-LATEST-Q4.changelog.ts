@@ -9,6 +9,26 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
+      shortText: 'Setup auth V2 attributes on all Steward actions',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a2e99456-2cd6-42f2-b70b-32fdcf7b2abb',
+      shortText: 'Temporarily fix FM gifting and messaging loc bug',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6e921f07-8574-4030-b0a0-963eb8da1dd6',
+      shortText: 'Move permissions management file to be stored in mem cache',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
+      uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
+      shortText: 'Display pull request URL on submit and various visual improvements',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'd5121718-586d-4cfd-a9ef-4655af2486da',
       shortText: 'Remove use of verify action button component',
     },

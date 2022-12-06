@@ -16,6 +16,7 @@ import { ObligationKustoRestateOMaticDataActivity } from '@models/pipelines/obli
 import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
 import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-obligation-pipeline';
 import { ObligationsService } from '@services/obligations';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { VerifyWithButtonDirective } from '@shared/modules/verify/verify-with.directive';
 import BigNumber from 'bignumber.js';
@@ -67,6 +68,8 @@ export class DataPipelineObligationComponent
   public formGroup = new FormGroup({
     options: this.formControls.options,
   });
+
+  public readonly permAttribute = PermAttributeName.UpdateObligationPipeline;
 
   /** The options for this form. */
   public get options(): ObligationOptions {

@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
@@ -38,11 +39,49 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static readonly XName NullElementXname = NamespaceElement + "null";
 
         /// <summary>
+        ///     Recursively builds a tree of metadata from deserilized xml object.
+        /// </summary>
+        public static Node BuildMetaData(object target, Node root, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
+        {
+            Node tree = BuildMetaDataCore(target, root);
+
+            ApplyLocTextComments(tree, locstrings);
+
+            return tree;
+        }
+
+        /// <summary>
+        /// Applies localization comments for formatter.
+        /// </summary>
+        public static void ApplyLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
+        {
+            var children = tree.Children;
+            foreach (var child in children)
+            {
+                if (child.Path.LocalName == "loc-def" && child.IsAttributeField && child.Value != null)
+                {
+                    Guid guid = Guid.Parse((string)child.Value);
+                    if (locstrings.TryGetValue(guid, out var localizedStrings))
+                    {
+                        var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
+                        if (loc != null)
+                        {
+                            // example: <!-- loc: Here be dragons (base) -->
+                            child.Comment = $" loc: {loc.Message} (base) ";
+                        }
+                    }
+                }
+
+                ApplyLocTextComments(child, locstrings);
+            }
+        }
+
+        /// <summary>
         ///     Recursively builds a tree of metadata from
         ///     deserialized xml object.
         /// </summary>
         /// <typeparam name="T">The type of target.</typeparam>
-        public static Node BuildMetaData<T>(T target, Node root)
+        private static Node BuildMetaDataCore<T>(T target, Node root)
         {
             foreach (PropertyInfo property in target.GetType().GetProperties())
             {
@@ -67,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         root.IsArray = true;
                         foreach (var innervalue in (object[])value)
                         {
-                            Node ret = BuildMetaData(innervalue, new Node()
+                            Node ret = BuildMetaDataCore(innervalue, new Node()
                             {
                                 Value = null,
                                 Path = path,
@@ -82,7 +121,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     else
                     {
                         // Recurse, then add created node to root.
-                        Node child = BuildMetaData(value, new Node()
+                        Node child = BuildMetaDataCore(value, new Node()
                         {
                             Value = null,
                             Path = path,
@@ -183,6 +222,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                     // remove nodes from loc-refs: (description, base, skiploc)
                     el.RemoveNodes();
+
+                    // to satisfy format requirement.
+                    el.AddBeforeSelf(new XComment(child.Comment ?? string.Empty));
                 }
             }
             else
@@ -249,7 +291,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
             else
             {
-                return new XElement(root.Path, child.Value);
+                return new XElement(child.Path, child.Value);
             }
         }
     }

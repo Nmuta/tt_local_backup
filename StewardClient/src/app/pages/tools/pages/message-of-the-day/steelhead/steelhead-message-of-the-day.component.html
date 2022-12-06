@@ -15,6 +15,7 @@
                   <mat-select
                     [formControl]="formControls.selectedMessageOfTheDay"
                     (selectionChange)="messageOfTheDayChanged()"
+                    [disabled]="isInEditMode"
                   >
                     <mat-option
                       *ngFor="let motd of messageOfTheDayList | keyvalue"
@@ -25,12 +26,28 @@
                   </mat-select>
                 </mat-form-field>
                 <button
+                  *ngIf="!isInEditMode"
                   mat-raised-button
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
                   color="accent"
                   (click)="toggleEditMode()"
                   [disabled]="!formControls.selectedMessageOfTheDay.value"
+                  matTooltip="Update message of the day"
+                  aria-label="Update message of the day"
                 >
                   Edit
+                </button>
+                <button
+                  *ngIf="isInEditMode"
+                  mat-raised-button
+                  color="warn"
+                  (click)="revertEntryEdit()"
+                  matTooltip="Cancel message of the day edit"
+                  aria-label="Cancel message of the day edit"
+                >
+                  Undo
                 </button>
               </div>
               <select-localized-string
@@ -56,6 +73,7 @@
                 [service]="localizationSelectServiceContract"
                 [formControl]="formControls.localizedContentHeader"
                 label="Content Header"
+                hintMessage="Optional"
                 formControlName="localizedContentHeader"
               ></select-localized-string>
               <select-localized-string
@@ -84,7 +102,7 @@
                   <mat-icon>close</mat-icon>
                 </button>
               </mat-form-field>
-              <div class="sf-horizontal">
+              <div *waitForMonitor="submitMotdMonitor" class="sf-horizontal">
                 <button
                   mat-raised-button
                   color="accent"
@@ -95,6 +113,9 @@
                 </button>
                 <mat-checkbox
                   #verifyModification
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
                   [disabled]="!isInEditMode"
                   matTooltip="Verify Modification"
                   >Verify Modification</mat-checkbox
@@ -102,6 +123,10 @@
               </div>
             </div>
           </form>
+          <span *ngIf="pullRequestUrl">
+            A pull request for your changes has been created. You can access it
+            <a target="_blank" href="{{ pullRequestUrl }}"> here </a>
+          </span>
         </mat-card-content>
       </mat-card>
     </ng-container>

@@ -2,7 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BackgroundJob } from '@models/background-job';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { Gift, GroupGift } from '@models/gift';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -29,7 +29,7 @@ import { GiftLiveryBaseComponent } from '../gift-livery.base.component';
   ],
 })
 export class WoodstockGiftLiveryComponent extends GiftLiveryBaseComponent<IdentityResultAlpha> {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
 
   constructor(
     private readonly woodstockService: WoodstockService,

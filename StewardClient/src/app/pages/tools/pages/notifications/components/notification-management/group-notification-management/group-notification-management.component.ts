@@ -16,6 +16,7 @@ import { GroupNotification } from '@models/notifications.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { renderDelay } from '@helpers/rxjs';
 import { DateValidators } from '@shared/validators/date-validators';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
@@ -60,6 +61,8 @@ export class GroupNotificationManagementComponent
   public allMonitors = [this.getMonitor];
 
   public min = DateTime.utc();
+
+  public readonly permAttribute = PermAttributeName.MessageGroup;
 
   /** Gets the game title */
   public get gameTitle(): GameTitle {

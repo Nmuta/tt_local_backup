@@ -18,6 +18,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for player entitlements data. */
 @NgModule({
@@ -44,6 +45,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
     MonitorActionModule,
     HelpModule,
     DirectivesModule,
+    PermissionsModule,
   ],
   exports: [LoyaltyRewardsComponent],
 })

@@ -22,7 +22,7 @@ export class SteelheadMessageOfTheDayService {
   }
 
   /** Submit Message of the Day modification. */
-  public submitModification$(motdId: string, motd: MessageOfTheDay): Observable<void> {
-    return this.api.postRequest$<void>(`${this.basePath}/${motdId}`, motd);
+  public submitModification$(motdId: string, motd: MessageOfTheDay): Observable<string> {
+    return this.api.postRequest$<string>(`${this.basePath}/${motdId}`, motd);
   }
 }

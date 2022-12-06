@@ -25,6 +25,8 @@
           monitorDisable
           [monitor]="setFlagsActionMonitor"
           [disabled]="!formGroup.dirty"
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
           >Verify</mat-checkbox
         >
         <button

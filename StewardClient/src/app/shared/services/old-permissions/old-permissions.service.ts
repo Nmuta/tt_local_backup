@@ -5,7 +5,7 @@ import { Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 
 /** Available tools that have restricted write permissions. */
-export enum PermissionServiceTool {
+export enum OldPermissionServiceTool {
   SetUserFlags,
   ConsoleBan,
   UnhideUgc,
@@ -20,42 +20,42 @@ export enum PermissionServiceTool {
   providedIn: 'root',
 })
 export class OldPermissionsService {
-  private readonly writePermissions: Record<PermissionServiceTool, UserRole[]> = {
-    [PermissionServiceTool.SetUserFlags]: [
+  private readonly writePermissions: Record<OldPermissionServiceTool, UserRole[]> = {
+    [OldPermissionServiceTool.SetUserFlags]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
       UserRole.SupportAgentNew,
       UserRole.CommunityManager,
     ],
-    [PermissionServiceTool.ConsoleBan]: [
+    [OldPermissionServiceTool.ConsoleBan]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
       UserRole.SupportAgentNew,
     ],
-    [PermissionServiceTool.UnhideUgc]: [
+    [OldPermissionServiceTool.UnhideUgc]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
     ],
-    [PermissionServiceTool.HideUgc]: [
+    [OldPermissionServiceTool.HideUgc]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
       UserRole.CommunityManager,
     ],
-    [PermissionServiceTool.FeatureUgc]: [
+    [OldPermissionServiceTool.FeatureUgc]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.CommunityManager,
     ],
-    [PermissionServiceTool.Unban]: [
+    [OldPermissionServiceTool.Unban]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
     ],
-    [PermissionServiceTool.SetUgcGeoFlags]: [
+    [OldPermissionServiceTool.SetUgcGeoFlags]: [
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
@@ -65,9 +65,15 @@ export class OldPermissionsService {
   constructor(private readonly store: Store) {}
 
   /** Checks if user role has write permissions for tool provided. */
-  public currentUserHasWritePermission(tool: PermissionServiceTool): boolean {
+  public currentUserHasWritePermission(tool: OldPermissionServiceTool): boolean {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     const userRole = profile?.role;
+
+    // If on V2 auth, this always returns true
+    if (userRole === UserRole.GeneralUser) {
+      return true;
+    }
+
     const toolWritePermRoles = this.writePermissions[tool];
 
     return toolWritePermRoles.includes(userRole);

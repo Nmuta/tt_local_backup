@@ -14,6 +14,7 @@ import { replace } from '@helpers/replace';
 import { flatten } from 'lodash';
 import { AuctionBlocklistService } from './auction-blocklist.base.service';
 import { renderDelay } from '@helpers/rxjs';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupBlocklistEntry {
@@ -50,6 +51,8 @@ export class AuctionBlocklistBaseComponent extends BaseComponent implements OnIn
   public inputPostMonitor: ActionMonitor = new ActionMonitor('INPUT POST');
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public allMonitors = [this.getMonitor, this.inputPostMonitor];
+
+  public readonly updatePermAttribute = PermAttributeName.UpdateAuctionBlocklist;
 
   /** Gets the game title. */
   public get gameTitle(): GameTitle {

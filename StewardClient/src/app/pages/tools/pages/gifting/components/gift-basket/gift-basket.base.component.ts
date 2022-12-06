@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitle, UserRole } from '@models/enums';
@@ -27,6 +27,7 @@ import _ from 'lodash';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { SteelheadGift } from '@models/steelhead';
 import { WoodstockGift } from '@models/woodstock';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export type InventoryItemGroup = {
   category: string;
@@ -47,9 +48,12 @@ export enum GiftReason {
   template: '',
 })
 export abstract class GiftBasketBaseComponent<
-  IdentityT extends IdentityResultUnion,
-  MasterInventoryT extends MasterInventoryUnion,
-> extends BaseComponent {
+    IdentityT extends IdentityResultUnion,
+    MasterInventoryT extends MasterInventoryUnion,
+  >
+  extends BaseComponent
+  implements OnChanges
+{
   /** Player identities to gift to. */
   @Input() public playerIdentities: IdentityT[];
   /** LSP group to gift to. */
@@ -110,6 +114,8 @@ export abstract class GiftBasketBaseComponent<
   /** The error received while loading. */
   public loadError: unknown;
 
+  public activePermAttribute = PermAttributeName.GiftPlayer;
+
   /**
    * Item groups used to populate item selection dropdown.
    * NOTE:  Due to master inventory items being so different per title, I am leaving this
@@ -153,6 +159,15 @@ export abstract class GiftBasketBaseComponent<
 
   /** Sets the state gift basket. */
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.usingPlayerIdentities) {
+      this.activePermAttribute = this.usingPlayerIdentities
+        ? PermAttributeName.GiftPlayer
+        : PermAttributeName.GiftGroup;
+    }
+  }
 
   /** Filter for the expire date date time component */
   public dateTimeFutureFilter = (input: DateTime | null): boolean => {

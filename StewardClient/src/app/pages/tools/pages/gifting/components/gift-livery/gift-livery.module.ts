@@ -21,6 +21,8 @@ import { LuxonModule } from 'luxon-angular';
 import { GiftingResultModule } from '../gifting-result/gifting-result.module';
 import { PastableSingleInputModule } from '@views/pastable-single-input/pastable-single-input.module';
 import { ApolloGiftLiveryComponent } from './apollo/apollo-gift-livery.component';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** The gift livery module. */
 @NgModule({
@@ -53,6 +55,8 @@ import { ApolloGiftLiveryComponent } from './apollo/apollo-gift-livery.component
     LuxonModule,
     MatIconModule,
     GiftingResultModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
   exports: [WoodstockGiftLiveryComponent, SunriseGiftLiveryComponent, ApolloGiftLiveryComponent],
 })

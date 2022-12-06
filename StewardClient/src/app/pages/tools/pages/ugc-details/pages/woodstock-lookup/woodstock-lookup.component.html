@@ -36,7 +36,7 @@
               color="primary"
               (click)="featureUgcItem()"
               stateManager
-              [permissionAttribute]="permAttribute"
+              [permissionAttribute]="featurePermAttribute"
               [permissionTitle]="gameTitle"
             >
               <span [matTooltip]="featureMatTooltip">{{
@@ -73,7 +73,14 @@
               >
                 <span>Report</span>
               </button>
-              <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
+              <mat-checkbox
+                clickStop
+                #verifyReport
+                stateManager
+                [permissionAttribute]="reportPermAttribute"
+                [permissionTitle]="gameTitle"
+                matTooltip="Check to enable report UGC."
+              >
                 Verify
               </mat-checkbox>
             </div>
@@ -97,7 +104,14 @@
               >
                 Hide UGC
               </button>
-              <mat-checkbox #verifyHide matTooltip="Verify Deletion">Verify</mat-checkbox>
+              <mat-checkbox
+                #verifyHide
+                stateManager
+                [permissionAttribute]="hidePermAttribute"
+                [permissionTitle]="gameTitle"
+                matTooltip="Verify Deletion"
+                >Verify</mat-checkbox
+              >
             </div>
 
             <div class="sf-horizontal">

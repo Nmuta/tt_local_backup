@@ -18,19 +18,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
     /// </summary>
     public class V2ControllerBase : ControllerBase
     {
-        /// <summary>Gets (lazily) the Woodstock Endpoint passed to this call.</summary>
+        /// <summary>Gets or sets the (lazily) the Woodstock Endpoint passed to this call.</summary>
         protected Lazy<string> WoodstockEndpoint { get; set; }
 
-        /// <summary>Gets (lazily) the Sunrise Endpoint passed to this call.</summary>
+        /// <summary>Gets or sets the (lazily) the Sunrise Endpoint passed to this call.</summary>
         protected Lazy<string> SunriseEndpoint { get; set; }
 
-        /// <summary>Gets (lazily) the Apollo Endpoint passed to this call.</summary>
+        /// <summary>Gets or sets the (lazily) the Apollo Endpoint passed to this call.</summary>
         protected Lazy<string> ApolloEndpoint { get; set; }
 
-        /// <summary>Gets (lazily) the Steelhead Endpoint passed to this call.</summary>
+        /// <summary>Gets or sets the (lazily) the Steelhead Endpoint passed to this call.</summary>
         protected Lazy<string> SteelheadEndpoint { get; set; }
-
-        // TODO: Find better way to reference services below. Ideally one that doesn't require a `.Value` on each reference call.
 
         /// <summary>Gets (lazily) the Steelhead services.</summary>
         protected Lazy<SteelheadProxyBundle> SteelheadServices { get; }
@@ -44,6 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         /// <summary>Gets (lazily) the Sunrise services.</summary>
         protected Lazy<SunriseProxyBundle> SunriseServices { get; }
 
+        /// <summary>Initializes a new instance of the <see cref="V2ControllerBase"/> class.</summary>
         protected V2ControllerBase()
         {
             this.SteelheadEndpoint = new Lazy<string>(() => this.GetSteelheadEndpoint());
@@ -59,14 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 return proxyBundle;
             });
 
-            this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() =>
-            {
-                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
-                // TODO: This, at least, is broken
-                var proxyBundle = componentContext.Resolve<WoodstockProxyBundle>();
-                proxyBundle.Endpoint = this.WoodstockEndpoint.Value;
-                return proxyBundle;
-            });
+            this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockProdLiveProxyBundle"));
 
             this.ApolloServices = new Lazy<ApolloProxyBundle>(() =>
             {
@@ -83,6 +75,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 proxyBundle.Endpoint = this.SunriseEndpoint.Value;
                 return proxyBundle;
             });
+        }
+
+        /// <summary>Resolves a Woodstock bundle with the given DI name.</summary>
+        /// <param name="bundleName">The DI name to reference. Must be registered previously.</param>
+        protected WoodstockProxyBundle ResolveWoodstockBundle(string bundleName)
+        {
+            var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+            var woodstockProxyBundle = componentContext.ResolveNamed<WoodstockProxyBundle>(bundleName);
+            woodstockProxyBundle.Endpoint = this.WoodstockEndpoint.Value;
+            return woodstockProxyBundle;
         }
 
         private string GetWoodstockEndpoint()

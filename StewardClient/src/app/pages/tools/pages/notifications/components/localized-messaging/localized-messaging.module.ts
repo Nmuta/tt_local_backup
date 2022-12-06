@@ -28,6 +28,8 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { NewLocalizedMessageComponent } from './components/new-localized-message/new-localized-message.component';
 import { LocalizedMessagingComponent } from './localized-messaging.component';
 import { LocalizationModule } from '@components/localization/localization.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -61,6 +63,8 @@ import { LocalizationModule } from '@components/localization/localization.module
     DateTimePickersModule,
     StandardDateModule,
     LocalizationModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
   exports: [NewLocalizedMessageComponent, LocalizedMessagingComponent],
 })

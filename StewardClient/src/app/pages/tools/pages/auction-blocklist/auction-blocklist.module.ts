@@ -29,6 +29,7 @@ import { WoodstockAuctionBlocklistComponent } from './woodstock/woodstock-auctio
 import { AuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/auction-blocklist-new-entry.component';
 import { SunriseAuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/sunrise/sunrise-auction-blocklist-new-entry.component';
 import { WoodstockAuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/woodstock/woodstock-auction-blocklist-new-entry.component';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -66,6 +67,8 @@ import { WoodstockAuctionBlocklistNewEntryComponent } from './components/auction
     AuctionBlocklistRoutingModule,
     MakeModelAutocompleteModule,
     EndpointSelectionModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
 })
 export class StewardAuctionBlocklistModule {}

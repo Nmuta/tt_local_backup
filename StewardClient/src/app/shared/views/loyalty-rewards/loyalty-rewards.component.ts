@@ -13,9 +13,10 @@ import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { chain } from 'lodash';
 import { Store } from '@ngxs/store';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
+import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export interface LoyaltyRewardsServiceContract {
   /** Game title the service contract is associated with. */
@@ -69,6 +70,8 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
   public actionLabel: string = 'resendReward';
   public featureDisabledText = `Feature is not supported for your user role.`;
 
+  public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
+
   constructor(protected readonly store: Store) {
     super();
   }
@@ -76,8 +79,8 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
   /** Lifecycle hook. */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableSendActions = !hasAccessToRestrictedFeature(
-      RestrictedFeature.SendLoyaltyRewards,
+    this.disableSendActions = !hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.SendLoyaltyRewards,
       this.serviceContract?.gameTitle,
       user.role,
     );

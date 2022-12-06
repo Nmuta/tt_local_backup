@@ -6,7 +6,7 @@ import { mergedParamMap$ } from '@helpers/param-map';
 import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
-import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { SunriseService } from '@services/sunrise';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -41,7 +41,8 @@ export class SunriseLookupComponent extends BaseComponent implements OnInit {
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
 
-  public permAttribute = PermAttributeName.FeatureUgc;
+  public featurePermAttribute = PermAttributeName.FeatureUgc;
+  public hidePermAttribute = PermAttributeName.HideUgc;
   public gameTitle = GameTitle.FH4;
 
   constructor(
@@ -56,7 +57,7 @@ export class SunriseLookupComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.userHasWritePerms = this.permissionsService.currentUserHasWritePermission(
-      PermissionServiceTool.FeatureUgc,
+      OldPermissionServiceTool.FeatureUgc,
     );
 
     mergedParamMap$(this.route)

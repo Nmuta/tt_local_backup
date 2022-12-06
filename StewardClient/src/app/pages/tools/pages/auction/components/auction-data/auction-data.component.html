@@ -18,9 +18,7 @@
     <model-dump-simple-table
       [values]="source.processedModel.extractedNumbers.ids"
     ></model-dump-simple-table>
-    <mat-card-actions align="end">
-      <ng-content select="button"></ng-content>
-    </mat-card-actions>
+    <ng-content select="mat-card-actions"></ng-content>
   </mat-card>
 
   <mat-card>

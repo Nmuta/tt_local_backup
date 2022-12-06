@@ -16,7 +16,7 @@ import {
   STEWARD_DISABLE_STATE_PROVIDER,
 } from '@shared/modules/state-managers/injection-tokens';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { InvalidPermissionsComponent } from '../components/invalid-permissions/invalid-permissions.component';
 
 /** A directive that toggles the enabled state of the host button with the provided mat-checkbox. */
@@ -38,12 +38,16 @@ export abstract class BasePermissionAttributeDirective
 
   /** Test */
   @Input() public set permissionAttribute(attribute: PermAttributeName) {
+    if (!attribute) return;
+
     this.attributeName = attribute;
     this.checkPermission$.next(null);
   }
   /** Test */
-  @Input() public set permissionTitle(gametitle: GameTitle) {
-    this.gameTitle = gametitle;
+  @Input() public set permissionTitle(gameTitle: GameTitle) {
+    if (!gameTitle) return;
+
+    this.gameTitle = gameTitle;
     this.checkPermission$.next(null);
   }
 
@@ -61,6 +65,21 @@ export abstract class BasePermissionAttributeDirective
 
     this.checkPermission$
       .pipe(
+        filter(() => !!this.attributeName),
+        tap(() => {
+          // Default to disabled permissions while waiting for init guard
+          this.updateHostState(true);
+          const host = element.nativeElement;
+          // If host element doesnt have the invalid permissions component as a child, add it
+          if (host.firstChild.localName !== 'invalid-permissions') {
+            const invalidPermissionComponent = viewContainerRef.createComponent(
+              InvalidPermissionsComponent,
+            );
+            invalidPermissionComponent.instance.setPermAttributeName(this.attributeName);
+            const host = element.nativeElement;
+            host.insertBefore(invalidPermissionComponent.location.nativeElement, host.firstChild);
+          }
+        }),
         switchMap(() => permAttributesService.initializationGuard$),
         takeUntil(this.onDestroy$),
       )
@@ -73,15 +92,7 @@ export abstract class BasePermissionAttributeDirective
         this.updateHostState(!hasPerm);
 
         const host = element.nativeElement;
-        if (!hasPerm && host.firstChild.localName !== 'invalid-permissions') {
-          const invalidPermissionComponent = viewContainerRef.createComponent(
-            InvalidPermissionsComponent,
-          );
-          invalidPermissionComponent.instance.setPermAttributeName(this.attributeName);
-          const host = element.nativeElement;
-          host.insertBefore(invalidPermissionComponent.location.nativeElement, host.firstChild);
-        }
-
+        // If hasPerm is true and host element has the invalid permissions component as a child, remove it
         if (hasPerm && host.firstChild.localName === 'invalid-permissions') {
           host.firstChild.remove();
         }

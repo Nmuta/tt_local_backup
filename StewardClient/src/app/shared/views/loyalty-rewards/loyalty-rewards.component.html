@@ -25,6 +25,9 @@
                 >{{ entry.label | humanize }}
                 <mat-checkbox
                   *ngIf="entry.label === actionLabel"
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="serviceContract?.gameTitle"
                   [checked]="!disableSingleActions"
                   (change)="toggleSingleSend($event)"
                   [disabled]="disableSendActions"
@@ -87,6 +90,9 @@
           </button>
           <mat-checkbox
             #verifyAction
+            stateManager
+            [permissionAttribute]="permAttribute"
+            [permissionTitle]="serviceContract?.gameTitle"
             [disabled]="titlesToSendRewardsTo.length === 0 || disableSendActions"
             [matTooltip]="!disableSendActions ? 'Verify Send Loyalty Rewards' : featureDisabledText"
             >{{

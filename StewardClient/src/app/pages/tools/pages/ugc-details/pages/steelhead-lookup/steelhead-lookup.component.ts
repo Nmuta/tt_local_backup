@@ -7,7 +7,7 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { SteelheadUgcReportService } from '@services/api-v2/steelhead/ugc/report/steelhead-ugc-report.service';
-import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { first, keys } from 'lodash';
@@ -41,7 +41,9 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
 
-  public permAttribute = PermAttributeName.FeatureUgc;
+  public featurePermAttribute = PermAttributeName.FeatureUgc;
+  public reportPermAttribute = PermAttributeName.ReportUgc;
+  public hidePermAttribute = PermAttributeName.HideUgc;
   public gameTitle = GameTitle.FM8;
 
   constructor(
@@ -56,7 +58,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.userHasWritePerms = this.permissionsService.currentUserHasWritePermission(
-      PermissionServiceTool.FeatureUgc,
+      OldPermissionServiceTool.FeatureUgc,
     );
 
     mergedParamMap$(this.route)

@@ -11,7 +11,8 @@ import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { WoodstockConsoleDetailsEntry } from '@models/woodstock';
 import { SunriseConsoleDetailsEntry } from '@models/sunrise';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
-import { PermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 type ConsoleActionMonitors = {
   banActionMonitor: ActionMonitor;
@@ -40,6 +41,8 @@ export abstract class ConsolesBaseComponent<T extends ConsoleDetailsTitleIntersp
   public columnsToDisplay = ['isBanned', 'consoleId', 'deviceType', 'actions'];
   public getConsoles = new ActionMonitor('Get consoles');
 
+  public readonly permAttribute = PermAttributeName.BanConsole;
+
   public abstract gameTitle: GameTitle;
   public abstract supportsConsoleBanning: boolean;
 
@@ -65,7 +68,7 @@ export abstract class ConsolesBaseComponent<T extends ConsoleDetailsTitleIntersp
     // Ignore permission service if disabled input is set to true
     this.disabled =
       this.disabled ||
-      !this.permissionsService.currentUserHasWritePermission(PermissionServiceTool.ConsoleBan);
+      !this.permissionsService.currentUserHasWritePermission(OldPermissionServiceTool.ConsoleBan);
 
     this.getConsoles = this.getConsoles.repeat();
     const getConsoleDetailsByXuid$ = this.getConsoleDetailsByXuid$(this.identity.xuid);
