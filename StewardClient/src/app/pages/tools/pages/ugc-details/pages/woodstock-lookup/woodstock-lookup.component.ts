@@ -252,7 +252,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     this.cloneMonitor = this.cloneMonitor.repeat();
 
     this.service
-      .cloneUgc$(this.ugcItem.id)
+      .cloneUgc$(this.ugcItem.id, this.ugcItem.type)
       .pipe(this.cloneMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(r => {
         debugger;

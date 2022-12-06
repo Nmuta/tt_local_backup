@@ -561,10 +561,14 @@ export class WoodstockService {
 
 
   /** Persist UGC item to the system user. */
-  public cloneUgc$(ugcId: string): Observable<unknown> {
+  public cloneUgc$(ugcId: string, contentType: UgcType): Observable<unknown> {
     return this.apiService.postRequest$<unknown>(
       `${this.basePathV2}/ugc/${ugcId}/clone`,
-      null,
+      {
+        contentType,
+        keepGuid: true,
+        isSearchable: false,
+      },
     );
   }
 
