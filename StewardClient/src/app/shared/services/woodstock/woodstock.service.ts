@@ -553,23 +553,16 @@ export class WoodstockService {
 
   /** Persist UGC item to the system user. */
   public persistUgc$(ugcId: string): Observable<unknown> {
-    return this.apiService.postRequest$<unknown>(
-      `${this.basePathV2}/ugc/${ugcId}/persist`,
-      null,
-    );
+    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/persist`, null);
   }
-
 
   /** Persist UGC item to the system user. */
   public cloneUgc$(ugcId: string, contentType: UgcType): Observable<unknown> {
-    return this.apiService.postRequest$<unknown>(
-      `${this.basePathV2}/ugc/${ugcId}/clone`,
-      {
-        contentType,
-        keepGuid: true,
-        isSearchable: false,
-      },
-    );
+    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
+      contentType,
+      keepGuid: true,
+      isSearchable: false,
+    });
   }
 
   /** Gets player UGC items by share code. */

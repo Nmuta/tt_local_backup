@@ -13,7 +13,7 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Add Clone and Persist buttons to UGC Details view',
       longText: [
         'Persist duplicates the item on the System user (ID 1) in the current Endpoint set (Studio/Retail)',
-        'Clone duplicates an item on the Retail endpoint to the System user (ID 1) on the Studio endpoint. IsSearchable and KeepGuid are both set to false.'
+        'Clone duplicates an item on the Retail endpoint to the System user (ID 1) on the Studio endpoint. IsSearchable and KeepGuid are both set to false.',
       ],
     },
     {

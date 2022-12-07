@@ -5,7 +5,6 @@ import { Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 
 /** Available tools that have restricted write permissions. */
-
 export enum OldPermissionServiceTool {
   SetUserFlags,
   ConsoleBan,
@@ -15,7 +14,7 @@ export enum OldPermissionServiceTool {
   SetUgcGeoFlags,
   Unban,
   CloneUgc,
-  PersistUgc
+  PersistUgc,
 }
 
 /** Client permission service. */

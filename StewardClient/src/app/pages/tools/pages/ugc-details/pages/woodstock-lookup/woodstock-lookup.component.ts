@@ -32,13 +32,6 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
-interface Permissions {
-  write: boolean;
-  geoFlags: boolean;
-  feature: boolean;
-  hide: boolean;
-}
-
 /** Routed component that displays details about a woodstock UGC item. */
 @Component({
   templateUrl: './woodstock-lookup.component.html',
@@ -250,9 +243,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     this.service
       .persistUgc$(this.ugcItem.id)
       .pipe(this.persistMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(r => {
-        debugger;
-      });
+      .subscribe();
   }
 
   /** Persist a UGC item to the system user in Woodstock */
@@ -265,8 +256,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     this.service
       .cloneUgc$(this.ugcItem.id, this.ugcItem.type)
       .pipe(this.cloneMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(r => {
-        debugger;
-      });
+      .subscribe();
   }
 }
