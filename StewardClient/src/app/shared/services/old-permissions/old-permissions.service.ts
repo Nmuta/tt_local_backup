@@ -65,13 +65,13 @@ export class OldPermissionsService {
     ],
     [OldPermissionServiceTool.CloneUgc]: [
       UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
+      UserRole.GeneralUser,
+      UserRole.HorizonDesigner,
     ],
     [OldPermissionServiceTool.PersistUgc]: [
       UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
+      UserRole.GeneralUser,
+      UserRole.HorizonDesigner,
     ],
   };
 

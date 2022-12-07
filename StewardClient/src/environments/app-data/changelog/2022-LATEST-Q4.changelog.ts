@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '09abf5d9-5e1f-427d-ba0c-e16f9e2f5d3e',
+      shortText: 'Add Clone and Persist buttons to UGC Details view',
+      longText: [
+        'Persist duplicates the item on the System user (ID 1) in the current Endpoint set (Studio/Retail)',
+        'Clone duplicates an item on the Retail endpoint to the System user (ID 1) on the Studio endpoint. IsSearchable and KeepGuid are both set to false.'
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
       shortText: 'Setup auth V2 attributes on all Steward actions',
