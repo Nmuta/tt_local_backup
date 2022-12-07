@@ -80,16 +80,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             }
 
             var liveOps = this.WoodstockServices.Value.LiveOpsService;
-            await liveOps
+            var result = await liveOps
                 .CloneUgcFile(
                     ugcId,
-                    null,
+                    string.Empty,
                     configuration.ContentType.Value,
                     configuration.IsSearchable.Value,
                     configuration.KeepGuid.Value)
                 .ConfigureAwait(true);
 
-            return this.Ok();
+            // TODO: Clean up this output model.
+            return this.Ok(result);
         }
 
         public class CloneConfigurationModel

@@ -27,8 +27,23 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// </summary>
         Task<GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
 
-        Task PersistUgcFile(Guid fileId);
+        /// <summary>
+        ///     Persist is a mechanism to allow Community to save a player UGC file for later user. Instead of pointing
+        ///     to a file that could get deleted by the player the contents are copied to a new UGC entry and added
+        ///     under the system PG user (xuid = 1).
+        /// </summary>
+        /// <param name="fileId">File to persist</param>
+        Task<PersistUgcFileOutput> PersistUgcFile(Guid fileId);
 
-        Task CloneUgcFile(Guid fileId, string shareCode, ForzaUGCContentType contentType, bool isSearchable, bool keepGuid);
+        /// <summary>
+        ///     Clone UGC File from an environment.
+        ///     Provide a UGC Guid OR the Share Code and File Type. If you specify both, the Share Code will be used.
+        /// </summary>
+        /// <param name="fileId">UGC file Id</param>
+        /// <param name="shareCode">File share code</param>
+        /// <param name="contentType">type of file</param>
+        /// <param name="isSearchable">if the new file will be searchable or not</param>
+        /// <param name="keepGuid">keep the same fileId or not</param>
+        Task<CloneUgcFileOutput> CloneUgcFile(Guid fileId, string shareCode, ForzaUGCContentType contentType, bool isSearchable, bool keepGuid);
     }
 }

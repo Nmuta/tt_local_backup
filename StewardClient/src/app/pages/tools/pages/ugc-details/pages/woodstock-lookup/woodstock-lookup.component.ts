@@ -76,6 +76,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public featurePermAttribute = PermAttributeName.FeatureUgc;
   public reportPermAttribute = PermAttributeName.ReportUgc;
   public hidePermAttribute = PermAttributeName.HideUgc;
+  public clonePermAttribute = PermAttributeName.CloneUgc;
+  public persistPermAttribute = PermAttributeName.PersistUgc;
   public gameTitle = GameTitle.FH5;
 
   constructor(
@@ -94,12 +96,17 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       OldPermissionServiceTool.FeatureUgc,
     );
 
-    this.canChangeGeoFlags = !this.permissionsService.currentUserHasWritePermission(
+    this.canChangeGeoFlags = this.permissionsService.currentUserHasWritePermission(
       OldPermissionServiceTool.SetUgcGeoFlags,
     );
 
-    this.canPersistUgc = true;
-    this.canCloneUgc = true;
+    this.canCloneUgc = this.permissionsService.currentUserHasWritePermission(
+      OldPermissionServiceTool.CloneUgc,
+    );
+
+    this.canPersistUgc = this.permissionsService.currentUserHasWritePermission(
+      OldPermissionServiceTool.PersistUgc,
+    );
 
     mergedParamMap$(this.route)
       ?.pipe(

@@ -24,6 +24,8 @@ export enum PermAttributeName {
   ServicesFeature = 'ServicesFeature',
   SetReportWeight = 'SetReportWeight',
   SetUgcGeoFlag = 'SetUgcGeoFlag',
+  CloneUgc = 'CloneUgc',
+  PersistUgc = 'PersistUgc',
   UnhideUgc = 'UnhideUgc',
   UpdateAuctionBlocklist = 'UpdateAuctionBlocklist',
   UpdateObligationPipeline = 'UpdateObligationPipeline',
@@ -31,7 +33,7 @@ export enum PermAttributeName {
   UpdateUserGroup = 'UpdateUserGroup',
   UpdateUserFlags = 'UpdateUserFlags',
   UpdateMessageOfTheDay = 'UpdateMessageOfTheDay',
-  UpdateWelcomeCenterTiles = 'UpdateWelcomeCenterTiles',
+  UpdateWelcomeCenterTiles = 'UpdateWelcomeCenterTiles'
 }
 
 /** Full perm attribute details. */

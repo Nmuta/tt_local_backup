@@ -61,9 +61,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             }
 
             var liveOps = this.WoodstockServices.Value.LiveOpsService;
-            await liveOps.PersistUgcFile(ugcId).ConfigureAwait(true);
+            var result = await liveOps.PersistUgcFile(ugcId).ConfigureAwait(true);
 
-            return this.Ok();
+            // TODO: Clean up this output model.
+            return this.Ok(result);
         }
     }
 }
