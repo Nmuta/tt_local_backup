@@ -29,6 +29,7 @@ export enum UgcAccessLevel {
 export enum UgcType {
   Unknown = 'Unknown',
   Livery = 'Livery',
+  LayerGroup = 'LayerGroup',
   Photo = 'Photo',
   Tune = 'Tune',
   EventBlueprint = 'EventBlueprint',
@@ -55,6 +56,7 @@ export const DefaultUgcFilters: UgcFilters = {
 /** Default values for UgcFilters. */
 export const WoodstockSupportedUgcTypes = [
   UgcType.Livery,
+  UgcType.LayerGroup,
   UgcType.Photo,
   UgcType.Tune,
   UgcType.EventBlueprint,

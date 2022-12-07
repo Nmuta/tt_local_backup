@@ -90,6 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
+                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, ServicesLiveOpsFH5.StorefrontManagementService.GetUGCLiveryOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH5.ForzaUGCContentType.Livery,
@@ -115,6 +116,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge,
                     (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
                     item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, SubmoduleFH5.LiveOpsService.GetUGCCommunityChallengeOutput>(
+                    shareCodeOrId,
+                    ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup,
+                    (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
+                    item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
             };
 
             var fh4Lookups = new[]

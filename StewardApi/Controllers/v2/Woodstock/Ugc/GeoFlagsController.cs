@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 
             var typedGeoFlags = geoFlags.Cast<int>().ToArray();
 
-            var storefront = this.WoodstockServices.Value.Storefront;
+            var storefront = this.WoodstockServices.Value.StorefrontManagement;
             await storefront.SetUGCGeoFlag(ugcId, typedGeoFlags).ConfigureAwait(true);
 
             return this.Ok();

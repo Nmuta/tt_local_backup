@@ -18,6 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         Task<StorefrontManagementService.GetUGCLiveryOutput> GetUGCLivery(
             Guid id);
 
+        /// <summary>
+        ///     Gets base UGC data.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCObjectOutput> GetUGCObject(Guid id);
+
         Task SetUGCGeoFlag(Guid id, int[] geoFlags);
 
         /// <summary>

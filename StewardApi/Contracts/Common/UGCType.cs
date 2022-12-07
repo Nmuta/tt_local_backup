@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -19,6 +20,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Livery UGC item type.
         /// </summary>
         Livery = 1,
+
+        /// <summary>
+        ///     Layer group UGC item type.
+        /// </summary>
+        LayerGroup = 2,
 
         /// <summary>
         ///     Tune UGC item type.
