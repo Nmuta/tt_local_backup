@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
             bool Equals(string str, string attr)
             {
-                return str.Equals(attr, StringComparison.OrdinalIgnoreCase);
+                return str?.Equals(attr, StringComparison.OrdinalIgnoreCase) == true;
             }
 
             bool EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
