@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets current Welcome Center configuration.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
+        [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration()
         {
             var welcomeCenterData = System.IO.File.ReadAllText(".\\Contracts\\Steelhead\\WelcomeCenter\\TestData\\LiveOps_WorldOfForzaConfigV3.json");

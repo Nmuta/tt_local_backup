@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'a849e488-97b9-4cbd-ad50-a947ee5294fb',
+      shortText: 'Add new tool to manage Welcome Center tile detail',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
       shortText: 'Setup auth V2 attributes on all Steward actions',
