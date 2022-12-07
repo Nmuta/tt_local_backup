@@ -129,6 +129,9 @@
                 monitorCompleteSnackbar
                 [disabled]="!canPersistUgc"
               >
+                <help-popover-icon cardTitle="Persist UGC">
+                  <p>Persisted UGC is duplicated on the System user (ID 1 in FH5).</p>
+                </help-popover-icon>
                 Persist UGC
               </button>
               <mat-checkbox #verifyPersist matTooltip="Verify Persist">Verify</mat-checkbox>
@@ -149,6 +152,13 @@
                 monitorCompleteSnackbar
                 [disabled]="!canCloneUgc"
               >
+                <help-popover-icon cardTitle="Persist UGC">
+                  <p>Cloned UGC is duplicated on the System user (ID 1 for FH5) in Studio.</p>
+                  <p>
+                    There are two other options available: KeepGuid and IsSearchable.
+                    These are not exposed here yet. Both are left off.</p>
+                  <p>After the operation completes, the content will be visible on the Studio endpoints.</p>
+                </help-popover-icon>
                 Clone UGC
               </button>
               <mat-checkbox #verifyClone matTooltip="Verify Clone">Verify</mat-checkbox>
