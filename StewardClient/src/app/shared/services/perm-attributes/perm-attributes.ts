@@ -24,6 +24,8 @@ export enum PermAttributeName {
   ServicesFeature = 'ServicesFeature',
   SetReportWeight = 'SetReportWeight',
   SetUgcGeoFlag = 'SetUgcGeoFlag',
+  CloneUgc = 'CloneUgc',
+  PersistUgc = 'PersistUgc',
   UnhideUgc = 'UnhideUgc',
   UpdateAuctionBlocklist = 'UpdateAuctionBlocklist',
   UpdateObligationPipeline = 'UpdateObligationPipeline',

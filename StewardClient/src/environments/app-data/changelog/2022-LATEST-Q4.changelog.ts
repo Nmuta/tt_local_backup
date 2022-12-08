@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '09abf5d9-5e1f-427d-ba0c-e16f9e2f5d3e',
+      shortText: 'Add Clone and Persist buttons to UGC Details view',
+      longText: [
+        'Persist duplicates the item on the System user (ID 1) in the current Endpoint set (Studio/Retail)',
+        'Clone duplicates an item on the Retail endpoint to the System user (ID 1) on the Studio endpoint. IsSearchable and KeepGuid are both set to false.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: 'a849e488-97b9-4cbd-ad50-a947ee5294fb',
       shortText: 'Add new tool to manage Welcome Center tile detail',
