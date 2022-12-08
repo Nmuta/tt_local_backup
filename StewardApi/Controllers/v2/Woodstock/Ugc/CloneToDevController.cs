@@ -26,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     /// <summary>
     ///     Handles GeoFlags requests for Woodstock.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/ugc")]
+    [Route("api/v{version:apiVersion}/title/woodstock/ugc/{id}/clone")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [AuthorizeRoles(
         UserRole.GeneralUser,
@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         /// </summary>
         /// <param name="id">The id from a Retail environment.</param>
         /// <param name="configuration">The configuration to produce the clone with.</param>
-        [HttpPost("{id}/clone")]
+        [HttpPost]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]
