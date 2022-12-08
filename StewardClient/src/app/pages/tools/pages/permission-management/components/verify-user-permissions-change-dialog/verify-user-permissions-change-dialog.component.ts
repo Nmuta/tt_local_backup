@@ -77,7 +77,9 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
       )
       .subscribe(() => {
         this.dialogRef.disableClose = false;
-        this.dialogRef.close();
+
+        // TODO: It looks like `true` here is a value to return to the dialog opener, in which case it should be an object and never a simple type. Primarily for readability, but also so extensibility isn't a large quest
+        this.dialogRef.close(true);
       });
   }
 

@@ -14,6 +14,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: 'ad6b3b4a-0625-4087-ab1e-ba428cfce8a9',
+      shortText: 'Add ability to clone auth v2 perms + small bug fixes',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
       shortText: 'Setup auth V2 attributes on all Steward actions',
     },

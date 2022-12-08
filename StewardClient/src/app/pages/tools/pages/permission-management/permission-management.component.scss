@@ -9,20 +9,15 @@
   width: 100%;
   display: flex;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
-  > div {
-    flex: 1;
-    min-width: 0;
+  .user-info {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-    &.selected-icon {
-      max-width: $mat-icon-width;
+    .name {
+      font-size: 18px;
     }
-  }
-
-  .name {
-    font-size: 18px;
   }
 }
 

@@ -37,12 +37,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Ensures user updated.
         /// </summary>
-        Task EnsureStewardUserAsync(StewardUser user);
+        Task EnsureStewardUserAsync(StewardClaimsUser user);
 
         /// <summary>
         ///     Ensures user updated.
         /// </summary>
-        Task EnsureStewardUserAsync(string id, string name, string email, string role, string attributes);
+        Task EnsureStewardUserAsync(string id, string name, string email, string role);
 
         /// <summary>
         ///     Gets all Steward users.

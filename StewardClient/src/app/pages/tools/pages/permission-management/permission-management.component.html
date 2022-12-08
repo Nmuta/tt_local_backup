@@ -25,12 +25,32 @@
           <ng-container *ngFor="let user of filteredUsers">
             <mat-divider></mat-divider>
             <div class="user-container" (click)="selectUserToManage$.next(user)">
-              <div class="selected-icon">
-                <mat-icon *ngIf="user.objectId === selectedUserId; else notSelectedCheckboxTemplate"
-                  >check_box</mat-icon
-                >
-              </div>
               <div>
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="userActionMenu"
+                  aria-label="Possible user actions"
+                  clickStop
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #userActionMenu="matMenu">
+                  <button
+                    [disabled]="!isUserSelected"
+                    mat-menu-item
+                    (click)="clonePermissions(user)"
+                  >
+                    Clone permissions to active user
+                  </button>
+                </mat-menu>
+                <button mat-icon-button aria-label="Select or unselect a user">
+                  <mat-icon
+                    *ngIf="user.objectId === selectedUserId; else notSelectedCheckboxTemplate"
+                    >check_box</mat-icon
+                  >
+                </button>
+              </div>
+              <div class="user-info">
                 <span class="name">{{ user.name }}</span
                 ><br />
                 <span class="email">{{ user.emailAddress }}</span>

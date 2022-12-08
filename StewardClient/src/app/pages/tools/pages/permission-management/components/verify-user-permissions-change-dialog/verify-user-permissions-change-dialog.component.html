@@ -32,7 +32,7 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="null">Go Back</button>
+  <button mat-button [mat-dialog-close]="false">Go Back</button>
   <button
     mat-raised-button
     color="primary"
@@ -40,8 +40,8 @@
     cdkFocusInitial
     (click)="saveUpdatedPermissions()"
   >
-    <button-spinner [monitor]="savePermissionsMonitor" defaultIcon="save"></button-spinner>
     Save Permissions
+    <button-spinner [monitor]="savePermissionsMonitor" defaultIcon="save"></button-spinner>
   </button>
   <mat-checkbox #verifySave matTooltip="Verify changes" aria-label="Verify changes"
     >Verify</mat-checkbox
