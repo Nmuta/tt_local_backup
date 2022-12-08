@@ -160,6 +160,12 @@
           <ng-container matColumnDef="score">
             <th mat-header-cell *matHeaderCellDef>Score</th>
             <td mat-cell *matCellDef="let entry">
+              <standard-flag
+                *ngIf="leaderboard.query.scoreTypeId.isEqualTo(leaderboardScoreTypeLaptime)"
+                [value]="entry.isClean"
+                matTooltip="Is Score clean?"
+                >Clean</standard-flag
+              >
               <div>
                 <b>{{ entry.score.toNumber() | number: '1.2-2' }}</b> {{ scoreTypeQualifier }}
               </div>

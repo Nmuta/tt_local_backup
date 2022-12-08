@@ -32,6 +32,7 @@ import {
   generateLeaderboardMetadataString,
   getDeviceTypesFromQuery,
   getLspEndpointFromLeaderboardEnvironment,
+  LeaderboardScoreType,
 } from '@models/leaderboards';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -147,6 +148,7 @@ export class LeaderboardScoresComponent
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
   public matCardSubtitle = this.matCardSubtitleDefault;
+  public leaderboardScoreTypeLaptime = LeaderboardScoreType.Laptime;
 
   /** Paginator jump form controls. */
   public jumpFormControls = {
