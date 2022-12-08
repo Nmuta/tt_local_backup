@@ -134,7 +134,14 @@
                 </help-popover-icon>
                 Persist UGC
               </button>
-              <mat-checkbox #verifyPersist matTooltip="Verify Persist">Verify</mat-checkbox>
+              <mat-checkbox
+                #verifyPersist
+                matTooltip="Verify Persist"
+                stateManager
+                [permissionAttribute]="persistPermAttribute"
+                [permissionTitle]="gameTitle"
+                >Verify</mat-checkbox
+              >
             </div>
 
             <div class="sf-horizontal">
@@ -165,7 +172,14 @@
                 </help-popover-icon>
                 Clone UGC
               </button>
-              <mat-checkbox #verifyClone matTooltip="Verify Clone">Verify</mat-checkbox>
+              <mat-checkbox
+                #verifyClone
+                matTooltip="Verify Clone"
+                stateManager
+                [permissionAttribute]="clonePermAttribute"
+                [permissionTitle]="gameTitle"
+                >Verify</mat-checkbox
+              >
             </div>
           </div>
         </div>

@@ -560,8 +560,8 @@ export class WoodstockService {
   public cloneUgc$(ugcId: string, contentType: UgcType): Observable<unknown> {
     return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
       contentType,
-      keepGuid: true,
-      isSearchable: false,
+      keepGuid: true, // admin pages default was true
+      isSearchable: true, // admin pages default was true
     });
   }
 
