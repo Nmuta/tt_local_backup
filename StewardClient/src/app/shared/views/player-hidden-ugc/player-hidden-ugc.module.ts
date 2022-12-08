@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /**
  *  A feature module for retrieving and displaying a player's hidden UGC.
@@ -39,6 +40,7 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
     MatIconModule,
     MatTooltipModule,
     VerifyCheckboxModule,
+    PermissionsModule,
   ],
   exports: [
     HiddenUgcTableComponent,

@@ -45,7 +45,7 @@ mat-spinner.force-inline-2x {
 .mat-raised-button,
 .mat-flat-button {
   mat-spinner {
-    position: relative;
-    top: 0.3em;
+    display: inline-flex;
+    vertical-align: middle;
   }
 }

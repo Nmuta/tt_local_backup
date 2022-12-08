@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DateTimeRange } from '@models/datetime-range';
+import { WelcomeCenterTileSize } from '@models/welcome-center';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
@@ -32,12 +33,6 @@ export type Condition =
   | PreviousUiSceneCondition
   | SessionsCondition;
 
-/** Values capitalized to match Pegasus response */
-export enum WelcomeCenterTileSize {
-  Medium = 'Medium',
-  Large = 'Large',
-}
-
 export enum WelcomeCenterColumn {
   Left = 'left',
   Center = 'center',
@@ -63,7 +58,7 @@ export interface WelcomeCenter {
   right: WelcomeCenterTile[];
 }
 
-/** The /v2/steelhead/usergroup endpoints. */
+/** The /v2/steelhead/welcomeCenter endpoints. */
 @Injectable({
   providedIn: 'root',
 })

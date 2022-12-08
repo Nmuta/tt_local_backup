@@ -56,3 +56,8 @@ export function getMessagingRoute(gameTitle: GameTitle) {
 export function getMessageOfTheDayRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.MessageOfTheDay, gameTitle);
 }
+
+/** Make welcome center tiles route. */
+export function getWelcomeCenterTilesRoute(gameTitle: GameTitle) {
+  return getComponentBaseRoute(NavbarTool.WelcomeCenterTiles, gameTitle);
+}

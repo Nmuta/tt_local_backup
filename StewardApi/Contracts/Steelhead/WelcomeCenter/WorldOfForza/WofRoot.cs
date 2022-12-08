@@ -32,6 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [PegEdit]
         public string FriendlyName { get; set; }
 
+        [PegEdit]
         public string Size { get; set; }
 
         public WofTimer Timer { get; set; }
@@ -45,8 +46,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [PegEdit]
         public LocTextWof TileTitle { get; set; }
 
+        [PegEdit]
         public LocTextWof TileType { get; set; }
 
+        [PegEdit]
         public LocTextWof TileDescription { get; set; }
 
         [PegEdit]

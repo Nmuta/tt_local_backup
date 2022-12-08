@@ -99,7 +99,14 @@
               >
                 Unhide UGC
               </button>
-              <mat-checkbox clickStop #verifyUnhide matTooltip="Check to enable unhide UGC">
+              <mat-checkbox
+                clickStop
+                #verifyUnhide
+                stateManager
+                [permissionAttribute]="unhidePermAttribute"
+                [permissionTitle]="gameTitle"
+                matTooltip="Check to enable unhide UGC"
+              >
                 Verify
               </mat-checkbox>
             </div>

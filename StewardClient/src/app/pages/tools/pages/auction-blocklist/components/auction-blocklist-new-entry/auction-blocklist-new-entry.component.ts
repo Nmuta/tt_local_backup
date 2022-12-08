@@ -11,6 +11,7 @@ import BigNumber from 'bignumber.js';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { AuctionBlocklistNewEntryService } from './auction-blocklist-new-entry.service';
 import { renderDelay } from '@helpers/rxjs';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /**
  *  Auction blocklist new entry component.
@@ -41,6 +42,8 @@ export class AuctionBlocklistNewEntryComponent extends BaseComponent implements 
   public formGroup = new FormGroup(this.formControls);
 
   public postMonitor: ActionMonitor = new ActionMonitor('INPUT POST');
+
+  public readonly updatePermAttribute = PermAttributeName.UpdateAuctionBlocklist;
 
   /** Gets the game title. */
   public get gameTitle(): GameTitle {

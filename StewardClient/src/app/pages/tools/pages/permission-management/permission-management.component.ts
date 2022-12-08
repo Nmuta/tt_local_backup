@@ -177,8 +177,8 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
       .pipe(debounceTime(HCI.TypingToAutoSearchDebounceMillis), takeUntil(this.onDestroy$))
       .subscribe(value => {
         let users = cloneDeep(this.allUsers);
-        const filterValue = value.toLowerCase().trim();
-        if (filterValue.length > 0) {
+        const filterValue = value?.toLowerCase()?.trim();
+        if (!!filterValue && filterValue.length > 0) {
           users = users.filter(
             user =>
               user.name.toLowerCase().includes(filterValue) ||
@@ -202,7 +202,33 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
         user: this.selectedUser,
       } as VerifyUserPermissionChangeDialogData,
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe();
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((didSave: boolean) => {
+        if (didSave) {
+          this.selectedUserHasPermChanges = false;
+          this.selectedUser.attributes = updatedPerms;
+          const foundUser = find(
+            this.allUsers,
+            user => user.objectId == this.selectedUser.objectId,
+          );
+          if (!!foundUser) {
+            foundUser.attributes = updatedPerms;
+          }
+          this.nameFilterFormControl.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+        }
+      });
+  }
+
+  /** Clones a user's permissions into the active mat tree */
+  public clonePermissions(user: UserModelWithPermissions): void {
+    if (!this.selectedUser) {
+      return;
+    }
+
+    this.selectedUserHasPermChanges = true;
+    this.setTreesSelectedAttributes(user.attributes);
   }
 
   /** Sets the attribute key to current user perms. */
@@ -272,9 +298,9 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
       .getAllStewardUsers$()
       .pipe(this.getUsersActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(users => {
-        const nonAdminUsers = users.filter(user => user.role !== UserRole.LiveOpsAdmin);
+        const generalUsers = users.filter(user => user.role === UserRole.GeneralUser);
 
-        this.allUsers = sortBy(nonAdminUsers, user => {
+        this.allUsers = sortBy(generalUsers, user => {
           return user.name;
         }) as UserModelWithPermissions[];
 
