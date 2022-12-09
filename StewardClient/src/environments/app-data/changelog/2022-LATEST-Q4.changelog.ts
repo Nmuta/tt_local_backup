@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UgcDetails },
+      uuid: '2c1d03d9-5212-4127-8194-5e4adb6c9dbd',
+      shortText: 'More visibility on why Hide UGC is disabled on Private UGC',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '09abf5d9-5e1f-427d-ba0c-e16f9e2f5d3e',
       shortText: 'Add Clone and Persist buttons to UGC Details view',
