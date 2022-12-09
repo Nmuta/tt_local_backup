@@ -59,6 +59,9 @@
                 monitorCompleteSnackbar
                 [disabled]="!canHideUgc"
               >
+                <help-popover-icon *ngIf="!ugcItem?.isPublic" cardTitle="Hide UGC">
+                  <p class="sf-text-warn">This item is private and cannot be hidden.</p>
+                </help-popover-icon>
                 Hide UGC
               </button>
               <mat-checkbox
@@ -67,6 +70,7 @@
                 [permissionAttribute]="hidePermAttribute"
                 [permissionTitle]="gameTitle"
                 matTooltip="Verify Deletion"
+                [disabled]="!canHideUgc"
                 >Verify</mat-checkbox
               >
             </div>
