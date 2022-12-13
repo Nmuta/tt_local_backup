@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             try
             {
                 results = await this.woodstockService.SearchUgcContentAsync(filters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
-            } 
+            }
             catch (Exception ex)
             {
                 throw new LspFailureStewardException($"Failed to search ugc. (type: {ugcType}) (filters: {filters})", ex);
