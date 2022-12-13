@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'ed929ef5-2241-414c-b115-e822ce81a8b5',
+      shortText: 'Add icon to represent if a laptime type score is clean',
+    },
+    {
       tag: { title: [GameTitle.FM7], tool: NavbarTool.UserBanning },
       uuid: '88e5c512-cab4-48d7-8d07-68bfd54e7209',
       shortText: 'Fix Apollo User Banning tool',
