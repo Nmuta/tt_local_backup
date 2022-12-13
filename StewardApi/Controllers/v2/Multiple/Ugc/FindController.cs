@@ -23,6 +23,7 @@ using ServicesLiveOpsFH4 = Forza.LiveOps.FH4.Generated;
 using ServicesLiveOpsFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 using ServicesLiveOpsFM8 = Turn10.Services.LiveOps.FM8.Generated;
 using SubmoduleFH5 = Forza.WebServices.FH5_main.Generated;
+using T10SubmoduleFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
 {
@@ -60,6 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get(string shareCodeOrId)
         {
+            var fh5StorefrontService = this.WoodstockServices.Value.StorefrontManagement;
             var fm8StorefrontService = this.SteelheadServices.Value.StorefrontManagementService;
             var fm8Lookups = new[]
             {
@@ -116,11 +118,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge,
                     (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
                     item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, SubmoduleFH5.LiveOpsService.GetUGCCommunityChallengeOutput>(
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, T10SubmoduleFH5.StorefrontManagementService.GetUGCLayerGroupOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup,
-                    (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
+                    (id) => fh5StorefrontService.GetUGCLayerGroup(id),
+                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
             };
 
             var fh4Lookups = new[]

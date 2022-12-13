@@ -581,7 +581,7 @@ export class WoodstockService {
     }
 
     return this.apiService.getRequest$<WoodstockPlayerUgcItem>(
-      `${this.basePath}/storefront/${ugcType.toLowerCase()}(${id})`,
+      `${this.basePathV2}/ugc/${ugcType.toLowerCase()}/${id}`,
     );
   }
 

@@ -21,6 +21,12 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// </summary>
         Task<GetAdminUserInventoryOutput> GetAdminUserInventory(ulong xuid);
 
+        /// <summary>Gets a specific event blueprint.</summary>
+        Task<GetUGCEventBlueprintOutput> GetUGCEventBlueprint(Guid id);
+
+        /// <summary>Gets a specific community challenge.</summary>
+        Task<GetUGCCommunityChallengeOutput> GetUGCCommunityChallenge(Guid id);
+
         /// <summary>
         ///     Gets player inventory by profile id.
         /// </summary>

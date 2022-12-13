@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
@@ -18,16 +19,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
     /// </summary>
     public class V2ControllerBase : ControllerBase
     {
-        /// <summary>Gets or sets the (lazily) the Woodstock Endpoint passed to this call.</summary>
+        /// <summary>Gets the Mapper service.</summary>
+        protected IMapper Mapper => this.LazyMapper.Value;
+
+        /// <summary>Gets or sets (lazily) the Mapper service.</summary>
+        protected Lazy<IMapper> LazyMapper { get; set; }
+
+        /// <summary>Gets or sets (lazily) the Woodstock Endpoint passed to this call.</summary>
         protected Lazy<string> WoodstockEndpoint { get; set; }
 
-        /// <summary>Gets or sets the (lazily) the Sunrise Endpoint passed to this call.</summary>
+        /// <summary>Gets or sets (lazily) the Sunrise Endpoint passed to this call.</summary>
         protected Lazy<string> SunriseEndpoint { get; set; }
 
-        /// <summary>Gets or sets the (lazily) the Apollo Endpoint passed to this call.</summary>
+        /// <summary>Gets or sets (lazily) the Apollo Endpoint passed to this call.</summary>
         protected Lazy<string> ApolloEndpoint { get; set; }
 
-        /// <summary>Gets or sets the (lazily) the Steelhead Endpoint passed to this call.</summary>
+        /// <summary>Gets or sets (lazily) the Steelhead Endpoint passed to this call.</summary>
         protected Lazy<string> SteelheadEndpoint { get; set; }
 
         /// <summary>Gets (lazily) the Steelhead services.</summary>
@@ -45,6 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         /// <summary>Initializes a new instance of the <see cref="V2ControllerBase"/> class.</summary>
         protected V2ControllerBase()
         {
+            this.LazyMapper = new Lazy<IMapper>(() => this.HttpContext.RequestServices.GetService<IMapper>());
             this.SteelheadEndpoint = new Lazy<string>(() => this.GetSteelheadEndpoint());
             this.WoodstockEndpoint = new Lazy<string>(() => this.GetWoodstockEndpoint());
             this.SunriseEndpoint = new Lazy<string>(() => this.GetSunriseEndpoint());

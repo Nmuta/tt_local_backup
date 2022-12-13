@@ -760,15 +760,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
-            var ugcItems = getUgcItems.GetAwaiter().GetResult();
+            var ugCItems = getUgcItems.GetAwaiter().GetResult();
             var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
 
-            foreach (var item in ugcItems)
+            foreach (var item in ugCItems)
             {
                 item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
-            return this.Ok(ugcItems);
+            return this.Ok(ugCItems);
         }
 
         /// <summary>
