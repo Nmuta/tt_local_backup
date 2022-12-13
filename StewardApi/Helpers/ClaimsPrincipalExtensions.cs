@@ -7,14 +7,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// <summary>
     ///     Contains assorted extension methods for <see cref="ClaimsPrincipal"/>.
     /// </summary>
-    public static class ClaimPrincipalExtensions
+    public static class ClaimsPrincipalExtensions
     {
         /// <summary>
         ///     Generates a user model from claims principal.
         /// </summary>
-        public static StewardUser UserClaims(this ClaimsPrincipal user)
+        public static StewardClaimsUser UserClaims(this ClaimsPrincipal user)
         {
-            return new StewardUser
+            // TODO: this type should probably wrap the ClaimsPrincipal rather than constructing a POCO, or this method should be a static-type method ctor like StewardUser.FromClaims(...). Either option will lend itself to easier extensibility in the future
+            return new StewardClaimsUser
             {
                 ObjectId = user.HasClaimType("http://schemas.microsoft.com/identity/claims/objectidentifier")
                     ? user.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier")

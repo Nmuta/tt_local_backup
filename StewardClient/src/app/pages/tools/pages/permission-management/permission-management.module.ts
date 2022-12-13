@@ -29,6 +29,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VerifyUserSwitchDialogComponent } from './components/verify-user-switch-dialong/verify-user-switch-dialog.component';
 import { VerifyUserPermissionChangeDialogComponent } from './components/verify-user-permissions-change-dialog/verify-user-permissions-change-dialog.component';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
@@ -66,6 +68,8 @@ import { VerifyUserPermissionChangeDialogComponent } from './components/verify-u
     MatTreeModule,
     MatCheckboxModule,
     MatDialogModule,
+    DirectivesModule,
+    MatMenuModule,
   ],
   exports: [],
 })

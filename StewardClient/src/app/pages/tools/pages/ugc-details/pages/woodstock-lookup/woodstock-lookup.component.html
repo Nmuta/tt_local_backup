@@ -102,6 +102,9 @@
                 monitorCompleteSnackbar
                 [disabled]="!canHideUgc"
               >
+                <help-popover-icon *ngIf="!ugcItem?.isPublic" cardTitle="Hide UGC">
+                  <p class="sf-text-warn">This item is private and cannot be hidden.</p>
+                </help-popover-icon>
                 Hide UGC
               </button>
               <mat-checkbox
@@ -109,7 +112,76 @@
                 stateManager
                 [permissionAttribute]="hidePermAttribute"
                 [permissionTitle]="gameTitle"
+                [disabled]="!canHideUgc"
                 matTooltip="Verify Deletion"
+                >Verify</mat-checkbox
+              >
+            </div>
+
+            <div class="sf-horizontal">
+              <button
+                class="sf-action-list-margins sf-grow-1"
+                mat-raised-button
+                color="accent"
+                [verifyWith]="verifyPersist"
+                (click)="persistUgcItem()"
+                stateManager
+                [monitor]="persistMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+                [disabled]="!canPersistUgc"
+              >
+                <help-popover-icon cardTitle="Persist UGC">
+                  <p>Persisted UGC is duplicated on the System user (ID 1 in FH5).</p>
+                </help-popover-icon>
+                Persist UGC
+              </button>
+              <mat-checkbox
+                #verifyPersist
+                matTooltip="Verify Persist"
+                stateManager
+                [permissionAttribute]="persistPermAttribute"
+                [permissionTitle]="gameTitle"
+                >Verify</mat-checkbox
+              >
+            </div>
+
+            <div class="sf-horizontal">
+              <button
+                class="sf-action-list-margins sf-grow-1"
+                mat-raised-button
+                color="accent"
+                [verifyWith]="verifyClone"
+                (click)="cloneUgcItem()"
+                stateManager
+                [monitor]="cloneMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+                [disabled]="!canCloneUgc"
+              >
+                <help-popover-icon cardTitle="Clone UGC">
+                  <p>Cloned UGC is duplicated on the System user (ID 1 for FH5) in Studio.</p>
+                  <p>
+                    There are two other options available: KeepGuid and IsSearchable. These are not
+                    exposed here yet. Both are left off.
+                  </p>
+                  <p>
+                    After the operation completes, the content will be visible on the Studio
+                    endpoints.
+                  </p>
+                </help-popover-icon>
+                Clone UGC
+              </button>
+              <mat-checkbox
+                #verifyClone
+                matTooltip="Verify Clone"
+                stateManager
+                [permissionAttribute]="clonePermAttribute"
+                [permissionTitle]="gameTitle"
                 >Verify</mat-checkbox
               >
             </div>

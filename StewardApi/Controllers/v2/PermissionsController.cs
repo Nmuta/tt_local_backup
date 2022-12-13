@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Castle.Core.Internal;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -41,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
     [Route("api/v{version:apiVersion}/permissions")]
     [LogTagTitle(TitleLogTags.TitleAgnostic)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [Authorize]
     [ApiVersion("2.0")]
     [Tags(Title.Agnostic, Topic.StewardPermissions)]
     public sealed class PermissionsController : V2ControllerBase
@@ -68,6 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Gets full permissions list.
         /// </summary>
         [HttpGet]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Dictionary<string, IList<string>>))]
         public async Task<IActionResult> GetAllPermissionsAsync()
         {
@@ -153,6 +155,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Sets user permission attributes.
         /// </summary>
         [HttpPost("user/{userId}")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttribute>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
@@ -160,6 +163,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] IEnumerable<AuthorizationAttribute> attributes)
         {
+            // Throw if any attributes contain an null or empty string attribute name
+            attributes.ForEach(value =>
+            {
+                if (value.Attribute.IsNullOrEmpty())
+                {
+                    throw new BadRequestStewardException("Cannot assign permission attribute with a null or empty attribute name");
+                }
+            });
+
             var internalUser = await this.userProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
             if (internalUser == null)
             {
@@ -172,7 +184,5 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
 
             return await this.GetUserPermissionsAsync(userId).ConfigureAwait(true);
         }
-
-        
     }
 }

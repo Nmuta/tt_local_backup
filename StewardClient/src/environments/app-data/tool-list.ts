@@ -476,7 +476,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/car-details/car-details.module').then(
         m => m.CarDetailsModule,
       ),
-    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.MessageOfTheDay,
@@ -696,6 +695,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Web Services for CMS authoring, snapshotting and publishing',
     shortDescription: [`Web Services for CMS authoring, snapshotting and publishing`],
     externalUrl: 'https://cms.services.forzamotorsport.net/',
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoMultiExternal>{
     icon: AppIcon.DeveloperTool,

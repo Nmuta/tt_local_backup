@@ -145,26 +145,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task EnsureStewardUserAsync(StewardUser user)
+        public async Task EnsureStewardUserAsync(StewardClaimsUser user)
         {
-            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes)).ConfigureAwait(false);
+          // We shouldnt pass in the attributes from claim. it doesnt exist
+            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task EnsureStewardUserAsync(string id, string name, string email, string role, string attributes)
+        public async Task EnsureStewardUserAsync(string id, string name, string email, string role)
         {
             try
             {
                 var user = await this.GetStewardUserAsync(id).ConfigureAwait(false);
 
-                if (name != user.Name || email != user.EmailAddress || role != user.Role || attributes != user.Attributes)
+                if (name != user.Name || email != user.EmailAddress || role != user.Role)
                 {
-                    await this.UpdateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
+                    await this.UpdateStewardUserAsync(id, name, email, role, user.Attributes).ConfigureAwait(false);
                 }
             }
             catch
             {
-                await this.CreateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
+                await this.CreateStewardUserAsync(id, name, email, role, string.Empty).ConfigureAwait(false);
             }
         }
 
