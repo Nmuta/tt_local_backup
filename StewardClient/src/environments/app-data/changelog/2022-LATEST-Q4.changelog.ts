@@ -13,6 +13,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Add icon to represent if a laptime type score is clean',
     },
     {
+      tag: { title: [GameTitle.FM7], tool: NavbarTool.UserBanning },
+      uuid: '88e5c512-cab4-48d7-8d07-68bfd54e7209',
+      shortText: 'Fix Apollo User Banning tool',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UgcDetails },
       uuid: '2c1d03d9-5212-4127-8194-5e4adb6c9dbd',
       shortText: 'More visibility on why Hide UGC is disabled on Private UGC',

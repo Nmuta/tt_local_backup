@@ -94,7 +94,7 @@ describe('ApolloBanningComponent', () => {
         .and.returnValue(of({}));
     });
 
-    describe('When subscribing to the send gift observable', () => {
+    describe('When subscribing to the banning observable', () => {
       describe('And a BackgroundJob is returned', () => {
         const testBackgroundJobResp: BackgroundJob<BanResultsUnion[]> = {
           createdDateUtc: toDateTime(faker.date.past()),
