@@ -36,7 +36,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
   public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
-  public gameTitle = GameTitle.FH3;
+  public gameTitle = GameTitle.FM7;
 
   public identitySortFn$: (
     identities: AugmentedCompositeIdentity[],
