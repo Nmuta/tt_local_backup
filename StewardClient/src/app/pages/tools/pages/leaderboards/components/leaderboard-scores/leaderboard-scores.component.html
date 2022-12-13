@@ -164,7 +164,7 @@
                 *ngIf="leaderboard.query.scoreTypeId.isEqualTo(leaderboardScoreTypeLaptime)"
                 [value]="entry.isClean"
                 matTooltip="Is Score clean?"
-                >{{entry.isClean? 'Clean' : 'Dirty'}}</standard-flag
+                >{{ entry.isClean ? 'Clean' : 'Dirty' }}</standard-flag
               >
               <div>
                 <b>{{ entry.score.toNumber() | number: '1.2-2' }}</b> {{ scoreTypeQualifier }}
