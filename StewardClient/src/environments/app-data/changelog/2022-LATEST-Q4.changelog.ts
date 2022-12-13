@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'bf6eb59c-4976-4291-8076-2e12abb2117e',
+      shortText: 'Properly label speed scores as km/h and add MPH conversion',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: 'ed929ef5-2241-414c-b115-e822ce81a8b5',
       shortText: 'Add icon to represent if a laptime type score is clean',
     },
