@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Livery = 1,
 
         /// <summary>
-        ///     Layer group UGC item type.
+        ///     Layer group UGC item type. Also called Vinyls.
         /// </summary>
         LayerGroup = 2,
 

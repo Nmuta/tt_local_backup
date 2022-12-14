@@ -164,22 +164,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<UgcItem> GetUgcLayerGroupAsync(Guid layerGroupId, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            var communityChallengeOutput = await this.woodstockService.GetCommunityChallengeAsync(layerGroupId, endpoint).ConfigureAwait(false);
-            var communityChallenge = this.mapper.Map<WoodstockUgcItem>(communityChallengeOutput.communityChallengeData);
-
-            if (communityChallenge.GameTitle != (int)GameTitle.FH5)
-            {
-                throw new NotFoundStewardException($"Layer Group ID could not found: {layerGroupId}");
-            }
-
-            return communityChallenge;
-        }
-
-        /// <inheritdoc />
         public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
