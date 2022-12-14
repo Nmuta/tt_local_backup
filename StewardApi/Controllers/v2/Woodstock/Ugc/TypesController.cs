@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
 
@@ -127,6 +128,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var actionOutput = await action(idAsGuid).ConfigureAwait(true);
             var objectToMap = mappedObjectSelector(actionOutput);
             var result = this.Mapper.SafeMap<OutT>(objectToMap);
+            if (result.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"ID could not found: {id}");
+            }
 
             return this.Ok(result);
         }
@@ -153,6 +158,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var objectToMap = mappedObjectSelector(actionOutput);
             var result = this.Mapper.SafeMap<OutT>(objectToMap);
             var cars = getCars.GetAwaiter().GetResult();
+            if (result.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"ID could not found: {id}");
+            }
 
             var carData = cars.FirstOrDefault(car => car.Id == result.CarId);
             result.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";

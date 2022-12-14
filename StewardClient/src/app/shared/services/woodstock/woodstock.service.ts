@@ -588,7 +588,10 @@ export class WoodstockService {
     return this.apiService.getRequest$<SimpleCar[]>(`${this.basePath}/items/cars`, params);
   }
 
-  /** Gets a player's UGC item.  */
+  /**
+   * Gets a player's UGC item.
+   * @deprecated TODO: Endpoint has been ported to v2 and should ve moved to a api-v2/* service
+   */
   public getPlayerUgcItem$(id: string, ugcType: UgcType): Observable<WoodstockPlayerUgcItem> {
     if (ugcType === UgcType.Unknown) {
       throw new Error(`Invalid UGC item type for lookup: ${ugcType}}`);
