@@ -1,12 +1,13 @@
 <mat-toolbar>
   <a
-    *ngFor="let type of supportedTypes"
-    [routerLink]="['.', type.toLowerCase()]"
+    *ngFor="let entry of supportedTypes"
+    [routerLink]="['.', entry.ugcType.toLowerCase()]"
     mat-button
     routerLinkActive="mat-stroked-button"
-    [class.mat-button-disabled]="!hasTypeLookup[type]"
-    >{{ type | humanize }}</a
-  >
+    [class.mat-button-disabled]="!hasTypeLookup[entry.ugcType]"
+    >{{ entry.ugcType | humanize}}
+    <span class="alternate-name" *ngIf="entry.alternateName">{{ entry.alternateName }}</span>
+  </a>
   <span class="icon-spacer"></span>
   <inline-spinner [monitor]="sharedLookupService.getMonitor"></inline-spinner>
   <span class="spacer"></span>
