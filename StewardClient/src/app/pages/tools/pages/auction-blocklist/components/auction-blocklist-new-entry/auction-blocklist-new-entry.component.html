@@ -40,6 +40,8 @@
             aria-label="Update blocklist entry"
             clickStop
             stateManager
+            [permissionAttribute]="updatePermAttribute"
+            [permissionTitle]="gameTitle"
             [monitor]="postMonitor"
             monitorDisable
             monitorWarn

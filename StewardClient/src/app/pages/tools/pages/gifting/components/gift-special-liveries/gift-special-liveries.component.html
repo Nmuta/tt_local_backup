@@ -78,8 +78,6 @@
       mat-raised-button
       color="primary"
       stateManager
-      [permissionAttribute]="activePermAttribute"
-      [permissionTitle]="contract.gameTitle"
       [monitor]="sendGiftMonitor"
       [waitOnMonitors]="allMonitors"
       monitorDisable
@@ -93,6 +91,13 @@
       <span *ngIf="!usingPlayerIdentities"> To LSP Groups</span>
       <button-spinner [monitor]="sendGiftMonitor" defaultIcon="outgoing_mail"></button-spinner>
     </button>
-    <mat-checkbox #verifyGift matTooltip="Verify Gift">Verify Gift</mat-checkbox>
+    <mat-checkbox
+      #verifyGift
+      stateManager
+      [permissionAttribute]="activePermAttribute"
+      [permissionTitle]="contract.gameTitle"
+      matTooltip="Verify Gift"
+      >Verify Gift</mat-checkbox
+    >
   </mat-card-actions>
 </mat-card>

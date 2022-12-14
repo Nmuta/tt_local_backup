@@ -40,6 +40,7 @@ export enum NavbarTool {
   PermissionManagement = 'permission-management',
   StewardManagement = 'steward-management',
   MessageOfTheDay = 'message-of-the-day',
+  WelcomeCenterTiles = 'welcome-center-tiles',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -161,6 +162,7 @@ export enum AppIcon {
   PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
   MessageOfTheDay = 'waving_hand',
+  WelcomeCenterTile = 'grid_view',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -474,7 +476,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/car-details/car-details.module').then(
         m => m.CarDetailsModule,
       ),
-    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.MessageOfTheDay,
@@ -508,6 +509,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/notifications/notifications.module').then(
         m => m.NotificationsModule,
       ),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.WelcomeCenterTile,
+    tool: NavbarTool.WelcomeCenterTiles,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Welcome Center Tiles',
+    subtitle: 'Manage Welcome Center Tiles',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View and edit Welcome Center Tiles.',
+    shortDescription: [`View and edit Welcome Center Calendar Tile Details.`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/welcome-center-tiles/welcome-center-tiles.module').then(
+        m => m.WelcomeCenterTilesModule,
+      ),
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.Kusto,
@@ -678,6 +695,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Web Services for CMS authoring, snapshotting and publishing',
     shortDescription: [`Web Services for CMS authoring, snapshotting and publishing`],
     externalUrl: 'https://cms.services.forzamotorsport.net/',
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoMultiExternal>{
     icon: AppIcon.DeveloperTool,

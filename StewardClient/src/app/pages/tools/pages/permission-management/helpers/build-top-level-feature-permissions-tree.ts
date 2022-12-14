@@ -43,7 +43,7 @@ function generateTitleTreeNodes(
   return titles.map(title => {
     const environments = titleEnvironments[title];
     return {
-      attribute: undefined,
+      attribute: null,
       name: title,
       isChecked: false,
       children: generateEnvironmentTreeNodes(attributeName, title, environments),

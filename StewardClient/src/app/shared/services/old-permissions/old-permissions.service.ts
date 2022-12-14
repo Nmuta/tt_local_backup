@@ -13,6 +13,8 @@ export enum OldPermissionServiceTool {
   FeatureUgc,
   SetUgcGeoFlags,
   Unban,
+  CloneUgc,
+  PersistUgc,
 }
 
 /** Client permission service. */
@@ -59,6 +61,16 @@ export class OldPermissionsService {
       UserRole.LiveOpsAdmin,
       UserRole.SupportAgentAdmin,
       UserRole.SupportAgent,
+    ],
+    [OldPermissionServiceTool.CloneUgc]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.GeneralUser,
+      UserRole.HorizonDesigner,
+    ],
+    [OldPermissionServiceTool.PersistUgc]: [
+      UserRole.LiveOpsAdmin,
+      UserRole.GeneralUser,
+      UserRole.HorizonDesigner,
     ],
   };
 

@@ -32,6 +32,7 @@ import {
   generateLeaderboardMetadataString,
   getDeviceTypesFromQuery,
   getLspEndpointFromLeaderboardEnvironment,
+  LeaderboardScoreType,
 } from '@models/leaderboards';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -147,6 +148,7 @@ export class LeaderboardScoresComponent
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
   public matCardSubtitle = this.matCardSubtitleDefault;
+  public leaderboardScoreTypeLaptime = LeaderboardScoreType.Laptime;
 
   /** Paginator jump form controls. */
   public jumpFormControls = {
@@ -445,6 +447,7 @@ export class LeaderboardScoresComponent
           this.paginator.pageSize = this.leaderboard.query.ps;
         }
 
+        this.prepareAlternateScoreValues(this.allScores);
         this.setLeaderboardScoresData(this.allScores);
       });
   }
@@ -530,8 +533,33 @@ export class LeaderboardScoresComponent
 
   private setLeaderboardScoresData(scores: LeaderboardScore[]): void {
     this.leaderboardScores.data = scores;
+
     this.exportableScores = this.prepareExportableScores(scores);
     this.scoresAscendWithPosition = first(scores)?.score.isLessThanOrEqualTo(last(scores)?.score);
+  }
+
+  private prepareAlternateScoreValues(scores: LeaderboardScore[]): void {
+    switch (this.leaderboard.query.scoreTypeId.toNumber()) {
+      case LeaderboardScoreType.SpeedTrap:
+      case LeaderboardScoreType.AverageSpeedZone:
+        scores.forEach(entry => {
+          entry.alternateScoreRepresentations = entry.alternateScoreRepresentations ?? [];
+          entry.alternateScoreRepresentations.push({
+            label: 'mph',
+            value: entry.score.dividedBy(1.609344),
+          });
+        });
+        break;
+      case LeaderboardScoreType.DangerSign:
+        scores.forEach(entry => {
+          entry.alternateScoreRepresentations = entry.alternateScoreRepresentations ?? [];
+          entry.alternateScoreRepresentations.push({
+            label: 'feet',
+            value: entry.score.multipliedBy(3.281),
+          });
+        });
+        break;
+    }
   }
 
   private prepareExportableScores(scores: LeaderboardScore[]): string[][] {

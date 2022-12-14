@@ -551,6 +551,20 @@ export class WoodstockService {
     );
   }
 
+  /** Persist UGC item to the system user. */
+  public persistUgc$(ugcId: string): Observable<unknown> {
+    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/persist`, null);
+  }
+
+  /** Persist UGC item to the system user. */
+  public cloneUgc$(ugcId: string, contentType: UgcType): Observable<unknown> {
+    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
+      contentType,
+      keepGuid: true, // admin pages default was true
+      isSearchable: true, // admin pages default was true
+    });
+  }
+
   /** Gets player UGC items by share code. */
   public getPlayerUgcByShareCode$(
     shareCode: string,

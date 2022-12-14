@@ -6,7 +6,7 @@ import { CreateLocalizedStringContract } from '@components/localization/create-l
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { GameTitle } from '@models/enums';
 import { LocalizedStringData, LocalizedStringsMap } from '@models/localization';
-import { MessageOfTheDay, MessagesOfTheDayMap } from '@models/message-of-the-day';
+import { MessageOfTheDay, FriendlyNameMap } from '@models/message-of-the-day';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { SteelheadMessageOfTheDayService } from '@services/api-v2/steelhead/message-of-the-day/steelhead-message-of-the-day.service';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
@@ -27,7 +27,7 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   public submitMotdMonitor = new ActionMonitor('POST Message Of The Day');
   public localizationCreationServiceContract: CreateLocalizedStringContract;
   public localizationSelectServiceContract: SelectLocalizedStringContract;
-  public messageOfTheDayList: MessagesOfTheDayMap;
+  public friendlyNameList: FriendlyNameMap;
   public isInEditMode: boolean = false;
   public currentMessageOfTheDay: MessageOfTheDay;
   public pullRequestUrl: string;
@@ -71,8 +71,8 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.steelheadMessageOfTheDayService
       .getMessagesOfTheDay$()
       .pipe(this.getListActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(motdMap => {
-        this.messageOfTheDayList = motdMap;
+      .subscribe(friendlyNameMap => {
+        this.friendlyNameList = friendlyNameMap;
       });
   }
 

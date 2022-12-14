@@ -2,10 +2,12 @@ import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angu
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
+import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { pull } from 'lodash';
@@ -32,11 +34,13 @@ type HideableUgcTableEntries = HideableUgc & {
   styleUrls: ['./hidden-ugc-table.component.scss'],
 })
 export class HiddenUgcTableComponent extends BaseComponent implements OnChanges, OnInit {
-  /** REVIEW-COMMENT: The hidden UGC service. */
+  /** The hidden UGC service. */
   @Input() public service: HiddenUgcServiceContract;
-  /** REVIEW-COMMENT: Player identity. */
+  /** The player identity. */
   @Input() public identity: IdentityResultAlpha;
-  /** REVIEW-COMMENT: Output when reload. */
+  /** The gameTitle. */
+  @Input() public gameTitle: GameTitle;
+  /** Output when results are reloaded. */
   @Output() public reloadMonitor = new EventEmitter<ActionMonitor>();
 
   public displayedColumns = ['preview', 'info', 'times', 'actions'];
@@ -47,6 +51,8 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
   public allMonitors: ActionMonitor[] = [this.getMonitor];
 
   public disableUnhide: boolean;
+
+  public readonly unhidePermAttribute = PermAttributeName.UnhideUgc;
 
   constructor(private readonly permissionsService: OldPermissionsService) {
     super();

@@ -18,10 +18,10 @@
                     [disabled]="isInEditMode"
                   >
                     <mat-option
-                      *ngFor="let motd of messageOfTheDayList | keyvalue"
-                      [value]="motd.key"
+                      *ngFor="let friendlyName of friendlyNameList | keyvalue"
+                      [value]="friendlyName.key"
                     >
-                      {{ motd.value | humanize }}
+                      {{ friendlyName.value | humanize }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>

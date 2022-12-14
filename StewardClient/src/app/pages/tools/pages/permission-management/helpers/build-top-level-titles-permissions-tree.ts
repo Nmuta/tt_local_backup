@@ -49,7 +49,7 @@ function generateEnvironmentTreeNodes(
 ): AttributeTreeNode[] {
   return environments.map(environment => {
     return {
-      attribute: { attribute: null, title: title, environment: environment },
+      attribute: null,
       name: environment,
       isChecked: false,
       children: generateAttributeTreeNodes(permList, title, environment),

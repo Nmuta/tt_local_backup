@@ -28,7 +28,6 @@ export interface UpsteamLeaderboard {
   carClass: string;
   validationData: LeaderboardValidationData[];
 }
-
 export interface Leaderboard extends UpsteamLeaderboard {
   /** Target environment */
   leaderboardEnvironment?: LeaderboardEnvironment;
@@ -57,12 +56,20 @@ export interface UpsteamLeaderboardScore {
   deviceType: string;
 }
 
+/** Alternate representation of leaderboard score. */
+export interface AlternateScoreRepresentation {
+  label: string;
+  value: BigNumber;
+}
+
 /** Interface for a leaderboard score. */
 export interface LeaderboardScore extends UpsteamLeaderboardScore {
   /** Multi-select */
   selected?: boolean;
   /** Highlighting specific players */
   highlighted?: boolean;
+  /** Client-side only, used to display alternate units for a score. */
+  alternateScoreRepresentations?: AlternateScoreRepresentation[];
 }
 
 /** List of known score types. */
@@ -175,26 +182,19 @@ export function isValidLeaderboardQuery(
 }
 
 export function determineScoreTypeQualifier(scoreTypeId: BigNumber): string {
-  if (
-    scoreTypeId.isEqualTo(LeaderboardScoreType.AverageSpeedZone) ||
-    scoreTypeId.isEqualTo(LeaderboardScoreType.SpeedTrap)
-  ) {
-    return 'mph';
+  switch (scoreTypeId.toNumber()) {
+    case LeaderboardScoreType.AverageSpeedZone:
+    case LeaderboardScoreType.SpeedTrap:
+      return 'km/h';
+    case LeaderboardScoreType.DangerSign:
+      return 'meters';
+    case LeaderboardScoreType.DriftZone:
+      return 'points';
+    case LeaderboardScoreType.Laptime:
+      return 'seconds';
+    default:
+      return '';
   }
-
-  if (scoreTypeId.isEqualTo(LeaderboardScoreType.DangerSign)) {
-    return 'feet';
-  }
-
-  if (scoreTypeId.isEqualTo(LeaderboardScoreType.DriftZone)) {
-    return 'points';
-  }
-
-  if (scoreTypeId.isEqualTo(LeaderboardScoreType.Laptime)) {
-    return 'seconds';
-  }
-
-  return '';
 }
 
 /** Generates an leaderboard metadata overview including name, scoretype, scoreboardType, and carClass.  */

@@ -17,6 +17,45 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'bf6eb59c-4976-4291-8076-2e12abb2117e',
+      shortText: 'Properly label speed scores as km/h and add MPH conversion',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'ed929ef5-2241-414c-b115-e822ce81a8b5',
+      shortText: 'Add icon to represent if a laptime type score is clean',
+    },
+    {
+      tag: { title: [GameTitle.FM7], tool: NavbarTool.UserBanning },
+      uuid: '88e5c512-cab4-48d7-8d07-68bfd54e7209',
+      shortText: 'Fix Apollo User Banning tool',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UgcDetails },
+      uuid: '2c1d03d9-5212-4127-8194-5e4adb6c9dbd',
+      shortText: 'More visibility on why Hide UGC is disabled on Private UGC',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '09abf5d9-5e1f-427d-ba0c-e16f9e2f5d3e',
+      shortText: 'Add Clone and Persist buttons to UGC Details view',
+      longText: [
+        'Persist duplicates the item on the System user (ID 1) in the current Endpoint set (Studio/Retail)',
+        'Clone duplicates an item on the Retail endpoint to the System user (ID 1) on the Studio endpoint. IsSearchable and KeepGuid are both set to false.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'a849e488-97b9-4cbd-ad50-a947ee5294fb',
+      shortText: 'Add new tool to manage Welcome Center tile detail',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ad6b3b4a-0625-4087-ab1e-ba428cfce8a9',
+      shortText: 'Add ability to clone auth v2 perms + small bug fixes',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
       shortText: 'Setup auth V2 attributes on all Steward actions',

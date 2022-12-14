@@ -20,7 +20,5 @@ export interface MessageOfTheDay {
   date: DateTime;
 }
 
-/**
- * Interface that represents a mapping of guid IDs to message of the day friendly name.
- */
-export type MessagesOfTheDayMap = Map<GuidLikeString, string>;
+/** Interface that represents a mapping of  message of the day friendly name to guid IDs. */
+export type FriendlyNameMap = Map<GuidLikeString, string>;
