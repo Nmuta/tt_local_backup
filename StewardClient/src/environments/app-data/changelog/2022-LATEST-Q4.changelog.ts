@@ -8,6 +8,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UgcDetails },
+      uuid: '310cf5ba-6286-4714-8a26-57e4eacc01db',
+      shortText: 'Adjust behavior of UGC Details routing',
+      longText: [
+        'Navigating "back" properly clears the search field.',
+        'Search field is no longer cleared out after initiating a search.',
+        'ID is no longer displayed separately in search field and UGC Overview section.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '8a79ef32-f77d-4362-8ac3-c736af5778d9',
       shortText: 'Add support FH5 Layer Groups in UGC Details tool',
