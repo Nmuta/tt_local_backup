@@ -5,7 +5,7 @@
     mat-button
     routerLinkActive="mat-stroked-button"
     [class.mat-button-disabled]="!hasTypeLookup[entry.ugcType]"
-    >{{ entry.ugcType | humanize}}
+    >{{ entry.ugcType | humanize }}
     <span class="alternate-name" *ngIf="entry.alternateName">{{ entry.alternateName }}</span>
   </a>
   <span class="icon-spacer"></span>

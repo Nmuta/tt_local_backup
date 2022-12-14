@@ -79,4 +79,4 @@ export const WoodstockExtendedSupportedUgcTypes: WoodstockExtendedSupportedUgcTy
   { ugcType: UgcType.Tune },
   { ugcType: UgcType.EventBlueprint },
   { ugcType: UgcType.CommunityChallenge },
-]
+];
