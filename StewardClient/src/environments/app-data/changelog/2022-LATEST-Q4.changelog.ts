@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '8a79ef32-f77d-4362-8ac3-c736af5778d9',
+      shortText: 'Add support FH5 Layer Groups in UGC Details tool',
+      longText: [
+        'Add support for Layer Groups in UGC Details tool. There is another field for "Curation Method" which is not yet exposed.',
+        'Port all UGC Details endpoints to V2 Steward API.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: 'bf6eb59c-4976-4291-8076-2e12abb2117e',
       shortText: 'Properly label speed scores as km/h and add MPH conversion',

@@ -72,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             {
                 var lookupResult = query.GetAwaiter().GetResult();
                 var thumbnailResult = new ThumbnailLookupOutput
-                { Id = lookupResult.Id, Thumbnail = lookupResult.ThumbnailOneImageBase64};
+                { Id = lookupResult.Id, Thumbnail = lookupResult.ThumbnailOneImageBase64 };
 
                 thumbnails.Add(thumbnailResult);
             }

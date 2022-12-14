@@ -775,6 +775,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC livery by ID.
         /// </summary>
         [HttpGet("storefront/livery({id})")]
+        [Obsolete("Use v2/woodstock/ugc/livery/{id}")]
         [SwaggerResponse(200, type: typeof(WoodstockUgcLiveryItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
@@ -800,6 +801,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC photo by ID.
         /// </summary>
         [HttpGet("storefront/photo({id})")]
+        [Obsolete("Use v2/woodstock/ugc/photo/{id}")]
         [SwaggerResponse(200, type: typeof(WoodstockUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
@@ -825,6 +827,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("storefront/tune({id})")]
+        [Obsolete("Use v2/woodstock/ugc/tune/{id}")]
         [SwaggerResponse(200, type: typeof(WoodstockUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
@@ -850,6 +853,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("storefront/eventBlueprint({id})")]
+        [Obsolete("Use v2/woodstock/ugc/eventBlueprint/{id}")]
         [SwaggerResponse(200, type: typeof(WoodstockUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
@@ -871,6 +875,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("storefront/communityChallenge({id})")]
+        [Obsolete("Use v2/woodstock/ugc/communityChallenge/{id}")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]

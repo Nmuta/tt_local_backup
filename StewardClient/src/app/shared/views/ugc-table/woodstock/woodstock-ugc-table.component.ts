@@ -26,8 +26,8 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   }
 
   /** Gets player UGC item. */
-  public getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
-    return this.woodstockService.getPlayerUgcItem$(id, type);
+  public getUgcItem(id: string, ugcType: UgcType): Observable<PlayerUgcItem> {
+    return this.woodstockService.getPlayerUgcItem$(id, ugcType);
   }
 
   /** Retrieve Photo thumnbnails. */
