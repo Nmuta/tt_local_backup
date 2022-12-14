@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '8a79ef32-f77d-4362-8ac3-c736af5778d9',
+      shortText: 'Add support FH5 Layer Groups in UGC Details tool',
+      longText: [
+        'Add support for Layer Groups in UGC Details tool. There is another field for "Curation Method" which is not yet exposed.',
+        'Port all UGC Details endpoints to V2 Steward API.',
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
       shortText: 'Setup auth V2 attributes on all Steward actions',

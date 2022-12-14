@@ -30,10 +30,10 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   /** Gets player UGC item. */
   public getUgcItem(id: string, type: UgcType): Observable<PlayerUgcItem> {
     // Only Layer Group has been moved to V2 endpoints
-    if(type === UgcType.LayerGroup) {
+    if (type === UgcType.LayerGroup) {
       return this.woodstockStorefrontService.getLayerGroup$(id);
     }
-    
+
     return this.woodstockService.getPlayerUgcItem$(id, type);
   }
 

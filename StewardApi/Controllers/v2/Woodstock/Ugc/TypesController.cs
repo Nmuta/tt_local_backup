@@ -21,7 +21,7 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementServ
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
     /// <summary>
-    ///     Handles requests for Woodstock.
+    ///     Handles requests for detailed information on specific types of Woodstock UGC content.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/ugc/")]
     [LogTagTitle(TitleLogTags.Woodstock)]
