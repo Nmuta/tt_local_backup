@@ -140,6 +140,8 @@
   );
 }
 
+/// Applies the provided $operator to the provided $color, with $percentage as the second param
+/// Supports 'lighten' and 'darken'
 @function adjustColor($operator, $color, $percentage) {
   @if ($operator == 'lighten') {
     @return lighten($color, $percentage);
