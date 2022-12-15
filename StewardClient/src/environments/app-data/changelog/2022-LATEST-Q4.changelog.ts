@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Leaderboards },
+      uuid: '91371012-2b0d-43cb-bbb6-941c170ddeff',
+      shortText: 'Added Steelhead to leaderboards tool',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UgcDetails },
       uuid: '310cf5ba-6286-4714-8a26-57e4eacc01db',
       shortText: 'Adjust behavior of UGC Details routing',

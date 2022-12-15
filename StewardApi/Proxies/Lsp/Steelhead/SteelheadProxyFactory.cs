@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.Services.ForzaClient;
+using Turn10.Services.LiveOps.FM8.Generated;
 using Turn10.Services.MessageEncryption;
 using AuctionManagementService = Turn10.Services.LiveOps.FM8.Generated.AuctionManagementService;
 using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingManagementService;
@@ -124,6 +125,14 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         {
             var service = new PermissionsManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
             var serviceProxy = service.ProxyInterface<PermissionsManagementService, IPermissionsManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IScoreboardManagementService PrepareScoreboardManagementService(string endpoint)
+        {
+            var service = new ScoreboardManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<ScoreboardManagementService, IScoreboardManagementService>();
             return serviceProxy;
         }
     }

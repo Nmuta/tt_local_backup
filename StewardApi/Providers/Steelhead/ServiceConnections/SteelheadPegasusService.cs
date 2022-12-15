@@ -177,15 +177,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<CarClass>> GetCarClassesAsync()
+        public async Task<IEnumerable<CarClass>> GetCarClassesAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
         {
             var carClassKey = $"{PegasusBaseCacheKey}CarClasses";
 
-            async Task<IEnumerable<CarClass>> GetCarClasses()
+            async Task<IEnumerable<CarClass>> GetCarClasses(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
             {
+                var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
+
+                if (slotStatus == null)
+                {
+                    throw new PegasusStewardException(
+                        $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
+                }
+
                 var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadLiveOpsContent.CarClass>>(
                     CMSFileNames.CarClasses,
-                    this.cmsEnvironment).ConfigureAwait(false);
+                    this.cmsEnvironment,
+                    slot: slotId).ConfigureAwait(false);
                 var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
 
                 this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
@@ -194,7 +203,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             return this.refreshableCacheStore.GetItem<IEnumerable<CarClass>>(carClassKey)
-                   ?? await GetCarClasses().ConfigureAwait(false);
+                   ?? await GetCarClasses(pegasusEnvironment ?? this.cmsEnvironment, slotId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        {
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
+            }
+
+            var leaderboardsKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_Leaderboards";
+
+            async Task<IEnumerable<Leaderboard>> GetLeaderboards()
+            {
+                var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<RivalEvent>>(filename, pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+                var leaderboards = this.mapper.Map<IEnumerable<Leaderboard>>(pegasusLeaderboards);
+
+                this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
+
+                return leaderboards;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<Leaderboard>>(leaderboardsKey)
+                   ?? await GetLeaderboards().ConfigureAwait(false);
         }
 
         /// <inheritdoc />

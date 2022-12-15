@@ -52,6 +52,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { SteelheadLeaderboardsComponent } from './steelhead/steelhead-leaderboards.component';
+import { SteelheadSearchLeaderboardsComponent } from './components/search-leaderboards/steelhead/steelhead-search-leaderboards.component';
+import { SteelheadLeaderboardStatsComponent } from './components/leaderboard-stats/steelhead/steelhead-leaderboard-stats.component';
+import { SteelheadLeaderboardScoresComponent } from './components/leaderboard-scores/steelhead/steelhead-leaderboard-scores.component';
 
 /** Module for displaying leaderboard management tools. */
 @NgModule({
@@ -59,15 +63,19 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     LeaderboardsComponent,
     ReportedScoresComponent,
     WoodstockLeaderboardsComponent,
+    SteelheadLeaderboardsComponent,
 
     SearchLeaderboardsComponent,
     WoodstockSearchLeaderboardsComponent,
+    SteelheadSearchLeaderboardsComponent,
 
     LeaderboardScoresComponent,
     WoodstockLeaderboardScoresComponent,
+    SteelheadLeaderboardScoresComponent,
 
     LeaderboardStatsComponent,
     WoodstockLeaderboardStatsComponent,
+    SteelheadLeaderboardStatsComponent,
 
     LeaderboardValidationsComponent,
   ],

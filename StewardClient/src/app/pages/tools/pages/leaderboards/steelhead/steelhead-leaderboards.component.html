@@ -1,0 +1,30 @@
+<mat-tab-group>
+  <!-- Reported scores coming later. Services wants to rebuild how reported scores are managed. -->
+  <!-- https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1000531/?triage=true -->
+  <!-- <mat-tab label="Reported Scores">
+    <reported-scores></reported-scores>
+  </mat-tab> -->
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Search Leaderboards
+      <error-spinner
+        [isActive]="getActionMonitor.isActive"
+        spinnerMessage="Retrieving Data"
+      ></error-spinner>
+    </ng-template>
+
+    <!-- Tab Content -->
+    <steelhead-search-leaderboards></steelhead-search-leaderboards>
+    <steelhead-leaderboard-stats
+      [leaderboard]="activeLeaderboard"
+      [scoresDeleted]="scoresDeleted"
+      (selectedScore)="onStatsScoreSelected($event)"
+    ></steelhead-leaderboard-stats>
+    <leaderboard-validations [leaderboard]="activeLeaderboard"></leaderboard-validations>
+    <steelhead-leaderboard-scores
+      [leaderboard]="activeLeaderboard"
+      [externalSelectedScore]="statsSelectedScore"
+      (scoresDeleted)="onScoresDeleted($event)"
+    ></steelhead-leaderboard-scores>
+  </mat-tab>
+</mat-tab-group>

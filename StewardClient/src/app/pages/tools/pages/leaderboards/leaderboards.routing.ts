@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { LeaderboardsComponent } from './leaderboards.component';
+import { SteelheadLeaderboardsComponent } from './steelhead/steelhead-leaderboards.component';
 import { WoodstockLeaderboardsComponent } from './woodstock/woodstock-leaderboards.component';
 
 const routes: Routes = [
@@ -20,6 +21,12 @@ const routes: Routes = [
         path: 'woodstock',
         canActivate: [TitleMemorySetGuard],
         component: WoodstockLeaderboardsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'steelhead',
+        canActivate: [TitleMemorySetGuard],
+        component: SteelheadLeaderboardsComponent,
         pathMatch: 'full',
       },
     ],

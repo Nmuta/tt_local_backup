@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
@@ -34,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets car classes.
         /// </summary>
-        Task<IEnumerable<CarClass>> GetCarClassesAsync();
+        Task<IEnumerable<CarClass>> GetCarClassesAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
         ///     Gets cars.
@@ -51,6 +52,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets vanity items.
         /// </summary>
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
+
+        /// <summary>
+        ///     Gets leaderboards.
+        /// </summary>
+        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
         ///     Creates pull request.

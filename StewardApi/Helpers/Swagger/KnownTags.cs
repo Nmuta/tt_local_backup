@@ -133,6 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string Inventory = "Topic: Inventory";
             public const string Localization = "Topic: Localization";
             public const string Flags = "Topic: Flags";
+            public const string Leaderboards = "Topic: Leaderboards";
             public const string LoyaltyRewards = "Topic: Loyalty Rewards";
             public const string Profile = "Topic: Profile";
             public const string ProfileNotes = "Topic: Profile Notes";

@@ -89,9 +89,12 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         /// </summary>
         public IPermissionsManagementService PermissionsManagementService => this.SteelheadFactory.PreparePermissionsManagementService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets a <see cref="IPermissionsManagementService" />.
+        /// </summary>
+        public IScoreboardManagementService ScoreboardManagementService => this.SteelheadFactory.PrepareScoreboardManagementService(this.Endpoint);
+
         private ISteelheadProxyFactory SteelheadFactory { get; }
-
-
 
         /// <summary>
         ///     Ensures all provided xuids are valid, else throws error.
