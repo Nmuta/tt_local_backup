@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
 import { onlyTrueKey } from '@helpers/only-true-key';
-import { mergedParamMap } from '@helpers/param-map';
+import { mergedParamMap, mergedParamMap$ } from '@helpers/param-map';
+import { renderGuard } from '@helpers/rxjs';
 import { GameTitleCodeName } from '@models/enums';
 import { chain } from 'lodash';
 import { debounceTime, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
@@ -24,7 +25,6 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
   };
 
   public GameTitleCodeName = GameTitleCodeName;
-  public navigationFailedId: string;
 
   public steelheadRouterLink = ['.', 'steelhead'];
   public woodstockRouterLink = ['.', 'woodstock'];
@@ -38,11 +38,31 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
     super();
   }
 
+  /** Hook for "Navigate back" event. */
+  @HostListener('window:popstate', ['$event'])
+  onPopState(_event: unknown) {
+    renderGuard(() => {
+      // TODO: This should likely be an optional feature on `mergedParamMap$` which also triggers on back events.
+      // But it's unclear how to add that at the moment.
+      //
+      // This entire issue boils down to a "bug" (read: unintuitive behavior) in the way angular paramMaps are handled.
+      // When you navigate back, you are removing the param from the map. This does not trigger an angular update.
+      // You are navigating FROM the route which now has no entries whatsoever (since it's not on the route), so no update is triggered.
+      // You are navigating back TO the segment of the route that had no ID. So the segments are the same and no update is triggered.
+      //
+      // Further, none of these changes are detected until an epsilon of time has passed,
+      // so we have to put this in a renderguard to wait for the paramMaps to update in the snapshot.
+      const childSnapshot = this.route.firstChild?.firstChild.snapshot;
+      const id = childSnapshot.paramMap.get('id');
+      this.controls.sharecode.setValue(id);
+    });
+  }
+
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.route.firstChild?.firstChild?.paramMap
+    mergedParamMap$(this.route.firstChild?.firstChild)
       ?.pipe(
-        map(params => params.get('id')),
+        map(params => params['id']),
         startWith(null),
         pairwise(),
         filter(([prev, cur]) => {
@@ -54,10 +74,7 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
         this.steelheadRouterLink = ['.', 'steelhead', id];
         this.woodstockRouterLink = ['.', 'woodstock', id];
         this.sunriseRouterLink = ['.', 'sunrise', id];
-
-        this.controls.sharecode.setValue('');
-        this.navigationFailedId = undefined;
-
+        this.controls.sharecode.setValue(id);
         this.sharedLookupService.doLookup(id);
       });
 
@@ -79,9 +96,6 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
         this.steelheadRouterLink = ['.', 'steelhead', id];
         this.woodstockRouterLink = ['.', 'woodstock', id];
         this.sunriseRouterLink = ['.', 'sunrise', id];
-
-        this.controls.sharecode.setValue('');
-        this.navigationFailedId = undefined;
 
         this.sharedLookupService.doLookup(id);
 
@@ -112,9 +126,6 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
       this.router.navigate(this.woodstockRouterLink, { relativeTo: this.route });
     } else if (onlyTrueKey(titleLookup, 'fm8')) {
       this.router.navigate(this.steelheadRouterLink, { relativeTo: this.route });
-    } else {
-      // No navigation
-      this.navigationFailedId = this.sharedLookupService.locations.shareCodeOrId;
     }
   }
 }
