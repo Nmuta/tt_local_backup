@@ -79,7 +79,12 @@
 }
 
 // Produces the CSS vars for a given foreground/background palette combination
-@mixin themePalettesToVars($theme-foreground-palette, $theme-background-palette) {
+@mixin themePalettesToVars(
+  $theme-foreground-palette,
+  $theme-background-palette,
+  $lighten-operator,
+  $darken-operator
+) {
   $secondary-text-color: map.get($theme-foreground-palette, 'secondary-text');
 
   // special vars
@@ -97,11 +102,11 @@
   );
   @include colorToVars(
     makeLookupName('background', 'lighter-contrast'),
-    darken(map-get($theme-foreground-palette, 'base'), 20%)
+    adjustColor($lighten-operator, map-get($theme-foreground-palette, 'base'), 20%)
   );
   @include colorToVars(
     makeLookupName('background', 'darker-contrast'),
-    lighten(map-get($theme-foreground-palette, 'base'), 20%)
+    adjustColor($darken-operator, map-get($theme-foreground-palette, 'base'), 20%)
   );
   @include colorToVars(
     makeLookupName('background', 'text-contrast'),
@@ -119,11 +124,11 @@
   );
   @include colorToVars(
     makeLookupName('background', 'lighter'),
-    darken(map-get($theme-background-palette, 'background'), 20%)
+    adjustColor($lighten-operator, map-get($theme-background-palette, 'background'), 20%)
   );
   @include colorToVars(
     makeLookupName('background', 'darker'),
-    lighten(map-get($theme-background-palette, 'background'), 20%)
+    adjustColor($darken-operator, map-get($theme-background-palette, 'background'), 20%)
   );
   @include colorToVars(
     makeLookupName('background', 'text'),
@@ -134,6 +139,17 @@
     map-get($theme-background-palette, 'card')
   );
 }
+
+@function adjustColor($operator, $color, $percentage) {
+  @if ($operator == 'lighten') {
+    @return lighten($color, $percentage);
+  } @else if ($operator == 'darken') {
+    @return darken($color, $percentage);
+  } @else {
+    @error 'Unsupported operator. Use `lighten` or `darken`.';
+  }
+}
+
 /// Converts a palette into a string used by CSS vars
 @function paletteToString($palette) {
   @if ($palette == $app-primary) {
