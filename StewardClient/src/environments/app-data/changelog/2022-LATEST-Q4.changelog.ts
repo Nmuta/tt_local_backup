@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.All,
+      uuid: '7fea8fb6-3db6-42b2-bdde-53b315ad01c2',
+      shortText: 'Fix light-theme off-color highlighting',
+      longText: [
+        'This makes Selected Items in the Leaderboards page show up while in light theme.',
+        'Any page using slightly-darker or slightly-lighter colors in Light Theme will now look as they were intended.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Leaderboards },
       uuid: '91371012-2b0d-43cb-bbb6-941c170ddeff',
       shortText: 'Added Steelhead to leaderboards tool',
