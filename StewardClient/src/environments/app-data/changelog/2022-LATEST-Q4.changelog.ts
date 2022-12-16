@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.SearchUGC },
+      uuid: '02a35bc8-9bdf-4b7e-bbcb-fbee6a5ebd42',
+      shortText: 'Change highlight colors for featured UGC to matchbehavior of other tables',
+    },
+    {
       tag: ChangelogTag.All,
       uuid: '7fea8fb6-3db6-42b2-bdde-53b315ad01c2',
       shortText: 'Fix light-theme off-color highlighting',

@@ -82,7 +82,7 @@ table {
   }
 
   .is-featured-item {
-    background-color: app-color-default($app-primary, 0.2);
+    background-color: $table-tr-hover;
   }
 
   .inline-buttons > button,
