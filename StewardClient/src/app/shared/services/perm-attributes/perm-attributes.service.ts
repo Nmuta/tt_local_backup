@@ -9,7 +9,7 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { find, has, includes } from 'lodash';
-import { Observable, ReplaySubject, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
