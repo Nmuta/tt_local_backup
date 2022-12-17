@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '2069c567-52ed-4182-908c-71c0e8a42939',
+      shortText: 'Correctly update permissions on first load.',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.SearchUGC },
       uuid: '02a35bc8-9bdf-4b7e-bbcb-fbee6a5ebd42',
       shortText: 'Change highlight colors for featured UGC to matchbehavior of other tables',

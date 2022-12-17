@@ -41,17 +41,17 @@ export abstract class BasePermissionAttributeDirective
     if (!attribute) return;
 
     this.attributeName = attribute;
-    this.checkPermission$.next(null);
+    this.checkPermission$.next();
   }
   /** Test */
   @Input() public set permissionTitle(gameTitle: GameTitle) {
     if (!gameTitle) return;
 
     this.gameTitle = gameTitle;
-    this.checkPermission$.next(null);
+    this.checkPermission$.next();
   }
 
-  private checkPermission$ = new Subject();
+  private checkPermission$ = new Subject<void>();
   private attributeName: PermAttributeName;
   private gameTitle: GameTitle;
 

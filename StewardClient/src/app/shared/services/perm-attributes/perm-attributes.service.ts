@@ -44,7 +44,7 @@ export class PermAttributesService extends BaseService {
 
   /** Helper function that timeouts state checks for user profile. */
   public get initializationGuard$(): Observable<void> {
-    return this.isInitialized$.pipe(take(1), takeUntil(this.onDestroy$));
+    return this.isInitialized$.pipe(takeUntil(this.onDestroy$));
   }
 
   public get isUsingV1Auth(): boolean {
