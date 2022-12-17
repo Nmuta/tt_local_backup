@@ -64,25 +64,6 @@ describe('PermAttributesService', () => {
       service.initialize(pemrs);
     });
 
-    it('should fire initializationGuard after', done => {
-      service.initializationGuard$
-        .pipe(
-          timeout({
-            each: 2000,
-            with: () => throwError(() => new Error('Fake error')),
-          }),
-          catchError(_error => {
-            expect(false).toBeTruthy();
-            done();
-            return EMPTY;
-          }),
-        )
-        .subscribe(() => {
-          expect(true).toBeTruthy();
-          done();
-        });
-    });
-
     it('should set availableTitlesAndEnvironments correctly', () => {
       expect(service.hasSteelheadAccess).toBeFalsy();
       expect(service.hasApolloAccess).toBeFalsy();
