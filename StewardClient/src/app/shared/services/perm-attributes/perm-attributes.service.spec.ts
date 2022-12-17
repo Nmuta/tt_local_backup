@@ -8,7 +8,6 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { throwError, timeout, catchError, EMPTY } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 import { PermAttributesService } from './perm-attributes.service';
@@ -62,25 +61,6 @@ describe('PermAttributesService', () => {
       });
 
       service.initialize(pemrs);
-    });
-
-    it('should fire initializationGuard after', done => {
-      service.initializationGuard$
-        .pipe(
-          timeout({
-            each: 2000,
-            with: () => throwError(() => new Error('Fake error')),
-          }),
-          catchError(_error => {
-            expect(false).toBeTruthy();
-            done();
-            return EMPTY;
-          }),
-        )
-        .subscribe(() => {
-          expect(true).toBeTruthy();
-          done();
-        });
     });
 
     it('should set availableTitlesAndEnvironments correctly', () => {

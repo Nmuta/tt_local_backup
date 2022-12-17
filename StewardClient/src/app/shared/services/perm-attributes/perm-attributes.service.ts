@@ -9,7 +9,7 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { find, has, includes } from 'lodash';
-import { Observable, ReplaySubject, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -44,7 +44,7 @@ export class PermAttributesService extends BaseService {
 
   /** Helper function that timeouts state checks for user profile. */
   public get initializationGuard$(): Observable<void> {
-    return this.isInitialized$.pipe(take(1), takeUntil(this.onDestroy$));
+    return this.isInitialized$.pipe(takeUntil(this.onDestroy$));
   }
 
   public get isUsingV1Auth(): boolean {
