@@ -8,7 +8,6 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { throwError, timeout, catchError, EMPTY } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 import { PermAttributesService } from './perm-attributes.service';
