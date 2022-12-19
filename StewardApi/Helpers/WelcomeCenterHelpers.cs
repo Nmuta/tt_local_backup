@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             var children = tree.Children;
             foreach (var child in children)
             {
-                if (child.Path.LocalName == "loc-def" && child.IsAttributeField && child.Value != null)
+                if (child.Path.LocalName == "loc-ref" && child.IsAttributeField && child.Value != null)
                 {
                     Guid guid = Guid.Parse((string)child.Value);
                     if (locstrings.TryGetValue(guid, out var localizedStrings))
@@ -223,8 +223,10 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     // remove nodes from loc-refs: (description, base, skiploc)
                     el.RemoveNodes();
 
-                    // to satisfy format requirement.
-                    el.AddBeforeSelf(new XComment(child.Comment ?? string.Empty));
+                    if (child.Comment != null)
+                    {
+                        el.AddBeforeSelf(new XComment(child.Comment));
+                    }
                 }
             }
             else
