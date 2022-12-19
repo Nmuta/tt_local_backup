@@ -452,5 +452,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return change;
         }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsAsync(PullRequestStatus status)
+        {
+            var pullRequests = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null, null).ConfigureAwait(false);
+
+            return pullRequests.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
+        {
+            var pullRequest = await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(false);
+
+            return pullRequest;
+        }
     }
 }

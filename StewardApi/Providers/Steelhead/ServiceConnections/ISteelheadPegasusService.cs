@@ -111,5 +111,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets a World of Forza entry as an Xelement.
         /// </summary>
         Task<XElement> GetWorldOfForzaElementAsync(Guid id);
+
+        /// <summary>
+        ///     Gets pull pull requests from the steward user.
+        /// </summary>
+        Task<IEnumerable<GitPullRequest>> GetPullRequestsAsync(PullRequestStatus status);
+
+        /// <summary>
+        /// Abandons the pull request.
+        /// </summary>
+        Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId);
     }
 }
