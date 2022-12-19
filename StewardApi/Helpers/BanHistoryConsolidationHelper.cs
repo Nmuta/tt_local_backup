@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -17,8 +18,13 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static List<LiveOpsBanHistory> ConsolidateBanHistory(IList<LiveOpsBanHistory> liveOpsBanHistory, IList<LiveOpsBanHistory> servicesBanHistory, ILoggingService loggingService, string gameTitle)
         {
+            IEqualityComparer<LiveOpsBanHistory> titleAppropriateBanHistoryComparer =
+                gameTitle == TitleCodeName.Woodstock.ToString()
+                    ? new LiveOpsBanHistoryIdComparer()
+                    : new LiveOpsBanHistoryComparer();
+
             return liveOpsBanHistory.Concat(servicesBanHistory)
-                                                .GroupBy(history => history, new LiveOpsBanHistoryComparer())
+                                                .GroupBy(history => history, titleAppropriateBanHistoryComparer)
                                                 .Select(banGroups => ConsolidateBanHistory(banGroups, loggingService, gameTitle))
                                                 .Where(entry => entry != null)
                                                 .ToList();
