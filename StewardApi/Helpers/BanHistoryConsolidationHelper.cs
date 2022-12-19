@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         private static LiveOpsBanHistory ConsolidateBanHistory(IGrouping<LiveOpsBanHistory, LiveOpsBanHistory> historyGroupings, ILoggingService loggingService, string gameTitle)
         {
             var serviceEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId == "From Services");
-            var liveOpsEntry = historyGroupings.SingleOrDefault(v => v.RequesterObjectId != "From Services");
+            var liveOpsEntry = historyGroupings.Where(v => v.RequesterObjectId != "From Services").OrderByDescending(v => v.ExpireTimeUtc).FirstOrDefault();
 
             if (serviceEntry == null && liveOpsEntry == null)
             {
