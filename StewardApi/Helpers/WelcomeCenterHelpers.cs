@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 {
                     // Null check ignores the non-existant loc-ref or loc-def.
                     // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
-                    el.SetAttributeValue(child.Path, null);
+                    el.SetAttributeValue(child.Path.Namespace + "loc-def", null);
                     el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
 
                     // remove nodes from loc-refs: (description, base, skiploc)
