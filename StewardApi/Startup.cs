@@ -28,6 +28,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
+using Newtonsoft.Json.Converters;
 using StewardGitApi;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
@@ -185,7 +186,11 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.Converters = new List<JsonConverter> { new TimeSpanConverter() };
+                options.SerializerSettings.Converters = new List<JsonConverter> 
+                {
+                    new TimeSpanConverter(),
+                    new StringEnumConverter()
+                };
             });
 
             services.AddSignalR().AddNewtonsoftJsonProtocol();

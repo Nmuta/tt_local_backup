@@ -118,33 +118,5 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
 
             return this.Ok(uri);
         }
-
-        /// <summary>
-        ///     Gets pull requests created by steward.
-        /// </summary>
-        [HttpGet("{status}")]
-        [SwaggerResponse(200, type: typeof(List<GitPullRequest>))]
-        [LogTagDependency(DependencyLogTags.Pegasus)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetPullRequests(PullRequestStatus status)
-        {
-            var pullRequests = await this.steelheadPegasusService.GetPullRequestsAsync(status).ConfigureAwait(true);
-
-            return this.Ok(pullRequests);
-        }
-
-        /// <summary>
-        ///     Abandons pull request by id.
-        /// </summary>
-        [HttpGet("{pullRequestId}")]
-        [SwaggerResponse(200, type: typeof(GitPullRequest))]
-        [LogTagDependency(DependencyLogTags.Pegasus)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> AbandonPullRequest(int pullRequestId)
-        {
-            var pullRequest = await this.steelheadPegasusService.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(true);
-
-            return this.Ok(pullRequest);
-        }
     }
 }

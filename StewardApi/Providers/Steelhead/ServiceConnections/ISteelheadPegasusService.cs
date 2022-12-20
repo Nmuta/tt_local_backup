@@ -115,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets pull pull requests from the steward user.
         /// </summary>
-        Task<IEnumerable<GitPullRequest>> GetPullRequestsAsync(PullRequestStatus status);
+        Task<IEnumerable<(GitPullRequest, string authorEmail)>> GetPullRequestsAsync(PullRequestStatus status);
 
         /// <summary>
         /// Abandons the pull request.

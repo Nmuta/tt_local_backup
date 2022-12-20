@@ -12,6 +12,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// </summary>
     public static class StringExtensions
     {
+        private const string MatchEmailPattern = @"\S+?@\S+?\.\S+";
+        private static readonly Regex rx = new Regex(MatchEmailPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         /// <summary>
         ///     Converts the given string to dash-delimited snake-case.
         /// </summary>
@@ -36,6 +39,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             using TextReader reader = new StringReader(xml);
             using XmlReader xmlreader = XmlReader.Create(reader);
             return await Task.Run(() => (T)new XmlSerializer(typeof(T)).Deserialize(xmlreader)).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Extracts emails from string.
+        /// </summary>
+        public static MatchCollection ExtractEmail(this string source)
+        {
+            if (string.IsNullOrWhiteSpace(source)) { return null; }
+            return rx.Matches(source);
         }
     }
 }

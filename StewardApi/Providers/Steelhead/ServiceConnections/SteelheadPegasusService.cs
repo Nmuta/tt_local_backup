@@ -454,14 +454,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsAsync(PullRequestStatus status)
+        public async Task<IEnumerable<(GitPullRequest, string authorEmail)>> GetPullRequestsAsync(PullRequestStatus status)
         {
-            var pullRequests = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null, null).ConfigureAwait(false);
+            var allPrs = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null, null).ConfigureAwait(false);
 
-            return pullRequests.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
+            var filteredPrs = allPrs.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
+
+            IEnumerable<(GitPullRequest pr, string authorEmail)> formattedPrs = filteredPrs.Select(pr =>
+            {
+                var match = pr.Title.ExtractEmail().FirstOrDefault();
+                string authorEmail = match?.Value;
+
+                return (pr, authorEmail);
+            });
+
+            return formattedPrs;
         }
 
-        /// <summary>
         /// <inheritdoc/>
         public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
         {
