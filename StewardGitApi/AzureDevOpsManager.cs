@@ -160,5 +160,15 @@ namespace StewardGitApi
             onSuccess?.Invoke(result.Success);
             return result;
         }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
+        {
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            var pullrequest = await GitHelper.AbandonPullRequestAsync(this.AzureContext, pullRequestId).ConfigureAwait(false);
+            return pullrequest;
+        }
     }
 }

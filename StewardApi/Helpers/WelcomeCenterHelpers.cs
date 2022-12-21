@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             Node tree = BuildMetaDataCore(target, root);
 
-            ApplyLocTextComments(tree, locstrings);
+            BakeLocTextComments(tree, locstrings);
 
             return tree;
         }
@@ -53,12 +53,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         /// Applies localization comments for formatter.
         /// </summary>
-        public static void ApplyLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
+        public static void BakeLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
         {
             var children = tree.Children;
             foreach (var child in children)
             {
-                if (child.Path.LocalName == "loc-def" && child.IsAttributeField && child.Value != null)
+                if (child.Path.LocalName == "loc-ref" && child.IsAttributeField && child.Value != null)
                 {
                     Guid guid = Guid.Parse((string)child.Value);
                     if (locstrings.TryGetValue(guid, out var localizedStrings))
@@ -66,13 +66,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
                         if (loc != null)
                         {
-                            // example: <!-- loc: Here be dragons (base) -->
                             child.Comment = $" loc: {loc.Message} (base) ";
                         }
                     }
                 }
 
-                ApplyLocTextComments(child, locstrings);
+                BakeLocTextComments(child, locstrings);
             }
         }
 
@@ -217,14 +216,16 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 {
                     // Null check ignores the non-existant loc-ref or loc-def.
                     // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
-                    el.SetAttributeValue(child.Path, null);
+                    el.SetAttributeValue(child.Path.Namespace + "loc-def", null);
                     el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
 
                     // remove nodes from loc-refs: (description, base, skiploc)
                     el.RemoveNodes();
 
-                    // to satisfy format requirement.
-                    el.AddBeforeSelf(new XComment(child.Comment ?? string.Empty));
+                    if (child.Comment != null)
+                    {
+                        el.AddBeforeSelf(new XComment(child.Comment));
+                    }
                 }
             }
             else
