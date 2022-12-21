@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             Node tree = BuildMetaDataCore(target, root);
 
-            ApplyLocTextComments(tree, locstrings);
+            BakeLocTextComments(tree, locstrings);
 
             return tree;
         }
@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         /// Applies localization comments for formatter.
         /// </summary>
-        public static void ApplyLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
+        public static void BakeLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
         {
             var children = tree.Children;
             foreach (var child in children)
@@ -66,13 +66,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
                         if (loc != null)
                         {
-                            // example: <!-- loc: Here be dragons (base) -->
                             child.Comment = $" loc: {loc.Message} (base) ";
                         }
                     }
                 }
 
-                ApplyLocTextComments(child, locstrings);
+                BakeLocTextComments(child, locstrings);
             }
         }
 

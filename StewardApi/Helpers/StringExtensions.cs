@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class StringExtensions
     {
         private const string MatchEmailPattern = @"\S+?@\S+?\.\S+";
-        private static readonly Regex rx = new Regex(MatchEmailPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex emailRegex = new Regex(MatchEmailPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         ///     Converts the given string to dash-delimited snake-case.
@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static MatchCollection ExtractEmail(this string source)
         {
             if (string.IsNullOrWhiteSpace(source)) { return null; }
-            return rx.Matches(source);
+            return emailRegex.Matches(source);
         }
     }
 }

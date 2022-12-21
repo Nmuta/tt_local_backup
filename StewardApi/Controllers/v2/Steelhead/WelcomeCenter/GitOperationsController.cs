@@ -5,16 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-
 using StewardGitApi;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -23,8 +19,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -36,7 +30,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
 {
     /// <summary>
-    ///     Controller for steelhead Welcome Center's Message of the Day.
+    ///     Controller for steelhead Git Operations.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/gitops")]
     [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
@@ -62,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     Gets pull requests created by steward.
         /// </summary>
         [HttpGet("pullrequest/{status}")]
-        [SwaggerResponse(200, type: typeof(List<(GitPullRequest pullRequest, string authorEmail)>))]
+        [SwaggerResponse(200, type: typeof(List<(GitPullRequest, string)>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetPullRequests(PullRequestStatus status)
