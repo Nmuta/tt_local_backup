@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 /** Interface for a Racer's Cup Schedule. */
 export interface RacersCupSchedule {
@@ -17,7 +17,7 @@ export interface RacersCupSeries {
   events: RacersCupEvent[];
   openTimeUtc: DateTime;
   closeTimeUtc: DateTime;
-  eventPlaylistTransitionTimeUtc: DateTime;
+  eventPlaylistTransitionTimeUtc: Duration;
 }
 
 /** Interface for a Racer's Cup Event. */

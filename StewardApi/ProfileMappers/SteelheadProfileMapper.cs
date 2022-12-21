@@ -137,29 +137,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
                 .ReverseMap();
             this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
-            this.CreateMap<ForzaRacersCupScheduleData, RacersCupSchedule>();
-            this.CreateMap<ForzaChampionshipDataV3, RacersCupChampionship>()
-                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.ChampionshipSeriesData));
-            this.CreateMap<ForzaChampionshipSeriesDataV3, RacersCupSeries>()
-                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
-                .ForMember(
-                    dest => dest.EventPlaylistTransitionTimeUtc,
-                    opt => opt.MapFrom(src => src.EventPlaylistTransitionTime))
-                .ForMember(dest => dest.Events, opt => opt.MapFrom(src => src.ChampionshipEventData));
-            this.CreateMap<ForzaBaseChampionshipEventData, RacersCupEvent>()
-                .ForMember(dest => dest.EventWindows, opt => opt.MapFrom(src => src.ChampionshipEventWindows));
-            this.CreateMap<ForzaBaseChampionshipEventWindowData, RacersCupEventWindow>()
-                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
-                .ForMember(dest => dest.EndTimeUtc, opt => opt.MapFrom(src => src.EndTime))
-                .ForMember(dest => dest.FeaturedRaceStartTimeUtc, opt => opt.MapFrom(src => src.FeaturedRaceStartTime));
-            this.CreateMap<ForzaGameOptions, RacersCupGameOptions>()
-                .ReverseMap();
-            this.CreateMap<ForzaQualificationOptions, RacersCupQualificationOptions>()
-                .ForMember(dest => dest.NumberOfLimitedLaps, opt => opt.MapFrom(src => src.NumLimitedLaps))
-                .ReverseMap();
-            this.CreateMap<ForzaWeatherCondition, RacersCupWeatherCondition>()
-                .ReverseMap();
             this.CreateMap<LocalizedStringData, ForzaLocalizedStringData>()
                 .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512)).ReverseMap();
             this.CreateMap<LocalizationStringResult, SteelheadLiveOpsContent.LocalizedString>()
@@ -395,6 +372,15 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.AntiLockBrakingSystem, opt => opt.MapFrom(src => src.ABS))
                 .ForMember(dest => dest.TractionControlSystem, opt => opt.MapFrom(src => src.TCS))
                 .ForMember(dest => dest.AutomaticTransmission, opt => opt.MapFrom(src => src.Auto));
+
+            this.CreateMap<WindowData, RacersCupEventWindow>()
+                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
+                .ForMember(dest => dest.EndTimeUtc, opt => opt.MapFrom(src => src.EndTime))
+                .ForMember(dest => dest.FeaturedRaceStartTimeUtc, opt => opt.MapFrom(src => src.FeaturedRaceStartTime));
+            this.CreateMap<SteelheadLiveOpsContent.QualificationOptions, RacersCupQualificationOptions>()
+                .ForMember(dest => dest.QualificationLimitType, opt => opt.MapFrom(src => src.QualificationLimitType))
+                .ForMember(dest => dest.NumberOfLimitedLaps, opt => opt.MapFrom(src => src.NumLimitedLaps))
+                .ForMember(dest => dest.IsOneShot, opt => opt.MapFrom(src => src.IsOneShot));
         }
     }
 }

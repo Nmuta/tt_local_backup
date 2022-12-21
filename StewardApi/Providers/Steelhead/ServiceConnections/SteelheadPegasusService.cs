@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
@@ -301,6 +302,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return this.refreshableCacheStore.GetItem<IEnumerable<VanityItem>>(vanityItemsKey)
                    ?? await GetVanityItems().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(string pegasusEnvironment = null, string pegasusSlot = null, string pegasusSnapshot = null)
+        {
+            pegasusEnvironment ??= this.cmsEnvironment;
+            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+
+            var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>>(
+                CMSFileNames.PlaylistDataForService,
+                environment: pegasusEnvironment,
+                slot: pegasusSlot,
+                snapshot: pegasusSnapshot).ConfigureAwait(false);
+
+            return playlists;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.RacersCupChampionships> GetRacersCupChampionshipScheduleV4Async(string pegasusEnvironment, string pegasusSlot = null, string pegasusSnapshot = null)
+        {
+            pegasusEnvironment ??= this.cmsEnvironment;
+            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+
+            var fileName = "RacersCupChampionshipScheduleV4";
+            var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
+                fileName,
+                environment: pegasusEnvironment,
+                slot: pegasusSlot,
+                snapshot: pegasusSnapshot).ConfigureAwait(false);
+
+            return scheduleData;
         }
 
         /// <inheritdoc/>

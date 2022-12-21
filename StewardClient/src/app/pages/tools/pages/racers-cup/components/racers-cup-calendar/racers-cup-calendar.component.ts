@@ -8,13 +8,12 @@ import {
   collapseAnimation,
   CalendarMonthViewBeforeRenderEvent,
 } from 'angular-calendar';
-import { SteelheadService } from '@services/steelhead';
 import BigNumber from 'bignumber.js';
 import {
-  RacersCupSchedule,
   RacersCupEventWindow,
   RacersCupGameOptions,
   RacersCupQualificationOptions,
+  RacersCupChampionship,
 } from '@models/racers-cup.model';
 import { indexOf, sortBy, uniq } from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,6 +29,7 @@ import {
   getOutlookCalendarHeaders,
 } from '@helpers/outlook-calendar-exporter';
 import { keys } from 'lodash';
+import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
 
 export type EventGroup<T> = {
   name: string;
@@ -70,8 +70,8 @@ export interface EventNameInfo {
 })
 export class RacersCupCalendarComponent extends BaseComponent implements OnInit {
   private readonly getSchedule$ = new Subject<void>();
-  private retrieveSchedule$: Observable<RacersCupSchedule>;
-  private schedule: RacersCupSchedule;
+  private retrieveSchedule$: Observable<RacersCupChampionship>;
+  private schedule: RacersCupChampionship;
 
   public playlistDictionary = new Map<string, string[]>();
 
@@ -81,11 +81,11 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
   public CalendarView = CalendarView;
   public viewDate: Date = new Date();
   public events: CalendarEvent[] = [];
-  public filteredEvents: CalendarEvent[] = [];
+  public filteredEvents: CalendarEvent<RacersCupMeta>[] = [];
   public getMonitor = new ActionMonitor('GET Racers Cup Schedule');
 
   constructor(
-    private readonly steelheadService: SteelheadService,
+    private readonly steelheadService: SteelheadRacersCupService,
     private readonly dialog: MatDialog,
   ) {
     super();
@@ -170,8 +170,8 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
 
   /** Handle clicking on event group. */
   public groupClicked(group: EventGroup<RacersCupMeta>): void {
-    const seriesName = group[0];
-    const events = group[1];
+    const seriesName = group.name;
+    const events = group.events;
 
     this.dialog.open(RacersCupSeriesModalComponent, {
       data: <RacersCupSeriesModalData>{ name: seriesName, events: events },
@@ -207,7 +207,8 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
         } as EventGroup<RacersCupMeta>;
       });
 
-      cell.eventGroups = eventGroups;
+      //Ensure that the series group ordering doesn't change based on order of events that occur that day.
+      cell.eventGroups = this.sortDayGroups(eventGroups);
     });
   }
 
@@ -241,6 +242,7 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
       const eventEndDate = buildOutlookDateString(event.end);
       const eventEndTime = buildOutlookTimeString(event.end);
 
+      // '#' character breaks export logic. For now sanitize the various names of any instances
       newCalendarCsvData[newCalendarCsvData.length] = [
         `\"${event.meta.eventNameClean}\"`, //Subject
         `\"${eventStartDate}\"`, //Start Date
@@ -256,9 +258,15 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
         null, // Optional Attendees
         null, // Meeting Resources
         null, // Billing Information
-        `\"Series: ${event.meta.seriesName}, Playlist: ${event.meta.playlistName}\"`, // Categories
+        `\"Series: ${event.meta.seriesName.replace(
+          '#',
+          '',
+        )}, Playlist: ${event.meta.playlistName.replace('#', '')}\"`, // Categories
         `\"\"`, // Description
-        `\"${event.meta.courseName} - ${event.meta.circuitName}\"`,
+        `\"${event.meta.courseName.replace('#', '')} - ${event.meta.circuitName.replace(
+          '#',
+          '',
+        )}\"`, // Location
         null, // Mileage
         '"Normal"', // Priority
         '"False"', // Private
@@ -271,57 +279,56 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
   }
 
   /** Converts Racer's Cup Schedule information into Calendar Events. */
-  private makeEvents(schedule: RacersCupSchedule): CalendarEvent[] {
+  private makeEvents(championship: RacersCupChampionship): CalendarEvent[] {
     const events: CalendarEvent<RacersCupMeta>[] = [];
     const seriesPlaylistMapping = new Map<string, string[]>();
-    for (const championship of schedule.championships) {
-      // Build an ordered set of series for use sorting later.
-      this.uniqueSeries = uniq(championship.series.map(series => series.name));
 
-      for (const series of championship.series) {
-        for (const event of series.events) {
-          if (seriesPlaylistMapping.has(series.name)) {
-            seriesPlaylistMapping.get(series.name).push(event.playlistName);
-          } else {
-            seriesPlaylistMapping.set(series.name, [event.playlistName]);
-          }
+    // Build an ordered set of series for use sorting later.
+    this.uniqueSeries = uniq(championship.series.map(series => series.name));
 
-          for (const eventWindow of event.eventWindows) {
-            const eventInfo = this.seperateEventInfo(event.name);
-            const newEvent: CalendarEvent<RacersCupMeta> = {
-              start: eventWindow.startTimeUtc.toJSDate(),
-              end: eventWindow.endTimeUtc.toJSDate(),
-              title: `${eventInfo.courseName}-${
-                eventInfo.circuitName
-              }: ${eventWindow.startTimeUtc.toJSDate()} - ${eventWindow.endTimeUtc.toJSDate()}`,
-              cssClass: `event-type-${this.getGroupIndex(series.name)}`,
-              meta: {
-                seriesName: series.name,
-                seriesColorIndex: this.getGroupIndex(series.name),
-                playlistName: event.playlistName,
-                eventNameRaw: event.name,
-                eventNameClean: `${eventInfo.courseName}-${eventInfo.circuitName}`,
-                courseName: eventInfo.courseName,
-                circuitName: eventInfo.circuitName,
-                eventWindow: eventWindow,
-                gameOptions: event.gameOptions,
-                qualificationOptions: event.qualificationOptions,
-                eventOpenPracticeInMinutes: event.openPracticeInMinutes,
-                raceDuration: new BigNumber(
-                  eventWindow.endTimeUtc.diff(eventWindow.startTimeUtc, ['minutes']).minutes,
-                ),
-                weekTooltip: `${series.name}-${eventInfo.courseName}-${eventInfo.circuitName}`,
-              },
-              allDay: false,
-              resizable: {
-                beforeStart: false,
-                afterEnd: false,
-              },
-              draggable: false,
-            };
+    for (const series of championship.series) {
+      for (const event of series.events) {
+        if (seriesPlaylistMapping.has(series.name)) {
+          seriesPlaylistMapping.get(series.name).push(event.playlistName);
+        } else {
+          seriesPlaylistMapping.set(series.name, [event.playlistName]);
+        }
 
-            events.push(newEvent);
-          }
+        for (const eventWindow of event.eventWindows) {
+          const eventInfo = this.seperateEventInfo(event.name);
+          const newEvent: CalendarEvent<RacersCupMeta> = {
+            start: eventWindow.startTimeUtc.toJSDate(),
+            end: eventWindow.endTimeUtc.toJSDate(),
+            title: `${eventInfo.courseName}-${
+              eventInfo.circuitName
+            }: ${eventWindow.startTimeUtc.toJSDate()} - ${eventWindow.endTimeUtc.toJSDate()}`,
+            cssClass: `event-type-${this.getGroupIndex(series.name)}`,
+            meta: {
+              seriesName: series.name,
+              seriesColorIndex: this.getGroupIndex(series.name),
+              playlistName: event.playlistName,
+              eventNameRaw: event.name,
+              eventNameClean: `${eventInfo.courseName}-${eventInfo.circuitName}`,
+              courseName: eventInfo.courseName,
+              circuitName: eventInfo.circuitName,
+              eventWindow: eventWindow,
+              gameOptions: event.gameOptions,
+              qualificationOptions: event.qualificationOptions,
+              eventOpenPracticeInMinutes: event.openPracticeInMinutes,
+              raceDuration: new BigNumber(
+                eventWindow.endTimeUtc.diff(eventWindow.startTimeUtc, ['minutes']).minutes,
+              ),
+              weekTooltip: `${series.name}-${eventInfo.courseName}-${eventInfo.circuitName}`,
+            },
+            allDay: false,
+            resizable: {
+              beforeStart: false,
+              afterEnd: false,
+            },
+            draggable: false,
+          };
+
+          events.push(newEvent);
         }
       }
     }
@@ -339,6 +346,13 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
   private sortEvents(events: CalendarEvent<RacersCupMeta>[]): CalendarEvent<RacersCupMeta>[] {
     return sortBy(events, o => {
       return o.start;
+    });
+  }
+
+  /** Sorts Racer's Cup event groups by unique series index. */
+  private sortDayGroups(groups: EventGroup<RacersCupMeta>[]): EventGroup<RacersCupMeta>[] {
+    return sortBy(groups, o => {
+      return this.getGroupIndex(o.name);
     });
   }
 

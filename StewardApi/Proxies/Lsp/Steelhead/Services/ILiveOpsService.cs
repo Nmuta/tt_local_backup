@@ -1,6 +1,7 @@
 ﻿using Forza.WebServices.FM8.Generated;
 using System;
 using System.Threading.Tasks;
+using static Forza.WebServices.FM8.Generated.LiveOpsService;
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 
 #pragma warning disable VSTHRD200 // Use  Suffix
@@ -27,22 +28,12 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Gets Racer's Cup schedule for user.
         /// </summary>
-        Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCMSRacersCupScheduleForUser(
-            ulong xuid,
-            DateTime startDateUtc,
-            int daysForward,
-            ForzaEventSessionType[] gameOptionsFilter);
+        Task<GetCMSRacersCupScheduleForUserV2Output> GetCMSRacersCupScheduleForUserV2(ulong xuid, DateTime startDate, int daysForwardToProject);
 
         /// <summary>
         ///     Gets Racer's Cup schedule.
         /// </summary>
-        Task<LiveOpsService.GetCMSRacersCupScheduleOutput> GetCMSRacersCupSchedule(
-            string environment,
-            string slotId,
-            string snapshotId,
-            DateTime startDateUtc,
-            int daysForward,
-            ForzaEventSessionType[] gameOptionsFilter);
+        Task<GetCMSRacersCupScheduleV2Output> GetCMSRacersCupScheduleV2(string environment, string slotId, string snapshotId, DateTime startDate, int daysForwardToProject);
 
         /// <summary>
         ///     Saves a profile id to a player.
