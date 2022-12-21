@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM7], tool: NavbarTool.UserGroupManagement },
+      uuid: '1dbd5ba4-7d64-466d-bf95-44d0cdedb87f',
+      shortText: 'Fix user group management time out',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '2069c567-52ed-4182-908c-71c0e8a42939',
       shortText: 'Correctly update permissions on first load.',

@@ -90,14 +90,14 @@ export class BackgroundJobService {
   }
 
   /** Waits for a background job to complete. */
-  public waitForBackgroundJobToComplete<T>(job: BackgroundJob<void>): Observable<T[]> {
+  public waitForBackgroundJobToComplete<T>(job: BackgroundJob<void>): Observable<T> {
     return this.getBackgroundJob$<T>(job.jobId).pipe(
       map(job => {
-        let returnValue: T[];
+        let returnValue: T;
         switch (job.status) {
           case BackgroundJobStatus.Completed:
           case BackgroundJobStatus.CompletedWithErrors:
-            returnValue = Array.isArray(job.result) ? job.result : [job.result];
+            returnValue = job.result;
             break;
           case BackgroundJobStatus.InProgress:
             throw new Error(BackgroundJobRetryStatus.InProgress);

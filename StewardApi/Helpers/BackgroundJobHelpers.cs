@@ -73,9 +73,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         ///     Generates a background job status based on a list of user group management (add/remove) responses.
         /// </summary>
         public static BackgroundJobStatus GetBackgroundJobStatus(
-            IList<BasicPlayer> results)
+            UserGroupBulkOperationStatusOutput results)
         {
-            var foundErrors = results.Any(basicPlayer => basicPlayer.Error != null);
+            var foundErrors = results.FailedUsers.Any(basicPlayer => basicPlayer.Error != null);
             return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
         }
 

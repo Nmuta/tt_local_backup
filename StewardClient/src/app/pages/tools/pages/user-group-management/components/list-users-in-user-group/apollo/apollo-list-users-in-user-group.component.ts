@@ -10,9 +10,10 @@ import {
   UserGroupBulkOperationStatus,
 } from '@models/user-group-bulk-operation';
 import { ApolloUserGroupService } from '@services/api-v2/apollo/user-group/apollo-user-group.service';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 import BigNumber from 'bignumber.js';
 import { first } from 'lodash';
-import { map, Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { ListUsersInGroupServiceContract } from '../list-users-in-user-group.component';
 
 /** Tool that creates new user groups. */
@@ -26,7 +27,10 @@ export class ApolloListUsersInGroupComponent extends BaseComponent {
   @Input() userGroup: LspGroup;
   public service: ListUsersInGroupServiceContract;
 
-  constructor(userGroupService: ApolloUserGroupService) {
+  constructor(
+    userGroupService: ApolloUserGroupService,
+    backgroundJobService: BackgroundJobService,
+  ) {
     super();
 
     this.service = {
@@ -61,7 +65,13 @@ export class ApolloListUsersInGroupComponent extends BaseComponent {
         playerList: BasicPlayerList,
         userGroup: LspGroup,
       ): Observable<UserGroupBulkOperationStatus> {
-        return userGroupService.addUsersToGroupUsingBulkProcessing$(userGroup.id, playerList);
+        return userGroupService.addUsersToGroupUsingBulkProcessing$(userGroup.id, playerList).pipe(
+          switchMap(response => {
+            return backgroundJobService.waitForBackgroundJobToComplete<UserGroupBulkOperationStatus>(
+              response,
+            );
+          }),
+        );
       },
       getBulkOperationStatus$(
         _userGroup: LspGroup,

@@ -8,6 +8,7 @@ import { GetUserGroupUsersResponse } from '@models/get-user-group-users-response
 import { HttpParams } from '@angular/common/http';
 import { BasicPlayerActionResult } from '@models/basic-player';
 import { UserGroupBulkOperationStatus } from '@models/user-group-bulk-operation';
+import { BackgroundJob } from '@models/background-job';
 
 /** The /v2/apollo/usergroup endpoints. */
 @Injectable({
@@ -70,10 +71,10 @@ export class ApolloUserGroupService {
   public addUsersToGroupUsingBulkProcessing$(
     userGroupId: BigNumber,
     playerList: BasicPlayerList,
-  ): Observable<UserGroupBulkOperationStatus> {
+  ): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBulkProcessing', true);
 
-    return this.api.postRequest$<UserGroupBulkOperationStatus>(
+    return this.api.postRequest$<BackgroundJob<void>>(
       `${this.basePath}/${userGroupId}/add`,
       playerList,
       params,
