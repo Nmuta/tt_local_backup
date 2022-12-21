@@ -104,8 +104,19 @@ export class RacersCupKeyComponent implements OnChanges {
     return returnArray;
   }
 
+  /** Toggle all nodes on/off. */
+  public ToggleAll(toggleOn: boolean): void {
+    this.treeControl.dataNodes.forEach(node => {
+      const descendants = this.treeControl.getDescendants(node);
+      node.isChecked = toggleOn;
+      descendants.forEach(x => (x.isChecked = toggleOn));
+
+      this.sendFilterResults();
+    });
+  }
+
   /** Toggle the node selection. Select/deselect all the descendants node. */
-  public todoItemSelectionToggle(node: RacersCupKeyFlatNode): void {
+  public ItemSelectionToggle(node: RacersCupKeyFlatNode): void {
     const descendants = this.treeControl.getDescendants(node);
     const descendantsPartiallySelected = this.descendantsPartiallySelected(node);
     node.isChecked = descendantsPartiallySelected ? node.isChecked : !node.isChecked;
@@ -115,7 +126,7 @@ export class RacersCupKeyComponent implements OnChanges {
   }
 
   /** Toggle the node selection. Select/deselect all the descendants node. */
-  public todoLeafItemSelectionToggle(node: RacersCupKeyFlatNode): void {
+  public LeafItemSelectionToggle(node: RacersCupKeyFlatNode): void {
     node.isChecked = !node.isChecked;
     const parent = this.getParentNode(node);
     const siblings = this.treeControl.getDescendants(parent);
