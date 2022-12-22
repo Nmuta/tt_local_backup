@@ -28,5 +28,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1805:Do not initialize unnecessarily", Justification = "Explicitly set")]
         public bool IsFeatured { get; set; } = false;
+
+        /// <summary>
+        ///     Gets or sets the order the results should be ordered in.
+        /// </summary>
+        public UgcOrderBy OrderBy { get; set; }
     }
 }

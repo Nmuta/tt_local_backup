@@ -47,6 +47,16 @@
         </button>
       </mat-form-field>
 
+      <!-- UGC Order By Filter -->
+      <mat-form-field appearance="fill">
+        <mat-label>Order By</mat-label>
+        <mat-select matInput [formControl]="formControls.orderBy">
+          <mat-option *ngFor="let orderBy of orderByOptions" [value]="orderBy">{{
+            orderBy | deppoh
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <!-- UGC Featured Status Filter -->
       <mat-checkbox class="featured-toggle" [formControl]="formControls.isFeatured">
         Limit Search to Featured UGC

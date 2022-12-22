@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: '16975ec9-4a02-481a-b467-2e1a7ea02621',
+      shortText: 'Add new sorting option when searching public UGC',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: 'c7d4769d-3717-4ce9-99ce-b047942d9e84',
       shortText: 'Racers Cup Calendar updated to new V2 APIs',

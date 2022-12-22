@@ -15,6 +15,7 @@ export interface UgcSearchFilters {
   ugcType: UgcType;
   carId: BigNumber;
   keywords: string;
+  orderBy: UgcOrderBy;
   isFeatured: boolean;
 }
 
