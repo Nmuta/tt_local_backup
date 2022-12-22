@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DeviceType } from '@models/enums';
+import { UgcOrderBy } from '@models/ugc-filters';
 import _ from 'lodash';
 
 export interface EnumPrintMap {
@@ -27,6 +28,22 @@ export class DomainEnumPrettyPrintPipe implements PipeTransform {
 
       case DeviceType.XboxCloud:
         return 'XCloud';
+        break;
+
+      case UgcOrderBy.CreatedDateAsc:
+        return 'Oldest first';
+        break;
+
+      case UgcOrderBy.CreatedDateDesc:
+        return 'Newest first';
+        break;
+
+      case UgcOrderBy.PopularityScoreAsc:
+        return 'Least Popular First';
+        break;
+
+      case UgcOrderBy.PopularityScoreDesc:
+        return 'Most Popular First';
         break;
 
       default:
