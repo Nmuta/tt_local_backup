@@ -14,6 +14,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '3c66a60e-08d8-4e6c-a13e-f7123691cb8b',
+      shortText: 'Add buttons to select/deselect all series and playlists',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: 'c7d4769d-3717-4ce9-99ce-b047942d9e84',
       shortText: 'Racers Cup Calendar updated to new V2 APIs',
     },
