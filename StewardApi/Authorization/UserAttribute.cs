@@ -44,6 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string UpdateUserFlags = nameof(UpdateUserFlags);
         public const string UpdateMessageOfTheDay = nameof(UpdateMessageOfTheDay);
         public const string UpdateWelcomeCenterTiles = nameof(UpdateWelcomeCenterTiles);
+        public const string CreateAuctions = nameof(CreateAuctions);
 
         public static IEnumerable<string> AllAttributes()
         {

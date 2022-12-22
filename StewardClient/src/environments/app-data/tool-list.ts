@@ -40,6 +40,7 @@ export enum NavbarTool {
   PermissionManagement = 'permission-management',
   StewardManagement = 'steward-management',
   MessageOfTheDay = 'message-of-the-day',
+  CreateAuction = 'create-auction',
   WelcomeCenterTiles = 'welcome-center-tiles',
 }
 
@@ -162,6 +163,7 @@ export enum AppIcon {
   PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
   MessageOfTheDay = 'waving_hand',
+  CreateAuction = 'sell',
   WelcomeCenterTile = 'grid_view',
 }
 
@@ -459,6 +461,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
     loadChildren: () =>
       import('../../app/pages/tools/pages/auction-blocklist/auction-blocklist.module').then(
         m => m.StewardAuctionBlocklistModule,
+      ),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.CreateAuction,
+    tool: NavbarTool.CreateAuction,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Create Auction',
+    subtitle: 'Create auction',
+    supportedTitles: [GameTitle.FH5],
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Create single or bulk auction(s)',
+    shortDescription: [`Create a single auction or bulk auctions`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/create-auction/create-auction.module').then(
+        m => m.CreateAuctionModule,
       ),
   },
   <HomeTileInfoInternal>{

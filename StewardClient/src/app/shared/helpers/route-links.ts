@@ -57,7 +57,17 @@ export function getMessageOfTheDayRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.MessageOfTheDay, gameTitle);
 }
 
+/** Make create auction route. */
+export function getCreateAuctionRoute(gameTitle: GameTitle) {
+  return getComponentBaseRoute(NavbarTool.CreateAuction, gameTitle);
+}
+
 /** Make welcome center tiles route. */
 export function getWelcomeCenterTilesRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.WelcomeCenterTiles, gameTitle);
+}
+
+/** Make auction details route. */
+export function getAuctionDetailsRoute(gameTitle: GameTitle, auctionId: string) {
+  return ['/app/tools/auction-details/', gameTitle, auctionId];
 }

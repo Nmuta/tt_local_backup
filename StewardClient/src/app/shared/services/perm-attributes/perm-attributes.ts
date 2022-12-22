@@ -34,6 +34,7 @@ export enum PermAttributeName {
   UpdateUserFlags = 'UpdateUserFlags',
   UpdateMessageOfTheDay = 'UpdateMessageOfTheDay',
   UpdateWelcomeCenterTiles = 'UpdateWelcomeCenterTiles',
+  CreateAuctions = 'CreateAuctions',
 }
 
 /** Full perm attribute details. */

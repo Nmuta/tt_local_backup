@@ -40,7 +40,8 @@
     // things that shouldn't grow to fill space
     > mat-checkbox,
     > button,
-    > help-popover-icon {
+    > help-popover-icon,
+    > mat-button-toggle-group {
       flex-grow: 0;
     }
 
@@ -58,6 +59,11 @@
       &:not(:last-child) {
         margin-right: 0; // mirror margins if it's in the middle of the block
       }
+      margin-bottom: $mat-form-field-bottom-spacing;
+    }
+
+    // add margin-bottom to mat-button-toggle-group
+    > mat-button-toggle-group {
       margin-bottom: $mat-form-field-bottom-spacing;
     }
 
@@ -80,6 +86,9 @@
     // support for up to 10 characters
     @include _mat-form-field-horizontal-sizing('9-char', 7em);
     @include _mat-form-field-horizontal-sizing('10-char', 7em);
+
+    // support for up to 13 characters
+    @include _mat-form-field-horizontal-sizing('13-char', 10em);
 
     //Full width
     @include _mat-form-field-horizontal-sizing('full-width', 100%);

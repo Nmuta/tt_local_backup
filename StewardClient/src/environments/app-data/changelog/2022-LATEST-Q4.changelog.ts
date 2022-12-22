@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: '3e8aac4c-f45d-4365-a104-2d8a7244e0bb',
+      shortText: 'Add new tool to create auction(s)',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
       uuid: '16975ec9-4a02-481a-b467-2e1a7ea02621',
       shortText: 'Add new sorting option when searching public UGC',
