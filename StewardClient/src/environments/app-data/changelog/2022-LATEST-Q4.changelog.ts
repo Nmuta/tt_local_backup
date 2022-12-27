@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.Gifting },
+      uuid: '12cf2586-12f7-4efe-bf94-17ab8084c150',
+      shortText: 'Resolved bug that prevented sending subsequent gifts without refreshing',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
       uuid: '3e8aac4c-f45d-4365-a104-2d8a7244e0bb',
       shortText: 'Add new tool to create auction(s)',

@@ -337,6 +337,8 @@ export abstract class GiftBasketBaseComponent<
 
     if (clearItemsInBasket) {
       this.sendGiftForm.reset();
+      this.sendGiftForm.controls.localizedTitleMessageInfo.reset({});
+      this.sendGiftForm.controls.localizedBodyMessageInfo.reset({});
       this.setStateGiftBasket([]);
       this.giftBasketHasErrors = false;
     }
