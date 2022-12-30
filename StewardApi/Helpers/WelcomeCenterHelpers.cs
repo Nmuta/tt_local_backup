@@ -215,7 +215,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 if (child.Value != null)
                 {
                     // Null check ignores the non-existant loc-ref or loc-def.
-                    // Always remove loc-def, replace with loc-ref. If loc-ref, replace.
+                    // Always remove loc-def, replace with loc-ref.
                     el.SetAttributeValue(child.Path.Namespace + "loc-def", null);
                     el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
 
@@ -224,7 +224,14 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                     if (child.Comment != null)
                     {
-                        el.AddBeforeSelf(new XComment(child.Comment));
+                        if (el.PreviousNode is XComment cNode)
+                        {
+                            cNode.Value = child.Comment;
+                        }
+                        else
+                        {
+                            el.AddBeforeSelf(new XComment(child.Comment));
+                        }
                     }
                 }
             }
