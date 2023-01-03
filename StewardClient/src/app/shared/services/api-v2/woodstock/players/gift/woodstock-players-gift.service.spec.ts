@@ -40,7 +40,7 @@ describe('WoodstockPlayersGiftService', () => {
         quickChatLines: [],
         emotes: [],
       },
-      expireTimeSpanInDays: fakeBigNumber(),
+      expireAfterDays: fakeBigNumber(),
     };
 
     beforeEach(() => {

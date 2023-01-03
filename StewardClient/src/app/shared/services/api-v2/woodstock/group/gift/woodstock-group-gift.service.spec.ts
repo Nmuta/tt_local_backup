@@ -41,7 +41,7 @@ describe('WoodstockGroupGiftService', () => {
         quickChatLines: [],
         emotes: [],
       },
-      expireTimeSpanInDays: fakeBigNumber(),
+      expireAfterDays: fakeBigNumber(),
     };
 
     beforeEach(() => {
