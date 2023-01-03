@@ -107,5 +107,10 @@ namespace StewardGitApi
         ///     Gets current user display name.
         /// </summary>
         public string GetCurrentUserDisplayName();
+
+        /// <summary>
+        ///     Gets a list of all branches.
+        /// </summary>
+        public Task<IEnumerable<GitRef>> GetAllBranchesAsync();
     }
 }

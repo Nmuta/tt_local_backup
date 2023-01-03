@@ -2,6 +2,7 @@
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Organization.Client;
+using Microsoft.VisualStudio.Services.WebApi;
 
 namespace StewardGitApi
 {
@@ -161,14 +162,20 @@ namespace StewardGitApi
             return result;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
         public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
         {
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             var pullrequest = await GitHelper.AbandonPullRequestAsync(this.AzureContext, pullRequestId).ConfigureAwait(false);
             return pullrequest;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitRef>> GetAllBranchesAsync()
+        {
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            var branches = await GitHelper.GetAllBranchesAsync(this.AzureContext).ConfigureAwait(false);
+            return branches;
         }
     }
 }

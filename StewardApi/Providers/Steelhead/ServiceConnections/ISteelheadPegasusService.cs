@@ -137,5 +137,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// Abandons the pull request.
         /// </summary>
         Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId);
+
+        /// <summary>
+        ///     Gets all branches.
+        /// </summary>
+        Task<IEnumerable<GitRef>> GetAllBranchesAsync();
     }
 }

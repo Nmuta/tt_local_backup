@@ -79,5 +79,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
 
             return this.Ok(pullRequest);
         }
+
+        /// <summary>
+        ///     Gets all branches.
+        /// </summary>
+        [HttpGet("refs/")]
+        [SwaggerResponse(200, type: typeof(List<GitRef>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
+        public async Task<IActionResult> GetAllBranches()
+        {
+            var branches = await this.steelheadPegasusService.GetAllBranchesAsync().ConfigureAwait(true);
+
+            return this.Ok(branches);
+        }
     }
 }

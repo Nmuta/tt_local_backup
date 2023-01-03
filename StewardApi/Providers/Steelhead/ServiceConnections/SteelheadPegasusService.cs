@@ -510,5 +510,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return pullRequest;
         }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitRef>> GetAllBranchesAsync()
+        {
+            var branches = await this.azureDevOpsManager.GetAllBranchesAsync().ConfigureAwait(false);
+
+            return branches;
+        }
     }
 }

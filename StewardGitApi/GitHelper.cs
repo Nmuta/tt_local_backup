@@ -325,7 +325,7 @@ namespace StewardGitApi
         }
 
         /// <summary>
-        /// Abandons pull request.
+        ///     Abandons pull request.
         /// </summary>
         internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId)
         {
@@ -341,6 +341,20 @@ namespace StewardGitApi
             var pullRequest = await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
 
             return pullRequest;
+        }
+
+        /// <summary>
+        ///     Gets all branches.
+        /// </summary>
+        internal static async Task<IEnumerable<GitRef>> GetAllBranchesAsync(AzureContext context)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+
+            (Guid projectId, Guid repoId) = context.Settings.Ids;
+
+            List<GitRef> refs = await gitClient.GetRefsAsync(repoId, filter: "heads/").ConfigureAwait(false);
+
+            return refs;
         }
 
         private static string WithoutRefsPrefix(string refName)
