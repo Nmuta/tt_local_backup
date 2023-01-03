@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
@@ -39,6 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     {
         private const string PegasusBaseCacheKey = "SteelheadPegasus_";
         private const string LocalizationFileAntecedent = "LiveOps_LocalizationStrings-";
+        private const string LocalizationStringIdsMappings = "LiveOps_LocalizationStringMappings";
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -121,9 +123,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync()
+        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
             var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
+
+            var localizationIdsMapping = await this.cmsRetrievalHelper
+                .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
+                    LocalizationStringIdsMappings,
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
 
             var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
             foreach (var supportedLocale in supportedLocales)
@@ -158,19 +166,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 }
             }
 
+            // Remap the ids to the right ids from the mapping file
+            if (useInternalIds)
+            {
+                return results
+                    .Where(p => localizationIdsMapping.ContainsKey(p.Key))
+                    .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+            }
+
             return results;
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<CarClass>> GetCarClassesAsync()
+        public async Task<IEnumerable<CarClass>> GetCarClassesAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
         {
             var carClassKey = $"{PegasusBaseCacheKey}CarClasses";
 
-            async Task<IEnumerable<CarClass>> GetCarClasses()
+            async Task<IEnumerable<CarClass>> GetCarClasses(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
             {
+                var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
+
+                if (slotStatus == null)
+                {
+                    throw new PegasusStewardException(
+                        $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
+                }
+
                 var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadLiveOpsContent.CarClass>>(
                     CMSFileNames.CarClasses,
-                    this.cmsEnvironment).ConfigureAwait(false);
+                    this.cmsEnvironment,
+                    slot: slotId).ConfigureAwait(false);
                 var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
 
                 this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
@@ -179,7 +204,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             return this.refreshableCacheStore.GetItem<IEnumerable<CarClass>>(carClassKey)
-                   ?? await GetCarClasses().ConfigureAwait(false);
+                   ?? await GetCarClasses(pegasusEnvironment ?? this.cmsEnvironment, slotId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        {
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
+            }
+
+            var leaderboardsKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_Leaderboards";
+
+            async Task<IEnumerable<Leaderboard>> GetLeaderboards()
+            {
+                var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<RivalEvent>>(filename, pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+                var leaderboards = this.mapper.Map<IEnumerable<Leaderboard>>(pegasusLeaderboards);
+
+                this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
+
+                return leaderboards;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<Leaderboard>>(leaderboardsKey)
+                   ?? await GetLeaderboards().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -251,6 +304,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                    ?? await GetVanityItems().ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(string pegasusEnvironment = null, string pegasusSlot = null, string pegasusSnapshot = null)
+        {
+            pegasusEnvironment ??= this.cmsEnvironment;
+            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+
+            var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>>(
+                CMSFileNames.PlaylistDataForService,
+                environment: pegasusEnvironment,
+                slot: pegasusSlot,
+                snapshot: pegasusSnapshot).ConfigureAwait(false);
+
+            return playlists;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.RacersCupChampionships> GetRacersCupChampionshipScheduleV4Async(string pegasusEnvironment, string pegasusSlot = null, string pegasusSnapshot = null)
+        {
+            pegasusEnvironment ??= this.cmsEnvironment;
+            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+
+            var fileName = "RacersCupChampionshipScheduleV4";
+            var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
+                fileName,
+                environment: pegasusEnvironment,
+                slot: pegasusSlot,
+                snapshot: pegasusSnapshot).ConfigureAwait(false);
+
+            return scheduleData;
+        }
+
         /// <inheritdoc/>
         public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
         {
@@ -314,14 +398,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<MotdEntry>(messageOfTheDayBridge);
-
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
+            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
             XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            string newXml = element.Document.ToString(SaveOptions.None);
+            string newXml = element.Document.ToXmlString();
 
             var change = new CommitRefProxy()
             {
@@ -381,14 +465,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofBridge wofTileBridge, Guid id, string commitComment)
         {
             var entry = this.mapper.Map<WofEntry>(wofTileBridge);
-
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node());
+            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
             XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            string newXml = element.Document.ToString(SaveOptions.None);
+            string newXml = element.Document.ToXmlString();
 
             var change = new CommitRefProxy()
             {
@@ -399,6 +483,40 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             };
 
             return change;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<(GitPullRequest, string authorEmail)>> GetPullRequestsAsync(PullRequestStatus status)
+        {
+            var allPrs = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null, null).ConfigureAwait(false);
+
+            var filteredPrs = allPrs.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
+
+            IEnumerable<(GitPullRequest pr, string authorEmail)> formattedPrs = filteredPrs.Select(pr =>
+            {
+                var match = pr.Title.ExtractEmail().FirstOrDefault();
+                string authorEmail = match?.Value;
+
+                return (pr, authorEmail);
+            });
+
+            return formattedPrs;
+        }
+
+        /// <inheritdoc/>
+        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
+        {
+            var pullRequest = await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(false);
+
+            return pullRequest;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitRef>> GetAllBranchesAsync()
+        {
+            var branches = await this.azureDevOpsManager.GetAllBranchesAsync().ConfigureAwait(false);
+
+            return branches;
         }
     }
 }

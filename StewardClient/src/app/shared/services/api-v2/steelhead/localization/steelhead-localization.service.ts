@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocalizedStringsMap, LocalizedStringData } from '@models/localization';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
@@ -12,8 +13,9 @@ export class SteelheadLocalizationService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets localized strings for Steelhead. */
-  public getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-    return this.api.getRequest$<LocalizedStringsMap>(this.basePath);
+  public getLocalizedStrings$(useInternalIds: boolean = true): Observable<LocalizedStringsMap> {
+    const params = new HttpParams().set('useInternalIds', useInternalIds);
+    return this.api.getRequest$<LocalizedStringsMap>(this.basePath, params);
   }
 
   /** Submits string to Steelhead for localization. */

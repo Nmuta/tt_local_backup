@@ -20,7 +20,9 @@
   @if ($is-dark) {
     @include themePalettesToVars(
       mat.$dark-theme-foreground-palette,
-      mat.$dark-theme-background-palette
+      mat.$dark-theme-background-palette,
+      'darken',
+      'lighten'
     );
     @include colorToVars(
       makeLookupName('highlight', 'default'),
@@ -30,7 +32,9 @@
     // light theme
     @include themePalettesToVars(
       mat.$light-theme-foreground-palette,
-      mat.$light-theme-background-palette
+      mat.$light-theme-background-palette,
+      'lighten',
+      'darken'
     );
     @include colorToVars(
       makeLookupName('highlight', 'default'),

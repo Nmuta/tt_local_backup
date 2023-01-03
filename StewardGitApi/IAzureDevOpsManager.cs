@@ -94,6 +94,11 @@ namespace StewardGitApi
         Task<GitRefUpdateResult> DeleteBranchAsync(GitRefUpdate gitRefUpdate, Action<bool> onSuccess);
 
         /// <summary>
+        /// Abandons pull request.
+        /// </summary>
+        public Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId);
+
+        /// <summary>
         ///     Gets current user id.
         /// </summary>
         public Guid GetCurrentUserId();
@@ -102,5 +107,10 @@ namespace StewardGitApi
         ///     Gets current user display name.
         /// </summary>
         public string GetCurrentUserDisplayName();
+
+        /// <summary>
+        ///     Gets a list of all branches.
+        /// </summary>
+        public Task<IEnumerable<GitRef>> GetAllBranchesAsync();
     }
 }

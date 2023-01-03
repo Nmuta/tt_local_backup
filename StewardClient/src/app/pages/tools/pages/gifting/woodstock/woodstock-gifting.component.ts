@@ -101,6 +101,7 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
       });
 
     this.specialLiveriesContract = {
+      gameTitle: GameTitle.FH5,
       liveries: chain(SPECIAL_LIVERY_TABLE)
         .map(
           v =>

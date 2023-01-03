@@ -21,6 +21,8 @@
       stateManager
       [monitor]="postMonitor"
       monitorDisable
+      [permissionAttribute]="permAttribute"
+      [permissionTitle]="gameTitle"
     >
       <span [matTooltip]="!canSetReportWeight ? featureDisabledText : null">
         Update <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>

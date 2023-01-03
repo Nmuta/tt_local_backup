@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     /// <inheritdoc />
     public sealed class StewardUserProvider : IStewardUserProvider, IScopedStewardUserProvider
     {
+        private readonly string allStewardUsersCacheKey = "AllStewardUserIds";
+
         private readonly ITableStorageClient tableStorageClient;
         private readonly IRefreshableCacheStore refreshableCacheStore;
 
@@ -70,6 +73,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 var insertOrReplaceOperation = TableOperation.InsertOrReplace(stewardUser);
 
                 await this.tableStorageClient.ExecuteAsync(insertOrReplaceOperation).ConfigureAwait(false);
+
+                // Update all user ids mem cache. No need to await, letting it run in the background
+                this.QueryUserIdsAsync();
             }
             catch (Exception ex)
             {
@@ -139,27 +145,58 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task EnsureStewardUserAsync(StewardUser user)
+        public async Task EnsureStewardUserAsync(StewardClaimsUser user)
         {
-            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes)).ConfigureAwait(false);
+          // We shouldnt pass in the attributes from claim. it doesnt exist
+            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task EnsureStewardUserAsync(string id, string name, string email, string role, string attributes)
+        public async Task EnsureStewardUserAsync(string id, string name, string email, string role)
         {
             try
             {
                 var user = await this.GetStewardUserAsync(id).ConfigureAwait(false);
 
-                if (name != user.Name || email != user.EmailAddress || role != user.Role || attributes != user.Attributes)
+                if (name != user.Name || email != user.EmailAddress || role != user.Role)
                 {
-                    await this.UpdateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
+                    await this.UpdateStewardUserAsync(id, name, email, role, user.Attributes).ConfigureAwait(false);
                 }
             }
             catch
             {
-                await this.CreateStewardUserAsync(id, name, email, role, attributes).ConfigureAwait(false);
+                await this.CreateStewardUserAsync(id, name, email, role, string.Empty).ConfigureAwait(false);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<StewardUserInternal>> GetAllStewardUsersAsync()
+        {
+            try
+            {
+                var userIds = this.refreshableCacheStore.GetItem<IEnumerable<StewardUserId>>(this.allStewardUsersCacheKey) ?? await this.QueryUserIdsAsync().ConfigureAwait(false);
+                var tasks = userIds.Select(u => this.GetStewardUserAsync(u.ObjectId));
+                await Task.WhenAll(tasks).ConfigureAwait(false);
+                var allUsers = tasks.Select(t => t.GetAwaiter().GetResult()).ToList();
+
+                return allUsers;
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to lookup all users in Steward.", ex);
+            }
+        }
+
+        /// <summary>
+        ///     Queries all user ids and sets the list in memory cache.
+        /// </summary>
+        private async Task<IEnumerable<StewardUserId>> QueryUserIdsAsync()
+        {
+            var tableQuery = new TableQuery<StewardUserId>().Select(new List<string>() { "ObjectId" });
+            var result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+            this.refreshableCacheStore.PutItem(this.allStewardUsersCacheKey, TimeSpan.FromDays(1), result);
+
+            return result;
         }
     }
 }

@@ -24,6 +24,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { CacheModule } from '@shared/modules/cache/cache.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 /**
  *  Routed module for interacting with auctions.
@@ -54,10 +58,14 @@ import { CacheModule } from '@shared/modules/cache/cache.module';
     StandardFlagModule,
     ModelDumpModule,
     MatTooltipModule,
+    MatCheckboxModule,
     MatTableModule,
     MatSortModule,
     HelpModule,
     CacheModule,
+    StateManagersModule,
+    PermissionsModule,
+    VerifyCheckboxModule,
   ],
 })
 export class AuctionModule {}

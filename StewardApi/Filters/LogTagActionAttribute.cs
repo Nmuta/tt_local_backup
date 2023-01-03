@@ -58,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Console = 8,
         ServiceApis = 16,
         UgcItem = 32,
+        StewardUser = 64,
     }
 
     [Flags]

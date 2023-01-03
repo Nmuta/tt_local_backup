@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
     [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/notifications")]
     [ApiVersion("2.0")]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",

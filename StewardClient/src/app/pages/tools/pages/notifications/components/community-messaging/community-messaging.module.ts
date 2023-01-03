@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatChipsModule } from '@angular/material/chips';
@@ -29,6 +28,8 @@ import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-comm
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -42,7 +43,6 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    VerifyActionButtonModule,
     MatToolbarModule,
     MatButtonModule,
     MatCardModule,
@@ -66,6 +66,8 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     JsonTableResultsModule,
     DateTimePickersModule,
     StandardDateModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
   exports: [
     SunriseCommunityMessagingComponent,

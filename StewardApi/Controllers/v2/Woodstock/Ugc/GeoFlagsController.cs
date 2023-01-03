@@ -24,6 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [Route("api/v{version:apiVersion}/title/woodstock/ugc/{id}/geoflags")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent)]
@@ -53,8 +54,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             }
 
             var typedGeoFlags = geoFlags.Cast<int>().ToArray();
-
-            await this.Services.StorefrontManagementService.SetUGCGeoFlag(ugcId, typedGeoFlags).ConfigureAwait(true);
+            var storefront = this.WoodstockServices.Value.StorefrontManagementService;
+            await storefront.SetUGCGeoFlag(ugcId, typedGeoFlags).ConfigureAwait(true);
 
             return this.Ok();
         }

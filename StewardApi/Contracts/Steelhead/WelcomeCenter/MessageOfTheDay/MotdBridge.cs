@@ -1,4 +1,7 @@
-﻿using System;
+﻿#pragma warning disable SA1306 // Field names should begin with lower-case letter
+
+using System;
+using System.Globalization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay
 {
@@ -7,6 +10,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     /// </summary>
     public class MotdBridge
     {
+        private DateTime InternalDateUtc;
+
         /// <summary>
         ///     Gets or sets the friendly message name.
         /// </summary>
@@ -35,6 +40,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         /// <summary>
         ///     Gets or sets the date.
         /// </summary>
-        public string Date { get; set; }
+        public string Date
+        {
+            get => this.InternalDateUtc.ToString("O");
+            set => this.InternalDateUtc = DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();
+        }
     }
 }

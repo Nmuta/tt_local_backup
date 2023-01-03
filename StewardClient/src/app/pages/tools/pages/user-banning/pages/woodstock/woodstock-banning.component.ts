@@ -9,10 +9,11 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanHistoryComponent } from '@shared/views/ban-history/woodstock/woodstock-ban-history.component';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
-import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { EMPTY, of, ReplaySubject, Subject } from 'rxjs';
+import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
+import { GameTitle } from '@models/enums';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -40,6 +41,8 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
   public selectedPlayer: IdentityResultAlpha = null;
 
   public identitySortFn = null;
+
+  public gameTitle = GameTitle.FH5;
 
   constructor(
     backgroundJobService: BackgroundJobService,
@@ -83,11 +86,8 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
     };
   }
 
-  public submit = (): Observable<unknown> => this.submitInternal();
-
   /** Submit the form. */
-  public submitInternal(): Observable<unknown> {
-    this.isLoading = true;
+  public submitBan(): void {
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
     const bans: WoodstockBanRequest[] = identities.map(identity => {
@@ -103,18 +103,19 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.woodstock.postBanPlayersWithBackgroundProcessing$(bans).pipe(
-      catchError(error => {
-        this.loadError = error;
-        this.isLoading = false;
-        return EMPTY;
-      }),
-      take(1),
-      tap((backgroundJob: BackgroundJob<void>) => {
-        this.waitForBackgroundJobToComplete(backgroundJob);
-      }),
-      takeUntil(this.onDestroy$),
-    );
+    this.banActionMonitor = this.banActionMonitor.repeat();
+    this.woodstock
+      .postBanPlayersWithBackgroundProcessing$(bans)
+      .pipe(
+        take(1),
+        switchMap((backgroundJob: BackgroundJob<void>) =>
+          this.waitForBackgroundJobToComplete$(backgroundJob),
+        ),
+        this.banActionMonitor.monitorSingleFire(),
+        catchError(() => EMPTY),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe();
   }
 
   /** Logic when player selection outputs identities. */

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
+import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { ResetProfileOptions } from '@models/reset-profile-options';
@@ -149,8 +149,8 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
   /** Lifecycle hook. */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.hasAccessToTool = hasAccessToRestrictedFeature(
-      RestrictedFeature.PlayerProfileManagement,
+    this.hasAccessToTool = hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.PlayerProfileManagement,
       this.service.gameTitle,
       user.role,
     );

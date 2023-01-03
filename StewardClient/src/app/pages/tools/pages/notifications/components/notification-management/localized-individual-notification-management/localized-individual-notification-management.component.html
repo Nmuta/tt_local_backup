@@ -26,6 +26,7 @@
                 *ngIf="entry.edit"
                 [service]="service?.selectLocalizedStringService"
                 [formControl]="entry.formControls.localizedMessageInfo"
+                formControlName="localizedMessageInfo"
                 [disableLanguagePreview]="true"
               ></select-localized-string>
             </div>
@@ -92,6 +93,9 @@
                 color="primary"
                 [disabled]="!entry.isEditable"
                 (click)="editEntry(entry)"
+                stateManager
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
               >
                 <span [matTooltip]="entry.tooltip">Edit</span>
               </button>
@@ -111,7 +115,12 @@
               >
                 Delete
               </button>
-              <mat-checkbox #verifyDelete matTooltip="Check to enable deletion"
+              <mat-checkbox
+                #verifyDelete
+                stateManager
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+                matTooltip="Check to enable deletion"
                 >Verify Deletion</mat-checkbox
               >
             </span>
@@ -129,6 +138,8 @@
                 monitorDisable
                 monitorWarn
                 monitorWarnSnackbar
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
               >
                 Submit
               </button>

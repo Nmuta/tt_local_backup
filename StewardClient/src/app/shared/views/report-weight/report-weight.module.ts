@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -17,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SteelheadReportWeightComponent } from './steelhead/steelhead-report-weight.component';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for getting and setting a player's report weight. */
 @NgModule({
@@ -30,7 +30,6 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
     MatProgressSpinnerModule,
     MatTooltipModule,
     PipesModule,
-    VerifyActionButtonModule,
     JsonDumpModule,
     MatIconModule,
     MatButtonModule,
@@ -43,6 +42,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
     MatSelectModule,
     MatCardModule,
     StateManagersModule,
+    PermissionsModule,
   ],
   exports: [WoodstockReportWeightComponent, SteelheadReportWeightComponent],
 })

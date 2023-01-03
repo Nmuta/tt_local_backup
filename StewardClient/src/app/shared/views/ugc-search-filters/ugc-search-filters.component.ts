@@ -11,10 +11,10 @@ import {
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
-import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
+import { UgcOrderBy, UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { SimpleCar } from '@models/cars';
 import BigNumber from 'bignumber.js';
-import { isEqual } from 'lodash';
+import { isEqual, keys } from 'lodash';
 import { Subject } from 'rxjs';
 import { startWith, tap } from 'rxjs/operators';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
@@ -66,13 +66,18 @@ export class UgcSearchFiltersComponent
   /** REVIEW-COMMENT: The UGC search filter service. */
   @Input() public serviceContract: UgcSearchFiltersServiceContract;
 
+  public orderByOptions = keys(UgcOrderBy) as UgcOrderBy[];
+
   public formControls = {
     ugcType: new FormControl(null, Validators.required),
     makeModelInput: new FormControl(null),
     keywords: new FormControl(''),
+    orderBy: new FormControl(UgcOrderBy.PopularityScoreDesc, Validators.required),
     isFeatured: new FormControl(false, Validators.required),
     identity: new FormControl(null),
   };
+
+  public playerNotFound: boolean = false;
 
   /** UGC filters form group. */
   public formGroup: FormGroup = new FormGroup(this.formControls);
@@ -95,6 +100,7 @@ export class UgcSearchFiltersComponent
       ugcType: string;
       carId: string;
       keywords: string;
+      orderBy: string;
       isFeatured: string;
     } = null;
 
@@ -116,6 +122,7 @@ export class UgcSearchFiltersComponent
           this.formControls.ugcType.updateValueAndValidity();
           this.formControls.makeModelInput.updateValueAndValidity();
           this.formControls.keywords.updateValueAndValidity();
+          this.formControls.orderBy.updateValueAndValidity();
           this.formControls.isFeatured.updateValueAndValidity();
         }
 
@@ -141,6 +148,7 @@ export class UgcSearchFiltersComponent
           ugcType: this.formControls.ugcType.value,
           carId: carId,
           keywords: this.formControls.keywords.value,
+          orderBy: this.formControls.orderBy.value,
           isFeatured: this.formControls.isFeatured.value,
         } as UgcSearchFiltersFormValue;
 
@@ -170,6 +178,7 @@ export class UgcSearchFiltersComponent
           ugcType: data.ugcType,
           carId: data.carId,
           keywords: data.keywords,
+          orderBy: data.orderBy,
           isFeatured: data.isFeatured,
         },
       };
@@ -193,6 +202,7 @@ export class UgcSearchFiltersComponent
       ugcType: this.formControls.ugcType.value,
       carId: carId,
       keywords: this.formControls.keywords.value,
+      orderBy: this.formControls.orderBy.value,
       isFeatured: this.formControls.isFeatured.value,
     } as UgcSearchFiltersFormValue;
 
@@ -216,7 +226,7 @@ export class UgcSearchFiltersComponent
   /** Player identity selected */
   public playerIdentityFound(newIdentity: AugmentedCompositeIdentity): void {
     const titleSpecificIdentity = this.serviceContract.foundFn(newIdentity);
-
+    this.playerNotFound = !!newIdentity?.result && !titleSpecificIdentity;
     this.formControls.identity.setValue(titleSpecificIdentity);
   }
 
@@ -236,6 +246,7 @@ export class UgcSearchFiltersComponent
     ugcType: string;
     carId: string;
     keywords: string;
+    orderBy: string;
     isFeatured: string;
   } {
     return {
@@ -243,6 +254,7 @@ export class UgcSearchFiltersComponent
       ugcType: rawData?.ugcType?.toString(),
       carId: rawData?.carId?.toString(),
       keywords: rawData?.keywords?.toString(),
+      orderBy: rawData?.orderBy?.toString(),
       isFeatured: rawData?.isFeatured?.toString(),
     };
   }

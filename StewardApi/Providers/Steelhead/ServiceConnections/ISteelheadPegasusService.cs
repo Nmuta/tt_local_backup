@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
@@ -29,12 +30,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Retrieve localized strings from Pegasus.
         /// </summary>
         /// <remarks>Utilizes a supported subset of BCP 47 Language Codes.</remarks>
-        Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync();
+        Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true);
 
         /// <summary>
         ///     Gets car classes.
         /// </summary>
-        Task<IEnumerable<CarClass>> GetCarClassesAsync();
+        Task<IEnumerable<CarClass>> GetCarClassesAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
         ///     Gets cars.
@@ -51,6 +52,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets vanity items.
         /// </summary>
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
+
+        /// <summary>
+        ///     Gets playlist data for Racer's Cup.
+        /// </summary>
+        Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(
+            string pegasusEnvironment = null,
+            string pegasusSlot = null,
+            string pegasusSnapshot = null);
+
+        /// <summary>
+        ///     Gets championship data for Racer's Cup.
+        /// </summary>
+        Task<SteelheadLiveOpsContent.RacersCupChampionships> GetRacersCupChampionshipScheduleV4Async(
+            string pegasusEnvironment = null,
+            string pegasusSlot = null,
+            string pegasusSnapshot = null);
+
+        /// <summary>
+        ///     Gets leaderboards.
+        /// </summary>
+        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
         ///     Creates pull request.
@@ -105,5 +127,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets a World of Forza entry as an Xelement.
         /// </summary>
         Task<XElement> GetWorldOfForzaElementAsync(Guid id);
+
+        /// <summary>
+        ///     Gets pull pull requests from the steward user.
+        /// </summary>
+        Task<IEnumerable<(GitPullRequest, string authorEmail)>> GetPullRequestsAsync(PullRequestStatus status);
+
+        /// <summary>
+        /// Abandons the pull request.
+        /// </summary>
+        Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId);
+
+        /// <summary>
+        ///     Gets all branches.
+        /// </summary>
+        Task<IEnumerable<GitRef>> GetAllBranchesAsync();
     }
 }

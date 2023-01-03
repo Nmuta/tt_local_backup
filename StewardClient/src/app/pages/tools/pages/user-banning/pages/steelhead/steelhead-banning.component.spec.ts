@@ -12,11 +12,17 @@ import { createMockBackgroundJobService } from '@services/background-job/backgro
 import { SteelheadBanningComponent } from './steelhead-banning.component';
 import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
 import { createMockSteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service.mock';
+import { toDateTime } from '@helpers/luxon';
+import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import { BanResultsUnion } from '../base/user-banning.base.component';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 
 describe('SteelheadBanningComponent', () => {
   let component: SteelheadBanningComponent;
   let fixture: ComponentFixture<SteelheadBanningComponent>;
   let steelhead: SteelheadPlayersService;
+
+  let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,6 +37,7 @@ describe('SteelheadBanningComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SteelheadBanningComponent);
     component = fixture.componentInstance;
+    mockBackgroundJobService = TestBed.inject(BackgroundJobService);
     fixture.detectChanges();
   });
 
@@ -39,7 +46,7 @@ describe('SteelheadBanningComponent', () => {
   });
 
   it('should submit', () => {
-    component.submitInternal$();
+    component.submitBan();
   });
 
   it('should gather summaries', () => {
@@ -66,5 +73,79 @@ describe('SteelheadBanningComponent', () => {
     const lookup0 = component.summaryLookup[testXuids[0].toString()];
     expect(lookup0).toBeDefined();
     expect(component.bannedXuids.length).toBe(1);
+  });
+
+  describe('Method: waitForBackgroundJobToComplete$', () => {
+    const testJob: BackgroundJob<void> = {
+      createdDateUtc: toDateTime(faker.date.past()),
+      userId: faker.datatype.uuid(),
+      jobId: 'test=-job-id',
+      status: BackgroundJobStatus.InProgress,
+      result: undefined,
+      rawResult: undefined,
+      isMarkingRead: false,
+      isRead: false,
+      reason: 'test',
+    };
+
+    beforeEach(() => {
+      mockBackgroundJobService.getBackgroundJob$ = jasmine
+        .createSpy('getBackgroundJob')
+        .and.returnValue(of({}));
+    });
+
+    describe('When subscribing to the banning observable', () => {
+      describe('And a BackgroundJob is returned', () => {
+        const testBackgroundJobResp: BackgroundJob<BanResultsUnion[]> = {
+          createdDateUtc: toDateTime(faker.date.past()),
+          userId: faker.datatype.uuid(),
+          jobId: 'test=-job-id',
+          status: BackgroundJobStatus.InProgress,
+          result: [
+            {
+              xuid: new BigNumber(faker.datatype.number()),
+              error: null,
+              banDescription: undefined,
+            },
+          ],
+          rawResult: {
+            xuid: new BigNumber(faker.datatype.number()),
+            success: true,
+            banDescription: undefined,
+          },
+          isMarkingRead: false,
+          isRead: false,
+          reason: 'test',
+        };
+        beforeEach(() => {
+          mockBackgroundJobService.getBackgroundJob$ = jasmine
+            .createSpy('getBackgroundJob')
+            .and.returnValue(of(testBackgroundJobResp));
+        });
+
+        describe('with a status of complete', () => {
+          it('should set gift response', done => {
+            testBackgroundJobResp.status = BackgroundJobStatus.Completed;
+            component.waitForBackgroundJobToComplete$(testJob).subscribe(() => {
+              expect(component.banResults).toEqual(testBackgroundJobResp.result);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
+  describe('Method: resetBanningToolUI', () => {
+    beforeEach(() => {
+      component.banResults = [];
+    });
+
+    it('should reset UI', () => {
+      component.resetBanningToolUI();
+
+      expect(component.banResults).toBeUndefined();
+      expect(component.banActionMonitor.isActive).toBeFalsy();
+    });
   });
 });

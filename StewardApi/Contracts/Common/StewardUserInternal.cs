@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public IEnumerable<AuthorizationAttribute> AuthorizationAttributes()
         {
-            if (string.IsNullOrEmpty(this.Attributes))
+            if (string.IsNullOrEmpty(this.Attributes) || this.Attributes == "null")
             {
                 return System.Array.Empty<AuthorizationAttribute>();
             }

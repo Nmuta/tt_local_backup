@@ -30,6 +30,7 @@ import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { LocalizationModule } from '@components/localization/localization.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -67,6 +68,7 @@ import { LocalizationModule } from '@components/localization/localization.module
     LuxonDateModule,
     StandardDateModule,
     LocalizationModule,
+    PermissionsModule,
   ],
   exports: [LocalizedGroupNotificationManagementComponent],
 })

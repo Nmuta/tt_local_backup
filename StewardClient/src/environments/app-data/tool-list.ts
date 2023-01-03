@@ -30,7 +30,6 @@ export enum NavbarTool {
   BanReview = 'ban-review',
   Messaging = 'messaging',
   AuctionDetails = 'auction-details',
-  StewardManagement = 'steward-management',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
   Endpoints = 'endpoints',
@@ -38,7 +37,11 @@ export enum NavbarTool {
   CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
+  PermissionManagement = 'permission-management',
+  StewardManagement = 'steward-management',
   MessageOfTheDay = 'message-of-the-day',
+  CreateAuction = 'create-auction',
+  WelcomeCenterTiles = 'welcome-center-tiles',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -49,26 +52,30 @@ export const CommonAccessLevels = {
     UserRole.SupportAgentAdmin,
     UserRole.SupportAgent,
     UserRole.SupportAgentNew,
+    UserRole.GeneralUser,
   ],
-  OldNavbarAppAdminOnly: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
-  OldCommunityAppOnly: [UserRole.LiveOpsAdmin, UserRole.CommunityManager],
+  OldNavbarAppAdminOnly: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.GeneralUser],
+  OldCommunityAppOnly: [UserRole.LiveOpsAdmin, UserRole.CommunityManager, UserRole.GeneralUser],
   OldCommunityAndNavbarAppOnly: [
     UserRole.LiveOpsAdmin,
     UserRole.SupportAgentAdmin,
     UserRole.SupportAgent,
     UserRole.SupportAgentNew,
     UserRole.CommunityManager,
+    UserRole.GeneralUser,
   ],
   DataPipelineAppOnly: [
     UserRole.LiveOpsAdmin,
     UserRole.DataPipelineAdmin,
     UserRole.DataPipelineContributor,
     UserRole.DataPipelineRead,
+    UserRole.GeneralUser,
   ],
   CommunityManagersAndAdmins: [
     UserRole.LiveOpsAdmin,
     UserRole.SupportAgentAdmin,
     UserRole.CommunityManager,
+    UserRole.GeneralUser,
   ],
   PlayerDetails: [
     UserRole.LiveOpsAdmin,
@@ -79,14 +86,16 @@ export const CommonAccessLevels = {
     UserRole.MediaTeam,
     UserRole.HorizonDesigner,
     UserRole.MotorsportDesigner,
+    UserRole.GeneralUser,
   ],
   Leaderboards: [
     UserRole.LiveOpsAdmin,
     UserRole.HorizonDesigner,
     UserRole.SupportAgentAdmin,
     UserRole.CommunityManager,
+    UserRole.GeneralUser,
   ],
-  RacersCup: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
+  RacersCup: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner, UserRole.GeneralUser],
   UserGroupManagement: [
     UserRole.LiveOpsAdmin,
     UserRole.SupportAgentAdmin,
@@ -96,13 +105,20 @@ export const CommonAccessLevels = {
     UserRole.MediaTeam,
     UserRole.HorizonDesigner,
     UserRole.MotorsportDesigner,
+    UserRole.GeneralUser,
   ],
-  AdminPageAccess: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+  AdminPageAccess: [
+    UserRole.LiveOpsAdmin,
+    UserRole.SupportAgentAdmin,
+    UserRole.CommunityManager,
+    UserRole.GeneralUser,
+  ],
   SearchUgc: [
     UserRole.LiveOpsAdmin,
     UserRole.SupportAgentAdmin,
     UserRole.CommunityManager,
     UserRole.MediaTeam,
+    UserRole.GeneralUser,
   ],
   Gifting: [
     UserRole.LiveOpsAdmin,
@@ -111,6 +127,7 @@ export const CommonAccessLevels = {
     UserRole.SupportAgentNew,
     UserRole.CommunityManager,
     UserRole.MediaTeam,
+    UserRole.GeneralUser,
   ],
 };
 
@@ -143,8 +160,11 @@ export enum AppIcon {
   DevEnvironment = 'admin_panel_settings',
   Endpoints = 'explore',
   CarDetails = 'minor_crash',
+  PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
   MessageOfTheDay = 'waving_hand',
+  CreateAuction = 'sell',
+  WelcomeCenterTile = 'grid_view',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -444,9 +464,25 @@ export const unprocessedToolList: HomeTileInfo[] = [
       ),
   },
   <HomeTileInfoInternal>{
+    icon: AppIcon.CreateAuction,
+    tool: NavbarTool.CreateAuction,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Create Auction',
+    subtitle: 'Create auction',
+    supportedTitles: [GameTitle.FH5],
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Create single or bulk auction(s)',
+    shortDescription: [`Create a single auction or bulk auctions`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/create-auction/create-auction.module').then(
+        m => m.CreateAuctionModule,
+      ),
+  },
+  <HomeTileInfoInternal>{
     icon: AppIcon.CarDetails,
     tool: NavbarTool.CarDetails,
-    accessList: [UserRole.LiveOpsAdmin],
+    accessList: CommonAccessLevels.Everyone,
     title: 'Car Details',
     subtitle: 'View full car details',
     supportedTitles: [GameTitle.FH5],
@@ -458,7 +494,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/car-details/car-details.module').then(
         m => m.CarDetailsModule,
       ),
-    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.MessageOfTheDay,
@@ -492,6 +527,22 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import('../../app/pages/tools/pages/notifications/notifications.module').then(
         m => m.NotificationsModule,
       ),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.WelcomeCenterTile,
+    tool: NavbarTool.WelcomeCenterTiles,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Welcome Center Tiles',
+    subtitle: 'Manage Welcome Center Tiles',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View and edit Welcome Center Tiles.',
+    shortDescription: [`View and edit Welcome Center Calendar Tile Details.`],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/welcome-center-tiles/welcome-center-tiles.module').then(
+        m => m.WelcomeCenterTilesModule,
+      ),
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.Kusto,
@@ -557,26 +608,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.LeaderboardsModule,
       ),
     hideFromUnauthorized: false,
-  },
-  <HomeTileInfoInternal>{
-    icon: AppIcon.StewardManagement,
-    tool: NavbarTool.StewardManagement,
-    accessList: [UserRole.LiveOpsAdmin],
-    title: 'Meta Tools',
-    subtitle: 'Manage Steward',
-    supportedTitles: [],
-    imageUrl: undefined,
-    imageAlt: undefined,
-    tooltipDescription: 'Manage high-level Kusto and Release features within Steward',
-    shortDescription: [
-      'Tools for managing aspects of steward itself',
-      'Manage high-level Kusto and Release features within Steward',
-    ],
-    loadChildren: () =>
-      import('../../app/pages/tools/pages/steward-management/steward-management.module').then(
-        m => m.StewardManagementModule,
-      ),
-    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.RacersCup,
@@ -682,6 +713,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Web Services for CMS authoring, snapshotting and publishing',
     shortDescription: [`Web Services for CMS authoring, snapshotting and publishing`],
     externalUrl: 'https://cms.services.forzamotorsport.net/',
+    hideFromUnauthorized: true,
   },
   <HomeTileInfoMultiExternal>{
     icon: AppIcon.DeveloperTool,
@@ -716,7 +748,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     icon: AppIcon.PowerBiTools,
     extraIcon: ExtraIcon.External,
     tool: NavbarTool.PowerBiTools,
-    accessList: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin],
+    accessList: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.GeneralUser],
     title: 'Power BI',
     subtitle: 'Various Dashboards',
     supportedTitles: [GameTitle.FH5],
@@ -792,6 +824,41 @@ export const unprocessedToolList: HomeTileInfo[] = [
         '../../app/shared/modules/endpoints/endpoints-nav-tool/endpoints-nav-tool.component'
       ).then(m => m.EndpointsNavToolComponent),
     hideLink: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.PermissionManagement,
+    tool: NavbarTool.PermissionManagement,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Permission Management',
+    subtitle: 'Manage Steward permissions',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Micro-manage permissions within Steward for all users',
+    shortDescription: [],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/permission-management/permission-management.module').then(
+        m => m.PermisisionManagementModule,
+      ),
+    hideFromUnauthorized: true,
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.StewardManagement,
+    tool: NavbarTool.StewardManagement,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Meta Tools',
+    subtitle: 'Manage Steward',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Manage high-level Kusto and Release features within Steward',
+    shortDescription: [
+      'Tools for managing aspects of steward itself',
+      'Manage high-level Kusto and Release features within Steward',
+    ],
+    loadChildren: () =>
+      import('../../app/pages/tools/pages/steward-management/steward-management.module').then(
+        m => m.StewardManagementModule,
+      ),
+    hideFromUnauthorized: true,
   },
 ];
 

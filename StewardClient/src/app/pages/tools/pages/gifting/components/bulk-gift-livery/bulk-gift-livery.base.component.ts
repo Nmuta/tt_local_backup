@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -31,6 +31,7 @@ import { tryParseBigNumber } from '@helpers/bignumbers';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 import { max, round } from 'lodash';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
@@ -72,7 +73,7 @@ export interface BulkGiftLiveryContract {
 })
 export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
   extends BaseComponent
-  implements OnInit
+  implements OnInit, OnChanges
 {
   @ViewChild(PastableSingleInputComponent) liveryInput: PastableSingleInputComponent;
 
@@ -104,6 +105,8 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
     GiftReason.SaveRollback,
   ];
   public giftResponse: GiftResponse<BigNumber>[];
+
+  public activePermAttribute = PermAttributeName.GiftPlayerLivery;
 
   /** Gets the liveries to be sent. */
   public liveries: PlayerUgcItem[] = [];
@@ -138,6 +141,15 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
         this.resetTool(true);
         this.onLiveryIdChange(liveryId);
       });
+  }
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.usingPlayerIdentities) {
+      this.activePermAttribute = this.usingPlayerIdentities
+        ? PermAttributeName.GiftPlayerLivery
+        : PermAttributeName.GiftGroupLivery;
+    }
   }
 
   /** Filter for the expire date date time component */

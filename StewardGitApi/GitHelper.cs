@@ -324,6 +324,39 @@ namespace StewardGitApi
             return refDeleteResult;
         }
 
+        /// <summary>
+        ///     Abandons pull request.
+        /// </summary>
+        internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+
+            var repoId = context.Settings.Ids.repoId;
+
+            GitPullRequest updatedPr = new ()
+            {
+                Status = PullRequestStatus.Abandoned,
+            };
+
+            var pullRequest = await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
+
+            return pullRequest;
+        }
+
+        /// <summary>
+        ///     Gets all branches.
+        /// </summary>
+        internal static async Task<IEnumerable<GitRef>> GetAllBranchesAsync(AzureContext context)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+
+            (Guid projectId, Guid repoId) = context.Settings.Ids;
+
+            List<GitRef> refs = await gitClient.GetRefsAsync(repoId, filter: "heads/").ConfigureAwait(false);
+
+            return refs;
+        }
+
         private static string WithoutRefsPrefix(string refName)
         {
             if (!refName.StartsWith("refs/", StringComparison.InvariantCulture))

@@ -4,7 +4,7 @@
     mat-button
     routerLinkActive="mat-stroked-button"
     [class.mat-button-disabled]="!sharedLookupService.hasAnyFM8"
-    >FM8
+    >FM
     <endpoint-selection [titleCodeName]="GameTitleCodeName.FM8"> </endpoint-selection>
   </a>
   <a
@@ -27,11 +27,7 @@
   <div class="lookup-container">
     <mat-form-field>
       <mat-label>UGC ID / Share Code</mat-label>
-      <input
-        matInput
-        placeholder="1234567 / fd895fdc-fb7e-4b3f-8e0d-7feaa772cd5d"
-        [formControl]="controls.sharecode"
-      />
+      <input matInput [formControl]="controls.sharecode" />
       <mat-hint>Will be checked against supported titles</mat-hint>
     </mat-form-field>
   </div>

@@ -31,26 +31,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///    Get player livery.
         /// </summary>
+        [Obsolete("Use proxies")]
         Task<WoodstockUgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint);
 
         /// <summary>
         ///    Get player photo.
         /// </summary>
+        [Obsolete("Use proxies")]
         Task<WoodstockUgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint);
 
         /// <summary>
         ///    Get player tune.
         /// </summary>
+        [Obsolete("Use proxies")]
         Task<WoodstockUgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint);
 
         /// <summary>
         ///    Get player event blueprint.
         /// </summary>
+        [Obsolete("Use proxies")]
         Task<WoodstockUgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint);
 
         /// <summary>
         ///    Get community challenege event.
         /// </summary>
+        [Obsolete("Use proxies")]
         Task<UgcItem> GetUgcCommunityChallengeAsync(Guid communityChallengeId, string endpoint);
 
         /// <summary>

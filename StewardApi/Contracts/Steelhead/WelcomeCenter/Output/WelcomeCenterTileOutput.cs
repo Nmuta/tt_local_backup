@@ -18,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output
 
         public TileSize Size { get; set; }
 
-        //Don't use JObject, this should by all rights be using ConditionSettings, but was blocking on deserializing abstract class
+        // TODO: Don't use JObject, this should by all rights be using ConditionSettings, but was blocking on deserializing abstract class
         public List<JObject> DisplayConditionDataList { get; set; }
 
         public string TileFriendlyName { get; set; }

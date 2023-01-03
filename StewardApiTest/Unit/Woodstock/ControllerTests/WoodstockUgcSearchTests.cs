@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var filters = Fixture.Create<UGCSearchFilters>();
+            var filters = Fixture.Create<UgcSearchFilters>();
             var type = "Livery";
 
             // Act.

@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
     ///     Handles requests for Apollo user groups.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/apollo/usergroup")]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Apollo)]
     [ApiController]
     [ApiVersion("2.0")]
@@ -43,17 +43,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
 
         private readonly ILoggingService loggingService;
         private readonly IMapper mapper;
+        private readonly IJobTracker jobTracker;
+        private readonly IScheduler scheduler;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserGroupController"/> class.
         /// </summary>
         public UserGroupController(
             ILoggingService loggingService,
-            IMapper mapper)
+            IMapper mapper,
+            IJobTracker jobTracker,
+            IScheduler scheduler)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
             loggingService.ShouldNotBeNull(nameof(loggingService));
+            jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            scheduler.ShouldNotBeNull(nameof(scheduler));
 
+            this.jobTracker = jobTracker;
+            this.scheduler = scheduler;
             this.mapper = mapper;
             this.loggingService = loggingService;
         }
@@ -151,8 +159,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
 
             if (useBulkProcessing)
             {
-                var response = await this.AddOrRemoveUsersToGroupUseBulkProcessing(userGroupId, userList, ForzaBulkOperationType.Add).ConfigureAwait(false);
-                return this.Ok(response);
+                var response = await this.AddUsersToGroupUseBackgroundProcessing(userGroupId, userList).ConfigureAwait(false);
+                return response;
             }
             else
             {
@@ -221,56 +229,80 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             var userIdsFromGtags = this.mapper.SafeMap<ForzaUserIds[]>(userList.Gamertags) ?? Array.Empty<ForzaUserIds>();
             var userIds = userIdsFromXuids.Concat(userIdsFromGtags).ToArray();
 
-            var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperation(bulkOperationType, userGroupId, userIds).ConfigureAwait(false);
+            // Split the userIds into chunk of 8000 and project them to a list of ForzaUserGroupOperationPage.
+            // This is done because the API serializer has a limit of 8192 items in an array.
+            var userIdsPages = userIds.Chunk(8000).Select(x => new ForzaUserGroupOperationPage() { userIds = x });
+
+            var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperationV2(bulkOperationType, userGroupId, userIdsPages.ToArray()).ConfigureAwait(false);
 
             return new UserGroupBulkOperationStatusOutput()
             {
                 Completed = bulkOperationOutput.changed,
-                Remaining = userIds.Length - bulkOperationOutput.changed
+                Remaining = userIds.Length - bulkOperationOutput.changed,
+                FailedUsers = this.mapper.SafeMap<IEnumerable<BasicPlayer>>(bulkOperationOutput.failedUsers.SelectMany(x => x.userIds)),
             };
         }
 
-        // Add users to a user group using xuids and/or gamertags
-        private async Task<IList<BasicPlayer>> AddUsersToUserGroupAsync(int groupId, UpdateUserGroupInput userList)
+        // Add users to a user group using xuids and/or gamertags as a background job.
+        private async Task<CreatedResult> AddUsersToGroupUseBackgroundProcessing(int userGroupId, UpdateUserGroupInput userList)
         {
-            var groups = new int[] { groupId };
-            var failedUsers = new List<string>();
-            var correlationId = Guid.NewGuid().ToString();
-            Exception lastException = null;
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            // Parse userList into response object
-            var response = userList.CreateBasicPlayerList();
+            var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
+            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Apollo Add Users to User Group: {userCount} users added.").ConfigureAwait(true);
 
-            foreach (var user in response)
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
                 try
                 {
-                    if (user.Xuid != null)
-                    {
-                        await this.Services.UserManagementService.AddToUserGroups(user.Xuid.Value, groups).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        await this.Services.UserManagementService.AddToUserGroupsByGamertag(user.Gamertag, groups).ConfigureAwait(false);
-                    }
+                    var response = await this.AddUsersToUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
+
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    failedUsers.Add(user.Gamertag ?? user.Xuid.ToString());
-                    var errorMessage = $"Failed to add user to user group. (Gamertag/Xuid: {user.Gamertag ?? user.Xuid.ToString()}) (groupId: {groupId}) (correlationId: {correlationId})";
-                    var error = new StewardError(errorMessage, ex);
-                    user.Error = error;
-                    lastException = ex;
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
-            if (failedUsers.Any())
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
+        }
+
+        // Add users to a user group using xuids and/or gamertags
+        private async Task<UserGroupBulkOperationStatusOutput> AddUsersToUserGroupAsync(int groupId, UpdateUserGroupInput userList)
+        {
+            var failedUsers = new List<BasicPlayer>();
+
+            var userIdsFromXuids = this.mapper.SafeMap<ForzaUserIds[]>(userList.Xuids) ?? Array.Empty<ForzaUserIds>();
+            var userIdsFromGtags = this.mapper.SafeMap<ForzaUserIds[]>(userList.Gamertags) ?? Array.Empty<ForzaUserIds>();
+            var userIds = userIdsFromXuids.Concat(userIdsFromGtags).ToArray();
+
+            // Split the userIds into chunk of 1000
+            var userIdsChunks = userIds.Chunk(1000);
+
+            foreach (var userIdsChunk in userIdsChunks)
             {
-                var appInsightErrorMessage = $"Failed to add user(s) to user group. (Users: {string.Join(", ", failedUsers.ToArray())}) (groupId: {groupId}) (correlationId:{correlationId})";
-                this.loggingService.LogException(new UserGroupManagementAppInsightsException(appInsightErrorMessage, lastException));
+                var userGroupPageArray = new ForzaUserGroupOperationPage[]
+                {
+                    new ForzaUserGroupOperationPage() { userIds = userIdsChunk }
+                };
+                var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperationV2(ForzaBulkOperationType.Add, groupId, userGroupPageArray).ConfigureAwait(false);
+                failedUsers.AddRange(this.mapper.SafeMap<IEnumerable<BasicPlayer>>(bulkOperationOutput.failedUsers.SelectMany(x => x.userIds)));
             }
 
-            return response;
+            return new UserGroupBulkOperationStatusOutput()
+            {
+                Completed = userIds.Length - failedUsers.Count,
+                Remaining = failedUsers.Count,
+                FailedUsers = failedUsers,
+            };
         }
 
         // Remove users from a user group using xuids and/or gamertags.
@@ -314,6 +346,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             }
 
             return response;
+        }
+
+        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
+        {
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
+                .ConfigureAwait(true);
+
+            this.Response.Headers.Add("jobId", jobId);
+
+            return jobId;
         }
     }
 }

@@ -22,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** The create user group module. */
 @NgModule({
@@ -52,6 +53,7 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
     ClipboardModule,
     PipesModule,
     StandardCopyModule,
+    PermissionsModule,
   ],
   exports: [
     WoodstockListUsersInGroupComponent,

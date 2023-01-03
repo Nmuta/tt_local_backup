@@ -1,18 +1,18 @@
 import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import faker from '@faker-js/faker';
-import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { CalendarModule, CalendarView, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { RacersCupCalendarComponent } from './racers-cup-calendar.component';
 import BigNumber from 'bignumber.js';
-import { of } from 'rxjs';
 import { RacersCupCalendarInputs } from '../racers-cup-inputs/racers-cup-inputs.component';
+import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
+import { createMockSteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service.mock';
 
 describe('RacersCupCalendarComponent', () => {
   let component: RacersCupCalendarComponent;
   let fixture: ComponentFixture<RacersCupCalendarComponent>;
-  let mockSteelheadService: SteelheadService;
+  let mockSteelheadService: SteelheadRacersCupService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,11 +21,11 @@ describe('RacersCupCalendarComponent', () => {
         MatDialogModule,
         CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
       ],
-      providers: [createMockSteelheadService()],
+      providers: [createMockSteelheadRacersCupService()],
     }).compileComponents();
 
     const injector = getTestBed();
-    mockSteelheadService = injector.inject(SteelheadService);
+    mockSteelheadService = injector.inject(SteelheadRacersCupService);
 
     fixture = TestBed.createComponent(RacersCupCalendarComponent);
     component = fixture.componentInstance;
@@ -57,9 +57,6 @@ describe('RacersCupCalendarComponent', () => {
     };
 
     beforeEach(() => {
-      mockSteelheadService.getRacersCupScheduleForUser$ = jasmine
-        .createSpy('getRacersCupScheduleForUser')
-        .and.returnValue(of({ championships: [] }));
       component.refreshTable(inputs);
     });
 

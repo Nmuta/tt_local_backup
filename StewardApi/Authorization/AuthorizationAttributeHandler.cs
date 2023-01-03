@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Kusto.Cloud.Platform.Utils;
@@ -11,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Authorization
 {
+
     /// <summary>
     ///     Verify user authorization attributes.
     /// </summary>
@@ -30,8 +32,32 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         /// <inheritdoc/>
         protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context, AttributeRequirement requirement)
         {
-            if (context == null || requirement == null || context.HasFailed || !(context.Resource is HttpContext httpContext))
+            if (context == null)
             {
+                return Task.CompletedTask;
+            }
+
+            if (requirement == null)
+            {
+                context?.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null {nameof(requirement)} in policy handler."));
+                return Task.CompletedTask;
+            }
+
+            if (string.IsNullOrEmpty(requirement.Attribute))
+            {
+                context?.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null or empty {nameof(requirement.Attribute)} in policy handler."));
+                return Task.CompletedTask;
+            }
+
+            if (!(context.Resource is HttpContext httpContext))
+            {
+                context.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Invalid {nameof(context.Resource)} type."));
+                return Task.CompletedTask;
+            }
+
+            if (context.HasFailed)
+            {
+                // Another policy has already failed
                 return Task.CompletedTask;
             }
 
@@ -63,6 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             }
             catch
             {
+                context.Fail(new AttributeFailureReason((int)HttpStatusCode.Unauthorized, this, $"Invalid user claim."));
                 return Task.CompletedTask;
             }
 
@@ -78,12 +105,12 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             }
 
             // Fail the context so any future policies can fail fast
-            context.Fail();
+            context.Fail(new AttributeFailureReason((int)HttpStatusCode.Unused, this, $"Policy check failed."));
             return Task.CompletedTask;
 
             bool Equals(string str, string attr)
             {
-                return str.Equals(attr, StringComparison.OrdinalIgnoreCase);
+                return str?.Equals(attr, StringComparison.OrdinalIgnoreCase) == true;
             }
 
             bool EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
@@ -103,11 +130,13 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
                 if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
                 {
+                    context.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Missing {environmentKey} header."));
                     return false;
                 }
 
                 if (env.IsNullOrEmpty())
                 {
+                    context.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null or empty {environmentKey} header."));
                     return false;
                 }
 
@@ -136,22 +165,5 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 return capitalize ? char.ToUpper(segment[0]) + segment[1..] : segment;
             }
         }
-    }
-
-    /// <summary>
-    /// User attribute to check.
-    /// </summary>
-    public class AttributeRequirement : IAuthorizationRequirement
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttributeRequirement"/> class.
-        /// </summary>
-        /// <param name="attribute">attribute</param>
-        public AttributeRequirement(string attribute) { Attribute = attribute; }
-
-        /// <summary>
-        /// Attribute.
-        /// </summary>
-        public string Attribute { get; private set; }
     }
 }

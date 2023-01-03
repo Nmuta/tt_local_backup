@@ -12,19 +12,20 @@ import { Subject } from 'rxjs';
 
 import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
 describe('SunriseConsolesComponent', () => {
   let component: SunriseConsolesComponent;
   let fixture: ComponentFixture<SunriseConsolesComponent>;
 
   let mockSunriseService: SunriseService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SunriseConsolesComponent, BigJsonPipe],
-      providers: [createMockSunriseService(), createMockPermissionsService()],
+      declarations: [SunriseConsolesComponent, BigJsonPipe, HumanizePipe],
+      providers: [createMockSunriseService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -33,7 +34,7 @@ describe('SunriseConsolesComponent', () => {
     fixture = TestBed.createComponent(SunriseConsolesComponent);
     component = fixture.componentInstance;
     mockSunriseService = TestBed.inject(SunriseService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')
@@ -153,35 +154,33 @@ describe('SunriseConsolesComponent', () => {
       describe('makeBanAction', () => {
         it('should ban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeBanAction$(firstUnbanned.consoleId);
+          const banAction = component.makeBanAction$(firstBanned.consoleId);
           expect(banAction).toBeTruthy();
           await fixture.whenStable();
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          banAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();
           banStatus$.complete();
           await fixture.whenStable();
           expect(isDone).toBe(true);
-          expect(firstUnbanned.isBanned).toBe(true);
+          expect(firstBanned.isBanned).toBe(true);
         }));
       });
 
       describe('makeUnbanAction', () => {
         it('should unban', waitForAsync(async () => {
           // create the ban action
-          const banAction = component.makeUnbanAction$(firstBanned.consoleId);
-          expect(banAction).toBeTruthy();
+          const unbanAction = component.makeUnbanAction$(firstUnbanned.consoleId);
+          expect(unbanAction).toBeTruthy();
           await fixture.whenStable();
 
           // execute the ban action
           let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => (isDone = true));
+          unbanAction.subscribe(() => (isDone = true));
 
           // emulate completion
           banStatus$.next();

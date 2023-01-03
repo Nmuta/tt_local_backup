@@ -19,6 +19,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** A utility module that exports a datetime picker component for forms. */
 @NgModule({
@@ -44,6 +45,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonToggleModule,
     MatChipsModule,
     MatTooltipModule,
+    PermissionsModule,
   ],
   exports: [CreateLocalizedStringComponent, SelectLocalizedStringComponent],
 })

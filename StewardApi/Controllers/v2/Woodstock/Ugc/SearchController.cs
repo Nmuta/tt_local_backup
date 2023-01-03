@@ -25,6 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [Route("api/v{version:apiVersion}/title/woodstock/ugc/search")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -63,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
-        public async Task<IActionResult> Get([FromBody] UGCSearchFilters parameters, string ugcType)
+        public async Task<IActionResult> Get([FromBody] UgcSearchFilters parameters, string ugcType)
         {
             parameters.ShouldNotBeNull(nameof(parameters));
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));

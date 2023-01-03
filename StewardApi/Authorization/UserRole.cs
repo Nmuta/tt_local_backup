@@ -32,6 +32,12 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
         public const string MediaTeam = "MediaTeam";
 
+        /// <summary>
+        ///     Auth V2 general user.
+        /// </summary>
+        /// <remarks>Access to all GET endpoints. Other endpoints are dynamic based on set attributes.</remarks>
+        public const string GeneralUser = "GeneralUser";
+
         public static List<string> V1Roles()
         {
             return new List<string>()

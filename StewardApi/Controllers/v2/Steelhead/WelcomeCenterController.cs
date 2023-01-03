@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [Route("api/v{version:apiVersion}/title/steelhead/welcomeCenter")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.Calendar, Topic.WelcomeCenter, Target.Details)]
     public class WelcomeCenterController : V2SteelheadControllerBase
@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets current Welcome Center configuration.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
+        [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration()
         {
             var welcomeCenterData = System.IO.File.ReadAllText(".\\Contracts\\Steelhead\\WelcomeCenter\\TestData\\LiveOps_WorldOfForzaConfigV3.json");

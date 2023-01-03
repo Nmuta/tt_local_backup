@@ -15,6 +15,7 @@ export interface UgcSearchFilters {
   ugcType: UgcType;
   carId: BigNumber;
   keywords: string;
+  orderBy: UgcOrderBy;
   isFeatured: boolean;
 }
 
@@ -29,6 +30,7 @@ export enum UgcAccessLevel {
 export enum UgcType {
   Unknown = 'Unknown',
   Livery = 'Livery',
+  LayerGroup = 'LayerGroup',
   Photo = 'Photo',
   Tune = 'Tune',
   EventBlueprint = 'EventBlueprint',
@@ -52,11 +54,30 @@ export const DefaultUgcFilters: UgcFilters = {
   orderBy: UgcOrderBy.CreatedDateDesc,
 };
 
-/** Default values for UgcFilters. */
+/**
+ * Default values for UgcFilters.
+ * @deprecated
+ */
 export const WoodstockSupportedUgcTypes = [
   UgcType.Livery,
+  UgcType.LayerGroup,
   UgcType.Photo,
   UgcType.Tune,
   UgcType.EventBlueprint,
   UgcType.CommunityChallenge,
+];
+
+/** Types and metadata relating to supported UGC Types. */
+export interface WoodstockExtendedSupportedUgcType {
+  ugcType: UgcType;
+  alternateName?: string;
+}
+/** Ordered list of Supported UGC Types */
+export const WoodstockExtendedSupportedUgcTypes: WoodstockExtendedSupportedUgcType[] = [
+  { ugcType: UgcType.Livery },
+  { ugcType: UgcType.LayerGroup, alternateName: 'Vinyl' },
+  { ugcType: UgcType.Photo },
+  { ugcType: UgcType.Tune },
+  { ugcType: UgcType.EventBlueprint },
+  { ugcType: UgcType.CommunityChallenge },
 ];

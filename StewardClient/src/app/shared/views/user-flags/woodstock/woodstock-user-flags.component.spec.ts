@@ -8,7 +8,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { WoodstockUserFlagsComponent } from './woodstock-user-flags.component';
-import { createMockPermissionsService, PermissionsService } from '@services/permissions';
+import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 describe('WoodstockUserFlagsComponent', () => {
@@ -16,13 +16,13 @@ describe('WoodstockUserFlagsComponent', () => {
   let fixture: ComponentFixture<WoodstockUserFlagsComponent>;
 
   let mockWoodstockService: WoodstockService;
-  let mockPermissionsService: PermissionsService;
+  let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockUserFlagsComponent],
       imports: [PipesModule],
-      providers: [createMockWoodstockService(), createMockPermissionsService()],
+      providers: [createMockWoodstockService(), createMockOldPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -31,7 +31,7 @@ describe('WoodstockUserFlagsComponent', () => {
     fixture = TestBed.createComponent(WoodstockUserFlagsComponent);
     component = fixture.componentInstance;
     mockWoodstockService = TestBed.inject(WoodstockService);
-    mockPermissionsService = TestBed.inject(PermissionsService);
+    mockPermissionsService = TestBed.inject(OldPermissionsService);
 
     mockPermissionsService.currentUserHasWritePermission = jasmine
       .createSpy('currentUserHasWritePermission ')
@@ -108,14 +108,14 @@ describe('WoodstockUserFlagsComponent', () => {
         beforeEach(() => {
           component.getFlagsByXuid$ = jasmine
             .createSpy('getFlagsByXuid$')
-            .and.returnValue(throwError(error));
+            .and.returnValue(throwError(() => error));
         });
 
         it('should set error', () => {
           component.ngOnChanges({});
 
           expect(component.currentFlags).toBeUndefined();
-          expect(component.loadError).toEqual(error);
+          expect(component.getFlagsActionMonitor.status.error).toEqual(error);
         });
       });
     });

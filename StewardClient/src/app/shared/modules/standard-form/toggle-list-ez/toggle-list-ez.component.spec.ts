@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { GameTitle } from '@models/enums';
 import { NEVER } from 'rxjs';
 import { ToggleListComponent } from '../toggle-list/toggle-list.component';
 
@@ -18,6 +19,7 @@ describe('ToggleListEzComponent', () => {
     fixture = TestBed.createComponent(ToggleListEzComponent);
     component = fixture.componentInstance;
     component.contract = {
+      gameTitle: GameTitle.FH5,
       initialModel: {},
       order: [],
       title: 'test',

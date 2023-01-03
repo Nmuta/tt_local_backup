@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
+import { WelcomeCenterTileSize } from '@models/welcome-center';
 import {
   SteelheadWelcomeCenterService,
   WelcomeCenter,
   WelcomeCenterColumn,
-  WelcomeCenterTileSize,
-} from '@services/api-v2/steelhead/welcome-center/steelhead-user-group.service';
+} from '@services/api-v2/steelhead/welcome-center/steelhead-welcome-center.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DomainEnumPrettyPrintOrHumanizePipe } from '@shared/pipes/domain-enum-pretty-print-or-humanize.pipe';
 import {

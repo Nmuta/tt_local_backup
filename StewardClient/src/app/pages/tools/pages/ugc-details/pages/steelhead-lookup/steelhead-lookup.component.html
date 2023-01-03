@@ -34,8 +34,11 @@
               mat-raised-button
               color="primary"
               (click)="featureUgcItem()"
+              stateManager
+              [permissionAttribute]="featurePermAttribute"
+              [permissionTitle]="gameTitle"
             >
-              <span [matTooltip]="featureMatToolip" [matTooltipDisabled]="canFeatureUgc">{{
+              <span [matTooltip]="featureMatTooltip">{{
                 ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
               }}</span>
             </button>
@@ -55,7 +58,14 @@
               >
                 <span>Report</span>
               </button>
-              <mat-checkbox clickStop #verifyReport matTooltip="Check to enable report UGC.">
+              <mat-checkbox
+                clickStop
+                #verifyReport
+                stateManager
+                [permissionAttribute]="reportPermAttribute"
+                [permissionTitle]="gameTitle"
+                matTooltip="Check to enable report UGC."
+              >
                 Verify
               </mat-checkbox>
             </div>

@@ -1,0 +1,11 @@
+@import '/src/styles/mixins';
+
+:host,
+span {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+::ng-deep button button-spinner mat-icon {
+  margin-left: $gap-small;
+}

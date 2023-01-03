@@ -1,11 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJob } from '@models/background-job';
+import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { PlayerUgcItem } from '@models/player-ugc-item';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumber } from 'bignumber.js';
 import { DateTime } from 'luxon';
@@ -24,6 +26,8 @@ export interface SpecialLiveryData {
 
 /** Upstream contract for special liveries UI. */
 export interface GiftSpecialLiveriesContract {
+  gameTitle: GameTitle;
+
   /** The special liveries to provide as options. */
   liveries: SpecialLiveryData[];
 
@@ -60,7 +64,7 @@ interface SpecialLiveryModel {
   templateUrl: './gift-special-liveries.component.html',
   styleUrls: ['./gift-special-liveries.component.scss'],
 })
-export class GiftSpecialLiveriesComponent extends BaseComponent implements OnInit {
+export class GiftSpecialLiveriesComponent extends BaseComponent implements OnInit, OnChanges {
   /** REVIEW-COMMENT: Player identities. */
   @Input() public playerIdentities: IdentityResultAlpha[];
   /** REVIEW-COMMENT: Lsp Group. */
@@ -86,6 +90,8 @@ export class GiftSpecialLiveriesComponent extends BaseComponent implements OnIni
     GiftReason.SaveRollback,
   ];
 
+  public activePermAttribute = PermAttributeName.GiftPlayerLivery;
+
   constructor() {
     super();
   }
@@ -103,6 +109,15 @@ export class GiftSpecialLiveriesComponent extends BaseComponent implements OnIni
         .getLivery$(livery.data.id)
         .pipe(livery.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
         .subscribe(r => (livery.ugcData = r));
+    }
+  }
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.usingPlayerIdentities) {
+      this.activePermAttribute = this.usingPlayerIdentities
+        ? PermAttributeName.GiftPlayerLivery
+        : PermAttributeName.GiftGroupLivery;
     }
   }
 

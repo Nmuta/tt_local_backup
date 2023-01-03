@@ -110,6 +110,18 @@
             <ng-template ngPluralCase="other">scores</ng-template>
           </span>
         </button>
+        <mat-checkbox
+          clickStop
+          #verifyCheckboxMultiDelete
+          [(ngModel)]="isMultiDeleteActive"
+          ngDefaultControl
+          stateManager
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+          matTooltip="Check to enable deletion"
+        >
+          Verify Multi-Delete
+        </mat-checkbox>
         <button
           mat-raised-button
           color="primary"
@@ -120,15 +132,6 @@
         >
           Export
         </button>
-        <mat-checkbox
-          clickStop
-          #verifyCheckboxMultiDelete
-          [(ngModel)]="isMultiDeleteActive"
-          ngDefaultControl
-          matTooltip="Check to enable deletion"
-        >
-          Verify Multi-Delete
-        </mat-checkbox>
       </div>
     </div>
     <div class="paginator-actions">
@@ -157,8 +160,17 @@
           <ng-container matColumnDef="score">
             <th mat-header-cell *matHeaderCellDef>Score</th>
             <td mat-cell *matCellDef="let entry">
+              <standard-flag
+                *ngIf="leaderboard.query.scoreTypeId.isEqualTo(leaderboardScoreTypeLaptime)"
+                [value]="entry.isClean"
+                matTooltip="Is Score clean?"
+                >{{ entry.isClean ? 'Clean' : 'Dirty' }}</standard-flag
+              >
               <div>
                 <b>{{ entry.score.toNumber() | number: '1.2-2' }}</b> {{ scoreTypeQualifier }}
+                <div *ngFor="let altScore of entry?.alternateScoreRepresentations">
+                  <b>{{ altScore.value.toNumber() | number: '1.2-2' }}</b> {{ altScore.label }}
+                </div>
               </div>
               <div>
                 <standard-absolute-time
@@ -247,7 +259,14 @@
                 >
                   Delete
                 </button>
-                <mat-checkbox clickStop #verifyCheckbox matTooltip="Check to enable deletion">
+                <mat-checkbox
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
+                  clickStop
+                  #verifyCheckbox
+                  matTooltip="Check to enable deletion"
+                >
                   Verify
                 </mat-checkbox>
               </div>

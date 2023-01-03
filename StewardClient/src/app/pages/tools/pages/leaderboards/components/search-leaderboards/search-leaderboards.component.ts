@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
+import { pairwiseSkip } from '@helpers/rxjs';
 import { DeviceType } from '@models/enums';
 import {
   paramsToLeadboardQuery,
@@ -14,9 +15,9 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BigNumberValidators } from '@shared/validators/bignumber-validators';
 import BigNumber from 'bignumber.js';
-import { keys, unionBy } from 'lodash';
+import { isObject, isString, keys, unionBy } from 'lodash';
 import { Observable } from 'rxjs';
-import { map, startWith, takeUntil, debounceTime, tap, pairwise, filter } from 'rxjs/operators';
+import { map, startWith, takeUntil, debounceTime, tap } from 'rxjs/operators';
 
 /** Available filter types for leaderboards. */
 enum LeaderboardFilterType {
@@ -50,7 +51,7 @@ export interface SearchLeaderboardsContract {
   styleUrls: ['./search-leaderboards.component.scss'],
 })
 export class SearchLeaderboardsComponent extends BaseComponent implements OnInit {
-  /** REVIEW-COMMENT: The search leaderboard service. */
+  /** The search leaderboard service contract. */
   @Input() public service: SearchLeaderboardsContract;
 
   /** The object to build leaderboard filters multi-select. */
@@ -103,10 +104,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   }
 
   /** Getter for selected device types */
-  public get deviceTypesString(): string {
-    const deviceTypes = this.formControls.deviceTypes.value as string[];
-    return deviceTypes?.length > 0 ? deviceTypes.join(', ') : null;
-  }
+  public deviceTypesString: string;
 
   constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
     super();
@@ -180,6 +178,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   public setLeaderboardQueryParams(): void {
     const leaderboard = this.formControls.leaderboard.value as Leaderboard;
     const deviceTypes = this.formControls.deviceTypes.value as DeviceType[];
+    this.deviceTypesString = deviceTypes?.length > 0 ? deviceTypes.join(', ') : null;
     const targetEnvironment = this.formControls.leaderboardEnvironment
       .value as LeaderboardEnvironment;
 
@@ -241,11 +240,11 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         map((input: Leaderboard | string) => {
           // When input is of type Leaderboard, it means one was selected
           // Update route params with leaderboard query data
-          if (typeof input === 'object') {
+          if (isObject(input)) {
             this.selectedLeaderboard = input;
           }
 
-          return typeof input === 'string' ? input : input.name;
+          return isString(input) ? input : input.name;
         }),
         map(filter =>
           filter.length > 0 ? this.filterLeaderboards(filter) : this.filteredLeaderboards,
@@ -259,15 +258,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
 
   private listenToTargetEnvironmentChanges(): void {
     this.formControls.leaderboardEnvironment.valueChanges
-      .pipe(
-        startWith(null),
-        pairwise(),
-        filter(([o, n]) => {
-          return o !== n;
-        }),
-        map(([_o, n]) => n),
-        takeUntil(this.onDestroy$),
-      )
+      .pipe(pairwiseSkip(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.formControls.leaderboard.setValue('');
         this.formControls.filters.setValue([]);
@@ -370,7 +361,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
             name: `${board.carClass} Car Class`,
           } as LeaderboardFilter;
         })
-        .filter(f => f.id.isGreaterThanOrEqualTo(0)),
+        .filter(f => f.id.isGreaterThanOrEqualTo(0) && f.id.isLessThan(255)),
       filter => {
         return filter.id.toString();
       },

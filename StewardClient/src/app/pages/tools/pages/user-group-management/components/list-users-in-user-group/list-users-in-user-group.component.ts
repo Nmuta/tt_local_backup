@@ -13,7 +13,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
-import { hasAccessToRestrictedFeature, RestrictedFeature } from '@environments/environment';
+import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
 import { BasicPlayerActionResult } from '@models/basic-player';
@@ -28,7 +28,7 @@ import {
 } from '@models/user-group-bulk-operation';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
-import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
@@ -73,7 +73,6 @@ interface UserGroupManagementFailures {
   players: BasicPlayerActionResult[];
   action: UserGroupManagementAction;
   copyToClipboard?: string;
-  count: number;
 }
 
 /** A player object within a user group. */
@@ -127,23 +126,23 @@ export class ListUsersInGroupComponent
   public isAllUsersGroup: boolean = false;
   public disallowDeleteAllUsers: boolean = false;
 
-  constructor(
-    private readonly backgroundJobService: BackgroundJobService,
-    private readonly store: Store,
-  ) {
+  public readonly updatePermAttribute = PermAttributeName.UpdateUserGroup;
+  public readonly removeAllPermAttribute = PermAttributeName.RemoveAllUsersFromGroup;
+
+  constructor(private readonly store: Store) {
     super();
   }
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.userHasWritePerms = hasAccessToRestrictedFeature(
-      RestrictedFeature.UserGroupWrite,
+    this.userHasWritePerms = hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.UserGroupWrite,
       this.service.gameTitle,
       user.role,
     );
-    this.userHasRemoveAllPerms = hasAccessToRestrictedFeature(
-      RestrictedFeature.UserGroupRemoveAll,
+    this.userHasRemoveAllPerms = hasV1AccessToV1RestrictedFeature(
+      V1RestrictedFeature.UserGroupRemoveAll,
       this.service.gameTitle,
       user.role,
     );
@@ -257,7 +256,6 @@ export class ListUsersInGroupComponent
     this.failedActionForUsers = {
       players: [],
       action: action,
-      count: null,
     };
 
     const playerList = this.getBasicPlayerList(
@@ -324,11 +322,6 @@ export class ListUsersInGroupComponent
           this.failedActionForUsers.copyToClipboard = response.failedUsers
             .map(player => player.gamertag ?? player.xuid)
             .join('\n');
-        }
-        // For Steelhead, Sunrise and Apollo the list of failedUsers is not returned.
-        // If any user do fail the "remaining" count of the response will be greater than 0
-        else if (response.remaining > 0) {
-          this.failedActionForUsers.count = response.remaining;
         }
 
         this.clearCheckboxes();

@@ -45,7 +45,7 @@
     <mat-label>Order By</mat-label>
     <mat-select matInput [formControl]="formControls.orderBy" (selectionChange)="searchFilters()">
       <mat-option *ngFor="let orderBy of orderByOptions" [value]="orderBy">{{
-        orderBy
+        orderBy | deppoh
       }}</mat-option>
     </mat-select>
   </mat-form-field>

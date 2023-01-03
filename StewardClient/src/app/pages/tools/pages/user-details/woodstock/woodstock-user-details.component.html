@@ -81,6 +81,9 @@
           <inline-spinner [monitor]="ugcLiveries.getMonitor | renderGuard"
             >({{ ugcLiveries?.ugcContent?.length }})</inline-spinner
           >
+          <inline-spinner [monitor]="ugcLayerGroup.getMonitor | renderGuard"
+            >({{ ugcLayerGroup?.ugcContent?.length }})</inline-spinner
+          >
           <inline-spinner [monitor]="ugcPhotos.getMonitor | renderGuard"
             >({{ ugcPhotos?.ugcContent?.length }})</inline-spinner
           >
@@ -104,6 +107,20 @@
               #ugcLiveries
               [identity]="identity"
               [contentType]="UgcType.Livery"
+              [usingIdentities]="true"
+            ></woodstock-player-ugc>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Layer Groups
+              <inline-spinner [monitor]="ugcLayerGroup.getMonitor | renderGuard"
+                >({{ ugcLayerGroup?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <woodstock-player-ugc
+              #ugcLayerGroup
+              [identity]="identity"
+              [contentType]="UgcType.EventBlueprint"
               [usingIdentities]="true"
             ></woodstock-player-ugc>
           </mat-tab>

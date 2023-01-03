@@ -13,6 +13,7 @@ import { MonitorActionModule } from '../monitor-action/monitor-action.module';
 import { StateManagersModule } from '../state-managers/state-managers.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { VerifyCheckboxModule } from '../verify/verify-checkbox.module';
+import { PermissionsModule } from '../permissions/permissions.module';
 
 /**
  * Module for standardized form components.
@@ -33,6 +34,7 @@ import { VerifyCheckboxModule } from '../verify/verify-checkbox.module';
     StateManagersModule,
     MatTooltipModule,
     VerifyCheckboxModule,
+    PermissionsModule,
   ],
   exports: [ToggleListComponent, ToggleListEzComponent],
 })

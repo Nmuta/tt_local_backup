@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
@@ -18,19 +19,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
     /// </summary>
     public class V2ControllerBase : ControllerBase
     {
-        /// <summary>Gets (lazily) the Woodstock Endpoint passed to this call.</summary>
-        protected Lazy<string> WoodstockEndpoint { get; }
+        /// <summary>Gets the Mapper service.</summary>
+        protected IMapper Mapper => this.LazyMapper.Value;
 
-        /// <summary>Gets (lazily) the Sunrise Endpoint passed to this call.</summary>
-        protected Lazy<string> SunriseEndpoint { get; }
+        /// <summary>Gets or sets (lazily) the Mapper service.</summary>
+        protected Lazy<IMapper> LazyMapper { get; set; }
 
-        /// <summary>Gets (lazily) the Apollo Endpoint passed to this call.</summary>
-        protected Lazy<string> ApolloEndpoint { get; }
+        /// <summary>Gets or sets (lazily) the Woodstock Endpoint passed to this call.</summary>
+        protected Lazy<string> WoodstockEndpoint { get; set; }
 
-        /// <summary>Gets (lazily) the Steelhead Endpoint passed to this call.</summary>
-        protected Lazy<string> SteelheadEndpoint { get; }
+        /// <summary>Gets or sets (lazily) the Sunrise Endpoint passed to this call.</summary>
+        protected Lazy<string> SunriseEndpoint { get; set; }
 
-        // TODO: Find better way to reference services below. Ideally one that doesn't require a `.Value` on each reference call.
+        /// <summary>Gets or sets (lazily) the Apollo Endpoint passed to this call.</summary>
+        protected Lazy<string> ApolloEndpoint { get; set; }
+
+        /// <summary>Gets or sets (lazily) the Steelhead Endpoint passed to this call.</summary>
+        protected Lazy<string> SteelheadEndpoint { get; set; }
 
         /// <summary>Gets (lazily) the Steelhead services.</summary>
         protected Lazy<SteelheadProxyBundle> SteelheadServices { get; }
@@ -44,8 +49,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         /// <summary>Gets (lazily) the Sunrise services.</summary>
         protected Lazy<SunriseProxyBundle> SunriseServices { get; }
 
+        /// <summary>Initializes a new instance of the <see cref="V2ControllerBase"/> class.</summary>
         protected V2ControllerBase()
         {
+            this.LazyMapper = new Lazy<IMapper>(() => this.HttpContext.RequestServices.GetService<IMapper>());
             this.SteelheadEndpoint = new Lazy<string>(() => this.GetSteelheadEndpoint());
             this.WoodstockEndpoint = new Lazy<string>(() => this.GetWoodstockEndpoint());
             this.SunriseEndpoint = new Lazy<string>(() => this.GetSunriseEndpoint());
@@ -59,13 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 return proxyBundle;
             });
 
-            this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() =>
-            {
-                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
-                var proxyBundle = componentContext.Resolve<WoodstockProxyBundle>();
-                proxyBundle.Endpoint = this.WoodstockEndpoint.Value;
-                return proxyBundle;
-            });
+            this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockProdLiveProxyBundle"));
 
             this.ApolloServices = new Lazy<ApolloProxyBundle>(() =>
             {
@@ -82,6 +83,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 proxyBundle.Endpoint = this.SunriseEndpoint.Value;
                 return proxyBundle;
             });
+        }
+
+        /// <summary>Resolves a Woodstock bundle with the given DI name.</summary>
+        /// <param name="bundleName">The DI name to reference. Must be registered previously.</param>
+        protected WoodstockProxyBundle ResolveWoodstockBundle(string bundleName)
+        {
+            var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+            var woodstockProxyBundle = componentContext.ResolveNamed<WoodstockProxyBundle>(bundleName);
+            woodstockProxyBundle.Endpoint = this.WoodstockEndpoint.Value;
+            return woodstockProxyBundle;
         }
 
         private string GetWoodstockEndpoint()

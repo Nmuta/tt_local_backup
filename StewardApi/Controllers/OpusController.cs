@@ -23,6 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/title/Opus")]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,

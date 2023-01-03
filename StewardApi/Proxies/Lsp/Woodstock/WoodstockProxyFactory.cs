@@ -114,5 +114,13 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
             var serviceProxy = service.ProxyInterface<NotificationsManagementService, INotificationsManagementService>();
             return serviceProxy;
         }
+
+        /// <inheritdoc/>
+        public IAuctionManagementService PrepareAuctionManagementService(string endpoint)
+        {
+            var service = new AuctionManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
+            var serviceProxy = service.ProxyInterface<AuctionManagementService, IAuctionManagementService>();
+            return serviceProxy;
+        }
     }
 }

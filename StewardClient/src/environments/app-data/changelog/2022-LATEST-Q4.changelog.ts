@@ -16,6 +16,190 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.Gifting },
+      uuid: '12cf2586-12f7-4efe-bf94-17ab8084c150',
+      shortText: 'Resolved bug that prevented sending subsequent gifts without refreshing',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: '3e8aac4c-f45d-4365-a104-2d8a7244e0bb',
+      shortText: 'Add new tool to create auction(s)',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: '16975ec9-4a02-481a-b467-2e1a7ea02621',
+      shortText: 'Add new sorting option when searching public UGC',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '3c66a60e-08d8-4e6c-a13e-f7123691cb8b',
+      shortText: 'Add buttons to select/deselect all series and playlists',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: 'c7d4769d-3717-4ce9-99ce-b047942d9e84',
+      shortText: 'Racers Cup Calendar updated to new V2 APIs',
+    },
+    {
+      tag: { title: [GameTitle.FM7], tool: NavbarTool.UserGroupManagement },
+      uuid: '1dbd5ba4-7d64-466d-bf95-44d0cdedb87f',
+      shortText: 'Fix user group management time out',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '2069c567-52ed-4182-908c-71c0e8a42939',
+      shortText: 'Correctly update permissions on first load.',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.SearchUGC },
+      uuid: '02a35bc8-9bdf-4b7e-bbcb-fbee6a5ebd42',
+      shortText: 'Change highlight colors for featured UGC to matchbehavior of other tables',
+    },
+    {
+      tag: ChangelogTag.All,
+      uuid: '7fea8fb6-3db6-42b2-bdde-53b315ad01c2',
+      shortText: 'Fix light-theme off-color highlighting',
+      longText: [
+        'This makes Selected Items in the Leaderboards page show up while in light theme.',
+        'Any page using slightly-darker or slightly-lighter colors in Light Theme will now look as they were intended.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Leaderboards },
+      uuid: '91371012-2b0d-43cb-bbb6-941c170ddeff',
+      shortText: 'Added Steelhead to leaderboards tool',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UgcDetails },
+      uuid: '310cf5ba-6286-4714-8a26-57e4eacc01db',
+      shortText: 'Adjust behavior of UGC Details routing',
+      longText: [
+        'Navigating "back" properly clears the search field.',
+        'Search field is no longer cleared out after initiating a search.',
+        'ID is no longer displayed separately in search field and UGC Overview section.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '8a79ef32-f77d-4362-8ac3-c736af5778d9',
+      shortText: 'Add support FH5 Layer Groups in UGC Details tool',
+      longText: [
+        'Add support for Layer Groups in UGC Details tool. There is another field for "Curation Method" which is not yet exposed.',
+        'Port all UGC Details endpoints to V2 Steward API.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'bf6eb59c-4976-4291-8076-2e12abb2117e',
+      shortText: 'Properly label speed scores as km/h and add MPH conversion',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'ed929ef5-2241-414c-b115-e822ce81a8b5',
+      shortText: 'Add icon to represent if a laptime type score is clean',
+    },
+    {
+      tag: { title: [GameTitle.FM7], tool: NavbarTool.UserBanning },
+      uuid: '88e5c512-cab4-48d7-8d07-68bfd54e7209',
+      shortText: 'Fix Apollo User Banning tool',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UgcDetails },
+      uuid: '2c1d03d9-5212-4127-8194-5e4adb6c9dbd',
+      shortText: 'More visibility on why Hide UGC is disabled on Private UGC',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '09abf5d9-5e1f-427d-ba0c-e16f9e2f5d3e',
+      shortText: 'Add Clone and Persist buttons to UGC Details view',
+      longText: [
+        'Persist duplicates the item on the System user (ID 1) in the current Endpoint set (Studio/Retail)',
+        'Clone duplicates an item on the Retail endpoint to the System user (ID 1) on the Studio endpoint. IsSearchable and KeepGuid are both set to false.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'a849e488-97b9-4cbd-ad50-a947ee5294fb',
+      shortText: 'Add new tool to manage Welcome Center tile detail',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ad6b3b4a-0625-4087-ab1e-ba428cfce8a9',
+      shortText: 'Add ability to clone auth v2 perms + small bug fixes',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '2293a2ab-8ff2-4b09-81d8-3a287419e65a',
+      shortText: 'Setup auth V2 attributes on all Steward actions',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a2e99456-2cd6-42f2-b70b-32fdcf7b2abb',
+      shortText: 'Temporarily fix FM gifting and messaging loc bug',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6e921f07-8574-4030-b0a0-963eb8da1dd6',
+      shortText: 'Move permissions management file to be stored in mem cache',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
+      uuid: '9a17ad61-1e81-4ba7-b623-e8784148a68a',
+      shortText: 'Display pull request URL on submit and various visual improvements',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'd5121718-586d-4cfd-a9ef-4655af2486da',
+      shortText: 'Remove use of verify action button component',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5131843c-5103-47b0-b97d-7003a5df08ef',
+      shortText: 'Refactor localized string dropdown',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '806b74b4-6cfa-43dc-84af-51bbf95bd53c',
+      shortText: 'Remove Geneva middleware and IFX sinks',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'edfd620a-eb33-4c53-adf7-8f36759462f1',
+      shortText: 'Player selection filter no longer overlaps other UGC filters',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'd32a2e5f-fe11-47d8-bd0f-720ca1658d0b',
+      shortText:
+        'Backing out of UGC selection no longer traps user in redirect loop back to the selection',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5a0eb482-9e44-45b5-ac57-fa296e859257',
+      shortText: 'Add support for new V2 user role',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '0e5d6089-d380-4278-997c-408115f5e5f8',
+      shortText: 'Integrate auth v2',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserGroupManagement,
+      },
+      uuid: '90b568a4-5b61-443d-947c-ce7b59141c83',
+      shortText: 'Enable all titles in production',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserGroupManagement,
+      },
+      uuid: 'f6cfbe14-052e-4901-b698-0a9782fad681',
+      shortText: 'Implement failed users response and sending large amount of users',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '86423c69-64cb-4467-97fd-752183fdd74d',
       shortText: 'New button to gift livery in UGC table',

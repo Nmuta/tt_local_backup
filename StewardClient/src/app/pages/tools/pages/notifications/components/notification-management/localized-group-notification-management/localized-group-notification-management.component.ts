@@ -17,6 +17,7 @@ import { DateValidators } from '@shared/validators/date-validators';
 import BigNumber from 'bignumber.js';
 import { LocalizedMessage } from '@models/community-message';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Service contract for managing localized messages for groups. */
 export interface LocalizedGroupMessagingManagementContract {
@@ -74,6 +75,8 @@ export class LocalizedGroupNotificationManagementComponent
   public allMonitors = [this.getMonitor];
 
   public min = DateTime.utc();
+
+  public readonly permAttribute = PermAttributeName.MessageGroup;
 
   /** Gets the game title */
   public get gameTitle(): GameTitle {

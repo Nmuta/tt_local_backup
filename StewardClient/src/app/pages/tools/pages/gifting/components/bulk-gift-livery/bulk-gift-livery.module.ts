@@ -24,6 +24,8 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { BulkGiftLiveryBaseComponent } from './bulk-gift-livery.base.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** The gift livery module. */
 @NgModule({
@@ -56,6 +58,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MonitorActionModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
   exports: [WoodstockBulkGiftLiveryComponent],
 })

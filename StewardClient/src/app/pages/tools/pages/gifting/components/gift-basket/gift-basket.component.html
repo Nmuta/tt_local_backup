@@ -170,12 +170,14 @@
             label="Select localized title message"
             [service]="selectLocalizedStringService"
             [formControl]="formControls.localizedTitleMessageInfo"
+            formControlName="localizedTitleMessageInfo"
             [disableLanguagePreview]="true"
           ></select-localized-string>
           <select-localized-string
             label="Select localized body message"
             [service]="selectLocalizedStringService"
             [formControl]="formControls.localizedBodyMessageInfo"
+            formControlName="localizedBodyMessageInfo"
             [disableLanguagePreview]="true"
           ></select-localized-string>
         </ng-container>
@@ -220,6 +222,9 @@
             color="primary"
             type="submit"
             [disabled]="!isGiftBasketReady()"
+            stateManager
+            [permissionAttribute]="activePermAttribute"
+            [permissionTitle]="title"
           >
             Send Gift
             <span *ngIf="usingPlayerIdentities">To Player(s)</span>

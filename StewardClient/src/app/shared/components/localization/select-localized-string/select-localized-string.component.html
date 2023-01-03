@@ -5,12 +5,15 @@
       <mat-select
         [formControl]="formControls.selectedLocalizedStringInfo"
         [compareWith]="comparisonFunction"
-        [disabled]="isDisabled"
       >
         <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails">
           {{ stringDetails.englishText | deppoh }}
         </mat-option>
       </mat-select>
+      <mat-hint *ngIf="hintMessage">{{ hintMessage }}</mat-hint>
+      <mat-error *ngIf="formControls.selectedLocalizedStringInfo.hasError('required')"
+        >Required</mat-error
+      >
     </mat-form-field>
     <div
       *ngIf="!disableLanguagePreview && selectedLocalizedStringCollection?.length > 0"

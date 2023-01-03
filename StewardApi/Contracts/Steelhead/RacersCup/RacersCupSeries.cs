@@ -14,8 +14,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 
         public DateTime CloseTimeUtc { get; set; }
 
-        public DateTime EventPlaylistTransitionTimeUtc { get; set; }
-
         public DateTime OpenTimeUtc { get; set; }
+
+        public TimeSpan EventPlaylistTransitionTimeUtc { get; set; }
     }
 }

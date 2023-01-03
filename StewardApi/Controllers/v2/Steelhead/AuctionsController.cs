@@ -23,11 +23,12 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
-    ///     Handles requests for Steelhead profile templates.
+    ///     Handles requests for Steelhead auctions.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/auctions")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -85,6 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpDelete("{auctionId}")]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent)]

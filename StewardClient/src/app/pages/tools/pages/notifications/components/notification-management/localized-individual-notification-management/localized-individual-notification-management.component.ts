@@ -16,6 +16,7 @@ import { renderDelay } from '@helpers/rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LocalizedMessage } from '@models/community-message';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Service contract for managing localized messages for individuals. */
 export interface LocalizedIndividualMessagingManagementContract {
@@ -72,6 +73,8 @@ export class LocalizedIndividualNotificationManagementComponent
   public allMonitors = [this.getMonitor];
 
   public min = DateTime.utc();
+
+  public readonly permAttribute = PermAttributeName.MessagePlayer;
 
   /** Gets the game title */
   public get gameTitle(): GameTitle {

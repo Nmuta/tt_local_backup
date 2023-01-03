@@ -34,6 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -65,9 +66,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, LiveOpsContracts.LocalizedString>))]
-        public async Task<IActionResult> GetLocalizedStrings()
+        public async Task<IActionResult> GetLocalizedStrings([FromQuery] bool useInternalIds = true)
         {
-            var locStrings = await this.pegasusService.GetLocalizedStringsAsync().ConfigureAwait(true);
+            var locStrings = await this.pegasusService.GetLocalizedStringsAsync(useInternalIds).ConfigureAwait(true);
             return this.Ok(locStrings);
         }
 
@@ -75,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Add string for localization.
         /// </summary>
         [HttpPost]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Guid))]
         [Authorize(Policy = UserAttribute.AddLocalizedString)]
         public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)

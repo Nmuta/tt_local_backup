@@ -1,2 +1,12 @@
-<p>Lookup should redirect shortly. If it doesn't, select option above.</p>
+<p *ngIf="!sharedLookupService?.locations?.shareCodeOrId; else navigationFailedTemplate">
+  Lookup should redirect shortly. If it doesn't, select option above.
+</p>
+
 <!-- TODO: Add found types in case redirect fails (happens when there are multiple types) -->
+
+<ng-template #navigationFailedTemplate class="sf-text-warn">
+  <p>
+    Lookup failed, <code>{{ sharedLookupService?.locations?.shareCodeOrId }}</code> is not a valid
+    UGC ID / Sharecode.
+  </p>
+</ng-template>

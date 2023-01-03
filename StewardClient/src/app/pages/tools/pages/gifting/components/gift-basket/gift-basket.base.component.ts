@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitle, UserRole } from '@models/enums';
@@ -27,6 +27,7 @@ import _ from 'lodash';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { SteelheadGift } from '@models/steelhead';
 import { WoodstockGift } from '@models/woodstock';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export type InventoryItemGroup = {
   category: string;
@@ -51,7 +52,7 @@ export abstract class GiftBasketBaseComponent<
     MasterInventoryT extends MasterInventoryUnion,
   >
   extends BaseComponent
-  implements OnInit
+  implements OnInit, OnChanges
 {
   /** Player identities to gift to. */
   @Input() public playerIdentities: IdentityT[];
@@ -113,6 +114,8 @@ export abstract class GiftBasketBaseComponent<
   /** The error received while loading. */
   public loadError: unknown;
 
+  public activePermAttribute = PermAttributeName.GiftPlayer;
+
   /**
    * Item groups used to populate item selection dropdown.
    * NOTE:  Due to master inventory items being so different per title, I am leaving this
@@ -164,6 +167,15 @@ export abstract class GiftBasketBaseComponent<
       this.formControls.localizedBodyMessageInfo.removeValidators(Validators.required);
       this.formControls.localizedTitleMessageInfo.updateValueAndValidity();
       this.formControls.localizedBodyMessageInfo.updateValueAndValidity();
+    }
+  }
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.usingPlayerIdentities) {
+      this.activePermAttribute = this.usingPlayerIdentities
+        ? PermAttributeName.GiftPlayer
+        : PermAttributeName.GiftGroup;
     }
   }
 
@@ -335,6 +347,8 @@ export abstract class GiftBasketBaseComponent<
 
     if (clearItemsInBasket) {
       this.sendGiftForm.reset();
+      this.sendGiftForm.controls.localizedTitleMessageInfo.reset({});
+      this.sendGiftForm.controls.localizedBodyMessageInfo.reset({});
       this.setStateGiftBasket([]);
       this.giftBasketHasErrors = false;
     }

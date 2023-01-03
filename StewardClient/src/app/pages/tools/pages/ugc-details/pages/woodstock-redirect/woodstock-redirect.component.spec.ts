@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.service';
+import { UgcDetailsComponent } from '../../ugc-details.component';
 
 import { WoodstockRedirectComponent } from './woodstock-redirect.component';
 
@@ -22,7 +23,7 @@ describe('WoodstockRedirectComponent', () => {
         NgxsModule.forRoot(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ScopedSharedLookupService],
+      providers: [ScopedSharedLookupService, UgcDetailsComponent],
     }).compileComponents();
   });
 

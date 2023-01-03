@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -13,6 +14,7 @@ export class WoodstockPlayerHiddenUgcComponent {
   /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
   public getMonitor: ActionMonitor;
+  public gameTitle = GameTitle.FH5;
 
   constructor(public readonly service: WoodstockService) {}
 

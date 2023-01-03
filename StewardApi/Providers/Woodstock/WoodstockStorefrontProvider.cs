@@ -66,8 +66,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
-            var results = await this.woodstockService.SearchUgcContentAsync(filters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
+            var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+            ServicesLiveOps.StorefrontManagementService.SearchUGCOutput results;
+            try
+            {
+                results = await this.woodstockService.SearchUgcContentAsync(filters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new LspFailureStewardException($"Failed to search ugc. (type: {ugcType}) (filters: {filters})", ex);
+            }
 
             // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
             var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);

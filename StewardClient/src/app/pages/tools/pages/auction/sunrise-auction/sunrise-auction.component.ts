@@ -15,7 +15,7 @@ import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 export class SunriseAuctionComponent extends BaseComponent implements OnInit {
   public auctionId: string;
   public auctionData: AuctionData;
-  public GameTitle = GameTitle;
+  public gameTitle = GameTitle.FH4;
 
   public getMonitor: ActionMonitor = new ActionMonitor('GET FH4 Auction Data');
 

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { LiveOpsBanDescription } from '@models/sunrise';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
-import { PermissionsService } from '@services/permissions';
+import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Apollo Ban history by XUID. */
 @Component({
@@ -26,7 +26,7 @@ export class ApolloBanHistoryComponent extends BanHistoryBaseComponent {
   public gameTitle = GameTitle.FM7;
   public actionsEnabled = true;
 
-  constructor(private readonly apollo: ApolloService, permissionsService: PermissionsService) {
+  constructor(private readonly apollo: ApolloService, permissionsService: OldPermissionsService) {
     super(permissionsService);
   }
 

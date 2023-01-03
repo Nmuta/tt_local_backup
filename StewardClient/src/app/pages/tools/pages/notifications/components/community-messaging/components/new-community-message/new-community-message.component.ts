@@ -1,10 +1,19 @@
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommunityMessage } from '@models/community-message';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { DateTime } from 'luxon';
-import { DeviceType } from '@models/enums';
+import { DeviceType, GameTitle } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Outputs a new community message. */
 @Component({
@@ -12,14 +21,18 @@ import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/date
   templateUrl: './new-community-message.component.html',
   styleUrls: ['./new-community-message.component.scss'],
 })
-export class NewCommunityMessageComponent implements OnInit {
+export class NewCommunityMessageComponent implements OnInit, OnChanges {
   private static readonly UTC_NOW = DateTime.utc();
-  /** REVIEW-COMMENT: Pending community message. */
+  /** Pending community message. */
   @Input() public pendingCommunityMessage: CommunityMessage;
-  /** REVIEW-COMMENT: Is device type filter allowed. */
+  /** Is device type filter allowed. */
   @Input() public allowDeviceTypeFilter: boolean;
-  /** REVIEW-COMMENT: Is start time disabled. */
+  /** Is start time disabled. */
   @Input() public lockStartTime: boolean = false;
+  /** The game title. */
+  @Input() public gameTitle: GameTitle;
+  /** True if component is using player identities. */
+  @Input() isUsingPlayerIdentities: boolean = true;
   /** REVIEW-COMMENT: Output when a community message is created. */
   @Output() public emitNewCommunityMessage = new EventEmitter<CommunityMessage>();
 
@@ -47,6 +60,8 @@ export class NewCommunityMessageComponent implements OnInit {
 
   public newCommunityMessageForm: FormGroup = new FormGroup(this.formControls);
 
+  public activePermAttribute = PermAttributeName.MessagePlayer;
+
   constructor(private readonly formBuilder: FormBuilder) {}
 
   /** Lifecycle hook. */
@@ -60,6 +75,15 @@ export class NewCommunityMessageComponent implements OnInit {
       this.formControls.deviceType.setValue(
         this.pendingCommunityMessage.deviceType ?? DeviceType.All,
       );
+    }
+  }
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.usingPlayerIdentities) {
+      this.activePermAttribute = this.isUsingPlayerIdentities
+        ? PermAttributeName.MessagePlayer
+        : PermAttributeName.MessageGroup;
     }
   }
 

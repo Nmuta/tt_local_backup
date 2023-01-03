@@ -28,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
@@ -75,6 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         /// </summary>
         [HttpPost]
         [AuthorizeRoles(
+            UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin,
             UserRole.SupportAgent,

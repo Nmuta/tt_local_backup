@@ -1,0 +1,7 @@
+<leaderboard-stats
+  [gameTitle]="gameTitle"
+  [service]="serviceContract"
+  [leaderboard]="leaderboard"
+  [scoresDeleted]="scoresDeleted"
+  (selectedScore)="selectedScore.emit($event)"
+></leaderboard-stats>

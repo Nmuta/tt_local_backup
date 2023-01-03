@@ -518,6 +518,20 @@ export class WoodstockService {
     );
   }
 
+  /** Persist UGC item to the system user. */
+  public persistUgc$(ugcId: string): Observable<unknown> {
+    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/persist`, null);
+  }
+
+  /** Persist UGC item to the system user. */
+  public cloneUgc$(ugcId: string, contentType: UgcType): Observable<unknown> {
+    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
+      contentType,
+      keepGuid: true, // admin pages default was true
+      isSearchable: true, // admin pages default was true
+    });
+  }
+
   /** Gets player UGC items by share code. */
   public getPlayerUgcByShareCode$(
     shareCode: string,
@@ -541,14 +555,17 @@ export class WoodstockService {
     return this.apiService.getRequest$<SimpleCar[]>(`${this.basePath}/items/cars`, params);
   }
 
-  /** Gets a player's UGC item.  */
+  /**
+   * Gets a player's UGC item.
+   * @deprecated TODO: Endpoint has been ported to v2 and should ve moved to a api-v2/* service
+   */
   public getPlayerUgcItem$(id: string, ugcType: UgcType): Observable<WoodstockPlayerUgcItem> {
     if (ugcType === UgcType.Unknown) {
       throw new Error(`Invalid UGC item type for lookup: ${ugcType}}`);
     }
 
     return this.apiService.getRequest$<WoodstockPlayerUgcItem>(
-      `${this.basePath}/storefront/${ugcType.toLowerCase()}(${id})`,
+      `${this.basePathV2}/ugc/${ugcType.toLowerCase()}/${id}`,
     );
   }
 

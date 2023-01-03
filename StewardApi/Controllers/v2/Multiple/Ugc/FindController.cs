@@ -9,6 +9,7 @@ using Microsoft.Rest;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Annotations;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -23,6 +24,7 @@ using ServicesLiveOpsFH4 = Forza.LiveOps.FH4.Generated;
 using ServicesLiveOpsFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 using ServicesLiveOpsFM8 = Turn10.Services.LiveOps.FM8.Generated;
 using SubmoduleFH5 = Forza.WebServices.FH5_main.Generated;
+using T10SubmoduleFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
 {
@@ -60,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get(string shareCodeOrId)
         {
+            var fh5StorefrontService = this.WoodstockServices.Value.StorefrontManagementService;
             var fm8StorefrontService = this.SteelheadServices.Value.StorefrontManagementService;
             var fm8Lookups = new[]
             {
@@ -90,6 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
                 this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
+                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, ServicesLiveOpsFH5.StorefrontManagementService.GetUGCLiveryOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH5.ForzaUGCContentType.Livery,
@@ -115,6 +119,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge,
                     (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
                     item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, T10SubmoduleFH5.StorefrontManagementService.GetUGCLayerGroupOutput>(
+                    shareCodeOrId,
+                    ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup,
+                    (id) => fh5StorefrontService.GetUGCLayerGroup(id),
+                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
             };
 
             var fh4Lookups = new[]
@@ -143,9 +152,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
             await Task.WhenAll(fh5Lookups).ConfigureAwait(true);
             await Task.WhenAll(fh4Lookups).ConfigureAwait(true);
 
-            var foundInFM8 = fm8Lookups.Select(fm8Lookup => fm8Lookup.GetAwaiter().GetResult()).Where(v => v != null).Select(v => v.Value).ToList();
-            var foundInFH5 = fh5Lookups.Select(fh5Lookup => fh5Lookup.GetAwaiter().GetResult()).Where(v => v != null).Select(v => v.Value).ToList();
-            var foundInFH4 = fh4Lookups.Select(fh4Lookup => fh4Lookup.GetAwaiter().GetResult()).Where(v => v != null).Select(v => v.Value).ToList();
+            var foundInFM8 = fm8Lookups
+                .Select(fm8Lookup => fm8Lookup.GetAwaiter().GetResult())
+                .Where(v => v != null)
+                .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
+                .ToList();
+            var foundInFH5 = fh5Lookups
+                .Select(fh5Lookup => fh5Lookup.GetAwaiter().GetResult())
+                .Where(v => v != null)
+                .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
+                .ToList();
+            var foundInFH4 = fh4Lookups
+                .Select(fh4Lookup => fh4Lookup.GetAwaiter().GetResult())
+                .Where(v => v != null)
+                .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
+                .ToList();
 
             return this.Ok(new OutputModel
             {
@@ -253,13 +274,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
             public string ShareCodeOrId { get; set; }
 
             [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-            public IList<ServicesLiveOpsFM8.ForzaUGCContentType> Fm8 { get; set; }
+            public IList<UgcType> Fm8 { get; set; }
 
             [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-            public IList<ServicesLiveOpsFH5.ForzaUGCContentType> Fh5 { get; set; }
+            public IList<UgcType> Fh5 { get; set; }
 
             [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-            public IList<ServicesLiveOpsFH4.ForzaUGCContentType> Fh4 { get; set; }
+            public IList<UgcType> Fh4 { get; set; }
         }
     }
 }

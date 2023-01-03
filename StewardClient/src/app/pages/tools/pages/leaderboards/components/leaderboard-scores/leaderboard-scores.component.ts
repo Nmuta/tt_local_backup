@@ -20,7 +20,7 @@ import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime
 import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
-import { DeviceType } from '@models/enums';
+import { DeviceType, GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import {
   Leaderboard,
@@ -32,7 +32,9 @@ import {
   generateLeaderboardMetadataString,
   getDeviceTypesFromQuery,
   getLspEndpointFromLeaderboardEnvironment,
+  LeaderboardScoreType,
 } from '@models/leaderboards';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
@@ -112,6 +114,8 @@ export class LeaderboardScoresComponent
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   /** REVIEW-COMMENT: Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** The game title. */
+  @Input() gameTitle: GameTitle;
   /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
@@ -144,6 +148,7 @@ export class LeaderboardScoresComponent
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
   public matCardSubtitle = this.matCardSubtitleDefault;
+  public leaderboardScoreTypeLaptime = LeaderboardScoreType.Laptime;
 
   /** Paginator jump form controls. */
   public jumpFormControls = {
@@ -194,6 +199,8 @@ export class LeaderboardScoresComponent
       helpText: "Uses Forza's artificial intelligence to handle the shifting for the player.",
     },
   };
+
+  public readonly permAttribute = PermAttributeName.DeleteLeaderboardScores;
 
   public BooleanFilterToggle = BooleanFilterToggle;
 
@@ -440,6 +447,7 @@ export class LeaderboardScoresComponent
           this.paginator.pageSize = this.leaderboard.query.ps;
         }
 
+        this.prepareAlternateScoreValues(this.allScores);
         this.setLeaderboardScoresData(this.allScores);
       });
   }
@@ -525,8 +533,33 @@ export class LeaderboardScoresComponent
 
   private setLeaderboardScoresData(scores: LeaderboardScore[]): void {
     this.leaderboardScores.data = scores;
+
     this.exportableScores = this.prepareExportableScores(scores);
     this.scoresAscendWithPosition = first(scores)?.score.isLessThanOrEqualTo(last(scores)?.score);
+  }
+
+  private prepareAlternateScoreValues(scores: LeaderboardScore[]): void {
+    switch (this.leaderboard.query.scoreTypeId.toNumber()) {
+      case LeaderboardScoreType.SpeedTrap:
+      case LeaderboardScoreType.AverageSpeedZone:
+        scores.forEach(entry => {
+          entry.alternateScoreRepresentations = entry.alternateScoreRepresentations ?? [];
+          entry.alternateScoreRepresentations.push({
+            label: 'mph',
+            value: entry.score.dividedBy(1.609344),
+          });
+        });
+        break;
+      case LeaderboardScoreType.DangerSign:
+        scores.forEach(entry => {
+          entry.alternateScoreRepresentations = entry.alternateScoreRepresentations ?? [];
+          entry.alternateScoreRepresentations.push({
+            label: 'feet',
+            value: entry.score.multipliedBy(3.281),
+          });
+        });
+        break;
+    }
   }
 
   private prepareExportableScores(scores: LeaderboardScore[]): string[][] {

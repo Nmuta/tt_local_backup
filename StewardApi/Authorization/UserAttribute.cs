@@ -35,6 +35,8 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string SetReportWeight = nameof(SetReportWeight);
         public const string SetUgcGeoFlag = nameof(SetUgcGeoFlag);
         public const string UnhideUgc = nameof(UnhideUgc);
+        public const string PersistUgc = nameof(PersistUgc);
+        public const string CloneUgc = nameof(CloneUgc);
         public const string UpdateAuctionBlocklist = nameof(UpdateAuctionBlocklist);
         public const string UpdateObligationPipeline = nameof(UpdateObligationPipeline);
         public const string UpdateProfile = nameof(UpdateProfile);
@@ -42,6 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string UpdateUserFlags = nameof(UpdateUserFlags);
         public const string UpdateMessageOfTheDay = nameof(UpdateMessageOfTheDay);
         public const string UpdateWelcomeCenterTiles = nameof(UpdateWelcomeCenterTiles);
+        public const string CreateAuctions = nameof(CreateAuctions);
 
         public static IEnumerable<string> AllAttributes()
         {

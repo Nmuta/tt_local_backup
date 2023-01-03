@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionData } from '@models/auction-data';
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { map, tap, switchMap, takeUntil } from 'rxjs/operators';
@@ -15,10 +16,12 @@ import { map, tap, switchMap, takeUntil } from 'rxjs/operators';
 export class WoodstockAuctionComponent extends BaseComponent implements OnInit {
   public auctionId: string;
   public auctionData: AuctionData;
-  public GameTitle = GameTitle;
+  public gameTitle = GameTitle.FH5;
 
   public getMonitor: ActionMonitor = new ActionMonitor('GET FH5 Auction Data');
   public postCancelMonitor: ActionMonitor = new ActionMonitor('POST Cancel FH5 Auction Data');
+
+  public readonly deletePermAttribute = PermAttributeName.DeleteAuction;
 
   constructor(
     private readonly route: ActivatedRoute,

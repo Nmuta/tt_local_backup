@@ -14,6 +14,7 @@ import {
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { cloneDeep } from 'lodash';
 import { Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -59,6 +60,8 @@ export class KustoDataActivitiesComponent
 
   private readonly onChange$ = new Subject<KustoDataActivityBundles>();
   private readonly formArray$ = new Subject<FormArray>();
+
+  public readonly permAttribute = PermAttributeName.UpdateObligationPipeline;
 
   constructor(private readonly activePipeline: ActivePipelineService) {
     super();

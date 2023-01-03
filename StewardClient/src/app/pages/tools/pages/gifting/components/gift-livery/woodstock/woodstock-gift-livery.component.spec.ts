@@ -20,7 +20,6 @@ import { GiftResponse } from '@models/gift-response';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
 import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service.mock';
 import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-player-gift.service.mock';
@@ -337,11 +336,7 @@ describe('WoodstockGiftLiveryComponent', () => {
       reason: 'test',
     };
 
-    let testMonitor: ActionMonitor;
-
     beforeEach(() => {
-      testMonitor = new ActionMonitor('test monitor');
-
       mockBackgroundJobService.getBackgroundJob$ = jasmine
         .createSpy('getBackgroundJob')
         .and.returnValue(of({}));
@@ -366,8 +361,8 @@ describe('WoodstockGiftLiveryComponent', () => {
           component
             .waitForBackgroundJobToComplete(testJob)
             .pipe(
-              catchError(error => {
-                expect(testMonitor.status.error).toEqual(error);
+              catchError(err => {
+                expect(err).toEqual(error);
                 return EMPTY;
               }),
             )

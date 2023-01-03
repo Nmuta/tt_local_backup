@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
+import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { SteelheadUgcReportService } from '@services/api-v2/steelhead/ugc/report/steelhead-ugc-report.service';
-import { PermissionServiceTool, PermissionsService } from '@services/permissions';
+import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { first, keys } from 'lodash';
 import {
@@ -35,14 +37,19 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
   public canHideUgc: boolean = false;
-  public featureMatToolip: string = null;
+  public featureMatTooltip: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
+
+  public featurePermAttribute = PermAttributeName.FeatureUgc;
+  public reportPermAttribute = PermAttributeName.ReportUgc;
+  public hidePermAttribute = PermAttributeName.HideUgc;
+  public gameTitle = GameTitle.FM8;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
-    private readonly permissionsService: PermissionsService,
+    private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: SteelheadUgcReportService,
   ) {
     super();
@@ -51,7 +58,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.userHasWritePerms = this.permissionsService.currentUserHasWritePermission(
-      PermissionServiceTool.FeatureUgc,
+      OldPermissionServiceTool.FeatureUgc,
     );
 
     mergedParamMap$(this.route)
@@ -90,9 +97,9 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
         this.canFeatureUgc = this.canFeatureUgc && this.ugcItem?.isPublic && this.userHasWritePerms;
 
         if (!this.userHasWritePerms) {
-          this.featureMatToolip = this.incorrectPermsTooltip;
+          this.featureMatTooltip = this.incorrectPermsTooltip;
         } else if (!this.ugcItem?.isPublic) {
-          this.featureMatToolip = this.privateUgcTooltip;
+          this.featureMatTooltip = this.privateUgcTooltip;
         }
       });
   }

@@ -14,7 +14,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DurationPickerComponent } from './components/duration-picker/duration-picker.component';
-import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatChipsModule } from '@angular/material/chips';
@@ -33,6 +32,10 @@ import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.c
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -59,7 +62,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ReactiveFormsModule,
     UserBanningRoutingModule,
     PlayerSelectionModule,
-    VerifyActionButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,
@@ -74,6 +76,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTabsModule,
     EndpointSelectionModule,
     MatAutocompleteModule,
+    VerifyCheckboxModule,
+    StateManagersModule,
+    MonitorActionModule,
+    PermissionsModule,
   ],
 })
 export class UserBanningModule {}

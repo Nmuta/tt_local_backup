@@ -10,6 +10,8 @@
       (click)="createUserGroup()"
       [disabled]="!formGroup.valid || !userHasWritePerms"
       stateManager
+      [permissionAttribute]="permAttribute"
+      [permissionTitle]="service?.gameTitle"
       [monitor]="monitor"
       monitorDisable
       monitorWarn

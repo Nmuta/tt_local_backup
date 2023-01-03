@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Filters;
@@ -76,6 +77,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return this.Ok(results);
+        }
+
+        /// <summary>
+        ///     Gets all Steward users.
+        /// </summary>
+        [HttpGet("allUsers")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        public async Task<IActionResult> GetAllStewardUsers()
+        {
+            var users = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);
+            var mappedUsers = this.mapper.SafeMap<IEnumerable<StewardUser>>(users);
+
+            return this.Ok(mappedUsers);
         }
     }
 }

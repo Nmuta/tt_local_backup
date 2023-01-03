@@ -1,6 +1,6 @@
 import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap } from '@angular/router';
 import { merge, reverse } from 'lodash';
-import { combineLatest, map, Observable, startWith } from 'rxjs';
+import { combineLatest, map, Observable, startWith, throwError } from 'rxjs';
 
 /**
  * Merges all params from root to the current route.
@@ -9,6 +9,10 @@ import { combineLatest, map, Observable, startWith } from 'rxjs';
  * @returns {Observable<Record<string, string>>} The merged param map, as an object dictionary.
  */
 export function mergedParamMap$(route: ActivatedRoute): Observable<Record<string, string>> {
+  if (!route) {
+    return throwError(() => new Error('Route was empty'));
+  }
+
   const allParamMaps: Observable<ParamMap>[] = [];
   let currentRoute = route;
   do {

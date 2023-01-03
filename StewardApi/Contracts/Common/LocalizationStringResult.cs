@@ -19,6 +19,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public LocCategory Category { get; set; }
 
         /// <summary>
+        ///     Gets or sets the sub-category.
+        /// </summary>
+        /// <remarks><see cref="LocSubCategory" />.</remarks>
+        public LocSubCategory SubCategory { get; set; }
+
+        /// <summary>
         ///     Gets or sets the Localized String.
         /// </summary>
         public string LocalizedString { get; set; }

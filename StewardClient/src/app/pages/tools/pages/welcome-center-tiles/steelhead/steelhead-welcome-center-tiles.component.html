@@ -1,0 +1,148 @@
+<mat-tab-group class="steward-layout-vertical-fill">
+  <mat-tab label="Welcome Center Tiles">
+    <ng-container *waitForMonitor="getListActionMonitor">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Welcome Center Tiles</mat-card-title>
+          <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="formGroup" class="sf-wrapper">
+            <div class="sf-vertical">
+              <div class="sf-horizontal">
+                <mat-form-field class="sf-default-hint">
+                  <mat-label>Select Welcome Center Tile</mat-label>
+                  <mat-select
+                    [formControl]="formControls.selectedWelcomeCenterTile"
+                    (selectionChange)="welcomeCenterTileChanged()"
+                    [disabled]="isInEditMode"
+                  >
+                    <mat-option
+                      *ngFor="let friendlyName of friendlyNameList | keyvalue"
+                      [value]="friendlyName.key"
+                    >
+                      {{ friendlyName.value | humanize }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button
+                  *ngIf="!isInEditMode"
+                  mat-raised-button
+                  color="accent"
+                  (click)="toggleEditMode()"
+                  [disabled]="!formControls.selectedWelcomeCenterTile.value"
+                  matTooltip="Update welcome center tile"
+                  aria-label="Update welcome center tile"
+                >
+                  Edit
+                </button>
+                <button
+                  *ngIf="isInEditMode"
+                  mat-raised-button
+                  color="warn"
+                  (click)="revertEntryEdit()"
+                  matTooltip="Cancel welcome center tile edit"
+                  aria-label="Cancel welcome center tile edit"
+                >
+                  Undo
+                </button>
+              </div>
+              <select-localized-string
+                [service]="localizationSelectServiceContract"
+                [formControl]="formControls.localizedTileTitle"
+                label="Tile Title"
+                formControlName="localizedTileTitle"
+              ></select-localized-string>
+              <select-localized-string
+                [service]="localizationSelectServiceContract"
+                [formControl]="formControls.localizedTileDescription"
+                label="Tile Description"
+                formControlName="localizedTileDescription"
+              ></select-localized-string>
+              <select-localized-string
+                [service]="localizationSelectServiceContract"
+                [formControl]="formControls.localizedTileType"
+                label="Tile Type"
+                hintMessage="Optional"
+                formControlName="localizedTileType"
+              ></select-localized-string>
+              <mat-form-field appearance="fill" class="sf-default-hint">
+                <mat-label>Content Image Path</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControl]="formControls.contentImagePath"
+                  [readonly]="!isInEditMode"
+                />
+                <button
+                  type="button"
+                  mat-button
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="clearContentImagePath()"
+                  [disabled]="!isInEditMode"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="sf-default-hint">
+                <mat-label>Tile Image Path</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControl]="formControls.tileImagePath"
+                  [readonly]="!isInEditMode"
+                />
+                <button
+                  type="button"
+                  mat-button
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="clearTileImagePath()"
+                  [disabled]="!isInEditMode"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Size</mat-label>
+                <mat-select [formControl]="formControls.size">
+                  <mat-option *ngFor="let size of sizes" [value]="size">
+                    {{ size }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *waitForMonitor="submitWelcomeCenterTileMonitor" class="sf-horizontal">
+                <button
+                  mat-raised-button
+                  color="accent"
+                  (click)="submitChanges()"
+                  [disabled]="!isInEditMode || !verifyModification.checked || !formGroup.valid"
+                >
+                  Submit Modification
+                </button>
+                <mat-checkbox
+                  #verifyModification
+                  [disabled]="!isInEditMode"
+                  matTooltip="Verify Modification"
+                  >Verify Modification</mat-checkbox
+                >
+              </div>
+            </div>
+          </form>
+          <span *ngIf="pullRequestUrl">
+            A pull request for your changes has been created. You can access it
+            <a target="_blank" href="{{ pullRequestUrl }}"> here </a>
+          </span>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </mat-tab>
+  <mat-tab label="Localization">
+    <create-localized-string
+      [service]="localizationCreationServiceContract"
+    ></create-localized-string>
+  </mat-tab>
+</mat-tab-group>

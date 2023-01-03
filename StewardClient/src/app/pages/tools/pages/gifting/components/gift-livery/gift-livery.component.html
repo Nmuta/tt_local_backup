@@ -63,6 +63,9 @@
               color="primary"
               [disabled]="!isGiftLiveryReady()"
               (click)="sendGiftLivery()"
+              stateManager
+              [permissionAttribute]="activePermAttribute"
+              [permissionTitle]="gameTitle"
             >
               Gift Livery
             </button>
