@@ -8,6 +8,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'c2c452a4-9c65-46b5-9483-e362c0a831b3',
+      shortText: 'Change default navbar tools for General User role',
+      longText: [
+        'New default tools are User Details, Gifting, Messaging, Endpoint Select, and Themeing',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },
       uuid: '0ccc4df2-a85e-4451-94f5-bdf153e63bd6',
       shortText: 'Fix search UGC failures',

@@ -880,4 +880,11 @@ export const standardRoleTools: Partial<Record<UserRole, Partial<Record<NavbarTo
   [UserRole.SupportAgent]: allToolsForRole(UserRole.SupportAgent),
   [UserRole.SupportAgentAdmin]: allToolsForRole(UserRole.SupportAgentAdmin),
   [UserRole.SupportAgentNew]: allToolsForRole(UserRole.SupportAgentNew),
+  [UserRole.GeneralUser]: {
+    [NavbarTool.UserDetails]: 1,
+    [NavbarTool.Gifting]: 2,
+    [NavbarTool.Messaging]: 3,
+    [NavbarTool.Endpoints]: 4,
+    [NavbarTool.Theming]: 5,
+  },
 };
