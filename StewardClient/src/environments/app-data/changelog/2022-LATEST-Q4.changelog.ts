@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },
+      uuid: '0ccc4df2-a85e-4451-94f5-bdf153e63bd6',
+      shortText: 'Fix search UGC failures',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '10c921ff-2c62-48b6-a618-8d42710d258f',
       shortText: 'Integrate profile and inventory lookup with LSP',
