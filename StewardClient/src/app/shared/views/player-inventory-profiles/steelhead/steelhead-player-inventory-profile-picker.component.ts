@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
-import { SteelheadService } from '@services/steelhead';
+import { SteelheadPlayerInventoryService } from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service';
 import { Observable } from 'rxjs';
 import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
 
@@ -18,7 +18,7 @@ export class SteelheadPlayerInventoryProfilePickerComponent extends PlayerInvent
   IdentityResultAlpha,
   SteelheadPlayerInventoryProfile
 > {
-  constructor(private readonly steelhead: SteelheadService) {
+  constructor(private readonly playerInventoryService: SteelheadPlayerInventoryService) {
     super();
   }
 
@@ -26,6 +26,6 @@ export class SteelheadPlayerInventoryProfilePickerComponent extends PlayerInvent
   protected getPlayerProfilesByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<SteelheadPlayerInventoryProfile[]> {
-    return this.steelhead.getPlayerInventoryProfilesByXuid$(identity.xuid);
+    return this.playerInventoryService.getInventoryProfilesByXuid$(identity.xuid);
   }
 }

@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '10c921ff-2c62-48b6-a618-8d42710d258f',
+      shortText: 'Integrate profile and inventory lookup with LSP',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.Gifting },
       uuid: '12cf2586-12f7-4efe-bf94-17ab8084c150',
       shortText: 'Resolved bug that prevented sending subsequent gifts without refreshing',
