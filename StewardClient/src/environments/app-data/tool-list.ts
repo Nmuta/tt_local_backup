@@ -129,6 +129,7 @@ export const CommonAccessLevels = {
     UserRole.MediaTeam,
     UserRole.GeneralUser,
   ],
+  AdminAndGeneralUsers: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
 };
 
 /**
@@ -466,7 +467,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.CreateAuction,
     tool: NavbarTool.CreateAuction,
-    accessList: [UserRole.LiveOpsAdmin],
+    accessList: CommonAccessLevels.AdminAndGeneralUsers,
     title: 'Create Auction',
     subtitle: 'Create auction',
     supportedTitles: [GameTitle.FH5],
@@ -628,7 +629,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   <HomeTileInfoInternal>{
     icon: AppIcon.WelcomeCenterCalendar,
     tool: NavbarTool.WelcomeCenterCalendar,
-    accessList: [UserRole.LiveOpsAdmin],
+    accessList: CommonAccessLevels.AdminAndGeneralUsers,
     title: 'Welcome Center Calendar',
     subtitle: 'View Welcome Center tiles on a day-by-day basis',
     imageUrl: undefined,
@@ -639,7 +640,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import(
         '../../app/pages/tools/pages/welcome-center-calendar/welcome-center-calendar.module'
       ).then(m => m.WelcomeCenterCalendarModule),
-    hideFromUnauthorized: true,
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.UserGroupManagement,

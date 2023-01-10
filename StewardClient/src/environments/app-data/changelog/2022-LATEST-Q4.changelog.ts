@@ -9,6 +9,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: '17a8f54e-c356-4c5e-95f0-181076439202',
+      shortText: 'Fix random auth V2 bugs',
+      longText: [
+        'Add permission management to send loyalty rewards by title buttons',
+        'Give General User role access to Welcome Center Calendar tool',
+        'Give General User role access to Create Auction tool',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'c2c452a4-9c65-46b5-9483-e362c0a831b3',
       shortText: 'Change default navbar tools for General User role',
       longText: [
