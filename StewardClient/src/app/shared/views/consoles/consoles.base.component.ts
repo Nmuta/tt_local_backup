@@ -84,7 +84,7 @@ export abstract class ConsolesBaseComponent<T extends ConsoleDetailsTitleIntersp
           return {
             ...console,
             banActionMonitor: new ActionMonitor(`Ban console: ${console.consoleId}`),
-            unbanActionMonitor: new ActionMonitor(`Unan console: ${console.consoleId}`),
+            unbanActionMonitor: new ActionMonitor(`Unban console: ${console.consoleId}`),
           } as T & ConsoleActionMonitors;
         });
       });

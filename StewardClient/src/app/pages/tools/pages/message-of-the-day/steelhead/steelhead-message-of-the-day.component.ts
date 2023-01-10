@@ -1,17 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTableDataSource } from '@angular/material/table';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { GameTitle } from '@models/enums';
+import { PullRequest, PullRequestSubject } from '@models/git-operation';
 import { LocalizedStringData, LocalizedStringsMap } from '@models/localization';
 import { MessageOfTheDay, FriendlyNameMap } from '@models/message-of-the-day';
+import { SteelheadGitOperationService } from '@services/api-v2/steelhead/git-operation/steelhead-git-operation.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { SteelheadMessageOfTheDayService } from '@services/api-v2/steelhead/message-of-the-day/steelhead-message-of-the-day.service';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
+
+type PullRequestTableData = PullRequest & {
+  monitor: ActionMonitor;
+};
 
 /** The Steelhead message of the day page. */
 @Component({
@@ -25,12 +32,15 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   public getListActionMonitor = new ActionMonitor('GET Message Of The Day list');
   public getDetailActionMonitor = new ActionMonitor('GET Message Of The Day detail');
   public submitMotdMonitor = new ActionMonitor('POST Message Of The Day');
+  public getPullRequests = new ActionMonitor('GET Pull Requests');
   public localizationCreationServiceContract: CreateLocalizedStringContract;
   public localizationSelectServiceContract: SelectLocalizedStringContract;
   public friendlyNameList: FriendlyNameMap;
   public isInEditMode: boolean = false;
   public currentMessageOfTheDay: MessageOfTheDay;
   public pullRequestUrl: string;
+  public existingPullRequestList = new MatTableDataSource<PullRequestTableData>();
+  public columnsToDisplay = ['title', 'creationDate', 'actions'];
 
   public formControls = {
     selectedMessageOfTheDay: new FormControl(null, [Validators.required]),
@@ -48,6 +58,7 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
     private readonly steelheadMessageOfTheDayService: SteelheadMessageOfTheDayService,
+    private readonly steelheadGitOperationService: SteelheadGitOperationService,
   ) {
     super();
 
@@ -74,6 +85,8 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
       .subscribe(friendlyNameMap => {
         this.friendlyNameList = friendlyNameMap;
       });
+
+    this.getActivePullRequests();
   }
 
   /** Clears the content image path input */
@@ -131,13 +144,18 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
         this.currentMessageOfTheDay,
       )
       .pipe(this.submitMotdMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(url => {
-        this.pullRequestUrl = url;
+      .subscribe(pullrequest => {
+        this.pullRequestUrl = pullrequest.webUrl;
         this.isInEditMode = false;
         this.verifyCheckbox.checked = false;
         this.formControls.localizedTitleHeader.disable();
         this.formControls.localizedContentHeader.disable();
         this.formControls.localizedContentBody.disable();
+        this.existingPullRequestList.data.unshift({
+          ...pullrequest,
+          monitor: new ActionMonitor(`Abandon pull request: ${pullrequest.id}`),
+        } as PullRequestTableData);
+        this.existingPullRequestList._updateChangeSubscription();
       });
   }
 
@@ -147,6 +165,36 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.formControls.localizedTitleHeader.enable();
     this.formControls.localizedContentHeader.enable();
     this.formControls.localizedContentBody.enable();
+    this.pullRequestUrl = '';
+  }
+
+  /** Send a request to github to abandon a Pull Request. */
+  public abandonPullRequest(entry: PullRequestTableData): void {
+    entry.monitor = entry.monitor.repeat();
+    this.steelheadGitOperationService
+      .abandonPullRequest$(entry.id)
+      .pipe(entry.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        const index = this.existingPullRequestList.data.indexOf(entry);
+        this.existingPullRequestList.data.splice(index, 1);
+        this.existingPullRequestList._updateChangeSubscription();
+      });
+  }
+
+  /** Get and display the current active pull request. */
+  private getActivePullRequests(): void {
+    this.getPullRequests = this.getPullRequests.repeat();
+    this.steelheadGitOperationService
+      .getActivePullRequests$(PullRequestSubject.MessageOfTheDay)
+      .pipe(this.getPullRequests.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(result => {
+        this.existingPullRequestList.data = result.map(pullrequest => {
+          return {
+            ...pullrequest,
+            monitor: new ActionMonitor(`Abandon pull request: ${pullrequest.id}`),
+          } as PullRequestTableData;
+        });
+      });
   }
 
   /** Set form fields using the MessageOfTheDay parameter. */

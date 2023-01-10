@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -37,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [ApiVersion("2.0")]
-    [Tags(Title.Steelhead, Topic.Pegasus)]
+    [Tags(Title.Steelhead, Topic.Git)]
     public class GitOperationsController : V2SteelheadControllerBase
     {
         private readonly ISteelheadPegasusService steelheadPegasusService;
@@ -56,12 +57,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         ///     Gets pull requests created by steward.
         /// </summary>
         [HttpGet("pullrequest/{status}")]
-        [SwaggerResponse(200, type: typeof(List<(GitPullRequest, string)>))]
+        [SwaggerResponse(200, type: typeof(List<PullRequest>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetPullRequests(PullRequestStatus status)
+        public async Task<IActionResult> GetPullRequests(PullRequestStatus status, string subject)
         {
-            var pullRequests = await this.steelheadPegasusService.GetPullRequestsAsync(status).ConfigureAwait(true);
+            var pullRequests = await this.steelheadPegasusService.GetPullRequestsAsync(status, subject).ConfigureAwait(true);
 
             return this.Ok(pullRequests);
         }

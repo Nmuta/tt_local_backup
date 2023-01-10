@@ -32,6 +32,14 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       ],
     },
     {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '534804bc-fc87-4145-a386-778344479a3d',
+      shortText: 'Add list of currently open pull request',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'c2c452a4-9c65-46b5-9483-e362c0a831b3',
       shortText: 'Change default navbar tools for General User role',
