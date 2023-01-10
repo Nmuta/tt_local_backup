@@ -18,6 +18,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: 'fb8c1166-7fed-4cd9-8b03-23ebf04d8949',
+      shortText: 'Fix V2 permissions bug on first login',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: '17a8f54e-c356-4c5e-95f0-181076439202',
       shortText: 'Fix random auth V2 bugs',
       longText: [
