@@ -8,6 +8,15 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterCalendar],
+      },
+      uuid: '1deb3d72-de0b-44e1-a52a-4d7e9f16b3ae',
+      shortText:
+        'Require localized string dropdown now properly show an asterisk next to their label',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '17a8f54e-c356-4c5e-95f0-181076439202',
       shortText: 'Fix random auth V2 bugs',
