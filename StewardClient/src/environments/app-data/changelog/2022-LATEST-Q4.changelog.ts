@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '4c8edbfe-1da0-4b3b-b9ec-7e457dc00f2d',
+      shortText: 'Add game options display to Racers Cup event details',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserGroupManagement },
       uuid: 'e878fac6-bba5-42ce-8ab7-a97ff14e5248',
       shortText: 'Display user count for every user group and fix timeout issues',
