@@ -326,7 +326,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
-            var fileName = "RacersCupChampionshipScheduleV4";
+            var fileName = "LiveOps_RacersCupChampionshipScheduleV4";
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
                 fileName,
                 environment: pegasusEnvironment,

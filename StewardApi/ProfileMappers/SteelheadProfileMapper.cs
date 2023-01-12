@@ -384,6 +384,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.QualificationLimitType, opt => opt.MapFrom(src => src.QualificationLimitType))
                 .ForMember(dest => dest.NumberOfLimitedLaps, opt => opt.MapFrom(src => src.NumLimitedLaps))
                 .ForMember(dest => dest.IsOneShot, opt => opt.MapFrom(src => src.IsOneShot));
+            this.CreateMap<SteelheadLiveOpsContent.GameOptions, RacersCupGameOptions>()
+                .ForMember(dest => dest.StartRaceWeatherCondition, opt => opt.MapFrom(src => src.StartRaceWeatherConditionId))
+                .ForMember(dest => dest.MidRaceWeatherCondition, opt => opt.MapFrom(src => src.MidRaceWeatherConditionId))
+                .ForMember(dest => dest.EndRaceWeatherCondition, opt => opt.MapFrom(src => src.EndRaceWeatherConditionId))
+                .ReverseMap();
+            this.CreateMap<SteelheadLiveOpsContent.WeatherCondition, RacersCupWeatherCondition>()
+                .ReverseMap();
+            this.CreateMap<SteelheadLiveOpsContent.EWeatherConditionType, RacersCupWeatherConditionType>();
 
             this.CreateMap<GitPullRequest, PullRequest>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.PullRequestId))
