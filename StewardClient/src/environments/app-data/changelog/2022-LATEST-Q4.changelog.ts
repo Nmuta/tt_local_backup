@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '96c72166-8cc4-4cd3-802d-729186831366',
+      shortText: 'Auto route home page to tools if user is not in Zendesk',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterCalendar },
       uuid: 'c9f754d0-1344-4636-bc29-a5cc804d62c6',
       shortText: 'Add day-view modal to Welcome Center Calendar',
