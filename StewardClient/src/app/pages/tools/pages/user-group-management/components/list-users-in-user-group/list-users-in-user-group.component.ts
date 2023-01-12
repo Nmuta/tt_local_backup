@@ -115,6 +115,7 @@ export class ListUsersInGroupComponent
   public addPlayersMonitor = new ActionMonitor('Add specified players in user group');
   public allPlayers: PlayerInUserGroup[] = [];
   public userGamertags: boolean = false;
+  public userCount: number;
 
   public userHasWritePerms: boolean = false;
   public userHasRemoveAllPerms: boolean = false;
@@ -161,6 +162,7 @@ export class ListUsersInGroupComponent
     this.allPlayers = [];
     this.playersDataSource.data = this.allPlayers;
     this.failedActionForUsers = null;
+    this.userCount = 0;
     if (changes.userGroup && !!this.userGroup) {
       this.isAllUsersGroup = this.userGroup?.id.isEqualTo(0);
       this.disallowDeleteAllUsers = !!this.service.largeUserGroups.find(x =>
@@ -352,24 +354,31 @@ export class ListUsersInGroupComponent
       .getPlayersInUserGroup$(this.userGroup, startIndex, this.playersDataSource.paginator.pageSize)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(response => {
-        const players = response.playerList.map(player => {
-          return {
-            gamertag: player.gamertag,
-            xuid: player.xuid,
-            deleteMonitor: new ActionMonitor(`Delete player from user group:  ${player.xuid}`),
-          };
-        });
+        this.userCount = response.playerCount;
 
-        // Pagination logic with dynamic loading.
-        // If the players array is not the right size, insert an undefined value at the end to trick the ui table
-        if (this.allPlayers.length != response.playerCount) {
-          this.allPlayers[response.playerCount - 1] = undefined;
+        // If the count was over 20,000 no user list is returned
+        if (response.playerList) {
+          const players = response.playerList.map(player => {
+            return {
+              gamertag: player.gamertag,
+              xuid: player.xuid,
+              deleteMonitor: new ActionMonitor(`Delete player from user group:  ${player.xuid}`),
+            };
+          });
+
+          // Pagination logic with dynamic loading.
+          // If the players array is not the right size, insert an undefined value at the end to trick the ui table
+          if (this.allPlayers.length != response.playerCount) {
+            this.allPlayers[response.playerCount - 1] = undefined;
+          }
+
+          // Insert players into allPlayers array
+          this.allPlayers.splice(startIndex, this.playersDataSource.paginator.pageSize, ...players);
+
+          this.playersDataSource.data = this.allPlayers;
+        } else {
+          this.isGroupTooLarge = true;
         }
-
-        // Insert players into allPlayers array
-        this.allPlayers.splice(startIndex, this.playersDataSource.paginator.pageSize, ...players);
-
-        this.playersDataSource.data = this.allPlayers;
       });
   }
 

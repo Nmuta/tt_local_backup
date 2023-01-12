@@ -80,17 +80,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<SimpleCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Live)
+        public async Task<IEnumerable<SimpleCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Daily)
         {
+            IEnumerable<DataCar> cars;
             try
             {
-                var cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
-                return this.mapper.Map<IEnumerable<SimpleCar>>(cars);
+                cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Failed to get Steelhead Pegasus cars.", ex);
             }
+
+            return this.mapper.SafeMap<IEnumerable<SimpleCar>>(cars);
         }
     }
 }

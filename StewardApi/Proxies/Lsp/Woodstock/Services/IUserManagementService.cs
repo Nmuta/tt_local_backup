@@ -18,6 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         Task<GetUserGroupUsersOutput> GetUserGroupUsers(int userGroupId, int startAt, int maxResults);
 
         /// <summary>
+        ///     Gets user group user count.
+        /// </summary>
+        Task<GetUserGroupMemberCountOutput> GetUserGroupMemberCount(int groupId);
+
+        /// <summary>
         ///     Gets user IDs.
         /// </summary>
         Task<GetUserIdsOutput> GetUserIds(int paramCount, ForzaPlayerLookupParameters[] playerLookupParameters);

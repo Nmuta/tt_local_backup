@@ -28,6 +28,9 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { LuxonModule } from 'luxon-angular';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 
 /** Module for displaying welcome center tiles tool. */
 @NgModule({
@@ -61,6 +64,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     LuxonDateModule,
     StandardDateModule,
     MatDatepickerModule,
+    PermissionsModule,
+    LuxonModule,
+    VerifyCheckboxModule,
   ],
   exports: [],
 })

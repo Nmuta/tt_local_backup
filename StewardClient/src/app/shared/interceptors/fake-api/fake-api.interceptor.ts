@@ -97,6 +97,9 @@ import { WoodstockLeaderboardScoresTopTopFakeApi } from './apis/title/woodstock/
 import { WoodstockLeaderboardScoresDeleteFakeApi } from './apis/title/woodstock/leaderboard/scores/delete';
 import { WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi } from './apis/title/woodstock/leaderboard/scores/near-player/xuid';
 
+import { SteelheadPlayerInventoryProfilesFakeApi } from './apis/v2/steelhead/player/xuid/profiles';
+import { SteelheadPlayerInventoryFakeApi } from './apis/v2/steelhead/player/xuid/inventory';
+
 import { LoggerService, LogTopic } from '@services/logger';
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
 import { PipelineGetFakeApi } from './apis/pipeline/get';
@@ -107,6 +110,10 @@ import { SettingsGetEndpointsFakeApi } from './apis/title/settings/lspEndpoints'
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
+  // Steelhead
+  SteelheadPlayerInventoryProfilesFakeApi,
+  SteelheadPlayerInventoryFakeApi,
+
   // Woodstock
   WoodstockPlayerXuidBackstagePassHistoryFakeApi,
   WoodstockPlayerXuidAccountInventoryFakeApi,

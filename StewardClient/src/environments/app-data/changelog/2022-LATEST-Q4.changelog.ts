@@ -13,6 +13,66 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'New button to hide multiple Ugcs added to Ugc search',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserGroupManagement },
+      uuid: 'e878fac6-bba5-42ce-8ab7-a97ff14e5248',
+      shortText: 'Display user count for every user group and fix timeout issues',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterCalendar],
+      },
+      uuid: '1deb3d72-de0b-44e1-a52a-4d7e9f16b3ae',
+      shortText:
+        'Require localized string dropdown now properly show an asterisk next to their label',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'fb8c1166-7fed-4cd9-8b03-23ebf04d8949',
+      shortText: 'Fix V2 permissions bug on first login',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '17a8f54e-c356-4c5e-95f0-181076439202',
+      shortText: 'Fix random auth V2 bugs',
+      longText: [
+        'Add permission management to send loyalty rewards by title buttons',
+        'Give General User role access to Welcome Center Calendar tool',
+        'Give General User role access to Create Auction tool',
+      ],
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '534804bc-fc87-4145-a386-778344479a3d',
+      shortText: 'Add list of currently open pull request',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c2c452a4-9c65-46b5-9483-e362c0a831b3',
+      shortText: 'Change default navbar tools for General User role',
+      longText: [
+        'New default tools are User Details, Gifting, Messaging, Endpoint Select, and Themeing',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },
+      uuid: '0ccc4df2-a85e-4451-94f5-bdf153e63bd6',
+      shortText: 'Fix search UGC failures',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '10c921ff-2c62-48b6-a618-8d42710d258f',
+      shortText: 'Integrate profile and inventory lookup with LSP',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.Gifting },
+      uuid: '12cf2586-12f7-4efe-bf94-17ab8084c150',
+      shortText: 'Resolved bug that prevented sending subsequent gifts without refreshing',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
       uuid: '3e8aac4c-f45d-4365-a104-2d8a7244e0bb',
       shortText: 'Add new tool to create auction(s)',

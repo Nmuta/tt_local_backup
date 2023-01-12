@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PullRequest } from '@models/git-operation';
 import { WelcomeCenterTile, FriendlyNameMap } from '@models/welcome-center';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
@@ -25,8 +26,8 @@ export class SteelheadWelcomeCenterTileService {
   public submitModification$(
     welcomeCenterTileId: string,
     welcomeCenterTile: WelcomeCenterTile,
-  ): Observable<string> {
-    return this.api.postRequest$<string>(
+  ): Observable<PullRequest> {
+    return this.api.postRequest$<PullRequest>(
       `${this.basePath}/${welcomeCenterTileId}`,
       welcomeCenterTile,
     );
