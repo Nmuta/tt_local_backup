@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { WelcomeCenterTileSize } from '@models/welcome-center';
@@ -7,6 +8,7 @@ import {
   WelcomeCenter,
   WelcomeCenterColumn,
 } from '@services/api-v2/steelhead/welcome-center/steelhead-welcome-center.service';
+
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DomainEnumPrettyPrintOrHumanizePipe } from '@shared/pipes/domain-enum-pretty-print-or-humanize.pipe';
 import {
@@ -18,17 +20,27 @@ import {
 } from 'angular-calendar';
 import { keys } from 'lodash';
 import { takeUntil } from 'rxjs';
+import {
+  WelcomeCenterTileDetailsModalComponent,
+  WelcomeCenterTileDetailsModalData,
+} from '../../welcome-center-tile-details-modal/steelhead/welcome-center-tile-details-modal.component';
 
 export interface WelcomeCenterMeta {
   column: WelcomeCenterColumn;
   size: WelcomeCenterTileSize;
   weekTooltip: string;
   dayTooltip: string;
+  title: string;
+  friendlyName: string;
+  tileType: string;
+  description: string;
+  displayConditions: object;
+  cssClass: string;
 }
 
 export interface TileEventGroup<T> {
   name: string;
-  events: CalendarEvent<T>;
+  events: CalendarEvent<T>[];
   tileCount: number;
 }
 
@@ -57,6 +69,7 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
   constructor(
     private readonly welcomeCenterService: SteelheadWelcomeCenterService,
     private readonly deppoh: DomainEnumPrettyPrintOrHumanizePipe,
+    private readonly dialog: MatDialog,
   ) {
     super();
   }
@@ -79,6 +92,13 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
   /** Sets calendar view. */
   public setView(view: CalendarView): void {
     this.view = view;
+  }
+
+  /** Opens modal to display day group's tiles with more detail. */
+  public groupsClicked(groups: TileEventGroup<WelcomeCenterMeta>[]): void {
+    this.dialog.open(WelcomeCenterTileDetailsModalComponent, {
+      data: <WelcomeCenterTileDetailsModalData>{ columns: groups },
+    });
   }
 
   /** Counts number of tiles needed to display a column. */
@@ -146,8 +166,14 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
         title: `${tile.tileTitle}`,
         cssClass: `event-column-${column}`,
         meta: {
+          title: tile.tileTitle,
+          friendlyName: tile.tileFriendlyName,
+          tileType: tile.tileTypeV3,
+          description: tile.tileDescription,
+          displayConditions: tile.displayConditionDataList,
           column: column,
           size: tile.size,
+          cssClass: `tile ${tile.size.toString().toLowerCase()} ${column}`,
           weekTooltip: `${this.deppoh.transform(column)} Column: ${tile.tileTitle} \r\n (${
             tile.tileFriendlyName
           }) \r\n ${tile.tileDescription}`,

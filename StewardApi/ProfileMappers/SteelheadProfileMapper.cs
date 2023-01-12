@@ -144,6 +144,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512)).ReverseMap();
             this.CreateMap<LocalizationStringResult, SteelheadLiveOpsContent.LocalizedString>()
                 .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
+                .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
                 .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory))
                 .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => src.MaxLength))
@@ -302,8 +303,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
                 .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.MakeDisplayName));
             this.CreateMap<SteelheadLiveOpsContent.VanityItem, MasterInventoryItem>()
-                            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
-                            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
             this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
             this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))
@@ -317,11 +318,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
             this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
-            this.CreateMap<(WelcomeCenterTileConfig tile, WelcomeCenterTileCmsBase tileInfo), WelcomeCenterTileOutput>()
-                .ForMember(dest => dest.TileTypeV3, opt => opt.MapFrom(src => src.tile.TileTypeV3))
-                .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.tile.Priority))
+            this.CreateMap<(WoFTileConfigBase tile, WoFTileCMSBase tileInfo), WelcomeCenterTileOutput>()
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.tile.Size))
-                .ForMember(dest => dest.DisplayConditionDataList, opt => opt.MapFrom(src => src.tile.DisplayConditionDataList))
                 .ForMember(dest => dest.TileFriendlyName, opt => opt.MapFrom(src => src.tileInfo.FriendlyName))
                 .ForMember(dest => dest.TileTitle, opt => opt.MapFrom(src => src.tileInfo.TileTitle))
                 .ForMember(dest => dest.TileType, opt => opt.MapFrom(src => src.tileInfo.TileType))

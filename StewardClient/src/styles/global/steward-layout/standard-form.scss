@@ -21,6 +21,10 @@
       align-items: center;
     }
 
+    .align-items-flex-start.align-items-flex-start.align-items-flex-start {
+      align-items: flex-start;
+    }
+
     // get the spacing right
     margin: -1em;
     > * {
