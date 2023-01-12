@@ -1,3 +1,39 @@
+<div class="sf-wrapper">
+  <div class="sf-horizontal" *ngIf="ugcHidingSupported">
+    <button
+      mat-raised-button
+      color="warn"
+      [disabled]="selectedUgcs?.length <= 0"
+      [verifyWith]="verifyCheckboxHide"
+      (click)="hideMultipleUgc(selectedUgcs)"
+      stateManager
+      [monitor]="hideUgcMonitor"
+      monitorDisable
+      monitorWarn
+      monitorWarnSnackbar
+    >
+      <span [ngPlural]="selectedUgcs?.length">
+        Hide {{ selectedUgcs?.length }}
+        <ng-template ngPluralCase="=1">Ugc</ng-template>
+        <ng-template ngPluralCase="other">Ugcs</ng-template>
+      </span>
+    </button>
+    <mat-checkbox
+      #verifyCheckboxHide
+      stateManager
+      [permissionAttribute]="hideUgcPermission"
+      [permissionTitle]="gameTitle"
+      matTooltip="Check to enable multi hide"
+    >
+      Verify Hide
+    </mat-checkbox>
+    <div class="failed-hide-ugc" *ngIf="failedHideUgcs">
+      <standard-copy [text]="failedHideUgcs" [alwaysShowIcon]="true">
+        Failed to hide some or all ugc(s)
+      </standard-copy>
+    </div>
+  </div>
+</div>
 <h5 *ngIf="useExpandoColumnDef">* Click on a row to expand its details.</h5>
 <div class="table-wide-actions" *ngIf="displayTableWideActions">
   <button
@@ -153,6 +189,18 @@
         <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
         <li><b>Car:</b> {{ entry.carDescription }}</li>
       </ul>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="selectRowCheckBox">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let entry">
+      <mat-checkbox
+        matTooltip="Check to select the ugc"
+        aria-label="Check to select the ugc"
+        (change)="onRowSelected(entry)"
+      >
+      </mat-checkbox>
     </td>
   </ng-container>
 

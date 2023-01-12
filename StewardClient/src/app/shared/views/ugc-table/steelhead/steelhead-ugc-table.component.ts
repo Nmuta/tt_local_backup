@@ -3,7 +3,7 @@ import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
@@ -17,7 +17,7 @@ import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup
 export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitle.FM8;
   public supportFeaturing: boolean = false;
-  public supportHiding: boolean = false;
+  public ugcHidingSupported = false;
 
   constructor(private readonly steelheadUgcLookupService: SteelheadUgcLookupService) {
     super();
@@ -31,5 +31,10 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   /** Retrieve Photo thumnbnails. */
   public retrievePhotoThumbnails(ugcIds: GuidLikeString[]): Observable<LookupThumbnailsResult[]> {
     return this.steelheadUgcLookupService.getUgcPhotoThumbnails$(ugcIds);
+  }
+
+  /** Hide multiple Ugcs. */
+  public hideUgc(_ugcIds: string[]): Observable<string[]> {
+    return throwError(new Error('Sunrise does not support bulk photo thumbnail lookup.'));
   }
 }

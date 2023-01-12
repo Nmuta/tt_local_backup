@@ -8,6 +8,8 @@ import { SunriseUgcTableComponent } from './sunrise-ugc-table.component';
 import { SunriseService } from '@services/sunrise';
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
+import { createMockSunriseUgcHideService } from '@services/api-v2/sunrise/ugc/sunrise-ugc-hide.service.mock';
+import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 
 describe('SunriseUgcTableComponent', () => {
   let component: SunriseUgcTableComponent;
@@ -18,7 +20,11 @@ describe('SunriseUgcTableComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatPaginatorModule, BrowserAnimationsModule],
       declarations: [SunriseUgcTableComponent, BigJsonPipe],
-      providers: [createMockSunriseService()],
+      providers: [
+        createMockSunriseService(),
+        createMockSunriseUgcHideService(),
+        createMockBackgroundJobService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

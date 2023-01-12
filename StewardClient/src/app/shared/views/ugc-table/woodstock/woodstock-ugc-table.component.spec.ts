@@ -11,6 +11,8 @@ import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
+import { createMockWoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-hide.service.mock';
+import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 
 describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
@@ -22,7 +24,12 @@ describe('WoodstockUgcTableComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatPaginatorModule, BrowserAnimationsModule],
       declarations: [WoodstockUgcTableComponent, BigJsonPipe],
-      providers: [createMockWoodstockService(), createMockWoodstockUgcLookupService()],
+      providers: [
+        createMockWoodstockService(),
+        createMockWoodstockUgcLookupService(),
+        createMockWoodstockUgcHideService(),
+        createMockBackgroundJobService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

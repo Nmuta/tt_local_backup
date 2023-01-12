@@ -32,8 +32,10 @@ import { GuidLikeString } from '@models/extended-types';
 import { saveAs } from 'file-saver';
 import { chunk, cloneDeep, flatten } from 'lodash';
 import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
+  'selectRowCheckBox',
   'ugcInfo',
   'metadata',
   'stats',
@@ -42,12 +44,20 @@ export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'actions',
 ];
 
-/** Extended type from HideableUgc. */
+/** Extended type from PlayerUgcItem. */
 export type PlayerUgcItemTableEntries = PlayerUgcItem & {
+  /** Link to the ugc detail page of that specific ugc item */
   ugcDetailsLink?: string[];
+  /** Sets if the row is selected */
+  selected?: boolean;
 };
 
-export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailOneImageBase64', 'actions'];
+export const UGC_TABLE_COLUMNS_EXPANDO = [
+  'selectRowCheckBox',
+  'exando-ugcInfo',
+  'thumbnailOneImageBase64',
+  'actions',
+];
 
 /** A component for a UGC content table. */
 @Component({
@@ -82,13 +92,18 @@ export abstract class UgcTableBaseComponent
   public ugcCount: number;
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
+  public hideUgcMonitor = new ActionMonitor('Hide Ugc(s)');
   public ugcDetailsLinkSupported: boolean = true;
+  public ugcHidingSupported: boolean = true;
   public ugcType = UgcType;
   public liveryGiftingRoute: string[];
+  public selectedUgcs: PlayerUgcItemTableEntries[] = [];
+  public failedHideUgcs: string;
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
+  public readonly hideUgcPermission = PermAttributeName.HideUgc;
 
   public abstract gameTitle: GameTitle;
 
@@ -101,6 +116,7 @@ export abstract class UgcTableBaseComponent
   public abstract retrievePhotoThumbnails(
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
+  public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
 
   /** Angular hook. */
   public ngOnInit(): void {
@@ -202,6 +218,40 @@ export abstract class UgcTableBaseComponent
       )
       .subscribe(base64Content => {
         saveAs(base64Content, 'Photos.zip');
+      });
+  }
+
+  /** Logic when row is selected. */
+  public onRowSelected(ugc: PlayerUgcItemTableEntries): void {
+    ugc.selected = !ugc.selected;
+    const selectedUgcIndex = this.selectedUgcs.findIndex(s => s.id === ugc.id);
+    if (selectedUgcIndex >= 0) {
+      this.selectedUgcs.splice(selectedUgcIndex, 1);
+    }
+
+    if (ugc.selected) {
+      this.selectedUgcs.push(ugc);
+    }
+  }
+
+  /** Hide multiple ugcs. */
+  public hideMultipleUgc(ugcs: PlayerUgcItemTableEntries[]): void {
+    this.hideUgcMonitor = this.hideUgcMonitor.repeat();
+
+    const ugcIds = ugcs.map(ugc => ugc.id);
+    this.hideUgc(ugcIds)
+      .pipe(this.hideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(failedUgcs => {
+        this.failedHideUgcs = failedUgcs.join('\n');
+        this.selectedUgcs.forEach(ugc => {
+          if (!failedUgcs.includes(ugc.id)) {
+            const index = this.ugcTableDataSource.data.indexOf(ugc);
+            this.ugcTableDataSource.data.splice(index, 1);
+          }
+        });
+        this.ugcTableDataSource._updateChangeSubscription();
+        this.selectedUgcs = [];
+        this.content = [];
       });
   }
 
