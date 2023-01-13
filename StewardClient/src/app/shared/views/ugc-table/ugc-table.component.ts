@@ -63,6 +63,7 @@ export const UGC_TABLE_COLUMNS_EXPANDO = [
 
 /** A component for a UGC content table. */
 @Component({
+  template: '',
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
