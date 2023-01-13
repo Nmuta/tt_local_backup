@@ -336,6 +336,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return scheduleData;
         }
 
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
+        {
+            var pegasusSlot = SteelheadPegasusSlot.Daily;
+            var fileName = "LiveOps_BuildersCupFeaturedCup-en-US";
+
+            var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
+                fileName,
+                environment: this.cmsEnvironment,
+                slot: pegasusSlot).ConfigureAwait(false);
+
+            return featuredCupData.Single();
+        }
+
         /// <inheritdoc/>
         public async Task<SteelheadLiveOpsContent.WorldOfForzaConfigV3> GetWelcomeCenterDataAsync()
         {
