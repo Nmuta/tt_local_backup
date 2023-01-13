@@ -16,6 +16,22 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'New button to hide multiple Ugcs added to Ugc search',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: '96c72166-8cc4-4cd3-802d-729186831366',
+      shortText: 'Auto route home page to tools if user is not in Zendesk',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterCalendar },
+      uuid: 'c9f754d0-1344-4636-bc29-a5cc804d62c6',
+      shortText: 'Add day-view modal to Welcome Center Calendar',
+      longText: [
+        'The modal will display the three Welcome Center tile columns.',
+        'Each column will contain a list of all tiles available for display.',
+        'The tiles display the messaging displayed in the Welcome Center.',
+        'Coming soon: Tiles filter based on date, auto-link to Welcome Center tile tool to modify.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserGroupManagement },
       uuid: 'e878fac6-bba5-42ce-8ab7-a97ff14e5248',
       shortText: 'Display user count for every user group and fix timeout issues',
@@ -103,12 +119,12 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     {
       tag: ChangelogTag.General,
       uuid: '2069c567-52ed-4182-908c-71c0e8a42939',
-      shortText: 'Correctly update permissions on first load.',
+      shortText: 'Correctly update permissions on first load',
     },
     {
       tag: { title: 'all', tool: NavbarTool.SearchUGC },
       uuid: '02a35bc8-9bdf-4b7e-bbcb-fbee6a5ebd42',
-      shortText: 'Change highlight colors for featured UGC to matchbehavior of other tables',
+      shortText: 'Change highlight colors for featured UGC to match behavior of other tables',
     },
     {
       tag: ChangelogTag.All,

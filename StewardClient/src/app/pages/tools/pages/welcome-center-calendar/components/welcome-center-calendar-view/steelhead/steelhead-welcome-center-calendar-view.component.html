@@ -81,11 +81,13 @@
   <div class="cell-totals">
     <div class="shrink-wrap">
       <div class="sf-wrapper">
-        <div class="center-text">Tile Columns</div>
         <div class="sf-vertical">
-          <!-- Hook up a click event to open modal with given column displayed -->
-          <div *ngFor="let group of day.eventGroups" class="column-group">
-            <hr />
+          <div
+            *ngFor="let group of day.eventGroups; let first = first"
+            class="column-group"
+            (click)="groupsClicked(day.eventGroups)"
+          >
+            <hr *ngIf="!first" />
             <div
               class="grid {{ group.name }}"
               style="grid-template-rows: repeat({{ group.tileCount }}, 10px);"
@@ -96,7 +98,7 @@
               <ng-container *ngFor="let tile of group.events">
                 <div
                   *ngIf="tile.meta.column === group.name"
-                  [class]="'tile ' + tile.meta.size.toLowerCase() + ' ' + tile.meta.column"
+                  [class]="tile.meta.cssClass"
                   [matTooltip]="tile.meta.dayTooltip"
                   matTooltipClass="multiline-tooltip"
                 ></div>

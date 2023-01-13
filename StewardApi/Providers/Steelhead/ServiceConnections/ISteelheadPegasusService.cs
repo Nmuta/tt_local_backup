@@ -71,6 +71,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             string pegasusSnapshot = null);
 
         /// <summary>
+        ///     Gets welcome center columns.
+        /// </summary>
+        Task<SteelheadLiveOpsContent.WorldOfForzaConfigV3> GetWelcomeCenterDataAsync();
+
+        /// <summary>
+        ///     Gets welcome center tile details.
+        /// </summary>
+        Task<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync();
+
+        /// <summary>
         ///     Gets leaderboards.
         /// </summary>
         Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
