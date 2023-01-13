@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -61,7 +63,6 @@ export const UGC_TABLE_COLUMNS_EXPANDO = [
 
 /** A component for a UGC content table. */
 @Component({
-  template: '',
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
@@ -75,10 +76,13 @@ export abstract class UgcTableBaseComponent
 {
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  /** REVIEW-COMMENT: Player UGC items. */
+  /** Player UGC items. */
   @Input() content: PlayerUgcItem[];
-  /** REVIEW-COMMENT: Content type. Default to {@link UgcType.Unknown}. */
+  /** Content type of the UGC shown. Default to {@link UgcType.Unknown}. */
   @Input() contentType: UgcType = UgcType.Unknown;
+  /** Output when UGC items are hidden. */
+  @Output() ugcsRemoved = new EventEmitter<string[]>();
+
   public readonly THUMBNAIL_LOOKUP_BATCH_SIZE = 250;
   public readonly THUMBNAIL_LOOKUP_MAX_CONCURRENCY = 4;
 
@@ -92,7 +96,7 @@ export abstract class UgcTableBaseComponent
   public ugcCount: number;
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
-  public hideUgcMonitor = new ActionMonitor('Hide Ugc(s)');
+  public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcHidingSupported: boolean = true;
   public ugcType = UgcType;
@@ -243,15 +247,23 @@ export abstract class UgcTableBaseComponent
       .pipe(this.hideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(failedUgcs => {
         this.failedHideUgcs = failedUgcs.join('\n');
-        this.selectedUgcs.forEach(ugc => {
-          if (!failedUgcs.includes(ugc.id)) {
-            const index = this.ugcTableDataSource.data.indexOf(ugc);
-            this.ugcTableDataSource.data.splice(index, 1);
-          }
+        // Remove ugcId that failed from the list of ugcIds
+        failedUgcs.forEach(failedUgc => {
+          let index = ugcIds.indexOf(failedUgc);
+          ugcIds.splice(index, 1);
+        });
+        // Remove hidden ugcs from the table
+        ugcIds.forEach(ugcId => {
+          let index = this.content.findIndex(x => x.id == ugcId);
+          this.content.splice(index, 1);
+        });
+        // Send ugcIds to be removed to parent component
+        this.ugcsRemoved.emit(ugcIds);
+        this.selectedUgcs = [];
+        this.ugcTableDataSource.data.forEach(ugcTableElement => {
+          ugcTableElement.selected = false;
         });
         this.ugcTableDataSource._updateChangeSubscription();
-        this.selectedUgcs = [];
-        this.content = [];
       });
   }
 
