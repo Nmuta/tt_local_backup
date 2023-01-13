@@ -249,12 +249,12 @@ export abstract class UgcTableBaseComponent
         this.failedHideUgcs = failedUgcs.join('\n');
         // Remove ugcId that failed from the list of ugcIds
         failedUgcs.forEach(failedUgc => {
-          let index = ugcIds.indexOf(failedUgc);
+          const index = ugcIds.indexOf(failedUgc);
           ugcIds.splice(index, 1);
         });
         // Remove hidden ugcs from the table
         ugcIds.forEach(ugcId => {
-          let index = this.content.findIndex(x => x.id == ugcId);
+          const index = this.content.findIndex(x => x.id == ugcId);
           this.content.splice(index, 1);
         });
         // Send ugcIds to be removed to parent component
