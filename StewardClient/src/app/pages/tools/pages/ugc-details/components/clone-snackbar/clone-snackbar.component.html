@@ -2,11 +2,7 @@
   <span class="label">{{ label }}</span> Complete
 </span>
 <span class="spacer"></span>
-<button
-  mat-icon-button
-  [cdkCopyToClipboard]="completionValue | json"
-  matTooltip="Copy Output"
->
+<button mat-icon-button [cdkCopyToClipboard]="completionValue | json" matTooltip="Copy Output">
   <mat-icon>content_copy</mat-icon>
 </button>
 <button

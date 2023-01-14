@@ -39,7 +39,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { CloneSnackbarComponent } from './components/clone-snackbar/clone-snackbar.component';
 import { MatIconModule } from '@angular/material/icon';
-import { CdkCopyToClipboard, ClipboardModule } from '@angular/cdk/clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 /**
  *  Routed module for interacting with UGC Details.

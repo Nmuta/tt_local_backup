@@ -6,7 +6,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 /** A component that summarizes the results of a clone operation. */
 @Component({
   templateUrl: './clone-snackbar.component.html',
-  styleUrls: ['./clone-snackbar.component.scss']
+  styleUrls: ['./clone-snackbar.component.scss'],
 })
 export class CloneSnackbarComponent implements OnInit {
   public completionValue: ClonedItemResult;

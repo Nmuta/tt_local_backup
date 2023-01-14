@@ -8,6 +8,20 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '38b7a643-3eea-4cb0-a301-47a0d0badb52',
+      shortText: 'Tweaks to Clone UGC button on UGC Details page',
+      longText: [
+        'The Clone UGC button now has correct help text. (KeepGuid and IsSearchable are both set to true when cloning)',
+        'The snackbar that pops up will now have buttons to copy the ID and Share Code.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '51b4e2ad-db52-4d61-9c4b-4039fa815c32',
+      shortText: 'Allow custom Action Monitor completion pop-ups',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '96c72166-8cc4-4cd3-802d-729186831366',
       shortText: 'Auto route home page to tools if user is not in Zendesk',
