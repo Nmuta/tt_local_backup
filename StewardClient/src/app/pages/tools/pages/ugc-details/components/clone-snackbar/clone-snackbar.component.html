@@ -1,0 +1,28 @@
+<span class="message">
+  <span class="label">{{ label }}</span> Complete
+</span>
+<span class="spacer"></span>
+<button
+  mat-icon-button
+  [cdkCopyToClipboard]="completionValue | json"
+  matTooltip="Copy Output"
+>
+  <mat-icon>content_copy</mat-icon>
+</button>
+<button
+  mat-icon-button
+  [cdkCopyToClipboard]="completionValue.clonedFileId"
+  matTooltip="Copy File ID"
+>
+  <mat-icon>pin</mat-icon>
+</button>
+<button
+  mat-icon-button
+  [cdkCopyToClipboard]="completionValue.clonedFileId"
+  matTooltip="Copy Share Code"
+>
+  <mat-icon>vpn_key</mat-icon>
+</button>
+<button mat-icon-button (click)="onDismiss()" matTooltip="Dismiss">
+  <mat-icon>close</mat-icon>
+</button>
