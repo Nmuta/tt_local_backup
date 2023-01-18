@@ -10,7 +10,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { GiftHistoryComponent } from './gift-history.component';
 import { GiftHistoryRouterModule } from './gift-history.routing';
-import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.component';
 import { GiftHistoryResultsModule } from '@shared/views/gift-history-results/gift-history-results.module';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.component';
@@ -32,7 +31,6 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
 @NgModule({
   declarations: [
     GiftHistoryComponent,
-    GravityGiftHistoryComponent,
     SunriseGiftHistoryComponent,
     ApolloGiftHistoryComponent,
     SteelheadGiftHistoryComponent,

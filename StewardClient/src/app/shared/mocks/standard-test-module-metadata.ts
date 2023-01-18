@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { StateClass } from '@ngxs/store/internals';
 import { createMockApolloService } from '@services/apollo';
-import { createMockGravityService } from '@services/gravity';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { createMockOpusService } from '@services/opus';
 import { createMockSteelheadService } from '@services/steelhead';
@@ -47,7 +46,6 @@ export function createStandardTestModuleMetadata(
       createMockLoggerService(),
       createMockNotificationsService(),
       createMockSunriseService(),
-      createMockGravityService(),
       createMockApolloService(),
       createMockOpusService(),
       createMockSteelheadService(),

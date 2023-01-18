@@ -4,7 +4,6 @@ import {
   IdentityQueryBeta,
   IdentityQueryAlpha,
   IdentityResultAlpha,
-  IdentityResultBeta,
   isValidAlphaQuery,
   IdentityQueryBetaIntersection,
   IdentityResultAlphaBatch,
@@ -32,7 +31,6 @@ export interface ResultSet {
   sunrise: IdentityResultAlpha[];
   opus: IdentityResultAlpha[];
   apollo: IdentityResultAlpha[];
-  gravity: IdentityResultBeta[];
   steelhead: IdentityResultAlpha[];
   woodstock: IdentityResultAlpha[];
 }
@@ -42,7 +40,6 @@ export interface EnvSet {
   sunrise: string;
   opus: undefined;
   apollo: string;
-  gravity: undefined;
   steelhead: string;
   woodstock: string;
 }
@@ -83,7 +80,6 @@ export interface SingleUserResultSet {
   sunrise: IdentityResultAlpha;
   opus: IdentityResultAlpha;
   apollo: IdentityResultAlpha;
-  gravity: IdentityResultBeta;
   steelhead: IdentityResultAlpha;
   woodstock: IdentityResultAlpha;
 }

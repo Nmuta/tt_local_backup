@@ -13,7 +13,6 @@ import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
 import { OpusUserDetailsComponent } from './opus/opus-user-details.component';
 import { ApolloUserDetailsComponent } from './apollo/apollo-user-details.component';
-import { GravityUserDetailsComponent } from './gravity/gravity-user-details.component';
 import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
@@ -55,7 +54,6 @@ import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-de
     SunriseUserDetailsComponent,
     OpusUserDetailsComponent,
     ApolloUserDetailsComponent,
-    GravityUserDetailsComponent,
     SteelheadUserDetailsComponent,
     WoodstockUserDetailsComponent,
     GeneralUserDetailsComponent,

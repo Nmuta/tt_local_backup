@@ -30,11 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Sunrise,
 
         /// <summary>
-        ///     Forza Street codename.
-        /// </summary>
-        Gravity,
-
-        /// <summary>
         ///     Forza Horizon 5 codename.
         /// </summary>
         Woodstock,

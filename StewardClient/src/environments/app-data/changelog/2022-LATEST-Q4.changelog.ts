@@ -16,6 +16,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'New button to hide multiple Ugcs added to Ugc search',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '088d7447-dd86-4714-8fad-13b35190b1cb',
+      shortText: 'Remove all of gravity from UI and API',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '96c72166-8cc4-4cd3-802d-729186831366',
       shortText: 'Auto route home page to tools if user is not in Zendesk',

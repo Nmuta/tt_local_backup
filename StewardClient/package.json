@@ -49,8 +49,6 @@
     "open:ticket:fh3": "start https://forzasupport1570048282.zendesk.com/agent/tickets/61?zat=true",
     "open:ticket:fh4": "start https://forzasupport1570048282.zendesk.com/agent/tickets/58?zat=true",
     "open:ticket:fh4:bad": "start https://forzasupport1570048282.zendesk.com/agent/tickets/62?zat=true",
-    "open:ticket:street": "start https://forzasupport1570048282.zendesk.com/agent/tickets/59?zat=true",
-    "open:ticket:street:bad": "start https://forzasupport1570048282.zendesk.com/agent/tickets/57?zat=true",
     "open:ticket:fh5": "start https://forzasupport1570048282.zendesk.com/agent/tickets/68?zat=true"
   },
   "private": true,

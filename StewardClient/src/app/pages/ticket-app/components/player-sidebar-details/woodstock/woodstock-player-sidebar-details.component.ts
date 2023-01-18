@@ -5,7 +5,7 @@ import { WoodstockService } from '@services/woodstock';
 import { Observable } from 'rxjs';
 import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.base.component';
 
-/** Gravity Player Details */
+/** Woodstock Player Details */
 @Component({
   selector: 'woodstock-player-sidebar-details',
   templateUrl: '../player-sidebar-details.component.html',

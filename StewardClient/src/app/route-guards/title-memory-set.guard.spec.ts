@@ -21,7 +21,7 @@ describe('TitleMemorySetGuard', () => {
     url: [
       new UrlSegment('tool', null),
       new UrlSegment('gifting', null),
-      new UrlSegment('Gravity', null),
+      new UrlSegment('Woodstock', null),
     ],
   };
   const testSnapshot: Partial<RouterStateSnapshot> = {};
@@ -48,7 +48,7 @@ describe('TitleMemorySetGuard', () => {
     );
     expect(result).toBeTruthy();
     expect(store.dispatch).toHaveBeenCalledWith(
-      new UpdateTitleMemory('gifting', GameTitleCodeName.Street),
+      new UpdateTitleMemory('gifting', GameTitleCodeName.FH5),
     );
   }));
 });

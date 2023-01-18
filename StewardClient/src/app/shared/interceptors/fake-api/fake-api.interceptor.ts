@@ -37,17 +37,6 @@ import { ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/a
 import { ApolloPlayerXuidConsolesFakeApi } from './apis/title/apollo/player/xuid/consoleDetails';
 import { ApolloPlayerXuidUserFlagsFakeApi } from './apis/title/apollo/player/xuid/userFlags';
 
-import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
-import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/inventory';
-import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity/player/xuid/profileId/inventory';
-import { GravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/inventory';
-import { GravityPlayerT10IdProfileIdInventoryFakeApi } from './apis/title/gravity/player/t10Id/profileId/inventory';
-import { GravityPlayerT10IdGiftHistoryFakeApi } from './apis/title/gravity/player/t10Id/giftHistory';
-import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
-import { GravityPlayerT10IdDetailsFakeApi } from './apis/title/gravity/player/t10Id/details';
-import { GravityMasterInventoryFakeApi } from './apis/title/gravity/masterInventory';
-import { GravityGiftingPlayerFakeApi } from './apis/title/gravity/gifting/players';
-
 import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
 import { OpusPlayerProfileIdInventoryFakeApi } from './apis/title/opus/player/profileId/inventory';
 import { OpusPlayerXuidInventoryFakeApi } from './apis/title/opus/player/xuid/inventory';
@@ -124,20 +113,6 @@ const fakeApiConstructors = [
   WoodstockLeaderboardScoresTopTopFakeApi,
   WoodstockLeaderboardScoresDeleteFakeApi,
   WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi,
-
-  // Gravity
-  GravityPlayerGamertagDetailsFakeApi,
-  GravityPlayerXuidInventoryFakeApi,
-  GravityPlayerXuidProfileIdInventoryFakeApi,
-  GravityPlayerT10IdDetailsFakeApi,
-  GravityPlayerT10IdInventoryFakeApi,
-  GravityPlayerT10IdProfileIdInventoryFakeApi,
-  GravityPlayerT10IdInventoryFakeApi,
-  GravityPlayerXuidInventoryFakeApi,
-  GravityPlayerT10IdGiftHistoryFakeApi,
-  GravityPlayersIdentitiesFakeApi,
-  GravityMasterInventoryFakeApi,
-  GravityGiftingPlayerFakeApi,
 
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,

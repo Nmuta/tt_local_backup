@@ -17,7 +17,6 @@ import {
   IdentityQueryByGamertag,
   IdentityQueryByXuid,
   IdentityResultAlpha,
-  IdentityResultBeta,
   makeBetaQuery,
   toAlphaIdentity,
 } from '@models/identity-query.model';
@@ -49,7 +48,6 @@ export interface AugmentedCompositeIdentity {
   sunrise: IdentityResultAlpha;
   apollo: IdentityResultAlpha;
   opus: IdentityResultAlpha;
-  gravity: IdentityResultBeta; // TODO: Remove once all gravity components are deleted
 
   result: SingleUserResult;
 
@@ -65,7 +63,6 @@ export interface AugmentedCompositeIdentity {
     hasSunrise: boolean;
     hasApollo: boolean;
     hasOpus: boolean;
-    hasGravity: boolean; // TODO: Remove once all gravity components are deleted
     label: string;
     labelTooltip: string;
   };
@@ -389,7 +386,6 @@ export abstract class PlayerSelectionBaseComponent
             hasSunrise: compositeIdentity.sunrise ? !compositeIdentity.sunrise?.error : false,
             hasApollo: compositeIdentity.apollo ? !compositeIdentity.apollo?.error : false,
             hasOpus: compositeIdentity.opus ? !compositeIdentity.opus?.error : false,
-            hasGravity: false, // TODO: Remove when all gravity componets are deleted
             label: '',
             labelTooltip: '',
             isAcceptable: undefined,

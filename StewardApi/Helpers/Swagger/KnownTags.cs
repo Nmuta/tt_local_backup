@@ -92,7 +92,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string Steelhead = "Title: Steelhead";
             public const string Woodstock = "Title: Woodstock";
             public const string Sunrise = "Title: Sunrise";
-            public const string Gravity = "Title: Gravity";
             public const string Apollo = "Title: Apollo";
         }
 

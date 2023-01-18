@@ -45,9 +45,9 @@ describe('SunriseComponent - Ticket App', () => {
         expect(result).toBeTruthy();
       });
     });
-    describe('When gameTitle does not match Gravity', () => {
+    describe('When gameTitle does not match Sunrise', () => {
       it('should return true', () => {
-        const result = component.isInCorrectTitleRoute(GameTitleCodeName.Street);
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.FH5);
 
         expect(result).toBeFalsy();
       });
@@ -57,7 +57,7 @@ describe('SunriseComponent - Ticket App', () => {
   describe('Method: requestPlayerIdentity$', () => {
     const gamertag = faker.name.firstName();
 
-    it('should send request to mockGravityService.getPlayerIdentity ', () => {
+    it('should send request to mockSunriseService.getPlayerIdentity ', () => {
       component.requestPlayerIdentity$(gamertag);
 
       expect(mockSunriseService.getPlayerIdentity$).toHaveBeenCalledWith({ gamertag: gamertag });

@@ -30,7 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             Title.Steelhead,
             Title.Woodstock,
             Title.Sunrise,
-            Title.Gravity,
             Title.Apollo,
 
             Sentinel.NonDangerousAlphabetic,

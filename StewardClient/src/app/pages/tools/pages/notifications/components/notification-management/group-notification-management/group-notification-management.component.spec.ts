@@ -18,7 +18,7 @@ import BigNumber from 'bignumber.js';
 
 /** Test for notification management service for lsp group. */
 class TestNotificationManagementService implements GroupNotificationManagementContract {
-  public gameTitle: GameTitle.Street;
+  public gameTitle: GameTitle.FH5;
   /** Get group notification. */
   public getGroupNotifications$(): Observable<GroupNotification[]> {
     return null;

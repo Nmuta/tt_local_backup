@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { GravityGiftHistoryResultsComponent } from './gravity/gravity-gift-history-results.component';
 import { SunriseGiftHistoryResultsComponent } from './sunrise/sunrise-gift-history-results.component';
 import { ApolloGiftHistoryResultsComponent } from './apollo/apollo-gift-history-results.component';
 import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift-history-results.component';
@@ -25,7 +24,6 @@ import { RouterModule } from '@angular/router';
 import { GiftHistoryResultsComponent } from './gift-history-results.component';
 import { GiftHistoryResultsCompactComponent } from './gift-history-results-compact/gift-history-results-compact.component';
 import { ApolloGiftHistoryResultsCompactComponent } from './gift-history-results-compact/apollo/apollo-gift-history-results-compact.component';
-import { GravityGiftHistoryResultsCompactComponent } from './gift-history-results-compact/gravity/gravity-gift-history-results-compact.component';
 import { SteelheadGiftHistoryResultsCompactComponent } from './gift-history-results-compact/steelhead/steelhead-gift-history-results-compact.component';
 import { SunriseGiftHistoryResultsCompactComponent } from './gift-history-results-compact/sunrise/sunrise-gift-history-results-compact.component';
 import { WoodstockGiftHistoryResultsCompactComponent } from './gift-history-results-compact/woodstock/woodstock-gift-history-results-compact.component';
@@ -37,14 +35,12 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     GiftHistoryResultsComponent,
     WoodstockGiftHistoryResultsComponent,
     SteelheadGiftHistoryResultsComponent,
-    GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,
     ApolloGiftHistoryResultsComponent,
 
     GiftHistoryResultsCompactComponent,
     WoodstockGiftHistoryResultsCompactComponent,
     SteelheadGiftHistoryResultsCompactComponent,
-    GravityGiftHistoryResultsCompactComponent,
     SunriseGiftHistoryResultsCompactComponent,
     ApolloGiftHistoryResultsCompactComponent,
   ],
@@ -72,13 +68,11 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
   exports: [
     WoodstockGiftHistoryResultsComponent,
     SteelheadGiftHistoryResultsComponent,
-    GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,
     ApolloGiftHistoryResultsComponent,
 
     WoodstockGiftHistoryResultsCompactComponent,
     SteelheadGiftHistoryResultsCompactComponent,
-    GravityGiftHistoryResultsCompactComponent,
     SunriseGiftHistoryResultsCompactComponent,
     ApolloGiftHistoryResultsCompactComponent,
   ],
