@@ -105,6 +105,9 @@ export class ZafClientService {
         [LogTopic.ZAF],
         `ZAFClient.init() returned ${maybeClient}, and the reconstituted ZAFClient.init() returned ${maybeReconstitutedClient}, when restored with ${priorZafLocRaw}.`,
       );
+
+      // Emit invalid client so services down the line know about it
+      this.setClient(undefined);
     } catch (e) {
       this.logger.error([LogTopic.ZAF], e);
       this.clientInternal$.error(e);

@@ -337,6 +337,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<SteelheadLiveOpsContent.WorldOfForzaConfigV3> GetWelcomeCenterDataAsync()
+        {
+            var filename = CMSFileNames.WorldOfForzaConfig;
+            var wofConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaConfigV3>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
+
+            return wofConfig;
+        }
+
+        /// <inheritdoc/>
+        public async Task<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync()
+        {
+            var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US");
+            var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
+
+            return wofTileCollection;
+        }
+
+        /// <inheritdoc/>
         public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
         {
             var pushed = await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);

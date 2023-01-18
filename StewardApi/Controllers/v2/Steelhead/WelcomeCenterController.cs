@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using SteelheadLiveOpsContent;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -26,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -43,15 +47,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [StandardTags(Title.Steelhead, Topic.Calendar, Topic.WelcomeCenter, Target.Details)]
     public class WelcomeCenterController : V2SteelheadControllerBase
     {
+        private readonly ISteelheadPegasusService pegasusService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WelcomeCenterController"/> class for Steelhead.
         /// </summary>
-        public WelcomeCenterController(IMapper mapper)
+        public WelcomeCenterController(ISteelheadPegasusService pegasusService, IMapper mapper)
         {
+            pegasusService.ShouldNotBeNull(nameof(pegasusService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
+            this.pegasusService = pegasusService;
             this.mapper = mapper;
         }
 
@@ -62,25 +69,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration()
         {
-            var welcomeCenterData = System.IO.File.ReadAllText(".\\Contracts\\Steelhead\\WelcomeCenter\\TestData\\LiveOps_WorldOfForzaConfigV3.json");
-            var welcomeCenterTileData = System.IO.File.ReadAllText(".\\Contracts\\Steelhead\\WelcomeCenter\\TestData\\LiveOps_WorldOfForzaTileCMSDataV3-en-US.json");
+            var welcomeCenterLookup = this.pegasusService.GetWelcomeCenterDataAsync();
+            var welcomeCenterTilesLookup = this.pegasusService.GetWelcomeCenterTileDataAsync();
 
-            var welcomeCenter = Newtonsoft.Json.JsonConvert.DeserializeObject<Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WelcomeCenter>(welcomeCenterData);
-            var welcomeCenterTiles = Newtonsoft.Json.JsonConvert.DeserializeObject<WelcomeCenterTiles>(welcomeCenterTileData);
+            await Task.WhenAll(welcomeCenterLookup, welcomeCenterTilesLookup).ConfigureAwait(true);
+
+            var welcomeCenter = welcomeCenterLookup.GetAwaiter().GetResult();
+            var welcomeCenterTiles = welcomeCenterTilesLookup.GetAwaiter().GetResult();
 
             var response = new WelcomeCenterOutput
             {
-                Left = welcomeCenter.TileColumnCollection[0].TileConfigCollection.Select(
+                Left = welcomeCenter.TileColumnCollection.ToList()[0].TileConfigCollection.Where(column => column is WoFTileConfigCMSDeeplink).Select(
                     column => this.mapper.SafeMap<WelcomeCenterTileOutput>(
-                        (column, welcomeCenterTiles.TileCMSCollection.Where(x => x.CMSTileID == column.CMSTileDataID).FirstOrDefault()))).ToList(),
+                        (column, welcomeCenterTiles.TileCMSCollection.Where(x => x.CMSTileID == (column as WoFTileConfigCMSDeeplink).CMSTileDataID).FirstOrDefault()))).ToList(),
 
-                Center = welcomeCenter.TileColumnCollection[1].TileConfigCollection.Select(
+                Center = welcomeCenter.TileColumnCollection.ToList()[1].TileConfigCollection.Where(column => column is WoFTileConfigCMSDeeplink).Select(
                     column => this.mapper.SafeMap<WelcomeCenterTileOutput>(
-                        (column, welcomeCenterTiles.TileCMSCollection.Where(x => x.CMSTileID == column.CMSTileDataID).FirstOrDefault()))).ToList(),
+                        (column, welcomeCenterTiles.TileCMSCollection.Where(x => x.CMSTileID == (column as WoFTileConfigCMSDeeplink).CMSTileDataID).FirstOrDefault()))).ToList(),
 
-                Right = welcomeCenter.TileColumnCollection[2].TileConfigCollection.Select(
+                Right = welcomeCenter.TileColumnCollection.ToList()[2].TileConfigCollection.Where(column => column is WoFTileConfigCMSDeeplink).Select(
                     column => this.mapper.SafeMap<WelcomeCenterTileOutput>(
-                        (column, welcomeCenterTiles.TileCMSCollection.Where(x => x.CMSTileID == column.CMSTileDataID).FirstOrDefault()))).ToList(),
+                        (column, welcomeCenterTiles.TileCMSCollection.Where(x => x.CMSTileID == (column as WoFTileConfigCMSDeeplink).CMSTileDataID).FirstOrDefault()))).ToList(),
             };
 
             return this.Ok(response);

@@ -26,12 +26,9 @@ export interface TicketFieldsResponse {
 export class ZendeskService {
   /** Emits true when we're inside zendesk. */
   public readonly inZendesk$: Observable<boolean>;
-  /** Emits true when we're missing zendesk. */
-  public readonly missingZendesk$: Observable<boolean>;
 
   constructor(private readonly zafClientService: ZafClientService) {
     this.inZendesk$ = this.zafClientService.client$.pipe(map(v => !!v));
-    this.missingZendesk$ = this.zafClientService.client$.pipe(map(v => !v));
   }
 
   /**
