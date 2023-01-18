@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SteelheadWelcomeCenterCalendarViewComponent } from './steelhead-welcome-center-calendar-view.component';
+import { SteelheadBuildersCupCalendarViewComponent } from './steelhead-builders-cup-calendar-view.component';
 
-describe('SteelheadWelcomeCenterCalendarViewComponent', () => {
-  let component: SteelheadWelcomeCenterCalendarViewComponent;
-  let fixture: ComponentFixture<SteelheadWelcomeCenterCalendarViewComponent>;
+describe('SteelheadBuildersCupCalendarViewComponent', () => {
+  let component: SteelheadBuildersCupCalendarViewComponent;
+  let fixture: ComponentFixture<SteelheadBuildersCupCalendarViewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -18,11 +18,11 @@ describe('SteelheadWelcomeCenterCalendarViewComponent', () => {
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
       ],
-      declarations: [SteelheadWelcomeCenterCalendarViewComponent],
+      declarations: [SteelheadBuildersCupCalendarViewComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SteelheadWelcomeCenterCalendarViewComponent);
+    fixture = TestBed.createComponent(SteelheadBuildersCupCalendarViewComponent);
     component = fixture.debugElement.componentInstance;
   }));
 

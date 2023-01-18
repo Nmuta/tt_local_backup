@@ -20,12 +20,8 @@ import {
 } from 'angular-calendar';
 import { keys } from 'lodash';
 import { takeUntil } from 'rxjs';
-import {
-  WelcomeCenterTileDetailsModalComponent,
-  WelcomeCenterTileDetailsModalData,
-} from '../../welcome-center-tile-details-modal/steelhead/welcome-center-tile-details-modal.component';
 
-export interface WelcomeCenterMeta {
+export interface BuildersCupMeta {
   column: WelcomeCenterColumn;
   size: WelcomeCenterTileSize;
   weekTooltip: string;
@@ -44,18 +40,18 @@ export interface TileEventGroup<T> {
   tileCount: number;
 }
 
-export type StewardWelcomeCenterMonthViewDay<T> = CalendarMonthViewDay<T> & {
+export type StewardBuildersCupMonthViewDay<T> = CalendarMonthViewDay<T> & {
   eventGroups: TileEventGroup<T>[];
 };
 
 /** The Steelhead Welcome Center Calendar View page. */
 @Component({
-  templateUrl: './steelhead-welcome-center-calendar-view.component.html',
-  styleUrls: ['./steelhead-welcome-center-calendar-view.component.scss'],
+  templateUrl: './steelhead-builders-cup-calendar-view.component.html',
+  styleUrls: ['./steelhead-builders-cup-calendar-view.component.scss'],
   providers: [DomainEnumPrettyPrintOrHumanizePipe],
   animations: [collapseAnimation],
 })
-export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent implements OnInit {
+export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent implements OnInit {
   public getActionMonitor = new ActionMonitor('GET car details');
   public welcomeCenter: WelcomeCenter;
   public gameTitle: GameTitle;
@@ -95,14 +91,14 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
   }
 
   /** Opens modal to display day group's tiles with more detail. */
-  public groupsClicked(groups: TileEventGroup<WelcomeCenterMeta>[]): void {
-    this.dialog.open(WelcomeCenterTileDetailsModalComponent, {
-      data: <WelcomeCenterTileDetailsModalData>{ columns: groups },
-    });
+  public groupsClicked(_groups: TileEventGroup<BuildersCupMeta>[]): void {
+    // this.dialog.open(WelcomeCenterTileDetailsModalComponent, {
+    //   data: <WelcomeCenterTileDetailsModalData>{ columns: groups },
+    // });
   }
 
   /** Counts number of tiles needed to display a column. */
-  public countTiles(tiles: CalendarEvent<WelcomeCenterMeta>[]): number {
+  public countTiles(tiles: CalendarEvent<BuildersCupMeta>[]): number {
     let total = 0;
     tiles.forEach(tile => {
       const tileCount = tile.meta.size === WelcomeCenterTileSize.Large ? 2 : 1;
@@ -114,10 +110,10 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
 
   /** Angular Calendar hook to group tiles by column. */
   public beforeMonthViewRender(event: CalendarMonthViewBeforeRenderEvent): void {
-    const calendarBody = event.body as StewardWelcomeCenterMonthViewDay<WelcomeCenterMeta>[];
+    const calendarBody = event.body as StewardBuildersCupMonthViewDay<BuildersCupMeta>[];
     calendarBody.forEach(cell => {
       const groups = {};
-      cell.events.forEach((event: CalendarEvent<WelcomeCenterMeta>) => {
+      cell.events.forEach((event: CalendarEvent<BuildersCupMeta>) => {
         groups[event.meta.column] = groups[event.meta.column] ?? [];
         groups[event.meta.column].push(event);
       });
@@ -131,8 +127,8 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
         return {
           name: entry[0],
           events: entry[1],
-          tileCount: this.countTiles(entry[1] as CalendarEvent<WelcomeCenterMeta>[]),
-        } as TileEventGroup<WelcomeCenterMeta>;
+          tileCount: this.countTiles(entry[1] as CalendarEvent<BuildersCupMeta>[]),
+        } as TileEventGroup<BuildersCupMeta>;
       });
 
       cell.eventGroups = eventGroups;
@@ -141,7 +137,7 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
 
   /** Converts Racer's Cup Schedule information into Calendar Events. */
   private makeEvents(welcomeCenter: WelcomeCenter): CalendarEvent[] {
-    let events: CalendarEvent<WelcomeCenterMeta>[] = [];
+    let events: CalendarEvent<BuildersCupMeta>[] = [];
 
     events = events.concat(this.convertColumnToEventArray(welcomeCenter, WelcomeCenterColumn.Left));
     events = events.concat(
@@ -157,10 +153,10 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
   private convertColumnToEventArray(
     welcomeCenter: WelcomeCenter,
     column: WelcomeCenterColumn,
-  ): CalendarEvent<WelcomeCenterMeta>[] {
-    const events: CalendarEvent<WelcomeCenterMeta>[] = [];
+  ): CalendarEvent<BuildersCupMeta>[] {
+    const events: CalendarEvent<BuildersCupMeta>[] = [];
     for (const tile of welcomeCenter[column]) {
-      const newEvent: CalendarEvent<WelcomeCenterMeta> = {
+      const newEvent: CalendarEvent<BuildersCupMeta> = {
         start: new Date('01/01/2001'), // TODO: Waiting on update from Madden on source of truth for tile display times.
         end: new Date('01/01/2101'), // TODO: Waiting on update from Madden on source of truth for tile display times.
         title: `${tile.tileTitle}`,
