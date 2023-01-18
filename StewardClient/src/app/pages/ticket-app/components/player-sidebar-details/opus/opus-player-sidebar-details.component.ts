@@ -5,7 +5,7 @@ import { OpusService } from '@services/opus';
 import { Observable } from 'rxjs';
 import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.base.component';
 
-/** Gravity Player Details */
+/** Opus Player Details */
 @Component({
   selector: 'opus-player-sidebar-details',
   templateUrl: '../player-sidebar-details.component.html',

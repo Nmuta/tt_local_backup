@@ -9,7 +9,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OpusPlayerInventoryComponent } from './opus/opus-player-inventory.component';
 import { ApolloPlayerInventoryComponent } from './apollo/apollo-player-inventory.component';
-import { GravityPlayerInventoryComponent } from './gravity/gravity-player-inventory.component';
 import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
 import { SteelheadPlayerInventoryComponent } from './steelhead/steelhead-player-inventory.component';
 import { WoodstockPlayerInventoryComponent } from './woodstock/woodstock-player-inventory.component';
@@ -22,7 +21,6 @@ import { WoodstockPlayerInventoryComponent } from './woodstock/woodstock-player-
     SunrisePlayerInventoryComponent,
     OpusPlayerInventoryComponent,
     ApolloPlayerInventoryComponent,
-    GravityPlayerInventoryComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +38,6 @@ import { WoodstockPlayerInventoryComponent } from './woodstock/woodstock-player-
     SunrisePlayerInventoryComponent,
     OpusPlayerInventoryComponent,
     ApolloPlayerInventoryComponent,
-    GravityPlayerInventoryComponent,
   ],
 })
 export class PlayerInventoryModule {}

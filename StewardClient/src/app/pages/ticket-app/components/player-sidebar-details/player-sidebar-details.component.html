@@ -21,7 +21,7 @@
           ></player-details-item>
           <player-details-item
             [name]="'Last Login'"
-            [value]="playerDetailsComposite.lastLoginUtc"
+            [value]="playerDetailsComposite?.lastLoginUtc"
           ></player-details-item>
           <player-details-item
             [name]="'Region'"
@@ -46,18 +46,6 @@
           <player-details-item
             [name]="'Subscription Tier'"
             [value]="playerDetailsComposite.subscriptionTier"
-          ></player-details-item>
-          <player-details-item
-            [name]="'Last Game Settings Used'"
-            [value]="playerDetailsComposite.lastGameSettingsUsed"
-          ></player-details-item>
-          <player-details-item
-            [name]="'Time Offset (sec)'"
-            [value]="playerDetailsComposite.timeOffsetInSeconds"
-          ></player-details-item>
-          <player-details-item
-            [name]="'Inventory Id'"
-            [value]="playerDetailsComposite.userInventoryId"
           ></player-details-item>
           <player-details-item
             [name]="'Career Level'"

@@ -3,7 +3,6 @@ export const stewardUrls = {
     home: '/app/tools',
     gifting: {
       default: '/app/tools/gifting',
-      gravity: '/app/tools/gifting/gravity',
       woodstock: '/app/tools/gifting/woodstock',
       steelhead: '/app/tools/gifting/steelhead',
       sunrise: '/app/tools/gifting/sunrise',
@@ -25,7 +24,6 @@ export const stewardUrls = {
       sunrise: '/app/tools/user-details/sunrise',
       apollo: '/app/tools/user-details/apollo',
       opus: '/app/tools/user-details/opus',
-      gravity: '/app/tools/user-details/gravity',
       steelhead: '/app/tools/user-details/steelhead',
       woodstock: '/app/tools/user-details/woodstock',
     },
@@ -40,7 +38,6 @@ export const stewardUrls = {
       default: '/app/tools/gift-history',
       woodstock: '/app/tools/gift-history/woodstock',
       steelhead: '/app/tools/gift-history/steelhead',
-      gravity: '/app/tools/gift-history/gravity',
       sunrise: '/app/tools/gift-history/sunrise',
       apollo: '/app/tools/gift-history/apollo',
     },

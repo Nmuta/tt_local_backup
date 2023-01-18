@@ -111,31 +111,6 @@
         public const string OpusCertificateSecretName = "OpusEnvironment:CertificateSecretName";
 
         /// <summary>
-        ///     The Gravity uri.
-        /// </summary>
-        public const string GravityUri = "GravityEnvironment:Uri";
-
-        /// <summary>
-        ///     The Gravity client version.
-        /// </summary>
-        public const string GravityClientVersion = "GravityEnvironment:ClientVersion";
-
-        /// <summary>
-        ///     The Gravity admin xuid.
-        /// </summary>
-        public const string GravityAdminXuid = "GravityEnvironment:AdminXuid";
-
-        /// <summary>
-        ///     The Gravity sandbox.
-        /// </summary>
-        public const string GravitySandbox = "GravityEnvironment:Sandbox";
-
-        /// <summary>
-        ///     The Gravity title ID.
-        /// </summary>
-        public const string GravityTitleId = "GravityEnvironment:TitleId";
-
-        /// <summary>
         ///     The Sunrise uri.
         /// </summary>
         public const string SunriseUri = "SunriseEnvironment:Uri";

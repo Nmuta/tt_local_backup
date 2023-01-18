@@ -10,7 +10,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { PlayerDetailsItemModule } from '../player-details-item/player-details-item.module';
 import { ApolloPlayerSidebarDetailsComponent } from './apollo/apollo-player-sidebar-details.component';
-import { GravityPlayerSidebarDetailsComponent } from './gravity/gravity-player-sidebar-details.component';
 import { OpusPlayerSidebarDetailsComponent } from './opus/opus-player-sidebar-details.component';
 import { SunrisePlayerSidebarDetailsComponent } from './sunrise/sunrise-player-sidebar-details.component';
 import { SteelheadPlayerSidebarDetailsComponent } from './steelhead/steelhead-player-sidebar-details.component';
@@ -32,7 +31,6 @@ import { WoodstockPlayerSidebarDetailsComponent } from './woodstock/woodstock-pl
   exports: [
     WoodstockPlayerSidebarDetailsComponent,
     SteelheadPlayerSidebarDetailsComponent,
-    GravityPlayerSidebarDetailsComponent,
     SunrisePlayerSidebarDetailsComponent,
     ApolloPlayerSidebarDetailsComponent,
     OpusPlayerSidebarDetailsComponent,
@@ -41,7 +39,6 @@ import { WoodstockPlayerSidebarDetailsComponent } from './woodstock/woodstock-pl
   declarations: [
     WoodstockPlayerSidebarDetailsComponent,
     SteelheadPlayerSidebarDetailsComponent,
-    GravityPlayerSidebarDetailsComponent,
     SunrisePlayerSidebarDetailsComponent,
     ApolloPlayerSidebarDetailsComponent,
     OpusPlayerSidebarDetailsComponent,

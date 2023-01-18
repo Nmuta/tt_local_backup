@@ -90,7 +90,7 @@ describe('State: LspGroupMemoryState', () => {
     });
 
     describe('When valid title is provided to the action', () => {
-      const badTitle: GameTitleCodeName = GameTitleCodeName.Street;
+      const badTitle: GameTitleCodeName = GameTitleCodeName.FH3;
       beforeEach(() => {
         action = new GetLspGroups(badTitle);
       });
@@ -100,7 +100,7 @@ describe('State: LspGroupMemoryState', () => {
           .dispatch(action)
           .pipe(
             catchError(error => {
-              expect(error).toEqual('Gravity is not currently setup to handle LSP groups.');
+              expect(error).toEqual('Opus is not currently setup to handle LSP groups.');
               return EMPTY;
             }),
             tap(() => {

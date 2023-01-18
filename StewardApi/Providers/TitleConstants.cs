@@ -21,11 +21,6 @@
         public const string SunriseCodeName = "Sunrise";
 
         /// <summary>
-        ///     The Gravity code name.
-        /// </summary>
-        public const string GravityCodeName = "Gravity";
-
-        /// <summary>
         ///     The Steelhead code name.
         /// </summary>
         public const string SteelheadCodeName = "Steelhead";
@@ -51,11 +46,6 @@
         public const string SunriseAbbreviation = "FH4";
 
         /// <summary>
-        ///     The Gravity abbreviation.
-        /// </summary>
-        public const string GravityAbbreviation = "Street";
-
-        /// <summary>
         ///     The Steelhead abbreviation.
         /// </summary>
         public const string SteelheadAbbreviation = "FM8";
@@ -79,11 +69,6 @@
         ///     The Sunrise full name.
         /// </summary>
         public const string SunriseFullName = "Forza Horizon 4";
-
-        /// <summary>
-        ///     The Gravity full name.
-        /// </summary>
-        public const string GravityFullName = "Forza Street";
 
         /// <summary>
         ///     The Steelhead full name.

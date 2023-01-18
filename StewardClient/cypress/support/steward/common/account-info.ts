@@ -8,7 +8,7 @@ export interface KnownUser {
 
 /** The account info to verify. */
 export interface AccountInfo {
-  title: 'Woodstock' | 'Steelhead' | 'Gravity' | 'Sunrise' | 'Apollo' | 'Opus';
+  title: 'Woodstock' | 'Steelhead' | 'Sunrise' | 'Apollo' | 'Opus';
   hasAccount: boolean;
 }
 
@@ -19,7 +19,6 @@ export const jordan: KnownUser = {
   accountInfo: [
     { title: 'Woodstock', hasAccount: false },
     { title: 'Steelhead', hasAccount: false },
-    { title: 'Gravity', hasAccount: true },
     { title: 'Sunrise', hasAccount: true },
     { title: 'Apollo', hasAccount: true },
     { title: 'Opus', hasAccount: false },
@@ -33,7 +32,6 @@ export const luke: KnownUser = {
   accountInfo: [
     { title: 'Woodstock', hasAccount: true },
     { title: 'Steelhead', hasAccount: false },
-    { title: 'Gravity', hasAccount: true },
     { title: 'Sunrise', hasAccount: true },
     { title: 'Apollo', hasAccount: true },
     { title: 'Opus', hasAccount: false },

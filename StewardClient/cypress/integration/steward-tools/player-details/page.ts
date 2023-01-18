@@ -27,12 +27,6 @@ export function searchByT10Id(t10Id: string): void {
   waitForProgressSpinners(timeoutOverride);
 }
 
-/** Switches to the Gravity title. */
-export function selectGravity(): void {
-  cy.contains('a', 'Street').click();
-  waitForProgressSpinners(timeoutOverride);
-}
-
 /** Switches to the Apollo title. */
 export function selectApollo(): void {
   cy.contains('a', 'FM7').click();

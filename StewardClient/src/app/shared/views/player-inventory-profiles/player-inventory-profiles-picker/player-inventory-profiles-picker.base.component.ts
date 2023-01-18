@@ -10,7 +10,6 @@ import {
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloPlayerInventoryProfile } from '@models/apollo';
-import { GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { OpusPlayerInventoryProfile } from '@models/opus';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
@@ -26,14 +25,12 @@ export type AcceptableInventoryProfileTypes =
   | SteelheadPlayerInventoryProfile
   | SunrisePlayerInventoryProfile
   | OpusPlayerInventoryProfile
-  | GravityPseudoPlayerInventoryProfile
   | ApolloPlayerInventoryProfile;
 
 type AcceptableInventoryProfileTypesIntersectionIntermediate = WoodstockPlayerInventoryProfile &
   SteelheadPlayerInventoryProfile &
   SunrisePlayerInventoryProfile &
   OpusPlayerInventoryProfile &
-  GravityPseudoPlayerInventoryProfile &
   ApolloPlayerInventoryProfile;
 
 type AcceptableInventoryProfileTypesIntersection =

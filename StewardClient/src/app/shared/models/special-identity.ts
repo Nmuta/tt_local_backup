@@ -27,7 +27,6 @@ export const SpecialXuid1: SpecialIdentity = {
     sunrise: null,
     apollo: null,
     opus: null,
-    gravity: null,
 
     result: null,
 
@@ -43,7 +42,6 @@ export const SpecialXuid1: SpecialIdentity = {
       hasSunrise: false,
       hasApollo: false,
       hasOpus: false,
-      hasGravity: false,
       label: 'W',
       labelTooltip: 'Retail Titles: Woodstock',
     },
