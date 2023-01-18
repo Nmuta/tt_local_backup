@@ -25,6 +25,7 @@ export class TitleMemoryModel {
   public userGroupManagement: GameTitleCodeName.FH5;
   public carDetails: GameTitleCodeName.FH5;
   public welcomeCenterCalendar: GameTitleCodeName.FM8;
+  public buildersCupCalendar: GameTitleCodeName.FM8;
   public messageOfTheDay: GameTitleCodeName.FM8;
   public createAuction: GameTitleCodeName.FH5;
   public welcomeCenterTiles: GameTitleCodeName.FM8;

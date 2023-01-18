@@ -37,8 +37,9 @@ import { angularCalendarCustomFactory } from '@helpers/angular-calendar-custom-f
 import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
 import { BuildersCupCalendarRoutingModule } from './builders-cup-calendar.routing';
 import { BuildersCupCalendarComponent } from './builders-cup-calendar.component';
+import { SteelheadBuildersCupCalendarViewComponent } from './components/builders-cup-calendar-view/steelhead/steelhead-builders-cup-calendar-view.component';
 
-/** A module for Welcome Center calendar. */
+/** A module for Builders Cup calendar. */
 @NgModule({
   declarations: [
     BuildersCupCalendarComponent,

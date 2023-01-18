@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '',
     component: BuildersCupCalendarComponent,
-    data: { tool: 'BuildersCupCalendar' },
+    data: { tool: 'buildersCupCalendar' },
     children: [
       {
         path: '',

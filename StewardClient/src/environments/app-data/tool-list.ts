@@ -22,8 +22,7 @@ export enum NavbarTool {
   Salus = 'salus',
   Zendesk = 'zendesk',
   Sprinklr = 'sprinklr',
-  Pegasus = 'pegasus',
-  WelcomeCenterCalendar = 'welcome-center-calendar',
+  Pegasus = 'pegasus',  
 
   AdminPagesSelector = 'admin-selector',
 
@@ -34,6 +33,8 @@ export enum NavbarTool {
   Theming = 'theming',
   Endpoints = 'endpoints',
   RacersCup = 'racers-cup',
+  BuildersCupCalendar = 'builders-cup-calendar',
+  WelcomeCenterCalendar = 'welcome-center-calendar',
   CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',
@@ -154,7 +155,7 @@ export enum AppIcon {
   AuctionDetails = 'price_check',
   StewardManagement = 'cloud_sync',
   Leaderboards = 'leaderboard',
-  RacersCup = 'calendar_today',
+  RacersCup = 'calendar_today',  
   UserGroupManagement = 'group',
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
@@ -163,6 +164,7 @@ export enum AppIcon {
   CarDetails = 'minor_crash',
   PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
+  BuildersCupCalendar = 'calendar_today',
   MessageOfTheDay = 'waving_hand',
   CreateAuction = 'sell',
   WelcomeCenterTile = 'grid_view',
@@ -640,6 +642,21 @@ export const unprocessedToolList: HomeTileInfo[] = [
       import(
         '../../app/pages/tools/pages/welcome-center-calendar/welcome-center-calendar.module'
       ).then(m => m.WelcomeCenterCalendarModule),
+  },
+  <HomeTileInfoInternal>{
+    icon: AppIcon.BuildersCupCalendar,
+    tool: NavbarTool.BuildersCupCalendar,
+    accessList: CommonAccessLevels.AdminAndGeneralUsers,
+    title: 'Builders Cup Calendar',
+    subtitle: 'View featured Builder\'s Cup content on a day-by-day basis.',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'View and validate Builder\'s Cup featured races.',
+    shortDescription: ['Tool for visualizing featured content in Builder\'s Cup.'],
+    loadChildren: () =>
+      import(
+        '../../app/pages/tools/pages/builders-cup-calendar/builders-cup-calendar.module'
+      ).then(m => m.BuildersCupCalendarModule),
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.UserGroupManagement,
