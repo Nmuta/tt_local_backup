@@ -1,0 +1,172 @@
+<div class="steward-layout-with-sidebar">
+  <ng-container *waitForMonitor="getActionMonitor">
+    <div class="steward-layout-pane steward-layout-main-group">
+      <mat-card>
+        <mat-card-title>Welcome Center Schedule</mat-card-title>
+        <div class="calendar-header">
+          <div>
+            <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+              Previous
+            </button>
+            <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate">Today</button>
+            <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+              Next
+            </button>
+          </div>
+          <div>
+            <h2>{{ viewDate | calendarDate: view + 'ViewTitle':'en' }}</h2>
+          </div>
+          <div>
+            <button
+              mat-raised-button
+              (click)="setView(CalendarView.Month)"
+              [class.active]="view === CalendarView.Month"
+            >
+              Month
+            </button>
+            <button
+              mat-raised-button
+              (click)="setView(CalendarView.Week)"
+              [class.active]="view === CalendarView.Week"
+            >
+              Week
+            </button>
+            <button
+              mat-raised-button
+              (click)="setView(CalendarView.Day)"
+              [class.active]="view === CalendarView.Day"
+            >
+              Day
+            </button>
+          </div>
+        </div>
+        <br />
+        <div class="calendar-view-switch" [ngSwitch]="view">
+          <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [cellTemplate]="customDayCellTemplate"
+            (beforeViewRender)="beforeMonthViewRender($event)"
+          >
+          </mwl-calendar-month-view>
+          <mwl-calendar-week-view
+            *ngSwitchCase="CalendarView.Week"
+            [viewDate]="viewDate"
+            [events]="events"
+            [eventTemplate]="weekEventTemplate"
+          >
+          </mwl-calendar-week-view>
+          <mwl-calendar-day-view
+            *ngSwitchCase="CalendarView.Day"
+            [viewDate]="viewDate"
+            [events]="events"
+            [eventTemplate]="dayEventTemplate"
+          >
+          </mwl-calendar-day-view>
+        </div>
+      </mat-card>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #customDayCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-badge">
+      {{ day.eventGroups[0].events.length }} | {{ day.eventGroups[1].events.length }} |
+      {{ day.eventGroups[2].events.length }}
+    </span>
+    <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
+  </div>
+  <div class="cell-totals">
+    <div class="shrink-wrap">
+      <div class="sf-wrapper">
+        <div class="sf-vertical">
+          <div
+            *ngFor="let group of day.eventGroups; let first = first"
+            class="column-group"
+            (click)="groupsClicked(day.eventGroups)"
+          >
+            <hr *ngIf="!first" />
+            <div
+              class="grid {{ group.name }}"
+              style="grid-template-rows: repeat({{ group.tileCount }}, 10px);"
+            >
+              <ng-container *ngFor="let column of day.eventGroups">
+                <div *ngIf="column.name !== group.name" [class]="'filler ' + column.name"></div>
+              </ng-container>
+              <ng-container *ngFor="let tile of group.events">
+                <div
+                  *ngIf="tile.meta.column === group.name"
+                  [class]="tile.meta.cssClass"
+                  [matTooltip]="tile.meta.dayTooltip"
+                  matTooltipClass="multiline-tooltip"
+                ></div>
+                <div
+                  class="annotation"
+                  [matTooltip]="tile.meta.dayTooltip"
+                  matTooltipClass="multiline-tooltip"
+                >
+                  {{ tile.title }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- "weekEvent" comes from Angular Calendar and cannot be changed -->
+<ng-template
+  #dayEventTemplate
+  let-dayEvent="weekEvent"
+  let-tooltipPlacement="tooltipPlacement"
+  let-eventClicked="eventClicked"
+  let-tooltipTemplate="tooltipTemplate"
+  let-tooltipAppendToBody="tooltipAppendToBody"
+  let-tooltipDisabled="tooltipDisabled"
+  let-tooltipDelay="tooltipDelay"
+  let-column="column"
+  let-daysInWeek="daysInWeek"
+  let-locale="locale"
+>
+  <div
+    class="cal-event day-view-event tile-column-{{ dayEvent.event.meta.column }}"
+    [mwlCalendarTooltip]="!tooltipDisabled ? dayEvent.event.meta.weekTooltip : ''"
+    [tooltipPlacement]="tooltipPlacement"
+    [tooltipEvent]="dayEvent.tempEvent || dayEvent.event"
+    [tooltipTemplate]="tooltipTemplate"
+    [tooltipAppendToBody]="tooltipAppendToBody"
+    [tooltipDelay]="tooltipDelay"
+  >
+    <div class="badge day-event-badge multiline-tooltip">
+      {{ dayEvent.event.meta?.eventNameClean }}
+    </div>
+  </div>
+</ng-template>
+
+<ng-template
+  #weekEventTemplate
+  let-weekEvent="weekEvent"
+  let-tooltipPlacement="tooltipPlacement"
+  let-eventClicked="eventClicked"
+  let-tooltipTemplate="tooltipTemplate"
+  let-tooltipAppendToBody="tooltipAppendToBody"
+  let-tooltipDisabled="tooltipDisabled"
+  let-tooltipDelay="tooltipDelay"
+  let-column="column"
+  let-daysInWeek="daysInWeek"
+  let-locale="locale"
+>
+  <div
+    class="cal-event week-view-event multiline-tooltip"
+    [mwlCalendarTooltip]="!tooltipDisabled ? weekEvent.event.meta.weekTooltip : ''"
+    [tooltipPlacement]="tooltipPlacement"
+    [tooltipEvent]="weekEvent.event"
+    [tooltipTemplate]="tooltipTemplate"
+    [tooltipAppendToBody]="tooltipAppendToBody"
+    [tooltipDelay]="tooltipDelay"
+  ></div>
+</ng-template>
