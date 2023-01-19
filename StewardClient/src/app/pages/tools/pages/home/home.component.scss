@@ -42,6 +42,10 @@ mat-chip.filter-type-title.filter-type-title.filter-type-title {
   color: #fff !important;
 }
 
+mat-chip.filter-type-text.filter-type-text.filter-type-text {
+  background-color: app-color-default($app-accent);
+}
+
 :host {
   padding: $gap-medium;
   display: flex;
