@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
-import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import { RouteMemoryRedirectGuard } from 'app/route-guards/route-memory/route-memory-redirect.guard';
+import { RouteMemorySetGuard } from 'app/route-guards/route-memory/route-memory-set.guard';
+import { WaitingForInputComponent } from '../auction/waiting-for-input/waiting-for-input.component';
 import { BuildersCupCalendarComponent } from './builders-cup-calendar.component';
 import { SteelheadBuildersCupCalendarViewComponent } from './components/builders-cup-calendar-view/steelhead/steelhead-builders-cup-calendar-view.component';
 
@@ -13,12 +14,13 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        canActivate: [TitleMemoryRedirectGuard],
+        component: WaitingForInputComponent,
+        canActivate: [RouteMemoryRedirectGuard],
         pathMatch: 'full',
       },
       {
         path: 'steelhead',
-        canActivate: [TitleMemorySetGuard],
+        canActivate: [RouteMemorySetGuard],
         component: SteelheadBuildersCupCalendarViewComponent,
       },
     ],
