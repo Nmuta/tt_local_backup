@@ -23,7 +23,6 @@ import { TitleMemoryModel } from './title-memory.model';
     racersCup: GameTitleCodeName.FM8,
     userGroupManagement: GameTitleCodeName.FH5,
     carDetails: GameTitleCodeName.FH5,
-    welcomeCenterCalendar: GameTitleCodeName.FM8,
     buildersCupCalendar: GameTitleCodeName.FM8,
     messageOfTheDay: GameTitleCodeName.FM8,
     createAuction: GameTitleCodeName.FH5,
