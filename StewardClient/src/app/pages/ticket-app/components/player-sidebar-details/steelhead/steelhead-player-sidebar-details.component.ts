@@ -5,7 +5,7 @@ import { SteelheadService } from '@services/steelhead';
 import { Observable } from 'rxjs';
 import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.base.component';
 
-/** Gravity Player Details */
+/** Steelhead Player Details */
 @Component({
   selector: 'steelhead-player-sidebar-details',
   templateUrl: '../player-sidebar-details.component.html',

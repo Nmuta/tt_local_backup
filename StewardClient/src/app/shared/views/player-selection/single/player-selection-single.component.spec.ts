@@ -1,14 +1,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
-import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/gravity/players/identities';
 import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/opus/players/identities';
 import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { ApolloService } from '@services/apollo';
-import { GravityService } from '@services/gravity';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { OpusService } from '@services/opus';
 import { SteelheadService } from '@services/steelhead';
@@ -26,7 +24,6 @@ describe('PlayerSelectionSingleComponent', () => {
   let fixture: ComponentFixture<PlayerSelectionSingleComponent>;
   let sunrise: SunriseService;
   let opus: OpusService;
-  let gravity: GravityService;
   let apollo: ApolloService;
   let steelhead: SteelheadService;
   let woodstock: WoodstockService;
@@ -44,7 +41,6 @@ describe('PlayerSelectionSingleComponent', () => {
 
     sunrise = TestBed.inject(SunriseService);
     opus = TestBed.inject(OpusService);
-    gravity = TestBed.inject(GravityService);
     apollo = TestBed.inject(ApolloService);
     steelhead = TestBed.inject(SteelheadService);
     woodstock = TestBed.inject(WoodstockService);
@@ -59,12 +55,6 @@ describe('PlayerSelectionSingleComponent', () => {
       .createSpy('opus.getPlayerIdentities$')
       .and.callFake(q =>
         deferUntil$.pipe(switchMap(_ => of(OpusPlayersIdentitiesFakeApi.make(q)))),
-      );
-
-    gravity.getPlayerIdentities$ = jasmine
-      .createSpy('gravity.getPlayerIdentities$')
-      .and.callFake(q =>
-        deferUntil$.pipe(switchMap(_ => of(GravityPlayersIdentitiesFakeApi.make(q)))),
       );
 
     apollo.getPlayerIdentities$ = jasmine
@@ -118,7 +108,6 @@ describe('PlayerSelectionSingleComponent', () => {
 
         expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(0);
         expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(0);
-        expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(0);
         expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(0);
         expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(0);
         expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(0);
@@ -139,7 +128,6 @@ describe('PlayerSelectionSingleComponent', () => {
       it('should call getPlayerIdentities$', waitForAsync(() => {
         expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-        // expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(1);
@@ -174,7 +162,6 @@ describe('PlayerSelectionSingleComponent', () => {
       it('should call getPlayerIdentities$', waitForAsync(() => {
         expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-        // expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
         // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
@@ -187,7 +174,6 @@ describe('PlayerSelectionSingleComponent', () => {
         expect(stub.extra).toBeFalsy();
         expect(stub.sunrise).toBeFalsy();
         expect(stub.apollo).toBeFalsy();
-        // expect(stub.gravity).toBeFalsy();
         expect(stub.opus).toBeFalsy();
         expect(stub.steelhead).toBeFalsy();
         expect(stub.woodstock).toBeFalsy();
@@ -213,7 +199,6 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(newStub.extra).toBeTruthy('extra');
           expect(newStub.sunrise).toBeTruthy('sunrise');
           expect(newStub.apollo).toBeTruthy('apollo');
-          // expect(newStub.gravity).toBeTruthy('gravity');
           expect(newStub.opus).toBeTruthy('opus');
           // expect(newStub.steelhead).toBeTruthy('steelhead');
           // expect(newStub.woodstock).toBeTruthy('woodstock');

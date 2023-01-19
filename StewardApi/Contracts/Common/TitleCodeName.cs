@@ -30,11 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Sunrise,
 
         /// <summary>
-        ///     Forza Street codename.
-        /// </summary>
-        Gravity,
-
-        /// <summary>
         ///     Forza Horizon 5 codename.
         /// </summary>
         Woodstock,
@@ -42,6 +37,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Forza Motorsport 8 codename.
         /// </summary>
-        Steelhead
+        Steelhead,
+
+        /// <summary>
+        ///     Secret codename.
+        /// </summary>
+        Forte,
+
+        /// <summary>
+        ///     Secret codename.
+        /// </summary>
+        Holland
     }
 }

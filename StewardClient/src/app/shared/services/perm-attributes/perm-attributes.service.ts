@@ -28,12 +28,14 @@ export class PermAttributesService extends BaseService {
   private userRole: UserRole;
   private allPermAttributes: PermAttribute[];
   private availableTitlesAndEnvironments: TitlesAndEnvironments = {
+    [GameTitle.Forte]: [],
     [GameTitle.FM8]: [],
     [GameTitle.FM7]: [],
     [GameTitle.FH5]: [],
     [GameTitle.FH4]: [],
   };
   private selectedEndpoints = {
+    [GameTitle.Forte]: null,
     [GameTitle.FM8]: null,
     [GameTitle.FM7]: null,
     [GameTitle.FH5]: null,
@@ -48,6 +50,10 @@ export class PermAttributesService extends BaseService {
       filter(() => !!this.userRole),
       takeUntil(this.onDestroy$),
     );
+  }
+
+  public get isAdmin(): boolean {
+    return this.userRole === UserRole.LiveOpsAdmin;
   }
 
   public get isUsingV1Auth(): boolean {
@@ -103,6 +109,7 @@ export class PermAttributesService extends BaseService {
 
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.selectedEndpoints = {
+        [GameTitle.Forte]: latest.forteEndpointKey,
         [GameTitle.FM8]: latest.steelheadEndpointKey,
         [GameTitle.FM7]: latest.apolloEndpointKey,
         [GameTitle.FH5]: latest.woodstockEndpointKey,
@@ -141,9 +148,17 @@ export class PermAttributesService extends BaseService {
   }
 
   /** Returns true if user has permission to feature attribute. */
-  public hasFeaturePermission(attr: PermAttributeName, title?: GameTitle): boolean {
-    if (this.isUsingV1Auth) {
+  public hasFeaturePermission(
+    attr: PermAttributeName,
+    title?: GameTitle,
+    allowV1Auth?: boolean,
+  ): boolean {
+    if (this.isAdmin) {
       return true;
+    }
+
+    if (this.isUsingV1Auth) {
+      return allowV1Auth;
     }
 
     const titleToCheck = title ?? '';

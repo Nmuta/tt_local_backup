@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import { Store } from '@ngxs/store';
 import { first } from 'lodash';
 import { filter, takeUntil } from 'rxjs/operators';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, GameTitle } from '@models/enums';
 import { renderDelay } from '@helpers/rxjs';
 import { SpecialIdentity } from '@models/special-identity';
 import { Subject } from 'rxjs';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { InvalidPermActionType } from '@shared/modules/permissions/directives/permission-attribute.base.directive';
 
 /** User Details page. */
 @Component({
@@ -22,6 +23,9 @@ export class UserDetailsComponent extends BaseComponent {
   public identity: AugmentedCompositeIdentity;
   public specialIdentitiesAllowed: SpecialIdentity[];
 
+  public InvalidPermActionType = InvalidPermActionType;
+  public PermAttributeName = PermAttributeName;
+  public GameTitle = GameTitle;
   public gameTitleCodeName = GameTitleCodeName;
 
   /** Emitted when the identity changes. */
@@ -33,6 +37,7 @@ export class UserDetailsComponent extends BaseComponent {
   }
 
   public generalRouterLink = ['.', 'general'];
+  public forteRouterLink = ['.', 'forte'];
   public woodstockRouterLink = ['.', 'woodstock'];
   public steelheadRouterLink = ['.', 'steelhead'];
   public sunriseRouterLink = ['.', 'sunrise'];
@@ -50,6 +55,19 @@ export class UserDetailsComponent extends BaseComponent {
     }
 
     return `Player ${first(this.lookupList)} does not have a Woodstock account`;
+  }
+
+  /** Generates a nav tooltip */
+  public get forteTooltip(): string {
+    if (!this.identity) {
+      return null;
+    }
+
+    if (this.identity?.extra?.hasForte) {
+      return null;
+    }
+
+    return `Player ${first(this.lookupList)} does not have a Forte account`;
   }
 
   /** Generates a nav tooltip */
@@ -104,11 +122,7 @@ export class UserDetailsComponent extends BaseComponent {
     return `Player ${first(this.lookupList)} does not have a Apollo account`;
   }
 
-  constructor(
-    private readonly store: Store,
-    private readonly route: ActivatedRoute,
-    router: Router,
-  ) {
+  constructor(router: Router) {
     super();
 
     router.events

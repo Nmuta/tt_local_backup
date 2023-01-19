@@ -33,6 +33,9 @@ describe('ButtonPermissionAttributeDirective', () => {
                 click: () => {
                   return;
                 },
+                style: {
+                  display: 'block',
+                },
               },
             },
           },
@@ -46,7 +49,7 @@ describe('ButtonPermissionAttributeDirective', () => {
 
   beforeEach(() => {
     directive = new ButtonPermissionAttributeDirective(
-      button._elementRef.nativeElement,
+      button._elementRef,
       mockPermAttributesService,
       null,
       null,

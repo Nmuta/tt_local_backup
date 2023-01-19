@@ -46,7 +46,6 @@ import { ApolloGiftingState } from '@tools-app/pages/gifting/apollo/state/apollo
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
-import { GravityGiftHistoryState } from '@tools-app/pages/gift-history/gravity/state/gravity-gift-history.state';
 import { SunriseGiftHistoryState } from '@tools-app/pages/gift-history/sunrise/state/sunrise-gift-history.state';
 import { ApolloGiftHistoryState } from '@tools-app/pages/gift-history/apollo/state/apollo-gift-history.state';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
@@ -172,7 +171,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         // Gift History page states
         WoodstockGiftHistoryState,
         SteelheadGiftHistoryState,
-        GravityGiftHistoryState,
         SunriseGiftHistoryState,
         ApolloGiftHistoryState,
       ],
