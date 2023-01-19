@@ -183,10 +183,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                     foreach (BaseChampionshipEventData eventData in cycledSeriesData.CycledSeries.ChampionshipEventData)
                     {
-                        // TODO V2: Lookup game options for each event
-                        //var gameOptions = await this.pegasusService.GetRacersCupEventGameOptionsV3Async(eventData.EventDataId).ConfigureAwait(true);
-                        //var translatedGameOptions = this.mapper.SafeMap<List<RacersCupGameOptions>>(gameOptions);
-
                         // Propogate event windows for each event.
                         WindowData[] eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
                         if (eventWindows == null) //If there's no event windows to chart, we don't care about it.
@@ -212,8 +208,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     var newSeries = new RacersCupSeries
                     {
                         Name = cycledSeriesData.CycledSeries.Name,
-                        OpenTimeUtc = cycledSeriesData.CycledSeries.OpenTime.Value,
-                        CloseTimeUtc = cycledSeriesData.CycledSeries.CloseTime.Value,
+                        OpenTimeUtc = cycledSeriesData.CycledSeries.OpenTime.HasValue ? cycledSeriesData.CycledSeries.OpenTime.Value : DateTime.MinValue,
+                        CloseTimeUtc = cycledSeriesData.CycledSeries.CloseTime.HasValue ? cycledSeriesData.CycledSeries.CloseTime.Value : DateTime.MaxValue,
                         Events = events,
                         EventPlaylistTransitionTimeUtc = cycledSeriesData.CycledSeries.EventPlaylistTransitionTime,
                     };
@@ -248,7 +244,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                             Name = eventData.Name,
                             PlaylistName = playlistName, //PlaylistName = playlistInfo.EventPlaylistName,
                             EventWindows = this.mapper.SafeMap<List<RacersCupEventWindow>>(eventWindows),
-                            GameOptions = new List<RacersCupGameOptions>(), //TODO use real game options
+                            GameOptions = this.mapper.SafeMap<List<RacersCupGameOptions>>(eventData.GameOptions), //new List<RacersCupGameOptions>(), //TODO use real game options
                             QualificationOptions = this.mapper.SafeMap<RacersCupQualificationOptions>(scheduledSeriesData.ScheduledSeries.DefaultEventOverrides.QualificationOptions),
                         };
 
