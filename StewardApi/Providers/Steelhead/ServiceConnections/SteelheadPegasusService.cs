@@ -339,7 +339,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
         {
-            var pegasusSlot = SteelheadPegasusSlot.Daily;
+            var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
             var fileName = "LiveOps_BuildersCupFeaturedCup-en-US";
 
             var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
