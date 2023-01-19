@@ -35,6 +35,6 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Hide multiple Ugcs. */
   public hideUgc(_ugcIds: string[]): Observable<string[]> {
-    return throwError(new Error('Sunrise does not support bulk photo thumbnail lookup.'));
+    return throwError(new Error('Steelhead does not support hiding ugc items.'));
   }
 }

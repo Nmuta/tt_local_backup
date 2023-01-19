@@ -82,7 +82,7 @@ export abstract class UgcTableBaseComponent
   /** Content type of the UGC shown. Default to {@link UgcType.Unknown}. */
   @Input() contentType: UgcType = UgcType.Unknown;
   /** Output when UGC items are hidden. */
-  @Output() ugcsRemoved = new EventEmitter<string[]>();
+  @Output() ugcItemsRemoved = new EventEmitter<string[]>();
 
   public readonly THUMBNAIL_LOOKUP_BATCH_SIZE = 250;
   public readonly THUMBNAIL_LOOKUP_MAX_CONCURRENCY = 4;
@@ -229,17 +229,18 @@ export abstract class UgcTableBaseComponent
   /** Logic when row is selected. */
   public onRowSelected(ugc: PlayerUgcItemTableEntries): void {
     ugc.selected = !ugc.selected;
-    const selectedUgcIndex = this.selectedUgcs.findIndex(s => s.id === ugc.id);
-    if (selectedUgcIndex >= 0) {
-      this.selectedUgcs.splice(selectedUgcIndex, 1);
-    }
 
     if (ugc.selected) {
       this.selectedUgcs.push(ugc);
+    } else {
+      const selectedUgcIndex = this.selectedUgcs.findIndex(s => s.id === ugc.id);
+      if (selectedUgcIndex >= 0) {
+        this.selectedUgcs.splice(selectedUgcIndex, 1);
+      }
     }
   }
 
-  /** Hide multiple ugcs. */
+  /** Hide multiple ugc items. */
   public hideMultipleUgc(ugcs: PlayerUgcItemTableEntries[]): void {
     this.hideUgcMonitor = this.hideUgcMonitor.repeat();
 
@@ -259,7 +260,7 @@ export abstract class UgcTableBaseComponent
           this.content.splice(index, 1);
         });
         // Send ugcIds to be removed to parent component
-        this.ugcsRemoved.emit(ugcIds);
+        this.ugcItemsRemoved.emit(ugcIds);
         this.selectedUgcs = [];
         this.ugcTableDataSource.data.forEach(ugcTableElement => {
           ugcTableElement.selected = false;

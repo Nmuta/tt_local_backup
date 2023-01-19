@@ -7,11 +7,11 @@ import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { WoodstockUgcTableComponent } from './woodstock-ugc-table.component';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-lookup.service';
-import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-lookup.service.mock';
+import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service.mock';
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
-import { createMockWoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-hide.service.mock';
+import { createMockWoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service.mock';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 
 describe('WoodstockUgcTableComponent', () => {

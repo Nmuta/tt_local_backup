@@ -7,7 +7,7 @@ import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-look
 import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { UgcReportReason } from '@models/ugc-report-reason';
-import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-report.service';
+import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';

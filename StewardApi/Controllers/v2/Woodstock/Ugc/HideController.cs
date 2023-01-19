@@ -78,6 +78,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     {
                         try
                         {
+                            var asdf = false;
+                            if (asdf)
+                            {
+                                throw new NotImplementedException();
+                            }
                             await this.Services.Storefront.HideUGC(ugcId).ConfigureAwait(true);
                         }
                         catch (Exception)

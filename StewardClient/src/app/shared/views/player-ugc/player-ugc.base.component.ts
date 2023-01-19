@@ -94,9 +94,9 @@ export abstract class PlayerUgcBaseComponent
     this.filteredUgcContent = this.filterUgcContent();
   }
 
-  /** Remove ugcs from the ugcContent so that filter changes reflect the right dataset. */
-  public removeUgcs(ugcsRemoved: string[]): void {
-    ugcsRemoved.forEach(ugcId => {
+  /** Remove ugc items from the ugcContent so that filter changes reflect the right dataset. */
+  public removeUgcItems(ugcItemsRemoved: string[]): void {
+    ugcItemsRemoved.forEach(ugcId => {
       const index = this.ugcContent.findIndex(x => x.id == ugcId);
       this.ugcContent.splice(index, 1);
     });

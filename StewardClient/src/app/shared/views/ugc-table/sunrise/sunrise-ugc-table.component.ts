@@ -7,7 +7,7 @@ import { UgcType } from '@models/ugc-filters';
 import { Observable, switchMap, throwError } from 'rxjs';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { GuidLikeString } from '@models/extended-types';
-import { SunriseUgcHideService } from '@services/api-v2/sunrise/ugc/sunrise-ugc-hide.service';
+import { SunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hide/sunrise-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 
 /** Displays sunrise UGC content in a table. */

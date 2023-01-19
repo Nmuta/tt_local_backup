@@ -8,7 +8,7 @@ import { SunriseUgcTableComponent } from './sunrise-ugc-table.component';
 import { SunriseService } from '@services/sunrise';
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
-import { createMockSunriseUgcHideService } from '@services/api-v2/sunrise/ugc/sunrise-ugc-hide.service.mock';
+import { createMockSunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hide/sunrise-ugc-hide.service.mock';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 
 describe('SunriseUgcTableComponent', () => {

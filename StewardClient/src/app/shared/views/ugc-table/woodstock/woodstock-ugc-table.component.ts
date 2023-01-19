@@ -5,10 +5,10 @@ import { UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
 import { Observable, switchMap } from 'rxjs';
 import { WoodstockService } from '@services/woodstock';
-import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-lookup.service';
+import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
-import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-hide.service';
+import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 
 /** Displays woodstock UGC content in a table. */

@@ -9,7 +9,7 @@ import { WoodstockPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title
 import { WoodstockSearchUgcComponent } from './woodstock-search-ugc.component';
 import { UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
-import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-lookup.service.mock';
+import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service.mock';
 import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-search.service';
 import { createMockWoodstockService } from '@services/woodstock';
 
