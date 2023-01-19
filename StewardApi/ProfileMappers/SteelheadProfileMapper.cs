@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
@@ -390,6 +391,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<SteelheadLiveOpsContent.WeatherCondition, RacersCupWeatherCondition>()
                 .ReverseMap();
             this.CreateMap<SteelheadLiveOpsContent.EWeatherConditionType, RacersCupWeatherConditionType>();
+
+            this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
+                .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime));
 
             this.CreateMap<GitPullRequest, PullRequest>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.PullRequestId))
