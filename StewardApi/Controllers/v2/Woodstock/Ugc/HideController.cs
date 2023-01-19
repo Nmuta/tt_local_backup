@@ -26,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     /// <summary>
     ///     Controller for Woodstock Ugc hiding.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/ugc")]
+    [Route("api/v{version:apiVersion}/title/woodstock/ugc/hide")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
@@ -53,11 +53,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         /// <summary>
         ///    Hide a list of ugc item.
         /// </summary>
-        [HttpPost("hide")]
+        [HttpPost]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
-        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.UgcHide)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
         [Authorize(Policy = UserAttribute.HideUgc)]
         public async Task<IActionResult> HideUgc([FromBody] Guid[] ugcIds)
         {

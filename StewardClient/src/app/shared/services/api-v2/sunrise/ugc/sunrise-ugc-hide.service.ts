@@ -8,11 +8,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SunriseUgcHideService {
-  private basePath: string = 'title/sunrise/ugc';
+  private basePath: string = 'title/sunrise/ugc/hide';
   constructor(private readonly api: ApiV2Service) {}
 
   /** Hide multiple Ugc. */
   public hideMultipleUgc$(ugcIds: string[]): Observable<BackgroundJob<void>> {
-    return this.api.postRequest$<BackgroundJob<void>>(`${this.basePath}/hide`, ugcIds);
+    return this.api.postRequest$<BackgroundJob<void>>(`${this.basePath}`, ugcIds);
   }
 }

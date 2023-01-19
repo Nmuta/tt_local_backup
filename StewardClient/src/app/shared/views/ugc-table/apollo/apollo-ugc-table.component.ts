@@ -35,6 +35,6 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
 
   /** Hide multiple Ugcs. */
   public hideUgc(_ugcIds: string[]): Observable<string[]> {
-    return throwError(new Error('Sunrise does not support bulk photo thumbnail lookup.'));
+    return throwError(new Error('Apollo does not support hiding of ugcs.'));
   }
 }
