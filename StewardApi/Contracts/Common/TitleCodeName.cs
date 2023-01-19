@@ -37,6 +37,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Forza Motorsport 8 codename.
         /// </summary>
-        Steelhead
+        Steelhead,
+
+        /// <summary>
+        ///     Secret codename.
+        /// </summary>
+        Forte,
+
+        /// <summary>
+        ///     Secret codename.
+        /// </summary>
+        Holland
     }
 }

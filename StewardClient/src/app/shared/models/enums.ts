@@ -10,6 +10,7 @@ export enum InventoryOption {
  * @deprecated Use GameTitle + angular pipe
  */
 export enum GameTitleName {
+  Forte = 'Forte',
   FM8 = 'Forza Motorsport',
   FH5 = 'Forza Horizon 5',
   FH4 = 'Forza Horizon 4',
@@ -22,6 +23,7 @@ export enum GameTitleName {
  * @deprecated Use GameTitle + angular pipe
  */
 export enum GameTitleAbbreviation {
+  Forte = 'Forte',
   FM8 = 'FM',
   FH5 = 'FH5',
   FH4 = 'FH4',
@@ -37,6 +39,7 @@ export enum GameTitleAbbreviation {
  */
 export enum GameTitleCodeName {
   General = 'General', // TODO: this is not really a title. It should be removed and placed in its own type alias when we migrate to `GameTitle` over `GameTitleCodeName`
+  Forte = 'Forte',
   FH5 = 'Woodstock',
   FM8 = 'Steelhead',
   FH4 = 'Sunrise',
@@ -46,6 +49,7 @@ export enum GameTitleCodeName {
 
 /** Enum for game title names. lowerCamel. */
 export enum GameTitle {
+  Forte = 'forte',
   FM8 = 'steelhead',
   FH5 = 'woodstock',
   FH4 = 'sunrise',

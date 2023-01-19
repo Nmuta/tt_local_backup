@@ -31,6 +31,11 @@
         public const string WoodstockCodeName = "Woodstock";
 
         /// <summary>
+        ///     The Forte code name.
+        /// </summary>
+        public const string ForteCodeName = "Forte";
+
+        /// <summary>
         ///     The Opus abbreviation.
         /// </summary>
         public const string OpusAbbreviation = "FH3";

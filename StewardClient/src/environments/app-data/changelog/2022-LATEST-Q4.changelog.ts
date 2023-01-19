@@ -9,6 +9,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'c5bce92e-b97c-41d0-b580-917f32638e9e',
+      shortText: 'Expand V2 permission management to support title/environment access',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '088d7447-dd86-4714-8fad-13b35190b1cb',
       shortText: 'Remove all of gravity from UI and API',
     },
