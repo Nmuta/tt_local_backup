@@ -1,6 +1,5 @@
 import { ApolloGiftHistory } from './apollo';
 import { MSError } from './error.model';
-import { GravityGiftHistory } from './gravity';
 import { PlayerInventoryItemList } from './master-inventory-item-list';
 import { SteelheadGiftHistory } from './steelhead';
 import { SunriseGiftHistory } from './sunrise';
@@ -10,7 +9,6 @@ import { WoodstockGiftHistory } from './woodstock';
 export type GiftHistoryResultUnion =
   | WoodstockGiftHistory
   | SteelheadGiftHistory
-  | GravityGiftHistory
   | SunriseGiftHistory
   | ApolloGiftHistory;
 

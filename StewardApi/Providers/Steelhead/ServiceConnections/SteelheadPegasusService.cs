@@ -126,56 +126,66 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
-            var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
+            var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}";
 
-            var localizationIdsMapping = await this.cmsRetrievalHelper
-                .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
-                    LocalizationStringIdsMappings,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
-
-            var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
-            foreach (var supportedLocale in supportedLocales)
+            async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStrings(bool useInternalIds)
             {
-                var filename = $"{LocalizationFileAntecedent}{supportedLocale.Locale}";
+                var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
-                var localizedStrings = await this.cmsRetrievalHelper
-                    .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
-                        filename,
+                var localizationIdsMapping = await this.cmsRetrievalHelper
+                    .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
+                        LocalizationStringIdsMappings,
                         this.cmsEnvironment,
                         slot: "daily").ConfigureAwait(false);
 
-                foreach (var locStringKey in localizedStrings.Keys)
+                var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
+                foreach (var supportedLocale in supportedLocales)
                 {
-                    var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+                    var filename = $"{LocalizationFileAntecedent}{supportedLocale.Locale}";
 
-                    var localizedResult = new LiveOpsContracts.LocalizedString()
-                    {
-                        Message = localizedStrings[locStringKey].LocString,
-                        Category = localizedStrings[locStringKey].Category,
-                        LanguageCode = supportedLocale.Locale,
-                        IsTranslated = isTranslated,
-                    };
+                    var localizedStrings = await this.cmsRetrievalHelper
+                        .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
+                            filename,
+                            this.cmsEnvironment,
+                            slot: "daily").ConfigureAwait(false);
 
-                    if (!results.ContainsKey(locStringKey))
+                    foreach (var locStringKey in localizedStrings.Keys)
                     {
-                        // Create if not exists in dictionary
-                        results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
+                        var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+
+                        var localizedResult = new LiveOpsContracts.LocalizedString()
+                        {
+                            Message = localizedStrings[locStringKey].LocString,
+                            Category = localizedStrings[locStringKey].Category,
+                            LanguageCode = supportedLocale.Locale,
+                            IsTranslated = isTranslated,
+                        };
+
+                        if (!results.ContainsKey(locStringKey))
+                        {
+                            // Create if not exists in dictionary
+                            results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
+                        }
+
+                        results[locStringKey].Add(localizedResult);
                     }
-
-                    results[locStringKey].Add(localizedResult);
                 }
+
+                this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
+
+                // Remap the ids to the right ids from the mapping file
+                if (useInternalIds)
+                {
+                    return results
+                        .Where(p => localizationIdsMapping.ContainsKey(p.Key))
+                        .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+                }
+
+                return results;
             }
 
-            // Remap the ids to the right ids from the mapping file
-            if (useInternalIds)
-            {
-                return results
-                    .Where(p => localizationIdsMapping.ContainsKey(p.Key))
-                    .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
-            }
-
-            return results;
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>>(localizedStringCacheKey)
+                   ?? await GetLocalizedStrings(useInternalIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -326,7 +336,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
-            var fileName = "RacersCupChampionshipScheduleV4";
+            var fileName = "LiveOps_RacersCupChampionshipScheduleV4";
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
                 fileName,
                 environment: pegasusEnvironment,
@@ -334,6 +344,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
 
             return scheduleData;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
+        {
+            var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
+            var fileName = "LiveOps_BuildersCupFeaturedCup-en-US";
+
+            var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
+                fileName,
+                environment: this.cmsEnvironment,
+                slot: pegasusSlot).ConfigureAwait(false);
+
+            return featuredCupData.Single();
         }
 
         /// <inheritdoc/>

@@ -4,7 +4,6 @@ import {
   IdentityQueryBeta,
   IdentityQueryAlpha,
   IdentityResultAlpha,
-  IdentityResultBeta,
   isValidAlphaQuery,
   IdentityQueryBetaIntersection,
   IdentityResultAlphaBatch,
@@ -32,9 +31,9 @@ export interface ResultSet {
   sunrise: IdentityResultAlpha[];
   opus: IdentityResultAlpha[];
   apollo: IdentityResultAlpha[];
-  gravity: IdentityResultBeta[];
   steelhead: IdentityResultAlpha[];
   woodstock: IdentityResultAlpha[];
+  forte: IdentityResultAlpha[];
 }
 
 /** A set of endpoints for all titles. Keys match @see ResultSet */
@@ -42,9 +41,9 @@ export interface EnvSet {
   sunrise: string;
   opus: undefined;
   apollo: string;
-  gravity: undefined;
   steelhead: string;
   woodstock: string;
+  forte: string;
 }
 
 /** A set of identity results across many users, for both Retail and whatever EnvSet is currently selected. */
@@ -83,9 +82,9 @@ export interface SingleUserResultSet {
   sunrise: IdentityResultAlpha;
   opus: IdentityResultAlpha;
   apollo: IdentityResultAlpha;
-  gravity: IdentityResultBeta;
   steelhead: IdentityResultAlpha;
   woodstock: IdentityResultAlpha;
+  forte: IdentityResultAlpha;
 }
 
 /** Identity information for a single user, for both Retail and whatever EnvSet is currently selected. */

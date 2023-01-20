@@ -138,7 +138,7 @@ export interface IdentityResultAlpha {
  * A single identity query. Beta type.
  *
  * Designed to work on games which use T10ID as a primary identifier such as:
- * - Street
+ * - Street (deleted)
  * - Future Titles?
  */
 export type IdentityQueryBeta =
@@ -150,7 +150,7 @@ export type IdentityQueryBeta =
  * A single identity query result. Beta type.
  *
  * Designed to work on games which use T10ID as a primary identifier such as:
- * - Street
+ * - Street (deleted)
  * - Future Titles?
  */
 export interface IdentityResultBeta {
@@ -183,7 +183,7 @@ export type IdentityQueryAlphaBatch = IdentityQueryAlpha[];
  * A batch of identity query. Beta type.
  *
  * Designed to work on games which use T10ID as a primary identifier such as:
- * - Street
+ * - Street (deleted)
  * - Future Titles?
  * @see IdentityQueryBeta
  */
@@ -204,7 +204,7 @@ export type IdentityResultAlphaBatch = IdentityResultAlpha[];
  * A batch of identity query results. Beta type.
  *
  * Designed to work on games which use T10ID as a primary identifier such as:
- * - Street
+ * - Street (deleted)
  * - Future Titles?
  * @see IdentityResultBeta
  */

@@ -44,6 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Opus = 2,
         Apollo = 4,
         Sunrise = 8,
+        [Obsolete("Gravity has been deleted.")]
         Gravity = 16,
         Woodstock = 32,
         Steelhead = 64,

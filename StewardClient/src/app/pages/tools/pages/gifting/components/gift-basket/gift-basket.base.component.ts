@@ -13,7 +13,6 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import { GravityGift } from '@models/gravity';
 import { SunriseGift } from '@models/sunrise';
 import { ApolloGift } from '@models/apollo';
 import { Store } from '@ngxs/store';
@@ -33,7 +32,7 @@ export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];
 };
-export type GiftUnion = SteelheadGift | WoodstockGift | GravityGift | SunriseGift | ApolloGift;
+export type GiftUnion = SteelheadGift | WoodstockGift | SunriseGift | ApolloGift;
 export type GiftBasketModel = MasterInventoryItem & { edit?: boolean; restriction?: string };
 export enum GiftReason {
   LostSave = 'Lost Save',

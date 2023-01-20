@@ -20,9 +20,9 @@ import { LocalizedMessage } from '@models/community-message';
 
 /** Test class for {@link LocalizedGroupMessagingManagementContract}. */
 class TestNotificationManagementService implements LocalizedGroupMessagingManagementContract {
-  public gameTitle: GameTitle.Street;
+  public gameTitle: GameTitle.FH5;
   public selectLocalizedStringService: SelectLocalizedStringContract = {
-    gameTitle: GameTitle.Street,
+    gameTitle: GameTitle.FH5,
     /** Get localized strings. */
     getLocalizedStrings$(): Observable<LocalizedStringsMap> {
       return of(null);

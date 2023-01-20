@@ -9,6 +9,21 @@
     >General
   </a>
   <a
+    [class.mat-button-disabled]="!identity?.extra?.hasForte"
+    [matTooltip]="forteTooltip"
+    [routerLink]="forteRouterLink"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    queryParamsHandling="preserve"
+    stateManager
+    [permissionAttribute]="PermAttributeName.TitleAccess"
+    [permissionTitle]="GameTitle.Forte"
+    [permissionInvalidActionType]="InvalidPermActionType.Hide"
+    [permissionSupportV1Auth]="false"
+    >Forte
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.Forte"> </endpoint-selection>
+  </a>
+  <a
     [class.mat-button-disabled]="!identity?.extra?.hasSteelhead"
     [matTooltip]="steelheadTooltip"
     [routerLink]="steelheadRouterLink"

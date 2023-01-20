@@ -50,6 +50,12 @@ export class SetWoodstockEndpointKey {
   constructor(public readonly woodstockEndpointKey: string) {}
 }
 
+/** Sets the current Forte endpoint key of the Steward app the client is running. */
+export class SetForteEndpointKey {
+  public static readonly type = '[Settings] Set Forte Endpoint Key';
+  constructor(public readonly forteEndpointKey: string) {}
+}
+
 /** Sets the current Steelhead endpoint key of the Steward app the client is running. */
 export class SetSteelheadEndpointKey {
   public static readonly type = '[Settings] Set Steelhead Endpoint Key';
