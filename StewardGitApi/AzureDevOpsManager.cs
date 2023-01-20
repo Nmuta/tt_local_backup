@@ -171,15 +171,6 @@ namespace StewardGitApi
             return await buildClient.QueueBuildAsync(build).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Extended build class that provides template parameters for the pipeline.
-        /// </summary>
-        private class BuildWithTemplateParameters : Build
-        {
-            [DataMember(EmitDefaultValue = false)]
-            public Dictionary<string, string> TemplateParameters { get; set; }
-        }
-
         /// <inheritdoc/>
         public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRef gitRef, Action<bool> onSuccess = null)
         {
@@ -224,6 +215,15 @@ namespace StewardGitApi
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             var branches = await GitHelper.GetAllBranchesAsync(this.AzureContext).ConfigureAwait(false);
             return branches;
+        }
+
+        /// <summary>
+        /// Extended build class that provides template parameters for the pipeline.
+        /// </summary>
+        private class BuildWithTemplateParameters : Build
+        {
+            [DataMember(EmitDefaultValue = false)]
+            public Dictionary<string, string> TemplateParameters { get; set; }
         }
     }
 }
