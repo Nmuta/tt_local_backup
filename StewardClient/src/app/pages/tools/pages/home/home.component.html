@@ -55,3 +55,12 @@
   *ngIf="rejectedPossibleNavbarItems.length > 0"
   [tiles]="rejectedPossibleNavbarItems"
 ></home-tile-grid>
+
+<div *ngIf="unauthorizedNavbarItems.length > 0" class="horizontal-divider">
+  <span>Tiles below are inaccessible due to permissions</span>
+</div>
+
+<home-tile-grid
+  *ngIf="unauthorizedNavbarItems.length > 0"
+  [tiles]="unauthorizedNavbarItems"
+></home-tile-grid>

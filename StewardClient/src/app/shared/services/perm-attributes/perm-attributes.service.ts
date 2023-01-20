@@ -26,6 +26,7 @@ export class PermAttributesService extends BaseService {
   // TODO: This will need to be revisted once all users are moved to V2
   // and we have determined how we want to handle admin grouping
   private userRole: UserRole;
+  private attributesInitialized: boolean = false;
   private allPermAttributes: PermAttribute[];
   private availableTitlesAndEnvironments: TitlesAndEnvironments = {
     [GameTitle.Forte]: [],
@@ -42,12 +43,12 @@ export class PermAttributesService extends BaseService {
     [GameTitle.FH4]: null,
   };
 
-  private isInitialized$ = new ReplaySubject<void>(1);
+  private checkInitialization$ = new ReplaySubject<void>(1);
 
   /** Helper function that timeouts state checks for user profile. */
   public get initializationGuard$(): Observable<void> {
-    return this.isInitialized$.pipe(
-      filter(() => !!this.userRole),
+    return this.checkInitialization$.pipe(
+      filter(() => this.attributesInitialized && !!this.userRole),
       takeUntil(this.onDestroy$),
     );
   }
@@ -121,7 +122,7 @@ export class PermAttributesService extends BaseService {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(profile => {
         this.userRole = profile.role;
-        this.isInitialized$.next();
+        this.checkInitialization$.next();
       });
   }
 
@@ -144,7 +145,8 @@ export class PermAttributesService extends BaseService {
       }
     }
 
-    this.isInitialized$.next();
+    this.attributesInitialized = true;
+    this.checkInitialization$.next();
   }
 
   /** Returns true if user has permission to feature attribute. */

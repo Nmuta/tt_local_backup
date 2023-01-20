@@ -8,12 +8,13 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment, NavbarTool } from '@environments/environment';
+import { environment, HomeTileRestrictionType, NavbarTool } from '@environments/environment';
 import { HomeTileInfoForNav, setExternalLinkTarget } from '@helpers/external-links';
 import { GameTitle, UserRole } from '@models/enums';
 import { QueryParam } from '@models/query-params';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';
 import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
 import {
@@ -21,9 +22,9 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { chain, cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { Observable, of } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 /** Types of filters to use on home page. */
 export enum FilterType {
@@ -49,12 +50,12 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
 
   public isEnabled: Partial<Record<NavbarTool, number>> = {};
-  public hasAccess: Partial<Record<NavbarTool, boolean>> = {};
   public userRole: UserRole;
 
   public possibleNavbarItems: HomeTileInfoForNav[] = [];
   public filteredPossibleNavbarItems: HomeTileInfoForNav[] = [];
   public rejectedPossibleNavbarItems: HomeTileInfoForNav[] = [];
+  public unauthorizedNavbarItems: HomeTileInfoForNav[] = [];
 
   // Bits and bobs used for sorting below
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
@@ -74,6 +75,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     private readonly store: Store,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly permAttributesService: PermAttributesService,
   ) {
     super();
     this.titleFilterOptions = of(this.preparedFilters.slice());
@@ -81,25 +83,49 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
-      this.userRole = profile.role;
-      this.hasAccess = chain(environment.tools)
-        .map(v => [v.tool, v.accessList.includes(profile?.role)])
-        .fromPairs()
-        .value();
+    this.permAttributesService.initializationGuard$
+      .pipe(
+        switchMap(() => this.profile$),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(profile => {
+        this.userRole = profile.role;
+        const toolsList = environment.tools as HomeTileInfoForNav[];
+        toolsList.forEach(tile => {
+          tile.hasAccess = tile.accessList.includes(profile?.role);
 
-      // show the usable tools above the unusable tools
-      const accessibleTools = environment.tools.filter(t => this.hasAccess[t.tool]);
-      const inaccessibleTools = environment.tools.filter(
-        t => !this.hasAccess[t.tool] && !t.hideFromUnauthorized,
-      );
-      this.possibleNavbarItems = [...accessibleTools, ...inaccessibleTools].map(tool => {
-        return setExternalLinkTarget(tool);
+          // Process the tool's perm restrictions
+          if (tile?.restriction?.requiredPermissions?.length > 0) {
+            const isMissingPerms = tile.restriction.requiredPermissions
+              .map(perm => this.permAttributesService.hasFeaturePermission(perm))
+              .includes(false);
+            if (isMissingPerms) {
+              tile.processedRestriction = tile.restriction.action;
+              tile.hasAccess = false;
+            }
+          }
+        });
+
+        this.unauthorizedNavbarItems = toolsList.filter(tool => {
+          let shouldHide = false;
+          if (this.userRole === UserRole.GeneralUser) {
+            shouldHide =
+              !tool.hasAccess && tool.processedRestriction === HomeTileRestrictionType.Hide;
+          } else {
+            shouldHide = !tool.hasAccess && tool.hideFromUnauthorized;
+          }
+
+          return !tool.hasAccess && !shouldHide;
+        });
+        this.possibleNavbarItems = toolsList
+          .filter(tool => tool.hasAccess)
+          .map(tool => {
+            return setExternalLinkTarget(tool);
+          });
+
+        this.parseRoute();
+        this.filterTiles();
       });
-    });
-
-    this.parseRoute();
-    this.filterTiles();
 
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
       this.isEnabled = v.navbarTools || {};
@@ -196,7 +222,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   }
 
   /** Bucketize tiles based on filter list. */
-  private filterTiles() {
+  private filterTiles(): void {
     if (this.filters.length <= 0) {
       this.filteredPossibleNavbarItems = this.possibleNavbarItems;
       this.rejectedPossibleNavbarItems = [];
@@ -240,8 +266,6 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     this.rejectedPossibleNavbarItems = this.possibleNavbarItems.filter(
       item => !this.filteredPossibleNavbarItems.includes(item),
     );
-
-    return;
   }
 
   /** Updates route params to match filter list. */

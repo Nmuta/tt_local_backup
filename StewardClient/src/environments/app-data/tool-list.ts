@@ -1,6 +1,7 @@
 import { Type } from '@angular/core';
 import { LoadChildren } from '@angular/router';
 import { GameTitle, UserRole } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { chain, values } from 'lodash';
 
 /**
@@ -186,6 +187,18 @@ export enum AdminPages {
   FM7Studio = 'https://test-a.fm7.forzamotorsport.net/Pages/Default.aspx',
 }
 
+/** Tile restriction types. */
+export enum HomeTileRestrictionType {
+  Disable,
+  Hide,
+}
+
+/** Defines tool tile restriction if user does not have all required perm attributes. */
+export interface HomeTileRestriction {
+  requiredPermissions: PermAttributeName[];
+  action: HomeTileRestrictionType;
+}
+
 /** Base model for Home Tiles. */
 export interface HomeTileInfoBase {
   /** The primary icon that is displayed alongside this tool's title. As in the top-level of the tiles. */
@@ -228,8 +241,11 @@ export interface HomeTileInfoBase {
    */
   readonly accessList: UserRole[];
 
-  /** Hides the tool on home page from unauthroized users. */
+  /** V1 Auth Restriction: Hides the tool on home page from unauthroized users. */
   readonly hideFromUnauthorized?: boolean;
+
+  /** V1 Auth Restriction: */
+  readonly restriction?: HomeTileRestriction;
 }
 
 /** Type for a custom tile. */
@@ -511,6 +527,10 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.MessageOfTheDayModule,
       ),
     hideFromUnauthorized: true,
+    restriction: {
+      requiredPermissions: [PermAttributeName.AdminFeature],
+      action: HomeTileRestrictionType.Hide,
+    },
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.Messaging,
@@ -544,6 +564,10 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.WelcomeCenterTilesModule,
       ),
     hideFromUnauthorized: true,
+    restriction: {
+      requiredPermissions: [PermAttributeName.AdminFeature],
+      action: HomeTileRestrictionType.Hide,
+    },
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.Kusto,
@@ -592,6 +616,10 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.DataPipelineObligationModule,
       ),
     hideFromUnauthorized: true,
+    restriction: {
+      requiredPermissions: [PermAttributeName.UpdateObligationPipeline],
+      action: HomeTileRestrictionType.Disable,
+    },
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.Leaderboards,
@@ -714,6 +742,10 @@ export const unprocessedToolList: HomeTileInfo[] = [
     shortDescription: [`Web Services for CMS authoring, snapshotting and publishing`],
     externalUrl: 'https://cms.services.forzamotorsport.net/',
     hideFromUnauthorized: true,
+    restriction: {
+      requiredPermissions: [PermAttributeName.AdminFeature],
+      action: HomeTileRestrictionType.Hide,
+    },
   },
   <HomeTileInfoMultiExternal>{
     icon: AppIcon.DeveloperTool,
@@ -840,6 +872,10 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.PermisisionManagementModule,
       ),
     hideFromUnauthorized: true,
+    restriction: {
+      requiredPermissions: [PermAttributeName.AdminFeature],
+      action: HomeTileRestrictionType.Hide,
+    },
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.StewardManagement,
@@ -859,6 +895,10 @@ export const unprocessedToolList: HomeTileInfo[] = [
         m => m.StewardManagementModule,
       ),
     hideFromUnauthorized: true,
+    restriction: {
+      requiredPermissions: [PermAttributeName.AdminFeature],
+      action: HomeTileRestrictionType.Hide,
+    },
   },
 ];
 
