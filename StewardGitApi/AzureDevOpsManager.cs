@@ -145,6 +145,13 @@ namespace StewardGitApi
         /// <returns>Started Build</returns>
         public async Task<Build> RunFormatPipeline(string branch)
         {
+            _ = Check.CheckForNullEmptyOrWhiteSpace(branch, nameof(branch));
+
+            if (branch.StartsWith("refs/heads/", StringComparison.OrdinalIgnoreCase))
+            {
+                branch = branch.Substring(11);
+            }
+
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
 
             var buildClient = this.AzureContext.Connection.GetClient<BuildHttpClient>();
