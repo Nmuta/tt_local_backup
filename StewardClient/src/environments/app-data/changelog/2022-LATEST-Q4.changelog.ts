@@ -14,6 +14,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '4960ac57-5a8a-4072-886b-1373311fad6b',
+      shortText: 'Make homepage tile filter smaller',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'c5bce92e-b97c-41d0-b580-917f32638e9e',
       shortText: 'Expand V2 permission management to support title/environment access',
     },
