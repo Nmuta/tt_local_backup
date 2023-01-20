@@ -1,8 +1,9 @@
-﻿using Microsoft.TeamFoundation.Core.WebApi;
+﻿using Microsoft.TeamFoundation.Build.WebApi;
+using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Organization.Client;
-using Microsoft.VisualStudio.Services.WebApi;
+using System.Runtime.Serialization;
 
 namespace StewardGitApi
 {
@@ -125,11 +126,51 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitPullRequest> CreatePullRequestAsync(GitPush push, string title, string description, Action<bool> onSuccess = null)
         {
+            _ = Check.CheckForNull(push, nameof(push));
             _ = Check.CheckForNullEmptyOrWhiteSpace(new string[] { title, description });
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+
+            // Kick off a pipeline run to format the branch
+            await this.RunFormatPipeline(push.RefUpdates.FirstOrDefault().Name).ConfigureAwait(false);
+
             GitPullRequest pullRequest = await GitHelper.CreatePullRequestAsync(this.AzureContext, push, title, description).ConfigureAwait(false);
             onSuccess?.Invoke(pullRequest != null);
             return pullRequest;
+        }
+
+        /// <summary>
+        /// Kick off a build to format the provided branch.
+        /// </summary>
+        /// <param name="branch">Branch to format.</param>
+        /// <returns>Started Build</returns>
+        public async Task<Build> RunFormatPipeline(string branch)
+        {
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+
+            var buildClient = this.AzureContext.Connection.GetClient<BuildHttpClient>();
+            var projectClient = this.AzureContext.Connection.GetClient<ProjectHttpClient>();
+
+            var project = projectClient.GetProject(this.AzureContext.Settings.Ids.projectId.ToString()).Result;
+            var buildDefinition = buildClient.GetDefinitionAsync(this.AzureContext.Settings.Ids.projectId, 376).Result;
+
+            var build = new BuildWithTemplateParameters()
+            {
+                Definition = buildDefinition,
+                Project = project,
+                SourceBranch = branch,
+            };
+            build.TemplateParameters.Add("branch", branch);
+
+            return await buildClient.QueueBuildAsync(build).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Extended build class that provides template parameters for the pipeline.
+        /// </summary>
+        public class BuildWithTemplateParameters : Build
+        {
+            [DataMember(EmitDefaultValue = false)]
+            public Dictionary<string, string> TemplateParameters = new Dictionary<string, string>();
         }
 
         /// <inheritdoc/>
