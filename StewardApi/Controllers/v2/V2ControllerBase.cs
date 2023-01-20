@@ -95,6 +95,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
             return woodstockProxyBundle;
         }
 
+        /// <summary>Add the jobId of a background job to the headers of the response.</summary>
+        protected void AddJobIdToResponseHeaders(string jobId)
+        {
+            this.Response.Headers.Add("jobId", jobId);
+        }
+
         private string GetWoodstockEndpoint()
         {
             if (!this.Request.Headers.TryGetValue("Endpoint-Woodstock", out var key))
