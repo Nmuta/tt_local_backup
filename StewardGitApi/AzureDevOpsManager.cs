@@ -160,13 +160,13 @@ namespace StewardGitApi
             var project = projectClient.GetProject(this.AzureContext.Settings.Ids.projectId.ToString()).Result;
             var buildDefinition = buildClient.GetDefinitionAsync(this.AzureContext.Settings.Ids.projectId, 376).Result;
 
-            var build = new BuildWithTemplateParameters()
+            var build = new BuildWithTemplateParameters
             {
                 Definition = buildDefinition,
                 Project = project,
                 SourceBranch = branch,
+                TemplateParameters = new Dictionary<string, string>() { { "branch", branch } },
             };
-            build.TemplateParameters = new Dictionary<string, string>() { { "branch", branch } };
 
             return await buildClient.QueueBuildAsync(build).ConfigureAwait(false);
         }
