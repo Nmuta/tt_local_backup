@@ -122,6 +122,8 @@ export class PermAttributesService extends BaseService {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(profile => {
         this.userRole = profile.role;
+        // TEST CODE - REMOVE
+        this.userRole = UserRole.GeneralUser;
         this.checkInitialization$.next();
       });
   }
@@ -129,6 +131,12 @@ export class PermAttributesService extends BaseService {
   /** Initiallizes the parm attributes service. */
   public initialize(attributes: PermAttribute[]): void {
     this.allPermAttributes = attributes;
+    // TEST CODE - REMOVE
+    // this.allPermAttributes.push({
+    //   attribute: PermAttributeName.UpdateObligationPipeline,
+    //   title: '',
+    //   environment: '',
+    // });
 
     // Build the available titles and environments model
     for (const attribute of this.allPermAttributes) {

@@ -106,7 +106,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
           }
         });
 
-        this.unauthorizedNavbarItems = toolsList.filter(tool => {
+        const unauthorizedNavbarItems = toolsList.filter(tool => {
           let shouldHide = false;
           if (this.userRole === UserRole.GeneralUser) {
             shouldHide =
@@ -122,6 +122,9 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
           .map(tool => {
             return setExternalLinkTarget(tool);
           });
+
+        this.possibleNavbarItems = [...this.possibleNavbarItems, ...unauthorizedNavbarItems];
+        this.unauthorizedNavbarItems = unauthorizedNavbarItems;
 
         this.parseRoute();
         this.filterTiles();

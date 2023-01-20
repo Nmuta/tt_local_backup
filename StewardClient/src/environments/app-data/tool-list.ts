@@ -244,7 +244,7 @@ export interface HomeTileInfoBase {
   /** V1 Auth Restriction: Hides the tool on home page from unauthroized users. */
   readonly hideFromUnauthorized?: boolean;
 
-  /** V1 Auth Restriction: */
+  /** V2 Auth Restriction: */
   readonly restriction?: HomeTileRestriction;
 }
 
