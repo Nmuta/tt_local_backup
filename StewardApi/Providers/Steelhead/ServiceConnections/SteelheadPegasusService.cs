@@ -326,7 +326,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
-            var fileName = "RacersCupChampionshipScheduleV4";
+            var fileName = "LiveOps_RacersCupChampionshipScheduleV4";
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
                 fileName,
                 environment: pegasusEnvironment,
@@ -334,6 +334,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
 
             return scheduleData;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
+        {
+            var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
+            var fileName = "LiveOps_BuildersCupFeaturedCup-en-US";
+
+            var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
+                fileName,
+                environment: this.cmsEnvironment,
+                slot: pegasusSlot).ConfigureAwait(false);
+
+            return featuredCupData.Single();
         }
 
         /// <inheritdoc/>

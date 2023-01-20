@@ -1,19 +1,17 @@
-import { NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
+import { ElementRef, NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatButton, MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
-import { CheckboxPermissionAttributeDirective } from './checkbox-permission-attribute.directive';
+import { AnchorPermissionAttributeDirective } from './anchor-permission-attribute.directive';
 
-describe('CheckboxPermissionAttributeDirective', () => {
-  let button: MatButton;
-  let directive: CheckboxPermissionAttributeDirective;
+describe('ButtonPermissionAttributeDirective', () => {
+  let anchor: ElementRef;
+  let directive: AnchorPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatButtonModule, MatCheckboxModule],
+      imports: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockPermAttributesService(),
@@ -26,16 +24,14 @@ describe('CheckboxPermissionAttributeDirective', () => {
           },
         },
         {
-          provide: MatButton,
+          provide: ElementRef,
           useValue: {
-            _elementRef: {
-              nativeElement: {
-                click: () => {
-                  return;
-                },
-                style: {
-                  display: 'block',
-                },
+            nativeElement: {
+              click: () => {
+                return;
+              },
+              style: {
+                display: 'block',
               },
             },
           },
@@ -44,12 +40,12 @@ describe('CheckboxPermissionAttributeDirective', () => {
     }).compileComponents();
 
     mockPermAttributesService = TestBed.inject(PermAttributesService);
-    button = TestBed.inject(MatButton);
+    anchor = TestBed.inject(ElementRef);
   });
 
   beforeEach(() => {
-    directive = new CheckboxPermissionAttributeDirective(
-      button._elementRef,
+    directive = new AnchorPermissionAttributeDirective(
+      anchor,
       mockPermAttributesService,
       null,
       null,

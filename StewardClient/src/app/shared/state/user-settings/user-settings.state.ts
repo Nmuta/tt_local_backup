@@ -23,6 +23,7 @@ import {
   ThemeEnvironmentWarningOptions,
   SetThemeEnvironmentWarning,
   RefreshEndpointKeys,
+  SetForteEndpointKey,
 } from './user-settings.actions';
 
 /** Defines the user state model. */
@@ -35,6 +36,7 @@ export class UserSettingsStateModel {
   public sunriseEndpointKey: string;
   public woodstockEndpointKey: string;
   public steelheadEndpointKey: string;
+  public forteEndpointKey: string;
   public navbarTools: Partial<Record<NavbarTool, number>>;
   public themeOverride: ThemeOverrideOptions;
   public themeEnvironmentWarning: ThemeEnvironmentWarningOptions;
@@ -52,6 +54,7 @@ export class UserSettingsStateModel {
     sunriseEndpointKey: undefined,
     woodstockEndpointKey: undefined,
     steelheadEndpointKey: undefined,
+    forteEndpointKey: undefined,
     showAppUpdatePopup: true,
     themeOverride: undefined,
     themeEnvironmentWarning: !environment.production ? 'warn' : undefined,
@@ -152,6 +155,15 @@ export class UserSettingsState {
     return of(ctx.patchState({ woodstockEndpointKey: action.woodstockEndpointKey }));
   }
 
+  /** Sets the state of the current Forte endpoint key. */
+  @Action(SetForteEndpointKey, { cancelUncompleted: true })
+  public setForteEndpointKey$(
+    ctx: StateContext<UserSettingsStateModel>,
+    action: SetForteEndpointKey,
+  ): Observable<UserSettingsStateModel> {
+    return of(ctx.patchState({ woodstockEndpointKey: action.forteEndpointKey }));
+  }
+
   /** Sets the state of the current Steelhead endpoint key. */
   @Action(SetSteelheadEndpointKey, { cancelUncompleted: true })
   public setSteelheadEndpointKey$(
@@ -217,12 +229,16 @@ export class UserSettingsState {
     const steelheadEndpointKeys = this.store.selectSnapshot<string[]>(
       EndpointKeyMemoryState.steelheadEndpointKeys,
     );
+    const forteEndpointKeys = this.store.selectSnapshot<string[]>(
+      EndpointKeyMemoryState.forteEndpointKeys,
+    );
 
     const isValidEndpointSelection = {
       apollo: apolloEndpointKeys.includes(state.apolloEndpointKey),
       sunrise: sunriseEndpointKeys.includes(state.sunriseEndpointKey),
       woodstock: woodstockEndpointKeys.includes(state.woodstockEndpointKey),
       steelhead: steelheadEndpointKeys.includes(state.steelheadEndpointKey),
+      forte: forteEndpointKeys.includes(state.forteEndpointKey),
     };
 
     //First endpoint key returned by API is the default, clear out any state values for endpoints that no longer exist.
@@ -238,6 +254,9 @@ export class UserSettingsState {
     state.steelheadEndpointKey = isValidEndpointSelection.steelhead
       ? state.steelheadEndpointKey
       : steelheadEndpointKeys[0];
+    state.forteEndpointKey = isValidEndpointSelection.forte
+      ? state.forteEndpointKey
+      : forteEndpointKeys[0];
 
     ctx.setState(state);
 
@@ -245,7 +264,8 @@ export class UserSettingsState {
       !isValidEndpointSelection.apollo ||
       !isValidEndpointSelection.sunrise ||
       !isValidEndpointSelection.woodstock ||
-      !isValidEndpointSelection.steelhead
+      !isValidEndpointSelection.steelhead ||
+      !isValidEndpointSelection.forte
     ) {
       return throwError(InitEndpointKeysError.SelectionRemoved);
     }
@@ -299,5 +319,11 @@ export class UserSettingsState {
   @Selector()
   public static steelheadEndpointKey(state: UserSettingsStateModel): string {
     return state.steelheadEndpointKey;
+  }
+
+  /** Selector for app's forte endpoint. */
+  @Selector()
+  public static forteEndpointKey(state: UserSettingsStateModel): string {
+    return state.forteEndpointKey;
   }
 }

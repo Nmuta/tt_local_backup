@@ -16,6 +16,16 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'New button to hide multiple Ugcs added to Ugc search',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '4c8edbfe-1da0-4b3b-b9ec-7e457dc00f2d',
+      shortText: 'Add game options display to Racers Cup event details',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'c5bce92e-b97c-41d0-b580-917f32638e9e',
+      shortText: 'Expand V2 permission management to support title/environment access',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '088d7447-dd86-4714-8fad-13b35190b1cb',
       shortText: 'Remove all of gravity from UI and API',

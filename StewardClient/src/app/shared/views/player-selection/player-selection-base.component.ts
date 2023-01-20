@@ -44,6 +44,7 @@ export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
   general: IdentityResultAlpha;
   woodstock: IdentityResultAlpha;
+  forte: IdentityResultAlpha;
   steelhead: IdentityResultAlpha;
   sunrise: IdentityResultAlpha;
   apollo: IdentityResultAlpha;
@@ -59,6 +60,7 @@ export interface AugmentedCompositeIdentity {
     isValid: boolean;
     isInvalid: boolean;
     hasWoodstock: boolean;
+    hasForte: boolean;
     hasSteelhead: boolean;
     hasSunrise: boolean;
     hasApollo: boolean;
@@ -366,6 +368,7 @@ export abstract class PlayerSelectionBaseComponent
           compositeIdentity.opus = result.standard.opus;
           compositeIdentity.steelhead = result.standard.steelhead;
           compositeIdentity.woodstock = result.standard.woodstock;
+          compositeIdentity.forte = result.standard.forte;
 
           compositeIdentity.general = this.generateGeneralIdentity(compositeIdentity);
 
@@ -374,13 +377,15 @@ export abstract class PlayerSelectionBaseComponent
             compositeIdentity.apollo?.error &&
             compositeIdentity.opus?.error &&
             compositeIdentity.steelhead?.error &&
-            compositeIdentity.woodstock?.error;
+            compositeIdentity.woodstock?.error &&
+            compositeIdentity.forte?.error;
 
           compositeIdentity.extra = {
             lookupType: this.lookupType,
             theme: allRequestsErrored ? 'warn' : 'primary',
             isValid: !allRequestsErrored,
             isInvalid: !!allRequestsErrored,
+            hasForte: compositeIdentity.forte ? !compositeIdentity.forte?.error : false,
             hasWoodstock: compositeIdentity.woodstock ? !compositeIdentity.woodstock?.error : false,
             hasSteelhead: compositeIdentity.steelhead ? !compositeIdentity.steelhead?.error : false,
             hasSunrise: compositeIdentity.sunrise ? !compositeIdentity.sunrise?.error : false,
@@ -404,6 +409,7 @@ export abstract class PlayerSelectionBaseComponent
           }
 
           compositeIdentity.extra.label = [
+            hasRetailTitle('forte') ? 'F' : undefined,
             hasRetailTitle('woodstock') ? 'W' : undefined,
             hasRetailTitle('steelhead') ? 'Sh' : undefined,
             hasRetailTitle('apollo') ? 'A' : undefined,
@@ -416,6 +422,7 @@ export abstract class PlayerSelectionBaseComponent
           compositeIdentity.extra.labelTooltip =
             'Retail Titles: ' +
             [
+              hasRetailTitle('forte') ? 'Forte' : undefined,
               hasRetailTitle('woodstock') ? 'Woodstock' : undefined,
               hasRetailTitle('steelhead') ? 'Steelhead' : undefined,
               hasRetailTitle('apollo') ? 'Apollo' : undefined,

@@ -26,5 +26,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the Steelhead endpoints.
         /// </summary>
         public IEnumerable<LspEndpoint> Steelhead { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Forte endpoints.
+        /// </summary>
+        public IEnumerable<LspEndpoint> Forte { get; set; }
     }
 }
