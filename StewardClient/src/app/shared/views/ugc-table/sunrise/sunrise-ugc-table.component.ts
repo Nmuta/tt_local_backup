@@ -39,7 +39,7 @@ export class SunriseUgcTableComponent extends UgcTableBaseComponent implements O
 
   /** Hide multiple Ugcs. */
   public hideUgc(ugcIds: string[]): Observable<string[]> {
-    return this.sunriseUgcHideService.hideMultipleUgc$(ugcIds).pipe(
+    return this.sunriseUgcHideService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),

@@ -948,32 +948,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Hides UGC.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.CommunityManager)]
-        [HttpPost("storefront/ugc/{ugcId}/hide")]
-        [SwaggerResponse(200)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.HideUgc)]
-        public async Task<IActionResult> HideUGC(string ugcId)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(ugcId, out var itemIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
-            }
-
-            await this.storefrontProvider.HideUgcAsync(itemIdGuid, endpoint).ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
         ///     Unhides player UGC content.
         /// </summary>
         [AuthorizeRoles(

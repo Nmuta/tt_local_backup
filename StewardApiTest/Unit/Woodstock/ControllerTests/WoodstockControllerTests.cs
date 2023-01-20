@@ -1555,21 +1555,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void HideUgc_WithValidInputs_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var ugcId = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.HideUGC(ugcId).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void UnhideUgc_WithValidInputs_DoesNotThrow()
         {
             // Arrange.

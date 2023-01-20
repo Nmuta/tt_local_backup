@@ -53,13 +53,43 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         /// <summary>
         ///    Hide a list of ugc item.
         /// </summary>
+        [AuthorizeRoles(
+            UserRole.GeneralUser,
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.CommunityManager)]
         [HttpPost]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
         [Authorize(Policy = UserAttribute.HideUgc)]
-        public async Task<IActionResult> HideUgc([FromBody] Guid[] ugcIds)
+        public async Task<IActionResult> HideUgc([FromQuery] bool useBackgroundProcessing, [FromBody] Guid[] ugcIds)
+        {
+            if (useBackgroundProcessing)
+            {
+                var response = await this.HideUgcItemsUseBackgroundProcessing(ugcIds).ConfigureAwait(false);
+                return response;
+            }
+            else
+            {
+                await this.HideUgcItems(ugcIds).ConfigureAwait(false);
+                return this.Ok();
+            }
+        }
+
+        // Hide list of UgcIds
+        private async Task HideUgcItems(Guid[] ugcIds)
+        {
+            foreach (var ugcId in ugcIds)
+            {
+                await this.Services.Storefront.HideUGC(ugcId).ConfigureAwait(true);
+            }
+        }
+
+        // Hide list of UfcIds using background processing
+        private async Task<CreatedResult> HideUgcItemsUseBackgroundProcessing(Guid[] ugcIds)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -78,11 +108,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     {
                         try
                         {
-                            var asdf = false;
-                            if (asdf)
-                            {
-                                throw new NotImplementedException();
-                            }
                             await this.Services.Storefront.HideUGC(ugcId).ConfigureAwait(true);
                         }
                         catch (Exception)

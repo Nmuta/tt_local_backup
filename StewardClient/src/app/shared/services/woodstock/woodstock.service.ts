@@ -531,13 +531,13 @@ export class WoodstockService {
     );
   }
 
-  /** Hide UGC item. */
-  public hideUgc$(ugcId: string): Observable<void> {
-    return this.apiService.postRequest$<void>(
-      `${this.basePath}/storefront/ugc/${ugcId}/hide`,
-      null,
-    );
-  }
+  // /** Hide UGC item. */
+  // public hideUgc$(ugcId: string): Observable<void> {
+  //   return this.apiService.postRequest$<void>(
+  //     `${this.basePath}/storefront/ugc/${ugcId}/hide`,
+  //     null,
+  //   );
+  // }
 
   /** Unhide UGC item. */
   public unhideUgc$(

@@ -41,7 +41,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Hide multiple Ugcs. */
   public hideUgc(ugcIds: string[]): Observable<string[]> {
-    return this.woodstockUgcHideService.hideMultipleUgc$(ugcIds).pipe(
+    return this.woodstockUgcHideService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),
