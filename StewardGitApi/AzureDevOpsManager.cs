@@ -166,7 +166,7 @@ namespace StewardGitApi
                 Project = project,
                 SourceBranch = branch,
             };
-            build.TemplateParameters.Add("branch", branch);
+            build.TemplateParameters = new Dictionary<string, string>() { { "branch", branch } };
 
             return await buildClient.QueueBuildAsync(build).ConfigureAwait(false);
         }
@@ -174,10 +174,10 @@ namespace StewardGitApi
         /// <summary>
         /// Extended build class that provides template parameters for the pipeline.
         /// </summary>
-        public class BuildWithTemplateParameters : Build
+        private class BuildWithTemplateParameters : Build
         {
             [DataMember(EmitDefaultValue = false)]
-            public Dictionary<string, string> TemplateParameters = new Dictionary<string, string>();
+            public Dictionary<string, string> TemplateParameters { get; set; }
         }
 
         /// <inheritdoc/>
