@@ -2,7 +2,7 @@
   <ng-container *waitForMonitor="getActionMonitor">
     <div class="steward-layout-pane steward-layout-main-group">
       <mat-card>
-        <mat-card-title>Welcome Center Schedule</mat-card-title>
+        <mat-card-title>Builder's Cup Schedule</mat-card-title>
         <div class="calendar-header">
           <div>
             <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
@@ -47,8 +47,10 @@
             [viewDate]="viewDate"
             [events]="events"
             [cellTemplate]="customDayCellTemplate"
-            (beforeViewRender)="beforeMonthViewRender($event)"
+            
           >
+          <!-- [cellTemplate]="customDayCellTemplate" -->
+          <!-- (beforeViewRender)="beforeMonthViewRender($event)" -->
           </mwl-calendar-month-view>
           <mwl-calendar-week-view
             *ngSwitchCase="CalendarView.Week"
@@ -71,6 +73,25 @@
 </div>
 
 <ng-template #customDayCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-badge">
+      {{ day.events.length }}
+    </span>
+    <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
+  </div>
+  <div class="cell-totals">
+    <div class="shrink-wrap">
+      <div
+        *ngFor="let event of day.events"
+        matTooltip="{{ event.name }}"
+      >
+        {{ event.title }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- <ng-template #customDayCellTemplate let-day="day" let-locale="locale">
   <div class="cal-cell-top">
     <span class="cal-day-badge">
       {{ day.eventGroups[0].events.length }} | {{ day.eventGroups[1].events.length }} |
@@ -116,7 +137,7 @@
       </div>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 
 <!-- "weekEvent" comes from Angular Calendar and cannot be changed -->
 <ng-template

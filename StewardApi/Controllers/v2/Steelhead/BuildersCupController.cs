@@ -83,6 +83,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var featuredTours = this.mapper.SafeMap<IList<BuildersCupFeaturedTour>>(featuredCupData.ChampionshipLadder);
 
+            // Temp code used to generate timeframes for tours while the live data isn't yet set up.
+            var counter = 0;
+            foreach (var tour in featuredTours)
+            {
+                tour.OpenTimeUtc = DateTime.UtcNow.AddMonths(counter++);
+                tour.CloseTimeUtc = tour.OpenTimeUtc.AddMonths(1);
+            }
+
             return this.Ok(featuredTours);
         }
     }

@@ -3,11 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { WelcomeCenterTileSize } from '@models/welcome-center';
-import {
-  SteelheadWelcomeCenterService,
-  WelcomeCenter,
-  WelcomeCenterColumn,
-} from '@services/api-v2/steelhead/welcome-center/steelhead-welcome-center.service';
+import { BuildersCupFeaturedTour, SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DomainEnumPrettyPrintOrHumanizePipe } from '@shared/pipes/domain-enum-pretty-print-or-humanize.pipe';
@@ -19,18 +15,15 @@ import {
   collapseAnimation,
 } from 'angular-calendar';
 import { keys } from 'lodash';
+import { DateTime } from 'luxon';
 import { takeUntil } from 'rxjs';
 
 export interface BuildersCupMeta {
-  column: WelcomeCenterColumn;
-  size: WelcomeCenterTileSize;
-  weekTooltip: string;
-  dayTooltip: string;
-  title: string;
-  friendlyName: string;
-  tileType: string;
+  name: string;
   description: string;
-  displayConditions: object;
+  openTimeUtc: DateTime;
+  closeTimeUtc: DateTime;
+  isDisabled: boolean;
   cssClass: string;
 }
 
@@ -53,7 +46,7 @@ export type StewardBuildersCupMonthViewDay<T> = CalendarMonthViewDay<T> & {
 })
 export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent implements OnInit {
   public getActionMonitor = new ActionMonitor('GET car details');
-  public welcomeCenter: WelcomeCenter;
+  public buildersCupSchedule: BuildersCupFeaturedTour[];
   public gameTitle: GameTitle;
 
   public view: CalendarView = CalendarView.Month;
@@ -63,7 +56,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
   public events: CalendarEvent[];
 
   constructor(
-    private readonly welcomeCenterService: SteelheadWelcomeCenterService,
+    private readonly buildersCupService: SteelheadBuildersCupService,
     private readonly deppoh: DomainEnumPrettyPrintOrHumanizePipe,
     private readonly dialog: MatDialog,
   ) {
@@ -72,16 +65,16 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    if (!this.welcomeCenterService) {
-      throw new Error('No service is defined for Welcome Center Calendar.');
+    if (!this.buildersCupService) {
+      throw new Error('No service is defined for Builder\'s Cup Calendar.');
     }
 
-    this.welcomeCenterService
-      .getWelcomeCenterTiles$()
+    this.buildersCupService
+      .getBuildersCupSchedule$()
       .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(welcomeCenter => {
-        this.welcomeCenter = welcomeCenter;
-        this.events = this.makeEvents(this.welcomeCenter);
+      .subscribe(buildersCupSchedule => {
+        this.buildersCupSchedule = buildersCupSchedule;
+        this.events = this.makeEvents(this.buildersCupSchedule);
       });
   }
 
@@ -97,83 +90,51 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
     // });
   }
 
-  /** Counts number of tiles needed to display a column. */
-  public countTiles(tiles: CalendarEvent<BuildersCupMeta>[]): number {
-    let total = 0;
-    tiles.forEach(tile => {
-      const tileCount = tile.meta.size === WelcomeCenterTileSize.Large ? 2 : 1;
-      total = total + tileCount;
-    });
-
-    return total;
-  }
-
   /** Angular Calendar hook to group tiles by column. */
-  public beforeMonthViewRender(event: CalendarMonthViewBeforeRenderEvent): void {
-    const calendarBody = event.body as StewardBuildersCupMonthViewDay<BuildersCupMeta>[];
-    calendarBody.forEach(cell => {
-      const groups = {};
-      cell.events.forEach((event: CalendarEvent<BuildersCupMeta>) => {
-        groups[event.meta.column] = groups[event.meta.column] ?? [];
-        groups[event.meta.column].push(event);
-      });
+  // public beforeMonthViewRender(event: CalendarMonthViewBeforeRenderEvent): void {
+  //   const calendarBody = event.body as StewardBuildersCupMonthViewDay<BuildersCupMeta>[];
+  //   calendarBody.forEach(cell => {
+  //     const groups = {};
+  //     cell.events.forEach((event: CalendarEvent<BuildersCupMeta>) => {
+  //       groups[event.meta.column] = groups[event.meta.column] ?? [];
+  //       groups[event.meta.column].push(event);
+  //     });
 
-      keys(groups).forEach(key => {
-        const group = groups[key];
-        group;
-      });
+  //     keys(groups).forEach(key => {
+  //       const group = groups[key];
+  //       group;
+  //     });
 
-      const eventGroups = Object.entries(groups).map(entry => {
-        return {
-          name: entry[0],
-          events: entry[1],
-          tileCount: this.countTiles(entry[1] as CalendarEvent<BuildersCupMeta>[]),
-        } as TileEventGroup<BuildersCupMeta>;
-      });
+  //     const eventGroups = Object.entries(groups).map(entry => {
+  //       return {
+  //         name: entry[0],
+  //         events: entry[1],
+  //         tileCount: this.countTiles(entry[1] as CalendarEvent<BuildersCupMeta>[]),
+  //       } as TileEventGroup<BuildersCupMeta>;
+  //     });
 
-      cell.eventGroups = eventGroups;
-    });
-  }
+  //     cell.eventGroups = eventGroups;
+  //   });
+  // }
 
-  /** Converts Racer's Cup Schedule information into Calendar Events. */
-  private makeEvents(welcomeCenter: WelcomeCenter): CalendarEvent[] {
+  /** Converts Builders's Cup Schedule information into Calendar Events. */
+  private makeEvents(featuredTours: BuildersCupFeaturedTour[]): CalendarEvent[] {
     let events: CalendarEvent<BuildersCupMeta>[] = [];
+    events = [];
 
-    events = events.concat(this.convertColumnToEventArray(welcomeCenter, WelcomeCenterColumn.Left));
-    events = events.concat(
-      this.convertColumnToEventArray(welcomeCenter, WelcomeCenterColumn.Center),
-    );
-    events = events.concat(
-      this.convertColumnToEventArray(welcomeCenter, WelcomeCenterColumn.Right),
-    );
-
-    return events;
-  }
-
-  private convertColumnToEventArray(
-    welcomeCenter: WelcomeCenter,
-    column: WelcomeCenterColumn,
-  ): CalendarEvent<BuildersCupMeta>[] {
-    const events: CalendarEvent<BuildersCupMeta>[] = [];
-    for (const tile of welcomeCenter[column]) {
+    featuredTours.forEach(tour => {
       const newEvent: CalendarEvent<BuildersCupMeta> = {
-        start: new Date('01/01/2001'), // TODO: Waiting on update from Madden on source of truth for tile display times.
-        end: new Date('01/01/2101'), // TODO: Waiting on update from Madden on source of truth for tile display times.
-        title: `${tile.tileTitle}`,
-        cssClass: `event-column-${column}`,
+        start: tour.openTimeUtc.toJSDate(),
+        end: tour.closeTimeUtc.toJSDate(),
+        title: `${tour.name}`,
+        cssClass: ``,
         meta: {
-          title: tile.tileTitle,
-          friendlyName: tile.tileFriendlyName,
-          tileType: tile.tileTypeV3,
-          description: tile.tileDescription,
-          displayConditions: tile.displayConditionDataList,
-          column: column,
-          size: tile.size,
-          cssClass: `tile ${tile.size.toString().toLowerCase()} ${column}`,
-          weekTooltip: `${this.deppoh.transform(column)} Column: ${tile.tileTitle} \r\n (${
-            tile.tileFriendlyName
-          }) \r\n ${tile.tileDescription}`,
-          dayTooltip: `${tile.tileTitle} \r\n ${tile.tileFriendlyName} \r\n ${tile.tileDescription}`,
+          name: tour.name,
+          description: tour.description,
+          openTimeUtc: tour.openTimeUtc,
+          closeTimeUtc: tour.closeTimeUtc,
+          isDisabled: tour.isDisabled,
+          cssClass: '',
         },
         allDay: false,
         resizable: {
@@ -181,10 +142,10 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
           afterEnd: false,
         },
         draggable: false,
-      };
+      }
 
       events.push(newEvent);
-    }
+    });
 
     return events;
   }

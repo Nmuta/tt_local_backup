@@ -9,20 +9,20 @@ export interface BuildersCupFeaturedTour {
   name: string;
   description: string;
   isDisabled: boolean;
-  openTime: DateTime;
-  closeTime: DateTime;
+  openTimeUtc: DateTime;
+  closeTimeUtc: DateTime;
 }
 
-/** The /v2/steelhead/welcomeCenter endpoints. */
+/** The /v2/steelhead/buildersCup endpoints. */
 @Injectable({
   providedIn: 'root',
 })
-export class SteelheadWelcomeCenterService {
-  private basePath: string = 'title/steelhead/buildersCup/schedule';
+export class SteelheadBuildersCupService {
+  private basePath: string = 'title/steelhead/buildersCup';
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the Steelhead lsp groups. */
   public getBuildersCupSchedule$(): Observable<BuildersCupFeaturedTour[]> {
-    return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}`);
+    return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}/schedule`);
   }
 }
