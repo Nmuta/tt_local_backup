@@ -2,18 +2,13 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { GameTitleCodeName } from '@models/enums';
-import { GravityPlayerDetails } from '@models/gravity';
 import { OpusPlayerDetails } from '@models/opus';
 import { SunrisePlayerDetails } from '@models/sunrise';
 import BigNumber from 'bignumber.js';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 
-type PlayerDetailsTitleUnion =
-  | OpusPlayerDetails
-  | GravityPlayerDetails
-  | ApolloPlayerDetails
-  | SunrisePlayerDetails;
+type PlayerDetailsTitleUnion = OpusPlayerDetails | ApolloPlayerDetails | SunrisePlayerDetails;
 type RequiredPlayerDetailsFields = { xuid: BigNumber };
 
 /**
@@ -24,7 +19,6 @@ type RequiredPlayerDetailsFields = { xuid: BigNumber };
 type PlayerDetailsUnion = RequiredPlayerDetailsFields & PlayerDetailsTitleUnion;
 
 type PlayerDetailsTitleIntersection = OpusPlayerDetails &
-  GravityPlayerDetails &
   ApolloPlayerDetails &
   SunrisePlayerDetails;
 

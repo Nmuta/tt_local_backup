@@ -95,6 +95,7 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
 
   public getPermissionsActionMonitor = new ActionMonitor('GET permision attributes');
   public titleEnvironments: TitleEnvironments = {
+    [GameTitle.Forte]: [],
     [GameTitle.FM8]: [],
     [GameTitle.FM7]: [],
     [GameTitle.FH5]: [],
@@ -316,10 +317,12 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
             latest.Apollo.length > 0 &&
             latest.Sunrise.length > 0 &&
             latest.Woodstock.length > 0 &&
-            latest.Steelhead.length > 0
+            latest.Steelhead.length > 0 &&
+            latest.Forte.length > 0
           );
         }),
         tap(latest => {
+          this.titleEnvironments[GameTitle.Forte] = latest.Forte;
           this.titleEnvironments[GameTitle.FM8] = latest.Steelhead;
           this.titleEnvironments[GameTitle.FM7] = latest.Apollo;
           this.titleEnvironments[GameTitle.FH5] = latest.Woodstock;

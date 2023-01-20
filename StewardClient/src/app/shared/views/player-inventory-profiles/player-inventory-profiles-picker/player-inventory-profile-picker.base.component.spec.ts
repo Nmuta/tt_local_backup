@@ -1,8 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
-import { IdentityResultUnion } from '@models/identity-query.model';
+import { IdentityResultAlpha, IdentityResultUnion } from '@models/identity-query.model';
 import { ApolloPlayerInventoryProfilePickerComponent } from '../apollo/apollo-player-inventory-profile-picker.component';
-import { GravityPlayerInventoryProfilePickerComponent } from '../gravity/gravity-player-inventory-profile-picker.component';
 import { OpusPlayerInventoryProfilePickerComponent } from '../opus/opus-player-inventory-profile-picker.component';
 import { SunrisePlayerInventoryProfilePickerComponent } from '../sunrise/sunrise-player-inventory-profile-picker.component';
 import { SteelheadPlayerInventoryProfilePickerComponent } from '../steelhead/steelhead-player-inventory-profile-picker.component';
@@ -13,7 +12,6 @@ type AcceptableComponents =
   | SteelheadPlayerInventoryProfilePickerComponent
   | SunrisePlayerInventoryProfilePickerComponent
   | ApolloPlayerInventoryProfilePickerComponent
-  | GravityPlayerInventoryProfilePickerComponent
   | OpusPlayerInventoryProfilePickerComponent;
 
 /** Performs common behavior testing for Player Inventory Profile Pickers. */
@@ -50,7 +48,7 @@ export function baseTests<
 
         component.profileChange.emit = jasmine.createSpy('profileChange.emit');
 
-        component.identity = makeIdentityFn();
+        component.identity = makeIdentityFn() as IdentityResultAlpha;
         component.ngOnChanges({ identity: new SimpleChange(null, component.identity, true) });
         fixture.detectChanges();
       });

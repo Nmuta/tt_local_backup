@@ -1,0 +1,17 @@
+<ng-container *ngIf="identity && !identity?.error; else noIdentity">
+  <h1><player-identity-results [identity]="identity"></player-identity-results></h1>
+  <section>
+    <p>Test page for Forte</p>
+  </section>
+</ng-container>
+
+<ng-template #noIdentity>
+  <h1 *ngIf="lookupName">Finding {{ lookupName }} by {{ lookupType | humanize }}</h1>
+  <h1 *ngIf="!lookupName">Waiting for {{ lookupType | humanize }}</h1>
+  <ng-container *ngIf="identity?.error">
+    <hr />
+    <h2>Request failed</h2>
+    <p>If this keeps happening, contact support.</p>
+    <json-dump [input]="identity?.error">View error</json-dump>
+  </ng-container>
+</ng-template>

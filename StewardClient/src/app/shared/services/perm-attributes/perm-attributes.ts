@@ -1,5 +1,6 @@
 /** List of all perm attributes. */
 export enum PermAttributeName {
+  TitleAccess = 'TitleAccess',
   AddLocalizedString = 'AddLocalizedString',
   AddProfileNote = 'AddProfileNote',
   AdminFeature = 'AdminFeature',

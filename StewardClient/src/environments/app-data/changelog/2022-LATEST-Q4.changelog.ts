@@ -8,6 +8,26 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '4c8edbfe-1da0-4b3b-b9ec-7e457dc00f2d',
+      shortText: 'Add game options display to Racers Cup event details',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'c5bce92e-b97c-41d0-b580-917f32638e9e',
+      shortText: 'Expand V2 permission management to support title/environment access',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '088d7447-dd86-4714-8fad-13b35190b1cb',
+      shortText: 'Remove all of gravity from UI and API',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '96c72166-8cc4-4cd3-802d-729186831366',
+      shortText: 'Auto route home page to tools if user is not in Zendesk',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterCalendar },
       uuid: 'c9f754d0-1344-4636-bc29-a5cc804d62c6',
       shortText: 'Add day-view modal to Welcome Center Calendar',

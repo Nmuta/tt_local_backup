@@ -54,7 +54,6 @@ export interface RacersCupGameOptions {
   midRaceWeatherCondition: RacersCupWeatherCondition;
   endRaceWeatherCondition: RacersCupWeatherCondition;
   eventSessionType: RacersCupEventSessionType;
-  carRestrictions: RacersCupCarClassId;
 }
 
 /** Interface for Racer's Cup Weather Condition. */

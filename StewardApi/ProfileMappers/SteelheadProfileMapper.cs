@@ -383,13 +383,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.QualificationLimitType, opt => opt.MapFrom(src => src.QualificationLimitType))
                 .ForMember(dest => dest.NumberOfLimitedLaps, opt => opt.MapFrom(src => src.NumLimitedLaps))
                 .ForMember(dest => dest.IsOneShot, opt => opt.MapFrom(src => src.IsOneShot));
+            this.CreateMap<SteelheadLiveOpsContent.GameOptions, RacersCupGameOptions>()
+                .ForMember(dest => dest.StartRaceWeatherCondition, opt => opt.MapFrom(src => src.StartRaceWeatherConditionId))
+                .ForMember(dest => dest.MidRaceWeatherCondition, opt => opt.MapFrom(src => src.MidRaceWeatherConditionId))
+                .ForMember(dest => dest.EndRaceWeatherCondition, opt => opt.MapFrom(src => src.EndRaceWeatherConditionId))
+                .ReverseMap();
+            this.CreateMap<SteelheadLiveOpsContent.WeatherCondition, RacersCupWeatherCondition>()
+                .ReverseMap();
+            this.CreateMap<SteelheadLiveOpsContent.EWeatherConditionType, RacersCupWeatherConditionType>();
 
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
-                .ForMember(dest => dest.OpenTime, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTime, opt => opt.MapFrom(src => src.CloseTime));
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime));
 
             this.CreateMap<GitPullRequest, PullRequest>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.PullRequestId))

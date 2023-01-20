@@ -66,7 +66,7 @@ describe('KustoService', () => {
     const query: KustoQuery = {
       id: faker.datatype.uuid(),
       name: 'Test Kusto Query',
-      title: GameTitleCodeName.Street,
+      title: GameTitleCodeName.FH5,
       query: faker.random.words(10),
     };
 
@@ -88,7 +88,7 @@ describe('KustoService', () => {
     const query: KustoQuery = {
       id: undefined,
       name: 'Test Kusto Query',
-      title: GameTitleCodeName.Street,
+      title: GameTitleCodeName.FH5,
       query: faker.random.words(10),
     };
     const queryEditId: GuidLikeString = faker.datatype.uuid();
@@ -112,7 +112,7 @@ describe('KustoService', () => {
     const query: KustoQuery = {
       id: faker.datatype.uuid(),
       name: 'Test Kusto Query',
-      title: GameTitleCodeName.Street,
+      title: GameTitleCodeName.FH5,
       query: faker.random.words(10),
     };
 

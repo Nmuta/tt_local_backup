@@ -19,9 +19,9 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
 
 /** Test class for {@link LocalizedIndividualMessagingManagementContract}. */
 class TestNotificationManagementService implements LocalizedIndividualMessagingManagementContract {
-  public gameTitle: GameTitle.Street;
+  public gameTitle: GameTitle.FH5;
   public selectLocalizedStringService: SelectLocalizedStringContract = {
-    gameTitle: GameTitle.Street,
+    gameTitle: GameTitle.FH5,
     /** Get localized strings. */
     getLocalizedStrings$(): Observable<LocalizedStringsMap> {
       return of(null);

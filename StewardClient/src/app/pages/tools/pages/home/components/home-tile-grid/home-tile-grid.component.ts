@@ -42,9 +42,6 @@ export class ToolsAppHomeTileGridComponent extends BaseComponent implements OnIn
 
   public parentRoute: string = '/app/tools/';
 
-  /** True when app is running inside of Zendesk. */
-  public isInZendesk: boolean = false;
-
   constructor(private readonly store: Store, private readonly zendeskService: ZendeskService) {
     super();
   }
@@ -56,10 +53,6 @@ export class ToolsAppHomeTileGridComponent extends BaseComponent implements OnIn
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.zendeskService.inZendesk$.pipe(takeUntil(this.onDestroy$)).subscribe(inZendesk => {
-      this.isInZendesk = inZendesk;
-    });
-
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
       this.userRole = profile.role;
       // The state replaces profile.role with profile.liveOpsAdminSecondaryRole to trick the app.

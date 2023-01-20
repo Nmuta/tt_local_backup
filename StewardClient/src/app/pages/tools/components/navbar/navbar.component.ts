@@ -21,7 +21,7 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { BaseComponent } from '@components/base-component/base.component';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import {
   SetNavbarTools,
   ThemeEnvironmentWarningOptions,
@@ -54,9 +54,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   public notificationCount = null;
   public notificationColor: ThemePalette = undefined;
 
-  /** True when app is running inside of Zendesk. */
-  public isInZendesk: boolean = false;
-
   /** The set Environment Warning Option. */
   public get environmentWarningOption(): ThemeEnvironmentWarningOptions {
     return this.theme.themeEnvironmentWarning;
@@ -80,10 +77,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
    * TODO: Remove when Kusto feature is ready.
    */
   public ngOnInit(): void {
-    this.zendeskService.inZendesk$.pipe(takeUntil(this.onDestroy$)).subscribe(inZendesk => {
-      this.isInZendesk = inZendesk;
-    });
-
     this.notificationsService.initialize();
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.role = profile?.role;
@@ -126,9 +119,9 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     return `${this.windowService.location().pathname}${this.windowService.location().search}`;
   }
 
-  /** Emits true when we are missing zendesk. */
+  /** Emits true when we are missing zendesk AND in an iframe. */
   public get missingZendesk$(): Observable<boolean> {
-    return this.zendeskService.missingZendesk$;
+    return this.zendeskService.inZendesk$.pipe(map(v => !v && this.windowService.isInIframe));
   }
 
   /** Configures the navbar with sensible defaults for a given role. */
