@@ -162,7 +162,7 @@
     [tooltipAppendToBody]="tooltipAppendToBody"
     [tooltipDelay]="tooltipDelay"
   >
-    <div class="badge day-event-badge multiline-tooltip">
+    <div class="badge day-event-badge">
       {{ dayEvent.event.meta?.eventNameClean }}
     </div>
   </div>
@@ -182,7 +182,7 @@
   let-locale="locale"
 >
   <div
-    class="cal-event week-view-event multiline-tooltip"
+    class="cal-event week-view-event"
     [mwlCalendarTooltip]="!tooltipDisabled ? weekEvent.event.meta.weekTooltip : ''"
     [tooltipPlacement]="tooltipPlacement"
     [tooltipEvent]="weekEvent.event"

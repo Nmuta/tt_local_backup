@@ -21,7 +21,7 @@ export class SteelheadBuildersCupService {
   private basePath: string = 'title/steelhead/buildersCup';
   constructor(private readonly api: ApiV2Service) {}
 
-  /** Gets the Steelhead lsp groups. */
+  /** Gets the Steelhead Builder's Cup featured content schedule. */
   public getBuildersCupSchedule$(): Observable<BuildersCupFeaturedTour[]> {
     return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}/schedule`);
   }

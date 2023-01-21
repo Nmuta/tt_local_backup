@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
-import { WelcomeCenterTileSize } from '@models/welcome-center';
 import { BuildersCupFeaturedTour, SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -14,7 +13,6 @@ import {
   CalendarView,
   collapseAnimation,
 } from 'angular-calendar';
-import { keys } from 'lodash';
 import { DateTime } from 'luxon';
 import { takeUntil } from 'rxjs';
 
@@ -24,7 +22,6 @@ export interface BuildersCupMeta {
   openTimeUtc: DateTime;
   closeTimeUtc: DateTime;
   isDisabled: boolean;
-  cssClass: string;
 }
 
 export interface TileEventGroup<T> {
@@ -37,7 +34,7 @@ export type StewardBuildersCupMonthViewDay<T> = CalendarMonthViewDay<T> & {
   eventGroups: TileEventGroup<T>[];
 };
 
-/** The Steelhead Welcome Center Calendar View page. */
+/** The Steelhead Builder's Cup Calendar View page. */
 @Component({
   templateUrl: './steelhead-builders-cup-calendar-view.component.html',
   styleUrls: ['./steelhead-builders-cup-calendar-view.component.scss'],
@@ -119,8 +116,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
 
   /** Converts Builders's Cup Schedule information into Calendar Events. */
   private makeEvents(featuredTours: BuildersCupFeaturedTour[]): CalendarEvent[] {
-    let events: CalendarEvent<BuildersCupMeta>[] = [];
-    events = [];
+    const events: CalendarEvent<BuildersCupMeta>[] = [];
 
     featuredTours.forEach(tour => {
       const newEvent: CalendarEvent<BuildersCupMeta> = {
@@ -134,7 +130,6 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
           openTimeUtc: tour.openTimeUtc,
           closeTimeUtc: tour.closeTimeUtc,
           isDisabled: tour.isDisabled,
-          cssClass: '',
         },
         allDay: false,
         resizable: {
