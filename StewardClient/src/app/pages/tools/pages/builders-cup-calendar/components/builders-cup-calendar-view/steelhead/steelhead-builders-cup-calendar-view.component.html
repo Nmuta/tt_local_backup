@@ -84,6 +84,7 @@
       <div
         *ngFor="let event of day.events"
         matTooltip="{{ event.name }}"
+        class="{{event.cssClass}}"
       >
         {{ event.title }}
       </div>

@@ -1,4 +1,5 @@
 @import '/src/styles/mixins';
+@import '../../../styles/builders-cup-unique-colors.scss';
 
 ::ng-deep .multiline-tooltip.multiline-tooltip.multiline-tooltip {
   white-space: pre-line;

@@ -13,6 +13,7 @@ import {
   CalendarView,
   collapseAnimation,
 } from 'angular-calendar';
+import { indexOf } from 'lodash';
 import { DateTime } from 'luxon';
 import { takeUntil } from 'rxjs';
 
@@ -123,7 +124,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
         start: tour.openTimeUtc.toJSDate(),
         end: tour.closeTimeUtc.toJSDate(),
         title: `${tour.name}`,
-        cssClass: ``,
+        cssClass: `unique-left-border-color-${indexOf(featuredTours, tour)+1}-of-${featuredTours.length}`,
         meta: {
           name: tour.name,
           description: tour.description,
