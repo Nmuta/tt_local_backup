@@ -74,7 +74,7 @@
 
 <ng-template #customDayCellTemplate let-day="day" let-locale="locale">
   <div class="cal-cell-top">
-    <span class="cal-day-badge">
+    <span *ngIf="day.events.length > 0" class="cal-day-badge">
       {{ day.events.length }}
     </span>
     <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
