@@ -38,6 +38,12 @@ export interface FilterChip {
   type: FilterType;
 }
 
+type FilteredTiles = {
+  all: HomeTileInfoForNav[];
+  filtered: HomeTileInfoForNav[];
+  rejected: HomeTileInfoForNav[];
+};
+
 /** The home page to rule them all. */
 @Component({
   templateUrl: './home.component.html',
@@ -52,10 +58,17 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   public isEnabled: Partial<Record<NavbarTool, number>> = {};
   public userRole: UserRole;
 
-  public possibleNavbarItems: HomeTileInfoForNav[] = [];
-  public filteredPossibleNavbarItems: HomeTileInfoForNav[] = [];
-  public rejectedPossibleNavbarItems: HomeTileInfoForNav[] = [];
-  public unauthorizedNavbarItems: HomeTileInfoForNav[] = [];
+  public availableTiles: FilteredTiles = {
+    all: [],
+    filtered: [],
+    rejected: [],
+  };
+
+  public unauthorizedTiles: FilteredTiles = {
+    all: [],
+    filtered: [],
+    rejected: [],
+  };
 
   // Bits and bobs used for sorting below
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
@@ -117,17 +130,17 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
           return !tool.hasAccess && !shouldHide;
         });
-        this.possibleNavbarItems = toolsList
+        this.availableTiles.all = toolsList
           .filter(tool => tool.hasAccess)
           .map(tool => {
             return setExternalLinkTarget(tool);
           });
 
-        this.possibleNavbarItems = [...this.possibleNavbarItems, ...unauthorizedNavbarItems];
-        this.unauthorizedNavbarItems = unauthorizedNavbarItems;
+        this.unauthorizedTiles.all = unauthorizedNavbarItems;
 
         this.parseRoute();
-        this.filterTiles();
+        this.filterTiles(this.availableTiles);
+        this.filterTiles(this.unauthorizedTiles);
       });
 
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
@@ -139,7 +152,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   /** Remove all filters for tiles. */
   public clearFilters(): void {
     this.filters = [];
-    this.filterTiles();
+    this.filterTiles(this.availableTiles);
+    this.filterTiles(this.unauthorizedTiles);
   }
 
   /** Add filter for tiles. */
@@ -164,7 +178,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       // Assume that if the input is typed in, it's a text search
       this.filters.push({ value: value, type: FilterType.Text });
 
-      this.filterTiles();
+      this.filterTiles(this.availableTiles);
+      this.filterTiles(this.unauthorizedTiles);
     }
 
     // Clear the input value
@@ -181,7 +196,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
     if (index >= 0) {
       this.filters.splice(index, 1);
-      this.filterTiles();
+      this.filterTiles(this.availableTiles);
+      this.filterTiles(this.unauthorizedTiles);
       this.updateRoute(this.filters);
     }
   }
@@ -204,7 +220,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     }
 
     this.filters.push(selectedFilter);
-    this.filterTiles();
+    this.filterTiles(this.availableTiles);
+    this.filterTiles(this.unauthorizedTiles);
 
     //clear the input value
     this.filterControl.setValue(null);
@@ -225,14 +242,14 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   }
 
   /** Bucketize tiles based on filter list. */
-  private filterTiles(): void {
+  private filterTiles(tilesToFilter: FilteredTiles): void {
     if (this.filters.length <= 0) {
-      this.filteredPossibleNavbarItems = this.possibleNavbarItems;
-      this.rejectedPossibleNavbarItems = [];
+      tilesToFilter.filtered = tilesToFilter.all;
+      tilesToFilter.rejected = [];
       return;
     }
 
-    this.filteredPossibleNavbarItems = this.possibleNavbarItems.filter(tile => {
+    tilesToFilter.filtered = tilesToFilter.all.filter(tile => {
       // Filter by title
       const titleFilters = this.filters.filter(filter => {
         return filter.type == FilterType.Title;
@@ -266,8 +283,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       return passesTitleCheck && passesTextCheck;
     });
 
-    this.rejectedPossibleNavbarItems = this.possibleNavbarItems.filter(
-      item => !this.filteredPossibleNavbarItems.includes(item),
+    tilesToFilter.rejected = tilesToFilter.all.filter(
+      item => !tilesToFilter.filtered.includes(item),
     );
   }
 

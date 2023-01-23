@@ -31,6 +31,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ToolsAppHomeTileGridComponent } from './pages/home/components/home-tile-grid/home-tile-grid.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 /** A module for all tools, with a configurable navbar. */
 @NgModule({
@@ -73,6 +74,7 @@ import { ToolsAppHomeTileGridComponent } from './pages/home/components/home-tile
     MatInputModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatTabsModule,
     ReactiveFormsModule,
   ],
 })

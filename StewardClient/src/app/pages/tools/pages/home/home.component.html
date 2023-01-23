@@ -45,22 +45,44 @@
   </div>
 </div>
 
-<home-tile-grid [tiles]="filteredPossibleNavbarItems"></home-tile-grid>
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Your Tools <mat-chip color="accent" selected>{{ availableTiles.filtered?.length }}</mat-chip>
+    </ng-template>
 
-<div *ngIf="rejectedPossibleNavbarItems.length > 0" class="horizontal-divider">
-  <span>Tiles below do not match filters</span>
-</div>
+    <home-tile-grid
+      *ngIf="availableTiles.filtered?.length > 0; else noResultsTemplate"
+      [tiles]="availableTiles.filtered"
+    ></home-tile-grid>
+    <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
+      <span>Tiles below do not match filters</span>
+    </div>
+    <home-tile-grid
+      *ngIf="availableTiles.rejected?.length > 0"
+      [tiles]="availableTiles.rejected"
+    ></home-tile-grid>
+  </mat-tab>
 
-<home-tile-grid
-  *ngIf="rejectedPossibleNavbarItems.length > 0"
-  [tiles]="rejectedPossibleNavbarItems"
-></home-tile-grid>
+  <mat-tab label="Disabled Tools">
+    <ng-template mat-tab-label>
+      Disabled Tools
+      <mat-chip color="accent" selected>{{ unauthorizedTiles.filtered?.length }}</mat-chip>
+    </ng-template>
+    <home-tile-grid
+      *ngIf="unauthorizedTiles.filtered?.length > 0; else noResultsTemplate"
+      [tiles]="unauthorizedTiles.filtered"
+    ></home-tile-grid>
+    <div *ngIf="unauthorizedTiles.rejected?.length > 0" class="horizontal-divider">
+      <span>Tiles below do not match filters</span>
+    </div>
+    <home-tile-grid
+      *ngIf="unauthorizedTiles.rejected?.length > 0"
+      [tiles]="unauthorizedTiles.rejected"
+    ></home-tile-grid>
+  </mat-tab>
+</mat-tab-group>
 
-<div *ngIf="unauthorizedNavbarItems.length > 0" class="horizontal-divider">
-  <span>Tiles below are inaccessible due to permissions</span>
-</div>
-
-<home-tile-grid
-  *ngIf="unauthorizedNavbarItems.length > 0"
-  [tiles]="unauthorizedNavbarItems"
-></home-tile-grid>
+<ng-template #noResultsTemplate>
+  <div class="no-results-container">No results found</div>
+</ng-template>
