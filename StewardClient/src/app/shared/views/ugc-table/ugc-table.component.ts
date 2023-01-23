@@ -255,6 +255,7 @@ export abstract class UgcTableBaseComponent
           ugcIds.splice(index, 1);
         });
         // Remove hidden ugcs from the table
+        // The ugcTableDataSource data property is a reference to this.content
         ugcIds.forEach(ugcId => {
           const index = this.content.findIndex(x => x.id == ugcId);
           this.content.splice(index, 1);

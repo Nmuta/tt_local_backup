@@ -94,7 +94,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            var jobId = await this.AddJobIdToHeaderAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Hide Multiple Ugc.").ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Hide Multiple Ugc.").ConfigureAwait(true);
+            this.AddJobIdToResponseHeaders(jobId);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -129,16 +130,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
             return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
     }
 }
