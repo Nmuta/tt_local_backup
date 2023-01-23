@@ -17,6 +17,7 @@ import {
   PermissionAttributeList,
   PermissionsService,
 } from '@services/api-v2/permissions/permissions.service';
+import { V2UsersService } from '@services/api-v2/users/users.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { UserService } from '@services/user';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -93,6 +94,7 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
   public selectUserToManage$ = new Subject<UserModelWithPermissions>();
   public nameFilterFormControl = new FormControl(null);
 
+  public postSyncUsersDbActionMonitor = new ActionMonitor('POST sync users DB');
   public getPermissionsActionMonitor = new ActionMonitor('GET permision attributes');
   public titleEnvironments: TitleEnvironments = {
     [GameTitle.Forte]: [],
@@ -134,6 +136,7 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
   constructor(
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
+    private readonly v2UsersService: V2UsersService,
     private readonly permissionsService: PermissionsService,
   ) {
     super();
@@ -294,7 +297,19 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
   /** Whether the node has a child */
   public hasChild = (_: number, _nodeData: AttributeTreeFlatNode) => _nodeData.expandable;
 
+  /** Syncs the user DB. */
+  public syncUsersDb(): void {
+    this.postSyncUsersDbActionMonitor = this.postSyncUsersDbActionMonitor.repeat();
+    this.v2UsersService
+      .syncDb$()
+      .pipe(this.postSyncUsersDbActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.initStewardUsersList();
+      });
+  }
+
   private initStewardUsersList(): void {
+    this.getUsersActionMonitor = this.getUsersActionMonitor.repeat();
     this.userService
       .getAllStewardUsers$()
       .pipe(this.getUsersActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
