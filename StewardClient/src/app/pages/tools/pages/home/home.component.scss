@@ -54,11 +54,17 @@ mat-chip.filter-type-text.filter-type-text.filter-type-text {
 
 .no-results-container {
   margin: $gap-large * 2 0;
-  font-size: 20px;
+  font-size: $font-size-navbar;
 }
 
 .mat-chip {
   margin-left: $gap-small;
+}
+
+.disabled-tools-info {
+  text-align: center;
+  font-size: $font-size-navbar;
+  margin: $gap-large;
 }
 
 .app-tiles-wrapper {

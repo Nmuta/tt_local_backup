@@ -152,6 +152,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   public clearFilters(): void {
     this.filters = [];
     this.filterAllTiles();
+    this.updateRoute(this.filters);
   }
 
   /** Add filter for tiles. */

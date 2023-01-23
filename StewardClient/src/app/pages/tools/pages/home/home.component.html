@@ -48,7 +48,10 @@
 <mat-tab-group>
   <mat-tab>
     <ng-template mat-tab-label>
-      Your Tools <mat-chip color="accent" [selected]="availableTiles.filtered?.length > 0">{{ availableTiles.filtered?.length }}</mat-chip>
+      Your Tools
+      <mat-chip color="accent" [selected]="availableTiles.filtered?.length > 0">{{
+        availableTiles.filtered?.length
+      }}</mat-chip>
     </ng-template>
 
     <home-tile-grid
@@ -56,7 +59,7 @@
       [tiles]="availableTiles.filtered"
     ></home-tile-grid>
     <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
-      <span>Tiles below do not match filters</span>
+      <span>Tools below do not match filters</span>
     </div>
     <home-tile-grid
       *ngIf="availableTiles.rejected?.length > 0"
@@ -64,17 +67,20 @@
     ></home-tile-grid>
   </mat-tab>
 
-  <mat-tab label="Disabled Tools">
+  <mat-tab>
     <ng-template mat-tab-label>
-      Unauthorized Tools
-      <mat-chip color="accent" [selected]="unauthorizedTiles.filtered?.length > 0">{{ unauthorizedTiles.filtered?.length }}</mat-chip>
+      Disabled Tools
+      <mat-chip color="accent" [selected]="unauthorizedTiles.filtered?.length > 0">{{
+        unauthorizedTiles.filtered?.length
+      }}</mat-chip>
     </ng-template>
+    <div class="disabled-tools-info">Tools below are disabled due to lack of permissions.</div>
     <home-tile-grid
       *ngIf="unauthorizedTiles.filtered?.length > 0; else noResultsTemplate"
       [tiles]="unauthorizedTiles.filtered"
     ></home-tile-grid>
     <div *ngIf="unauthorizedTiles.rejected?.length > 0" class="horizontal-divider">
-      <span>Tiles below do not match filters</span>
+      <span>Tools below do not match filters</span>
     </div>
     <home-tile-grid
       *ngIf="unauthorizedTiles.rejected?.length > 0"
@@ -84,5 +90,5 @@
 </mat-tab-group>
 
 <ng-template #noResultsTemplate>
-  <div class="no-results-container">No results found</div>
+  <div class="no-results-container">No tools found matching filters...</div>
 </ng-template>
