@@ -2,18 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
-import { BuildersCupFeaturedTour, SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
+import {
+  BuildersCupFeaturedTour,
+  SteelheadBuildersCupService,
+} from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DomainEnumPrettyPrintOrHumanizePipe } from '@shared/pipes/domain-enum-pretty-print-or-humanize.pipe';
 import {
   CalendarEvent,
-  CalendarMonthViewBeforeRenderEvent,
   CalendarMonthViewDay,
   CalendarView,
   collapseAnimation,
 } from 'angular-calendar';
-import { indexOf } from 'lodash';
+import { indexOf, max } from 'lodash';
 import { DateTime } from 'luxon';
 import { takeUntil } from 'rxjs';
 
@@ -64,7 +66,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
   /** Lifecycle hook. */
   public ngOnInit(): void {
     if (!this.buildersCupService) {
-      throw new Error('No service is defined for Builder\'s Cup Calendar.');
+      throw new Error("No service is defined for Builder's Cup Calendar.");
     }
 
     this.buildersCupService
@@ -81,40 +83,6 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
     this.view = view;
   }
 
-  /** Opens modal to display day group's tiles with more detail. */
-  public groupsClicked(_groups: TileEventGroup<BuildersCupMeta>[]): void {
-    // this.dialog.open(WelcomeCenterTileDetailsModalComponent, {
-    //   data: <WelcomeCenterTileDetailsModalData>{ columns: groups },
-    // });
-  }
-
-  /** Angular Calendar hook to group tiles by column. */
-  // public beforeMonthViewRender(event: CalendarMonthViewBeforeRenderEvent): void {
-  //   const calendarBody = event.body as StewardBuildersCupMonthViewDay<BuildersCupMeta>[];
-  //   calendarBody.forEach(cell => {
-  //     const groups = {};
-  //     cell.events.forEach((event: CalendarEvent<BuildersCupMeta>) => {
-  //       groups[event.meta.column] = groups[event.meta.column] ?? [];
-  //       groups[event.meta.column].push(event);
-  //     });
-
-  //     keys(groups).forEach(key => {
-  //       const group = groups[key];
-  //       group;
-  //     });
-
-  //     const eventGroups = Object.entries(groups).map(entry => {
-  //       return {
-  //         name: entry[0],
-  //         events: entry[1],
-  //         tileCount: this.countTiles(entry[1] as CalendarEvent<BuildersCupMeta>[]),
-  //       } as TileEventGroup<BuildersCupMeta>;
-  //     });
-
-  //     cell.eventGroups = eventGroups;
-  //   });
-  // }
-
   /** Converts Builders's Cup Schedule information into Calendar Events. */
   private makeEvents(featuredTours: BuildersCupFeaturedTour[]): CalendarEvent[] {
     const events: CalendarEvent<BuildersCupMeta>[] = [];
@@ -124,7 +92,10 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
         start: tour.openTimeUtc.toJSDate(),
         end: tour.closeTimeUtc.toJSDate(),
         title: `${tour.name}`,
-        cssClass: `unique-left-border-color-${indexOf(featuredTours, tour)+1}-of-${featuredTours.length}`,
+        cssClass: `unique-left-border-color-${indexOf(featuredTours, tour) + 1}-of-${max([
+          featuredTours.length,
+          5, // Use 5 unique colors minimum
+        ])}`,
         meta: {
           name: tour.name,
           description: tour.description,
@@ -138,7 +109,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
           afterEnd: false,
         },
         draggable: false,
-      }
+      };
 
       events.push(newEvent);
     });

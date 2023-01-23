@@ -3,7 +3,6 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 
-
 /** Interface that represents Builder's Cup featured content. */
 export interface BuildersCupFeaturedTour {
   name: string;

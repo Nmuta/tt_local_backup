@@ -26,7 +26,7 @@ import { TitleMemoryModel } from './title-memory.model';
     welcomeCenterCalendar: GameTitleCodeName.FM8,
     messageOfTheDay: GameTitleCodeName.FM8,
     createAuction: GameTitleCodeName.FH5,
-    welcomeCenterTiles: GameTitleCodeName.FM8,    
+    welcomeCenterTiles: GameTitleCodeName.FM8,
   },
 })
 @Injectable()

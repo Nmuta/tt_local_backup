@@ -41,10 +41,7 @@ import { SteelheadBuildersCupCalendarViewComponent } from './components/builders
 
 /** A module for Builders Cup calendar. */
 @NgModule({
-  declarations: [
-    BuildersCupCalendarComponent,
-    SteelheadBuildersCupCalendarViewComponent,
-  ],
+  declarations: [BuildersCupCalendarComponent, SteelheadBuildersCupCalendarViewComponent],
   imports: [
     CommonModule,
     DataPrivacyNoticeModule,

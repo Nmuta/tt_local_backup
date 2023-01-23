@@ -22,7 +22,7 @@ export enum NavbarTool {
   Salus = 'salus',
   Zendesk = 'zendesk',
   Sprinklr = 'sprinklr',
-  Pegasus = 'pegasus',  
+  Pegasus = 'pegasus',
 
   AdminPagesSelector = 'admin-selector',
 
@@ -155,7 +155,7 @@ export enum AppIcon {
   AuctionDetails = 'price_check',
   StewardManagement = 'cloud_sync',
   Leaderboards = 'leaderboard',
-  RacersCup = 'calendar_today',  
+  RacersCup = 'calendar_today',
   UserGroupManagement = 'group',
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
@@ -648,15 +648,15 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tool: NavbarTool.BuildersCupCalendar,
     accessList: CommonAccessLevels.AdminAndGeneralUsers,
     title: 'Builders Cup Calendar',
-    subtitle: 'View featured Builder\'s Cup content on a day-by-day basis.',
+    subtitle: "View featured Builder's Cup content on a day-by-day basis.",
     imageUrl: undefined,
     imageAlt: undefined,
-    tooltipDescription: 'View and validate Builder\'s Cup featured races.',
-    shortDescription: ['Tool for visualizing featured content in Builder\'s Cup.'],
+    tooltipDescription: "View and validate Builder's Cup featured races.",
+    shortDescription: ["Tool for visualizing featured content in Builder's Cup."],
     loadChildren: () =>
-      import(
-        '../../app/pages/tools/pages/builders-cup-calendar/builders-cup-calendar.module'
-      ).then(m => m.BuildersCupCalendarModule),
+      import('../../app/pages/tools/pages/builders-cup-calendar/builders-cup-calendar.module').then(
+        m => m.BuildersCupCalendarModule,
+      ),
   },
   <HomeTileInfoInternal>{
     icon: AppIcon.UserGroupManagement,
