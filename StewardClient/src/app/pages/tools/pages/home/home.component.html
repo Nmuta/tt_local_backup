@@ -48,7 +48,7 @@
 <mat-tab-group>
   <mat-tab>
     <ng-template mat-tab-label>
-      Your Tools <mat-chip color="accent" selected>{{ availableTiles.filtered?.length }}</mat-chip>
+      Your Tools <mat-chip color="accent" [selected]="availableTiles.filtered?.length > 0">{{ availableTiles.filtered?.length }}</mat-chip>
     </ng-template>
 
     <home-tile-grid
@@ -66,8 +66,8 @@
 
   <mat-tab label="Disabled Tools">
     <ng-template mat-tab-label>
-      Disabled Tools
-      <mat-chip color="accent" selected>{{ unauthorizedTiles.filtered?.length }}</mat-chip>
+      Unauthorized Tools
+      <mat-chip color="accent" [selected]="unauthorizedTiles.filtered?.length > 0">{{ unauthorizedTiles.filtered?.length }}</mat-chip>
     </ng-template>
     <home-tile-grid
       *ngIf="unauthorizedTiles.filtered?.length > 0; else noResultsTemplate"
