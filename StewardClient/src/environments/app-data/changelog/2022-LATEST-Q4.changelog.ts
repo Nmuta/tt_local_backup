@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'c960565a-98c5-4e9c-a027-7667e778885f',
+      shortText: 'Allow clicking tile headers on single-action tiles',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '38b7a643-3eea-4cb0-a301-47a0d0badb52',
       shortText: 'Tweaks to Clone UGC button on UGC Details page',
