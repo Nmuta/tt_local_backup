@@ -139,8 +139,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
         this.unauthorizedTiles.all = unauthorizedNavbarItems;
 
         this.parseRoute();
-        this.filterTiles(this.availableTiles);
-        this.filterTiles(this.unauthorizedTiles);
+        this.filterAllTiles();
       });
 
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
@@ -152,8 +151,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   /** Remove all filters for tiles. */
   public clearFilters(): void {
     this.filters = [];
-    this.filterTiles(this.availableTiles);
-    this.filterTiles(this.unauthorizedTiles);
+    this.filterAllTiles();
   }
 
   /** Add filter for tiles. */
@@ -178,8 +176,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       // Assume that if the input is typed in, it's a text search
       this.filters.push({ value: value, type: FilterType.Text });
 
-      this.filterTiles(this.availableTiles);
-      this.filterTiles(this.unauthorizedTiles);
+      this.filterAllTiles();
     }
 
     // Clear the input value
@@ -196,8 +193,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
     if (index >= 0) {
       this.filters.splice(index, 1);
-      this.filterTiles(this.availableTiles);
-      this.filterTiles(this.unauthorizedTiles);
+      this.filterAllTiles();
       this.updateRoute(this.filters);
     }
   }
@@ -220,8 +216,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     }
 
     this.filters.push(selectedFilter);
-    this.filterTiles(this.availableTiles);
-    this.filterTiles(this.unauthorizedTiles);
+    this.filterAllTiles();
 
     //clear the input value
     this.filterControl.setValue(null);
@@ -239,6 +234,12 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     const filterValue = filter.value.toLowerCase();
 
     return this.preparedFilters.filter(filter => filter.value.toLowerCase().includes(filterValue));
+  }
+
+  /** Runs filtering logic on both available and unauthorized tile lists. */
+  private filterAllTiles(): void {
+    this.filterTiles(this.availableTiles);
+    this.filterTiles(this.unauthorizedTiles);
   }
 
   /** Bucketize tiles based on filter list. */
