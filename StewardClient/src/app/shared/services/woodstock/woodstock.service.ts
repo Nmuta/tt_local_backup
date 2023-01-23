@@ -42,7 +42,7 @@ import {
 import { AuctionFilters } from '@models/auction-filters';
 import { PlayerAuction } from '@models/player-auction';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
-import { PlayerUgcItem, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
+import { ClonedItemResult, PlayerUgcItem, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
 import { SimpleCar } from '@models/cars';
@@ -557,8 +557,8 @@ export class WoodstockService {
   }
 
   /** Persist UGC item to the system user. */
-  public cloneUgc$(ugcId: string, contentType: UgcType): Observable<unknown> {
-    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
+  public cloneUgc$(ugcId: string, contentType: UgcType): Observable<ClonedItemResult> {
+    return this.apiService.postRequest$<ClonedItemResult>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
       contentType,
       keepGuid: true, // admin pages default was true
       isSearchable: true, // admin pages default was true

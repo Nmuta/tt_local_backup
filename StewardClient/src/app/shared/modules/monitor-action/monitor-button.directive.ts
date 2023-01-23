@@ -1,7 +1,8 @@
+import { ComponentType } from '@angular/cdk/portal';
 import { Directive, forwardRef, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { isBoolean } from 'lodash';
+import { isBoolean, isObject } from 'lodash';
 import { STEWARD_DISABLE_STATE_PROVIDER } from '../state-managers/injection-tokens';
 import { ErrorSnackbarComponent } from './error-snackbar/error-snackbar.component';
 import { MonitorBaseDirective } from './monitor.base.directive';
@@ -25,6 +26,7 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
   private shouldMonitorCompleteWithSnackbar = false;
 
   private templateColor = undefined;
+  private alternateCompleteSnackbarComponent: ComponentType<unknown> = undefined;
 
   /** When set, disables the host component when the monitor state is `active`. */
   @Input()
@@ -42,8 +44,9 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
 
   /** When set, produces a snackbar indicating the error when the monitor state is `error`. */
   @Input()
-  public set monitorCompleteSnackbar(value: boolean | '') {
+  public set monitorCompleteSnackbar(value: '' | ComponentType<unknown>) {
     this.shouldMonitorCompleteWithSnackbar = isBoolean(value) ? value : true;
+    this.alternateCompleteSnackbarComponent = isObject(value) ? value : undefined;
     this.updateHostState();
   }
 
@@ -104,10 +107,17 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
     }
 
     if (this.monitorIsComplete && this.shouldMonitorCompleteWithSnackbar) {
-      this.snackBar.openFromComponent(SuccessSnackbarComponent, {
-        data: this.monitor,
-        panelClass: ['snackbar-success'],
-      });
+      if (this.alternateCompleteSnackbarComponent) {
+        this.snackBar.openFromComponent(this.alternateCompleteSnackbarComponent, {
+          data: this.monitor,
+          panelClass: ['snackbar-success'],
+        });
+      } else {
+        this.snackBar.openFromComponent(SuccessSnackbarComponent, {
+          data: this.monitor,
+          panelClass: ['snackbar-success'],
+        });
+      }
     }
   }
 }

@@ -29,6 +29,7 @@ import {
 } from 'rxjs';
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { CloneSnackbarComponent } from '../../components/clone-snackbar/clone-snackbar.component';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
@@ -73,6 +74,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public clonePermAttribute = PermAttributeName.CloneUgc;
   public persistPermAttribute = PermAttributeName.PersistUgc;
   public gameTitle = GameTitle.FH5;
+
+  public cloneSnackbarComponent = CloneSnackbarComponent;
 
   constructor(
     private readonly route: ActivatedRoute,
