@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using CreditUpdate = Turn10.LiveOps.StewardApi.Contracts.Data.CreditUpdate;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -499,6 +500,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             catch (Exception ex)
             {
                 throw new QueryFailedStewardException($"Failed to query rollback history for XUID: {xuid}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid)
+        {
+            try
+            {
+                var query = CreditUpdate.MakeQuery(xuid);
+
+                async Task<IList<CreditUpdate>> GetCreditUpdates()
+                {
+                    var creditUpdates = new List<CreditUpdate>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (reader.Read())
+                        {
+                            var creditUpdate = CreditUpdate.FromQueryResult(reader);
+                            creditUpdates.Add(creditUpdate);
+                        }
+
+                        reader.Close();
+                    }
+
+                    return creditUpdates;
+                }
+
+                return await GetCreditUpdates().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Failed to query credit updates for XUID: {xuid}", ex);
             }
         }
 
