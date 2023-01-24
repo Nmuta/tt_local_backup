@@ -14,10 +14,10 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 {
     /// <summary>
-    ///     Handles requests for Woodstock items.
+    ///     Handles requests for Woodstock credit updates.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/creditUpdates")]
     [ApiVersion("2.0")]

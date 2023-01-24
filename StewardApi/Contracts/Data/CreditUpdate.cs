@@ -73,14 +73,4 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             };
         }
     }
-
-    public enum CreditUpdateColumn
-    {
-        Timestamp,
-        CreditsAfter,
-        CreditAmount,
-        SceneName,
-        DeviceType,
-        TotalXp
-    }
 }
