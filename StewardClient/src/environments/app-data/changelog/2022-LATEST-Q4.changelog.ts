@@ -18,6 +18,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: 'Allow clicking tile headers on single-action tiles',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'd6c54f11-e5c0-469d-a5ec-f4fc8535edc5',
+      shortText: 'Allow admins to sync AAD user list with Cosmos DB user list',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '38b7a643-3eea-4cb0-a301-47a0d0badb52',
       shortText: 'Tweaks to Clone UGC button on UGC Details page',
