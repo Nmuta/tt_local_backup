@@ -37,7 +37,6 @@ import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
-  'selectRowCheckBox',
   'ugcInfo',
   'metadata',
   'stats',
@@ -55,7 +54,7 @@ export type PlayerUgcItemTableEntries = PlayerUgcItem & {
 };
 
 export const UGC_TABLE_COLUMNS_EXPANDO = [
-  'selectRowCheckBox',
+  'expandButton',
   'exando-ugcInfo',
   'thumbnailOneImageBase64',
   'actions',
@@ -268,6 +267,12 @@ export abstract class UgcTableBaseComponent
         });
         this.ugcTableDataSource._updateChangeSubscription();
       });
+  }
+
+  /** Unselects all selected ugc items. */
+  public unselectAllUgcItems(): void {
+    this.selectedUgcs = [];
+    this.ugcTableDataSource.data.map(s => (s.selected = false));
   }
 
   private lookupThumbnails(photoIds: string[]): Observable<LookupThumbnailsResult[]> {
