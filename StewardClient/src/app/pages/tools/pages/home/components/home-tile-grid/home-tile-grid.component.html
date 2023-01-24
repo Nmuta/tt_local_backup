@@ -11,7 +11,7 @@
         <mat-card-header
           *ngIf="!item.tileActionComponent"
           [routerLink]="parentRoute + item.tool"
-          [class.clickable-header]="true"
+          class="clickable-header"
         >
           <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
           <mat-card-title>{{ item.title }}</mat-card-title>
