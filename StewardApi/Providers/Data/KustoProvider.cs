@@ -504,20 +504,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startAt, int maxResults)
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, string databaseName, SortDirection sortDirection, CreditUpdateColumn column, int startAt, int maxResults)
         {
             try
             {
-                var query = CreditUpdate.MakeQuery(xuid);
-                var prodTelemetryDatabaseName = "Prod Woodstock Telemetry";
+                var query = CreditUpdate.MakeQuery(xuid, column, sortDirection);
 
                 async Task<IList<CreditUpdate>> GetCreditUpdates()
                 {
                     var creditUpdates = new List<CreditUpdate>();
 
-
                     using (var reader = await this.cslQueryProvider
-                        .ExecuteQueryAsync(prodTelemetryDatabaseName, query, new ClientRequestProperties())
+                        .ExecuteQueryAsync(databaseName, query, new ClientRequestProperties())
                         .ConfigureAwait(false))
                     {
                         while (startAt > 0 && reader.Read())

@@ -147,6 +147,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string StewardPermissions = "Topic: Steward Permissions";
             public const string Pegasus = "Topic: Pegasus";
             public const string Git = "Topic: Git";
+            public const string CreditUpdates = "Topic: Credit Updates";
         }
 
         /// <summary>

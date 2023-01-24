@@ -486,7 +486,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets credit updates.
         /// </summary>
         [HttpGet("player/xuid({xuid})/creditUpdates")]
-        //[SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
+        [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCreditUpdates(
@@ -495,14 +495,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] int maxResults = DefaultMaxResults)
         {
 
-            //var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            //var result = await this.woodstockPlayerDetailsProvider.GetCreditUpdatesAsync(
-            //    xuid,
-            //    startIndex,
-            //    maxResults,
-            //    endpoint).ConfigureAwait(true);
-
-            var result = await this.kustoProvider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+            var result = await this.woodstockPlayerDetailsProvider.GetCreditUpdatesAsync(
+                xuid,
+                startIndex,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 
 #pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped from Kusto)
-#pragma warning disable CS1591 // XML Comments (POCO mapped from Kusto)
+#pragma warning disable CA1304 // Invariant Culture when using String.toLower()
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
@@ -44,9 +45,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Makes a query for credit updates that this model can read.
         /// </summary>
-        public static string MakeQuery(ulong xuid)
+        /// <remarks>
+        ///     Despite having another title in the name, actual_platform_mapping_sunrise
+        ///     is just a table that maps device type integer values to human-readable strings.
+        /// </remarks>
+        public static string MakeQuery(ulong xuid, CreditUpdateColumn column, SortDirection sortDirection)
         {
-            return $"Game_CreditsUpdate |  where UserId == {xuid} | project Timestamp, CreditsAfter, CreditAmount, SceneName, ActualPlatform, TotalXPEarned | lookup kind=leftouter (database('T10Analytics').actual_platform_mapping_sunrise | project tolong(ActualPlatform), MappedPlatform=PlatformDescription) on ActualPlatform | project Timestamp, CreditsAfter, CreditAmount, SceneName, MappedPlatform, TotalXPEarned | order by Timestamp asc";
+            var unorderedQuery = $"Game_CreditsUpdate |  where UserId == {xuid} | project Timestamp, CreditsAfter, CreditAmount, SceneName, ActualPlatform, TotalXPEarned | lookup kind=leftouter (database('T10Analytics').actual_platform_mapping_sunrise | project tolong(ActualPlatform), MappedPlatform=PlatformDescription) on ActualPlatform | project Timestamp, CreditsAfter, CreditAmount, SceneName, DeviceType = MappedPlatform , TotalXp = TotalXPEarned";
+            var ordering = $" | order by {column} {sortDirection.ToString().ToLower()}";
+
+            return unorderedQuery + ordering;
         }
 
         /// <summary>
@@ -60,9 +68,25 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 CreditsAfter = reader.Get<long>("CreditsAfter"),
                 CreditAmount = reader.Get<long>("CreditAmount"),
                 SceneName = reader.Get<string>("SceneName"),
-                DeviceType = reader.Get<string>("MappedPlatform"),
-                TotalXp = reader.Get<long>("TotalXPEarned")
+                DeviceType = reader.Get<string>("DeviceType"),
+                TotalXp = reader.Get<long>("TotalXp")
             };
         }
+    }
+
+    public enum SortDirection
+    {
+        Asc,
+        Desc
+    }
+
+    public enum CreditUpdateColumn
+    {
+        Timestamp,
+        CreditsAfter,
+        CreditAmount,
+        SceneName,
+        DeviceType,
+        TotalXp
     }
 }
