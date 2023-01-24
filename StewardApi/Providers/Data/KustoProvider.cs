@@ -316,7 +316,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             string endpoint,
             DateTimeOffset? startDate,
             DateTimeOffset? endDate)
-        { 
+        {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -504,21 +504,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid)
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startAt, int maxResults)
         {
             try
             {
                 var query = CreditUpdate.MakeQuery(xuid);
+                var prodTelemetryDatabaseName = "Prod Woodstock Telemetry";
 
                 async Task<IList<CreditUpdate>> GetCreditUpdates()
                 {
                     var creditUpdates = new List<CreditUpdate>();
 
+
                     using (var reader = await this.cslQueryProvider
-                        .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
+                        .ExecuteQueryAsync(prodTelemetryDatabaseName, query, new ClientRequestProperties())
                         .ConfigureAwait(false))
                     {
-                        while (reader.Read())
+                        while (startAt > 0 && reader.Read())
+                        {
+                            startAt--;
+                        }
+
+                        while (creditUpdates.Count != maxResults && reader.Read())
                         {
                             var creditUpdate = CreditUpdate.FromQueryResult(reader);
                             creditUpdates.Add(creditUpdate);

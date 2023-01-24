@@ -82,6 +82,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Gets a user's credit update history.
         /// </summary>
-        Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid);
+        Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startAt, int maxResults);
     }
 }

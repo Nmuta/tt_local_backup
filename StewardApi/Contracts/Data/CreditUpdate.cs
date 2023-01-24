@@ -60,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 CreditsAfter = reader.Get<long>("CreditsAfter"),
                 CreditAmount = reader.Get<long>("CreditAmount"),
                 SceneName = reader.Get<string>("SceneName"),
-                DeviceType = reader.Get<string>("ActualPlatform"),
+                DeviceType = reader.Get<string>("MappedPlatform"),
                 TotalXp = reader.Get<long>("TotalXPEarned")
             };
         }

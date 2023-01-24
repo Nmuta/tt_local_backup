@@ -502,7 +502,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             //    maxResults,
             //    endpoint).ConfigureAwait(true);
 
-            var result = await this.kustoProvider.GetCreditUpdatesAsync(xuid).ConfigureAwait(true);
+            var result = await this.kustoProvider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
