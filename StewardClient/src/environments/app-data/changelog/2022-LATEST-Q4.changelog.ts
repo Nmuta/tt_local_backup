@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'c960565a-98c5-4e9c-a027-7667e778885f',
+      shortText: 'Allow clicking tile headers on single-action tiles',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'd6c54f11-e5c0-469d-a5ec-f4fc8535edc5',
       shortText: 'Allow admins to sync AAD user list with Cosmos DB user list',
