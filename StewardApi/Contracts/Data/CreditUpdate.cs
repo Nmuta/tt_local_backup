@@ -74,12 +74,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         }
     }
 
-    public enum SortDirection
-    {
-        Asc,
-        Desc
-    }
-
     public enum CreditUpdateColumn
     {
         Timestamp,
