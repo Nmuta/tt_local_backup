@@ -9,7 +9,7 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { find, has, includes } from 'lodash';
-import { filter, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { filter, Observable, ReplaySubject, takeUntil, tap } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -27,6 +27,7 @@ export class PermAttributesService extends BaseService {
   // and we have determined how we want to handle admin grouping
   private userRole: UserRole;
   private attributesInitialized: boolean = false;
+  private isServiceFullyInitialized: boolean = false;
   private allPermAttributes: PermAttribute[];
   private availableTitlesAndEnvironments: TitlesAndEnvironments = {
     [GameTitle.Forte]: [],
@@ -49,8 +50,22 @@ export class PermAttributesService extends BaseService {
   public get initializationGuard$(): Observable<void> {
     return this.checkInitialization$.pipe(
       filter(() => this.attributesInitialized && !!this.userRole),
+      tap(() => (this.isServiceFullyInitialized = true)),
       takeUntil(this.onDestroy$),
     );
+  }
+
+  /** Gets all perm attributes. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
+  public get permAttributes(): PermAttribute[] {
+    return this.allPermAttributes;
+  }
+
+  /**
+   * Returns the current initialization state of the service.
+   * Use initializationGuard$ if you want to wait for the service to be initialized.
+   */
+  public get isServiceInitialized(): boolean {
+    return this.isServiceFullyInitialized;
   }
 
   public get isAdmin(): boolean {
@@ -122,8 +137,6 @@ export class PermAttributesService extends BaseService {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(profile => {
         this.userRole = profile.role;
-        // TEST CODE - REMOVE
-        this.userRole = UserRole.GeneralUser;
         this.checkInitialization$.next();
       });
   }
@@ -131,12 +144,6 @@ export class PermAttributesService extends BaseService {
   /** Initiallizes the parm attributes service. */
   public initialize(attributes: PermAttribute[]): void {
     this.allPermAttributes = attributes;
-    // TEST CODE - REMOVE
-    // this.allPermAttributes.push({
-    //   attribute: PermAttributeName.UpdateObligationPipeline,
-    //   title: '',
-    //   environment: '',
-    // });
 
     // Build the available titles and environments model
     for (const attribute of this.allPermAttributes) {

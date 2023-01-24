@@ -3,7 +3,8 @@ import { GameTitle } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { PermAttribute } from '@services/perm-attributes/perm-attributes';
-import { Observable } from 'rxjs';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
+import { Observable, of, tap } from 'rxjs';
 
 /** Key/value pairing of permission attribute name with supported game titles. */
 export type PermissionAttributeList = { [key: string]: GameTitle[] };
@@ -14,7 +15,10 @@ export type PermissionAttributeList = { [key: string]: GameTitle[] };
 })
 export class PermissionsService {
   public readonly basePath: string = 'permissions';
-  constructor(private readonly api: ApiV2Service) {}
+  constructor(
+    private readonly api: ApiV2Service,
+    private readonly permAttributeService: PermAttributesService,
+  ) {}
 
   /** Gets the Woodstock detailed car list. */
   public getAllPermissionAttributes$(): Observable<PermissionAttributeList> {
@@ -23,7 +27,14 @@ export class PermissionsService {
 
   /** Gets the user perm attributes. */
   public getUserPermissionAttributes$(user: UserModel): Observable<PermAttribute[]> {
-    return this.api.getRequest$<PermAttribute[]>(`${this.basePath}/user/${user.objectId}`);
+    if (this.permAttributeService.isServiceInitialized)
+      return of(this.permAttributeService.permAttributes);
+
+    return this.api.getRequest$<PermAttribute[]>(`${this.basePath}/user/${user.objectId}`).pipe(
+      tap(permAttributes => {
+        this.permAttributeService.initialize(permAttributes);
+      }),
+    );
   }
 
   /** Gets the user perm attributes. */

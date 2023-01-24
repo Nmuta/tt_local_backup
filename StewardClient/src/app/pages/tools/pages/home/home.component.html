@@ -55,7 +55,7 @@
     </ng-template>
 
     <home-tile-grid
-      *ngIf="availableTiles.filtered?.length > 0; else noResultsTemplate"
+      *ngIf="availableTiles.filtered?.length > 0; else noAvailableResultsTemplate"
       [tiles]="availableTiles.filtered"
     ></home-tile-grid>
     <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
@@ -76,7 +76,7 @@
     </ng-template>
     <div class="disabled-tools-info">Tools below are disabled due to lack of permissions.</div>
     <home-tile-grid
-      *ngIf="unauthorizedTiles.filtered?.length > 0; else noResultsTemplate"
+      *ngIf="unauthorizedTiles.filtered?.length > 0; else noUnauthorizedResultsTemplate"
       [tiles]="unauthorizedTiles.filtered"
     ></home-tile-grid>
     <div *ngIf="unauthorizedTiles.rejected?.length > 0" class="horizontal-divider">
@@ -89,6 +89,10 @@
   </mat-tab>
 </mat-tab-group>
 
-<ng-template #noResultsTemplate>
-  <div class="no-results-container">No tools found matching filters...</div>
+<ng-template #noAvailableResultsTemplate>
+  <div class="no-results-container">No available tools found matching your filters.</div>
+</ng-template>
+
+<ng-template #noUnauthorizedResultsTemplate>
+  <div class="no-results-container">No disabled tools found matching your filters.</div>
 </ng-template>
