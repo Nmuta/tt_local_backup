@@ -746,7 +746,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetCreditUpdates(xuid, true, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -768,7 +768,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, true, startIndex, maxResults).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
@@ -785,7 +785,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var maxResults = -1;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, true, startIndex, maxResults).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
