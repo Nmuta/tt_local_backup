@@ -21,6 +21,16 @@
         public const string AzureClientId = "AzureAd:ClientId";
 
         /// <summary>
+        ///     The Azure service principal ID.
+        /// </summary>
+        public const string AzureServicePrincipalId = "AzureAd:ServicePrincipalId";
+
+        /// <summary>
+        ///     The Azure client secret key in Key Vault.
+        /// </summary>
+        public const string AzureClientSecretKey = "AzureAd:ClientSecretKey";
+
+        /// <summary>
         ///     The key vault url.
         /// </summary>
         public const string KeyVaultUrl = "KeyVaultUrl";
