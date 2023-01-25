@@ -504,11 +504,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, string databaseName, SortDirection sortDirection, CreditUpdateColumn column, int startAt, int maxResults)
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(
+            ulong xuid,
+            TitleCodeName title,
+            SortDirection sortDirection,
+            CreditUpdateColumn column,
+            int startAt,
+            int maxResults)
         {
+            var databaseName = $"Prod {title} Telemetry";
+
             try
             {
-                var query = CreditUpdate.MakeQuery(xuid, column, sortDirection);
+                var query = CreditUpdate.MakeQuery(xuid, title, column, sortDirection);
 
                 async Task<IList<CreditUpdate>> GetCreditUpdates()
                 {
@@ -539,7 +547,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
             catch (Exception ex)
             {
-                throw new QueryFailedStewardException($"Failed to query credit updates for XUID: {xuid}", ex);
+                throw new QueryFailedStewardException($"Failed to query credit updates. (XUID: {xuid}) (Title: {title})", ex);
             }
         }
 

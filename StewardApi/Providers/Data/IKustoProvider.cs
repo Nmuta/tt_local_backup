@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// </summary>
         Task<IList<CreditUpdate>> GetCreditUpdatesAsync(
             ulong xuid,
-            string databaseName,
+            TitleCodeName title,
             SortDirection sortDirection,
             CreditUpdateColumn column,
             int startAt,

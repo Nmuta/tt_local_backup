@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Globalization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.Services.Orm.SqlGen;
 
 #pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped from Kusto)
 #pragma warning disable CA1304 // Invariant Culture when using String.toLower()
@@ -49,9 +52,24 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Despite having another title in the name, actual_platform_mapping_sunrise
         ///     is just a table that maps device type integer values to human-readable strings.
         /// </remarks>
-        public static string MakeQuery(ulong xuid, CreditUpdateColumn column, SortDirection sortDirection)
+        public static string MakeQuery(ulong xuid, TitleCodeName title, CreditUpdateColumn column, SortDirection sortDirection)
         {
-            var unorderedQuery = $"Game_CreditsUpdate |  where UserId == {xuid} | project Timestamp, CreditsAfter, CreditAmount, SceneName, ActualPlatform, TotalXPEarned | lookup kind=leftouter (database('T10Analytics').actual_platform_mapping_sunrise | project tolong(ActualPlatform), MappedPlatform=PlatformDescription) on ActualPlatform | project Timestamp, CreditsAfter, CreditAmount, SceneName, DeviceType = MappedPlatform , TotalXp = TotalXPEarned";
+            string unorderedQuery = string.Empty;
+
+            switch (title)
+            {
+                case TitleCodeName.Woodstock:
+                    unorderedQuery = $"Game_CreditsUpdate |  where UserId == {xuid} | project Timestamp, CreditsAfter, CreditAmount, SceneName, ActualPlatform, TotalXPEarned | lookup kind=leftouter (database('T10Analytics').actual_platform_mapping_sunrise | project tolong(ActualPlatform), MappedPlatform=PlatformDescription) on ActualPlatform | project Timestamp, CreditsAfter, CreditAmount, SceneName, DeviceType = MappedPlatform , TotalXp = TotalXPEarned";
+                    break;
+
+                case TitleCodeName.Sunrise:
+                    unorderedQuery = $"Game_CreditsUpdate |  where UserId == '{xuid}'  | extend MappedPlatform=case(ActualPlatform==\"1\", \"Durango\", ActualPlatform==\"2\", \"Edmonton\", ActualPlatform==\"3\", \"Scorpio\", ActualPlatform==\"4\", \"x64\", ActualPlatform==\"5\", \"UWP\", ActualPlatform==\"6\", \"Xbox Series S\", ActualPlatform==\"7\", \"Xbox Series X\", ActualPlatform==\"8\", \"Steam\", \"Unknown\")  | project Timestamp = Time, CreditsAfter = tolong(CreditsAfter), CreditAmount = tolong(CreditAmount), SceneName, DeviceType = MappedPlatform, TotalXp = TotalXPEarned";
+                    break;
+
+                default:
+                    throw new ConversionFailedStewardException($"No credit update query available. (Title: {title})");
+            }
+
             var ordering = $" | order by {column} {sortDirection.ToString().ToLower()}";
 
             return unorderedQuery + ordering;

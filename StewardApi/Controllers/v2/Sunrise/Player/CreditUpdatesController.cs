@@ -6,20 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.Player
 {
     /// <summary>
-    ///     Handles requests for Woodstock credit updates.
+    ///     Handles requests for Sunrise credit updates.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/creditUpdates")]
+    [Route("api/v{version:apiVersion}/title/sunrise/player/{xuid}/creditUpdates")]
     [ApiVersion("2.0")]
     [ApiController]
     [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
@@ -27,9 +28,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
         Justification = "This can't be avoided.")]
-    [LogTagTitle(TitleLogTags.Woodstock)]
-    [StandardTags(Title.Woodstock, Target.Player, Topic.CreditUpdates)]
-    public sealed class CreditUpdatesController : V2WoodstockControllerBase
+    [LogTagTitle(TitleLogTags.Sunrise)]
+    [StandardTags(Title.Sunrise, Target.Player, Topic.CreditUpdates)]
+    public sealed class CreditUpdatesController : V2SunriseControllerBase
     {
         private const int DefaultMaxResults = 100;
 
@@ -72,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(column)} provided: {column}");
             }
 
-            var result = await this.kustoProvider.GetCreditUpdatesAsync(xuid, Contracts.Common.TitleCodeName.Woodstock, sortEnum, columnEnum, startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.kustoProvider.GetCreditUpdatesAsync(xuid, TitleCodeName.Sunrise, sortEnum, columnEnum, startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
