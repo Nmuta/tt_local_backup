@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '31486e41-e069-4ab2-9672-b81c24b406f5',
+      shortText: 'Restructure Home Page Tile data',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'c960565a-98c5-4e9c-a027-7667e778885f',
       shortText: 'Allow clicking tile headers on single-action tiles',
