@@ -9,7 +9,7 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { find, has, includes } from 'lodash';
-import { filter, Observable, ReplaySubject, take, takeUntil, tap } from 'rxjs';
+import { filter, Observable, of, ReplaySubject, take, takeUntil, tap } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -44,14 +44,18 @@ export class PermAttributesService extends BaseService {
     [GameTitle.FH4]: null,
   };
 
-  private checkInitialization$ = new ReplaySubject<void>(1);
+  private tryInitialization$ = new ReplaySubject<void>(1);
 
   /** Helper function that timeouts state checks for user profile. */
   public get initializationGuard$(): Observable<void> {
-    return this.checkInitialization$.pipe(
+    if (this.isServiceFullyInitialized) {
+      return of(null);
+    }
+
+    return this.tryInitialization$.pipe(
       filter(() => this.attributesInitialized && !!this.userRole),
       tap(() => (this.isServiceFullyInitialized = true)),
-      take(1), // Complete observable after initialization
+      take(1),
       takeUntil(this.onDestroy$),
     );
   }
@@ -138,7 +142,7 @@ export class PermAttributesService extends BaseService {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(profile => {
         this.userRole = profile.role;
-        this.checkInitialization$.next();
+        this.tryInitialization$.next();
       });
   }
 
@@ -162,7 +166,7 @@ export class PermAttributesService extends BaseService {
     }
 
     this.attributesInitialized = true;
-    this.checkInitialization$.next();
+    this.tryInitialization$.next();
   }
 
   /** Returns true if user has permission to feature attribute. */
