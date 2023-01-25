@@ -902,10 +902,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
-                $"Sunrise Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+                $"Sunrise Banning: {banParameters.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1314,10 +1314,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 groupGift.ToJson(),
                 requesterObjectId,
-                $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+                $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1514,7 +1514,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1937,16 +1937,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
 
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
