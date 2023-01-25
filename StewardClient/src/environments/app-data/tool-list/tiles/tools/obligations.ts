@@ -1,6 +1,11 @@
-import { HomeTileRestrictionType } from '@environments/environment';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import {
+  HomeTileInfoInternal,
+  AppIcon,
+  NavbarTool,
+  CommonAccessLevels,
+  HomeTileRestrictionType,
+} from '../../helpers';
 
 export const obligationsTile = <HomeTileInfoInternal>{
   icon: AppIcon.DeveloperTool,

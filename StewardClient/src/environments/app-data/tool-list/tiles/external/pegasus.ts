@@ -1,7 +1,12 @@
-import { HomeTileRestrictionType } from '@environments/environment';
 import { GameTitle, UserRole } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { AppIcon, NavbarTool, ExtraIcon, HomeTileInfoExternal } from '../../helpers';
+import {
+  AppIcon,
+  NavbarTool,
+  ExtraIcon,
+  HomeTileInfoExternal,
+  HomeTileRestrictionType,
+} from '../../helpers';
 
 export const pegasusExternalTile = <HomeTileInfoExternal>{
   icon: AppIcon.DeveloperTool,

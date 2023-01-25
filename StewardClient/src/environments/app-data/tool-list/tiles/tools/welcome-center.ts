@@ -1,7 +1,6 @@
-import { HomeTileRestrictionType } from '@environments/environment';
 import { UserRole } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } from '../../helpers';
 
 export const welcomeCenterTile = <HomeTileInfoInternal>{
   icon: AppIcon.WelcomeCenterTile,
