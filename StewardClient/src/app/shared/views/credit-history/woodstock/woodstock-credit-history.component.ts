@@ -5,7 +5,11 @@ import { Observable, throwError } from 'rxjs';
 import { CreditHistoryBaseComponent } from '../credit-history.base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
-import { CreditUpdateColumn, SortDirection, WoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.service';
+import {
+  CreditUpdateColumn,
+  SortDirection,
+  WoodstockPlayerCreditUpdatesService,
+} from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.service';
 
 /** Retreives and displays Woodstock credit history by XUID. */
 @Component({
@@ -27,7 +31,13 @@ export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<
     startIndex: number,
     maxResults: number,
   ): Observable<WoodstockCreditDetailsEntry[]> {
-    return this.woodstock.getCreditHistoryByXuid$(xuid, SortDirection.Ascending, CreditUpdateColumn.Timestamp, startIndex, maxResults);
+    return this.woodstock.getCreditHistoryByXuid$(
+      xuid,
+      SortDirection.Ascending,
+      CreditUpdateColumn.Timestamp,
+      startIndex,
+      maxResults,
+    );
   }
 
   /** Gets save rollbacks history list */

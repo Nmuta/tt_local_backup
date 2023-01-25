@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 export enum SortDirection {
   Ascending = 'Asc',
-  Descending = 'Desc'
+  Descending = 'Desc',
 }
 
 export enum CreditUpdateColumn {
@@ -16,7 +16,7 @@ export enum CreditUpdateColumn {
   CreditAmount = 'CreditAmount',
   SceneName = 'SceneName',
   DeviceType = 'DeviceType',
-  TotalXp = 'TotalXp'
+  TotalXp = 'TotalXp',
 }
 
 /** The /v2/woodstock/player/{xuid}/creditUpdates endpoints. */

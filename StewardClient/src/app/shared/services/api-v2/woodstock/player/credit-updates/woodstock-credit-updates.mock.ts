@@ -15,7 +15,7 @@ export class MockWoodstockPlayerCreditUpdatesService {
 }
 
 /** Creates an injectable mock for Woodstock Service. */
-export function createWoodstockPlayerCreditUpdatesService(
+export function createMockWoodstockPlayerCreditUpdatesService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {

@@ -5,6 +5,7 @@ import { WoodstockCreditHistoryComponent } from './woodstock-credit-history.comp
 import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { createMockWoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.mock';
 
 describe('WoodstockCreditHistoryComponent', () => {
   let component: WoodstockCreditHistoryComponent;
@@ -15,7 +16,7 @@ describe('WoodstockCreditHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockCreditHistoryComponent],
-      providers: [createMockWoodstockService()],
+      providers: [createMockWoodstockService(), createMockWoodstockPlayerCreditUpdatesService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
