@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { WoodstockCreditDetailsEntry } from '@models/woodstock';
+import { SunriseCreditDetailsEntry } from '@models/sunrise';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import {
   CreditUpdateColumn,
@@ -9,12 +9,12 @@ import {
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
-/** The /v2/woodstock/player/{xuid}/creditUpdates endpoints. */
+/** The /v2/sunrise/player/{xuid}/creditUpdates endpoints. */
 @Injectable({
   providedIn: 'root',
 })
-export class WoodstockPlayerCreditUpdatesService {
-  public readonly basePath: string = 'title/woodstock/player';
+export class SunrisePlayerCreditUpdatesService {
+  public readonly basePath: string = 'title/sunrise/player';
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets a player's credit history by XUID. */
@@ -24,13 +24,13 @@ export class WoodstockPlayerCreditUpdatesService {
     column: CreditUpdateColumn.Timestamp,
     startIndex: number = 0,
     maxResults: number = 100,
-  ): Observable<WoodstockCreditDetailsEntry[]> {
+  ): Observable<SunriseCreditDetailsEntry[]> {
     const httpParams = new HttpParams()
       .set('sortDirection', sortOrder)
       .set('column', column)
       .set('startIndex', startIndex.toString())
       .set('maxResults', maxResults.toString());
-    return this.api.getRequest$<WoodstockCreditDetailsEntry[]>(
+    return this.api.getRequest$<SunriseCreditDetailsEntry[]>(
       `${this.basePath}/${xuid}/creditUpdates`,
       httpParams,
     );

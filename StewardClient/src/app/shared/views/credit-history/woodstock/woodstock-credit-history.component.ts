@@ -2,14 +2,14 @@ import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { WoodstockCreditDetailsEntry } from '@models/woodstock';
 import { Observable, throwError } from 'rxjs';
-import { CreditHistoryBaseComponent } from '../credit-history.base.component';
-import { GameTitleCodeName } from '@models/enums';
-import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import {
+  CreditHistoryBaseComponent,
   CreditUpdateColumn,
   SortDirection,
-  WoodstockPlayerCreditUpdatesService,
-} from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.service';
+} from '../credit-history.base.component';
+import { GameTitleCodeName } from '@models/enums';
+import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
+import { WoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.service';
 
 /** Retreives and displays Woodstock credit history by XUID. */
 @Component({
