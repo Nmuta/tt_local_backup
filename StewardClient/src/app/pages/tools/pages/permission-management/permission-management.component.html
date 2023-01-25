@@ -1,6 +1,24 @@
 <div class="steward-layout-with-sidebar">
   <div class="steward-layout-sidebar-group">
     <div class="steward-layout-pane">
+      <button
+        mat-raised-button
+        color="primary"
+        class="sync-users-button"
+        (click)="syncUsersDb()"
+        [disabled]="getUsersActionMonitor.isActive"
+        [monitor]="postSyncUsersDbActionMonitor"
+        stateManager
+        monitorDisable
+        monitorCompleteSnackbar
+        monitorWarnSnackbar
+      >
+        Sync Users DB
+        <button-spinner
+          [monitor]="postSyncUsersDbActionMonitor"
+          defaultIcon="sync"
+        ></button-spinner>
+      </button>
       <mat-card>
         <mat-card-header>
           <mat-card-title>Steward Users</mat-card-title>
