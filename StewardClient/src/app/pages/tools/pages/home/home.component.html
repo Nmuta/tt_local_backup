@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<mat-tab-group>
+<mat-tab-group *waitForMonitor="permInitializationActionMonitor">
   <mat-tab>
     <ng-template mat-tab-label>
       Your Tools

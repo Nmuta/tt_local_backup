@@ -9,7 +9,7 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { find, has, includes } from 'lodash';
-import { filter, Observable, ReplaySubject, takeUntil, tap } from 'rxjs';
+import { filter, Observable, ReplaySubject, take, takeUntil, tap } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -51,6 +51,7 @@ export class PermAttributesService extends BaseService {
     return this.checkInitialization$.pipe(
       filter(() => this.attributesInitialized && !!this.userRole),
       tap(() => (this.isServiceFullyInitialized = true)),
+      take(1), // Complete observable after initialization
       takeUntil(this.onDestroy$),
     );
   }

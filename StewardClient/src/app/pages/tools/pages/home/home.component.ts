@@ -15,6 +15,7 @@ import { QueryParam } from '@models/query-params';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';
 import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
 import {
@@ -57,6 +58,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   public isEnabled: Partial<Record<NavbarTool, number>> = {};
   public userRole: UserRole;
+  public permInitializationActionMonitor = new ActionMonitor('Permission initialization');
 
   public availableTiles: FilteredTiles = {
     all: [],
@@ -98,6 +100,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     this.permAttributesService.initializationGuard$
       .pipe(
+        this.permInitializationActionMonitor.monitorSingleFire(),
         switchMap(() => this.profile$),
         takeUntil(this.onDestroy$),
       )
