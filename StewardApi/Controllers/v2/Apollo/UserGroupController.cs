@@ -251,7 +251,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
-            var jobId = await this.AddJobIdToHeaderAsync(userList.ToJson(), requesterObjectId, $"Apollo Add Users to User Group: {userCount} users added.").ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(userList.ToJson(), requesterObjectId, $"Apollo Add Users to User Group: {userCount} users added.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -346,16 +346,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             }
 
             return response;
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
     }
 }

@@ -6,6 +6,7 @@ import { mergedParamMap$ } from '@helpers/param-map';
 import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
+import { SunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hide/sunrise-ugc-hide.service';
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { SunriseService } from '@services/sunrise';
@@ -49,6 +50,7 @@ export class SunriseLookupComponent extends BaseComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly service: SunriseService,
     private readonly permissionsService: OldPermissionsService,
+    private readonly ugcHideService: SunriseUgcHideService,
     private readonly dialog: MatDialog,
   ) {
     super();
@@ -128,8 +130,8 @@ export class SunriseLookupComponent extends BaseComponent implements OnInit {
     }
     this.hideMonitor = this.hideMonitor.repeat();
 
-    this.service
-      .hideUgc$(this.ugcItem.id)
+    this.ugcHideService
+      .hideUgcItems$([this.ugcItem.id])
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;

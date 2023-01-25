@@ -1,5 +1,5 @@
-//import { GameTitle } from '@models/enums';
-//import { NavbarTool } from '../tool-list';
+import { GameTitle } from '@models/enums';
+import { NavbarTool } from '../tool-list';
 import { ChangelogGroup, ChangelogTag } from './types';
 
 /** User-facing changes to the code. */
@@ -11,6 +11,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: ChangelogTag.General,
       uuid: '7dde5027-cadc-4d90-a809-5c8dca247831',
       shortText: 'Add tool & route restrictions for auth V2',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH5, GameTitle.FH4],
+        tool: [NavbarTool.SearchUGC, NavbarTool.UserDetails],
+      },
+      uuid: 'afb89433-0165-48f8-9ecc-b7ff8cf7fa21',
+      shortText: 'New button to hide multiple Ugcs added to Ugc search',
     },
     {
       tag: ChangelogTag.Internal,
