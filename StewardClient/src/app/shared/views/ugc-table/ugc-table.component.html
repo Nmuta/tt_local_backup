@@ -20,7 +20,6 @@
       monitorDisable
       monitorWarn
       monitorWarnSnackbar
-      monitorCompleteSnackbar
     >
       <span [ngPlural]="selectedUgcs?.length">
         Hide {{ selectedUgcs?.length }}
@@ -42,11 +41,6 @@
     >
       Verify Hide
     </mat-checkbox>
-  </div>
-  <div class="sf-horizontal sf-right failed-hide-ugc" *ngIf="failedHideUgcs">
-    <standard-copy [text]="failedHideUgcs" [alwaysShowIcon]="true">
-      Failed to hide some or all UGC items
-    </standard-copy>
   </div>
 </div>
 <div class="table-wide-actions" *ngIf="displayTableWideActions">
@@ -187,12 +181,14 @@
     <td mat-cell *matCellDef="let entry">
       <ul>
         <li>
+          <standard-copy [text]="entry.id"><b>Id:</b> {{ entry.id }}</standard-copy>
+        </li>
+        <li>
           <b>Featured:</b>
           {{ entry.featuredByT10 ? (entry.featuredEndDateUtc | utcDate: 'short') : 'No' }}
         </li>
         <li><b>Title:</b> {{ entry.title }}</li>
         <li><b>Description:</b> {{ entry.description }}</li>
-        <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
         <li><b>Car:</b> {{ entry.carDescription }}</li>
       </ul>
     </td>
@@ -224,9 +220,7 @@
       >
         <ul>
           <div>
-            <li>
-              <standard-copy [text]="entry.id"><b>Id:</b> {{ entry.id }}</standard-copy>
-            </li>
+            <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
             <li><b>Share Code:</b> {{ entry.shareCode || 'N/A' }}</li>
             <li><b>Popularity:</b> {{ entry.popularityBucket }}/5</li>
             <li><b>Likes:</b> {{ entry.timesLiked }}</li>
@@ -258,10 +252,9 @@
     [hidden]="waitingForThumbnails"
     mat-row
     *matRowDef="let element; columns: useExpandoColumnDef ? expandoColumnDef : columnsToDisplay"
-    class="example-element-row"
+    class="example-element-row cursor-pointer"
     [class.example-expanded-row]="expandedElement === element"
     [class.border-bottom]="!useExpandoColumnDef"
-    [class.cursor-pointer]="useExpandoColumnDef"
     [class.is-featured-item]="element.featuredByT10"
     [class.selected]="element.selected"
     (click)="onRowSelected(element)"

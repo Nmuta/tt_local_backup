@@ -7,6 +7,7 @@ import { UgcType } from '@models/ugc-filters';
 import { Observable, throwError } from 'rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** Displays apollo UGC content in a table. */
 @Component({
@@ -19,8 +20,8 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
   public ugcDetailsLinkSupported: boolean = false;
   public ugcHidingSupported = false;
 
-  constructor(private readonly apolloService: ApolloService) {
-    super();
+  constructor(private readonly apolloService: ApolloService, snackbar: MatSnackBar) {
+    super(snackbar);
   }
 
   /** Gets player UGC item. */

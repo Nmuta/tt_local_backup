@@ -9,6 +9,7 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { GuidLikeString } from '@models/extended-types';
 import { SunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hide/sunrise-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -23,8 +24,9 @@ export class SunriseUgcTableComponent extends UgcTableBaseComponent implements O
     private readonly sunriseService: SunriseService,
     private readonly sunriseUgcHideService: SunriseUgcHideService,
     private readonly backgroundJobService: BackgroundJobService,
+    snackbar: MatSnackBar,
   ) {
-    super();
+    super(snackbar);
   }
 
   /** Gets player UGC item. */

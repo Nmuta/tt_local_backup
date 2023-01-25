@@ -35,6 +35,8 @@ import { saveAs } from 'file-saver';
 import { chunk, cloneDeep, flatten } from 'lodash';
 import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SuccessSnackbarComponent } from '@shared/modules/monitor-action/success-snackbar/success-snackbar.component';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -102,7 +104,6 @@ export abstract class UgcTableBaseComponent
   public ugcType = UgcType;
   public liveryGiftingRoute: string[];
   public selectedUgcs: PlayerUgcItemTableEntries[] = [];
-  public failedHideUgcs: string;
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
@@ -111,7 +112,7 @@ export abstract class UgcTableBaseComponent
 
   public abstract gameTitle: GameTitle;
 
-  constructor() {
+  constructor(private readonly snackbar: MatSnackBar) {
     super();
   }
 
@@ -247,7 +248,23 @@ export abstract class UgcTableBaseComponent
     this.hideUgc(ugcIds)
       .pipe(this.hideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(failedUgcs => {
-        this.failedHideUgcs = failedUgcs.join('\n');
+        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
+        // the backend was successful (200)
+        if (failedUgcs.length > 0) {
+          this.snackbar.open(
+            `Failed to hide some or all of the following UGC items : ${failedUgcs.join('\n')}`,
+            'Okay',
+            {
+              panelClass: 'snackbar-warn',
+            },
+          );
+        } else {
+          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
+            data: this.hideUgcMonitor,
+            panelClass: ['snackbar-success'],
+          });
+        }
+
         // Remove ugcId that failed from the list of ugcIds
         failedUgcs.forEach(failedUgc => {
           const index = ugcIds.indexOf(failedUgc);

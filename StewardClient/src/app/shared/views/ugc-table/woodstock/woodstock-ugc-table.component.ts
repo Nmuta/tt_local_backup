@@ -10,6 +10,7 @@ import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
@@ -25,8 +26,9 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
     private readonly woodstockUgcHideService: WoodstockUgcHideService,
     private readonly backgroundJobService: BackgroundJobService,
+    snackbar: MatSnackBar,
   ) {
-    super();
+    super(snackbar);
   }
 
   /** Gets player UGC item. */

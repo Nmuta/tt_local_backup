@@ -103,10 +103,6 @@ img {
   @include standard-image-border();
 }
 
-.failed-hide-ugc {
-  color: app-color-default($app-warn);
-}
-
 .mat-row {
   &.selected {
     background-color: $table-tr-hover;

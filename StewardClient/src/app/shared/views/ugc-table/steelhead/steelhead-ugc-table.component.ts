@@ -7,6 +7,7 @@ import { Observable, throwError } from 'rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** Displays steelhead UGC content in a table. */
 @Component({
@@ -19,8 +20,11 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   public supportFeaturing: boolean = false;
   public ugcHidingSupported = false;
 
-  constructor(private readonly steelheadUgcLookupService: SteelheadUgcLookupService) {
-    super();
+  constructor(
+    private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
+    snackbar: MatSnackBar,
+  ) {
+    super(snackbar);
   }
 
   /** Gets player UGC item. */
