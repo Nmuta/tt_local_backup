@@ -3,7 +3,6 @@ import { GameTitle, PegasusProjectionSlot } from '@models/enums';
 import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcSearchFilters, UgcType, WoodstockSupportedUgcTypes } from '@models/ugc-filters';
-import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-search.service';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -19,6 +18,7 @@ import BigNumber from 'bignumber.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon/help-popover-icon.component';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
+import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/search/woodstock-ugc-search.service';
 
 /** Retreives and displays Woodstock ugc by search filters. */
 @Component({

@@ -7,7 +7,7 @@ import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-look
 import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { UgcReportReason } from '@models/ugc-report-reason';
-import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/woodstock-ugc-report.service';
+import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { WoodstockService } from '@services/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -30,6 +30,7 @@ import {
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { CloneSnackbarComponent } from '../../components/clone-snackbar/clone-snackbar.component';
+import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -81,6 +82,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     private readonly service: WoodstockService,
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: WoodstockUgcReportService,
+    private readonly ugcHideService: WoodstockUgcHideService,
     private readonly dialog: MatDialog,
   ) {
     super();
@@ -205,8 +207,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     }
     this.hideMonitor = this.hideMonitor.repeat();
 
-    this.service
-      .hideUgc$(this.ugcItem.id)
+    this.ugcHideService
+      .hideUgcItems$([this.ugcItem.id])
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
