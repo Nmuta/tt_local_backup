@@ -8,12 +8,9 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
-      tag: {
-        title: [GameTitle.FH5, GameTitle.FH4],
-        tool: [NavbarTool.SearchUGC, NavbarTool.UserDetails],
-      },
-      uuid: 'afb89433-0165-48f8-9ecc-b7ff8cf7fa21',
-      shortText: 'New button to hide multiple Ugcs added to Ugc search',
+      tag: ChangelogTag.Internal,
+      uuid: '31486e41-e069-4ab2-9672-b81c24b406f5',
+      shortText: 'Restructure Home Page Tile data',
     },
     {
       tag: ChangelogTag.General,
