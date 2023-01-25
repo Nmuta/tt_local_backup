@@ -13,6 +13,7 @@ import { GameTitle } from '@models/enums';
 import { createMockWoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service.mock';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
@@ -22,7 +23,7 @@ describe('WoodstockUgcTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule],
+      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
       declarations: [WoodstockUgcTableComponent, BigJsonPipe],
       providers: [
         createMockWoodstockService(),

@@ -10,6 +10,7 @@ import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { createMockSunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hide/sunrise-ugc-hide.service.mock';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('SunriseUgcTableComponent', () => {
   let component: SunriseUgcTableComponent;
@@ -18,7 +19,7 @@ describe('SunriseUgcTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule],
+      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
       declarations: [SunriseUgcTableComponent, BigJsonPipe],
       providers: [
         createMockSunriseService(),
