@@ -48,5 +48,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Leaderboards = 32,
         BackgroundProcessing = 64,
         Pegasus = 128,
+        Cosmos = 256,
     }
 }

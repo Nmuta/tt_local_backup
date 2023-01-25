@@ -8,7 +8,16 @@
     <div class="tile-aspect"></div>
     <div class="tile-content">
       <mat-card>
-        <mat-card-header>
+        <mat-card-header
+          *ngIf="!item.tileActionComponent"
+          [routerLink]="parentRoute + item.tool"
+          class="clickable-header"
+        >
+          <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
+          <mat-card-title>{{ item.title }}</mat-card-title>
+          <mat-card-subtitle [matTooltip]="item.subtitle">{{ item.subtitle }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-header *ngIf="item.tileActionComponent">
           <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
           <mat-card-title>{{ item.title }}</mat-card-title>
           <mat-card-subtitle [matTooltip]="item.subtitle">{{ item.subtitle }}</mat-card-subtitle>
