@@ -5,8 +5,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 {
     public sealed class RacersCupWeatherCondition
     {
-        public string Id { get; set; }
-
         public string Name { get; set; }
 
         public RacersCupWeatherConditionType WeatherConditionType { get; set; }

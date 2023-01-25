@@ -37,14 +37,6 @@
   margin-left: 15px;
 }
 
-mat-chip.filter-type-title.filter-type-title.filter-type-title {
-  background-color: app-color-default($app-primary);
-}
-
-mat-chip.filter-type-text.filter-type-text.filter-type-text {
-  background-color: app-color-default($app-accent);
-}
-
 :host {
   padding: $gap-medium;
   display: flex;
@@ -155,6 +147,21 @@ mat-chip.filter-type-text.filter-type-text.filter-type-text {
         > * {
           margin-top: 0;
           margin-bottom: 0;
+        }
+
+        > mat-card-header {
+          margin-bottom: 0.5em;
+        }
+
+        > .clickable-header {
+          cursor: pointer;
+          transition: color 0.5s ease, background-color 0.5s ease, filter 0.2s ease;
+          filter: brightness(100%);
+          border-bottom: 1px solid transparent;
+          &:hover {
+            filter: brightness(90%);
+            border-bottom: 1px solid rgba(0, 0, 0, 10%);
+          }
         }
 
         img[mat-card-image] {

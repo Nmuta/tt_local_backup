@@ -71,6 +71,15 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field class="set-forte-endpoint" appearance="fill">
+        <mat-label>Forte Endpoint</mat-label>
+        <mat-select [(ngModel)]="forteEndpointKey" (selectionChange)="syncForteEndpointKey($event)">
+          <mat-option *ngFor="let endpointKey of steelheadEndpointKeyList" [value]="endpointKey">
+            {{ endpointKey }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </span>
 
     <p>No settings available</p>

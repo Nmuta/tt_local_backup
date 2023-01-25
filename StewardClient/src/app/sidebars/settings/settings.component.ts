@@ -13,6 +13,7 @@ import {
 import {
   SetApolloEndpointKey,
   SetFakeApi,
+  SetForteEndpointKey,
   SetStagingApi,
   SetSteelheadEndpointKey,
   SetSunriseEndpointKey,
@@ -45,6 +46,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public sunriseEndpointKey: string;
   public woodstockEndpointKey: string;
   public steelheadEndpointKey: string;
+  public forteEndpointKey: string;
   public showProfileOverrideOptions: boolean;
   public showFakeApiToggle: boolean; // Only show on dev or if user is a live ops admin
   public showStagingApiToggle: boolean; // Only show on staging slot
@@ -54,6 +56,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public sunriseEndpointKeyList: string[];
   public woodstockEndpointKeyList: string[];
   public steelheadEndpointKeyList: string[];
+  public forteEndpointKeyList: string[];
 
   constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
@@ -79,6 +82,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
             latest.Apollo.length > 0 &&
             latest.Sunrise.length > 0 &&
             latest.Woodstock.length > 0 &&
+            latest.Forte.length > 0 &&
             latest.Steelhead.length > 0
           );
         }),
@@ -89,6 +93,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
         this.sunriseEndpointKeyList = latest.Sunrise;
         this.woodstockEndpointKeyList = latest.Woodstock;
         this.steelheadEndpointKeyList = latest.Steelhead;
+        this.forteEndpointKeyList = latest.Forte;
       });
 
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
@@ -98,6 +103,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
       this.sunriseEndpointKey = latest.sunriseEndpointKey;
       this.woodstockEndpointKey = latest.woodstockEndpointKey;
       this.steelheadEndpointKey = latest.steelheadEndpointKey;
+      this.forteEndpointKey = latest.forteEndpointKey;
     });
   }
 
@@ -128,6 +134,13 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   /** Fired when any setting changes. */
   public syncWoodstockEndpointKey($event: MatSelectChange): void {
     this.store.dispatch(new SetWoodstockEndpointKey($event.value)).subscribe(() => {
+      this.windowService.location().reload();
+    });
+  }
+
+  /** Fired when any setting changes. */
+  public syncForteEndpointKey($event: MatSelectChange): void {
+    this.store.dispatch(new SetForteEndpointKey($event.value)).subscribe(() => {
       this.windowService.location().reload();
     });
   }

@@ -46,6 +46,9 @@ import { ReportWeightModule } from '@views/report-weight/report-weight.module';
 import { LoyaltyRewardsModule } from '@views/loyalty-rewards/loyalty-rewards.module';
 import { PlayerProfileManagementModule } from '@views/player-profile-management/player-profile-management.module';
 import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-details.module';
+import { ForteUserDetailsComponent } from './forte/forte-user-details.component';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -56,6 +59,7 @@ import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-de
     ApolloUserDetailsComponent,
     SteelheadUserDetailsComponent,
     WoodstockUserDetailsComponent,
+    ForteUserDetailsComponent,
     GeneralUserDetailsComponent,
   ],
   imports: [
@@ -100,6 +104,8 @@ import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-de
     ReportWeightModule,
     LoyaltyRewardsModule,
     PlayerProfileManagementModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
 })
 export class UserDetailsModule {}

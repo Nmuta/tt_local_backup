@@ -33,6 +33,9 @@ describe('CheckboxPermissionAttributeDirective', () => {
                 click: () => {
                   return;
                 },
+                style: {
+                  display: 'block',
+                },
               },
             },
           },
@@ -46,7 +49,7 @@ describe('CheckboxPermissionAttributeDirective', () => {
 
   beforeEach(() => {
     directive = new CheckboxPermissionAttributeDirective(
-      button._elementRef.nativeElement,
+      button._elementRef,
       mockPermAttributesService,
       null,
       null,

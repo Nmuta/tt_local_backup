@@ -7,6 +7,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Forte;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -53,6 +54,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 Woodstock = typeof(WoodstockEndpoint).GetProperties()
                     .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
                 Steelhead = typeof(SteelheadEndpoint).GetProperties()
+                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
+                Forte = typeof(ForteEndpoint).GetProperties()
                     .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
             };
 

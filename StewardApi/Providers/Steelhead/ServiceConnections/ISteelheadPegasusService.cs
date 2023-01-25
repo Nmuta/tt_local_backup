@@ -71,6 +71,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             string pegasusSnapshot = null);
 
         /// <summary>
+        ///     Gets data for Builder's Cup's dynamic content.
+        /// </summary>
+        Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync();
+
+        /// <summary>
         ///     Gets welcome center columns.
         /// </summary>
         Task<SteelheadLiveOpsContent.WorldOfForzaConfigV3> GetWelcomeCenterDataAsync();

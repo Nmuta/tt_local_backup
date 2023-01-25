@@ -78,6 +78,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             Dictionary<string, IList<string>> GetPermissionAttributes()
             {
                 var permissions = new Dictionary<string, IList<string>>();
+#pragma warning disable CA1308 // Normalize strings to uppercase, UI string enum is expecting title lowercased
+                permissions.Add(UserAttribute.TitleAccess, new List<string>()
+                {
+                        nameof(TitleCodeName.Forte).ToLowerInvariant(),
+                });
 
                 var collection = this.HttpContext.RequestServices
                     .GetService(typeof(IActionDescriptorCollectionProvider)) as ActionDescriptorCollectionProvider;
@@ -101,7 +106,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                     var titlePathIndex = segments.IndexOf(segment => string.Equals(segment, "title", StringComparison.OrdinalIgnoreCase));
                     var titleIndex = titlePathIndex + 1;
                     var hasTitle = titlePathIndex >= 0;
-#pragma warning disable CA1308 // Normalize strings to uppercase, UI string enum is expecting title lowercased
                     var title = segments[titleIndex].ToLowerInvariant();
 
                     foreach (var action in allActions)
