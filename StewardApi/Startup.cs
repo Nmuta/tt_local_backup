@@ -65,6 +65,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
@@ -265,6 +266,9 @@ namespace Turn10.LiveOps.StewardApi
             var scopes = new[] { "https://graph.microsoft.com/.default" };
             var graphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
             builder.Register(c => new MsGraphService(graphServiceClient, servicePrincipalId)).As<IMsGraphService>().SingleInstance();
+
+            // PlayFab Service
+            builder.RegisterType<WoodstockPlayFabService>().As<IWoodstockPlayFabService>().SingleInstance();
 
             builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
             builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
