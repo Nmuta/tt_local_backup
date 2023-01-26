@@ -1,4 +1,11 @@
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import {
+  HomeTileInfoInternal,
+  AppIcon,
+  NavbarTool,
+  CommonAccessLevels,
+  HomeTileRestrictionType,
+} from '../../helpers';
 
 export const obligationsTile = <HomeTileInfoInternal>{
   icon: AppIcon.DeveloperTool,
@@ -17,4 +24,8 @@ export const obligationsTile = <HomeTileInfoInternal>{
       m => m.DataPipelineObligationModule,
     ),
   hideFromUnauthorized: true,
+  restriction: {
+    requiredPermissions: [PermAttributeName.UpdateObligationPipeline],
+    action: HomeTileRestrictionType.Disable,
+  },
 };

@@ -1,5 +1,12 @@
 import { GameTitle, UserRole } from '@models/enums';
-import { AppIcon, NavbarTool, ExtraIcon, HomeTileInfoExternal } from '../../helpers';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import {
+  AppIcon,
+  NavbarTool,
+  ExtraIcon,
+  HomeTileInfoExternal,
+  HomeTileRestrictionType,
+} from '../../helpers';
 
 export const pegasusExternalTile = <HomeTileInfoExternal>{
   icon: AppIcon.DeveloperTool,
@@ -15,4 +22,8 @@ export const pegasusExternalTile = <HomeTileInfoExternal>{
   shortDescription: [`Web Services for CMS authoring, snapshotting and publishing`],
   externalUrl: 'https://cms.services.forzamotorsport.net/',
   hideFromUnauthorized: true,
+  restriction: {
+    requiredPermissions: [PermAttributeName.AdminFeature],
+    action: HomeTileRestrictionType.Disable,
+  },
 };

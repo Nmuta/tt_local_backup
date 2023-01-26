@@ -45,13 +45,54 @@
   </div>
 </div>
 
-<home-tile-grid [tiles]="filteredPossibleNavbarItems"></home-tile-grid>
+<mat-tab-group *waitForMonitor="permInitializationActionMonitor">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Your Tools
+      <mat-chip color="accent" [selected]="availableTiles.filtered?.length > 0">{{
+        availableTiles.filtered?.length
+      }}</mat-chip>
+    </ng-template>
 
-<div *ngIf="rejectedPossibleNavbarItems.length > 0" class="horizontal-divider">
-  <span>Tiles below do not match filters</span>
-</div>
+    <home-tile-grid
+      *ngIf="availableTiles.filtered?.length > 0; else noAvailableResultsTemplate"
+      [tiles]="availableTiles.filtered"
+    ></home-tile-grid>
+    <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
+      <span>Tools below do not match filters</span>
+    </div>
+    <home-tile-grid
+      *ngIf="availableTiles.rejected?.length > 0"
+      [tiles]="availableTiles.rejected"
+    ></home-tile-grid>
+  </mat-tab>
 
-<home-tile-grid
-  *ngIf="rejectedPossibleNavbarItems.length > 0"
-  [tiles]="rejectedPossibleNavbarItems"
-></home-tile-grid>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Disabled Tools
+      <mat-chip color="accent" [selected]="unauthorizedTiles.filtered?.length > 0">{{
+        unauthorizedTiles.filtered?.length
+      }}</mat-chip>
+    </ng-template>
+    <div class="disabled-tools-info">Tools below are disabled due to lack of permissions.</div>
+    <home-tile-grid
+      *ngIf="unauthorizedTiles.filtered?.length > 0; else noUnauthorizedResultsTemplate"
+      [tiles]="unauthorizedTiles.filtered"
+    ></home-tile-grid>
+    <div *ngIf="unauthorizedTiles.rejected?.length > 0" class="horizontal-divider">
+      <span>Tools below do not match filters</span>
+    </div>
+    <home-tile-grid
+      *ngIf="unauthorizedTiles.rejected?.length > 0"
+      [tiles]="unauthorizedTiles.rejected"
+    ></home-tile-grid>
+  </mat-tab>
+</mat-tab-group>
+
+<ng-template #noAvailableResultsTemplate>
+  <div class="no-results-container">No available tools found matching your filters.</div>
+</ng-template>
+
+<ng-template #noUnauthorizedResultsTemplate>
+  <div class="no-results-container">No disabled tools found matching your filters.</div>
+</ng-template>

@@ -1,6 +1,7 @@
 import { Type } from '@angular/core';
 import { LoadChildren } from '@angular/router';
 import { GameTitle, UserRole } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { NavbarTool } from './navbar-tool';
 
 /** Base model for Home Tiles. */
@@ -47,6 +48,21 @@ export interface HomeTileInfoBase {
 
   /** Hides the tool on home page from unauthroized users. */
   readonly hideFromUnauthorized?: boolean;
+
+  /** V2 Auth Restriction: */
+  readonly restriction?: HomeTileRestriction;
+}
+
+/** Tile restriction types. */
+export enum HomeTileRestrictionType {
+  Disable,
+  Hide,
+}
+
+/** Defines tool tile restriction if user does not have all required perm attributes. */
+export interface HomeTileRestriction {
+  requiredPermissions: PermAttributeName[];
+  action: HomeTileRestrictionType;
 }
 
 /** Type for a custom tile. */
