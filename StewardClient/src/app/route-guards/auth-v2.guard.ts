@@ -5,7 +5,6 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  Router,
 } from '@angular/router';
 import { environment } from '@environments/environment';
 import { UserModel } from '@models/user.model';
