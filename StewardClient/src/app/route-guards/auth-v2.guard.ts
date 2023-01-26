@@ -5,6 +5,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
+  Router,
 } from '@angular/router';
 import { environment } from '@environments/environment';
 import { UserModel } from '@models/user.model';
@@ -35,8 +36,7 @@ export class AuthV2Guard implements CanActivate, CanActivateChild {
     _route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean> {
-    const urlNoQuery = state.url.split('?')[0];
-    const redirectAction = new Navigate(['/auth/login'], { from: urlNoQuery });
+    const redirectAction = new Navigate(['/auth/login'], { from: state.url });
     const unauthorizedAction = new Navigate(['/unauthorized'], { source: state.url || '' });
 
     // Find the correct tool in the tool list

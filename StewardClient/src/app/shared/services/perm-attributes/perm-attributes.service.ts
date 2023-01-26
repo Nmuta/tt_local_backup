@@ -55,7 +55,7 @@ export class PermAttributesService extends BaseService {
     return this.tryInitialization$.pipe(
       filter(() => this.attributesInitialized && !!this.userRole),
       tap(() => (this.isServiceFullyInitialized = true)),
-      take(1),
+      take(1), // Complete observable after initialization
       takeUntil(this.onDestroy$),
     );
   }
