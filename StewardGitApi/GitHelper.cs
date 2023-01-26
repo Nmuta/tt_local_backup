@@ -1,5 +1,6 @@
-﻿using System.Text;
-
+﻿using System.Runtime.Serialization;
+using System.Text;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
@@ -357,6 +358,32 @@ namespace StewardGitApi
             return refs;
         }
 
+        /// <summary>
+        ///     Kick off a pipeline to format the branch.
+        /// </summary>
+        internal static async Task<Build> RunPipelineAsync(AzureContext context, string branch, int buildDefinition)
+        {
+            if (branch.StartsWith("refs/heads/", StringComparison.OrdinalIgnoreCase))
+            {
+                branch = branch.Substring(11);
+            }
+
+            var buildClient = context.Connection.GetClient<BuildHttpClient>();
+
+            var project = await GetProjectAsync(context).ConfigureAwait(false);
+            var definition = await buildClient.GetDefinitionAsync(project.Id, buildDefinition).ConfigureAwait(false); // Motorsport-FormatContent build definition 376
+
+            var build = new BuildWithTemplateParameters
+            {
+                Definition = definition,
+                Project = project,
+                SourceBranch = branch,
+                TemplateParameters = new Dictionary<string, string>() { { "branch", branch } },
+            };
+
+            return await buildClient.QueueBuildAsync(build).ConfigureAwait(false);
+        }
+
         private static string WithoutRefsPrefix(string refName)
         {
             if (!refName.StartsWith("refs/", StringComparison.InvariantCulture))
@@ -413,6 +440,15 @@ namespace StewardGitApi
             }
 
             return commitRefs;
+        }
+
+        /// <summary>
+        /// Extended build class that provides template parameters for the pipeline.
+        /// </summary>
+        private class BuildWithTemplateParameters : Build
+        {
+            [DataMember(EmitDefaultValue = false)]
+            public Dictionary<string, string> TemplateParameters { get; set; }
         }
     }
 }

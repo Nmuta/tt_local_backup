@@ -9,6 +9,7 @@ using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using StewardGitApi;
 using Swashbuckle.AspNetCore.Annotations;
@@ -108,6 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
             CommitRefProxy change = await this.steelheadPegasusService.EditMessageOfTheDayAsync(messageOfTheDayBridge, parsedId, commitComment).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
+            _ = await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
 
             var user = this.User.UserClaims();
             var pullRequestTitle = $"Edits MessageOfTheDay from Steward. Author: {user.EmailAddress}";

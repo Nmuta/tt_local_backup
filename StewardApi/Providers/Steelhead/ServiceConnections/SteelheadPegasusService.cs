@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using AutoMapper;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
@@ -57,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private readonly string cmsEnvironment;
         private readonly string pathMessageOfTheDay;
         private readonly string pathWorldOfForzaTile;
+        private readonly string formatPipelineBuildDefinition;
         private readonly CMSRetrievalHelper cmsRetrievalHelper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IMapper mapper;
@@ -98,6 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
             this.pathMessageOfTheDay = configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath];
             this.pathWorldOfForzaTile = configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath];
+            this.formatPipelineBuildDefinition = configuration[ConfigurationKeyConstants.SteelheadFormatPipelineBuildDefinition];
 
             string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
                 configuration[ConfigurationKeyConstants.KeyVaultUrl],
@@ -338,17 +341,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
         {
-            var pushed = await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);
-
-            return pushed;
+            return await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
         {
-            var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
-
-            return pullrequest;
+            return await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -517,6 +516,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var branches = await this.azureDevOpsManager.GetAllBranchesAsync().ConfigureAwait(false);
 
             return branches;
+        }
+
+        /// <inheritdoc/>
+        public async Task<Build> RunFormatPipelineAsync(GitPush push)
+        {
+            return await this.azureDevOpsManager.RunPipelineAsync(
+                push, int.Parse(this.formatPipelineBuildDefinition, System.Globalization.CultureInfo.InvariantCulture)).ConfigureAwait(false);
         }
     }
 }

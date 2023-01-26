@@ -1,4 +1,5 @@
-﻿using Microsoft.TeamFoundation.Core.WebApi;
+﻿using Microsoft.TeamFoundation.Build.WebApi;
+using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Organization.Client;
 
@@ -112,5 +113,10 @@ namespace StewardGitApi
         ///     Gets a list of all branches.
         /// </summary>
         public Task<IEnumerable<GitRef>> GetAllBranchesAsync();
+
+        /// <summary>
+        ///     Kick off a build to format the provided branch.
+        /// </summary>
+        public Task<Build> RunPipelineAsync(GitPush push, int buildDefinition);
     }
 }
