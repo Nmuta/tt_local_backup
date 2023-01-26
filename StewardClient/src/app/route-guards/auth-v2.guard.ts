@@ -7,7 +7,6 @@ import {
   UrlTree,
 } from '@angular/router';
 import { environment } from '@environments/environment';
-import { strContains } from '@microsoft/applicationinsights-core-js';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
@@ -16,6 +15,7 @@ import { PermAttributesService } from '@services/perm-attributes/perm-attributes
 import { RequestAccessToken } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { catchError, Observable, of, switchMap } from 'rxjs';
+import { includes } from 'lodash';
 
 /** A guard for preventing unauthenticated access and directing users to the auth flow. */
 @Injectable({
@@ -40,7 +40,7 @@ export class AuthV2Guard implements CanActivate, CanActivateChild {
     const unauthorizedAction = new Navigate(['/unauthorized'], { source: state.url || '' });
 
     // Find the correct tool in the tool list
-    const homeTile = environment.tools.find(homeTile => strContains(state.url, homeTile.tool));
+    const homeTile = environment.tools.find(homeTile => includes(state.url, homeTile.tool));
 
     // Shouldnt happen but if tool cannot be found, assume no restrictions.
     if (!homeTile) return of(true);
