@@ -1,0 +1,19 @@
+<form [formGroup]="formGroup" class="sf-wrapper">
+  <div class="sf-vertical">
+    <div class="sf-horizontal do-not-align-items">
+      <mat-form-field appearance="fill">
+        <mat-label>Column</mat-label>
+        <mat-select matInput [formControl]="formControls.column">
+          <mat-option *ngFor="let option of columnOrderOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <section >
+        <mat-button-toggle-group [formControl]="formControls.direction">
+          <mat-button-toggle [value]="directionOptions.Ascending">Ascending</mat-button-toggle>
+          <mat-button-toggle [value]="directionOptions.Descending">Descending</mat-button-toggle>
+        </mat-button-toggle-group>
+      </section>
+    </div>
+  </div>
+</form>
