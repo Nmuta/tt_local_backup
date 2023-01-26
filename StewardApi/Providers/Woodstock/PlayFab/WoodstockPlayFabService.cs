@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Azure.Identity;
 using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Configuration;
@@ -25,24 +26,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
     /// <inheritdoc />
     public sealed class WoodstockPlayFabService : IWoodstockPlayFabService
     {
-        private readonly WoodstockPlayFabConfig playerFabConfig = new WoodstockPlayFabConfig();
+        private readonly WoodstockPlayFabConfig playerFabConfig;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayFabService"/> class.
         /// </summary>
-        public WoodstockPlayFabService(IKeyVaultProvider keyVaultProvider, IConfiguration configuration)
+        public WoodstockPlayFabService(WoodstockPlayFabConfig playerFabConfig)
         {
-            var devEnvironment = new PlayFabEnvironment()
-            {
-                TitleId = keyVaultProvider.GetSecretAsync(
-                    configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                    configuration[ConfigurationKeyConstants.WoodstockPlayFabDevTitleId]).GetAwaiter().GetResult(),
-                Key = keyVaultProvider.GetSecretAsync(
-                    configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                    configuration[ConfigurationKeyConstants.WoodstockPlayFabDevKey]).GetAwaiter().GetResult(),
-            };
+            playerFabConfig.ShouldNotBeNull(nameof(playerFabConfig));
 
-            this.playerFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Dev, devEnvironment);
+            this.playerFabConfig = playerFabConfig;
         }
 
         /// <inheritdoc />

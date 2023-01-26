@@ -39,6 +39,7 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -267,8 +268,18 @@ namespace Turn10.LiveOps.StewardApi
             var graphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
             builder.Register(c => new MsGraphService(graphServiceClient, servicePrincipalId)).As<IMsGraphService>().SingleInstance();
 
-            // PlayFab Service
-            builder.RegisterType<WoodstockPlayFabService>().As<IWoodstockPlayFabService>().SingleInstance();
+            // Woodstock PlayFab Service
+            var woodstockPlayFabConfig = new WoodstockPlayFabConfig();
+            woodstockPlayFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Dev, new PlayFabEnvironment()
+            {
+                TitleId = keyVaultProvider.GetSecretAsync(
+                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabDevTitleId]).GetAwaiter().GetResult(),
+                Key = keyVaultProvider.GetSecretAsync(
+                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabDevKey]).GetAwaiter().GetResult(),
+            });
+            builder.Register(c => new WoodstockPlayFabService(woodstockPlayFabConfig)).As<IWoodstockPlayFabService>().SingleInstance();
 
             builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
             builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
