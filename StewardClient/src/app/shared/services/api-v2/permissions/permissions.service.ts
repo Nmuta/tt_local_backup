@@ -27,8 +27,9 @@ export class PermissionsService {
 
   /** Gets the user perm attributes. */
   public getUserPermissionAttributes$(user: UserModel): Observable<PermAttribute[]> {
-    if (this.permAttributeService.isServiceInitialized)
+    if (this.permAttributeService.isServiceInitialized) {
       return of(this.permAttributeService.permAttributes);
+    }
 
     return this.api.getRequest$<PermAttribute[]>(`${this.basePath}/user/${user.objectId}`).pipe(
       tap(permAttributes => {
