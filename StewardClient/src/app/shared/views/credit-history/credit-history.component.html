@@ -4,22 +4,17 @@
     <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
     <button
-      class="filter-search"
       mat-raised-button
       color="primary"
-      matTooltip="Search Public UGC"
-      [disabled]="!formGroup.valid"
+      matTooltip="Lookup Credit Updates"
       [monitor]="retrieveCreditUpdatesMonitor"
       stateManager
       monitorDisable
       monitorWarnSnackbar
+      (click)="lookupCreditUpdates()"
     >
-    <!--
-      (click)="searchUgc()"
-     -->
       Search
       <button-spinner defaultIcon="search" [monitor]="retrieveCreditUpdatesMonitor"></button-spinner>
-      <!--  -->
     </button>
     <help-popover-icon cardTitle="Credit History" confluenceName="Credit History Card">
       <p>Credit history is recovered from logs and is displayed from oldest to newest.</p>

@@ -6,11 +6,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { UgcSearchFiltersComponent } from './ugc-search-filters.component';
+import { CreditUpdateSortOptionsComponent } from './credit-update-sort-options.component';
 
-describe('UgcSearchFiltersComponent', () => {
-  let fixture: ComponentFixture<UgcSearchFiltersComponent>;
-  let component: UgcSearchFiltersComponent;
+describe('CreditUpdateSortOptionsComponent', () => {
+  let fixture: ComponentFixture<CreditUpdateSortOptionsComponent>;
+  let component: CreditUpdateSortOptionsComponent;
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
@@ -22,7 +22,7 @@ describe('UgcSearchFiltersComponent', () => {
         ReactiveFormsModule,
         MatAutocompleteModule,
       ],
-      declarations: [UgcSearchFiltersComponent],
+      declarations: [CreditUpdateSortOptionsComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [],
     }).compileComponents();
@@ -30,7 +30,7 @@ describe('UgcSearchFiltersComponent', () => {
     const injector = getTestBed();
     mockStore = injector.inject(Store);
 
-    fixture = TestBed.createComponent(UgcSearchFiltersComponent);
+    fixture = TestBed.createComponent(CreditUpdateSortOptionsComponent);
     component = fixture.debugElement.componentInstance;
 
     mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));

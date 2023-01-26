@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { WoodstockCreditDetailsEntry } from '@models/woodstock';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
 import BigNumber from 'bignumber.js';
@@ -150,8 +150,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
   public formGroup = new FormGroup(this.formControls);
 
-  public selectedSortOptions: CreditUpdateSortOptionsFormValue = null;
-
   public retrieveCreditUpdatesMonitor = new ActionMonitor('Get credit updates');
   public saveRollbackMonitor = new ActionMonitor('GET save rollback');
 
@@ -187,6 +185,8 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public abstract isSaveRollbackSupported: boolean;
   public abstract getCreditHistoryByXuid$(
     xuid: BigNumber,
+    column: CreditUpdateColumn,
+    direction: SortDirection,
     startIndex: number,
     maxResults: number,
   ): Observable<T[]>;
@@ -202,6 +202,8 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
           this.loadingMore = true;
           const getCreditHistoryByXuid$ = this.getCreditHistoryByXuid$(
             this.identity.xuid,
+            this.formControls.sortOptions.value?.column,
+            this.formControls.sortOptions.value?.direction,
             this.startIndex,
             this.maxResultsPerRequest,
           );
@@ -236,11 +238,17 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       this.loadSaveRollbackHistory();
     }
 
-    this.formControls.sortOptions.valueChanges
-      .pipe( pairwiseSkip(ObjectDeepComparePredicate), takeUntil(this.onDestroy$))
-      .subscribe((options: CreditUpdateSortOptionsFormValue) => {
-        this.selectedSortOptions = options || undefined;
-      });
+    // this.formControls.sortOptions.valueChanges
+    //   .pipe( pairwiseSkip(ObjectDeepComparePredicate), takeUntil(this.onDestroy$))
+    //   .subscribe((options: CreditUpdateSortOptionsFormValue) => {
+    //     //this.selectedSortOptions = options || undefined;
+    //     //console.log(this.selectedSortOptions)
+    //   });
+  }
+
+  public lookupCreditUpdates(): void 
+  {
+    console.log(this.formControls)
   }
 
   /** Lifecycle hook. */

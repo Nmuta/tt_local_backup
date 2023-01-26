@@ -32,13 +32,15 @@ export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<Su
   /** Gets Sunrise player's list of credit updates. */
   public getCreditHistoryByXuid$(
     xuid: BigNumber,
+    column: CreditUpdateColumn,
+    direction: SortDirection,
     startIndex: number,
     maxResults: number,
   ): Observable<SunriseCreditDetailsEntry[]> {
     return this.sunrise.getCreditHistoryByXuid$(
       xuid,
-      SortDirection.Ascending,
-      CreditUpdateColumn.Timestamp,
+      direction,
+      column,
       startIndex,
       maxResults,
     );
