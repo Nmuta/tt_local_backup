@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
@@ -29,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Updates build lock entry.
         /// </summary>
-        Task UpdateAsync(Guid buildId, PlayFabBuildLock updatedBuildLock);
+        Task UpdateAsync(Guid buildId, PlayFabBuildLockRequest updatedBuildLock);
 
         /// <summary>
         ///     Deletes build lock entry.

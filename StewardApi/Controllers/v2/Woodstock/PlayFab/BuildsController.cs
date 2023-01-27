@@ -149,6 +149,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
 
             await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, parsedPlayFabEnvironment).ConfigureAwait(true);
 
+            if (!buildLock.IsLocked)
+            {
+                throw new InvalidArgumentsStewardException($"Cannot add a new build lock with isLocked set to false.");
+            }
+
             try
             {
                 await this.playFabBuildLocksProvider.CreateAsync(new PlayFabBuildLock()
@@ -159,6 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
                     UserId = userClaims.ObjectId,
                     PlayFabEnvironment = parsedPlayFabEnvironment.ToString(),
                     GameTitle = TitleConstants.WoodstockCodeName.ToLowerInvariant(),
+                    DateCreated = DateTimeOffset.UtcNow,
                     MetaData = null,
                 }).ConfigureAwait(true);
 
@@ -177,7 +183,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update)]
-        public async Task<IActionResult> UpdatePlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest buildLock)
+        public async Task<IActionResult> UpdatePlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest updatedBuildLock)
         {
             var userClaims = this.User.UserClaims();
 
@@ -188,16 +194,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
 
             try
             {
-                await this.playFabBuildLocksProvider.UpdateAsync(parsedBuildId, new PlayFabBuildLock()
-                {
-                    Id = parsedBuildId,
-                    Reason = buildLock.Reason,
-                    IsLocked = buildLock.IsLocked,
-                    UserId = userClaims.ObjectId,
-                    PlayFabEnvironment = parsedPlayFabEnvironment.ToString(),
-                    GameTitle = TitleConstants.WoodstockCodeName.ToLowerInvariant(),
-                    MetaData = null,
-                }).ConfigureAwait(true);
+                await this.playFabBuildLocksProvider.UpdateAsync(parsedBuildId, updatedBuildLock).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

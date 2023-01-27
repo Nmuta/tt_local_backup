@@ -9,6 +9,7 @@ using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -113,17 +114,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task UpdateAsync(Guid buildId, PlayFabBuildLock updatedBuildLock)
+        public async Task UpdateAsync(Guid buildId, PlayFabBuildLockRequest updatedBuildLock)
         {
-            var existingBuildLock = this.GetAsync(buildId);
+            var existingBuildLock = await this.GetAsync(buildId).ConfigureAwait(true);
             var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
 
             try
             {
                 // Only update fields we care about.
+                existingBuildLockInternal.ETag = "*";
                 existingBuildLockInternal.Reason = updatedBuildLock.Reason;
                 existingBuildLockInternal.IsLocked = updatedBuildLock.IsLocked;
-                existingBuildLockInternal.DateCreated = updatedBuildLock.DateCreated;
 
                 var replaceOperation = TableOperation.Replace(existingBuildLockInternal);
                 await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
@@ -137,11 +138,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task DeleteAsync(Guid buildId)
         {
-            var existingBuildLock = this.GetAsync(buildId);
+            var existingBuildLock = await this.GetAsync(buildId).ConfigureAwait(true);
             var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
 
             try
             {
+                existingBuildLockInternal.ETag = "*";
                 var deleteOperation = TableOperation.Delete(existingBuildLockInternal);
                 await this.tableStorageClient.ExecuteAsync(deleteOperation).ConfigureAwait(false);
             }
