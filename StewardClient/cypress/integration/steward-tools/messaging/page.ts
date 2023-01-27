@@ -37,12 +37,6 @@ export function verifyChip(chipText: string): void {
   });
 }
 
-/** Switches to the Gravity title. */
-export function selectGravity(): void {
-  cy.contains('a', 'Street').click();
-  waitForProgressSpinners();
-}
-
 /** Switches to the Apollo title. */
 export function selectApollo(): void {
   cy.contains('a', 'FM7').click();

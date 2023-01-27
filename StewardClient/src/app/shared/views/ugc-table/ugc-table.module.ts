@@ -27,6 +27,8 @@ import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-moda
 import { UgcDownloadButtonModule } from '@components/ugc-download-button/ugc-download-button.module';
 import { SteelheadUgcTableComponent } from './steelhead/steelhead-ugc-table.component';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -62,6 +64,8 @@ import { HelpModule } from '@shared/modules/help/help.module';
     FeatureUgcModalModule,
     UgcDownloadButtonModule,
     HelpModule,
+    StandardCopyModule,
+    PermissionsModule,
   ],
   exports: [
     SunriseUgcTableComponent,

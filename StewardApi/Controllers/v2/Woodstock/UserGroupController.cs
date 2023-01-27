@@ -108,6 +108,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
 
             try
             {
+                var userCount = await this.Services.UserManagementService.GetUserGroupMemberCount(userGroupId).ConfigureAwait(true);
+
+                // If the user count is higher than 20000, only return the count and do not get the actual users to avoid a potential timeout
+                if (userCount.count > 20000)
+                {
+                    return this.Ok(new GetUserGroupUsersResponse() { PlayerCount = (int)userCount.count });
+                }
+
                 var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
 
                 // Temporary code until the service call returns gamertags //

@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import {
-  environment,
   HomeTileInfo,
+  HomeTileRestrictionType,
   isHomeTileInfoMultiExternal,
   NavbarTool,
 } from '@environments/environment';
@@ -10,7 +10,6 @@ import { HomeTileInfoForNav } from '@helpers/external-links';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
-import { ZendeskService } from '@services/zendesk';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';
 import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
 import {
@@ -28,7 +27,7 @@ import { Observable, takeUntil } from 'rxjs';
   styleUrls: ['./home-tile-grid.component.scss'],
   providers: [GameTitleAbbreviationPipe],
 })
-export class ToolsAppHomeTileGridComponent extends BaseComponent implements OnInit {
+export class ToolsAppHomeTileGridComponent extends BaseComponent implements OnChanges {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
   @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
 
@@ -36,16 +35,15 @@ export class ToolsAppHomeTileGridComponent extends BaseComponent implements OnIn
   @Input() public tiles: HomeTileInfoForNav[];
 
   public isEnabled: Partial<Record<NavbarTool, number>> = {};
-  public hasAccess: Partial<Record<NavbarTool, boolean>> = {};
   public isLiveOpsAdmin: boolean = false;
   public userRole: UserRole;
 
   public parentRoute: string = '/app/tools/';
 
-  /** True when app is running inside of Zendesk. */
-  public isInZendesk: boolean = false;
+  public HomeTileRestrictionType = HomeTileRestrictionType;
+  public UserRole = UserRole;
 
-  constructor(private readonly store: Store, private readonly zendeskService: ZendeskService) {
+  constructor(private readonly store: Store) {
     super();
   }
 
@@ -55,20 +53,16 @@ export class ToolsAppHomeTileGridComponent extends BaseComponent implements OnIn
   }
 
   /** Initialization hook. */
-  public ngOnInit(): void {
-    this.zendeskService.inZendesk$.pipe(takeUntil(this.onDestroy$)).subscribe(inZendesk => {
-      this.isInZendesk = inZendesk;
-    });
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.tiles) {
+      return;
+    }
 
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
       this.userRole = profile.role;
       // The state replaces profile.role with profile.liveOpsAdminSecondaryRole to trick the app.
       // We must check for liveOpsAdminSecondaryRole instead of role to know if the user is a LiveOpsAdmin.
       this.isLiveOpsAdmin = !!profile.overrides?.role && profile.overrides?.role === profile.role;
-      this.hasAccess = chain(environment.tools)
-        .map(v => [v.tool, v.accessList.includes(profile?.role)])
-        .fromPairs()
-        .value();
     });
 
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {

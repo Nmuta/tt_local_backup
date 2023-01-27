@@ -26,13 +26,6 @@
       profile.deviceType
     }}</span>
     <mat-icon
-      *ngIf="profile.lastLoginUtc"
-      class="last-used"
-      [matTooltip]="'Last Used On: ' + (profile.lastLoginUtc | dateTimeToJsDate | date: 'long')"
-    >
-      history
-    </mat-icon>
-    <mat-icon
       *ngIf="profile.externalProfileId"
       class="external-id trailing-icon"
       [matTooltip]="'External ID: ' + profile.externalProfileId"

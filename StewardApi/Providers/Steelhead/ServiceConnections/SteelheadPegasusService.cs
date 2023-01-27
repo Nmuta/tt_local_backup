@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
@@ -128,56 +129,66 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
-            var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
+            var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}";
 
-            var localizationIdsMapping = await this.cmsRetrievalHelper
-                .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
-                    LocalizationStringIdsMappings,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
-
-            var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
-            foreach (var supportedLocale in supportedLocales)
+            async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStrings(bool useInternalIds)
             {
-                var filename = $"{LocalizationFileAntecedent}{supportedLocale.Locale}";
+                var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
-                var localizedStrings = await this.cmsRetrievalHelper
-                    .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
-                        filename,
+                var localizationIdsMapping = await this.cmsRetrievalHelper
+                    .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
+                        LocalizationStringIdsMappings,
                         this.cmsEnvironment,
                         slot: "daily").ConfigureAwait(false);
 
-                foreach (var locStringKey in localizedStrings.Keys)
+                var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
+                foreach (var supportedLocale in supportedLocales)
                 {
-                    var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+                    var filename = $"{LocalizationFileAntecedent}{supportedLocale.Locale}";
 
-                    var localizedResult = new LiveOpsContracts.LocalizedString()
-                    {
-                        Message = localizedStrings[locStringKey].LocString,
-                        Category = localizedStrings[locStringKey].Category,
-                        LanguageCode = supportedLocale.Locale,
-                        IsTranslated = isTranslated,
-                    };
+                    var localizedStrings = await this.cmsRetrievalHelper
+                        .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
+                            filename,
+                            this.cmsEnvironment,
+                            slot: "daily").ConfigureAwait(false);
 
-                    if (!results.ContainsKey(locStringKey))
+                    foreach (var locStringKey in localizedStrings.Keys)
                     {
-                        // Create if not exists in dictionary
-                        results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
+                        var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+
+                        var localizedResult = new LiveOpsContracts.LocalizedString()
+                        {
+                            Message = localizedStrings[locStringKey].LocString,
+                            Category = localizedStrings[locStringKey].Category,
+                            LanguageCode = supportedLocale.Locale,
+                            IsTranslated = isTranslated,
+                        };
+
+                        if (!results.ContainsKey(locStringKey))
+                        {
+                            // Create if not exists in dictionary
+                            results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
+                        }
+
+                        results[locStringKey].Add(localizedResult);
                     }
-
-                    results[locStringKey].Add(localizedResult);
                 }
+
+                this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
+
+                // Remap the ids to the right ids from the mapping file
+                if (useInternalIds)
+                {
+                    return results
+                        .Where(p => localizationIdsMapping.ContainsKey(p.Key))
+                        .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+                }
+
+                return results;
             }
 
-            // Remap the ids to the right ids from the mapping file
-            if (useInternalIds)
-            {
-                return results
-                    .Where(p => localizationIdsMapping.ContainsKey(p.Key))
-                    .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
-            }
-
-            return results;
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>>(localizedStringCacheKey)
+                   ?? await GetLocalizedStrings(useInternalIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -328,7 +339,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
-            var fileName = "RacersCupChampionshipScheduleV4";
+            var fileName = "LiveOps_RacersCupChampionshipScheduleV4";
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
                 fileName,
                 environment: pegasusEnvironment,
@@ -337,6 +348,39 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return scheduleData;
         }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
+        {
+            var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
+            var fileName = "LiveOps_BuildersCupFeaturedCup-en-US";
+
+            var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
+                fileName,
+                environment: this.cmsEnvironment,
+                slot: pegasusSlot).ConfigureAwait(false);
+
+            return featuredCupData.Single();
+        }
+
+        /// <inheritdoc/>
+        public async Task<SteelheadLiveOpsContent.WorldOfForzaConfigV3> GetWelcomeCenterDataAsync()
+        {
+            var filename = CMSFileNames.WorldOfForzaConfig;
+            var wofConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaConfigV3>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
+
+            return wofConfig;
+        }
+
+        /// <inheritdoc/>
+        public async Task<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync()
+        {
+            var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US");
+            var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
+
+            return wofTileCollection;
+        }
+
 
         /// <inheritdoc/>
         public async Task<XElement> GetMessageOfTheDayElementAsync(Guid id)
@@ -473,19 +517,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<(GitPullRequest, string authorEmail)>> GetPullRequestsAsync(PullRequestStatus status)
+        public async Task<IEnumerable<PullRequest>> GetPullRequestsAsync(PullRequestStatus status, string subject = null)
         {
             var allPrs = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null).ConfigureAwait(false);
 
             var filteredPrs = allPrs.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
 
-            IEnumerable<(GitPullRequest pr, string authorEmail)> formattedPrs = filteredPrs.Select(pr =>
+            if (!string.IsNullOrEmpty(subject))
             {
-                var match = pr.Title.ExtractEmail().FirstOrDefault();
-                string authorEmail = match?.Value;
+                filteredPrs = filteredPrs.Where(pr => pr.Title.Contains(subject, StringComparison.InvariantCulture));
+            }
 
-                return (pr, authorEmail);
-            });
+            var formattedPrs = this.mapper.Map<List<PullRequest>>(filteredPrs);
 
             return formattedPrs;
         }
@@ -517,9 +560,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
+        public async Task<PullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
         {
-            return await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
+            var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
+
+            var formattedPr = this.mapper.Map<PullRequest>(pullrequest);
+
+            return formattedPr;
         }
     }
 }

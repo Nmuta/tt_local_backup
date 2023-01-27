@@ -49,7 +49,6 @@ describe('State: MasterInventoryListMemoryState', () => {
 
     store.reset({
       giftingMasterListMemory: {
-        [GameTitleCodeName.Street]: {},
         [GameTitleCodeName.FH4]: undefined,
       },
     });

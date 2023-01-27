@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloMasterInventory } from '@models/apollo';
-import { GravityPlayerInventory } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { OpusMasterInventory } from '@models/opus';
@@ -22,7 +21,6 @@ import { GameTitle } from '@models/enums';
 import { cloneDeep } from 'lodash';
 
 export type AcceptablePlayerInventoryTypeUnion =
-  | GravityPlayerInventory
   | SunriseMasterInventory
   | ApolloMasterInventory
   | OpusMasterInventory;

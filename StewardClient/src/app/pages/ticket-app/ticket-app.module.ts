@@ -8,7 +8,6 @@ import { PlayerSidebarDetailsModule } from './components/player-sidebar-details/
 import { TicketAppComponent } from './ticket-app.component';
 import { TicketAppRouterModule } from './ticket-app.routing';
 import { SunriseComponent } from './pages/sunrise/sunrise.component';
-import { GravityComponent } from './pages/gravity/gravity.component';
 import { ApolloComponent } from './pages/apollo/apollo.component';
 import { OpusComponent } from './pages/opus/opus.component';
 import { GoToInventoryButtonComponent } from './components/go-to-inventory-button/go-to-inventory-button.component';
@@ -48,7 +47,6 @@ import { GiftHistoryResultsModule } from '@views/gift-history-results/gift-histo
     SunriseComponent,
     SteelheadComponent,
     WoodstockComponent,
-    GravityComponent,
     ApolloComponent,
     OpusComponent,
     TicketAppComponent,

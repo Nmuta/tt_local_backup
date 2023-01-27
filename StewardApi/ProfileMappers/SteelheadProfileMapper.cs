@@ -7,16 +7,20 @@ using AutoMapper;
 using Forza.Scoreboard.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
+using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
+using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -141,6 +145,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512)).ReverseMap();
             this.CreateMap<LocalizationStringResult, SteelheadLiveOpsContent.LocalizedString>()
                 .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
+                .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
                 .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory))
                 .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => src.MaxLength))
@@ -299,8 +304,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.MakeID))
                 .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.MakeDisplayName));
             this.CreateMap<SteelheadLiveOpsContent.VanityItem, MasterInventoryItem>()
-                            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
-                            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
             this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
             this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))
@@ -314,11 +319,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
             this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
-            this.CreateMap<(WelcomeCenterTileConfig tile, WelcomeCenterTileCmsBase tileInfo), WelcomeCenterTileOutput>()
-                .ForMember(dest => dest.TileTypeV3, opt => opt.MapFrom(src => src.tile.TileTypeV3))
-                .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.tile.Priority))
+            this.CreateMap<(WoFTileConfigBase tile, WoFTileCMSBase tileInfo), WelcomeCenterTileOutput>()
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.tile.Size))
-                .ForMember(dest => dest.DisplayConditionDataList, opt => opt.MapFrom(src => src.tile.DisplayConditionDataList))
                 .ForMember(dest => dest.TileFriendlyName, opt => opt.MapFrom(src => src.tileInfo.FriendlyName))
                 .ForMember(dest => dest.TileTitle, opt => opt.MapFrom(src => src.tileInfo.TileTitle))
                 .ForMember(dest => dest.TileType, opt => opt.MapFrom(src => src.tileInfo.TileType))
@@ -381,6 +383,24 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.QualificationLimitType, opt => opt.MapFrom(src => src.QualificationLimitType))
                 .ForMember(dest => dest.NumberOfLimitedLaps, opt => opt.MapFrom(src => src.NumLimitedLaps))
                 .ForMember(dest => dest.IsOneShot, opt => opt.MapFrom(src => src.IsOneShot));
+            this.CreateMap<SteelheadLiveOpsContent.GameOptions, RacersCupGameOptions>()
+                .ForMember(dest => dest.StartRaceWeatherCondition, opt => opt.MapFrom(src => src.StartRaceWeatherConditionId))
+                .ForMember(dest => dest.MidRaceWeatherCondition, opt => opt.MapFrom(src => src.MidRaceWeatherConditionId))
+                .ForMember(dest => dest.EndRaceWeatherCondition, opt => opt.MapFrom(src => src.EndRaceWeatherConditionId))
+                .ReverseMap();
+            this.CreateMap<SteelheadLiveOpsContent.WeatherCondition, RacersCupWeatherCondition>()
+                .ReverseMap();
+            this.CreateMap<SteelheadLiveOpsContent.EWeatherConditionType, RacersCupWeatherConditionType>();
+
+            this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
+                .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime));
+
+            this.CreateMap<GitPullRequest, PullRequest>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.PullRequestId))
+                .ForMember(dest => dest.WebUrl, opt => opt.MapFrom(source => $"{source.Repository.WebUrl}/pullrequest/{source.PullRequestId}"))
+                .ForMember(dest => dest.CreationDateUtc, opt => opt.MapFrom(source => source.CreationDate));
         }
     }
 }

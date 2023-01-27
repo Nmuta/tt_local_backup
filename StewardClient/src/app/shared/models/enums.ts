@@ -10,9 +10,9 @@ export enum InventoryOption {
  * @deprecated Use GameTitle + angular pipe
  */
 export enum GameTitleName {
+  Forte = 'Forte',
   FM8 = 'Forza Motorsport',
   FH5 = 'Forza Horizon 5',
-  Street = 'Forza Street',
   FH4 = 'Forza Horizon 4',
   FM7 = 'Forza Motorsport 7',
   FH3 = 'Forza Horizon 3',
@@ -23,9 +23,9 @@ export enum GameTitleName {
  * @deprecated Use GameTitle + angular pipe
  */
 export enum GameTitleAbbreviation {
+  Forte = 'Forte',
   FM8 = 'FM',
   FH5 = 'FH5',
-  Street = 'Street',
   FH4 = 'FH4',
   FM7 = 'FM7',
   FH3 = 'FH3',
@@ -39,9 +39,9 @@ export enum GameTitleAbbreviation {
  */
 export enum GameTitleCodeName {
   General = 'General', // TODO: this is not really a title. It should be removed and placed in its own type alias when we migrate to `GameTitle` over `GameTitleCodeName`
+  Forte = 'Forte',
   FH5 = 'Woodstock',
   FM8 = 'Steelhead',
-  Street = 'Gravity',
   FH4 = 'Sunrise',
   FM7 = 'Apollo',
   FH3 = 'Opus',
@@ -49,9 +49,9 @@ export enum GameTitleCodeName {
 
 /** Enum for game title names. lowerCamel. */
 export enum GameTitle {
+  Forte = 'forte',
   FM8 = 'steelhead',
   FH5 = 'woodstock',
-  Street = 'gravity',
   FH4 = 'sunrise',
   FM7 = 'apollo',
   FH3 = 'opus',
@@ -159,6 +159,6 @@ export enum StewardErrorCode {
 /** Enum for Pegasus Projection Slots. */
 export enum PegasusProjectionSlot {
   Live = 'live',
-
   LiveSteward = 'live-steward',
+  Daily = 'daily',
 }

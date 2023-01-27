@@ -1,16 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTableDataSource } from '@angular/material/table';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { GameTitle } from '@models/enums';
+import { PullRequest, PullRequestSubject } from '@models/git-operation';
 import { LocalizedStringData, LocalizedStringsMap } from '@models/localization';
 import { WelcomeCenterTile, FriendlyNameMap, WelcomeCenterTileSize } from '@models/welcome-center';
+import { SteelheadGitOperationService } from '@services/api-v2/steelhead/git-operation/steelhead-git-operation.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { SteelheadWelcomeCenterTileService } from '@services/api-v2/steelhead/welcome-center-tiles/steelhead-welcome-center-tiles.service';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
+
+type PullRequestTableData = PullRequest & {
+  monitor: ActionMonitor;
+};
 
 /** The Steelhead welcome center tile page. */
 @Component({
@@ -24,6 +32,7 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
   public getListActionMonitor = new ActionMonitor('GET Welcome Center Tile list');
   public getTileActionMonitor = new ActionMonitor('GET Welcome Center Tile');
   public submitWelcomeCenterTileMonitor = new ActionMonitor('POST Welcome Center Tile');
+  public getPullRequests = new ActionMonitor('GET Pull Requests');
   public localizationCreationServiceContract: CreateLocalizedStringContract;
   public localizationSelectServiceContract: SelectLocalizedStringContract;
   public friendlyNameList: FriendlyNameMap;
@@ -31,6 +40,8 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
   public currentWelcomeCenterTile: WelcomeCenterTile;
   public pullRequestUrl: string;
   public sizes: string[] = [WelcomeCenterTileSize.Large, WelcomeCenterTileSize.Medium];
+  public existingPullRequestList = new MatTableDataSource<PullRequestTableData>();
+  public columnsToDisplay = ['title', 'creationDate', 'actions'];
 
   public formControls = {
     selectedWelcomeCenterTile: new FormControl(null, [Validators.required]),
@@ -44,9 +55,12 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
+  public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
+
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
     private readonly steelheadWelcomeCenterTileService: SteelheadWelcomeCenterTileService,
+    private readonly steelheadGitOperationService: SteelheadGitOperationService,
   ) {
     super();
 
@@ -73,6 +87,8 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
       .subscribe(friendlyNameMap => {
         this.friendlyNameList = friendlyNameMap;
       });
+
+    this.getActivePullRequests();
   }
 
   /** Clears the content image path input */
@@ -134,13 +150,18 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
         this.currentWelcomeCenterTile,
       )
       .pipe(this.submitWelcomeCenterTileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(url => {
-        this.pullRequestUrl = url;
+      .subscribe(pullrequest => {
+        this.pullRequestUrl = pullrequest.webUrl;
         this.isInEditMode = false;
         this.verifyCheckbox.checked = false;
         this.formControls.localizedTileDescription.disable();
         this.formControls.localizedTileTitle.disable();
         this.formControls.localizedTileType.disable();
+        this.existingPullRequestList.data.unshift({
+          ...pullrequest,
+          monitor: new ActionMonitor(`Abandon pull request: ${pullrequest.id}`),
+        } as PullRequestTableData);
+        this.existingPullRequestList._updateChangeSubscription();
       });
   }
 
@@ -150,6 +171,36 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
     this.formControls.localizedTileDescription.enable();
     this.formControls.localizedTileTitle.enable();
     this.formControls.localizedTileType.enable();
+    this.pullRequestUrl = '';
+  }
+
+  /** Send a request to github to abandon a Pull Request. */
+  public abandonPullRequest(entry: PullRequestTableData): void {
+    entry.monitor = entry.monitor.repeat();
+    this.steelheadGitOperationService
+      .abandonPullRequest$(entry.id)
+      .pipe(entry.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        const index = this.existingPullRequestList.data.indexOf(entry);
+        this.existingPullRequestList.data.splice(index, 1);
+        this.existingPullRequestList._updateChangeSubscription();
+      });
+  }
+
+  /** Get and display the current active pull request. */
+  private getActivePullRequests(): void {
+    this.getPullRequests = this.getPullRequests.repeat();
+    this.steelheadGitOperationService
+      .getActivePullRequests$(PullRequestSubject.WorldOfForzaTile)
+      .pipe(this.getPullRequests.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(result => {
+        this.existingPullRequestList.data = result.map(pullrequest => {
+          return {
+            ...pullrequest,
+            monitor: new ActionMonitor(`Abandon pull request: ${pullrequest.id}`),
+          } as PullRequestTableData;
+        });
+      });
   }
 
   /** Set form fields using the WelcomeCenterTile parameter. */

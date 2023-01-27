@@ -48,6 +48,12 @@ export interface WoodstockPlayerUgcItem extends PlayerUgcItem {
   geoFlags: WoodstockGeoFlags[];
 }
 
+/** The result of a cloning operation. */
+export interface ClonedItemResult {
+  clonedFileId: string;
+  clonedShareCode: string;
+}
+
 /** Creates a fake player UGC item */
 export function fakePlayerUgcItem(): PlayerUgcItem {
   const id = faker.datatype.uuid();

@@ -280,10 +280,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
-                $"Apollo Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+                $"Apollo Banning: {banParameters.Count} recipients.",
+                this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -768,10 +769,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 groupGift.ToJson(),
                 requesterObjectId,
-                $"Apollo Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+                $"Apollo Gifting: {groupGift.Xuids.Count} recipients.",
+                this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1038,16 +1040,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
 
             return this.Ok(livery);
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
 
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)

@@ -38,10 +38,15 @@ import { WelcomeCenterCalendarComponent } from './welcome-center-calendar.compon
 import { SteelheadWelcomeCenterCalendarViewComponent } from './components/welcome-center-calendar-view/steelhead/steelhead-welcome-center-calendar-view.component';
 import { WelcomeCenterCalendarRoutingModule } from './welcome-center-calendar.routing';
 import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
+import { WelcomeCenterTileDetailsModalComponent } from './components/welcome-center-tile-details-modal/steelhead/welcome-center-tile-details-modal.component';
 
 /** A module for Welcome Center calendar. */
 @NgModule({
-  declarations: [WelcomeCenterCalendarComponent, SteelheadWelcomeCenterCalendarViewComponent],
+  declarations: [
+    WelcomeCenterCalendarComponent,
+    SteelheadWelcomeCenterCalendarViewComponent,
+    WelcomeCenterTileDetailsModalComponent,
+  ],
   imports: [
     CommonModule,
     DataPrivacyNoticeModule,

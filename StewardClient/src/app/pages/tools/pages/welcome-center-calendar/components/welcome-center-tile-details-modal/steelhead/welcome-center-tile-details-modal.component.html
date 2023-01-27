@@ -1,0 +1,27 @@
+<section>
+  <h2 mat-dialog-title>
+    <span>Welcome Center Tile Columns</span>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="modal-wrapper">
+      <div class="scroll-pane grid">
+        <div *ngFor="let column of data.columns">
+          <div>
+            <h1 class="center-text">{{ column.name | deppoh }}</h1>
+            <ng-container>
+              <mat-card *ngFor="let tile of column.events" [class]="tile.meta.cssClass">
+                <mat-card-title>{{ tile.title }}</mat-card-title>
+                <mat-card-subtitle>{{ tile.meta.friendlyName }}</mat-card-subtitle>
+                <mat-card-content class="respect-newline">
+                  {{ tile.meta.description }}
+                </mat-card-content>
+              </mat-card>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</section>

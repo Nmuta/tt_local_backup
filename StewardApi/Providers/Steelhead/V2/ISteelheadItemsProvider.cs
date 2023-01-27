@@ -18,6 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         /// <summary>
         ///     Gets the Steelhead cars detailed.
         /// </summary>
-        Task<IEnumerable<SimpleCar>> GetCarsAsync(string slotId = "live");
+        Task<IEnumerable<SimpleCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Daily);
     }
 }

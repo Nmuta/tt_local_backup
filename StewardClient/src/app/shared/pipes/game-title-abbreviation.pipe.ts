@@ -22,8 +22,6 @@ export class GameTitleAbbreviationPipe implements PipeTransform {
         return GameTitleAbbreviation.FH5;
       case GameTitle.FM8:
         return GameTitleAbbreviation.FM8;
-      case GameTitle.Street:
-        return GameTitleAbbreviation.Street;
       case GameTitle.FH4:
         return GameTitleAbbreviation.FH4;
       case GameTitle.FM7:

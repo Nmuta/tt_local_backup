@@ -10,6 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 #pragma warning disable SA1600 // Elements should be documented
     public static class UserAttribute
     {
+        public const string TitleAccess = nameof(TitleAccess);
         public const string AddLocalizedString = nameof(AddLocalizedString);
         public const string AddProfileNote = nameof(AddProfileNote);
         public const string AdminFeature = nameof(AdminFeature);

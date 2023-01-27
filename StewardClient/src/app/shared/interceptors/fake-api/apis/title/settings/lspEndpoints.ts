@@ -29,6 +29,7 @@ export class SettingsGetEndpointsFakeApi extends FakeApiBase {
       sunrise: [{ name: faker.random.word() }, { name: faker.random.word() }],
       woodstock: [{ name: faker.random.word() }],
       steelhead: [{ name: faker.random.word() }],
+      forte: [{ name: faker.random.word() }],
     };
   }
 }

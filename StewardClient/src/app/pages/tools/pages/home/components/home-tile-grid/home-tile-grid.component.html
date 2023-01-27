@@ -3,12 +3,21 @@
     class="tile-container"
     *ngFor="let item of tiles; let i = index"
     [class.activated]="isEnabled[item.tool]"
-    [class.no-access]="!hasAccess[item.tool]"
+    [class.no-access]="!item.hasAccess"
   >
     <div class="tile-aspect"></div>
     <div class="tile-content">
       <mat-card>
-        <mat-card-header>
+        <mat-card-header
+          *ngIf="!item.tileActionComponent"
+          [routerLink]="parentRoute + item.tool"
+          class="clickable-header"
+        >
+          <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
+          <mat-card-title>{{ item.title }}</mat-card-title>
+          <mat-card-subtitle [matTooltip]="item.subtitle">{{ item.subtitle }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-header *ngIf="item.tileActionComponent">
           <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
           <mat-card-title>{{ item.title }}</mat-card-title>
           <mat-card-subtitle [matTooltip]="item.subtitle">{{ item.subtitle }}</mat-card-subtitle>
@@ -24,9 +33,9 @@
           <div
             *ngIf="item.tileContentComponent"
             [navAnchor]="item.tileContentComponent"
-            [navAnchorDisabled]="!hasAccess[item.tool]"
+            [navAnchorDisabled]="!item.hasAccess"
           ></div>
-          <div *ngIf="!hasAccess[item.tool]" class="no-access-warning">
+          <div *ngIf="!item.hasAccess" class="no-access-warning">
             <ng-container *ngIf="isLiveOpsAdmin; else noAccessTemplate">
               <span><mat-icon>gpp_bad</mat-icon>Allowed Roles<mat-icon>gpp_bad</mat-icon></span>
               <ul>
@@ -37,8 +46,8 @@
         </mat-card-content>
         <mat-card-actions align="end">
           <mat-checkbox
-            [matTooltip]="hasAccess[item.tool] ? 'Check to include in nav' : undefined"
-            [disabled]="!isEnabled[item.tool] && !hasAccess[item.tool]"
+            [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
+            [disabled]="!isEnabled[item.tool] && !item.hasAccess"
             [ngModel]="isEnabled[item.tool]"
             (ngModelChange)="onCheckboxChecked(item.tool, $event)"
           >
@@ -46,7 +55,7 @@
           </mat-checkbox>
           <div class="spacer"></div>
           <a
-            *ngIf="!item.tileActionComponent && hasAccess[item.tool] && !item.hideLink"
+            *ngIf="!item.tileActionComponent && item.hasAccess && !item.hideLink"
             mat-button
             [routerLink]="parentRoute + item.tool"
             [target]="item.target"
@@ -58,7 +67,7 @@
             <span
               [navAnchor]="item.tileActionComponent"
               [navItem]="item"
-              [navAnchorDisabled]="!hasAccess[item.tool]"
+              [navAnchorDisabled]="!item.hasAccess"
             ></span>
           </span>
         </mat-card-actions>
@@ -68,7 +77,8 @@
 </main>
 
 <ng-template #noAccessTemplate>
-  <span
+  <!-- Don't show this if user is on Auth V2. -->
+  <span *ngIf="userRole !== UserRole.GeneralUser"
     ><mat-icon>gpp_bad</mat-icon>Role <b>{{ userRole }}</b> does not have access.</span
   >
 </ng-template>

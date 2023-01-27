@@ -247,6 +247,8 @@ namespace StewardGitApi
                 },
                 top: mostRecent).ConfigureAwait(false);
 
+            // For some reason, the WebUrl property in the repository object of each PR is null
+            prs.ForEach(x => x.Repository.WebUrl = repo.WebUrl);
             return prs;
         }
 

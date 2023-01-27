@@ -81,6 +81,8 @@ export class SelectLocalizedStringComponent
   public selectedLocalizedStringCollection: LocalizedString[] = [];
   public selectedLanguageLocalizedString: LocalizedString = null;
 
+  public isRequired = false;
+
   public formControls = {
     selectedLocalizedStringInfo: new FormControl(undefined),
   };
@@ -105,6 +107,15 @@ export class SelectLocalizedStringComponent
     // Get the validators from the parent formControl and add them to this component validators
     const parentControl = this.controlContainer?.control.get(this.formControlName);
     this.formControls.selectedLocalizedStringInfo.setValidators(parentControl?.validator);
+
+    // isRequired will set the [required] property of the mat-select in the UI
+    // By default, the [required] property will use hasValidator(Validators.required) to verify if the field is required
+    // When we use setValidators(parentControl?.validator), parentControl?.validator is a ValidatorFn that wrap every validator the parent has (Required, etc...)
+    // hasValidator(Validators.required) will than return false because parentControl?.validator is not Validators.required
+    // Fix based on this https://github.com/angular/components/issues/2574#issuecomment-659394478
+    this.isRequired = this.formControls.selectedLocalizedStringInfo.validator?.(
+      {} as AbstractControl,
+    )?.required;
 
     this.getLocalizedStrings$
       .pipe(

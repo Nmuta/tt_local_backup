@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PullRequest } from '@models/git-operation';
 import { MessageOfTheDay, FriendlyNameMap } from '@models/message-of-the-day';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
@@ -22,7 +23,7 @@ export class SteelheadMessageOfTheDayService {
   }
 
   /** Submit Message of the Day modification. */
-  public submitModification$(motdId: string, motd: MessageOfTheDay): Observable<string> {
-    return this.api.postRequest$<string>(`${this.basePath}/${motdId}`, motd);
+  public submitModification$(motdId: string, motd: MessageOfTheDay): Observable<PullRequest> {
+    return this.api.postRequest$<PullRequest>(`${this.basePath}/${motdId}`, motd);
   }
 }

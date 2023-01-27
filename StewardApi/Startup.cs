@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
+using Azure.Identity;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,6 +26,7 @@ using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
@@ -38,7 +40,6 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -55,8 +56,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Gravity;
-using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.MsGraph;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Pipelines;
@@ -70,7 +70,6 @@ using Turn10.LiveOps.StewardApi.Proxies;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.LiveOps.StewardApi.Validation.Apollo;
-using Turn10.LiveOps.StewardApi.Validation.Gravity;
 using Turn10.LiveOps.StewardApi.Validation.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation.Woodstock;
@@ -81,6 +80,7 @@ using Turn10.Services.MessageEncryption;
 using Turn10.Services.Storage.Blob;
 using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 using static Turn10.LiveOps.StewardApi.Helpers.AutofacHelpers;
+using AppRole = Turn10.LiveOps.StewardApi.Common.ApplicationSettings.AppRole;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 
 namespace Turn10.LiveOps.StewardApi
@@ -236,7 +236,6 @@ namespace Turn10.LiveOps.StewardApi
             this.RegisterOpusTypes(builder);
             this.RegisterSteelheadTypes(builder);
             this.RegisterApolloTypes(builder);
-            this.RegisterGravityTypes(builder);
 
             // Kusto
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
@@ -254,6 +253,19 @@ namespace Turn10.LiveOps.StewardApi
             var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
             builder.Register(c => kustoProvider).As<IKustoProvider>().SingleInstance();
 
+            // MS Graph Service
+            var tenantId = this.configuration[ConfigurationKeyConstants.AzureTenantId];
+            var clientId = this.configuration[ConfigurationKeyConstants.AzureClientId];
+            var servicePrincipalId = this.configuration[ConfigurationKeyConstants.AzureServicePrincipalId];
+            var clientSecret = keyVaultProvider.GetSecretAsync(
+               this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+               this.configuration[ConfigurationKeyConstants.AzureClientSecretKey]).GetAwaiter().GetResult();
+
+            var clientSecretCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+            var scopes = new[] { "https://graph.microsoft.com/.default" };
+            var graphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
+            builder.Register(c => new MsGraphService(graphServiceClient, servicePrincipalId)).As<IMsGraphService>().SingleInstance();
+
             builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
             builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
             builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
@@ -265,7 +277,6 @@ namespace Turn10.LiveOps.StewardApi
             {
                 mc.AddProfile(new OpusProfileMapper());
                 mc.AddProfile(new SunriseProfileMapper());
-                mc.AddProfile(new GravityProfileMapper());
                 mc.AddProfile(new ApolloProfileMapper());
                 mc.AddProfile(new SteelheadProfileMapper());
                 mc.AddProfile(new WoodstockProfileMapper());
@@ -468,18 +479,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<OpusServiceWrapper>().As<IOpusService>().SingleInstance();
             builder.RegisterType<OpusPlayerDetailsProvider>().As<IOpusPlayerDetailsProvider>().SingleInstance();
             builder.RegisterType<OpusPlayerInventoryProvider>().As<IOpusPlayerInventoryProvider>().SingleInstance();
-        }
-
-        private void RegisterGravityTypes(ContainerBuilder builder)
-        {
-            builder.RegisterType<GravityServiceWrapper>().As<IGravityService>().SingleInstance();
-            builder.RegisterType<GravityPlayerDetailsProvider>().As<IGravityPlayerDetailsProvider>().SingleInstance();
-            builder.RegisterType<GravityGameSettingsProvider>().As<IGravityGameSettingsProvider>().SingleInstance();
-            builder.RegisterType<GravityPlayerInventoryProvider>().As<IGravityPlayerInventoryProvider>().SingleInstance();
-
-            builder.RegisterType<GravityMasterInventoryRequestValidator>().As<IRequestValidator<GravityMasterInventory>>().SingleInstance();
-            builder.RegisterType<GravityGiftRequestValidator>().As<IRequestValidator<GravityGift>>().SingleInstance();
-            builder.RegisterType<GravityGiftHistoryProvider>().As<IGravityGiftHistoryProvider>().SingleInstance();
         }
     }
 

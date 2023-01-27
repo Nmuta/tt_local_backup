@@ -2,11 +2,16 @@ import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { SteelheadInventoryService } from '@services/api-v2/steelhead/inventory/steelhead-inventory.service';
 import {
-  SteelheadService,
-  createMockSteelheadService,
-  MockSteelheadService,
-} from '@services/steelhead';
+  createMockSteelheadInventoryService,
+  MockSteelheadInventoryService,
+} from '@services/api-v2/steelhead/inventory/steelhead-inventory.service.mock';
+import { SteelheadPlayerInventoryService } from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service';
+import {
+  createMockSteelheadPlayerInventoryService,
+  MockSteelheadPlayerInventoryService,
+} from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service.mock';
 import { first } from 'lodash';
 import { Subject } from 'rxjs';
 
@@ -15,19 +20,28 @@ import { SteelheadPlayerInventoryComponent } from './steelhead-player-inventory.
 describe('SteelheadPlayerInventoryComponent', () => {
   let component: SteelheadPlayerInventoryComponent;
   let fixture: ComponentFixture<SteelheadPlayerInventoryComponent>;
-  let service: SteelheadService;
+  let mockSteelheadPlayerInventoryService: SteelheadPlayerInventoryService;
+  let mockSteelheadInventoryService: SteelheadInventoryService;
   let waitUntil$: Subject<void>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadPlayerInventoryComponent],
-      providers: [createMockSteelheadService()],
+      providers: [
+        createMockSteelheadPlayerInventoryService(),
+        createMockSteelheadInventoryService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = TestBed.inject(SteelheadService);
+    mockSteelheadPlayerInventoryService = TestBed.inject(SteelheadPlayerInventoryService);
+    mockSteelheadInventoryService = TestBed.inject(SteelheadInventoryService);
     waitUntil$ = new Subject<void>();
-    (service as unknown as MockSteelheadService).waitUntil$ = waitUntil$;
+    (
+      mockSteelheadPlayerInventoryService as unknown as MockSteelheadPlayerInventoryService
+    ).waitUntil$ = waitUntil$;
+    (mockSteelheadInventoryService as unknown as MockSteelheadInventoryService).waitUntil$ =
+      waitUntil$;
   });
 
   beforeEach(() => {
@@ -51,7 +65,9 @@ describe('SteelheadPlayerInventoryComponent', () => {
     }));
 
     it('should call getPlayerInventoryByXuid$', () => {
-      expect(service.getPlayerInventoryByXuid$).toHaveBeenCalledWith(testXuid);
+      expect(mockSteelheadPlayerInventoryService.getInventoryByXuid$).toHaveBeenCalledWith(
+        testXuid,
+      );
     });
 
     it('should reset', () => {

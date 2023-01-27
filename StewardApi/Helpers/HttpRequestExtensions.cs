@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -55,10 +54,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     result = SunriseEndpoint.GetEndpoint(key);
                     break;
 
-                case TitleCodeName.Gravity: // Only one valid endpoint.
-                    result = GetDefaultEndpoint(title);
-                    break;
-
                 case TitleCodeName.Woodstock:
                     result = WoodstockEndpoint.GetEndpoint(key);
                     break;
@@ -90,10 +85,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                 case TitleCodeName.Sunrise:
                     result = SunriseEndpoint.Retail;
-                    break;
-
-                case TitleCodeName.Gravity:
-                    result = GravitySupportedEndpoint.Retail;
                     break;
 
                 case TitleCodeName.Woodstock:

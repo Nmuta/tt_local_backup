@@ -21,6 +21,16 @@
         public const string AzureClientId = "AzureAd:ClientId";
 
         /// <summary>
+        ///     The Azure service principal ID.
+        /// </summary>
+        public const string AzureServicePrincipalId = "AzureAd:ServicePrincipalId";
+
+        /// <summary>
+        ///     The Azure client secret key in Key Vault.
+        /// </summary>
+        public const string AzureClientSecretKey = "AzureAd:ClientSecretKey";
+
+        /// <summary>
         ///     The key vault url.
         /// </summary>
         public const string KeyVaultUrl = "KeyVaultUrl";
@@ -109,31 +119,6 @@
         ///     The Opus certificate secret name.
         /// </summary>
         public const string OpusCertificateSecretName = "OpusEnvironment:CertificateSecretName";
-
-        /// <summary>
-        ///     The Gravity uri.
-        /// </summary>
-        public const string GravityUri = "GravityEnvironment:Uri";
-
-        /// <summary>
-        ///     The Gravity client version.
-        /// </summary>
-        public const string GravityClientVersion = "GravityEnvironment:ClientVersion";
-
-        /// <summary>
-        ///     The Gravity admin xuid.
-        /// </summary>
-        public const string GravityAdminXuid = "GravityEnvironment:AdminXuid";
-
-        /// <summary>
-        ///     The Gravity sandbox.
-        /// </summary>
-        public const string GravitySandbox = "GravityEnvironment:Sandbox";
-
-        /// <summary>
-        ///     The Gravity title ID.
-        /// </summary>
-        public const string GravityTitleId = "GravityEnvironment:TitleId";
 
         /// <summary>
         ///     The Sunrise uri.

@@ -92,7 +92,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string Steelhead = "Title: Steelhead";
             public const string Woodstock = "Title: Woodstock";
             public const string Sunrise = "Title: Sunrise";
-            public const string Gravity = "Title: Gravity";
             public const string Apollo = "Title: Apollo";
         }
 
@@ -141,11 +140,14 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string ProfileTemplates = "Topic: Profile Templates";
             public const string Calendar = "Topic: Calendar";
             public const string RacersCup = "Topic: Racers Cup";
+            public const string BuildersCup = "Topic: Builders Cup";
             public const string WelcomeCenter = "Topic: Welcome Center";
             public const string CmsOverride = "Topic: Cms Override";
             public const string Permissions = "Topic: Permissions";
             public const string StewardPermissions = "Topic: Steward Permissions";
             public const string Pegasus = "Topic: Pegasus";
+            public const string Git = "Topic: Git";
+            public const string StewardUsers = "Topic: Steward Users";
         }
 
         /// <summary>
