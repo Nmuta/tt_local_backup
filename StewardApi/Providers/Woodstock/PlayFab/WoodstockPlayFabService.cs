@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<IList<BuildSummary>> GetBuildsAsync(WoodstockPlayFabEnvironment environment)
+        public async Task<IList<PlayFabBuildSummary>> GetBuildsAsync(WoodstockPlayFabEnvironment environment)
         {
             await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(true);
 
@@ -68,11 +68,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 finished = skipToken == null;
             }
 
-            return builds;
+            return this.mapper.SafeMap<IList<PlayFabBuildSummary>>(builds);
         }
 
         /// <inheritdoc />
-        public async Task<BuildSummary> GetBuildAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
+        public async Task<PlayFabBuildSummary> GetBuildAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
         {
             await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(true);
 
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 return null;
             }
 
-            return this.mapper.SafeMap<BuildSummary>(response.Result);
+            return this.mapper.SafeMap<PlayFabBuildSummary>(response.Result);
         }
 
         /// <summary>

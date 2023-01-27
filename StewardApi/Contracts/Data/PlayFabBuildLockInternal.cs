@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
         public string GameTitle { get; set; }
 
-        public DateTimeOffset DateCreated { get; set; }
+        public DateTimeOffset DateCreatedUtc { get; set; }
 
         public string MetaData { get; set; }
     }

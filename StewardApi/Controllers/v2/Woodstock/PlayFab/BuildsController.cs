@@ -35,8 +35,8 @@ using Turn10.Services.LiveOps.FH5_main.Generated;
 using Turn10.UGC.Contracts;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using BuildSummary = PlayFab.MultiplayerModels.BuildSummary;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
+using Microsoft.AspNetCore.Authorization;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         ///     Retrieves list of PlayFab builds.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(IList<BuildSummary>))]
+        [SwaggerResponse(200, type: typeof(IList<PlayFabBuildSummary>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
         public async Task<IActionResult> GetPlayFabBuilds(string playFabEnvironment)
         {
@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         ///     Retrieves PlayFab build.
         /// </summary>
         [HttpGet("{buildId}")]
-        [SwaggerResponse(200, type: typeof(BuildSummary))]
+        [SwaggerResponse(200, type: typeof(PlayFabBuildSummary))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
         public async Task<IActionResult> GetPlayFabBuild(string playFabEnvironment, string buildId)
         {
@@ -137,11 +137,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         ///     Adds new PlayFab build lock to the database.
         /// </summary>
         [HttpPost("{buildId}/lock")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create)]
-        public async Task<IActionResult> AddNewPlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest buildLock)
+        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
+        public async Task<IActionResult> AddNewPlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest buildLockRequest)
         {
+            // TODO: Max # of build locks per person.
+            // TODO: throw if trying to add a build lock if one already exists
+
             var userClaims = this.User.UserClaims();
 
             var parsedPlayFabEnvironment = playFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(WoodstockPlayFabEnvironment));
@@ -149,26 +153,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
 
             await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, parsedPlayFabEnvironment).ConfigureAwait(true);
 
-            if (!buildLock.IsLocked)
+            if (!buildLockRequest.IsLocked)
             {
                 throw new InvalidArgumentsStewardException($"Cannot add a new build lock with isLocked set to false.");
             }
 
             try
             {
-                await this.playFabBuildLocksProvider.CreateAsync(new PlayFabBuildLock()
+                var buildLock = new PlayFabBuildLock()
                 {
                     Id = parsedBuildId,
-                    Reason = buildLock.Reason,
+                    Reason = buildLockRequest.Reason,
                     IsLocked = true,
                     UserId = userClaims.ObjectId,
                     PlayFabEnvironment = parsedPlayFabEnvironment.ToString(),
                     GameTitle = TitleConstants.WoodstockCodeName.ToLowerInvariant(),
-                    DateCreated = DateTimeOffset.UtcNow,
+                    DateCreatedUtc = DateTimeOffset.UtcNow,
                     MetaData = null,
-                }).ConfigureAwait(true);
+                };
 
-                return this.Ok();
+                var createdLock = await this.playFabBuildLocksProvider.CreateAsync(buildLock).ConfigureAwait(true);
+
+                return this.Ok(createdLock);
             }
             catch (Exception ex)
             {
@@ -183,6 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update)]
+        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> UpdatePlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest updatedBuildLock)
         {
             var userClaims = this.User.UserClaims();
@@ -194,14 +201,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
 
             try
             {
-                await this.playFabBuildLocksProvider.UpdateAsync(parsedBuildId, updatedBuildLock).ConfigureAwait(true);
+                var updatedLock = await this.playFabBuildLocksProvider.UpdateAsync(parsedBuildId, updatedBuildLock).ConfigureAwait(true);
+
+                return this.Ok(updatedLock);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to update build lock. (buildId: {buildId})", ex);
             }
-
-            return this.Ok();
         }
 
         /// <summary>
@@ -211,6 +218,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete)]
+        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> DeletePlayFabBuildLock(string playFabEnvironment, string buildId)
         {
             // TODO: Verify who can delete locks (only person who created them | anyone with correct Steward perms)
@@ -221,20 +229,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
 
             try
             {
-                await this.playFabBuildLocksProvider.DeleteAsync(parsedBuildId).ConfigureAwait(true);
+                var deletedLock = await this.playFabBuildLocksProvider.DeleteAsync(parsedBuildId).ConfigureAwait(true);
+
+                return this.Ok(deletedLock);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to delete build lock. (buildId: {buildId})", ex);
             }
-
-            return this.Ok();
         }
 
         /// <summary>
         ///     Verifies that the build id exists. Throws if it doesn't.
         /// </summary>
-        private async Task<BuildSummary> VerifyBuildIdInPlayFabAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
+        private async Task<PlayFabBuildSummary> VerifyBuildIdInPlayFabAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
         {
             var build = await this.playFabService.GetBuildAsync(buildId, environment).ConfigureAwait(true);
             if (build == null)

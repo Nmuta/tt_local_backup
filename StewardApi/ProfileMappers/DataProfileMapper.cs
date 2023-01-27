@@ -31,7 +31,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<PlayFabBuildLockInternal, PlayFabBuildLock>()
                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.RowKey))
                .ReverseMap();
-            this.CreateMap<GetBuildResponse, BuildSummary>().ReverseMap();
+            this.CreateMap<GetBuildResponse, PlayFabBuildSummary>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.BuildId))
+                .ForMember(des => des.Name, opt => opt.MapFrom(src => src.BuildName))
+                .ReverseMap();
+            this.CreateMap<BuildSummary, PlayFabBuildSummary>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.BuildId))
+                .ForMember(des => des.Name, opt => opt.MapFrom(src => src.BuildName))
+                .ReverseMap();
             this.CreateMap<StewardUserInternal, StewardUser>()
                 .ForMember(des => des.Attributes, opt =>
                     opt.MapFrom(src => src.AuthorizationAttributes()));

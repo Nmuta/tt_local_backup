@@ -1,0 +1,27 @@
+@import '/src/styles/mixins';
+
+$isLocked-column-width: 100px;
+$build-row-height: 100px;
+$actions-column-width: 250px;
+
+table {
+  width: 100%;
+
+  .mat-row {
+    height: $build-row-height;
+  }
+
+  .mat-column-isLocked {
+    @include table-width($isLocked-column-width);
+  }
+
+  .mat-column-actions {
+    @include table-width($actions-column-width);
+
+    button {
+      min-width: $button-min-size;
+      margin-top: $gap-small;
+      margin-bottom: $gap-small;
+    }
+  }
+}

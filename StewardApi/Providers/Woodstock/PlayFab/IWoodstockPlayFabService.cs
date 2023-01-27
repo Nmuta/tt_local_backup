@@ -16,11 +16,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <summary>
         ///     Gets all available PlayFab builds.
         /// </summary>
-        Task<IList<BuildSummary>> GetBuildsAsync(WoodstockPlayFabEnvironment environment);
+        Task<IList<PlayFabBuildSummary>> GetBuildsAsync(WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Gets PlayFab build. Else null if it doesn't exist.
         /// </summary>
-        Task<BuildSummary> GetBuildAsync(Guid buildId, WoodstockPlayFabEnvironment environment);
+        Task<PlayFabBuildSummary> GetBuildAsync(Guid buildId, WoodstockPlayFabEnvironment environment);
     }
 }

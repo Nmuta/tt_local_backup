@@ -16,3 +16,4 @@ export * from './woodstock-group-gift.model';
 export * from './woodstock-master-inventory.model';
 export * from './woodstock-profile-rollback.model';
 export * from './woodstock-player-account-inventory.model';
+export * from './woodstock-playfab';

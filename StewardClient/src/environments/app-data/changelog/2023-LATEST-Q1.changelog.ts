@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'cd9aa261-4e82-4b8d-8181-22a120c28e82',
+      shortText: 'Initial MVP effort for new PlayFab build management tool',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '7dde5027-cadc-4d90-a809-5c8dca247831',
       shortText: 'Add tool & route restrictions for auth V2',

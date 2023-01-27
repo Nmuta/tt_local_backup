@@ -2,6 +2,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Directive, forwardRef, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HCI } from '@environments/environment';
 import { isBoolean, isObject } from 'lodash';
 import { STEWARD_DISABLE_STATE_PROVIDER } from '../state-managers/injection-tokens';
 import { ErrorSnackbarComponent } from './error-snackbar/error-snackbar.component';
@@ -103,6 +104,7 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
       this.snackBar.openFromComponent(ErrorSnackbarComponent, {
         data: this.monitor,
         panelClass: ['snackbar-warn'],
+        duration: HCI.Toast.Duration.Standard,
       });
     }
 
@@ -111,11 +113,13 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
         this.snackBar.openFromComponent(this.alternateCompleteSnackbarComponent, {
           data: this.monitor,
           panelClass: ['snackbar-success'],
+          duration: HCI.Toast.Duration.Standard,
         });
       } else {
         this.snackBar.openFromComponent(SuccessSnackbarComponent, {
           data: this.monitor,
           panelClass: ['snackbar-success'],
+          duration: HCI.Toast.Duration.Standard,
         });
       }
     }
