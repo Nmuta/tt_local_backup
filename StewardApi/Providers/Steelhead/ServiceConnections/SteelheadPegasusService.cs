@@ -12,7 +12,6 @@ using System.Xml.Serialization;
 using AutoMapper;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
-using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
@@ -546,7 +545,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<Build> RunFormatPipelineAsync(GitPush push)
+        public async Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push)
         {
             // Motorsport-FormatContent build definition 376
             return await this.azureDevOpsManager.RunPipelineAsync(
@@ -564,9 +563,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
 
-            var formattedPr = this.mapper.Map<PullRequest>(pullrequest);
-
-            return formattedPr;
+            return this.mapper.Map<PullRequest>(pullrequest);
         }
     }
 }

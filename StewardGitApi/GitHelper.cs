@@ -387,7 +387,7 @@ namespace StewardGitApi
         }
 
         /// <summary>
-        ///     Kick off a pipeline to format the branch.
+        ///     Kick off a pipeline on the branch.
         /// </summary>
         internal static async Task<Build> RunPipelineAsync(AzureContext context, string branch, int buildDefinition)
         {

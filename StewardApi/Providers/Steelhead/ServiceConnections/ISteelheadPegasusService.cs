@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
@@ -163,6 +162,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Runs the specified build pipeline.
         /// </summary>
-        public Task<Build> RunFormatPipelineAsync(GitPush push);
+        public Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push);
     }
 }
