@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -10,24 +12,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     public interface IPlayFabBuildLocksProvider
     {
         /// <summary>
-        ///     Gets all build lock entries.
+        ///     Gets build lock entry.
         /// </summary>
-        Task<IList<object>> GetAsync();
+        Task<PlayFabBuildLock> GetAsync(Guid buildId);
+
+        /// <summary>
+        ///     Gets multiple build lock entries based on params.
+        /// </summary>
+        Task<IList<PlayFabBuildLock>> GetMultipleAsync(WoodstockPlayFabEnvironment environment, bool? withActiveLocks = null);
 
         /// <summary>
         ///     Creates new build lock entry.
         /// </summary>
-        Task CreateAsync(object newbuildLock);
+        Task CreateAsync(PlayFabBuildLock newbuildLock);
 
         /// <summary>
         ///     Updates build lock entry.
         /// </summary>
-        Task UpdateAsync(string buildId, object updatedBuildLock);
-
+        Task UpdateAsync(Guid buildId, PlayFabBuildLock updatedBuildLock);
 
         /// <summary>
         ///     Deletes build lock entry.
         /// </summary>
-        Task DeleteAsync(string buildId);
+        Task DeleteAsync(Guid buildId);
     }
 }

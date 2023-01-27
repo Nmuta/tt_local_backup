@@ -11,6 +11,8 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -46,88 +48,106 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<object>> GetAsync()
+        public async Task<PlayFabBuildLock> GetAsync(Guid buildId)
         {
-            try
-            {
-                var tableQuery = new TableQuery();
-
-                var result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<object>>(result);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException("Failed to lookup saved Kusto Queries.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task CreateAsync(object newbuildLock)
-        {
-            //try
-            //{
-            //    var internalQuery = new KustoQueryInternal(name, title, query);
-
-            //    var insertOrReplaceOperation = TableOperation.InsertOrReplace(internalQuery);
-
-            //    await this.tableStorageClient.ExecuteAsync(insertOrReplaceOperation).ConfigureAwait(false);
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new FailedToSendStewardException($"Unable to upload query with name: {name}.", ex);
-            //}
-        }
-
-        /// <inheritdoc />
-        public async Task UpdateAsync(string buildId, object updatedBuildLock)
-        {
-            buildId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(buildId));
+            PlayFabBuildLockInternal result;
 
             try
             {
-                //var tableQuery = new TableQuery<KustoQueryInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, queryId));
-
-                //var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
-                //if (results.Count <= 0)
-                //{
-                //    throw new NotFoundStewardException($"Query failed with queryId: {queryId}");
-                //}
-
-                //var result = results[0];
-                //result.Name = query.Name;
-                //result.Title = query.Title;
-                //result.Query = query.Query;
-
-                //var replaceOperation = TableOperation.Replace(result);
-                //await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException("Failed to find query to edit.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task DeleteAsync(string buildId)
-        {
-            buildId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(buildId));
-
-            try
-            {
-                var tableQuery = new TableQuery<KustoQueryInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, buildId));
+                var tableQuery = new TableQuery<PlayFabBuildLockInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, buildId.ToString()));
 
                 var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
-
-                foreach (var result in results)
+                if (results.Count <= 0)
                 {
-                    var deleteOperation = TableOperation.Delete(result);
-                    await this.tableStorageClient.ExecuteAsync(deleteOperation).ConfigureAwait(false);
+                    throw new NotFoundStewardException($"Could not find PlayFab build lock in database. (buildId: {buildId})");
                 }
+
+                result = results[0];
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"Failed to delete PlayDab build lock. (buildId: {buildId})", ex);
+                throw new UnknownFailureStewardException($"Failed to get PlayFab build lock. (buildId: {buildId})", ex);
+            }
+
+            return this.mapper.Map<PlayFabBuildLock>(result);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<PlayFabBuildLock>> GetMultipleAsync(WoodstockPlayFabEnvironment environment, bool? withActiveLocks = null)
+        {
+            IList<PlayFabBuildLockInternal> result;
+
+            try
+            {
+                var tableQuery = new TableQuery<PlayFabBuildLockInternal>().Where(TableQuery.GenerateFilterCondition("PlayFabEnvironment", QueryComparisons.Equal, environment.ToString()));
+                if (withActiveLocks.HasValue)
+                {
+                    tableQuery = tableQuery.Where(TableQuery.GenerateFilterCondition("IsLocked", QueryComparisons.Equal, withActiveLocks.Value.ToString()));
+                }
+
+                result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Failed to get PlayFab build locks.", ex);
+            }
+
+            return this.mapper.Map<IList<PlayFabBuildLock>>(result);
+        }
+
+        /// <inheritdoc />
+        public async Task CreateAsync(PlayFabBuildLock newbuildLock)
+        {
+            var internalLock = this.mapper.SafeMap<PlayFabBuildLockInternal>(newbuildLock);
+
+            try
+            {
+                var insertOrReplaceOperation = TableOperation.InsertOrReplace(internalLock);
+
+                await this.tableStorageClient.ExecuteAsync(insertOrReplaceOperation).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to create new PlayFab build lock. (buildId: {newbuildLock.Id})", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task UpdateAsync(Guid buildId, PlayFabBuildLock updatedBuildLock)
+        {
+            var existingBuildLock = this.GetAsync(buildId);
+            var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
+
+            try
+            {
+                // Only update fields we care about.
+                existingBuildLockInternal.Reason = updatedBuildLock.Reason;
+                existingBuildLockInternal.IsLocked = updatedBuildLock.IsLocked;
+                existingBuildLockInternal.DateCreated = updatedBuildLock.DateCreated;
+
+                var replaceOperation = TableOperation.Replace(existingBuildLockInternal);
+                await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to create new PlayFab build lock. (buildId: {buildId})", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteAsync(Guid buildId)
+        {
+            var existingBuildLock = this.GetAsync(buildId);
+            var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
+
+            try
+            {
+                var deleteOperation = TableOperation.Delete(existingBuildLockInternal);
+                await this.tableStorageClient.ExecuteAsync(deleteOperation).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to delete PlayFab build lock. (buildId: {buildId})", ex);
             }
         }
     }

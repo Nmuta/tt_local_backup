@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using PlayFab.MultiplayerModels;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
@@ -27,6 +28,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<KustoQueryInternal, KustoQuery>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.RowKey))
                 .ReverseMap();
+            this.CreateMap<PlayFabBuildLockInternal, PlayFabBuildLock>()
+               .ForMember(des => des.Id, opt => opt.MapFrom(src => src.RowKey))
+               .ReverseMap();
+            this.CreateMap<GetBuildRequest, BuildSummary>().ReverseMap();
             this.CreateMap<StewardUserInternal, StewardUser>()
                 .ForMember(des => des.Attributes, opt =>
                     opt.MapFrom(src => src.AuthorizationAttributes()));
