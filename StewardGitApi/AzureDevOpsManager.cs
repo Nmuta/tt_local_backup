@@ -162,5 +162,12 @@ namespace StewardGitApi
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.GetAllBranchesAsync(this.AzureContext).ConfigureAwait(false);
         }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitItem>> ListItemsAsync(string path)
+        {
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            return await GitHelper.ListItemsAsync(this.AzureContext, path).ConfigureAwait(false);
+        }
     }
 }

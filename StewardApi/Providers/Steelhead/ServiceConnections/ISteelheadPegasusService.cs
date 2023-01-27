@@ -163,5 +163,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Runs the specified build pipeline.
         /// </summary>
         public Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push);
+
+        /// <summary>
+        ///     Gets steelhead localized text.
+        /// </summary>
+        public Task<IEnumerable<LocTextBridge>> GetExistingLocTextAsync();
+
+        /// <summary>
+        ///     Writes new localized text to pegasus.
+        /// </summary>
+        public Task WriteLocTextToPegasusAsync(IEnumerable<LocTextBridge> loctext);
     }
 }

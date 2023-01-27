@@ -565,5 +565,39 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return this.mapper.Map<PullRequest>(pullrequest);
         }
+
+        /// <inheritdoc/>
+        public Task<IEnumerable<LocTextBridge>> GetExistingLocTextAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public Task WriteLocTextToPegasusAsync(IEnumerable<LocTextBridge> loctext)
+        {
+            foreach (var loc in loctext)
+            {
+                var entry = this.mapper.Map<LocEntry>(loc);
+            }
+            var entry = this.mapper.Map<WofEntry>(wofTileBridge);
+            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
+
+            XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
+
+            WelcomeCenterHelpers.FillXml(element, tree);
+
+            string newXml = element.Document.ToXmlString();
+
+            var change = new CommitRefProxy()
+            {
+                CommitComment = commitComment,
+                NewFileContent = newXml,
+                PathToFile = this.pathWorldOfForzaTile,
+                VersionControlChangeType = VersionControlChangeType.Edit
+            };
+
+            return change;
+        }
     }
 }
