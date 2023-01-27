@@ -52,6 +52,21 @@ mat-chip.filter-type-text.filter-type-text.filter-type-text {
   flex-flow: column nowrap;
 }
 
+.no-results-container {
+  margin: $gap-large * 4 0;
+  font-size: $font-size-navbar;
+}
+
+.mat-chip {
+  margin-left: $gap-small;
+}
+
+.disabled-tools-info {
+  text-align: center;
+  font-size: $font-size-navbar;
+  margin: $gap-large;
+}
+
 .app-tiles-wrapper {
   // horizontal positioning and sizing of the box
   display: grid;

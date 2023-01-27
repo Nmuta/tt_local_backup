@@ -1,5 +1,6 @@
 import { UserRole } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } from '../../helpers';
 
 export const motdTile = <HomeTileInfoInternal>{
   icon: AppIcon.MessageOfTheDay,
@@ -16,4 +17,8 @@ export const motdTile = <HomeTileInfoInternal>{
       '../../../../../app/pages/tools/pages/message-of-the-day/message-of-the-day.module'
     ).then(m => m.MessageOfTheDayModule),
   hideFromUnauthorized: true,
+  restriction: {
+    requiredPermissions: [PermAttributeName.AdminFeature],
+    action: HomeTileRestrictionType.Hide,
+  },
 };

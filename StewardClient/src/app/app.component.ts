@@ -44,9 +44,7 @@ export class AppComponent extends BaseComponent implements OnInit {
         switchMap(() => this.permissionsService.getUserPermissionAttributes$(user)),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(permAttributes => {
-        this.permAttributesService.initialize(permAttributes);
-      });
+      .subscribe();
 
     this.store.dispatch(new RequestAccessToken());
     this.store.dispatch(new SyncChangelog());

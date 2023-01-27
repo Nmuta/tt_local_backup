@@ -1,5 +1,6 @@
 import { UserRole } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } from '../../helpers';
 
 export const welcomeCenterTile = <HomeTileInfoInternal>{
   icon: AppIcon.WelcomeCenterTile,
@@ -16,4 +17,8 @@ export const welcomeCenterTile = <HomeTileInfoInternal>{
       '../../../../../app/pages/tools/pages/welcome-center-tiles/welcome-center-tiles.module'
     ).then(m => m.WelcomeCenterTilesModule),
   hideFromUnauthorized: true,
+  restriction: {
+    requiredPermissions: [PermAttributeName.AdminFeature],
+    action: HomeTileRestrictionType.Hide,
+  },
 };

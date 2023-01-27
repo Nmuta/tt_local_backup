@@ -9,7 +9,7 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { find, has, includes } from 'lodash';
-import { filter, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { filter, Observable, of, ReplaySubject, take, takeUntil, tap } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -26,6 +26,8 @@ export class PermAttributesService extends BaseService {
   // TODO: This will need to be revisted once all users are moved to V2
   // and we have determined how we want to handle admin grouping
   private userRole: UserRole;
+  private attributesInitialized: boolean = false;
+  private isServiceFullyInitialized: boolean = false;
   private allPermAttributes: PermAttribute[];
   private availableTitlesAndEnvironments: TitlesAndEnvironments = {
     [GameTitle.Forte]: [],
@@ -42,14 +44,33 @@ export class PermAttributesService extends BaseService {
     [GameTitle.FH4]: null,
   };
 
-  private isInitialized$ = new ReplaySubject<void>(1);
+  private tryInitialization$ = new ReplaySubject<void>(1);
 
   /** Helper function that timeouts state checks for user profile. */
   public get initializationGuard$(): Observable<void> {
-    return this.isInitialized$.pipe(
-      filter(() => !!this.userRole),
+    if (this.isServiceFullyInitialized) {
+      return of(null);
+    }
+
+    return this.tryInitialization$.pipe(
+      filter(() => this.attributesInitialized && !!this.userRole),
+      tap(() => (this.isServiceFullyInitialized = true)),
+      take(1), // Complete observable after initialization
       takeUntil(this.onDestroy$),
     );
+  }
+
+  /** Gets all perm attributes. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
+  public get permAttributes(): PermAttribute[] {
+    return this.allPermAttributes;
+  }
+
+  /**
+   * Returns the current initialization state of the service.
+   * Use initializationGuard$ if you want to wait for the service to be initialized.
+   */
+  public get isServiceInitialized(): boolean {
+    return this.isServiceFullyInitialized;
   }
 
   public get isAdmin(): boolean {
@@ -121,7 +142,7 @@ export class PermAttributesService extends BaseService {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(profile => {
         this.userRole = profile.role;
-        this.isInitialized$.next();
+        this.tryInitialization$.next();
       });
   }
 
@@ -144,7 +165,8 @@ export class PermAttributesService extends BaseService {
       }
     }
 
-    this.isInitialized$.next();
+    this.attributesInitialized = true;
+    this.tryInitialization$.next();
   }
 
   /** Returns true if user has permission to feature attribute. */
