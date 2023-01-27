@@ -339,21 +339,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
-        {
-            return await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
-        {
-            return await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
         public async Task<XElement> GetMessageOfTheDayElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob).ConfigureAwait(false);
 
             XDocument doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "UserMessages.MessageOfTheDay")
@@ -368,7 +356,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<MotdBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob).ConfigureAwait(false);
 
             MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
             MotdEntry entry = root.Entries.Where(motd => motd.idAttribute == id).First();
@@ -381,7 +369,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob).ConfigureAwait(false);
             MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
@@ -420,7 +408,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<WofBridge> GetWorldOfForzaCurrentValuesAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob).ConfigureAwait(false);
 
             WofRoot root = await item.Content.DeserializeAsync<WofRoot>().ConfigureAwait(false);
             WofEntry entry = root.Entries.Where(wof => wof.id == id).First();
@@ -433,7 +421,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob).ConfigureAwait(false);
             WofRoot root = await item.Content.DeserializeAsync<WofRoot>().ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
@@ -448,7 +436,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<XElement> GetWorldOfForzaElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob).ConfigureAwait(false);
 
             XDocument doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "WorldOfForza.WoFTileImageText")
@@ -487,7 +475,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<IEnumerable<(GitPullRequest, string authorEmail)>> GetPullRequestsAsync(PullRequestStatus status)
         {
-            var allPrs = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null, null).ConfigureAwait(false);
+            var allPrs = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null).ConfigureAwait(false);
 
             var filteredPrs = allPrs.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
 
@@ -505,24 +493,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
         {
-            var pullRequest = await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(false);
-
-            return pullRequest;
+            return await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         public async Task<IEnumerable<GitRef>> GetAllBranchesAsync()
         {
-            var branches = await this.azureDevOpsManager.GetAllBranchesAsync().ConfigureAwait(false);
-
-            return branches;
+            return await this.azureDevOpsManager.GetAllBranchesAsync().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         public async Task<Build> RunFormatPipelineAsync(GitPush push)
         {
+            // Motorsport-FormatContent build definition 376
             return await this.azureDevOpsManager.RunPipelineAsync(
                 push, int.Parse(this.formatPipelineBuildDefinition, System.Globalization.CultureInfo.InvariantCulture)).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
+        {
+            return await this.azureDevOpsManager.CommitAndPushAsync(changes).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
+        {
+            return await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
         }
     }
 }

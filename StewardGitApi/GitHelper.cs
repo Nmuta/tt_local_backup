@@ -36,9 +36,18 @@ namespace StewardGitApi
                 try
                 {
                     project = await projectClient.GetProject(projectId).ConfigureAwait(false);
+                    if (project == null)
+                    {
+                        throw new GitOperationException("Project returned null");
+                    }
+
                     context.Settings.CacheValue(projectId, project);
                 }
-                catch (ProjectDoesNotExistException) { project = null; }
+                catch (ProjectDoesNotExistException ex)
+                {
+                    throw new GitOperationException("Project does not exist", ex);
+                }
+                finally { projectClient.Dispose(); }
             }
 
             return project;
@@ -105,12 +114,15 @@ namespace StewardGitApi
             {
                 return await gitHttpClient.GetRepositoriesAsync(projectId).ConfigureAwait(false);
             }
-            catch (ProjectDoesNotExistException) { return new List<GitRepository>(); }
+            catch (ProjectDoesNotExistException e)
+            {
+                throw new GitOperationException("Project does not exist", e);
+            }
         }
 
         /// <summary>
         ///     Gets a repository from the current project that
-        ///     matches the current <see cref="AzureContext.Settings"/>.RepoId.
+        ///     matches the <see cref="AzureContext.Settings"/>.RepoId.
         /// </summary>
         internal static async Task<GitRepository> GetRepositoryAsync(AzureContext context)
         {
@@ -130,9 +142,18 @@ namespace StewardGitApi
                         ? await gitClient.GetRepositoryAsync(repoId).ConfigureAwait(false)
                         : await gitClient.GetRepositoryAsync(projectId, repoId).ConfigureAwait(false);
 
+                    if (repo == null)
+                    {
+                        throw new GitOperationException("Repository is null");
+                    }
+
                     context.Settings.CacheValue(repoId.ToString(), repo);
                 }
-                catch (VssServiceException) { repo = null; }
+                catch (VssServiceException e)
+                {
+                    throw new GitOperationException("The repository returned null", e);
+                }
+                finally { gitClient.Dispose(); }
             }
 
             return repo;
@@ -156,15 +177,23 @@ namespace StewardGitApi
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
             (Guid projectId, _) = context.Settings.Ids;
+
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
             try
             {
-                return await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
+                var pr = await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
+                if (pr == null)
+                {
+                    throw new GitOperationException("Pull request is null");
+                }
+
+                return pr;
             }
             catch (Exception e) when (e is VssException or ProjectDoesNotExistException)
             {
-                return null;
+                throw new GitOperationException("API Exception", e);
             }
+            finally { gitClient.Dispose(); }
         }
 
         /// <summary>
@@ -339,9 +368,7 @@ namespace StewardGitApi
                 Status = PullRequestStatus.Abandoned,
             };
 
-            var pullRequest = await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
-
-            return pullRequest;
+            return await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -350,8 +377,7 @@ namespace StewardGitApi
         internal static async Task<IEnumerable<GitRef>> GetAllBranchesAsync(AzureContext context)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
-
-            (Guid projectId, Guid repoId) = context.Settings.Ids;
+            (_, Guid repoId) = context.Settings.Ids;
 
             List<GitRef> refs = await gitClient.GetRefsAsync(repoId, filter: "heads/").ConfigureAwait(false);
 
@@ -371,7 +397,7 @@ namespace StewardGitApi
             var buildClient = context.Connection.GetClient<BuildHttpClient>();
 
             var project = await GetProjectAsync(context).ConfigureAwait(false);
-            var definition = await buildClient.GetDefinitionAsync(project.Id, buildDefinition).ConfigureAwait(false); // Motorsport-FormatContent build definition 376
+            var definition = await buildClient.GetDefinitionAsync(project.Id, buildDefinition).ConfigureAwait(false);
 
             var build = new BuildWithTemplateParameters
             {
