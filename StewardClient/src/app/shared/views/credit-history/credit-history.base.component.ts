@@ -8,7 +8,7 @@ import { GameTitleCodeName } from '@models/enums';
 import BigNumber from 'bignumber.js';
 import { SunriseCreditDetailsEntry } from '@models/sunrise';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
-import { clamp, slice } from 'lodash';
+import { clamp, keys, slice } from 'lodash';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -150,8 +150,11 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
   public formGroup = new FormGroup(this.formControls);
 
-  public retrieveCreditUpdatesMonitor = new ActionMonitor('Get credit updates');
+  public getCreditUpdatesMonitor = new ActionMonitor('Get credit updates');
   public saveRollbackMonitor = new ActionMonitor('GET save rollback');
+
+  public columnOptions = CreditUpdateColumn;
+  public directionOptions = SortDirection;
 
   /** A list of player credit events. */
   public creditHistory = new TableVirtualScrollDataSource<
@@ -178,6 +181,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public maxResultsPerRequest = 5000;
   public loadingMore = false;
   public showLoadMore: boolean;
+  public sortOptions: CreditUpdateSortOptionsFormValue;
 
   public xpAnalysisDates: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[] = null;
 
@@ -207,7 +211,10 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
             this.startIndex,
             this.maxResultsPerRequest,
           );
+          this.getCreditUpdatesMonitor = this.getCreditUpdatesMonitor.repeat();
+
           return getCreditHistoryByXuid$.pipe(
+            this.getCreditUpdatesMonitor.monitorSingleFire(),
             catchError(error => {
               this.loadingMore = false;
               this.isLoading = false;
@@ -219,21 +226,34 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
         takeUntil(this.onDestroy$),
       )
       .subscribe((creditUpdates: T[]) => {
+        this.sortOptions = this.formControls.sortOptions.value;
         this.loadingMore = false;
         this.isLoading = false;
-        const priorLength = this.creditHistory.data.length;
-        this.creditHistory.data = this.creditHistory.data.concat(creditUpdates);
-        applyGroupingAnalysis(priorLength, this.creditHistory.data);
-        applyXpAnalysis(priorLength, this.creditHistory.data);
 
-        const xpAnalysisBadDates = this.creditHistory.data.filter(e => e.xpTrend === 'lower');
-        this.xpAnalysisDates = xpAnalysisBadDates.length > 0 ? xpAnalysisBadDates : null;
+        // Logic here differs depending on if we're loading more of previous query, or starting a new one
+        const priorLength = this.startIndex > 0 ? this.creditHistory.data.length : 0;        
+        this.creditHistory.data = this.startIndex > 0 ? this.creditHistory.data.concat(creditUpdates) : this.creditHistory.data = creditUpdates;
+
+        // TODO only do this if we sorted by Asc Timestamp, otherwise change some labels to explain why they're missing
+        if(this.sortOptions.column == CreditUpdateColumn.Timestamp && this.sortOptions.direction == SortDirection.Ascending)
+        {
+          applyGroupingAnalysis(priorLength, this.creditHistory.data);
+          applyXpAnalysis(priorLength, this.creditHistory.data);
+
+          const xpAnalysisBadDates = this.creditHistory.data.filter(e => e.xpTrend === 'lower');
+          this.xpAnalysisDates = xpAnalysisBadDates.length > 0 ? xpAnalysisBadDates : null;
+        }
+        else
+        {
+          this.xpAnalysisDates = null;
+        }
 
         this.startIndex = this.creditHistory.data.length;
         this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
       });
 
     if (!!this.identity?.xuid) {
+      this.sortOptions = {column: CreditUpdateColumn.Timestamp, direction: SortDirection.Ascending};
       this.getCreditUpdates$.next();
       this.loadSaveRollbackHistory();
     }
@@ -248,7 +268,12 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
   public lookupCreditUpdates(): void 
   {
-    console.log(this.formControls)
+    this.startIndex = 0;
+    //this.xpAnalysisDates = null;
+    //this.sortOptions = this.formControls.sortOptions.value;
+    this.getCreditUpdates$.next();
+    //this.saveRollbackHistory = null;
+    //this.loadSaveRollbackHistory();
   }
 
   /** Lifecycle hook. */

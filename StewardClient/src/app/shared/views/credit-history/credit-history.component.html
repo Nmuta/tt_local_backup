@@ -7,14 +7,14 @@
       mat-raised-button
       color="primary"
       matTooltip="Lookup Credit Updates"
-      [monitor]="retrieveCreditUpdatesMonitor"
+      [monitor]="getCreditUpdatesMonitor"
       stateManager
       monitorDisable
       monitorWarnSnackbar
       (click)="lookupCreditUpdates()"
     >
       Search
-      <button-spinner defaultIcon="search" [monitor]="retrieveCreditUpdatesMonitor"></button-spinner>
+      <button-spinner defaultIcon="search" [monitor]="getCreditUpdatesMonitor"></button-spinner>
     </button>
     <help-popover-icon cardTitle="Credit History" confluenceName="Credit History Card">
       <p>Credit history is recovered from logs and is displayed from oldest to newest.</p>
@@ -30,6 +30,17 @@
     </credit-update-sort-options>
 
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <mat-expansion-panel *ngIf="sortOptions.column !== columnOptions.Timestamp || sortOptions.direction !== directionOptions.Ascending">
+        <mat-expansion-panel-header color="warn">
+          <mat-panel-title>
+            Backwards XP
+            <mat-icon color="warn">warning</mat-icon>
+          </mat-panel-title>
+          <mat-panel-description>
+            XP trend analysis only available when sorting by Timestamp-Ascending
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
       <mat-expansion-panel *ngIf="xpAnalysisDates">
         <mat-expansion-panel-header color="warn">
           <mat-panel-title>
