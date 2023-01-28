@@ -1,6 +1,8 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
+﻿#pragma warning disable SA1600 // ElementsMustBeDocumented
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
-    public class LocMetaDataBridge
+    public class LocalizedStringBridge
     {
         public ushort MaxLength { get; set; }
 

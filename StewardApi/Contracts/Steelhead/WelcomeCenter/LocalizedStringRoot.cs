@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
     [DesignerCategoryAttribute("code")]
     [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:x")]
     [XmlRootAttribute("content-set", Namespace = "scribble:x", IsNullable = false)]
-    public partial class LocalizedTextRoot
+    public partial class LocalizedStringRoot
     {
         [XmlElementAttribute("Localization.LocalizedString", Namespace = "scribble:title-content")]
         public List<LocEntry> LocalizationLocalizedString { get; set; }
