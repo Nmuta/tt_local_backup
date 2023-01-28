@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
             CommitRefProxy change = await this.steelheadPegasusService.WriteLocalizedStringsToPegasusAsync(path, localizedStringBridge).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
-            _ = await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
+            //_ = await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
 
             var user = this.User.UserClaims();
             var pullRequestTitle = $"Adds new localized strings to steward. Author: {user.EmailAddress}";
