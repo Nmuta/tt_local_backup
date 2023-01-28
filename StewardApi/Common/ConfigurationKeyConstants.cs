@@ -259,5 +259,10 @@
         ///     The Steelhead format pipeline build definitoin key.
         /// </summary>
         public const string SteelheadFormatPipelineBuildDefinition = "Git:SteelheadFormatPipelineBuildDefinition";
+
+        /// <summary>
+        ///     The Steelhead localization folder key.
+        /// </summary>
+        public const string SteelheadLocalizationFolderPath = "Git:SteelheadLocalizationFolderPath";
     }
 }

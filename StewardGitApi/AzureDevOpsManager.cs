@@ -66,6 +66,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType)
         {
+            _ = path.CheckForNull(nameof(path));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.GetItemAsync(this.AzureContext, path, gitObjectType).ConfigureAwait(false);
         }
@@ -166,6 +167,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<IEnumerable<GitItem>> ListItemsAsync(string path)
         {
+            _ = path.CheckForNull(nameof(path));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.ListItemsAsync(this.AzureContext, path).ConfigureAwait(false);
         }

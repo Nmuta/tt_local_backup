@@ -165,13 +165,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push);
 
         /// <summary>
-        ///     Gets steelhead localized text.
+        ///     Gets localization text categories to write to.
         /// </summary>
-        public Task<IEnumerable<LocTextBridge>> GetExistingLocTextAsync();
-
-        /// <summary>
-        ///     Writes new localized text to pegasus.
-        /// </summary>
-        public Task WriteLocTextToPegasusAsync(IEnumerable<LocTextBridge> loctext);
+        public Task<IEnumerable<string>> GetLocalizationCategoriesAsync();
     }
 }

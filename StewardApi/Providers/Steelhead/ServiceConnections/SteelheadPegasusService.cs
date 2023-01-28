@@ -58,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private readonly string cmsEnvironment;
         private readonly string pathMessageOfTheDay;
         private readonly string pathWorldOfForzaTile;
+        private readonly string pathLocalizationFolder;
         private readonly string formatPipelineBuildDefinition;
         private readonly CMSRetrievalHelper cmsRetrievalHelper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
@@ -100,6 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
             this.pathMessageOfTheDay = configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath];
             this.pathWorldOfForzaTile = configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath];
+            this.pathLocalizationFolder = configuration[ConfigurationKeyConstants.SteelheadLocalizationFolderPath];
             this.formatPipelineBuildDefinition = configuration[ConfigurationKeyConstants.SteelheadFormatPipelineBuildDefinition];
 
             string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
@@ -567,37 +569,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<LocTextBridge>> GetExistingLocTextAsync()
+        public async Task<IEnumerable<string>> GetLocalizationCategoriesAsync()
         {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc/>
-        public Task WriteLocTextToPegasusAsync(IEnumerable<LocTextBridge> loctext)
-        {
-            foreach (var loc in loctext)
-            {
-                var entry = this.mapper.Map<LocEntry>(loc);
-            }
-            var entry = this.mapper.Map<WofEntry>(wofTileBridge);
-            var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
-
-            XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
-
-            WelcomeCenterHelpers.FillXml(element, tree);
-
-            string newXml = element.Document.ToXmlString();
-
-            var change = new CommitRefProxy()
-            {
-                CommitComment = commitComment,
-                NewFileContent = newXml,
-                PathToFile = this.pathWorldOfForzaTile,
-                VersionControlChangeType = VersionControlChangeType.Edit
-            };
-
-            return change;
+            var items = await this.azureDevOpsManager.ListItemsAsync(this.pathLocalizationFolder).ConfigureAwait(false);
+            return items.Select(k => k.Path).Skip(1); // first item is root path
         }
     }
 }

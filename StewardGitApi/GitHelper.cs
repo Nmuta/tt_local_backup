@@ -47,7 +47,7 @@ namespace StewardGitApi
                 {
                     throw new GitOperationException("Project does not exist", ex);
                 }
-                finally { projectClient.Dispose(); }
+                //finally { projectClient.Dispose(); }
             }
 
             return project;
@@ -172,7 +172,7 @@ namespace StewardGitApi
                 {
                     throw new GitOperationException("The repository returned null", e);
                 }
-                finally { gitClient.Dispose(); }
+                //finally { gitClient.Dispose(); }
             }
 
             return repo;
@@ -212,7 +212,7 @@ namespace StewardGitApi
             {
                 throw new GitOperationException("API Exception", e);
             }
-            finally { gitClient.Dispose(); }
+            //finally { gitClient.Dispose(); }
         }
 
         /// <summary>

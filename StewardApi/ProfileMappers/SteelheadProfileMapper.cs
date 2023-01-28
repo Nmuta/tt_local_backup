@@ -329,6 +329,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TileTelemetryTag, opt => opt.MapFrom(src => src.tileInfo.TelemetryTag));
             this.CreateMap<MotdEntry, MotdBridge>()
                 .ReverseMap();
+            //this.CreateMap<LocEntry, LocMetaDataBridge>().ReverseMap();
             this.CreateMap<LocTextMotdNoDesc, LocTextBridge>()
                 .ForMember(dest => dest.Description, act => act.Ignore())
                 .ReverseMap();
