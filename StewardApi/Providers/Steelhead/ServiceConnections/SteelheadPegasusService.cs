@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -579,23 +581,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var item = await this.azureDevOpsManager.GetItemAsync(path, GitObjectType.Blob).ConfigureAwait(false);
 
-            var locXmlObj = await item.Content.DeserializeAsync<LocalizedStringRoot>().ConfigureAwait(false);
+            var xmlObj = await item.Content.DeserializeAsync<LocalizedStringRoot>().ConfigureAwait(false);
 
             foreach (var loc in localizedStrings)
             {
                 var entry = this.mapper.Map<LocEntry>(loc);
                 entry.id = Guid.NewGuid().ToString();
                 entry.LocString.locdef = Guid.NewGuid().ToString();
-
-                locXmlObj.LocalizationLocalizedString.Add(entry);
+                xmlObj.LocalizationLocalizedString.Add(entry);
             }
 
-            var xmlString = await XmlHelpers.SerializeAsync(locXmlObj, WelcomeCenterHelpers.SteelheadXmlNamespaces).ConfigureAwait(false);
+            var appendedXmlStr = await XmlHelpers.SerializeAsync(xmlObj, WelcomeCenterHelpers.SteelheadXmlNamespaces).ConfigureAwait(false);
+
+            // Now fix the CData sections for {scribble:x}base elements
+
+            var xdoc = XDocument.Parse(appendedXmlStr);
+            var cdataSearchTarget = WelcomeCenterHelpers.NamespaceElement + "base";
+            foreach (var el in xdoc.Descendants(cdataSearchTarget))
+            {
+                el.FirstNode.ReplaceWith(new XCData(el.Value));
+            }
+
+            var finalXmlString = xdoc.ToXmlString();
 
             var change = new CommitRefProxy()
             {
                 CommitComment = $"Add localized string to {path}",
-                NewFileContent = xmlString,
+                NewFileContent = finalXmlString,
                 PathToFile = path,
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
