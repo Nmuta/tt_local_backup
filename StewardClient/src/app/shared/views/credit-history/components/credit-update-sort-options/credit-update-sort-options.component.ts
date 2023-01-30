@@ -20,18 +20,18 @@ import {
   SortDirection,
 } from '@views/credit-history/credit-history.base.component';
 
-/** Outputted form value of the UGC search filters. */
+/** Outputted form value of the credit update sort options. */
 export interface CreditUpdateSortOptionsFormValue {
   direction: SortDirection;
   column: CreditUpdateColumn;
 }
 
-/** Internal form value of the UGC search filters. */
+/** Internal form value of the credit update sort options. */
 interface CreditUpdateSortOptionsFormValueInternal {
   options: CreditUpdateSortOptionsFormValue;
 }
 
-/** A component for UGC search filters. */
+/** A component for credit update sort options. */
 @Component({
   selector: 'credit-update-sort-options',
   templateUrl: 'credit-update-sort-options.component.html',
