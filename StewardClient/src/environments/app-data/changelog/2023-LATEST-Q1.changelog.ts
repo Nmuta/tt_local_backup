@@ -13,6 +13,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Initial MVP effort for new PlayFab build management tool',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'e467ed45-c3aa-4a8a-abef-2725bf7334c1',
+      shortText:
+        'Switch Woodstock and Sunrise credit update APIs with V2 versions that pulls directly from Kusto',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '7dde5027-cadc-4d90-a809-5c8dca247831',
       shortText: 'Add tool & route restrictions for auth V2',

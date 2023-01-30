@@ -12,6 +12,22 @@ import { clamp, slice } from 'lodash';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
+/** Acceptable values for which direction to sort a column */
+export enum SortDirection {
+  Ascending = 'Asc',
+  Descending = 'Desc',
+}
+
+/** Kusto columns available for credit update history */
+export enum CreditUpdateColumn {
+  Timestamp = 'Timestamp',
+  CreditsAfter = 'CreditsAfter',
+  CreditAmount = 'CreditAmount',
+  SceneName = 'SceneName',
+  DeviceType = 'DeviceType',
+  TotalXp = 'TotalXp',
+}
+
 export type CreditDetailsEntryUnion = SunriseCreditDetailsEntry | WoodstockCreditDetailsEntry;
 export type CreditDetailsEntryMixin = {
   timeMatchesAbove?: boolean;
