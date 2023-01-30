@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'e467ed45-c3aa-4a8a-abef-2725bf7334c1',
+      shortText:
+        'Switch Woodstock and Sunrise credit update APIs with V2 versions that pulls directly from Kusto',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '7dde5027-cadc-4d90-a809-5c8dca247831',
       shortText: 'Add tool & route restrictions for auth V2',

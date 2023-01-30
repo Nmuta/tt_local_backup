@@ -1,12 +1,16 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { SunriseCreditDetailsEntry } from '@models/sunrise';
-import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
-import { CreditHistoryBaseComponent } from '../credit-history.base.component';
+import {
+  CreditHistoryBaseComponent,
+  CreditUpdateColumn,
+  SortDirection,
+} from '../credit-history.base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { SunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service';
+import { SunrisePlayerCreditUpdatesService } from '@services/api-v2/sunrise/player/credit-updates/sunrise-credit-updates.service';
 
 /** Retreives and displays Sunrise credit history by XUID. */
 @Component({
@@ -19,7 +23,7 @@ export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<Su
   public isSaveRollbackSupported = true;
 
   constructor(
-    private readonly sunrise: SunriseService,
+    private readonly sunrise: SunrisePlayerCreditUpdatesService,
     private readonly sunrisePlayerService: SunrisePlayerService,
   ) {
     super();
@@ -31,7 +35,13 @@ export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<Su
     startIndex: number,
     maxResults: number,
   ): Observable<SunriseCreditDetailsEntry[]> {
-    return this.sunrise.getCreditHistoryByXuid$(xuid, startIndex, maxResults);
+    return this.sunrise.getCreditHistoryByXuid$(
+      xuid,
+      SortDirection.Ascending,
+      CreditUpdateColumn.Timestamp,
+      startIndex,
+      maxResults,
+    );
   }
 
   /** Gets save rollbacks history list */
