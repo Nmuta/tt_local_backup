@@ -4,11 +4,13 @@
       <mat-form-field appearance="fill">
         <mat-label>Column</mat-label>
         <mat-select matInput [formControl]="formControls.column">
-          <mat-option *ngFor="let option of columnOrderOptions" [value]="option">{{ option }}</mat-option>
+          <mat-option *ngFor="let option of columnOrderOptions" [value]="option">{{
+            option
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <section >
+      <section>
         <mat-button-toggle-group [formControl]="formControls.direction">
           <mat-button-toggle [value]="directionOptions.Ascending">Ascending</mat-button-toggle>
           <mat-button-toggle [value]="directionOptions.Descending">Descending</mat-button-toggle>

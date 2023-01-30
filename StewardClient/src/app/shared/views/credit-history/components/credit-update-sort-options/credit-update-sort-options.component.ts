@@ -15,7 +15,10 @@ import { Subject } from 'rxjs';
 import { startWith, tap } from 'rxjs/operators';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { renderDelay } from '@helpers/rxjs';
-import { CreditUpdateColumn, SortDirection } from '@views/credit-history/credit-history.base.component';
+import {
+  CreditUpdateColumn,
+  SortDirection,
+} from '@views/credit-history/credit-history.base.component';
 
 /** Outputted form value of the UGC search filters. */
 export interface CreditUpdateSortOptionsFormValue {
@@ -50,16 +53,16 @@ export class CreditUpdateSortOptionsComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor
 {
-  /** REVIEW-COMMENT: The UGC search filter service. */
   public columnOrderOptions = keys(CreditUpdateColumn) as CreditUpdateColumn[];
   public directionOptions = SortDirection;
 
+  /** Credit update sort options form controls. */
   public formControls = {
     direction: new FormControl(SortDirection.Ascending, Validators.required),
     column: new FormControl(CreditUpdateColumn.Timestamp, Validators.required),
   };
 
-  /** UGC filters form group. */
+  /** Credit update sort options form group. */
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
   private readonly onChanges$ = new Subject<CreditUpdateSortOptionsFormValue>();
@@ -164,7 +167,7 @@ export class CreditUpdateSortOptionsComponent
   } {
     return {
       direction: rawData?.direction?.toString(),
-      column: rawData?.column?.toString()
+      column: rawData?.column?.toString(),
     };
   }
 }

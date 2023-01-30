@@ -37,13 +37,7 @@ export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<Su
     startIndex: number,
     maxResults: number,
   ): Observable<SunriseCreditDetailsEntry[]> {
-    return this.sunrise.getCreditHistoryByXuid$(
-      xuid,
-      direction,
-      column,
-      startIndex,
-      maxResults,
-    );
+    return this.sunrise.getCreditHistoryByXuid$(xuid, direction, column, startIndex, maxResults);
   }
 
   /** Gets save rollbacks history list */

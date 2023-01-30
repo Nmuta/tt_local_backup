@@ -33,13 +33,7 @@ export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<
     startIndex: number,
     maxResults: number,
   ): Observable<WoodstockCreditDetailsEntry[]> {
-    return this.woodstock.getCreditHistoryByXuid$(
-      xuid,
-      direction,
-      column,
-      startIndex,
-      maxResults,
-    );
+    return this.woodstock.getCreditHistoryByXuid$(xuid, direction, column, startIndex, maxResults);
   }
 
   /** Gets save rollbacks history list */

@@ -25,12 +25,16 @@
     </help-popover-icon>
   </mat-card-header>
   <mat-card-content>
-    <credit-update-sort-options
-    [formControl]="formControls.sortOptions">      
+    <credit-update-sort-options [formControl]="formControls.sortOptions">
     </credit-update-sort-options>
 
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
-      <mat-expansion-panel *ngIf="sortOptions.column !== columnOptions.Timestamp || sortOptions.direction !== directionOptions.Ascending">
+      <mat-expansion-panel
+        *ngIf="
+          sortOptions.column !== columnOptions.Timestamp ||
+          sortOptions.direction !== directionOptions.Ascending
+        "
+      >
         <mat-expansion-panel-header color="warn">
           <mat-panel-title>
             Backwards XP

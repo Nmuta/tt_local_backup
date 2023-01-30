@@ -231,20 +231,23 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
         this.isLoading = false;
 
         // Logic here differs depending on if we're loading more of previous query, or starting a new one
-        const priorLength = this.startIndex > 0 ? this.creditHistory.data.length : 0;        
-        this.creditHistory.data = this.startIndex > 0 ? this.creditHistory.data.concat(creditUpdates) : this.creditHistory.data = creditUpdates;
+        const priorLength = this.startIndex > 0 ? this.creditHistory.data.length : 0;
+        this.creditHistory.data =
+          this.startIndex > 0
+            ? this.creditHistory.data.concat(creditUpdates)
+            : (this.creditHistory.data = creditUpdates);
 
         // TODO only do this if we sorted by Asc Timestamp, otherwise change some labels to explain why they're missing
-        if(this.sortOptions.column == CreditUpdateColumn.Timestamp && this.sortOptions.direction == SortDirection.Ascending)
-        {
+        if (
+          this.sortOptions.column == CreditUpdateColumn.Timestamp &&
+          this.sortOptions.direction == SortDirection.Ascending
+        ) {
           applyGroupingAnalysis(priorLength, this.creditHistory.data);
           applyXpAnalysis(priorLength, this.creditHistory.data);
 
           const xpAnalysisBadDates = this.creditHistory.data.filter(e => e.xpTrend === 'lower');
           this.xpAnalysisDates = xpAnalysisBadDates.length > 0 ? xpAnalysisBadDates : null;
-        }
-        else
-        {
+        } else {
           this.xpAnalysisDates = null;
         }
 
@@ -253,27 +256,19 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       });
 
     if (!!this.identity?.xuid) {
-      this.sortOptions = {column: CreditUpdateColumn.Timestamp, direction: SortDirection.Ascending};
+      this.sortOptions = {
+        column: CreditUpdateColumn.Timestamp,
+        direction: SortDirection.Ascending,
+      };
       this.getCreditUpdates$.next();
       this.loadSaveRollbackHistory();
     }
-
-    // this.formControls.sortOptions.valueChanges
-    //   .pipe( pairwiseSkip(ObjectDeepComparePredicate), takeUntil(this.onDestroy$))
-    //   .subscribe((options: CreditUpdateSortOptionsFormValue) => {
-    //     //this.selectedSortOptions = options || undefined;
-    //     //console.log(this.selectedSortOptions)
-    //   });
   }
 
-  public lookupCreditUpdates(): void 
-  {
+  /** Trigger new lookup with current form selections. */
+  public lookupCreditUpdates(): void {
     this.startIndex = 0;
-    //this.xpAnalysisDates = null;
-    //this.sortOptions = this.formControls.sortOptions.value;
     this.getCreditUpdates$.next();
-    //this.saveRollbackHistory = null;
-    //this.loadSaveRollbackHistory();
   }
 
   /** Lifecycle hook. */

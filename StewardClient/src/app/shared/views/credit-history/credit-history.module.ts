@@ -35,7 +35,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
-  declarations: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent, CreditUpdateSortOptionsComponent],
+  declarations: [
+    WoodstockCreditHistoryComponent,
+    SunriseCreditHistoryComponent,
+    CreditUpdateSortOptionsComponent,
+  ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
     StandardDateModule,
@@ -57,7 +61,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MonitorActionModule,
     StateManagersModule,
     CommonModule,
-    
+
     MatDialogModule,
     MatFormFieldModule,
     MatAutocompleteModule,
