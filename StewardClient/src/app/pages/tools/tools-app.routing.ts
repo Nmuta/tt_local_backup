@@ -14,6 +14,7 @@ import {
 import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { HomeTileInfoExternal, HomeTileInfoInternal } from '@environments/environment.dev';
 import { chain } from 'lodash';
+import { AuthV2Guard } from 'app/route-guards/auth-v2.guard';
 
 const routes: Routes = [
   {
@@ -38,8 +39,8 @@ const routes: Routes = [
           return <Route>{
             path: tool.tool,
             loadChildren: tool.loadChildren,
-            canActivate: [AuthGuard, FindUserRoleGuard(tool.accessList)],
-            canActivateChild: [AuthGuard],
+            canActivate: [AuthGuard, AuthV2Guard, FindUserRoleGuard(tool.accessList)],
+            canActivateChild: [AuthGuard, AuthV2Guard],
           };
         }),
       // tool redirects
@@ -62,8 +63,8 @@ const routes: Routes = [
             path: tool.tool,
             resolve: { url: 'externalUrlRedirectResolver' },
             data: { externalUrl: tool.externalUrl },
-            canActivate: [AuthGuard, FindUserRoleGuard(tool.accessList)],
-            canActivateChild: [AuthGuard],
+            canActivate: [AuthGuard, AuthV2Guard, FindUserRoleGuard(tool.accessList)],
+            canActivateChild: [AuthGuard, AuthV2Guard],
           };
         }),
       ...sidebarRoutes,

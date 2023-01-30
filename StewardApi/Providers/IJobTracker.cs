@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -13,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Adds a job into the tracker.
         /// </summary>
-        Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason);
+        Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason, HttpResponse httpResponse);
 
         /// <summary>
         ///     Gets the job status.

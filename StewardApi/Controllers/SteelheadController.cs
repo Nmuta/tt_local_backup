@@ -399,10 +399,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
-                $"Steelhead Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+                $"Steelhead Banning: {banParameters.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -678,10 +678,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 groupGift.ToJson(),
                 requesterObjectId,
-                $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+                $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.",
+                this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1305,19 +1306,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var locStrings = await this.steelheadServiceManagementProvider.GetLocalizedStringsAsync().ConfigureAwait(true);
             return this.Ok(locStrings);
-        }
-
-        /// <summary>
-        ///     Creates a job and puts the job ID in the response header.
-        /// </summary>
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
 
         /// <summary>

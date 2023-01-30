@@ -3,10 +3,11 @@ import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** Displays steelhead UGC content in a table. */
 @Component({
@@ -17,10 +18,13 @@ import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup
 export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitle.FM8;
   public supportFeaturing: boolean = false;
-  public supportHiding: boolean = false;
+  public ugcHidingSupported = false;
 
-  constructor(private readonly steelheadUgcLookupService: SteelheadUgcLookupService) {
-    super();
+  constructor(
+    private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
+    snackbar: MatSnackBar,
+  ) {
+    super(snackbar);
   }
 
   /** Gets player UGC item. */
@@ -31,5 +35,10 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   /** Retrieve Photo thumnbnails. */
   public retrievePhotoThumbnails(ugcIds: GuidLikeString[]): Observable<LookupThumbnailsResult[]> {
     return this.steelheadUgcLookupService.getUgcPhotoThumbnails$(ugcIds);
+  }
+
+  /** Hide multiple Ugcs. */
+  public hideUgc(_ugcIds: string[]): Observable<string[]> {
+    return throwError(new Error('Steelhead does not support hiding ugc items.'));
   }
 }
