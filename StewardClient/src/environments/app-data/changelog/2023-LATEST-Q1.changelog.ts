@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FH5, GameTitle.FH4],
+        tool: [NavbarTool.UserDetails],
+      },
+      uuid: '4dd325df-5a59-43e3-be81-e98cc6a5d319',
+      shortText: 'Add sort options to credit update view in player details',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e467ed45-c3aa-4a8a-abef-2725bf7334c1',
       shortText:
