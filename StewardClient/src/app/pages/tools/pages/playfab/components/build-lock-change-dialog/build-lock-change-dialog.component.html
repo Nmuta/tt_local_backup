@@ -7,7 +7,7 @@
   <ng-container *ngIf="data?.lockBuild; else unlockBuildContentTemplate">
     <form [formGroup]="formGroup">
       <mat-form-field appearance="fill">
-        <mat-label>Reason for build lock</mat-label>
+        <mat-label>Reason for locking build</mat-label>
         <textarea matInput [formControl]="formControls?.reason" cdkTextareaAutosize></textarea>
       </mat-form-field>
     </form>
@@ -45,5 +45,5 @@
 </div>
 
 <ng-template #unlockBuildContentTemplate>
-  <div class="unlock-message">Are you sure you want to remove this build lock?</div>
+  <div class="unlock-message">Are you sure you want to remove the lock on this build?</div>
 </ng-template>

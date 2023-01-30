@@ -3,21 +3,25 @@ import {
   Component,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
+import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { pairwiseSkip } from '@helpers/rxjs';
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { PlayFabBuildLock, PlayFabBuildLockRequest, PlayFabBuildSummary } from '@models/playfab';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { find } from 'lodash';
+import { cloneDeep, find } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
   BuildLockChangeDialogComponent,
   BuildLockChangeDialogData,
@@ -32,10 +36,21 @@ export interface PlayFabBuildsManagementServiceContract {
   deletePlayFabBuildLock$(buildLockId: GuidLikeString): Observable<PlayFabBuildLock>;
 }
 
+interface BuildFilters {
+  nameOrId: string;
+  lockStatus: LockFilterType;
+}
+
 type PlayFabBuildSummaryTableEntry = PlayFabBuildSummary & {
   /** Build lock if it exists. Correlated through separate API request. */
   lock: PlayFabBuildLock;
 };
+
+enum LockFilterType {
+  All,
+  Locked,
+  Unlocked,
+}
 
 /** Displays the playfab-builds management tool. */
 @Component({
@@ -45,7 +60,7 @@ type PlayFabBuildSummaryTableEntry = PlayFabBuildSummary & {
 })
 export class PlayFabBuildsManagementComponent
   extends BaseComponent
-  implements OnChanges, AfterViewInit
+  implements OnInit, OnChanges, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -56,11 +71,36 @@ export class PlayFabBuildsManagementComponent
 
   public buildsTableColumns = ['isLocked', 'buildDetails', 'lockDetails', 'actions'];
   public buildsTable = new BetterMatTableDataSource<PlayFabBuildSummaryTableEntry>([]);
+  public allBuildTableEntries: PlayFabBuildSummaryTableEntry[] = [];
 
   public playFabBuildsPermAttribute = PermAttributeName.ManagePlayFabBuildLocks;
 
+  public filterFormControls = {
+    nameOrId: new FormControl(null),
+    lockStatus: new FormControl(LockFilterType.All),
+  };
+
+  public filterFormGroup = new FormGroup(this.filterFormControls);
+
+  public LockFilterType = LockFilterType;
+
   constructor(private readonly dialog: MatDialog) {
     super();
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    this.filterFormGroup.valueChanges
+      .pipe(
+        debounceTime(HCI.TypingToAutoSearchDebounceMillis),
+        pairwiseSkip((prev, cur) => {
+          return prev?.nameOrId === cur?.nameOrId && prev?.lockStatus === cur?.lockStatus;
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((formFilters: BuildFilters) => {
+        this.filterBuilds(formFilters);
+      });
   }
 
   /** Lifecycle hook. */
@@ -85,7 +125,8 @@ export class PlayFabBuildsManagementComponent
           return mappedBuld;
         });
 
-        this.buildsTable.data = tableBulds;
+        this.allBuildTableEntries = tableBulds;
+        this.buildsTable.data = this.allBuildTableEntries;
       });
   }
 
@@ -135,5 +176,25 @@ export class PlayFabBuildsManagementComponent
   /** Deletes the PlayFab build lock. */
   private deletePlayFabBuildLock$(buildId: GuidLikeString): Observable<PlayFabBuildLock> {
     return this.service.deletePlayFabBuildLock$(buildId);
+  }
+
+  private filterBuilds(filters: BuildFilters): void {
+    let filteredBuilds = cloneDeep(this.allBuildTableEntries);
+
+    const nameOrIdFilter = filters?.nameOrId?.trim()?.toLowerCase();
+    if (!!nameOrIdFilter && nameOrIdFilter !== '') {
+      filteredBuilds = filteredBuilds.filter(
+        build =>
+          build.id.toLowerCase().includes(nameOrIdFilter) ||
+          build.name.toLowerCase().includes(nameOrIdFilter),
+      );
+    }
+
+    if (filters.lockStatus !== LockFilterType.All) {
+      const filterToLocked = filters.lockStatus === LockFilterType.Locked;
+      filteredBuilds = filteredBuilds.filter(build => !!build.lock === filterToLocked);
+    }
+
+    this.buildsTable.data = filteredBuilds;
   }
 }

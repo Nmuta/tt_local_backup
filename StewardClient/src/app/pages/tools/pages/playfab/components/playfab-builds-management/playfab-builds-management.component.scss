@@ -4,11 +4,25 @@ $isLocked-column-width: 100px;
 $build-row-height: 100px;
 $actions-column-width: 250px;
 
+.mat-card {
+  // User sets paginator to whatever size they want to scroll
+  max-height: unset;
+}
+
+mat-form-field {
+  max-width: $single-input-max-width;
+  width: 100%;
+}
+
 table {
   width: 100%;
 
   .mat-row {
     height: $build-row-height;
+  }
+
+  .is-locked {
+    background-color: app-color-darker($app-background);
   }
 
   .mat-column-isLocked {

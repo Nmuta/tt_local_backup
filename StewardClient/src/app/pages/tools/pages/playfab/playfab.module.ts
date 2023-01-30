@@ -31,6 +31,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { BuildLockChangeDialogComponent } from './components/build-lock-change-dialog/build-lock-change-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
@@ -59,6 +60,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule,
     MatToolbarModule,
     MatPaginatorModule,
+    MatButtonToggleModule,
     TextFieldModule,
     JsonDumpModule,
     MatProgressSpinnerModule,
