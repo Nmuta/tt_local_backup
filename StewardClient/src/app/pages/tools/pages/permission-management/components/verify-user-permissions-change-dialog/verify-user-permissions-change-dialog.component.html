@@ -39,6 +39,9 @@
     [disabled]="!verifySave.checked"
     cdkFocusInitial
     (click)="saveUpdatedPermissions()"
+    stateManager
+    [monitor]="savePermissionsMonitor"
+    monitorDisable
   >
     Save Permissions
     <button-spinner [monitor]="savePermissionsMonitor" defaultIcon="save"></button-spinner>

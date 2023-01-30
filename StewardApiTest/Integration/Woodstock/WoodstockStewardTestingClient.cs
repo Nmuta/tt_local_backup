@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kusto.Cloud.Platform.Utils;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
     {
         private const string Version = "1";
         private const string TitlePath = "api/v1/title/woodstock/";
+        private const string V2TitlePath = "api/v2/title/woodstock/";
 
         private readonly Uri baseUri;
         private readonly string authKey;
@@ -310,11 +312,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return await ServiceClient.SendRequestAsync<IList<HideableUgc>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task HideUGCAsync(Guid ugcId)
+        public async Task HideUGCAsync(Guid ugcId, bool useBackgroundJob)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}storefront/ugc/{ugcId}/hide");
+            var path = new Uri(this.baseUri, $"{V2TitlePath}ugc/hide?useBackgroundProcessing={useBackgroundJob.ToStringLowercase()}");
 
-            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, new[] { ugcId }, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task UnhideUGCAsync(ulong xuid, string fileType, Guid ugcId)

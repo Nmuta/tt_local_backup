@@ -37,6 +37,9 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
 import { MatSelectModule } from '@angular/material/select';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { CloneSnackbarComponent } from './components/clone-snackbar/clone-snackbar.component';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -53,6 +56,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     SteelheadRedirectComponent,
     WoodstockRedirectComponent,
     SunriseRedirectComponent,
+    CloneSnackbarComponent,
   ],
   imports: [
     CommonModule,
@@ -84,6 +88,8 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     StandardFormModule,
     MatSelectModule,
     PermissionsModule,
+    MatIconModule,
+    ClipboardModule,
   ],
 })
 export class UgcDetailsModule {}

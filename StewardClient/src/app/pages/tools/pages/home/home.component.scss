@@ -39,6 +39,7 @@
 
 mat-chip.filter-type-title.filter-type-title.filter-type-title {
   background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
 }
 
 mat-chip.filter-type-text.filter-type-text.filter-type-text {
@@ -49,6 +50,21 @@ mat-chip.filter-type-text.filter-type-text.filter-type-text {
   padding: $gap-medium;
   display: flex;
   flex-flow: column nowrap;
+}
+
+.no-results-container {
+  margin: $gap-large * 4 0;
+  font-size: $font-size-navbar;
+}
+
+.mat-chip {
+  margin-left: $gap-small;
+}
+
+.disabled-tools-info {
+  text-align: center;
+  font-size: $font-size-navbar;
+  margin: $gap-large;
 }
 
 .app-tiles-wrapper {

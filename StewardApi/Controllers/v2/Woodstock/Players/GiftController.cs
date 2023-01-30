@@ -138,10 +138,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 groupGift.ToJson(),
                 requesterObjectId,
-                $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+                $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.",
+                this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -206,7 +207,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             var liveries = await this.LookupLiveries(gift.LiveryIds).ConfigureAwait(true);
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Woodstock Gifting Liveries: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Woodstock Gifting Liveries: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -274,19 +275,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             var mappedLivery = this.mapper.SafeMap<WoodstockUgcLiveryItem>(livery.result);
             return mappedLivery;
-        }
-
-        /// <summary>
-        ///     Creates a job and puts the job ID in the response header.
-        /// </summary>
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
 
         /// <summary>

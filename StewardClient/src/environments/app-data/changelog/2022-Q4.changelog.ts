@@ -13,9 +13,43 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
       shortText: "Add calendar tool that displays Builder's Cup featured Tours",
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '31486e41-e069-4ab2-9672-b81c24b406f5',
+      shortText: 'Restructure Home Page Tile data',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c960565a-98c5-4e9c-a027-7667e778885f',
+      shortText: 'Allow clicking tile headers on single-action tiles',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'd6c54f11-e5c0-469d-a5ec-f4fc8535edc5',
+      shortText: 'Allow admins to sync AAD user list with Cosmos DB user list',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '38b7a643-3eea-4cb0-a301-47a0d0badb52',
+      shortText: 'Tweaks to Clone UGC button on UGC Details page',
+      longText: [
+        'The Clone UGC button now has correct help text. (KeepGuid and IsSearchable are both set to true when cloning)',
+        'The snackbar that pops up will now have buttons to copy the ID and Share Code.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '51b4e2ad-db52-4d61-9c4b-4039fa815c32',
+      shortText: 'Allow custom Action Monitor completion pop-ups',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: '4c8edbfe-1da0-4b3b-b9ec-7e457dc00f2d',
       shortText: 'Add game options display to Racers Cup event details',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '4960ac57-5a8a-4072-886b-1373311fad6b',
+      shortText: 'Make homepage tile filter smaller',
     },
     {
       tag: ChangelogTag.Internal,

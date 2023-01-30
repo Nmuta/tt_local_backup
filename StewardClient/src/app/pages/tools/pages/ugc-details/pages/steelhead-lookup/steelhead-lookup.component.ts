@@ -119,7 +119,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    throw new Error(`Steelhead does not support featuring UGC.`);
+    throw new Error(`Steelhead does not support hiding UGC.`);
   }
 
   /** Report a Ugc item in Woodstock */

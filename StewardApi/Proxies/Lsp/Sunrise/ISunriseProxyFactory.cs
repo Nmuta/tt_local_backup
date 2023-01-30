@@ -17,5 +17,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise
         ///     Prepares a <see cref="IUserManagementService" />.
         /// </summary>
         IUserManagementService PrepareUserManagementService(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="IStorefrontService" />.
+        /// </summary>
+        IStorefrontService PrepareStorefrontService(string endpoint);
     }
 }

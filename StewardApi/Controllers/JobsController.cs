@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] object postBody)
         {
             var objectId = this.User?.UserClaims()?.ObjectId;
-            var jobId = await this.AddJobIdToHeaderAsync(postBody.ToJson(), objectId).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] object postBody)
         {
             var objectId = this.User?.UserClaims()?.ObjectId;
-            var jobId = await this.AddJobIdToHeaderAsync(postBody.ToJson(), objectId).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] object postBody)
         {
             var objectId = this.User?.UserClaims()?.ObjectId;
-            var jobId = await this.AddJobIdToHeaderAsync(postBody.ToJson(), objectId).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -206,15 +206,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
 
             return this.Ok(output);
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, "Fake Job").ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
     }
 }

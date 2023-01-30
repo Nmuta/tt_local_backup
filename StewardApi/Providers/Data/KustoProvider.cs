@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using CreditUpdate = Turn10.LiveOps.StewardApi.Contracts.Data.CreditUpdate;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -315,7 +316,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             string endpoint,
             DateTimeOffset? startDate,
             DateTimeOffset? endDate)
-        { 
+        {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -499,6 +500,54 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             catch (Exception ex)
             {
                 throw new QueryFailedStewardException($"Failed to query rollback history for XUID: {xuid}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(
+            ulong xuid,
+            TitleCodeName title,
+            SortDirection sortDirection,
+            CreditUpdateColumn column,
+            int startAt,
+            int maxResults)
+        {
+            var databaseName = $"Prod {title} Telemetry";
+
+            try
+            {
+                var query = CreditUpdate.MakeQuery(xuid, title, column, sortDirection);
+
+                async Task<IList<CreditUpdate>> GetCreditUpdates()
+                {
+                    var creditUpdates = new List<CreditUpdate>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(databaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (startAt > 0 && reader.Read())
+                        {
+                            startAt--;
+                        }
+
+                        while (creditUpdates.Count != maxResults && reader.Read())
+                        {
+                            var creditUpdate = CreditUpdate.FromQueryResult(reader);
+                            creditUpdates.Add(creditUpdate);
+                        }
+
+                        reader.Close();
+                    }
+
+                    return creditUpdates;
+                }
+
+                return await GetCreditUpdates().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Failed to query credit updates. (XUID: {xuid}) (Title: {title})", ex);
             }
         }
 

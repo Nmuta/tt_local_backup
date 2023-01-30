@@ -77,10 +77,6 @@ table {
     }
   }
 
-  ugc-download-button {
-    margin-left: $gap-small;
-  }
-
   .is-featured-item {
     background-color: $table-tr-hover;
   }
@@ -105,4 +101,10 @@ mat-progress-spinner {
 
 img {
   @include standard-image-border();
+}
+
+.mat-row {
+  &.selected {
+    background-color: $table-tr-hover;
+  }
 }

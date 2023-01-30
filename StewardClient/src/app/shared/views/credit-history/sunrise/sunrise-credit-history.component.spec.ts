@@ -1,11 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { SunriseCreditHistoryComponent } from './sunrise-credit-history.component';
 import { first } from 'lodash';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { createMockSunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service.mock';
+import { createMockSunrisePlayerCreditUpdatesService } from '@services/api-v2/sunrise/player/credit-updates/sunrise-credit-updates.mock';
 
 describe('SunriseCreditHistoryComponent', () => {
   let component: SunriseCreditHistoryComponent;
@@ -16,7 +16,7 @@ describe('SunriseCreditHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseCreditHistoryComponent],
-      providers: [createMockSunriseService(), createMockSunrisePlayerService()],
+      providers: [createMockSunrisePlayerCreditUpdatesService(), createMockSunrisePlayerService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
