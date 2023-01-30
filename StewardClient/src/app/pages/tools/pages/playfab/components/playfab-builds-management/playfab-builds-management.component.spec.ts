@@ -1,15 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameTitle } from '@models/enums';
 import { NgxsModule } from '@ngxs/store';
-import { createMockBlobStorageService } from '@services/blob-storage';
 import { of } from 'rxjs';
 
 import {
@@ -24,10 +23,10 @@ describe('PlayFabBuildsManagementComponent', () => {
   const mockService: PlayFabBuildsManagementServiceContract = {
     gameTitle: GameTitle.FH5,
     getPlayFabBuilds$: () => {
-      return of(undefined);
+      return of([]);
     },
     getPlayFabBuildLocks$: () => {
-      return of(undefined);
+      return of([]);
     },
     addPlayFabBuildLock$: () => {
       return of(undefined);
@@ -46,13 +45,13 @@ describe('PlayFabBuildsManagementComponent', () => {
         NgxsModule.forRoot([]),
         FormsModule,
         ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
         MatFormFieldModule,
         MatInputModule,
+        MatDialogModule,
+        MatButtonToggleModule,
       ],
       declarations: [PlayFabBuildsManagementComponent],
-      providers: [createMockBlobStorageService()],
+      providers: [],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlayFabBuildsManagementComponent);
@@ -79,7 +78,7 @@ describe('PlayFabBuildsManagementComponent', () => {
         } catch (e) {
           expect(true).toBeTruthy();
           expect(e.message).toEqual(
-            'No service contract was provided for ListUsersInGroupComponent',
+            'No service contract was provided for PlayFabBuildsManagementComponent',
           );
         }
       });
