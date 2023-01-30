@@ -94,6 +94,14 @@ export abstract class PlayerUgcBaseComponent
     this.filteredUgcContent = this.filterUgcContent();
   }
 
+  /** Remove ugc items from the ugcContent so that filter changes reflect the right dataset. */
+  public removeUgcItems(ugcItemsRemoved: string[]): void {
+    ugcItemsRemoved.forEach(ugcId => {
+      const index = this.ugcContent.findIndex(x => x.id == ugcId);
+      this.ugcContent.splice(index, 1);
+    });
+  }
+
   private filterUgcContent(): PlayerUgcItem[] {
     let filteredContent = cloneDeep(this.ugcContent);
 

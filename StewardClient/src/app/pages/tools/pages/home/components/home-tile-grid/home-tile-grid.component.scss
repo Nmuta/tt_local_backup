@@ -149,6 +149,21 @@
           margin-bottom: 0;
         }
 
+        > mat-card-header {
+          margin-bottom: 0.5em;
+        }
+
+        > .clickable-header {
+          cursor: pointer;
+          transition: color 0.5s ease, background-color 0.5s ease, filter 0.2s ease;
+          filter: brightness(100%);
+          border-bottom: 1px solid transparent;
+          &:hover {
+            filter: brightness(90%);
+            border-bottom: 1px solid rgba(0, 0, 0, 10%);
+          }
+        }
+
         img[mat-card-image] {
           flex-shrink: 1;
           padding-bottom: 1em;

@@ -8,6 +8,7 @@ import { ApolloUgcTableComponent } from './apollo-ugc-table.component';
 import faker from '@faker-js/faker';
 import { UgcType } from '@models/ugc-filters';
 import { ApolloService } from '@services/apollo';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('ApolloUgcTableComponent', () => {
   let component: ApolloUgcTableComponent;
@@ -16,7 +17,7 @@ describe('ApolloUgcTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule],
+      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
       declarations: [ApolloUgcTableComponent, BigJsonPipe],
       providers: [createMockApolloService()],
       schemas: [NO_ERRORS_SCHEMA],

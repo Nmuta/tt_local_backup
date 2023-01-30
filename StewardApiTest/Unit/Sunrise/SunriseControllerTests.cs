@@ -1865,21 +1865,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void HideUgc_WithValidInputs_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var ugcId = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.HideUGC(ugcId).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void UnhideUgc_WithValidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -1998,7 +1983,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.StorefrontProvider.GetUgcPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.GetUgcTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.SetUgcFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
-                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
+                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<HttpResponse>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
             }

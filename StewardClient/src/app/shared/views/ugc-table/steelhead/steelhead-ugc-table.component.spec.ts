@@ -10,6 +10,7 @@ import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
 import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service.mock';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('SteelheadUgcTableComponent', () => {
   let component: SteelheadUgcTableComponent;
@@ -18,7 +19,7 @@ describe('SteelheadUgcTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule],
+      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
       declarations: [SteelheadUgcTableComponent, BigJsonPipe],
       providers: [createMockSteelheadUgcLookupService()],
       schemas: [NO_ERRORS_SCHEMA],

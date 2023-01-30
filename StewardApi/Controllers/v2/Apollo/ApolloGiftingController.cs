@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -186,16 +186,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             var response = await this.playerInventoryProvider.SendCarLiveryAsync(gift, groupId, livery, requesterObjectId, this.ApolloEndpoint.Value).ConfigureAwait(true);
 
             return this.Ok(response);
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
     }
 }
