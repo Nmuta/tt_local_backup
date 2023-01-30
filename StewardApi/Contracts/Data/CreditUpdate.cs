@@ -59,11 +59,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             switch (title)
             {
                 case TitleCodeName.Woodstock:
-                    unorderedQuery = $"Game_CreditsUpdate |  where UserId == {xuid} | project Timestamp, CreditsAfter, CreditAmount, SceneName, ActualPlatform, TotalXPEarned | lookup kind=leftouter (database('T10Analytics').actual_platform_mapping_sunrise | project tolong(ActualPlatform), MappedPlatform=PlatformDescription) on ActualPlatform | project Timestamp, CreditsAfter, CreditAmount, SceneName, DeviceType = MappedPlatform , TotalXp = TotalXPEarned";
+                    unorderedQuery = $"Game_CreditsUpdate" +
+                                    $"| where UserId == {xuid} | project Timestamp, CreditsAfter, CreditAmount, SceneName, ActualPlatform, TotalXPEarned " +
+                                    $"| lookup kind=leftouter (database('T10Analytics').actual_platform_mapping_sunrise | project tolong(ActualPlatform), MappedPlatform=PlatformDescription) on ActualPlatform " +
+                                    $"| project Timestamp, CreditsAfter, CreditAmount, SceneName, DeviceType = MappedPlatform , TotalXp = TotalXPEarned";
                     break;
 
                 case TitleCodeName.Sunrise:
-                    unorderedQuery = $"Game_CreditsUpdate |  where UserId == '{xuid}'  | extend MappedPlatform=case(ActualPlatform==\"1\", \"Durango\", ActualPlatform==\"2\", \"Edmonton\", ActualPlatform==\"3\", \"Scorpio\", ActualPlatform==\"4\", \"x64\", ActualPlatform==\"5\", \"UWP\", ActualPlatform==\"6\", \"Xbox Series S\", ActualPlatform==\"7\", \"Xbox Series X\", ActualPlatform==\"8\", \"Steam\", \"Unknown\")  | project Timestamp = Time, CreditsAfter = tolong(CreditsAfter), CreditAmount = tolong(CreditAmount), SceneName, DeviceType = MappedPlatform, TotalXp = TotalXPEarned";
+                    unorderedQuery = $"Game_CreditsUpdate " +
+                                     $"|  where UserId == '{xuid}' " +
+                                     $"| extend MappedPlatform=case(ActualPlatform==\"1\", \"Durango\", ActualPlatform==\"2\", \"Edmonton\", ActualPlatform==\"3\", \"Scorpio\", ActualPlatform==\"4\"," +
+                                     $" \"x64\", ActualPlatform==\"5\", \"UWP\", ActualPlatform==\"6\", \"Xbox Series S\", ActualPlatform==\"7\", \"Xbox Series X\", ActualPlatform==\"8\", \"Steam\", \"Unknown\") " +
+                                     $"| project Timestamp = Time, CreditsAfter = tolong(CreditsAfter), CreditAmount = tolong(CreditAmount), SceneName, DeviceType = MappedPlatform, TotalXp = TotalXPEarned";
                     break;
 
                 default:
