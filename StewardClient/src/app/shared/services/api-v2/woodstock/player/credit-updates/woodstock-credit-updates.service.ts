@@ -21,7 +21,7 @@ export class WoodstockPlayerCreditUpdatesService {
   public getCreditHistoryByXuid$(
     xuid: BigNumber,
     sortOrder: SortDirection = SortDirection.Ascending,
-    column: CreditUpdateColumn.Timestamp,
+    column: CreditUpdateColumn = CreditUpdateColumn.Timestamp,
     startIndex: number = 0,
     maxResults: number = 100,
   ): Observable<WoodstockCreditDetailsEntry[]> {
