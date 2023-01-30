@@ -8,12 +8,11 @@ import { GameTitleCodeName } from '@models/enums';
 import BigNumber from 'bignumber.js';
 import { SunriseCreditDetailsEntry } from '@models/sunrise';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
-import { clamp, keys, slice } from 'lodash';
+import { clamp, slice } from 'lodash';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreditUpdateSortOptionsFormValue } from './components/credit-update-sort-options/credit-update-sort-options.component';
-import { ObjectDeepComparePredicate, pairwiseSkip } from '@helpers/rxjs';
 
 /** Acceptable values for which direction to sort a column */
 export enum SortDirection {
@@ -141,7 +140,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   extends BaseComponent
   implements OnInit, OnChanges
 {
-  /** REVIEW-COMMENT: Player identity. */
+  /** Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
   public formControls = {
@@ -237,7 +236,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
             ? this.creditHistory.data.concat(creditUpdates)
             : (this.creditHistory.data = creditUpdates);
 
-        // TODO only do this if we sorted by Asc Timestamp, otherwise change some labels to explain why they're missing
         if (
           this.sortOptions.column == CreditUpdateColumn.Timestamp &&
           this.sortOptions.direction == SortDirection.Ascending
