@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using CreditUpdate = Turn10.LiveOps.StewardApi.Contracts.Data.CreditUpdate;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -77,5 +78,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Gets a user's save rollback history.
         /// </summary>
         Task<IList<SaveRollbackHistory>> GetSaveRollbackHistoryAsync(ulong xuid);
+
+        /// <summary>
+        ///     Gets a user's credit update history.
+        /// </summary>
+        Task<IList<CreditUpdate>> GetCreditUpdatesAsync(
+            ulong xuid,
+            TitleCodeName title,
+            SortDirection sortDirection,
+            CreditUpdateColumn column,
+            int startAt,
+            int maxResults);
     }
 }
