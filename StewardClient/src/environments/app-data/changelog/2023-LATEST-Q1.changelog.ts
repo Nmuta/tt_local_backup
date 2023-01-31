@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '92349474-466e-409d-91a9-bb1280daffd5',
+      shortText: 'Fix auth refresh bug that stops permissions from loading',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e467ed45-c3aa-4a8a-abef-2725bf7334c1',
       shortText:
