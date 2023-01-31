@@ -8,11 +8,6 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.BuildersCupCalendar },
-      uuid: 'e84c76da-cbaa-43aa-8716-aa52079efb2a',
-      shortText: "Add calendar tool that displays Builder's Cup featured Tours",
-    },
-    {
       tag: ChangelogTag.Internal,
       uuid: '31486e41-e069-4ab2-9672-b81c24b406f5',
       shortText: 'Restructure Home Page Tile data',
