@@ -577,12 +577,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,
+            DateTime forceFeatureEndDate,
             string endpoint)
         {
             var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            // NOTE: User scenario for setting featured state always uses the same DateTime for featureEndDate & forceFeatureEndDate
-            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, featureEndDate).ConfigureAwait(false);
+            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, forceFeatureEndDate).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

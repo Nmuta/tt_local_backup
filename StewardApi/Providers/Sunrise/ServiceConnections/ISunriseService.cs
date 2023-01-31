@@ -388,6 +388,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,
+            DateTime forceFeatureEndDate,
             string endpoint);
     }
 }

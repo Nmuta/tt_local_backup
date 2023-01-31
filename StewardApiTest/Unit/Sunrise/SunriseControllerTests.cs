@@ -1802,7 +1802,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             async Task<IActionResult> Action() => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
             {
                 IsFeatured = false,
-                Expiry = expiry,
+                FeaturedExpiry = expiry,
             }).ConfigureAwait(false);
 
             // Assert.
@@ -1826,7 +1826,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 async () => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
                 {
                     IsFeatured = true,
-                    Expiry = null,
+                    FeaturedExpiry = null,
                 }).ConfigureAwait(false),
             };
 
@@ -1852,7 +1852,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 async () => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
                 {
                     IsFeatured = true,
-                    Expiry = expiry,
+                    FeaturedExpiry = expiry,
                 }).ConfigureAwait(false),
             };
 
@@ -1982,7 +1982,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.StorefrontProvider.GetUgcLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcLiveryItem>());
                 this.StorefrontProvider.GetUgcPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.GetUgcTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
-                this.StorefrontProvider.SetUgcFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
+                this.StorefrontProvider.SetUgcFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<HttpResponse>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());

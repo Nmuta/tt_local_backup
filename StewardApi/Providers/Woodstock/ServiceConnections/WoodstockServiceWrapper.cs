@@ -736,12 +736,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,
+            DateTime forceFeatureEndDate,
             string endpoint)
         {
             var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            // NOTE: User scenario for setting featured state always uses the same DateTime for featureEndDate & forceFeatureEndDate
-            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, featureEndDate)
+            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, forceFeatureEndDate)
                 .ConfigureAwait(false);
         }
 

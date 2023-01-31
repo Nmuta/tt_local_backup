@@ -38,9 +38,7 @@
               [permissionAttribute]="featurePermAttribute"
               [permissionTitle]="gameTitle"
             >
-              <span [matTooltip]="featureMatTooltip">{{
-                ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
-              }}</span>
+              <span [matTooltip]="featureMatTooltip">Change Featured Status</span>
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
               <mat-form-field

@@ -604,10 +604,6 @@ export class WoodstockService {
 
   /** Sets a UGC item's feature status.  */
   public setUgcItemFeatureStatus(status: UgcFeaturedStatus): Observable<void> {
-    if (status.isFeatured && !status.expiry) {
-      throw new Error('Cannot feature UGC item with an expiry duration.');
-    }
-
     return this.apiService.postRequest$<void>(
       `${this.basePath}/storefront/itemId(${status.itemId})/featuredStatus`,
       status,

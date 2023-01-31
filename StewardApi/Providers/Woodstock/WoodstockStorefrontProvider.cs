@@ -164,14 +164,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
+        public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, TimeSpan? forceFeaturedExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var featureEndDate = isFeatured && featuredExpiry.HasValue ? DateTime.UtcNow.Add(featuredExpiry.Value) : DateTime.MinValue;
-                await this.woodstockService.SetUgcFeaturedStatusAsync(contentId, isFeatured, featureEndDate, endpoint).ConfigureAwait(false);
+                var forceFeatureEndDate = isFeatured && forceFeaturedExpiry.HasValue ? DateTime.UtcNow.Add(forceFeaturedExpiry.Value) : DateTime.MinValue;
+                await this.woodstockService.SetUgcFeaturedStatusAsync(contentId, isFeatured, featureEndDate, forceFeatureEndDate, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

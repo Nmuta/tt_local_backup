@@ -714,20 +714,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
             }
 
-            if (status.IsFeatured && !status.Expiry.HasValue)
+            if (status.IsFeatured && status.FeaturedExpiry.HasValue)
             {
-                throw new InvalidArgumentsStewardException($"Required query param is missing: {nameof(status.Expiry)}");
+                status.FeaturedExpiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.FeaturedExpiry));
             }
 
-            if (status.IsFeatured && status.Expiry.HasValue)
-            {
-                status.Expiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
-            }
-
+            // NOTE: Disabling the ability to set force featured. Will soon add full configurability to Steward (lugeiken - 2023/01/31)
             await this.storefrontProvider.SetUgcFeaturedStatusAsync(
                 itemIdGuid,
                 status.IsFeatured,
-                status.Expiry,
+                status.FeaturedExpiry,
+                null, // Force featured expiry
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
