@@ -6,12 +6,7 @@ import {
 } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import {
-  CalendarEvent,
-  CalendarMonthViewDay,
-  CalendarView,
-  collapseAnimation,
-} from 'angular-calendar';
+import { CalendarEvent, CalendarView, collapseAnimation } from 'angular-calendar';
 import { indexOf, max } from 'lodash';
 import { DateTime } from 'luxon';
 import { takeUntil } from 'rxjs';
@@ -41,9 +36,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
 
   public events: CalendarEvent[];
 
-  constructor(
-    private readonly buildersCupService: SteelheadBuildersCupService,
-  ) {
+  constructor(private readonly buildersCupService: SteelheadBuildersCupService) {
     super();
   }
 

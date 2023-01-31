@@ -11,7 +11,7 @@ export const buildersCupCalendarTile = <HomeTileInfoInternal>{
   tooltipDescription: "View and validate Builder's Cup featured races.",
   shortDescription: ["Tool for visualizing featured content in Builder's Cup."],
   loadChildren: () =>
-    import('../../../../../app/pages/tools/pages/builders-cup-calendar/builders-cup-calendar.module').then(
-      m => m.BuildersCupCalendarModule,
-    ),
+    import(
+      '../../../../../app/pages/tools/pages/builders-cup-calendar/builders-cup-calendar.module'
+    ).then(m => m.BuildersCupCalendarModule),
 };
