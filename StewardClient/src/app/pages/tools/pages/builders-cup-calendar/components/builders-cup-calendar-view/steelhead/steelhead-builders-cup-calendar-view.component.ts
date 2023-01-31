@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitle } from '@models/enums';
 import {
   BuildersCupFeaturedTour,
   SteelheadBuildersCupService,
 } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { DomainEnumPrettyPrintOrHumanizePipe } from '@shared/pipes/domain-enum-pretty-print-or-humanize.pipe';
 import {
   CalendarEvent,
   CalendarMonthViewDay,
@@ -19,6 +16,7 @@ import { indexOf, max } from 'lodash';
 import { DateTime } from 'luxon';
 import { takeUntil } from 'rxjs';
 
+/** Represents Builder's Cup specific data for use in a calendar event */
 export interface BuildersCupMeta {
   name: string;
   description: string;
@@ -27,27 +25,15 @@ export interface BuildersCupMeta {
   isDisabled: boolean;
 }
 
-export interface TileEventGroup<T> {
-  name: string;
-  events: CalendarEvent<T>[];
-  tileCount: number;
-}
-
-export type StewardBuildersCupMonthViewDay<T> = CalendarMonthViewDay<T> & {
-  eventGroups: TileEventGroup<T>[];
-};
-
 /** The Steelhead Builder's Cup Calendar View page. */
 @Component({
   templateUrl: './steelhead-builders-cup-calendar-view.component.html',
   styleUrls: ['./steelhead-builders-cup-calendar-view.component.scss'],
-  providers: [DomainEnumPrettyPrintOrHumanizePipe],
   animations: [collapseAnimation],
 })
 export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent implements OnInit {
   public getActionMonitor = new ActionMonitor('GET car details');
   public buildersCupSchedule: BuildersCupFeaturedTour[];
-  public gameTitle: GameTitle;
 
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
@@ -57,8 +43,6 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
 
   constructor(
     private readonly buildersCupService: SteelheadBuildersCupService,
-    private readonly deppoh: DomainEnumPrettyPrintOrHumanizePipe,
-    private readonly dialog: MatDialog,
   ) {
     super();
   }

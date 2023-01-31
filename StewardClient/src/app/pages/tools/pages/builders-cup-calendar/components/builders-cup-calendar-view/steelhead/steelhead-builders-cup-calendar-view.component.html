@@ -48,8 +48,6 @@
             [events]="events"
             [cellTemplate]="customDayCellTemplate"
           >
-            <!-- [cellTemplate]="customDayCellTemplate" -->
-            <!-- (beforeViewRender)="beforeMonthViewRender($event)" -->
           </mwl-calendar-month-view>
           <mwl-calendar-week-view
             *ngSwitchCase="CalendarView.Week"
@@ -90,54 +88,6 @@
     </div>
   </div>
 </ng-template>
-
-<!-- <ng-template #customDayCellTemplate let-day="day" let-locale="locale">
-  <div class="cal-cell-top">
-    <span class="cal-day-badge">
-      {{ day.eventGroups[0].events.length }} | {{ day.eventGroups[1].events.length }} |
-      {{ day.eventGroups[2].events.length }}
-    </span>
-    <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
-  </div>
-  <div class="cell-totals">
-    <div class="shrink-wrap">
-      <div class="sf-wrapper">
-        <div class="sf-vertical">
-          <div
-            *ngFor="let group of day.eventGroups; let first = first"
-            class="column-group"
-            (click)="groupsClicked(day.eventGroups)"
-          >
-            <hr *ngIf="!first" />
-            <div
-              class="grid {{ group.name }}"
-              style="grid-template-rows: repeat({{ group.tileCount }}, 10px);"
-            >
-              <ng-container *ngFor="let column of day.eventGroups">
-                <div *ngIf="column.name !== group.name" [class]="'filler ' + column.name"></div>
-              </ng-container>
-              <ng-container *ngFor="let tile of group.events">
-                <div
-                  *ngIf="tile.meta.column === group.name"
-                  [class]="tile.meta.cssClass"
-                  [matTooltip]="tile.meta.dayTooltip"
-                  matTooltipClass="multiline-tooltip"
-                ></div>
-                <div
-                  class="annotation"
-                  [matTooltip]="tile.meta.dayTooltip"
-                  matTooltipClass="multiline-tooltip"
-                >
-                  {{ tile.title }}
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template> -->
 
 <!-- "weekEvent" comes from Angular Calendar and cannot be changed -->
 <ng-template
