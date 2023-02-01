@@ -160,11 +160,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   >([]);
   public saveRollbackHistory: ProfileRollbackHistory[];
 
-  /** True while waiting on a request. */
-  public isLoading = true;
-  /** The error received while loading. */
-  public loadError: unknown;
-
   public columnsToDisplay = [
     'eventTimestampUtc',
     'deviceType',
@@ -213,10 +208,8 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
           return getCreditHistoryByXuid$.pipe(
             this.getCreditUpdatesMonitor.monitorSingleFire(),
-            catchError(error => {
+            catchError(_ => {
               this.loadingMore = false;
-              this.isLoading = false;
-              this.loadError = error;
               return EMPTY;
             }),
           );
@@ -225,7 +218,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       )
       .subscribe((creditUpdates: T[]) => {
         this.loadingMore = false;
-        this.isLoading = false;
 
         // Logic here differs depending on if we're loading more of previous query, or starting a new one
         const priorLength = this.startIndex > 0 ? this.creditHistory.data.length : 0;
@@ -273,8 +265,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       return;
     }
 
-    this.isLoading = true;
-    this.loadError = undefined;
     this.startIndex = 0;
     this.creditHistory.data = [];
     this.saveRollbackHistory = null;

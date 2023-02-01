@@ -28,7 +28,7 @@
     <credit-update-sort-options [formControl]="formControls.sortOptions">
     </credit-update-sort-options>
 
-    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+    <ng-container *waitForMonitor="getCreditUpdatesMonitor">
       <mat-expansion-panel *ngIf="displayTrendAnalysisDisabled">
         <mat-expansion-panel-header color="warn">
           <mat-panel-title>
@@ -194,8 +194,3 @@
     </ng-container>
   </mat-card-content>
 </mat-card>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
-</ng-template>
