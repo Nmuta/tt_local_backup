@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'c50fb424-7b32-472a-8f3a-a46fea0038f8',
+      shortText: 'Featuring UGC now only sets featured end date',
+      longText: [
+        'Force featured end date is now ignored.',
+        'There is an open work item to allow for a fully configurable UGC featured status.',
+      ],
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '92349474-466e-409d-91a9-bb1280daffd5',
       shortText: 'Fix auth refresh bug that stops permissions from loading',
