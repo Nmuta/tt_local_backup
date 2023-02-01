@@ -29,6 +29,7 @@ export enum NavbarTool {
   Theming = 'theming',
   Endpoints = 'endpoints',
   RacersCup = 'racers-cup',
+  BuildersCupCalendar = 'builders-cup-calendar',
   CarDetails = 'car-details',
   UserGroupManagement = 'user-group-management',
   PowerBiTools = 'power-bi-tools',

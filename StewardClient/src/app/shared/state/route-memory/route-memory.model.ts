@@ -4,4 +4,5 @@ export class RouteMemoryModel {
   public auctionDetails: string;
   public carDetails: string;
   public gifting: string;
+  public buildersCupCalendar: string;
 }
