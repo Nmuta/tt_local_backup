@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '7ff5c818-1510-4c30-b41b-15f8ef06c0e4',
+      shortText: 'Give V1 auth roles access to updated credit history view',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'c50fb424-7b32-472a-8f3a-a46fea0038f8',
       shortText: 'Featuring UGC now only sets featured end date',
