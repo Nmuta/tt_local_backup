@@ -21,16 +21,11 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { CreditUpdateSortOptionsComponent } from './components/credit-update-sort-options/credit-update-sort-options.component';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 /** A domain module for displaying credit histories. */
@@ -61,19 +56,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MonitorActionModule,
     StateManagersModule,
     CommonModule,
-
-    MatDialogModule,
     MatFormFieldModule,
-    MatAutocompleteModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    MakeModelAutocompleteModule,
-    MatCheckboxModule,
-
     MatButtonToggleModule,
   ],
   exports: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
