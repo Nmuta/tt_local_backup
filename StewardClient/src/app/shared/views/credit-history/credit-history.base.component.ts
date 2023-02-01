@@ -234,6 +234,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
             ? this.creditHistory.data.concat(creditUpdates)
             : (this.creditHistory.data = creditUpdates);
 
+        // Can't accurately verify if credits jumped an unreasonable amount without full history.
         if (
           this.formControls.sortOptions.value?.column == CreditUpdateColumn.Timestamp &&
           this.formControls.sortOptions.value?.direction == SortDirection.Ascending

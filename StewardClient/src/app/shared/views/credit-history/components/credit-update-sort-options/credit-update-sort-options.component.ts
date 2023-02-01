@@ -26,11 +26,6 @@ export interface CreditUpdateSortOptionsFormValue {
   column: CreditUpdateColumn;
 }
 
-/** Internal form value of the credit update sort options. */
-interface CreditUpdateSortOptionsFormValueInternal {
-  options: CreditUpdateSortOptionsFormValue;
-}
-
 /** A component for credit update sort options. */
 @Component({
   selector: 'credit-update-sort-options',
@@ -118,14 +113,7 @@ export class CreditUpdateSortOptionsComponent
   /** Form control hook. */
   public writeValue(data: CreditUpdateSortOptionsFormValue): void {
     if (data) {
-      const dataInternal: CreditUpdateSortOptionsFormValueInternal = {
-        options: {
-          direction: data.direction,
-          column: data.column,
-        },
-      };
-
-      this.formGroup.patchValue(dataInternal, { emitEvent: false });
+      this.formGroup.patchValue(data, { emitEvent: false });
     }
   }
 
