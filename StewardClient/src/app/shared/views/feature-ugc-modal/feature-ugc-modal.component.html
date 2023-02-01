@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  Feature {{ gameTitle }} Ugc Content
+  Feature {{ gameTitle | humanize }} Ugc Content
   <br />
   <span class="mat-subheading-2">
     <ng-container *ngIf="!!ugcItem.featuredByT10; else notFeaturedTemplate">
@@ -21,16 +21,22 @@
   <img #modelImage [src]="ugcItem.thumbnailOneImageBase64" />
 
   <form [formGroup]="formGroup">
-    <mat-checkbox 
-      [formControl]="formControls.isFeatured" 
-      (click)="changedFeatureStatus()"
-    >Feature UGC Item</mat-checkbox>
+    <mat-checkbox [formControl]="formControls.isFeatured" (click)="changedFeatureStatus()"
+      >Feature UGC Item</mat-checkbox
+    >
     <mat-form-field appearance="fill" class="expiry-date">
       <mat-label>Featured End Date</mat-label>
-      <input matInput [disabled]="!formControls.isFeatured.value" [matDatepicker]="picker" [formControl]="formControls.featuredDate" />
+      <input
+        matInput
+        [disabled]="!formControls.isFeatured.value"
+        [matDatepicker]="picker"
+        [formControl]="formControls.featuredDate"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      <mat-hint *ngIf="!formControls.isFeatured.value">Cannot select end date when UGC is not featured</mat-hint>
+      <mat-hint *ngIf="!formControls.isFeatured.value"
+        >Cannot select end date when UGC is not featured</mat-hint
+      >
       <mat-hint *ngIf="formControls.isFeatured.value">Optional</mat-hint>
       <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('is-after')"
         >Expiry time must be in the future</mat-error
@@ -77,10 +83,6 @@
   >
 </mat-dialog-actions>
 
-<ng-template #noFeaturedEndDateTemplate>
-  Featured with no end date
-</ng-template>
+<ng-template #noFeaturedEndDateTemplate> Featured with no end date </ng-template>
 
-<ng-template #notFeaturedTemplate>
-  Not currently featured
-</ng-template>
+<ng-template #notFeaturedTemplate> Not currently featured </ng-template>

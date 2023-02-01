@@ -22,15 +22,12 @@ export type FeatureUgcModalComponentUnion =
 /** Base modal component to set featured status of a UGC item. */
 @Component({
   template: '',
-  providers: [
-  ],
+  providers: [],
 })
 export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
   public formControls = {
     isFeatured: new FormControl(''),
-    featuredDate: new FormControl('', [
-      DateValidators.isAfter(DateTime.local()),
-    ]),
+    featuredDate: new FormControl('', [DateValidators.isAfter(DateTime.local())]),
   };
   public formGroup = new FormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Set Featured Status');
@@ -87,7 +84,11 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
     this.changedFeatureStatus();
   }
 
-  public abstract changeFeaturedStatus$(itemId: string, isFeatured: boolean, expireDate?: DateTime): Observable<void>;
+  public abstract changeFeaturedStatus$(
+    itemId: string,
+    isFeatured: boolean,
+    expireDate?: DateTime,
+  ): Observable<void>;
 
   public abstract getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
 
@@ -123,5 +124,5 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
   /** Logic when changing the feature status checbox. */
   public changedFeatureStatus(): void {
     this.formControls.featuredDate.setValue(null);
-  } 
+  }
 }

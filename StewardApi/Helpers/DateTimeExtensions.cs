@@ -24,5 +24,18 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 throw new InvalidArgumentsStewardException($"{sourceName}: {source} must come after {comparisonName}: {compareTo}.");
             }
         }
+
+        /// <summary>
+        ///     If source is DateTime.MinValue, return null. Else returns source.
+        /// </summary>
+        public static DateTime? CovertToNullIfMin(this DateTime source)
+        {
+            if (source == DateTime.MinValue)
+            {
+                return null;
+            }
+
+            return source;
+        }
     }
 }

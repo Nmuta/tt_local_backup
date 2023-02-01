@@ -26,7 +26,11 @@ export class SunriseFeatureUgcModalComponent extends FeatureUgcModalBaseComponen
   }
 
   /** Sends out request to set featured status. */
-  public changeFeaturedStatus$(itemId: string, isFeatured: boolean, expireDate?: DateTime): Observable<void> {
+  public changeFeaturedStatus$(
+    itemId: string,
+    isFeatured: boolean,
+    expireDate?: DateTime,
+  ): Observable<void> {
     const expireDuration = !!expireDate ? expireDate.diff(DateTime.local().startOf('day')) : null;
     return this.sunriseService.setUgcItemFeatureStatus({
       itemId: itemId,

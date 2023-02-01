@@ -26,7 +26,11 @@ export class WoodstockFeatureUgcModalComponent extends FeatureUgcModalBaseCompon
   }
 
   /** Sets featured status of a UGC item. */
-  public changeFeaturedStatus$(itemId: string, isFeatured: boolean, expireDate?: DateTime): Observable<void> {
+  public changeFeaturedStatus$(
+    itemId: string,
+    isFeatured: boolean,
+    expireDate?: DateTime,
+  ): Observable<void> {
     const expireDuration = !!expireDate ? expireDate.diff(DateTime.local().startOf('day')) : null;
     return this.woodstockService.setUgcItemFeatureStatus({
       itemId: itemId,
