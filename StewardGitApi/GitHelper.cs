@@ -189,7 +189,7 @@ namespace StewardGitApi
             }
             catch (Exception e) when (e is VssException or ProjectDoesNotExistException)
             {
-                throw new GitOperationException("API Exception", e);
+                throw new GitOperationException("Cannot retrieve pull request", e);
             }
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Turn10.LiveOps.StewardApi.Contracts.Git
 {
     /// <summary>
-    ///     Represents a git pull request.
+    ///     Represents a Steward git pull request.
     /// </summary>
     public class PullRequest
     {
