@@ -12,7 +12,6 @@ import { clamp, slice } from 'lodash';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CreditUpdateSortOptionsFormValue } from './components/credit-update-sort-options/credit-update-sort-options.component';
 
 /** Acceptable values for which direction to sort a column */
 export enum SortDirection {
@@ -180,7 +179,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public maxResultsPerRequest = 5000;
   public loadingMore = false;
   public showLoadMore: boolean;
-  public sortOptions: CreditUpdateSortOptionsFormValue;
+  public displayTrendAnalysisDisabled: boolean;
 
   public xpAnalysisDates: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[] = null;
 
@@ -225,7 +224,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
         takeUntil(this.onDestroy$),
       )
       .subscribe((creditUpdates: T[]) => {
-        this.sortOptions = this.formControls.sortOptions.value;
         this.loadingMore = false;
         this.isLoading = false;
 
@@ -237,15 +235,17 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
             : (this.creditHistory.data = creditUpdates);
 
         if (
-          this.sortOptions.column == CreditUpdateColumn.Timestamp &&
-          this.sortOptions.direction == SortDirection.Ascending
+          this.formControls.sortOptions.value?.column == CreditUpdateColumn.Timestamp &&
+          this.formControls.sortOptions.value?.direction == SortDirection.Ascending
         ) {
           applyGroupingAnalysis(priorLength, this.creditHistory.data);
           applyXpAnalysis(priorLength, this.creditHistory.data);
 
+          this.displayTrendAnalysisDisabled = false;
           const xpAnalysisBadDates = this.creditHistory.data.filter(e => e.xpTrend === 'lower');
           this.xpAnalysisDates = xpAnalysisBadDates.length > 0 ? xpAnalysisBadDates : null;
         } else {
+          this.displayTrendAnalysisDisabled = true;
           this.xpAnalysisDates = null;
         }
 
@@ -254,10 +254,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       });
 
     if (!!this.identity?.xuid) {
-      this.sortOptions = {
-        column: CreditUpdateColumn.Timestamp,
-        direction: SortDirection.Ascending,
-      };
+      this.displayTrendAnalysisDisabled = true;
       this.getCreditUpdates$.next();
       this.loadSaveRollbackHistory();
     }

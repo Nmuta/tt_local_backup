@@ -13,7 +13,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
         tool: [NavbarTool.UserDetails],
       },
       uuid: '4dd325df-5a59-43e3-be81-e98cc6a5d319',
-      shortText: 'Add sort options to credit update view in player details',
+      shortText: 'Add sort options to credit update view',
     },
     {
       tag: ChangelogTag.Internal,
