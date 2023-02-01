@@ -1,7 +1,21 @@
 <mat-card>
-  <mat-card-title-group>
+  <mat-card-header class="sf-header">
     <mat-card-title>Credit History</mat-card-title>
     <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <button
+      mat-raised-button
+      color="primary"
+      matTooltip="Lookup Credit Updates"
+      [monitor]="getCreditUpdatesMonitor"
+      stateManager
+      monitorDisable
+      monitorWarnSnackbar
+      (click)="lookupCreditUpdates()"
+    >
+      Search
+      <button-spinner defaultIcon="search" [monitor]="getCreditUpdatesMonitor"></button-spinner>
+    </button>
     <help-popover-icon cardTitle="Credit History" confluenceName="Credit History Card">
       <p>Credit history is recovered from logs and is displayed from oldest to newest.</p>
       <p>
@@ -9,9 +23,23 @@
         together.
       </p>
     </help-popover-icon>
-  </mat-card-title-group>
+  </mat-card-header>
   <mat-card-content>
-    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+    <credit-update-sort-options [formControl]="formControls.sortOptions">
+    </credit-update-sort-options>
+
+    <ng-container *waitForMonitor="getCreditUpdatesMonitor">
+      <mat-expansion-panel *ngIf="displayTrendAnalysisDisabled">
+        <mat-expansion-panel-header color="warn">
+          <mat-panel-title>
+            Backwards XP
+            <mat-icon color="warn">warning</mat-icon>
+          </mat-panel-title>
+          <mat-panel-description>
+            XP trend analysis only available when sorting by Timestamp-Ascending
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
       <mat-expansion-panel *ngIf="xpAnalysisDates">
         <mat-expansion-panel-header color="warn">
           <mat-panel-title>
@@ -166,8 +194,3 @@
     </ng-container>
   </mat-card-content>
 </mat-card>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
-</ng-template>
