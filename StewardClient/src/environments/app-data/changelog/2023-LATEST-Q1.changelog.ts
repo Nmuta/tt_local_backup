@@ -16,6 +16,25 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add sort options to credit update view',
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '7ff5c818-1510-4c30-b41b-15f8ef06c0e4',
+      shortText: 'Give V1 auth roles access to updated credit history view',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'c50fb424-7b32-472a-8f3a-a46fea0038f8',
+      shortText: 'Featuring UGC now only sets featured end date',
+      longText: [
+        'Force featured end date is now ignored.',
+        'There is an open work item to allow for a fully configurable UGC featured status.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '92349474-466e-409d-91a9-bb1280daffd5',
+      shortText: 'Fix auth refresh bug that stops permissions from loading',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e467ed45-c3aa-4a8a-abef-2725bf7334c1',
       shortText:
