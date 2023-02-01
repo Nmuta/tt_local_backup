@@ -13,7 +13,6 @@ import {
   WoodstockBanResult,
   WoodstockBanSummary,
   WoodstockConsoleDetailsEntry,
-  WoodstockCreditDetailsEntry,
   WoodstockGift,
   WoodstockGiftHistory,
   WoodstockGroupGift,
@@ -360,21 +359,6 @@ export class WoodstockService {
     return this.apiService.postRequest$<CommunityMessageResult<BigNumber>>(
       `${this.basePath}/notifications/send/groupId(${groupId})`,
       communityMessage,
-    );
-  }
-
-  /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid$(
-    xuid: BigNumber,
-    startIndex: number = 0,
-    maxResults: number = 100,
-  ): Observable<WoodstockCreditDetailsEntry[]> {
-    const httpParams = new HttpParams()
-      .set('startIndex', startIndex.toString())
-      .set('maxResults', maxResults.toString());
-    return this.apiService.getRequest$<WoodstockCreditDetailsEntry[]>(
-      `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
-      httpParams,
     );
   }
 

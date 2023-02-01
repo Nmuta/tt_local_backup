@@ -11,6 +11,7 @@ import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 import { clamp, slice } from 'lodash';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 /** Acceptable values for which direction to sort a column */
 export enum SortDirection {
@@ -138,21 +139,26 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   extends BaseComponent
   implements OnInit, OnChanges
 {
-  /** REVIEW-COMMENT: Player identity. */
+  /** Player identity. */
   @Input() public identity?: IdentityResultUnion;
 
+  public formControls = {
+    sortOptions: new FormControl('', Validators.required),
+  };
+
+  public formGroup = new FormGroup(this.formControls);
+
+  public getCreditUpdatesMonitor = new ActionMonitor('Get credit updates');
   public saveRollbackMonitor = new ActionMonitor('GET save rollback');
+
+  public columnOptions = CreditUpdateColumn;
+  public directionOptions = SortDirection;
 
   /** A list of player credit events. */
   public creditHistory = new TableVirtualScrollDataSource<
     CreditDetailsEntryUnion & CreditDetailsEntryMixin
   >([]);
   public saveRollbackHistory: ProfileRollbackHistory[];
-
-  /** True while waiting on a request. */
-  public isLoading = true;
-  /** The error received while loading. */
-  public loadError: unknown;
 
   public columnsToDisplay = [
     'eventTimestampUtc',
@@ -168,6 +174,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public maxResultsPerRequest = 5000;
   public loadingMore = false;
   public showLoadMore: boolean;
+  public displayTrendAnalysisDisabled: boolean;
 
   public xpAnalysisDates: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[] = null;
 
@@ -175,6 +182,8 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public abstract isSaveRollbackSupported: boolean;
   public abstract getCreditHistoryByXuid$(
     xuid: BigNumber,
+    column: CreditUpdateColumn,
+    direction: SortDirection,
     startIndex: number,
     maxResults: number,
   ): Observable<T[]>;
@@ -190,14 +199,17 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
           this.loadingMore = true;
           const getCreditHistoryByXuid$ = this.getCreditHistoryByXuid$(
             this.identity.xuid,
+            this.formControls.sortOptions.value?.column,
+            this.formControls.sortOptions.value?.direction,
             this.startIndex,
             this.maxResultsPerRequest,
           );
+          this.getCreditUpdatesMonitor = this.getCreditUpdatesMonitor.repeat();
+
           return getCreditHistoryByXuid$.pipe(
-            catchError(error => {
+            this.getCreditUpdatesMonitor.monitorSingleFire(),
+            catchError(_ => {
               this.loadingMore = false;
-              this.isLoading = false;
-              this.loadError = error;
               return EMPTY;
             }),
           );
@@ -206,23 +218,45 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       )
       .subscribe((creditUpdates: T[]) => {
         this.loadingMore = false;
-        this.isLoading = false;
-        const priorLength = this.creditHistory.data.length;
-        this.creditHistory.data = this.creditHistory.data.concat(creditUpdates);
-        applyGroupingAnalysis(priorLength, this.creditHistory.data);
-        applyXpAnalysis(priorLength, this.creditHistory.data);
 
-        const xpAnalysisBadDates = this.creditHistory.data.filter(e => e.xpTrend === 'lower');
-        this.xpAnalysisDates = xpAnalysisBadDates.length > 0 ? xpAnalysisBadDates : null;
+        // Logic here differs depending on if we're loading more of previous query, or starting a new one
+        const priorLength = this.startIndex > 0 ? this.creditHistory.data.length : 0;
+        this.creditHistory.data =
+          this.startIndex > 0
+            ? this.creditHistory.data.concat(creditUpdates)
+            : (this.creditHistory.data = creditUpdates);
+
+        // Can't accurately verify if credits jumped an unreasonable amount without full history.
+        if (
+          this.formControls.sortOptions.value?.column == CreditUpdateColumn.Timestamp &&
+          this.formControls.sortOptions.value?.direction == SortDirection.Ascending
+        ) {
+          applyGroupingAnalysis(priorLength, this.creditHistory.data);
+          applyXpAnalysis(priorLength, this.creditHistory.data);
+
+          this.displayTrendAnalysisDisabled = false;
+          const xpAnalysisBadDates = this.creditHistory.data.filter(e => e.xpTrend === 'lower');
+          this.xpAnalysisDates = xpAnalysisBadDates.length > 0 ? xpAnalysisBadDates : null;
+        } else {
+          this.displayTrendAnalysisDisabled = true;
+          this.xpAnalysisDates = null;
+        }
 
         this.startIndex = this.creditHistory.data.length;
         this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
       });
 
     if (!!this.identity?.xuid) {
+      this.displayTrendAnalysisDisabled = true;
       this.getCreditUpdates$.next();
       this.loadSaveRollbackHistory();
     }
+  }
+
+  /** Trigger new lookup with current form selections. */
+  public lookupCreditUpdates(): void {
+    this.startIndex = 0;
+    this.getCreditUpdates$.next();
   }
 
   /** Lifecycle hook. */
@@ -231,8 +265,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
       return;
     }
 
-    this.isLoading = true;
-    this.loadError = undefined;
     this.startIndex = 0;
     this.creditHistory.data = [];
     this.saveRollbackHistory = null;

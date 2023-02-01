@@ -47,7 +47,6 @@ import { SunriseConsoleIsBannedFakeApi } from './apis/title/sunrise/console/isBa
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayerXuidConsolesFakeApi } from './apis/title/sunrise/player/xuid/consoleDetails';
-import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/player/xuid/creditUpdates';
 import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/player/xuid/profileSummary';
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
@@ -118,7 +117,6 @@ const fakeApiConstructors = [
   SunrisePlayerGamertagDetailsFakeApi,
   SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi,
   SunrisePlayerXuidConsolesFakeApi,
-  SunrisePlayerXuidCreditUpdatesFakeApi,
   SunrisePlayerXuidUserFlagsFakeApi,
   SunrisePlayerXuidProfileSummaryFakeApi,
   SunrisePlayerXuidBanHistoryFakeApi,
