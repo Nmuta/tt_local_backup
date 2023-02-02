@@ -107,7 +107,7 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
   ];
   public giftResponse: GiftResponse<BigNumber>[];
 
-  public activePermAttribute = PermAttributeName.GiftPlayerLivery;
+  public activePermAttribute = PermAttributeName.GiftPlayer;
 
   /** Gets the liveries to be sent. */
   public liveries: PlayerUgcItem[] = [];
@@ -148,8 +148,8 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
   public ngOnChanges(changes: BetterSimpleChanges<BulkGiftLiveryBaseComponent<IdentityT>>): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
-        ? PermAttributeName.GiftPlayerLivery
-        : PermAttributeName.GiftGroupLivery;
+        ? PermAttributeName.GiftPlayer
+        : PermAttributeName.GiftGroup;
     }
   }
 

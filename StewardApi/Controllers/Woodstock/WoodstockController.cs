@@ -1603,7 +1603,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] ExpirableGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1679,7 +1679,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroupLivery)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] ExpirableGift gift)
         {
             var userClaims = this.User.UserClaims();

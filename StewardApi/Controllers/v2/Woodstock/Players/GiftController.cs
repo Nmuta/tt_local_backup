@@ -189,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing([FromBody] BulkLiveryGift<ExpirableGroupGift> gift)
         {
             var userClaims = this.User.UserClaims();
