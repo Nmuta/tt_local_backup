@@ -7,7 +7,6 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -37,6 +36,7 @@ import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SuccessSnackbarComponent } from '@shared/modules/monitor-action/success-snackbar/success-snackbar.component';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -138,7 +138,7 @@ export abstract class UgcTableBaseComponent
   }
 
   /** Angular hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<UgcTableBaseComponent>): void {
     if (!!changes.content) {
       const ugcItemsToProcess: PlayerUgcItemTableEntries[] = this.content;
 

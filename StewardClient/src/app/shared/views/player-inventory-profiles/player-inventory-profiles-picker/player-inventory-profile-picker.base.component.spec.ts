@@ -49,7 +49,8 @@ export function baseTests<
         component.profileChange.emit = jasmine.createSpy('profileChange.emit');
 
         component.identity = makeIdentityFn() as IdentityResultAlpha;
-        component.ngOnChanges({ identity: new SimpleChange(null, component.identity, true) });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>{ identity: new SimpleChange(null, component.identity, true) });
         fixture.detectChanges();
       });
 

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalizedMessage } from '@models/community-message';
 import { DateTime } from 'luxon';
@@ -7,6 +7,7 @@ import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/date
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { values } from 'lodash';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type LocalizedMessageWithEnglishPreview = LocalizedMessage & { englishText: string };
 
@@ -58,8 +59,8 @@ export class NewLocalizedMessageComponent implements OnChanges {
   public activePermAttribute = PermAttributeName.MessagePlayer;
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.usingPlayerIdentities) {
+  public ngOnChanges(changes: BetterSimpleChanges<NewLocalizedMessageComponent>): void {
+    if (changes.isUsingPlayerIdentities) {
       this.activePermAttribute = this.isUsingPlayerIdentities
         ? PermAttributeName.MessagePlayer
         : PermAttributeName.MessageGroup;

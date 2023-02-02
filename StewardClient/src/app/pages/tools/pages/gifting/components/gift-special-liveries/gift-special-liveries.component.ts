@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -113,7 +114,7 @@ export class GiftSpecialLiveriesComponent extends BaseComponent implements OnIni
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<GiftSpecialLiveriesComponent>): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
         ? PermAttributeName.GiftPlayer

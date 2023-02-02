@@ -90,7 +90,8 @@ describe('SteelheadUgcTableComponent', () => {
       });
 
       it('should request getLeaderboardScores$', () => {
-        component.ngOnChanges(changes);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>changes);
 
         expect(component.ugcTableDataSource.data).toEqual(component.content);
         expect(component.ugcCount).toEqual(component.content.length);

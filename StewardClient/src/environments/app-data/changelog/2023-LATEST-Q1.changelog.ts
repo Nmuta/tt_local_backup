@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '6e026fe0-9624-402f-a7f8-c992c76748e5',
+      shortText: 'Add TypeScript typings around change detection',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '8daf979f-0f6d-4228-bd79-650b64e29686',
       shortText: 'Merge gift livery perms into basic gift perms',
     },

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -32,6 +32,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 import { max, round } from 'lodash';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
@@ -144,7 +145,7 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<BulkGiftLiveryBaseComponent<IdentityT>>): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
         ? PermAttributeName.GiftPlayer

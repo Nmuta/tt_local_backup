@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { JsonTableResult } from '@models/json-table-result';
 import { jsonBigIntSafeSerialize } from '@helpers/json-bigint';
 import { DateTime } from 'luxon';
 import BigNumber from 'bignumber.js';
 import { isNull, isUndefined } from 'lodash';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 type TemplateNames =
   | 'unknown'
@@ -37,7 +38,7 @@ export class JsonTableResultsComponent implements OnChanges {
   constructor(private readonly humanizePipe: HumanizePipe) {}
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<JsonTableResultsComponent>): void {
     this.resultKeys = [];
     this.downloadResults = [];
     this.templateCache = new Map<JsonTableResult<unknown>, Map<string, TemplateNames>>();

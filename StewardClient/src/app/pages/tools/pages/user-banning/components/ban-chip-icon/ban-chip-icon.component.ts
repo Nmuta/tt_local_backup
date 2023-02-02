@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultUnion } from '@models/identity-query.model';
@@ -7,6 +7,7 @@ import { SunriseBanSummary } from '@models/sunrise';
 import { SteelheadBanSummary } from '@models/steelhead';
 import { ApolloBanSummary } from '@models/apollo';
 import { WoodstockBanSummary } from '@models/woodstock';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export interface BanQuery {
   isLoading: boolean;
@@ -46,7 +47,7 @@ export class BanChipIconComponent extends BaseComponent implements OnChanges {
   }
 
   /** Angular hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: BetterSimpleChanges<BanChipIconComponent>): void {
     if (this.banSummary) {
       this.banCount = this.banSummary.banCount;
       this.hasBans = this.banSummary.banCount > new BigNumber(0);
