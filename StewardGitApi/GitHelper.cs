@@ -38,7 +38,7 @@ namespace StewardGitApi
                     project = await projectClient.GetProject(projectId).ConfigureAwait(false);
                     if (project == null)
                     {
-                        throw new GitOperationException("Project returned null");
+                        throw new GitOperationException($"Project is in an unexpected state. Project Id: {projectId}");
                     }
 
                     context.Settings.CacheValue(projectId, project);
@@ -143,7 +143,7 @@ namespace StewardGitApi
 
                     if (repo == null)
                     {
-                        throw new GitOperationException("Repository is null");
+                        throw new GitOperationException($"Repository is in an unexpected state. Project Id: {projectId}, Repo Id: {repoId}");
                     }
 
                     context.Settings.CacheValue(repoId.ToString(), repo);
@@ -182,7 +182,8 @@ namespace StewardGitApi
                 var pr = await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
                 if (pr == null)
                 {
-                    throw new GitOperationException("Pull request is null");
+                    throw new GitOperationException($"Pull request is in an unexpected state. " +
+                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
                 }
 
                 return pr;
