@@ -1,5 +1,6 @@
-﻿using System.Text;
-
+﻿using System.Runtime.Serialization;
+using System.Text;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
@@ -35,9 +36,17 @@ namespace StewardGitApi
                 try
                 {
                     project = await projectClient.GetProject(projectId).ConfigureAwait(false);
+                    if (project == null)
+                    {
+                        throw new GitOperationException($"Project is in an unexpected state. Project Id: {projectId}");
+                    }
+
                     context.Settings.CacheValue(projectId, project);
                 }
-                catch (ProjectDoesNotExistException) { project = null; }
+                catch (ProjectDoesNotExistException ex)
+                {
+                    throw new GitOperationException("Project does not exist", ex);
+                }
             }
 
             return project;
@@ -104,12 +113,15 @@ namespace StewardGitApi
             {
                 return await gitHttpClient.GetRepositoriesAsync(projectId).ConfigureAwait(false);
             }
-            catch (ProjectDoesNotExistException) { return new List<GitRepository>(); }
+            catch (ProjectDoesNotExistException e)
+            {
+                throw new GitOperationException("Project does not exist", e);
+            }
         }
 
         /// <summary>
         ///     Gets a repository from the current project that
-        ///     matches the current <see cref="AzureContext.Settings"/>.RepoId.
+        ///     matches the <see cref="AzureContext.Settings"/>.RepoId.
         /// </summary>
         internal static async Task<GitRepository> GetRepositoryAsync(AzureContext context)
         {
@@ -129,9 +141,17 @@ namespace StewardGitApi
                         ? await gitClient.GetRepositoryAsync(repoId).ConfigureAwait(false)
                         : await gitClient.GetRepositoryAsync(projectId, repoId).ConfigureAwait(false);
 
+                    if (repo == null)
+                    {
+                        throw new GitOperationException($"Repository is in an unexpected state. Project Id: {projectId}, Repo Id: {repoId}");
+                    }
+
                     context.Settings.CacheValue(repoId.ToString(), repo);
                 }
-                catch (VssServiceException) { repo = null; }
+                catch (VssServiceException e)
+                {
+                    throw new GitOperationException("The repository returned null", e);
+                }
             }
 
             return repo;
@@ -155,14 +175,22 @@ namespace StewardGitApi
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
             (Guid projectId, _) = context.Settings.Ids;
+
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
             try
             {
-                return await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
+                var pr = await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
+                if (pr == null)
+                {
+                    throw new GitOperationException($"Pull request is in an unexpected state. " +
+                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
+                }
+
+                return pr;
             }
             catch (Exception e) when (e is VssException or ProjectDoesNotExistException)
             {
-                return null;
+                throw new GitOperationException("Cannot retrieve pull request", e);
             }
         }
 
@@ -340,9 +368,7 @@ namespace StewardGitApi
                 Status = PullRequestStatus.Abandoned,
             };
 
-            var pullRequest = await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
-
-            return pullRequest;
+            return await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -351,12 +377,37 @@ namespace StewardGitApi
         internal static async Task<IEnumerable<GitRef>> GetAllBranchesAsync(AzureContext context)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
-
-            (Guid projectId, Guid repoId) = context.Settings.Ids;
+            (_, Guid repoId) = context.Settings.Ids;
 
             List<GitRef> refs = await gitClient.GetRefsAsync(repoId, filter: "heads/").ConfigureAwait(false);
 
             return refs;
+        }
+
+        /// <summary>
+        ///     Kick off a pipeline on the branch.
+        /// </summary>
+        internal static async Task<Build> RunPipelineAsync(AzureContext context, string branch, int buildDefinition)
+        {
+            if (branch.StartsWith("refs/heads/", StringComparison.OrdinalIgnoreCase))
+            {
+                branch = branch.Substring(11);
+            }
+
+            var buildClient = context.Connection.GetClient<BuildHttpClient>();
+
+            var project = await GetProjectAsync(context).ConfigureAwait(false);
+            var definition = await buildClient.GetDefinitionAsync(project.Id, buildDefinition).ConfigureAwait(false);
+
+            var build = new BuildWithTemplateParameters
+            {
+                Definition = definition,
+                Project = project,
+                SourceBranch = branch,
+                TemplateParameters = new Dictionary<string, string>() { { "branch", branch } },
+            };
+
+            return await buildClient.QueueBuildAsync(build).ConfigureAwait(false);
         }
 
         private static string WithoutRefsPrefix(string refName)
@@ -415,6 +466,15 @@ namespace StewardGitApi
             }
 
             return commitRefs;
+        }
+
+        /// <summary>
+        /// Extended build class that provides template parameters for the pipeline.
+        /// </summary>
+        private class BuildWithTemplateParameters : Build
+        {
+            [DataMember(EmitDefaultValue = false)]
+            public Dictionary<string, string> TemplateParameters { get; set; }
         }
     }
 }

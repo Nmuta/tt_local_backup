@@ -254,5 +254,10 @@
         ///     The Steelhead World of Forza path in the Steelhead Content repo.
         /// </summary>
         public const string SteelheadWorldOfForzaPath = "Git:SteelheadWorldOfForzaPath";
+
+        /// <summary>
+        ///     The Steelhead format pipeline build definitoin key.
+        /// </summary>
+        public const string SteelheadFormatPipelineBuildDefinition = "Git:SteelheadFormatPipelineBuildDefinition";
     }
 }
