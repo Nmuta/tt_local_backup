@@ -22,9 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string DeleteLeaderboardScores = nameof(DeleteLeaderboardScores);
         public const string FeatureUgc = nameof(FeatureUgc);
         public const string GiftGroup = nameof(GiftGroup);
-        public const string GiftGroupLivery = nameof(GiftGroupLivery);
         public const string GiftPlayer = nameof(GiftPlayer);
-        public const string GiftPlayerLivery = nameof(GiftPlayerLivery);
         public const string HideUgc = nameof(HideUgc);
         public const string MessageGroup = nameof(MessageGroup);
         public const string MessagePlayer = nameof(MessagePlayer);

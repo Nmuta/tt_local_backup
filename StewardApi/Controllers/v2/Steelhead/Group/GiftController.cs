@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroupLivery)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(string liveryId, int groupId, [FromBody] LocalizedMessageExpirableGift gift)
         {
             if (!Guid.TryParse(liveryId, out var liveryIdAsGuid))

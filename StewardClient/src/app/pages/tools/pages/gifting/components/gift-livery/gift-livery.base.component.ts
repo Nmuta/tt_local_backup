@@ -64,7 +64,7 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
   ];
   public giftResponse: GiftResponse<BigNumber>[];
 
-  public activePermAttribute = PermAttributeName.GiftPlayerLivery;
+  public activePermAttribute = PermAttributeName.GiftPlayer;
 
   /** Gets the livery from form controls. */
   public get livery(): PlayerUgcItem {
@@ -140,8 +140,8 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
-        ? PermAttributeName.GiftPlayerLivery
-        : PermAttributeName.GiftGroupLivery;
+        ? PermAttributeName.GiftPlayer
+        : PermAttributeName.GiftGroup;
     }
   }
 

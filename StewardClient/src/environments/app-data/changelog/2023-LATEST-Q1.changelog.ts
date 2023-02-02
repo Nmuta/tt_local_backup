@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '8daf979f-0f6d-4228-bd79-650b64e29686',
+      shortText: 'Merge gift livery perms into basic gift perms',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '611e27c6-025c-44f9-a068-bd6d534cc2e0',
       shortText: 'Restrict tools home page from users without a role',

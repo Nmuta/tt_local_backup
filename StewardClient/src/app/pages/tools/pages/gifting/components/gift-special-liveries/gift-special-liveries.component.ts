@@ -90,7 +90,7 @@ export class GiftSpecialLiveriesComponent extends BaseComponent implements OnIni
     GiftReason.SaveRollback,
   ];
 
-  public activePermAttribute = PermAttributeName.GiftPlayerLivery;
+  public activePermAttribute = PermAttributeName.GiftPlayer;
 
   constructor() {
     super();
@@ -116,8 +116,8 @@ export class GiftSpecialLiveriesComponent extends BaseComponent implements OnIni
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
-        ? PermAttributeName.GiftPlayerLivery
-        : PermAttributeName.GiftGroupLivery;
+        ? PermAttributeName.GiftPlayer
+        : PermAttributeName.GiftGroup;
     }
   }
 
