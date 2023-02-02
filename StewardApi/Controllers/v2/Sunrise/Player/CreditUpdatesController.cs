@@ -23,7 +23,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.Player
     [Route("api/v{version:apiVersion}/title/sunrise/player/{xuid}/creditUpdates")]
     [ApiVersion("2.0")]
     [ApiController]
-    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(
+        UserRole.GeneralUser,
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager,
+        UserRole.HorizonDesigner,
+        UserRole.MotorsportDesigner,
+        UserRole.MediaTeam)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",

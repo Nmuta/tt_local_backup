@@ -21,6 +21,7 @@ export enum AppIcon {
   StewardManagement = 'cloud_sync',
   Leaderboards = 'leaderboard',
   RacersCup = 'calendar_today',
+  BuildersCupCalendar = 'calendar_today',
   UserGroupManagement = 'group',
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',

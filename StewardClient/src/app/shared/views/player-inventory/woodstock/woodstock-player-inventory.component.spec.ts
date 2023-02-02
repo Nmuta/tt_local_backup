@@ -45,7 +45,8 @@ describe('WoodstockPlayerInventoryComponent', () => {
 
     beforeEach(waitForAsync(() => {
       component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-      component.ngOnChanges({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      component.ngOnChanges(<any>{
         identity: new SimpleChange(undefined, component.identity, true),
       });
     }));
@@ -72,7 +73,8 @@ describe('WoodstockPlayerInventoryComponent', () => {
       describe('when null identity is set', () => {
         beforeEach(waitForAsync(() => {
           component.identity = null;
-          component.ngOnChanges({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component.ngOnChanges(<any>{
             identity: new SimpleChange(undefined, null, false),
           });
         }));

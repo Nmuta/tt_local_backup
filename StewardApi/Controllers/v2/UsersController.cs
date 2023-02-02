@@ -30,6 +30,7 @@ using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
@@ -51,19 +52,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
     {
         private readonly IStewardUserProvider stewardUserProvider;
         private readonly IMsGraphService msGraphService;
+        private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
         public UsersController(
             IStewardUserProvider stewardUserProvider,
-            IMsGraphService msGraphService)
+            IMsGraphService msGraphService,
+            IMapper mapper)
         {
             stewardUserProvider.ShouldNotBeNull(nameof(stewardUserProvider));
             msGraphService.ShouldNotBeNull(nameof(msGraphService));
+            mapper.ShouldNotBeNull(nameof(mapper));
 
             this.stewardUserProvider = stewardUserProvider;
             this.msGraphService = msGraphService;
+            this.mapper = mapper;
         }
 
         /// <summary>
@@ -145,12 +150,59 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         {
             try
             {
-                await this.stewardUserProvider.UpdateStewardUserAsync(userToUpdate.ObjectId, userToUpdate.Name, userToUpdate.EmailAddress, userToUpdate.Role, userToUpdate.Attributes).ConfigureAwait(true);
+                await this.stewardUserProvider.UpdateStewardUserAsync(
+                    userToUpdate.ObjectId,
+                    userToUpdate.Name,
+                    userToUpdate.EmailAddress,
+                    userToUpdate.Role,
+                    userToUpdate.Attributes,
+                    userToUpdate.Team).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to updated AAD user to DB during sync. (aadUserId: {userToUpdate.ObjectId})", ex);
             }
+        }
+
+        /// <summary>
+        ///     Gets user team.
+        /// </summary>
+        [HttpGet("{userId}/team")]
+        [SwaggerResponse(200, type: typeof(Team))]
+        public async Task<IActionResult> GetTeamAsync(string userId)
+        {
+            var user = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
+            if (user == null)
+            {
+                throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {userId})");
+            }
+
+            return this.Ok(user.DeserializeTeam());
+        }
+
+        /// <summary>
+        ///     Sets user team.
+        /// </summary>
+        [HttpPost("{userId}/team")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [SwaggerResponse(200, type: typeof(Team))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
+        [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserTeam)]
+        [Authorize(Policy = UserAttribute.AdminFeature)]
+        public async Task<IActionResult> SetTeamAsync(string userId, [FromBody] Team team)
+        {
+            var internalUser = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
+            if (internalUser == null)
+            {
+                throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {userId})");
+            }
+
+            var user = this.mapper.SafeMap<StewardUser>(internalUser);
+            user.Team = team;
+            await this.stewardUserProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
+
+            return await this.GetTeamAsync(userId).ConfigureAwait(true);
         }
     }
 }

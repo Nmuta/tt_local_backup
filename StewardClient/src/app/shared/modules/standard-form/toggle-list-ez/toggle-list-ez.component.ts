@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -42,7 +43,7 @@ export class ToggleListEzComponent extends BaseComponent implements OnChanges {
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges) {
+  public ngOnChanges(_changes: BetterSimpleChanges<ToggleListEzComponent>) {
     this.formControl.valueChanges.subscribe(v => {
       if (isEqual(v, this.contract.initialModel)) {
         this.formControl.reset();

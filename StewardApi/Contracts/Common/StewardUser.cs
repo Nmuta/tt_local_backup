@@ -34,8 +34,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public StewardError Error { get; set; }
 
         /// <summary>
-        ///     Gets or sets the attributes.
+        ///     Gets or sets the authorization attributes.
         /// </summary>
         public IEnumerable<AuthorizationAttribute> Attributes { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the team.
+        /// </summary>
+        public Team Team { get; set; }
     }
 }

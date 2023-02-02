@@ -4,8 +4,10 @@ import { HttpError } from '@microsoft/signalr';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
+import { GetLspEndpointsPath } from '@services/settings/settings';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
+import { includes } from 'lodash';
 import { EMPTY, MonoTypeOperatorFunction, Observable, throwError } from 'rxjs';
 import { catchError, first, switchMap, tap } from 'rxjs/operators';
 
@@ -42,7 +44,10 @@ export class ReauthService {
             self.logger.log([LogTopic.AuthInterception], `[${requestId}] [rechecking auth]`, url);
             self.logger.warn([LogTopic.Auth], 'Authentication error encountered. Retrying.');
 
-            self.store.dispatch(new RecheckAuth()).subscribe();
+            // We DO NOT want to re-request lsp endpoints during reauth if that endpoint was the one that failed with a 401
+            // Instead we should rely on this pipeline to retry to request after token refresh
+            const isLspEndpointReq = includes(url, GetLspEndpointsPath);
+            self.store.dispatch(new RecheckAuth(!isLspEndpointReq));
             return UserState.latestValidProfile$(self.profile$).pipe(
               first(),
               tap(() =>

@@ -47,7 +47,8 @@ describe('JsonTableResultsComponent', () => {
       };
 
       it('Should reset the component results', () => {
-        component.ngOnChanges(changes);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>changes);
 
         expect(component.resultKeys).not.toBeUndefined();
         expect(component.downloadResults).not.toBeUndefined();
@@ -71,7 +72,8 @@ describe('JsonTableResultsComponent', () => {
       });
 
       it('Should reset the component results', () => {
-        component.ngOnChanges(changes);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>changes);
 
         expect(component.resultKeys).not.toBeUndefined();
         expect(component.downloadResults).not.toBeUndefined();
@@ -95,7 +97,8 @@ describe('JsonTableResultsComponent', () => {
       });
 
       it('Should set the component variables to display results correctly', () => {
-        component.ngOnChanges(changes);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>changes);
 
         expect(component.resultKeys).not.toBeUndefined();
         expect(component.downloadResults).not.toBeUndefined();
