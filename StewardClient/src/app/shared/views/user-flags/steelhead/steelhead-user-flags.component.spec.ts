@@ -53,7 +53,8 @@ describe('SteelheadUserFlagsComponent', () => {
       });
 
       it('should not call getFlagsByXuid$', () => {
-        component.ngOnChanges({});
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>{});
 
         expect(component.getFlagsByXuid$).not.toHaveBeenCalledTimes(1);
       });
@@ -69,7 +70,8 @@ describe('SteelheadUserFlagsComponent', () => {
       });
 
       it('should call getFlagsByXuid$', () => {
-        component.ngOnChanges({});
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>{});
 
         expect(component.getFlagsByXuid$).toHaveBeenCalledTimes(1);
       });
@@ -89,7 +91,8 @@ describe('SteelheadUserFlagsComponent', () => {
         });
 
         it('should set currentFlags', () => {
-          component.ngOnChanges({});
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component.ngOnChanges(<any>{});
 
           expect(component.currentFlags).toEqual(flags);
           expect(component.formControls.isVip.value).toEqual(flags.isVip);
@@ -109,7 +112,8 @@ describe('SteelheadUserFlagsComponent', () => {
         });
 
         it('should set error', () => {
-          component.ngOnChanges({});
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component.ngOnChanges(<any>{});
 
           expect(component.currentFlags).toBeUndefined();
           expect(component.getFlagsActionMonitor.status.error).toEqual(error);
