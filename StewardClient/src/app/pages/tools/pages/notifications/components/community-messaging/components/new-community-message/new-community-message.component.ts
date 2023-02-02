@@ -80,7 +80,7 @@ export class NewCommunityMessageComponent implements OnInit, OnChanges {
 
   /** Lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.usingPlayerIdentities) {
+    if (changes.isUsingPlayerIdentities) {
       this.activePermAttribute = this.isUsingPlayerIdentities
         ? PermAttributeName.MessagePlayer
         : PermAttributeName.MessageGroup;
