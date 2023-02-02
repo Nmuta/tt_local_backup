@@ -161,7 +161,9 @@ export abstract class GiftBasketBaseComponent<
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: BetterSimpleChanges<GiftBasketBaseComponent<IdentityT, MasterInventoryT>>): void {
+  public ngOnChanges(
+    changes: BetterSimpleChanges<GiftBasketBaseComponent<IdentityT, MasterInventoryT>>,
+  ): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
         ? PermAttributeName.GiftPlayer

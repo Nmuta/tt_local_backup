@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '6e026fe0-9624-402f-a7f8-c992c76748e5',
+      shortText: 'Add TypeScript typings around change detection',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.Messaging },
       uuid: 'aa9a2be8-f513-45db-804c-43f12e05f1f5',
       shortText: 'Fix invalid permissions displaying as valid',

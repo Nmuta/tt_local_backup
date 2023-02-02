@@ -1,12 +1,5 @@
 import BigNumber from 'bignumber.js';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloMasterInventory } from '@models/apollo';
 import { IdentityResultUnion } from '@models/identity-query.model';
@@ -130,7 +123,11 @@ export abstract class PlayerInventoryBaseComponent<
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: BetterSimpleChanges<PlayerInventoryBaseComponent<PlayerInventoryType, IdentityResultType>>): void {
+  public ngOnChanges(
+    changes: BetterSimpleChanges<
+      PlayerInventoryBaseComponent<PlayerInventoryType, IdentityResultType>
+    >,
+  ): void {
     if (changes['identity']) {
       if (changes.identity.currentValue !== changes.identity.previousValue) {
         this.identity$.next(this.identity);
