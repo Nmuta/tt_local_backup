@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import {
   generateLeaderboardMetadataString,
   LeaderboardMetadataAndQuery,
@@ -19,7 +20,7 @@ export class LeaderboardValidationsComponent implements OnChanges {
   public matCardSubtitle = this.matCardSubtitleDefault;
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<LeaderboardValidationsComponent>): void {
     if (!!changes.leaderboard && !!this.leaderboard?.query) {
       this.matCardSubtitle = !!this.leaderboard?.metadata
         ? generateLeaderboardMetadataString(this.leaderboard.metadata)

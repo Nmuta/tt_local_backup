@@ -5,7 +5,6 @@ import {
   Input,
   OnInit,
   OnChanges,
-  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommunityMessage } from '@models/community-message';
@@ -14,6 +13,7 @@ import { DateTime } from 'luxon';
 import { DeviceType, GameTitle } from '@models/enums';
 import { DatetimeRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/datetime-range-picker.component';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 /** Outputs a new community message. */
 @Component({
@@ -79,7 +79,7 @@ export class NewCommunityMessageComponent implements OnInit, OnChanges {
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<NewCommunityMessageComponent>): void {
     if (changes.isUsingPlayerIdentities) {
       this.activePermAttribute = this.isUsingPlayerIdentities
         ? PermAttributeName.MessagePlayer

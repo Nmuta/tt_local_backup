@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -10,6 +10,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { chain, clone, isEqual, keys } from 'lodash';
 
 export type ToggleListOptions = Record<string, boolean>;
@@ -44,7 +45,7 @@ export class ToggleListComponent implements OnChanges, ControlValueAccessor, Val
   public formGroup = new FormGroup(this.formControls);
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: BetterSimpleChanges<ToggleListComponent>): void {
     const initialKeys = keys(this.initial);
     const initialKeysLookup = new Set(initialKeys);
     const lengthsMatch = initialKeys.length == this.order.length;

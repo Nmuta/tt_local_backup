@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitle, UserRole } from '@models/enums';
@@ -27,6 +27,7 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
 import { SteelheadGift } from '@models/steelhead';
 import { WoodstockGift } from '@models/woodstock';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type InventoryItemGroup = {
   category: string;
@@ -160,7 +161,7 @@ export abstract class GiftBasketBaseComponent<
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<GiftBasketBaseComponent<IdentityT, MasterInventoryT>>): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
         ? PermAttributeName.GiftPlayer

@@ -5,7 +5,6 @@ import {
   OnChanges,
   OnInit,
   QueryList,
-  SimpleChanges,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
@@ -16,6 +15,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { BasicPlayerActionResult } from '@models/basic-player';
 import { BasicPlayerList } from '@models/basic-player-list';
 import { GameTitle } from '@models/enums';
@@ -150,7 +150,7 @@ export class ListUsersInGroupComponent
   }
 
   /** Lifecycle hook */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<ListUsersInGroupComponent>): void {
     if (!this.service) {
       throw new Error('No service contract was provided for ListUsersInGroupComponent');
     }

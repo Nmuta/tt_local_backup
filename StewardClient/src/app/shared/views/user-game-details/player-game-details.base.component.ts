@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { PlayerGameDetails } from '@models/player-game-details.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export interface PlayerGameDetailsContract {
   gameTitle: GameTitle;
@@ -35,7 +36,7 @@ export class PlayerGameDetailsBaseComponent extends BaseComponent implements OnC
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: BetterSimpleChanges<PlayerGameDetailsBaseComponent>): void {
     if (!this.identity?.xuid) {
       return;
     }

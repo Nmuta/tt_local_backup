@@ -5,7 +5,6 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -19,6 +18,7 @@ import { isEmpty, sortBy } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap, map } from 'rxjs/operators';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type AcceptableInventoryProfileTypes =
   | WoodstockPlayerInventoryProfile
@@ -100,7 +100,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<PlayerInventoryProfilesPickerBaseComponent<IdentityResultType, InventoryProfileType>>): void {
     if (changes['identity']) {
       this.identity$.next(this.identity);
     }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import {
   HomeTileInfo,
@@ -7,6 +7,7 @@ import {
   NavbarTool,
 } from '@environments/environment';
 import { HomeTileInfoForNav } from '@helpers/external-links';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
@@ -53,7 +54,7 @@ export class ToolsAppHomeTileGridComponent extends BaseComponent implements OnCh
   }
 
   /** Initialization hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<ToolsAppHomeTileGridComponent>): void {
     if (!changes.tiles) {
       return;
     }
