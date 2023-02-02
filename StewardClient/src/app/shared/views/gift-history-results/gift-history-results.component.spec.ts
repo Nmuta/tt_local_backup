@@ -155,7 +155,8 @@ describe('GiftHistoryResultsComponent', () => {
               .and.returnValue(of(validGiftHistories));
           });
           it('should set gift histories to returned list.', () => {
-            component.ngOnChanges(null);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            component.ngOnChanges(<any>null);
             expect(component.giftHistoryList).toEqual(validGiftHistories);
           });
         });
@@ -167,7 +168,8 @@ describe('GiftHistoryResultsComponent', () => {
               .and.returnValue(throwError(errorMessage));
           });
           it('should handle error response.', () => {
-            component.ngOnChanges(null);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            component.ngOnChanges(<any>null);
             expect(component.giftHistoryList).toBeUndefined();
             expect(component.getHistoryMonitor.status.error).toEqual(errorMessage);
           });
@@ -190,7 +192,8 @@ describe('GiftHistoryResultsComponent', () => {
               .and.returnValue(of(validGiftHistories));
           });
           it('should set gift histories to returned list.', () => {
-            component.ngOnChanges(null);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            component.ngOnChanges(<any>null);
             expect(component.giftHistoryList).toEqual(validGiftHistories);
           });
         });
@@ -202,7 +205,8 @@ describe('GiftHistoryResultsComponent', () => {
               .and.returnValue(throwError(errorMessage));
           });
           it('should handle error response.', () => {
-            component.ngOnChanges(null);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            component.ngOnChanges(<any>null);
             expect(component.giftHistoryList).toBeUndefined();
             expect(component.getHistoryMonitor.status.error).toEqual(errorMessage);
           });

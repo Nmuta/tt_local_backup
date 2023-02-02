@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardUserInternal"/> class.
         /// </summary>
-        public StewardUserInternal(string userObjectId, string name, string emailAddress, string role, string attributes)
+        public StewardUserInternal(string userObjectId, string name, string emailAddress, string role, string attributes, string team)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
@@ -32,6 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             this.EmailAddress = emailAddress;
             this.Role = role;
             this.Attributes = attributes;
+            this.Team = team;
         }
 
         /// <summary>
@@ -59,14 +60,37 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// </summary>
         public string Attributes { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the attributes.
+        /// </summary>
+        public string Team { get; set; }
+
+        /// <summary>
+        ///     Gets the autorization attributes as an object.
+        /// </summary>
+        /// <returns>List of <see cref="AuthorizationAttribute"/>.</returns>
         public IEnumerable<AuthorizationAttribute> AuthorizationAttributes()
         {
-            if (string.IsNullOrEmpty(this.Attributes) || this.Attributes == "null")
+            if (string.IsNullOrEmpty(this.Attributes) || "null".Equals(this.Attributes, System.StringComparison.OrdinalIgnoreCase))
             {
                 return System.Array.Empty<AuthorizationAttribute>();
             }
 
             return JsonConvert.DeserializeObject<IEnumerable<AuthorizationAttribute>>(this.Attributes);
+        }
+
+        /// <summary>
+        ///     Gets the team as an object.
+        /// </summary>
+        /// <returns><see cref="Team"/>.</returns>
+        public Team DeserializeTeam()
+        {
+            if (string.IsNullOrEmpty(this.Team) || "null".Equals(this.Team, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return new Team(); // Empty team
+            }
+
+            return JsonConvert.DeserializeObject<Team>(this.Team);
         }
     }
 }

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { ApolloUserFlags } from '@models/apollo';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { OldPermissionsService, OldPermissionServiceTool } from '@services/old-permissions';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type UserFlagsUnion =
   | WoodstockUserFlags
@@ -72,7 +73,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public abstract putFlagsByXuid$(xuid: BigNumber): Observable<T>;
 
   /** Lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: BetterSimpleChanges<UserFlagsBaseComponent<T>>): void {
     // Ignore permission service if disabled input is set to true
     this.disabled =
       this.disabled ||

@@ -21,6 +21,7 @@ export * from './tools/messaging-motd';
 export * from './tools/obligations';
 export * from './tools/player-details';
 export * from './tools/racers-cup';
+export * from './tools/builders-cup-calendar';
 export * from './tools/steward-user-history';
 export * from './tools/ugc-details';
 export * from './tools/ugc-search';

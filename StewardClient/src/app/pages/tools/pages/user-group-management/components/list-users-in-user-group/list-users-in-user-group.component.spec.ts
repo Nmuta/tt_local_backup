@@ -159,7 +159,8 @@ describe('ListUsersInGroupComponent', () => {
 
       it('should throw error', () => {
         try {
-          component.ngOnChanges({});
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component.ngOnChanges(<any>{});
 
           expect(false).toBeTruthy();
         } catch (e) {
@@ -175,7 +176,8 @@ describe('ListUsersInGroupComponent', () => {
       // Provided by default in the test component
       it('should not throw error', () => {
         try {
-          component.ngOnChanges({});
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component.ngOnChanges(<any>{});
 
           expect(true).toBeTruthy();
         } catch (e) {

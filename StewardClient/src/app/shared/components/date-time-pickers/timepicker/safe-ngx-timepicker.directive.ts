@@ -1,4 +1,5 @@
-import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, Input, OnChanges } from '@angular/core';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { DateTime } from 'luxon';
 import { NgxMaterialTimepickerComponent, TimepickerDirective } from 'ngx-material-timepicker';
 
@@ -40,7 +41,7 @@ export class SafeNgxTimepickerDirective extends TimepickerDirective implements O
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<SafeNgxTimepickerDirective>): void {
     if (this.fallbackValue) {
       return;
     }

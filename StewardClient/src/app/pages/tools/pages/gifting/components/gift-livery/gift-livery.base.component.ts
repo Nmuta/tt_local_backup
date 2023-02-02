@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -25,6 +25,7 @@ import { HCI } from '@environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
@@ -64,7 +65,7 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
   ];
   public giftResponse: GiftResponse<BigNumber>[];
 
-  public activePermAttribute = PermAttributeName.GiftPlayerLivery;
+  public activePermAttribute = PermAttributeName.GiftPlayer;
 
   /** Gets the livery from form controls. */
   public get livery(): PlayerUgcItem {
@@ -137,11 +138,11 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<GiftLiveryBaseComponent<IdentityT>>): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
-        ? PermAttributeName.GiftPlayerLivery
-        : PermAttributeName.GiftGroupLivery;
+        ? PermAttributeName.GiftPlayer
+        : PermAttributeName.GiftGroup;
     }
   }
 

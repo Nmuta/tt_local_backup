@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Azure.KeyVault.Models;
+using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10;
@@ -159,7 +160,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Sets user permission attributes.
         /// </summary>
         [HttpPost("user/{userId}")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
         [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttribute>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
@@ -167,6 +168,35 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] IEnumerable<AuthorizationAttribute> attributes)
         {
+            if (this.HttpContext.User.IsInRole(UserRole.GeneralUser))
+            {
+                // If the user is a general user, they must be a team lead
+                var objectId = this.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimConstants.ObjectId);
+
+                if (objectId == null)
+                {
+                    throw new BadRequestStewardException("ObjectId Claim must be provided");
+                }
+
+                var thisUser = await this.userProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
+                if (thisUser == null)
+                {
+                    throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {objectId.Value})");
+                }
+
+                if (!thisUser.DeserializeTeam().Members.Contains(new Guid(userId)))
+                {
+                    throw new BadRequestStewardException("Team lead cannot assign permissions to member not in their team.");
+                }
+
+                // Also verify the current user has the attributes they are attempting to assign to another user
+                var matches = thisUser.AuthorizationAttributes().SelectMany(a => attributes.Where(b => a.Matches(b)));
+                if (matches.Count() != attributes.Count())
+                {
+                    throw new BadRequestStewardException("Team lead cannot assign permissions they do not have to a team member.");
+                }
+            }
+
             // Throw if any attributes contain an null or empty string attribute name
             attributes.ForEach(value =>
             {

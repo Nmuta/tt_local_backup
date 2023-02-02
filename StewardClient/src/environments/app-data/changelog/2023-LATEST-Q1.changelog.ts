@@ -8,6 +8,31 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '6e026fe0-9624-402f-a7f8-c992c76748e5',
+      shortText: 'Add TypeScript typings around change detection',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '8daf979f-0f6d-4228-bd79-650b64e29686',
+      shortText: 'Merge gift livery perms into basic gift perms',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '611e27c6-025c-44f9-a068-bd6d534cc2e0',
+      shortText: 'Restrict tools home page from users without a role',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.Messaging },
+      uuid: 'aa9a2be8-f513-45db-804c-43f12e05f1f5',
+      shortText: 'Fix invalid permissions displaying as valid',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BuildersCupCalendar },
+      uuid: 'e84c76da-cbaa-43aa-8716-aa52079efb2a',
+      shortText: "Add calendar tool that displays Builder's Cup featured Tours",
+    },
+    {
       tag: {
         title: [GameTitle.FH5, GameTitle.FH4],
         tool: [NavbarTool.UserDetails],
