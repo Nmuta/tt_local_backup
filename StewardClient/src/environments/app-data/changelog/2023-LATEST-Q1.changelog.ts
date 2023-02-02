@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '611e27c6-025c-44f9-a068-bd6d534cc2e0',
+      shortText: 'Restrict tools home page from users without a role',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.Messaging },
       uuid: 'aa9a2be8-f513-45db-804c-43f12e05f1f5',
       shortText: 'Fix invalid permissions displaying as valid',
