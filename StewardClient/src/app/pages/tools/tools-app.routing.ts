@@ -6,6 +6,7 @@ import { AuthGuard } from 'app/route-guards/auth.guard';
 import { ToolsAppComponent } from './tools-app.component';
 import { ToolsAppHomeComponent } from './pages/home/home.component';
 import {
+  CommonAccessLevels,
   environment,
   HomeTileInfo,
   isHomeTileInfoExternal,
@@ -19,7 +20,7 @@ import { AuthV2Guard } from 'app/route-guards/auth-v2.guard';
 const routes: Routes = [
   {
     path: 'tools',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, FindUserRoleGuard(CommonAccessLevels.Everyone)],
     canActivateChild: [AuthGuard],
     component: ToolsAppComponent,
     children: [
