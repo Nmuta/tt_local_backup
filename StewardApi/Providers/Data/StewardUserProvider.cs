@@ -55,11 +55,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         {
             user.ShouldNotBeNull(nameof(user));
 
-            await this.CreateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes)).ConfigureAwait(false);
+            await this.CreateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes), JsonConvert.SerializeObject(user.Team)).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task CreateStewardUserAsync(string id, string name, string email, string role, string attributes)
+        public async Task CreateStewardUserAsync(string id, string name, string email, string role, string attributes, string team)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             try
             {
-                var stewardUser = new StewardUserInternal(id, name, email, role, attributes);
+                var stewardUser = new StewardUserInternal(id, name, email, role, attributes, team);
 
                 var insertOrReplaceOperation = TableOperation.InsertOrReplace(stewardUser);
 
@@ -88,11 +88,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         {
             user.ShouldNotBeNull(nameof(user));
 
-            await this.UpdateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes)).ConfigureAwait(false);
+            await this.UpdateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role, JsonConvert.SerializeObject(user.Attributes), JsonConvert.SerializeObject(user.Team)).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task UpdateStewardUserAsync(string id, string name, string email, string role, string attributes)
+        public async Task UpdateStewardUserAsync(string id, string name, string email, string role, string attributes, string team)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
@@ -104,6 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 result.EmailAddress = email;
                 result.Role = role;
                 result.Attributes = attributes;
+                result.Team = team;
 
                 var replaceOperation = TableOperation.Replace(result);
 
@@ -160,12 +161,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 if (name != user.Name || email != user.EmailAddress || role != user.Role)
                 {
-                    await this.UpdateStewardUserAsync(id, name, email, role, user.Attributes).ConfigureAwait(false);
+                    await this.UpdateStewardUserAsync(id, name, email, role, user.Attributes, user.Team).ConfigureAwait(false);
                 }
             }
-            catch
+            catch (NotFoundStewardException _)
             {
-                await this.CreateStewardUserAsync(id, name, email, role, string.Empty).ConfigureAwait(false);
+                await this.CreateStewardUserAsync(id, name, email, role, string.Empty, string.Empty).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                throw new UnknownFailureStewardException("Could not validate Steward User", e);
             }
         }
 
