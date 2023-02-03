@@ -1,0 +1,151 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Manage PlayFab Builds</mat-card-title>
+    <mat-card-subtitle>Add and remove locks from PlayFab builds</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="filters">
+      <form [formGroup]="filterFormGroup">
+        <mat-form-field>
+          <mat-label>Filter Builds</mat-label>
+          <input
+            matInput
+            [formControl]="filterFormControls.nameOrId"
+            [disabled]="getPlayFabBuildsAndLocksMonitor.isActive"
+          />
+          <button
+            matSuffix
+            mat-icon-button
+            clickStop
+            (click)="filterFormControls.nameOrId.setValue(null)"
+            matTooltip="Clear text filter"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <div>
+          <mat-button-toggle-group [formControl]="filterFormControls.lockStatus">
+            <mat-button-toggle [value]="LockFilterType.All">All</mat-button-toggle>
+            <mat-button-toggle [value]="LockFilterType.Locked">Locked</mat-button-toggle>
+            <mat-button-toggle [value]="LockFilterType.Unlocked">Unlocked</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </form>
+    </div>
+    <div [hidden]="buildsTable.data?.length <= 0">
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons>
+      </mat-paginator>
+    </div>
+    <ng-container *waitForMonitor="getPlayFabBuildsAndLocksMonitor">
+      <table mat-table [dataSource]="buildsTable">
+        <!-- Is Locked Column -->
+        <ng-container matColumnDef="isLocked">
+          <th mat-header-cell *matHeaderCellDef>Is Locked</th>
+          <td mat-cell *matCellDef="let item">
+            <mat-icon *ngIf="!!item.lock">lock</mat-icon>
+          </td>
+        </ng-container>
+
+        <!-- Build Details Column -->
+        <ng-container matColumnDef="buildDetails">
+          <th mat-header-cell *matHeaderCellDef>Build Details</th>
+          <td mat-cell *matCellDef="let item">
+            <table class="info-table">
+              <tr>
+                <th>Name</th>
+                <td>
+                  {{ item.name }}
+                </td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>
+                  {{ item.id }}
+                </td>
+              </tr>
+            </table>
+          </td></ng-container
+        >
+
+        <!-- Lock Details Column -->
+        <ng-container matColumnDef="lockDetails">
+          <th mat-header-cell *matHeaderCellDef>Lock Details</th>
+          <td mat-cell *matCellDef="let item">
+            <table *ngIf="!!item.lock" class="info-table">
+              <tr>
+                <th>Locked By:</th>
+                <td>
+                  <steward-user [objectId]="item.lock.userId"></steward-user>
+                </td>
+              </tr>
+              <tr>
+                <th>Date:</th>
+                <td>
+                  {{ item.lock.dateCreatedUtc | utcDate: 'short' }}
+                </td>
+              </tr>
+              <tr>
+                <th>Reason:</th>
+                <td>
+                  {{ item.lock.reason }}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let item">
+            <ng-container
+              *ngTemplateOutlet="
+                !!item.lock ? unlockBuildTemplate : lockBuildTemplate;
+                context: { $implicit: item }
+              "
+            ></ng-container>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="buildsTableColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: buildsTableColumns"
+          [class.is-locked]="!!row.lock"
+        ></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #lockBuildTemplate let-item>
+  <button
+    mat-raised-button
+    color="accent"
+    clickStop
+    stateManager
+    [permissionAttribute]="playFabBuildsPermAttribute"
+    [permissionTitle]="service.gameTitle"
+    (click)="openBuildLockChangeDialog(item, true)"
+  >
+    Lock Build
+    <mat-icon>lock</mat-icon>
+  </button>
+</ng-template>
+
+<ng-template #unlockBuildTemplate let-item>
+  <button
+    mat-raised-button
+    color="warn"
+    clickStop
+    stateManager
+    [monitor]="item.monitor"
+    [permissionAttribute]="playFabBuildsPermAttribute"
+    [permissionTitle]="service.gameTitle"
+    (click)="openBuildLockChangeDialog(item, false)"
+  >
+    Unlock Build
+    <mat-icon>lock_open</mat-icon>
+  </button>
+</ng-template>

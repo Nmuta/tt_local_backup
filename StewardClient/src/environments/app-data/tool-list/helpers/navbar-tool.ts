@@ -19,6 +19,7 @@ export enum NavbarTool {
   Sprinklr = 'sprinklr',
   Pegasus = 'pegasus',
   WelcomeCenterCalendar = 'welcome-center-calendar',
+  PlayFab = 'playfab',
 
   AdminPagesSelector = 'admin-selector',
 

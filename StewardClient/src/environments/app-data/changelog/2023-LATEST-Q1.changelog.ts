@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'cd9aa261-4e82-4b8d-8181-22a120c28e82',
+      shortText: 'Initial MVP effort for new PlayFab build management tool',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '6e026fe0-9624-402f-a7f8-c992c76748e5',
       shortText: 'Add TypeScript typings around change detection',
     },
