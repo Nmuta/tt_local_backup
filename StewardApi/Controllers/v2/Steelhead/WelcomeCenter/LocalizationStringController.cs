@@ -24,7 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
     ///     Controller for managing localization strings in Pegasus.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/localization")]
-    [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [ApiVersion("2.0")]
