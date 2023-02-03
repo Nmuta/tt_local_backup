@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         private readonly IPlayFabBuildLocksProvider playFabBuildLocksProvider;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BuildsController"/> class for Steelhead.
+        ///     Initializes a new instance of the <see cref="BuildsController"/> class for Woodstock.
         /// </summary>
         public BuildsController(IWoodstockPlayFabService playFabService, IPlayFabBuildLocksProvider playFabBuildLocksProvider)
         {
@@ -80,11 +80,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             try
             {
                 var builds = await this.playFabService.GetBuildsAsync(parsedPlayFabEnvironment).ConfigureAwait(true);
+
                 return this.Ok(builds);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to get multiplayer service builds from PlayFab.", ex);
+                throw new UnknownFailureStewardException($"Failed to get multiplayer service builds from PlayFab. (playFabEnvironment: {playFabEnvironment})", ex);
             }
         }
 
@@ -107,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to get multiplayer service builds from PlayFab.", ex);
+                throw new UnknownFailureStewardException($"Failed to get multiplayer service build from PlayFab. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})", ex);
             }
         }
 
@@ -129,7 +130,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to get build lock from database.", ex);
+                throw new UnknownFailureStewardException($"Failed to get build locks from database. (playFabEnvironment: {playFabEnvironment})", ex);
             }
         }
 
@@ -140,6 +141,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
         [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> AddNewPlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest buildLockRequest)
         {
@@ -178,7 +180,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to create new build lock. (buildId: {buildId})", ex);
+                throw new UnknownFailureStewardException($"Failed to create new build lock. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})", ex);
             }
         }
 
@@ -186,9 +188,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         ///     Updates PlayFab build lock in the database.
         /// </summary>
         [HttpPut("{buildId}/lock")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabBuildLock)]
         [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> UpdatePlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest updatedBuildLock)
         {
@@ -207,7 +210,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to update build lock. (buildId: {buildId})", ex);
+                throw new UnknownFailureStewardException($"Failed to update build lock. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})", ex);
             }
         }
 
@@ -215,9 +218,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         ///     Deletes PlayFab build lock in the database.
         /// </summary>
         [HttpDelete("{buildId}/lock")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.PlayFabBuildLock)]
         [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> DeletePlayFabBuildLock(string playFabEnvironment, string buildId)
         {
@@ -235,7 +239,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to delete build lock. (buildId: {buildId})", ex);
+                throw new UnknownFailureStewardException($"Failed to delete build lock.(playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})", ex);
             }
         }
 
@@ -247,7 +251,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             var build = await this.playFabService.GetBuildAsync(buildId, environment).ConfigureAwait(true);
             if (build == null)
             {
-                throw new InvalidArgumentsStewardException($"The provided build id does not exist in the specific PlayFab environment. (buildId: {buildId}) (playFabEnvironment: {environment})");
+                throw new InvalidArgumentsStewardException($"The provided build id does not exist in the specific PlayFab environment. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})");
             }
 
             return build;
