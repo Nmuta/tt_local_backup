@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public string SubCategory { get; set; }
 
         [XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string id { get; set; }
+        public Guid id { get; set; }
     }
 
     [SerializableAttribute]

@@ -1,5 +1,10 @@
 ﻿#pragma warning disable SA1600 // ElementsMustBeDocumented
 
+using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using SteelheadLiveOpsContent;
+
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
     public class LocalizedStringBridge
@@ -8,10 +13,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 
         public LocTextBridge LocString { get; set; }
 
-        public string Category { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public LocCategory Category { get; set; }
 
-        public string SubCategory { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public LocSubCategory SubCategory { get; set; }
 
-        public string id { get; set; }
+        public Guid Id { get; set; }
     }
 }

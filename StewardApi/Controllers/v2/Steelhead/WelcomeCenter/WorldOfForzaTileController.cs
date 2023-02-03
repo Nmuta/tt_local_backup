@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.WelcomeCenter)]
-        [Authorize(Policy = UserAttribute.UpdateMessageOfTheDay)]
+        [Authorize(Policy = UserAttribute.UpdateWelcomeCenterTiles)]
         public async Task<IActionResult> EditAndSubmitWorldOfForza(string id, [FromBody] WofBridge wofTileBridge)
         {
             if (!Guid.TryParse(id, out var parsedId))

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
+using SteelheadLiveOpsContent;
 using StewardGitApi;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -42,39 +44,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         }
 
         /// <summary>
-        ///     Gets localization string categories.
-        /// </summary>
-        [HttpGet("categories")]
-        [SwaggerResponse(200, type: typeof(List<string>))]
-        [LogTagDependency(DependencyLogTags.Pegasus)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetLocalizationCategories()
-        {
-            var categories = await this.steelheadPegasusService.GetLocalizationCategoriesAsync().ConfigureAwait(true);
-
-            return this.Ok(categories);
-        }
-
-        /// <summary>
         ///     Submits new localized strings to Pegasus.
         /// </summary>
-        [HttpPost("{path}")]
+        [HttpPost("{category}")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(Contracts.Git.PullRequest))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> WriteLocalizedStringsToPegasus(string path, [FromBody] IEnumerable<LocalizedStringBridge> localizedStringBridge)
+        [Authorize(Policy = UserAttribute.AddLocalizedString)]
+        public async Task<IActionResult> WriteLocalizedStringsToPegasus(LocCategory category, [FromBody] IEnumerable<LocalizedStringBridge> localizedStringBridge)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new BadRequestStewardException($"Localized string path is null or empty: {path}");
-            }
-
-            path = "/Source/Localization/Localization-MOTD.xml";
-            CommitRefProxy change = await this.steelheadPegasusService.WriteLocalizedStringsToPegasusAsync(path, localizedStringBridge).ConfigureAwait(true);
+            CommitRefProxy change = await this.steelheadPegasusService.WriteLocalizedStringsToPegasusAsync(category, localizedStringBridge).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
-            _ = await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
+            await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
 
             var user = this.User.UserClaims();
             var pullRequestTitle = $"Adds new localized strings to steward. Author: {user.EmailAddress}";
