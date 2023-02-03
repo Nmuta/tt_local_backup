@@ -33,7 +33,7 @@ import { BuildLockChangeDialogComponent } from './components/build-lock-change-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
-/** Module for displaying the available apps, or a login button. */
+/** Module for the PlayFab tool. */
 @NgModule({
   declarations: [
     PlayFabComponent,

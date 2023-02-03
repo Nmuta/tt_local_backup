@@ -5,4 +5,5 @@ export class RouteMemoryModel {
   public carDetails: string;
   public gifting: string;
   public playfab: string;
+  public buildersCupCalendar: string;
 }

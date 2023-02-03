@@ -41,7 +41,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<StewardUserInternal, StewardUser>()
                 .ForMember(des => des.Attributes, opt =>
-                    opt.MapFrom(src => src.AuthorizationAttributes()));
+                    opt.MapFrom(src => src.AuthorizationAttributes()))
+                .ForMember(des => des.Team, opt =>
+                    opt.MapFrom(src => src.DeserializeTeam()));
         }
     }
 }

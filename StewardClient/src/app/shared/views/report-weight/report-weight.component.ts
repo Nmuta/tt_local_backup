@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -12,6 +12,7 @@ import { Store } from '@ngxs/store';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export interface ReportWeightServiceContract {
   /** Game title the service contract is associated with. */
@@ -88,7 +89,7 @@ export class ReportWeightComponent extends BaseComponent implements OnInit, OnCh
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<ReportWeightComponent>): void {
     if (!!changes.xuid) {
       this.getMonitor = this.getMonitor.repeat();
       this.service

@@ -28,7 +28,10 @@ export class SetNoUserProfile {
 /** RequestAccessToken action declaration. */
 export class RequestAccessToken {
   public static readonly type = '[User] Request Access Token';
-  constructor(public readonly forceTokenRefresh: boolean = false) {
+  constructor(
+    public readonly forceTokenRefresh: boolean = false,
+    public readonly refreshLspEndpoints: boolean = true,
+  ) {
     // Empty
   }
 }
@@ -52,7 +55,7 @@ export class LogoutUser {
 /** Meta action: Clear auth and grab it again. */
 export class RecheckAuth {
   public static readonly type = '[User] Recheck Auth';
-  constructor() {
+  constructor(public readonly refreshLspEndpoints: boolean = true) {
     // Empty
   }
 }

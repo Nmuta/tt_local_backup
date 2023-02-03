@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { isArray } from 'lodash';
 
 type TemplateName = 'array' | 'unknown';
@@ -21,7 +22,7 @@ export class JsonDumpComponent implements OnChanges {
   public template: TemplateName = 'unknown';
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges) {
+  public ngOnChanges(_changes: BetterSimpleChanges<JsonDumpComponent>) {
     this.template = this.determineTemplate();
   }
 

@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             }
             catch
             {
-                context.Fail(new AttributeFailureReason((int)HttpStatusCode.Unauthorized, this, $"Invalid user claim."));
+                context.Fail(new AttributeFailureReason((int)HttpStatusCode.Forbidden, this, $"Invalid user claim."));
                 return Task.CompletedTask;
             }
 
@@ -105,7 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
             }
 
             // Fail the context so any future policies can fail fast
-            context.Fail(new AttributeFailureReason((int)HttpStatusCode.Unused, this, $"Policy check failed."));
+            context.Fail(new AttributeFailureReason((int)HttpStatusCode.Forbidden, this, $"Policy check failed."));
             return Task.CompletedTask;
 
             bool Equals(string str, string attr)

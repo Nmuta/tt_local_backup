@@ -96,13 +96,13 @@ export class UserState {
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(RecheckAuth, { cancelUncompleted: true })
-  public recheckAuth$(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
+  public recheckAuth$(ctx: StateContext<UserStateModel>, action: RecheckAuth): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] recheckAuth`);
     const resetUserProfile$ = ctx.dispatch(new ResetUserProfile());
     const requestAccessToken$ = this.actions$.pipe(
       ofActionSuccessful(ResetAccessToken),
       first(),
-      switchMap(() => ctx.dispatch(new RequestAccessToken(true))),
+      switchMap(() => ctx.dispatch(new RequestAccessToken(true, action.refreshLspEndpoints))),
     );
     return concat(resetUserProfile$, requestAccessToken$);
   }
@@ -206,7 +206,13 @@ export class UserState {
             `[user.state] [requestAccessToken] [acquireTokenSilent] has access token`,
           );
           ctx.patchState({ accessToken: clone(data.accessToken) });
-          return ctx.dispatch([new GetUser(), new RefreshEndpointKeys()]);
+
+          const actions = [new GetUser()];
+          if (action.refreshLspEndpoints) {
+            actions.push(new RefreshEndpointKeys());
+          }
+
+          return ctx.dispatch(actions);
         }
       }),
       catchError(e => {

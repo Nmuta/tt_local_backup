@@ -143,7 +143,8 @@ describe('LeaderboardStatsComponent', () => {
       });
 
       it('should request getLeaderboardScores$', () => {
-        component.ngOnChanges(changesWithQuery);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>changesWithQuery);
 
         expect(mockService.getLeaderboardScores$).toHaveBeenCalled();
       });
@@ -162,7 +163,8 @@ describe('LeaderboardStatsComponent', () => {
       };
 
       it('should not request getLeaderboardScores$', () => {
-        component.ngOnChanges(changesWithoutQuery);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.ngOnChanges(<any>changesWithoutQuery);
 
         expect(mockService.getLeaderboardScores$).not.toHaveBeenCalled();
       });

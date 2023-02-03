@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
@@ -25,6 +17,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { makeItemList } from './helpers/make-item-list';
 import { NEGATIVE_ONE } from '@helpers/bignumbers';
 import { DateTime } from 'luxon';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type GiftHistoryResultsServiceContract = {
   getGiftHistoryByPlayer$: () => Observable<GiftHistoryResultUnion[]>;
@@ -119,7 +112,7 @@ export class GiftHistoryResultsComponent extends BaseComponent implements OnChan
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: BetterSimpleChanges<GiftHistoryResultsComponent>): void {
     this.getGiftHistory$.next();
   }
 

@@ -256,6 +256,11 @@
         public const string SteelheadWorldOfForzaPath = "Git:SteelheadWorldOfForzaPath";
 
         /// <summary>
+        ///     The Steelhead format pipeline build definitoin key.
+        /// </summary>
+        public const string SteelheadFormatPipelineBuildDefinition = "Git:SteelheadFormatPipelineBuildDefinition";
+
+        /// <summary>
         ///    The Woodstock PlayFab dev title id.
         /// </summary>
         public const string WoodstockPlayFabDevTitleId = "WoodstockEnvironment:PlayFab:Dev:TitleId";

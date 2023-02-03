@@ -21,6 +21,7 @@ import {
   playerInfoTile,
   powerBIExternalDropdownTile,
   racersCupTile,
+  buildersCupCalendarTile,
   salusExternalTile,
   sprinklrExternalTile,
   stewardUserHistoryTile,
@@ -63,6 +64,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
 
   leaderboardsTile,
   racersCupTile,
+  buildersCupCalendarTile,
   welcomeCenterCalendarTile,
 
   userGroupManagementTile,

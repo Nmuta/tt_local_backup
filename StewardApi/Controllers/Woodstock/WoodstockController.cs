@@ -483,31 +483,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets credit updates.
-        /// </summary>
-        [HttpGet("player/xuid({xuid})/creditUpdates")]
-        [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetCreditUpdates(
-            ulong xuid,
-            [FromQuery] int startIndex = 0,
-            [FromQuery] int maxResults = DefaultMaxResults)
-        {
-            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var result = await this.woodstockPlayerDetailsProvider.GetCreditUpdatesAsync(
-                xuid,
-                startIndex,
-                maxResults,
-                endpoint).ConfigureAwait(true);
-
-            return this.Ok(result);
-        }
-
-        /// <summary>
         ///     Gets player auctions.
         /// </summary>
         [HttpGet("player/xuid({xuid})/auctions")]
@@ -1628,7 +1603,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] ExpirableGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1704,7 +1679,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroupLivery)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] ExpirableGift gift)
         {
             var userClaims = this.User.UserClaims();

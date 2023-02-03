@@ -17,7 +17,7 @@ namespace StewardGitApi
         /// </summary>
         public AzureContext(Uri organizationUrl, VssBasicCredential vssBasicCredential, RepoSettings connectionSettings)
         {
-            this.credential = vssBasicCredential ?? throw new VssCredentialException("No credentials provided");
+            this.credential = vssBasicCredential ?? throw new GitOperationException("No credentials provided");
 
             if (connectionSettings == RepoSettings.Default)
             {

@@ -1,0 +1,24 @@
+@import '/src/styles/mixins';
+
+.player-selection-max-width {
+  max-width: $width-input-two-form-min;
+}
+
+.player-not-found {
+  margin-top: -1em;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+
+  > * {
+    margin: $gap-small / 2;
+  }
+
+  .featured-toggle {
+    margin-bottom: $gap-medium;
+  }
+}

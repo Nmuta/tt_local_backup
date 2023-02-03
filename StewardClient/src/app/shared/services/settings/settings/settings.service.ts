@@ -5,6 +5,9 @@ import { LspEndpoints } from '@models/lsp-endpoints';
 import { ToolsAvailability } from '@models/blob-storage';
 import { HttpHeaders } from '@angular/common/http';
 
+/** API endpoint path for getting LSP endpoints. */
+export const GetLspEndpointsPath: string = 'lspEndpoints';
+
 /** Handles calls to Sunrise API routes. */
 @Injectable({
   providedIn: 'root',
@@ -16,7 +19,7 @@ export class SettingsService {
 
   /** Gets supported LSP endpoints. */
   public getLspEndpoints$(): Observable<LspEndpoints> {
-    return this.apiService.getRequest$<LspEndpoints>(`${this.basePath}/lspEndpoints`);
+    return this.apiService.getRequest$<LspEndpoints>(`${this.basePath}/${GetLspEndpointsPath}`);
   }
 
   /** Sets tool availability. */

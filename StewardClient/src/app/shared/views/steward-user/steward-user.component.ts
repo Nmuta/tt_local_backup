@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
 import { UserService } from '@services/user';
 import { EMPTY, Subject } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 /**
  *  Retrieves and displays Steward user information.
@@ -49,7 +50,7 @@ export class StewardUserComponent extends BaseComponent implements OnInit, OnCha
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: BetterSimpleChanges<StewardUserComponent>): void {
     this.getStewardUser$.next();
   }
 }

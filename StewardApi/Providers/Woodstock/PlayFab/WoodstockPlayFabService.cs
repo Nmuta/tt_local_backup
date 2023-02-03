@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <inheritdoc />
         public async Task<IList<PlayFabBuildSummary>> GetBuildsAsync(WoodstockPlayFabEnvironment environment)
         {
-            await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(true);
+            await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(false);
 
             var builds = new List<BuildSummary>();
             string skipToken = null;
@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 var response = await PlayFabMultiplayerAPI.ListBuildSummariesV2Async(new ListBuildSummariesRequest()
                 {
                     SkipToken = skipToken,
-                }).ConfigureAwait(true);
+                }).ConfigureAwait(false);
 
                 if (response.Error != null)
                 {
@@ -74,12 +74,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <inheritdoc />
         public async Task<PlayFabBuildSummary> GetBuildAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
         {
-            await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(true);
+            await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(false);
 
             var response = await PlayFabMultiplayerAPI.GetBuildAsync(new GetBuildRequest()
             {
                 BuildId = buildId.ToString(),
-            }).ConfigureAwait(true);
+            }).ConfigureAwait(false);
 
             if (response.Error != null)
             {
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             PlayFabSettings.staticSettings.TitleId = environmentConfig.TitleId;
             PlayFabSettings.staticSettings.DeveloperSecretKey = environmentConfig.Key;
 
-            await PlayFabAuthenticationAPI.GetEntityTokenAsync(new GetEntityTokenRequest()).ConfigureAwait(true);
+            await PlayFabAuthenticationAPI.GetEntityTokenAsync(new GetEntityTokenRequest()).ConfigureAwait(false);
         }
     }
 }

@@ -5,7 +5,6 @@ import {
   OnChanges,
   Output,
   QueryList,
-  SimpleChanges,
   ViewChildren,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -14,6 +13,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ZERO } from '@helpers/bignumbers';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 import { DeviceType, GameTitle } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
@@ -132,7 +132,7 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnChange
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<LeaderboardStatsComponent>): void {
     const foundQueryChange = !!changes.leaderboard && !!this.leaderboard?.query;
     const foundScoresDeleted = !!changes.scoresDeleted && this.scoresDeleted?.length > 0;
 

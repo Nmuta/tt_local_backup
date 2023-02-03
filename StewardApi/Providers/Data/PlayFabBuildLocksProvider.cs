@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new UnknownFailureStewardException($"Failed to get PlayFab build lock. (buildId: {buildId})", ex);
             }
 
-            return this.mapper.Map<PlayFabBuildLock>(result);
+            return this.mapper.SafeMap<PlayFabBuildLock>(result);
         }
 
         /// <inheritdoc />
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new UnknownFailureStewardException("Failed to get PlayFab build locks.", ex);
             }
 
-            return this.mapper.Map<IList<PlayFabBuildLock>>(result);
+            return this.mapper.SafeMap<IList<PlayFabBuildLock>>(result);
         }
 
         /// <inheritdoc />

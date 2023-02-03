@@ -5,7 +5,6 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -22,6 +21,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
 import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 /** The item-selection component. */
 @Component({
@@ -65,7 +65,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: BetterSimpleChanges<ItemSelectionComponent>): void {
     if (!!this.masterInventory) {
       this.inventoryItemGroups = this.buildMatAutocompleteState();
       this.stateGroupOptions$ = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
