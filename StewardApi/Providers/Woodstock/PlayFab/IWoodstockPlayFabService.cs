@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Graph;
 using PlayFab.MultiplayerModels;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab

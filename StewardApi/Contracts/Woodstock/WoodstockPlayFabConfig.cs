@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 
 #pragma warning disable SA1600 // Elements should be documented
 

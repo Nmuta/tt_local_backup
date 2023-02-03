@@ -37,6 +37,7 @@ using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using Microsoft.AspNetCore.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
@@ -251,7 +252,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             var build = await this.playFabService.GetBuildAsync(buildId, environment).ConfigureAwait(true);
             if (build == null)
             {
-                throw new InvalidArgumentsStewardException($"The provided build id does not exist in the specific PlayFab environment. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})");
+                throw new InvalidArgumentsStewardException($"The provided build id does not exist in the specific PlayFab environment. (playFabEnvironment: {environment}) (buildId: {buildId})");
             }
 
             return build;

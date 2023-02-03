@@ -4,7 +4,7 @@ using PlayFab.MultiplayerModels;
 
 #pragma warning disable SA1600 // Elements should be documented
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
     public sealed class PlayFabBuildSummary
     {
