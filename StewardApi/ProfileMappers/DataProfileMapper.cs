@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PlayFab.MultiplayerModels;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
