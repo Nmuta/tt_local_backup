@@ -6,7 +6,7 @@ using PlayFab.MultiplayerModels;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
-    public sealed class PlayFabBuildSummary
+    public class PlayFabBuildSummary
     {
         public string Id { get; set; }
 

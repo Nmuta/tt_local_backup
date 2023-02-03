@@ -4,7 +4,7 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
-    public sealed class PlayFabEnvironment
+    public class PlayFabEnvironment
     {
         public string TitleId { get; set; }
 
