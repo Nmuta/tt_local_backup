@@ -19,6 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon/help-popover-icon.component';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/search/woodstock-ugc-search.service';
+import { SpecialXuid1 } from '@models/special-identity';
 
 /** Retreives and displays Woodstock ugc by search filters. */
 @Component({
@@ -41,6 +42,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
     gameTitle: this.gameTitle,
     makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
     supportedUgcTypes: WoodstockSupportedUgcTypes,
+    specialIdentitiesAllowed: [SpecialXuid1],
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,
   };
@@ -91,6 +93,8 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   /** Searches player UGC content. */
   public searchUgc(): void {
+    console.log(this.formControls.ugcFilters.value)
+    console.log(this.formControls.ugcFilters.errors)
     this.searchUgc$.next(this.formControls.ugcFilters.value);
   }
 
@@ -127,6 +131,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   /** Produces title specific identity, if it exists. */
   public foundFn(newIdentity: AugmentedCompositeIdentity): IdentityResultAlpha | null {
+    console.log(newIdentity)
     if (newIdentity?.woodstock?.error) {
       return null;
     }

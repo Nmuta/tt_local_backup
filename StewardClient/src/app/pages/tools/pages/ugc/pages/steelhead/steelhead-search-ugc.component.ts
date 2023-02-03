@@ -19,6 +19,7 @@ import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup
 import { SteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon/help-popover-icon.component';
+import { SpecialXuid1 } from '@models/special-identity';
 
 /** Retreives and displays Steelhead ugc by search filters. */
 @Component({
@@ -41,6 +42,7 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
     gameTitle: this.gameTitle,
     makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
     supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.Tune],
+    specialIdentitiesAllowed: [],
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,
   };

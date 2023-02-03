@@ -23,20 +23,17 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 import { MakeModelAutocompleteServiceContract } from '@views/make-model-autocomplete/make-model-autocomplete/make-model-autocomplete.component';
 import { OnChanges } from '@angular/core';
 import { renderDelay } from '@helpers/rxjs';
+import { SpecialIdentity, SpecialXuid1 } from '@models/special-identity';
 
 /** Outputted form value of the UGC search filters. */
 export type UgcSearchFiltersFormValue = UgcSearchFilters;
-
-/** Internal form value of the UGC search filters. */
-interface UgcSearchFiltersFormValueInternal {
-  filters: UgcSearchFiltersFormValue;
-}
 
 /** Service contract for UGC search filters. */
 export interface UgcSearchFiltersServiceContract {
   gameTitle: GameTitle;
   makeModelAutocompleteServiceContract: MakeModelAutocompleteServiceContract;
   supportedUgcTypes: UgcType[];
+  specialIdentitiesAllowed: SpecialIdentity[];
   foundFn: (identity: AugmentedCompositeIdentity) => IdentityResultAlpha | null;
   rejectionFn: (identity: AugmentedCompositeIdentity) => string | null;
 }
@@ -172,18 +169,7 @@ export class UgcSearchFiltersComponent
   /** Form control hook. */
   public writeValue(data: UgcSearchFiltersFormValue): void {
     if (data) {
-      const dataInternal: UgcSearchFiltersFormValueInternal = {
-        filters: {
-          xuid: data.xuid,
-          ugcType: data.ugcType,
-          carId: data.carId,
-          keywords: data.keywords,
-          orderBy: data.orderBy,
-          isFeatured: data.isFeatured,
-        },
-      };
-
-      this.formGroup.patchValue(dataInternal, { emitEvent: false });
+      this.formGroup.patchValue(data, { emitEvent: false });
     }
   }
 
@@ -226,6 +212,7 @@ export class UgcSearchFiltersComponent
   /** Player identity selected */
   public playerIdentityFound(newIdentity: AugmentedCompositeIdentity): void {
     const titleSpecificIdentity = this.serviceContract.foundFn(newIdentity);
+
     this.playerNotFound = !!newIdentity?.result && !titleSpecificIdentity;
     this.formControls.identity.setValue(titleSpecificIdentity);
   }
