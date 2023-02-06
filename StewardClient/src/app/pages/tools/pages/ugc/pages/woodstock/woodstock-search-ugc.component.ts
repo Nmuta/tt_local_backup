@@ -93,8 +93,6 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   /** Searches player UGC content. */
   public searchUgc(): void {
-    console.log(this.formControls.ugcFilters.value)
-    console.log(this.formControls.ugcFilters.errors)
     this.searchUgc$.next(this.formControls.ugcFilters.value);
   }
 
@@ -131,7 +129,6 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   /** Produces title specific identity, if it exists. */
   public foundFn(newIdentity: AugmentedCompositeIdentity): IdentityResultAlpha | null {
-    console.log(newIdentity)
     if (newIdentity?.woodstock?.error) {
       return null;
     }

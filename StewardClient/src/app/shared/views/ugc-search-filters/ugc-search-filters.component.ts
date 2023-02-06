@@ -23,7 +23,7 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 import { MakeModelAutocompleteServiceContract } from '@views/make-model-autocomplete/make-model-autocomplete/make-model-autocomplete.component';
 import { OnChanges } from '@angular/core';
 import { renderDelay } from '@helpers/rxjs';
-import { SpecialIdentity, SpecialXuid1 } from '@models/special-identity';
+import { SpecialIdentity } from '@models/special-identity';
 
 /** Outputted form value of the UGC search filters. */
 export type UgcSearchFiltersFormValue = UgcSearchFilters;
