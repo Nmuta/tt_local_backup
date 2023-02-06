@@ -7,13 +7,13 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  SimpleChanges,
   Type,
   ViewContainerRef,
 } from '@angular/core';
 import { CustomTileComponent } from '@environments/environment';
 import { HomeTileInfoForNav } from '@helpers/external-links';
 import { renderDelay } from '@helpers/rxjs';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { from } from 'rxjs';
 
 /** Provides an attachment point to render a dynamic tool-tile element. */
@@ -58,7 +58,7 @@ export class AnchorDirective implements OnChanges, AfterViewInit, OnDestroy {
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_: SimpleChanges): void {
+  public ngOnChanges(_: BetterSimpleChanges<AnchorDirective>): void {
     if (this.componentRef) {
       this.componentRef.instance.disabled = this.navAnchorDisabled;
       this.componentRef.instance.item = this.navItem;

@@ -49,5 +49,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         BackgroundProcessing = 64,
         Pegasus = 128,
         Cosmos = 256,
+        PlayFab = 512,
     }
 }

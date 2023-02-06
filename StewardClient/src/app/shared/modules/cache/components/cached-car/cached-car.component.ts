@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { pairwiseSkip, PairwiseSkipPredicates } from '@helpers/rxjs';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { SimpleCar } from '@models/cars';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -61,7 +62,7 @@ export class CachedCarComponent extends BaseComponent implements OnInit, OnChang
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(_: SimpleChanges): void {
+  public ngOnChanges(_: BetterSimpleChanges<CachedCarComponent>): void {
     this.carId$.next(this.carId);
   }
 

@@ -3,7 +3,8 @@ import { values } from 'lodash';
 
 /** The common access levels for the app. Used to generate role guards. */
 export const CommonAccessLevels = {
-  Everyone: values(UserRole),
+  // We should never accept UserRole.None into any tool route
+  Everyone: values(UserRole).filter(role => role !== UserRole.None),
   OldNavbarAppOnly: [
     UserRole.LiveOpsAdmin,
     UserRole.SupportAgentAdmin,

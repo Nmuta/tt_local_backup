@@ -12,9 +12,7 @@ export enum PermAttributeName {
   DeleteLeaderboardScores = 'DeleteLeaderboardScores',
   FeatureUgc = 'FeatureUgc',
   GiftGroup = 'GiftGroup',
-  GiftGroupLivery = 'GiftGroupLivery',
   GiftPlayer = 'GiftPlayer',
-  GiftPlayerLivery = 'GiftPlayerLivery',
   HideUgc = 'HideUgc',
   MessageGroup = 'MessageGroup',
   MessagePlayer = 'MessagePlayer',
@@ -36,6 +34,7 @@ export enum PermAttributeName {
   UpdateMessageOfTheDay = 'UpdateMessageOfTheDay',
   UpdateWelcomeCenterTiles = 'UpdateWelcomeCenterTiles',
   CreateAuctions = 'CreateAuctions',
+  ManagePlayFabBuildLocks = 'ManagePlayFabBuildLocks',
 }
 
 /** Full perm attribute details. */

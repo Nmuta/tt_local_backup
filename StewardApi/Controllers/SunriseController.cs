@@ -1455,7 +1455,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1528,7 +1528,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroupLivery)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();

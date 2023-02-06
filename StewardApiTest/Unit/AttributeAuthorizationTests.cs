@@ -56,7 +56,8 @@ namespace Turn10.LiveOps.StewardTest.Unit
                        skip("Util", "DeleteStatus") ||
                        skip("Util", "PatchStatus") ||
                        skip("Util", "PostStatus") ||
-                       skip("Util", "PutStatus"))
+                       skip("Util", "PutStatus") ||
+                       skip("Permissions", "SetUserPermissions"))
                     {
                         continue;
                     }

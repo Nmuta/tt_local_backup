@@ -39,7 +39,9 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -65,6 +67,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
@@ -288,6 +291,19 @@ namespace Turn10.LiveOps.StewardApi
             var mapper = mappingConfiguration.CreateMapper();
             builder.Register(c => mapper).As<IMapper>().SingleInstance();
 
+            // Woodstock PlayFab Service
+            var woodstockPlayFabConfig = new WoodstockPlayFabConfig();
+            woodstockPlayFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Dev, new PlayFabEnvironment()
+            {
+                TitleId = keyVaultProvider.GetSecretAsync(
+                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabDevTitleId]).GetAwaiter().GetResult(),
+                Key = keyVaultProvider.GetSecretAsync(
+                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabDevKey]).GetAwaiter().GetResult(),
+            });
+            builder.Register(c => new WoodstockPlayFabService(woodstockPlayFabConfig, mapper)).As<IWoodstockPlayFabService>().SingleInstance();
+
             builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
             builder.RegisterType<StsClientWrapper>().As<IStsClient>().SingleInstance();
             builder.RegisterType<LoggingService>().As<ILoggingService>().SingleInstance();
@@ -306,6 +322,7 @@ namespace Turn10.LiveOps.StewardApi
 
             builder.RegisterType<HubManager>().SingleInstance();
             builder.RegisterType<JobTracker>().As<IJobTracker>().SingleInstance();
+            builder.RegisterType<PlayFabBuildLocksProvider>().As<IPlayFabBuildLocksProvider>().SingleInstance();
             builder.RegisterType<KustoQueryProvider>().As<IKustoQueryProvider>().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();

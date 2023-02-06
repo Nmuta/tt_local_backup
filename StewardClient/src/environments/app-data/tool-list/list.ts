@@ -21,6 +21,7 @@ import {
   playerInfoTile,
   powerBIExternalDropdownTile,
   racersCupTile,
+  buildersCupCalendarTile,
   salusExternalTile,
   sprinklrExternalTile,
   stewardUserHistoryTile,
@@ -32,6 +33,7 @@ import {
   welcomeCenterTile,
   zendeskExternalTile,
 } from './tiles';
+import { playFabTile } from './tiles/tools/playfab';
 
 /** The unprocessed tool list. Use @see environment.tools instead. */
 export const unprocessedToolList: HomeTileInfo[] = [
@@ -62,9 +64,12 @@ export const unprocessedToolList: HomeTileInfo[] = [
 
   leaderboardsTile,
   racersCupTile,
+  buildersCupCalendarTile,
   welcomeCenterCalendarTile,
 
   userGroupManagementTile,
+
+  playFabTile,
 
   salusExternalTile,
   zendeskExternalTile,

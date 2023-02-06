@@ -158,5 +158,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets all branches.
         /// </summary>
         Task<IEnumerable<GitRef>> GetAllBranchesAsync();
+
+        /// <summary>
+        ///     Runs the specified build pipeline.
+        /// </summary>
+        public Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push);
     }
 }

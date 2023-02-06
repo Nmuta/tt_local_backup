@@ -28,16 +28,12 @@ export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<
   /** Gets Woodstock player's list of credit updates. */
   public getCreditHistoryByXuid$(
     xuid: BigNumber,
+    column: CreditUpdateColumn,
+    direction: SortDirection,
     startIndex: number,
     maxResults: number,
   ): Observable<WoodstockCreditDetailsEntry[]> {
-    return this.woodstock.getCreditHistoryByXuid$(
-      xuid,
-      SortDirection.Ascending,
-      CreditUpdateColumn.Timestamp,
-      startIndex,
-      maxResults,
-    );
+    return this.woodstock.getCreditHistoryByXuid$(xuid, direction, column, startIndex, maxResults);
   }
 
   /** Gets save rollbacks history list */

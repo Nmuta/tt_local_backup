@@ -21,6 +21,7 @@ export enum AppIcon {
   StewardManagement = 'cloud_sync',
   Leaderboards = 'leaderboard',
   RacersCup = 'calendar_today',
+  BuildersCupCalendar = 'calendar_today',
   UserGroupManagement = 'group',
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
@@ -32,6 +33,7 @@ export enum AppIcon {
   MessageOfTheDay = 'waving_hand',
   CreateAuction = 'sell',
   WelcomeCenterTile = 'grid_view',
+  PlayFab = 'hexagon',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */

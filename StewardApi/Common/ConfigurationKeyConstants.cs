@@ -254,5 +254,20 @@
         ///     The Steelhead World of Forza path in the Steelhead Content repo.
         /// </summary>
         public const string SteelheadWorldOfForzaPath = "Git:SteelheadWorldOfForzaPath";
+
+        /// <summary>
+        ///     The Steelhead format pipeline build definitoin key.
+        /// </summary>
+        public const string SteelheadFormatPipelineBuildDefinition = "Git:SteelheadFormatPipelineBuildDefinition";
+
+        /// <summary>
+        ///    The Woodstock PlayFab dev title id.
+        /// </summary>
+        public const string WoodstockPlayFabDevTitleId = "WoodstockEnvironment:PlayFab:Dev:TitleId";
+
+        /// <summary>
+        ///    The Woodstock PlayFab dev key.
+        /// </summary>
+        public const string WoodstockPlayFabDevKey = "WoodstockEnvironment:PlayFab:Dev:Key";
     }
 }
