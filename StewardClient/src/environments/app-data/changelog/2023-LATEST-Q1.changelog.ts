@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'fad320f0-f724-4b46-8e60-b6cfc39b87f5',
+      shortText: 'Update endpoint selection to ignore invalid titles for users',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
       uuid: '01016f44-2d05-4cfb-9133-f1f8cd16c303',
       shortText: 'Add ability to search for Xuid 1',
