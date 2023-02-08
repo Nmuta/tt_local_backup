@@ -81,6 +81,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(column)} provided: {column}");
             }
 
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
             var result = await this.kustoProvider.GetCreditUpdatesAsync(xuid, Contracts.Common.TitleCodeName.Woodstock, sortEnum, columnEnum, startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
