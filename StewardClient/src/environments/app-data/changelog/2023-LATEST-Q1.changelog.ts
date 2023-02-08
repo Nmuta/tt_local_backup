@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.PlayFab },
+      uuid: 'a0954464-0bb3-456b-9629-9e995ff4e861',
+      shortText: 'New PlayFab build management tool',
+      longText: [
+        'In the tool, you are able to lock and unlock PlayFab builds from being deleted.',
+        'Additionally, users with valid permissions have the ability to change the max number of available build locks.',
+      ],
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'fad320f0-f724-4b46-8e60-b6cfc39b87f5',
       shortText: 'Update endpoint selection to ignore invalid titles for users',

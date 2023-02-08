@@ -8,7 +8,12 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment, HomeTileRestrictionType, NavbarTool } from '@environments/environment';
+import {
+  environment,
+  hasRequiredPermissions,
+  HomeTileRestrictionType,
+  NavbarTool,
+} from '@environments/environment';
 import { HomeTileInfoForNav, setExternalLinkTarget } from '@helpers/external-links';
 import { GameTitle, UserRole } from '@models/enums';
 import { QueryParam } from '@models/query-params';
@@ -110,15 +115,10 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
         toolsList.forEach(tile => {
           tile.hasAccess = tile.accessList.includes(profile?.role);
 
-          // Process the tool's perm restrictions
-          if (tile?.restriction?.requiredPermissions?.length > 0) {
-            const isMissingPerms = tile.restriction.requiredPermissions
-              .map(perm => this.permAttributesService.hasFeaturePermission(perm))
-              .includes(false);
-            if (isMissingPerms) {
-              tile.processedRestriction = tile.restriction.action;
-              tile.hasAccess = false;
-            }
+          const hasPermissions = hasRequiredPermissions(tile, this.permAttributesService);
+          if (!hasPermissions) {
+            tile.processedRestriction = tile.restriction.action;
+            tile.hasAccess = false;
           }
         });
 

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { PlayFabRoutingModule } from './playfab.routing';
@@ -32,6 +33,8 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { BuildLockChangeDialogComponent } from './components/build-lock-change-dialog/build-lock-change-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { PlayFabSettingsComponent } from './components/playfab-settings/playfab-settings.component';
 
 /** Module for the PlayFab tool. */
 @NgModule({
@@ -41,6 +44,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     PlayFabBuildsManagementComponent,
     WoodstockPlayFabBuildsManagementComponent,
     BuildLockChangeDialogComponent,
+    PlayFabSettingsComponent,
   ],
   imports: [
     PlayFabRoutingModule,
@@ -61,6 +65,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatToolbarModule,
     MatPaginatorModule,
     MatButtonToggleModule,
+    MatChipsModule,
+    MatExpansionModule,
     TextFieldModule,
     JsonDumpModule,
     MatProgressSpinnerModule,

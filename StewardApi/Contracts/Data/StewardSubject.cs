@@ -32,5 +32,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         Users,
         UserTeam,
         PlayFabBuildLock,
+        PlayFabSettings,
     }
 }

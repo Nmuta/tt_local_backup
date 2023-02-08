@@ -2,6 +2,7 @@ import { Type } from '@angular/core';
 import { LoadChildren } from '@angular/router';
 import { GameTitle, UserRole } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { NavbarTool } from './navbar-tool';
 
 /** Base model for Home Tiles. */
@@ -142,4 +143,27 @@ export function isHomeTileInfoInternal(
   homeTileInfo: HomeTileInfo,
 ): homeTileInfo is HomeTileInfoInternal {
   return !!(homeTileInfo as HomeTileInfoInternal).loadChildren;
+}
+
+/** Verifies the home tile's Auth V2 restrictions. Must has all of the required permissions in at least one game title. */
+export function hasRequiredPermissions(
+  tile: HomeTileInfoBase,
+  permAttributesService: PermAttributesService,
+): boolean {
+  if (!tile?.restriction || tile?.restriction?.requiredPermissions?.length <= 0) {
+    return true;
+  }
+
+  const checkRequiredPermissions = tile?.restriction.requiredPermissions.map(perm => {
+    const gameTitles = tile.supportedTitles;
+    if (!gameTitles || gameTitles?.length <= 0) {
+      return permAttributesService.hasFeaturePermission(perm);
+    }
+
+    return gameTitles
+      .map(title => permAttributesService.hasFeaturePermission(perm, title))
+      .includes(true);
+  });
+
+  return !checkRequiredPermissions.includes(false);
 }
