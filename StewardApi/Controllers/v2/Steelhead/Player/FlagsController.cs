@@ -25,7 +25,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
-    ///     Steelhead user flags controller
+    ///     Steelhead user flags controller.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/flags")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -45,8 +45,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     public class FlagsController : V2SteelheadControllerBase
     {
         private const int DefaultMaxResults = 500;
-        private const int VipUserGroupId = 1;
-        private const int UltimateVipUserGroupId = 2;
+        private const int SteamVipUserGroupId = 25;
+        private const int SteamUltimateVipUserGroupId = 26;
+        private const int GamecoreVipUserGroupId = 27;
+        private const int GamecoreUltimateVipUserGroupId = 28;
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
         private const int RaceMarshallUserGroupId = 9;
@@ -150,8 +152,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var flags = new SteelheadUserFlags
             {
-                IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
-                IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
+                IsGamecoreVip = userGroupResults.userGroups.Any(r => r.Id == GamecoreVipUserGroupId),
+                IsGamecoreUltimateVip = userGroupResults.userGroups.Any(r => r.Id == GamecoreUltimateVipUserGroupId),
+                IsSteamVip = userGroupResults.userGroups.Any(r => r.Id == SteamVipUserGroupId),
+                IsSteamUltimateVip = userGroupResults.userGroups.Any(r => r.Id == SteamUltimateVipUserGroupId),
                 IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
                 IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
                 IsUnderReview = suspiciousResults.isUnderReview,
@@ -167,8 +171,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var nonStandardUserGroups = NonStandardUserGroupHelpers.GetUserGroups(this.Services.Endpoint);
 
             var resultGroupIds = new List<int>();
-            if (userFlags.IsVip == toggleState) { resultGroupIds.Add(VipUserGroupId); }
-            if (userFlags.IsUltimateVip == toggleState) { resultGroupIds.Add(UltimateVipUserGroupId); }
+            if (userFlags.IsGamecoreVip == toggleState) { resultGroupIds.Add(GamecoreVipUserGroupId); }
+            if (userFlags.IsGamecoreUltimateVip == toggleState) { resultGroupIds.Add(GamecoreUltimateVipUserGroupId); }
+            if (userFlags.IsSteamVip == toggleState) { resultGroupIds.Add(SteamVipUserGroupId); }
+            if (userFlags.IsSteamUltimateVip == toggleState) { resultGroupIds.Add(SteamUltimateVipUserGroupId); }
             if (userFlags.IsTurn10Employee == toggleState) { resultGroupIds.Add(T10EmployeeUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleState) { resultGroupIds.Add(WhitelistUserGroupId); }
             if (userFlags.IsRaceMarshall == toggleState) { resultGroupIds.Add(RaceMarshallUserGroupId); }
