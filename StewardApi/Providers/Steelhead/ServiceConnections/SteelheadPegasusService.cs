@@ -324,10 +324,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
-            var fileName = "LiveOps_PlaylistData";
 
             var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>>(
-                fileName,
+                CMSFileNames.PlaylistData,
                 environment: pegasusEnvironment,
                 slot: pegasusSlot,
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
