@@ -1,0 +1,18 @@
+@import '/src/styles/mixins';
+
+.mat-checkbox {
+  margin-left: $gap-small;
+}
+
+.mat-form-field {
+  width: 100%;
+  margin: $gap-large 0;
+
+  textarea {
+    min-height: $textarea-min-height;
+  }
+}
+
+.unlock-message {
+  margin: $gap-large 0;
+}

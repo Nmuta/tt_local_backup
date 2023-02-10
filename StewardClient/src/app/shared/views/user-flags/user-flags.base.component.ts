@@ -55,6 +55,8 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
 
   /** Alternate text per key. */
   public readonly alteredLabels: { [key in keyof UserFlagsIntersection]?: string } = {
+    isGamecoreVip: 'Is Windows/Xbox Vip',
+    isGamecoreUltimateVip: 'Is Windows/Xbox Ultimate Vip',
     isEarlyAccess: 'Is Early Access (Unbannable)',
     isTurn10Employee: 'Is Employee (User Badge + Unbannable)',
     isUnderReview: 'Is Under Review (Console Banned)',

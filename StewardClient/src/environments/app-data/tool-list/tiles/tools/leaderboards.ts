@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const leaderboardsTile = <HomeTileInfoInternal>{
@@ -8,6 +9,7 @@ export const leaderboardsTile = <HomeTileInfoInternal>{
   title: 'Leaderboards',
   subtitle: 'Manage leaderboards',
   supportedTitles: [GameTitle.FH5],
+  allPermissions: [PermAttributeName.DeleteLeaderboardScores],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Review and delete leaderboard score.',

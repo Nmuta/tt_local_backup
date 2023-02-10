@@ -24,6 +24,11 @@
         />
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedFilter($event)">
+        <mat-optgroup label="Permission">
+          <mat-option *ngFor="let chip of permissionFilterOptions | async" [value]="chip">
+            {{ chip.value | deppoh }}
+          </mat-option>
+        </mat-optgroup>
         <mat-optgroup label="Title">
           <mat-option *ngFor="let chip of titleFilterOptions | async" [value]="chip">
             {{ chip.value | gameTitleAbbreviation: true }}

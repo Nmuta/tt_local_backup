@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { environment } from '@environments/environment';
+import { environment, hasRequiredPermissions } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
@@ -55,19 +55,12 @@ export class AuthV2Guard implements CanActivate, CanActivateChild {
       ),
       switchMap(() => this.permAttributesService.initializationGuard$),
       switchMap(() => {
-        let isMissingPerms = false;
+        const hasPermissions = hasRequiredPermissions(homeTile, this.permAttributesService);
 
-        // Process the tool's perm restrictions
-        if (homeTile?.restriction?.requiredPermissions?.length > 0) {
-          isMissingPerms = homeTile.restriction.requiredPermissions
-            .map(perm => this.permAttributesService.hasFeaturePermission(perm))
-            .includes(false);
-        }
-
-        if (isMissingPerms) {
+        if (!hasPermissions) {
           this.store.dispatch(unauthorizedAction);
         }
-        return of(!isMissingPerms);
+        return of(hasPermissions);
       }),
     );
   }

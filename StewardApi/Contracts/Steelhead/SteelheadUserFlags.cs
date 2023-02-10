@@ -7,9 +7,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// </summary>
     public sealed class SteelheadUserFlags
     {
-        public bool IsVip { get; set; }
+        public bool IsGamecoreVip { get; set; }
 
-        public bool IsUltimateVip { get; set; }
+        public bool IsGamecoreUltimateVip { get; set; }
+
+        public bool IsSteamVip { get; set; }
+
+        public bool IsSteamUltimateVip { get; set; }
 
         public bool IsTurn10Employee { get; set; }
 

@@ -1,6 +1,4 @@
-﻿#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -179,8 +177,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     }
                 }
 
-                this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
-
                 // Remap the ids to the right ids from the mapping file
                 if (useInternalIds)
                 {
@@ -188,6 +184,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         .Where(p => localizationIdsMapping.ContainsKey(p.Key))
                         .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
                 }
+
+                this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
 
                 return results;
             }
@@ -588,13 +586,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 entry.Category = loc.Category.ToString();
                 entry.SubCategory = loc.SubCategory.ToString();
 
-                xmlObj.LocalizationLocalizedString.Add(entry);
+                xmlObj.LocalizationEntries.Add(entry);
             }
 
             var appendedXmlStr = await XmlHelpers.SerializeAsync(xmlObj, WelcomeCenterHelpers.SteelheadXmlNamespaces).ConfigureAwait(false);
 
             // Now fix the CData sections for {scribble:x}base elements
-
             var xdoc = XDocument.Parse(appendedXmlStr);
             var cdataSearchTarget = WelcomeCenterHelpers.NamespaceElement + "base";
             foreach (var el in xdoc.Descendants(cdataSearchTarget))

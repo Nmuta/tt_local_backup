@@ -34,6 +34,8 @@ export enum PermAttributeName {
   UpdateMessageOfTheDay = 'UpdateMessageOfTheDay',
   UpdateWelcomeCenterTiles = 'UpdateWelcomeCenterTiles',
   CreateAuctions = 'CreateAuctions',
+  ManagePlayFabBuildLocks = 'ManagePlayFabBuildLocks',
+  ManagePlayFabSettings = 'ManagePlayFabSettings',
 }
 
 /** Full perm attribute details. */

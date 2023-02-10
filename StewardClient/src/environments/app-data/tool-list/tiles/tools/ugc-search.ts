@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const ugcSearchTile = <HomeTileInfoInternal>{
@@ -9,6 +10,7 @@ export const ugcSearchTile = <HomeTileInfoInternal>{
   title: 'UGC Search',
   subtitle: 'Search User Generated Content',
   supportedTitles: [GameTitle.FH5, GameTitle.FM8],
+  allPermissions: [PermAttributeName.HideUgc],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Search public UGC by model, ugc type, and keywords.',

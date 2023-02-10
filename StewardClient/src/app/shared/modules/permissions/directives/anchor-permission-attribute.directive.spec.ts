@@ -4,7 +4,7 @@ import { PermAttributesService } from '@services/perm-attributes/perm-attributes
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 import { AnchorPermissionAttributeDirective } from './anchor-permission-attribute.directive';
 
-describe('ButtonPermissionAttributeDirective', () => {
+describe('AnchorPermissionAttributeDirective', () => {
   let anchor: ElementRef;
   let directive: AnchorPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;

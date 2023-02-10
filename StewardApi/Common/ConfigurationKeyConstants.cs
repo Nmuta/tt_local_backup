@@ -264,5 +264,15 @@
         ///     The Steelhead localization folder key.
         /// </summary>
         public const string SteelheadLocalizationFolderPath = "Git:SteelheadLocalizationFolderPath";
+
+        /// <summary>
+        ///    The Woodstock PlayFab dev title id.
+        /// </summary>
+        public const string WoodstockPlayFabDevTitleId = "WoodstockEnvironment:PlayFab:Dev:TitleId";
+
+        /// <summary>
+        ///    The Woodstock PlayFab dev key.
+        /// </summary>
+        public const string WoodstockPlayFabDevKey = "WoodstockEnvironment:PlayFab:Dev:Key";
     }
 }

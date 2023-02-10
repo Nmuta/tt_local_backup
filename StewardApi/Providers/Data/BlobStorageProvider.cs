@@ -22,8 +22,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     {
         private const string SettingsContainerName = "settings";
         private const string ToolsAvailabilityBlobName = "tool-availability.json";
+        private const string PlayFabSettingsBlobName = "playfab.json";
 
-        private readonly BlobClient blobClient;
+        private readonly BlobClient toolsBlobClient;
+        private readonly BlobClient playFabBlobClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BlobStorageProvider"/> class.
@@ -40,20 +42,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             var serviceClient = new BlobServiceClient(blobConnectionString);
             var containerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);
-            this.blobClient = containerClient.GetBlobClient(ToolsAvailabilityBlobName);
+            this.toolsBlobClient = containerClient.GetBlobClient(ToolsAvailabilityBlobName);
+            this.playFabBlobClient = containerClient.GetBlobClient(PlayFabSettingsBlobName);
         }
 
         /// <inheritdoc />
         public async Task<ToolsAvailability> GetToolsAvailabilityAsync()
         {
-            if (!await this.EnsureBlobClientExistsAsync().ConfigureAwait(false))
+            if (!await this.EnsureBlobClientExistsAsync(this.toolsBlobClient).ConfigureAwait(false))
             {
                 throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.");
             }
 
             try
             {
-                var response = await this.blobClient.DownloadAsync().ConfigureAwait(false);
+                var response = await this.toolsBlobClient.DownloadAsync().ConfigureAwait(false);
                 var download = response.Value;
 
                 return await download.DeserializeAsync<ToolsAvailability>().ConfigureAwait(false);
@@ -67,14 +70,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task<ToolsAvailability> SetToolsAvailabilityAsync(ToolsAvailability updatedToolsAvailability)
         {
-            if (!await this.EnsureBlobClientExistsAsync().ConfigureAwait(false))
+            if (!await this.EnsureBlobClientExistsAsync(this.toolsBlobClient).ConfigureAwait(false))
             {
                 throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.");
             }
 
             try
             {
-                var blobLease = this.blobClient.GetBlobLeaseClient();
+                var blobLease = this.toolsBlobClient.GetBlobLeaseClient();
                 var lease = await blobLease.AcquireAsync(new TimeSpan(TimeSpan.TicksPerSecond * 15)).ConfigureAwait(false);
 
                 var serializedContent = JsonConvert.SerializeObject(updatedToolsAvailability, new JsonSerializerSettings
@@ -83,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 });
 
                 var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
-                await this.blobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
+                await this.toolsBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
                 {
                     Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
                 }).ConfigureAwait(false);
@@ -98,9 +101,64 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             return await this.GetToolsAvailabilityAsync().ConfigureAwait(false);
         }
 
-        private async Task<bool> EnsureBlobClientExistsAsync()
+        /// <inheritdoc />
+        public async Task<StewardPlayFabSettings> GetStewardPlayFabSettingsAsync()
         {
-            var response = await this.blobClient.ExistsAsync().ConfigureAwait(false);
+            if (!await this.EnsureBlobClientExistsAsync(this.playFabBlobClient).ConfigureAwait(false))
+            {
+                throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {SettingsContainerName}. Blob name: {PlayFabSettingsBlobName}.");
+            }
+
+            try
+            {
+                var response = await this.playFabBlobClient.DownloadAsync().ConfigureAwait(false);
+                var download = response.Value;
+
+                return await download.DeserializeAsync<StewardPlayFabSettings>().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Could not retrieve PlayFab settings JSON from blob storage. Container name: {SettingsContainerName}. Blob name: {PlayFabSettingsBlobName}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<StewardPlayFabSettings> SetStewardPlayFabSettingsAsync(StewardPlayFabSettings updatedPlayFabSettings)
+        {
+            if (!await this.EnsureBlobClientExistsAsync(this.playFabBlobClient).ConfigureAwait(false))
+            {
+                throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {SettingsContainerName}. Blob name: {PlayFabSettingsBlobName}.");
+            }
+
+            try
+            {
+                var blobLease = this.playFabBlobClient.GetBlobLeaseClient();
+                var lease = await blobLease.AcquireAsync(new TimeSpan(TimeSpan.TicksPerSecond * 15)).ConfigureAwait(false);
+
+                var serializedContent = JsonConvert.SerializeObject(updatedPlayFabSettings, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+
+                var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
+                await this.playFabBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
+                {
+                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                }).ConfigureAwait(false);
+
+                await blobLease.ReleaseAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Could not update PlayFab settings JSON in blob storage. Container name: {SettingsContainerName}. Blob name: {PlayFabSettingsBlobName}.", ex);
+            }
+
+            return await this.GetStewardPlayFabSettingsAsync().ConfigureAwait(false);
+        }
+
+        private async Task<bool> EnsureBlobClientExistsAsync(BlobClient blobClient)
+        {
+            var response = await blobClient.ExistsAsync().ConfigureAwait(false);
             return response.Value;
         }
     }

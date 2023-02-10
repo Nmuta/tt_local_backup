@@ -8,6 +8,8 @@ export const metaToolsInternalTile = <HomeTileInfoInternal>{
   accessList: [UserRole.LiveOpsAdmin],
   title: 'Meta Tools',
   subtitle: 'Manage Steward',
+  supportedTitles: [],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Manage high-level Kusto and Release features within Steward',

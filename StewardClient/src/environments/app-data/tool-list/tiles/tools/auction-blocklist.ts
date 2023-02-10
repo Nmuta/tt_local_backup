@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const auctionBlocklistTile = <HomeTileInfoInternal>{
@@ -8,6 +9,7 @@ export const auctionBlocklistTile = <HomeTileInfoInternal>{
   title: 'Auction Blocklist',
   subtitle: 'Ban cars from auction',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5],
+  allPermissions: [PermAttributeName.UpdateAuctionBlocklist],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Manage the list of cars blocked on the Auction House',

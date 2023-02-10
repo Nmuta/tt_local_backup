@@ -15,6 +15,7 @@ export const zendeskExternalTile = <HomeTileInfoExternal>{
   title: 'Zendesk',
   subtitle: 'Tickets',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Ticket management and knowledge base',

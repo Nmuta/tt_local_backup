@@ -8,6 +8,49 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'e692ef6b-2eab-4a24-827b-c09e9442142c',
+      shortText: 'Homepage now filters by user write permissions on load',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '56699ccd-33be-4f7f-8834-45eb7a71c23d',
+      shortText: 'Split Vip and Ultimate Vip flags by device',
+      longText: [
+        'Vip and Ultimate Vip now are separate based on device types.',
+        'The supported device types are Steam and Xbox/Windows.',
+      ],
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.PlayFab },
+      uuid: 'a0954464-0bb3-456b-9629-9e995ff4e861',
+      shortText: 'New PlayFab build management tool',
+      longText: [
+        'In the tool, you are able to lock and unlock PlayFab builds from being deleted.',
+        'Additionally, users with valid permissions have the ability to change the max number of available build locks.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'fad320f0-f724-4b46-8e60-b6cfc39b87f5',
+      shortText: 'Update endpoint selection to ignore invalid titles for users',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: '01016f44-2d05-4cfb-9133-f1f8cd16c303',
+      shortText: 'Add ability to search for Xuid 1',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd5758b93-a447-4ced-8a5b-6406828c64fc',
+      shortText: 'Fix Navbar colors while in Edit Mode',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'cd9aa261-4e82-4b8d-8181-22a120c28e82',
+      shortText: 'Initial MVP effort for new PlayFab build management tool',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '6e026fe0-9624-402f-a7f8-c992c76748e5',
       shortText: 'Add TypeScript typings around change detection',

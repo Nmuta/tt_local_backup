@@ -18,8 +18,10 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
   public gameTitle = GameTitle.FM8;
 
   public formControls = {
-    isVip: new FormControl(false),
-    isUltimateVip: new FormControl(false),
+    isGamecoreVip: new FormControl(false),
+    isGamecoreUltimateVip: new FormControl(false),
+    isSteamVip: new FormControl(false),
+    isSteamUltimateVip: new FormControl(false),
     isTurn10Employee: new FormControl(false),
     isEarlyAccess: new FormControl(false),
     isRaceMarshall: new FormControl(false),
@@ -44,8 +46,10 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
   /** Sets the newly selected Steelhead flags. */
   public putFlagsByXuid$(xuid: BigNumber): Observable<SteelheadUserFlags> {
     return this.steelheadPlayerFlagsService.putFlagsByXuid$(xuid, {
-      isVip: this.formControls.isVip.value,
-      isUltimateVip: this.formControls.isUltimateVip.value,
+      isGamecoreVip: this.formControls.isGamecoreVip.value,
+      isGamecoreUltimateVip: this.formControls.isGamecoreUltimateVip.value,
+      isSteamVip: this.formControls.isSteamVip.value,
+      isSteamUltimateVip: this.formControls.isSteamUltimateVip.value,
       isTurn10Employee: this.formControls.isTurn10Employee.value,
       isEarlyAccess: this.formControls.isEarlyAccess.value,
       isUnderReview: this.formControls.isUnderReview.value,

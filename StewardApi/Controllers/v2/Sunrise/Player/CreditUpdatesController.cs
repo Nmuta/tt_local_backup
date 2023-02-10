@@ -82,6 +82,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.Player
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(column)} provided: {column}");
             }
 
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
             var result = await this.kustoProvider.GetCreditUpdatesAsync(xuid, TitleCodeName.Sunrise, sortEnum, columnEnum, startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);

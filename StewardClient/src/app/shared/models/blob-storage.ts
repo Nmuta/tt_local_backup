@@ -2,3 +2,8 @@
 export interface ToolsAvailability {
   allTools: boolean;
 }
+
+/** Interface for Steward PlayFab settings. */
+export interface PlayFabSettings {
+  maxBuildLocks: number;
+}

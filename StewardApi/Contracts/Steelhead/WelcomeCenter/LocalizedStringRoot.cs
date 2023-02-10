@@ -18,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
     public partial class LocalizedStringRoot
     {
         [XmlElementAttribute("Localization.LocalizedString", Namespace = "scribble:title-content")]
-        public List<LocEntry> LocalizationLocalizedString { get; set; }
+        public List<LocEntry> LocalizationEntries { get; set; }
     }
 
     [SerializableAttribute]

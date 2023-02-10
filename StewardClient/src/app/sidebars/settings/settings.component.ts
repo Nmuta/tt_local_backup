@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
-import { UserRole } from '@models/enums';
+import { GameTitle, UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { WindowService } from '@services/window';
+import { InvalidPermActionType } from '@shared/modules/permissions/directives/permission-attribute.base.directive';
 import {
   EndpointKeyMemoryModel,
   EndpointKeyMemoryState,
@@ -57,6 +59,10 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public woodstockEndpointKeyList: string[];
   public steelheadEndpointKeyList: string[];
   public forteEndpointKeyList: string[];
+
+  public InvalidPermActionType = InvalidPermActionType;
+  public PermAttributeName = PermAttributeName;
+  public GameTitle = GameTitle;
 
   constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
