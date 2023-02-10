@@ -223,6 +223,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                     var events = new List<RacersCupEvent>();
 
+                    var carRestriction = scheduledSeriesData.ScheduledSeries.DefaultEventOverrides.Buckets.First().CarRestrictions.CarClassId.ToString();
+
                     foreach (BaseChampionshipEventData eventData in scheduledSeriesData.ScheduledSeries.ChampionshipEventData)
                     {
                         // TODO V2: Lookup game options for each event
@@ -238,6 +240,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                         var playlistName = playlistInfoCollection.Where(playlistData => playlistData.EventPlaylistEventData.Select(tuple => tuple.Item1)
                                             .Where(championshipEventData => championshipEventData.EventDataId == eventData.EventDataId).Any()).Single().EventPlaylistName;
+
+                        
+
 
                         RacersCupEvent newEvent = new RacersCupEvent()
                         {
