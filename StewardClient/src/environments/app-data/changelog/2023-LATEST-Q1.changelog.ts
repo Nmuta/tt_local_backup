@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'e692ef6b-2eab-4a24-827b-c09e9442142c',
+      shortText: 'Homepage now filters by user write permissions on load',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '56699ccd-33be-4f7f-8834-45eb7a71c23d',
       shortText: 'Split Vip and Ultimate Vip flags by device',

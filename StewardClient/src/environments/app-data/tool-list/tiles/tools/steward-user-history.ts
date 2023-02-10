@@ -7,6 +7,7 @@ export const stewardUserHistoryTile = <HomeTileInfoInternal>{
   title: 'Job History',
   subtitle: 'Past actions',
   supportedTitles: [],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'View your job history',

@@ -8,6 +8,7 @@ export const racersCupTile = <HomeTileInfoInternal>{
   title: 'Racers Cup',
   subtitle: 'Visualize when racing events occur',
   supportedTitles: [GameTitle.FM8],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Everything you need to know for upcoming Racers Cup events.',

@@ -8,6 +8,8 @@ export const permissionManagementInternalTile = <HomeTileInfoInternal>{
   accessList: [UserRole.LiveOpsAdmin],
   title: 'Permission Management',
   subtitle: 'Manage Steward permissions',
+  supportedTitles: [],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Micro-manage permissions within Steward for all users',
