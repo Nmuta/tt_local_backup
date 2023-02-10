@@ -15,6 +15,7 @@ export const powerBIExternalDropdownTile = <HomeTileInfoMultiExternal>{
   title: 'Power BI',
   subtitle: 'Various Dashboards',
   supportedTitles: [GameTitle.FH5],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Various Power BI Dashboards',

@@ -13,7 +13,16 @@
           [routerLink]="parentRoute + item.tool"
           class="clickable-header"
         >
-          <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
+          <mat-icon
+            mat-card-avatar
+            [matBadgeHidden]="item.foundWritePermissions?.length <= 0"
+            [matBadge]="item.foundWritePermissions?.length"
+            matBadgeColor="accent"
+            [matTooltipDisabled]="item.foundWritePermissions?.length <= 0"
+            [matTooltip]="item.writePermissionsTooltip | humanize"
+            matTooltipClass="multiline-tooltip"
+            >{{ item.icon }}</mat-icon
+          >
           <mat-card-title>{{ item.title }}</mat-card-title>
           <mat-card-subtitle [matTooltip]="item.subtitle">{{ item.subtitle }}</mat-card-subtitle>
         </mat-card-header>

@@ -28,6 +28,7 @@ export const adminPagesExternalDropdownTile = <HomeTileInfoMultiExternal>{
   title: 'Admin Pages',
   subtitle: 'Production / Flight / Dev',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Various Admin Pages',

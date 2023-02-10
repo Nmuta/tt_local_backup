@@ -9,6 +9,10 @@ export const playFabTile = <HomeTileInfoInternal>{
   title: 'PlayFab',
   subtitle: 'Management helpers for PlayFab',
   supportedTitles: [GameTitle.FH5],
+  allPermissions: [
+    PermAttributeName.ManagePlayFabBuildLocks,
+    PermAttributeName.ManagePlayFabSettings,
+  ],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Manage multiplayer server build locks',

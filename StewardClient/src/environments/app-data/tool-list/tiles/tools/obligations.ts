@@ -15,6 +15,7 @@ export const obligationsTile = <HomeTileInfoInternal>{
   title: 'Obligation',
   subtitle: 'A data pipeline tool',
   supportedTitles: [],
+  allPermissions: [PermAttributeName.UpdateObligationPipeline],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Configure Data Activity processing',

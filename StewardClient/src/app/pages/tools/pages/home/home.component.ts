@@ -19,6 +19,7 @@ import { GameTitle, UserRole } from '@models/enums';
 import { QueryParam } from '@models/query-params';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';
@@ -28,12 +29,13 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, intersection } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 /** Types of filters to use on home page. */
 export enum FilterType {
+  Permission = 'permission',
   Title = 'title',
   Text = 'text',
 }
@@ -81,12 +83,20 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
   public filterControl = new FormControl('');
   public titleFilterOptions: Observable<FilterChip[]>;
-  public preparedFilters: FilterChip[] = [
+  public permissionFilterOptions: Observable<FilterChip[]>;
+  public preparedTitleFilters: FilterChip[] = [
     { value: GameTitle.FM7, type: FilterType.Title },
     { value: GameTitle.FH4, type: FilterType.Title },
     { value: GameTitle.FH5, type: FilterType.Title },
     { value: GameTitle.FM8, type: FilterType.Title },
   ];
+  public preparedPermissionFilters: FilterChip[] = [
+    { value: 'Tools with available actions', type: FilterType.Permission },
+  ];
+  public startupFilters: FilterChip[] = [
+    { value: 'Tools with available actions', type: FilterType.Permission },
+  ];
+
   public filters: FilterChip[] = [];
 
   public fields = { groupBy: 'type', value: 'value' };
@@ -98,7 +108,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     private readonly permAttributesService: PermAttributesService,
   ) {
     super();
-    this.titleFilterOptions = of(this.preparedFilters.slice());
+    this.titleFilterOptions = of(this.preparedTitleFilters.slice());
+    this.permissionFilterOptions = of(this.preparedPermissionFilters.slice());
   }
 
   /** Initialization hook. */
@@ -138,6 +149,18 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
           .map(tool => {
             return setExternalLinkTarget(tool);
           });
+
+        //Create a list of which perms the user has for a given tile.
+        const userAttributeNames = this.permAttributesService.permAttributeNames;
+        this.availableTiles.all.forEach(tile => {
+          tile.foundWritePermissions = intersection(userAttributeNames, tile.allPermissions);
+          tile.writePermissionsTooltip = this.createWritePermissionsTooltip(
+            tile.foundWritePermissions,
+          );
+        });
+
+        // Start with the write permission filter filled in.
+        this.filters.push(...this.startupFilters);
 
         this.unauthorizedTiles.all = unauthorizedNavbarItems;
 
@@ -237,7 +260,9 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   private _filter(filter: FilterChip): FilterChip[] {
     const filterValue = filter.value.toLowerCase();
 
-    return this.preparedFilters.filter(filter => filter.value.toLowerCase().includes(filterValue));
+    return this.preparedTitleFilters.filter(filter =>
+      filter.value.toLowerCase().includes(filterValue),
+    );
   }
 
   /** Runs filtering logic on both available and unauthorized tile lists. */
@@ -285,7 +310,13 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       const passesTextCheck =
         textFilters.length === 0 || !textFilterCheck.some(check => check === false);
 
-      return passesTitleCheck && passesTextCheck;
+      // Permissions Check
+      const hasPermissionFilter = this.filters.some(filter => {
+        return filter.type == FilterType.Permission;
+      });
+      const passesPermissionCheck = !hasPermissionFilter || tile.foundWritePermissions.length > 0;
+
+      return passesTitleCheck && passesTextCheck && passesPermissionCheck;
     });
 
     tilesToFilter.rejected = tilesToFilter.all.filter(
@@ -339,5 +370,12 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     const textParams = params[QueryParam.TextFilters];
     const textParamGroup: string[] = textParams?.split(',');
     textParamGroup?.forEach(param => this.filters.push({ value: param, type: FilterType.Text }));
+  }
+
+  /** Prepares a tooltip which lists available write permissions for a tile. */
+  private createWritePermissionsTooltip(permissions: PermAttributeName[]): string {
+    return `You have the following permissions for this tool:\n ${permissions
+      .map(perm => perm.toString())
+      .join(', ')}.`;
   }
 }

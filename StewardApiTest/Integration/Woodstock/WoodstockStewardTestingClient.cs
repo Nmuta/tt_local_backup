@@ -101,7 +101,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/creditUpdates?startIndex={startIndex}&maxResults={maxResults}");
+            var path = new Uri(this.baseUri, $"{V2TitlePath}player/{xuid}/creditUpdates?startIndex={startIndex}&maxResults={maxResults}");
 
             return await ServiceClient.SendRequestAsync<List<CreditUpdate>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }

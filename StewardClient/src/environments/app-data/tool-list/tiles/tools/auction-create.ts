@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const auctionCreateTile = <HomeTileInfoInternal>{
@@ -8,6 +9,7 @@ export const auctionCreateTile = <HomeTileInfoInternal>{
   title: 'Create Auction',
   subtitle: 'Create auction',
   supportedTitles: [GameTitle.FH5],
+  allPermissions: [PermAttributeName.CreateAuctions],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Create single or bulk auction(s)',

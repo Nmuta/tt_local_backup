@@ -9,6 +9,7 @@ export const banHistoryTile = <HomeTileInfoInternal>{
   title: 'Ban Review',
   subtitle: 'View past bans',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription:

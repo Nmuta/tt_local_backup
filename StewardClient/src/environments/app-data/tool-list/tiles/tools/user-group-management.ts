@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const userGroupManagementTile = <HomeTileInfoInternal>{
@@ -8,6 +9,11 @@ export const userGroupManagementTile = <HomeTileInfoInternal>{
   title: 'User Group Management',
   subtitle: 'Create & Edit User Groups',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+  allPermissions: [
+    PermAttributeName.CreateUserGroup,
+    PermAttributeName.UpdateUserGroup,
+    PermAttributeName.RemoveAllUsersFromGroup,
+  ],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Manage all operations for user groups.',

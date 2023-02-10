@@ -1,4 +1,4 @@
-import { UserRole } from '@models/enums';
+import { GameTitle, UserRole } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } from '../../helpers';
 
@@ -8,6 +8,8 @@ export const welcomeCenterTile = <HomeTileInfoInternal>{
   accessList: [UserRole.LiveOpsAdmin],
   title: 'Welcome Center Tiles',
   subtitle: 'Manage Welcome Center Tiles',
+  supportedTitles: [GameTitle.FM8],
+  allPermissions: [PermAttributeName.UpdateWelcomeCenterTiles],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'View and edit Welcome Center Tiles.',
