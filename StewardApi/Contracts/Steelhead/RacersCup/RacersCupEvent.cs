@@ -11,6 +11,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 
         public string PlaylistName { get; set; }
 
+        public string CarRestrictions { get; set; }
+
         public List<RacersCupEventWindow> EventWindows { get; set; }
 
         public List<RacersCupGameOptions> GameOptions { get; set; }
