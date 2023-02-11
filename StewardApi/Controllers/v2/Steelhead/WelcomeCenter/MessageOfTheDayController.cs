@@ -100,6 +100,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         [Authorize(Policy = UserAttribute.UpdateMessageOfTheDay)]
         public async Task<IActionResult> EditAndSubmitMessageOfTheDay(string id, [FromBody] MotdBridge messageOfTheDayBridge)
         {
+            messageOfTheDayBridge.ShouldNotBeNull(nameof(messageOfTheDayBridge));
+
             if (!Guid.TryParse(id, out var parsedId))
             {
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");

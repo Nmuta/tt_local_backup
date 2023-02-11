@@ -53,6 +53,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         [Authorize(Policy = UserAttribute.AddLocalizedString)]
         public async Task<IActionResult> WriteLocalizedStringsToPegasus(LocCategory category, [FromBody] IEnumerable<LocalizedStringBridge> localizedStringBridge)
         {
+            localizedStringBridge.CheckForNullOrEmpty(nameof(localizedStringBridge));
+
             CommitRefProxy change = await this.steelheadPegasusService.WriteLocalizedStringsToPegasusAsync(category, localizedStringBridge).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);

@@ -100,6 +100,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         [Authorize(Policy = UserAttribute.UpdateWelcomeCenterTiles)]
         public async Task<IActionResult> EditAndSubmitWorldOfForza(string id, [FromBody] WofBridge wofTileBridge)
         {
+            wofTileBridge.ShouldNotBeNull(nameof(wofTileBridge));
+
             if (!Guid.TryParse(id, out var parsedId))
             {
                 throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
