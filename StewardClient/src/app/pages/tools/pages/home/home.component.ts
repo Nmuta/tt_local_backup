@@ -161,8 +161,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
         });
 
         // Start with the write permission filter filled in.
-        if (this.userRole === UserRole.GeneralUser)
-        {
+        if (this.userRole === UserRole.GeneralUser) {
           this.filters.push(...this.startupFilters);
         }
 
