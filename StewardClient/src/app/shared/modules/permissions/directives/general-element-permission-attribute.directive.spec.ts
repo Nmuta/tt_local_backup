@@ -2,11 +2,11 @@ import { ElementRef, NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
-import { AnchorPermissionAttributeDirective } from './anchor-permission-attribute.directive';
+import { GeneralElementPermissionAttributeDirective } from './general-element-permission-attribute.directive';
 
-describe('AnchorPermissionAttributeDirective', () => {
+describe('GeneralElementPermissionAttributeDirective', () => {
   let anchor: ElementRef;
-  let directive: AnchorPermissionAttributeDirective;
+  let directive: GeneralElementPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;
 
   beforeEach(async () => {
@@ -44,7 +44,7 @@ describe('AnchorPermissionAttributeDirective', () => {
   });
 
   beforeEach(() => {
-    directive = new AnchorPermissionAttributeDirective(
+    directive = new GeneralElementPermissionAttributeDirective(
       anchor,
       mockPermAttributesService,
       null,

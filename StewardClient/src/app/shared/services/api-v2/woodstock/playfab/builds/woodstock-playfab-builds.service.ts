@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { throwError } from '@microsoft/applicationinsights-core-js';
 import { GuidLikeString } from '@models/extended-types';
-import { PlayFabBuildLock, PlayFabBuildSummary, PlayFabBuildLockRequest } from '@models/playfab';
+import { PlayFabBuildLock, PlayFabBuildSummary } from '@models/playfab';
 import { WoodstockPlayFabEnvironments } from '@models/woodstock';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
@@ -45,25 +44,12 @@ export class WoodstockPlayFabBuildsService {
   /** Adds new PlayFab build lock. */
   public addBuildLock$(
     playFabEnvironment: WoodstockPlayFabEnvironments,
-    buildLockRequest: PlayFabBuildLockRequest,
+    buildLockId: GuidLikeString,
+    reason: string,
   ): Observable<PlayFabBuildLock> {
-    if (!buildLockRequest.isLocked) {
-      return throwError('Cannot add a new PlayFab build lock with isLocked set to false.');
-    }
     return this.api.postRequest$<PlayFabBuildLock>(
-      `${this.basePath}/${playFabEnvironment}/builds/${buildLockRequest.id}/lock`,
-      buildLockRequest,
-    );
-  }
-
-  /** Updates PlayFab build lock. */
-  public updateBuildLock$(
-    playFabEnvironment: WoodstockPlayFabEnvironments,
-    buildLockRequest: PlayFabBuildLockRequest,
-  ): Observable<void> {
-    return this.api.putRequest$<void>(
-      `${this.basePath}/${playFabEnvironment}/builds/${buildLockRequest.id}/lock`,
-      buildLockRequest,
+      `${this.basePath}/${playFabEnvironment}/builds/${buildLockId}/lock`,
+      reason,
     );
   }
 

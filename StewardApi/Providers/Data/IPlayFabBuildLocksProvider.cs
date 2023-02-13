@@ -21,17 +21,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Gets multiple build lock entries based on params.
         /// </summary>
-        Task<IList<PlayFabBuildLock>> GetMultipleAsync(WoodstockPlayFabEnvironment environment, bool? withActiveLocks = null);
+        Task<IList<PlayFabBuildLock>> GetMultipleAsync(WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Creates new build lock entry.
         /// </summary>
         Task<PlayFabBuildLock> CreateAsync(PlayFabBuildLock newbuildLock);
-
-        /// <summary>
-        ///     Updates build lock entry.
-        /// </summary>
-        Task<PlayFabBuildLock> UpdateAsync(Guid buildId, PlayFabBuildLockRequest updatedBuildLock);
 
         /// <summary>
         ///     Deletes build lock entry.

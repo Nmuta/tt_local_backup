@@ -75,17 +75,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<PlayFabBuildLock>> GetMultipleAsync(WoodstockPlayFabEnvironment environment, bool? withActiveLocks = null)
+        public async Task<IList<PlayFabBuildLock>> GetMultipleAsync(WoodstockPlayFabEnvironment environment)
         {
             IList<PlayFabBuildLockInternal> result;
 
             try
             {
                 var tableQuery = new TableQuery<PlayFabBuildLockInternal>().Where(TableQuery.GenerateFilterCondition("PlayFabEnvironment", QueryComparisons.Equal, environment.ToString()));
-                if (withActiveLocks.HasValue)
-                {
-                    tableQuery = tableQuery.Where(TableQuery.GenerateFilterCondition("IsLocked", QueryComparisons.Equal, withActiveLocks.Value.ToString()));
-                }
 
                 result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
             }
@@ -114,30 +110,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             {
                 throw new UnknownFailureStewardException($"Failed to create new PlayFab build lock. (buildId: {newbuildLock.Id})", ex);
             }
-        }
-
-        /// <inheritdoc />
-        public async Task<PlayFabBuildLock> UpdateAsync(Guid buildId, PlayFabBuildLockRequest updatedBuildLock)
-        {
-            var existingBuildLock = await this.GetAsync(buildId).ConfigureAwait(true);
-            var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
-
-            try
-            {
-                // Only update fields we care about.
-                existingBuildLockInternal.ETag = "*";
-                existingBuildLockInternal.Reason = updatedBuildLock.Reason;
-                existingBuildLockInternal.IsLocked = updatedBuildLock.IsLocked;
-
-                var replaceOperation = TableOperation.Replace(existingBuildLockInternal);
-                await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to create new PlayFab build lock. (buildId: {buildId})", ex);
-            }
-
-            return this.mapper.SafeMap<PlayFabBuildLock>(existingBuildLockInternal);
         }
 
         /// <inheritdoc />

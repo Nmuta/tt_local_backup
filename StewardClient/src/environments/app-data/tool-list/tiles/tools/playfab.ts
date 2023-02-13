@@ -5,10 +5,14 @@ import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } fr
 export const playFabTile = <HomeTileInfoInternal>{
   icon: AppIcon.PlayFab,
   tool: NavbarTool.PlayFab,
-  accessList: [UserRole.LiveOpsAdmin],
+  accessList: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   title: 'PlayFab',
   subtitle: 'Management helpers for PlayFab',
   supportedTitles: [GameTitle.FH5],
+  allPermissions: [
+    PermAttributeName.ManagePlayFabBuildLocks,
+    PermAttributeName.ManagePlayFabSettings,
+  ],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Manage multiplayer server build locks',
@@ -17,9 +21,8 @@ export const playFabTile = <HomeTileInfoInternal>{
     import('../../../../../app/pages/tools/pages/playfab/playfab.module').then(
       m => m.PlayFabModule,
     ),
-  hideFromUnauthorized: true,
   restriction: {
     requiredPermissions: [PermAttributeName.ManagePlayFabBuildLocks],
-    action: HomeTileRestrictionType.Hide,
+    action: HomeTileRestrictionType.Disable,
   },
 };

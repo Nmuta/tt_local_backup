@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
-import { PlayFabBuildLock, PlayFabBuildLockRequest, PlayFabBuildSummary } from '@models/playfab';
+import { PlayFabBuildLock, PlayFabBuildSummary } from '@models/playfab';
 import { WoodstockPlayFabEnvironments } from '@models/woodstock';
 import { WoodstockPlayFabBuildsService } from '@services/api-v2/woodstock/playfab/builds/woodstock-playfab-builds.service';
 import { Observable } from 'rxjs';
@@ -25,10 +25,11 @@ export class WoodstockPlayFabBuildsManagementComponent {
       getPlayFabBuildLocks$(): Observable<PlayFabBuildLock[]> {
         return woodstockPlayFabBuildsService.getBuildLocks$(WoodstockPlayFabEnvironments.Dev);
       },
-      addPlayFabBuildLock$(buildLockRequest: PlayFabBuildLockRequest) {
+      addPlayFabBuildLock$(buildLockId: GuidLikeString, reason: string) {
         return woodstockPlayFabBuildsService.addBuildLock$(
           WoodstockPlayFabEnvironments.Dev,
-          buildLockRequest,
+          buildLockId,
+          reason,
         );
       },
       deletePlayFabBuildLock$(buildLockId: GuidLikeString) {

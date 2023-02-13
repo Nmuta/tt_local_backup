@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
     ///     Handles requests for Woodstock PlayFab build integrations.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/playfab/{playFabEnvironment}/builds")]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
@@ -55,17 +55,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
     {
         private readonly IWoodstockPlayFabService playFabService;
         private readonly IPlayFabBuildLocksProvider playFabBuildLocksProvider;
+        private readonly IBlobStorageProvider blobStorageProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BuildsController"/> class for Woodstock.
         /// </summary>
-        public BuildsController(IWoodstockPlayFabService playFabService, IPlayFabBuildLocksProvider playFabBuildLocksProvider)
+        public BuildsController(IWoodstockPlayFabService playFabService, IPlayFabBuildLocksProvider playFabBuildLocksProvider, IBlobStorageProvider blobStorageProvider)
         {
             playFabService.ShouldNotBeNull(nameof(playFabService));
             playFabBuildLocksProvider.ShouldNotBeNull(nameof(playFabBuildLocksProvider));
+            blobStorageProvider.ShouldNotBeNull(nameof(blobStorageProvider));
 
             this.playFabService = playFabService;
             this.playFabBuildLocksProvider = playFabBuildLocksProvider;
+            this.blobStorageProvider = blobStorageProvider;
         }
 
         /// <summary>
@@ -144,11 +147,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
         [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
-        public async Task<IActionResult> AddNewPlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest buildLockRequest)
+        public async Task<IActionResult> AddNewPlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] string reason)
         {
-            // TODO: Max # of build locks per person.
-            // TODO: throw if trying to add a build lock if one already exists
-
             var userClaims = this.User.UserClaims();
 
             var parsedPlayFabEnvironment = playFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(WoodstockPlayFabEnvironment));
@@ -156,9 +156,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
 
             await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, parsedPlayFabEnvironment).ConfigureAwait(true);
 
-            if (!buildLockRequest.IsLocked)
+            var activeBuildLocks = await this.playFabBuildLocksProvider.GetMultipleAsync(parsedPlayFabEnvironment).ConfigureAwait(true);
+            var playFabSettings = await this.blobStorageProvider.GetStewardPlayFabSettingsAsync().ConfigureAwait(true);
+
+            // Verify that a build lock does not already exist
+            var foundBuildLock = activeBuildLocks.FirstOrDefault((v) => v.Id == parsedBuildId);
+            if (foundBuildLock != null)
             {
-                throw new InvalidArgumentsStewardException($"Cannot add a new build lock with isLocked set to false.");
+                throw new BadRequestStewardException($"Cannot add, lock already exists for the provided PlayFab build. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})");
+            }
+
+            // Verify that the new build lock will not break configured max # of allowed locks
+            var expectedBuildLockCount = activeBuildLocks.Count + 1;
+            if (expectedBuildLockCount > playFabSettings.MaxBuildLocks)
+            {
+                throw new BadRequestStewardException($"Maximum number of build locks has already been met. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId}) (activeBuildLockCount: ${activeBuildLocks.Count}) (activeBuildLockCount: ${playFabSettings.MaxBuildLocks})");
             }
 
             try
@@ -166,8 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
                 var buildLock = new PlayFabBuildLock()
                 {
                     Id = parsedBuildId,
-                    Reason = buildLockRequest.Reason,
-                    IsLocked = true,
+                    Reason = reason,
                     UserId = userClaims.ObjectId,
                     PlayFabEnvironment = parsedPlayFabEnvironment.ToString(),
                     GameTitle = TitleConstants.WoodstockCodeName.ToLowerInvariant(),
@@ -186,36 +197,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         }
 
         /// <summary>
-        ///     Updates PlayFab build lock in the database.
-        /// </summary>
-        [HttpPut("{buildId}/lock")]
-        [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
-        [LogTagDependency(DependencyLogTags.Cosmos)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update)]
-        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabBuildLock)]
-        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
-        public async Task<IActionResult> UpdatePlayFabBuildLock(string playFabEnvironment, string buildId, [FromBody] PlayFabBuildLockRequest updatedBuildLock)
-        {
-            var userClaims = this.User.UserClaims();
-
-            var parsedPlayFabEnvironment = playFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(WoodstockPlayFabEnvironment));
-            var parsedBuildId = buildId.TryParseGuidElseThrow(nameof(buildId));
-
-            await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, parsedPlayFabEnvironment).ConfigureAwait(true);
-
-            try
-            {
-                var updatedLock = await this.playFabBuildLocksProvider.UpdateAsync(parsedBuildId, updatedBuildLock).ConfigureAwait(true);
-
-                return this.Ok(updatedLock);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to update build lock. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId})", ex);
-            }
-        }
-
-        /// <summary>
         ///     Deletes PlayFab build lock in the database.
         /// </summary>
         [HttpDelete("{buildId}/lock")]
@@ -229,8 +210,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             // TODO: Verify who can delete locks (only person who created them | anyone with correct Steward perms)
             var parsedPlayFabEnvironment = playFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(WoodstockPlayFabEnvironment));
             var parsedBuildId = buildId.TryParseGuidElseThrow();
-
-            await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, parsedPlayFabEnvironment).ConfigureAwait(true);
 
             try
             {

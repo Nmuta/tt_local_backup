@@ -17,5 +17,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Sets tools availability.
         /// </summary>
         Task<ToolsAvailability> SetToolsAvailabilityAsync(ToolsAvailability updatedToolsAvailability);
+
+        /// <summary>
+        ///     Gets PlayFab settings.
+        /// </summary>
+        Task<StewardPlayFabSettings> GetStewardPlayFabSettingsAsync();
+
+        /// <summary>
+        ///     Sets PlayFab settings.
+        /// </summary>
+        Task<StewardPlayFabSettings> SetStewardPlayFabSettingsAsync(StewardPlayFabSettings updatedPlayFabSettings);
     }
 }

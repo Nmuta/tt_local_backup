@@ -83,7 +83,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<SteelheadGift> giftRequestValidator;
         private readonly IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator;
         private readonly IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator;
-        private readonly IRequestValidator<SteelheadUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SteelheadController"/> class.
@@ -108,8 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SteelheadGift> giftRequestValidator,
             IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator,
-            IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator,
-            IRequestValidator<SteelheadUserFlagsInput> userFlagsRequestValidator)
+            IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
@@ -131,7 +129,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
-            userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.memoryCache = memoryCache;
@@ -152,7 +149,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
-            this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 
         /// <summary>
@@ -308,65 +304,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return this.Ok(result);
         }
 
-        /// <summary>
-        ///     Gets user flags.
-        /// </summary>
-        [HttpGet("player/xuid({xuid})/userFlags")]
-        [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
-        public async Task<IActionResult> GetUserFlags(
-            ulong xuid)
-        {
-            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            var result = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-
-            return this.Ok(result);
-        }
-
-        /// <summary>
-        ///     Sets user flags.
-        /// </summary>
-        [HttpPut("player/xuid({xuid})/userFlags")]
-        [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
-        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
-        public async Task<IActionResult> SetUserFlags(
-            ulong xuid,
-            [FromBody] SteelheadUserFlagsInput userFlags)
-        {
-            userFlags.ShouldNotBeNull(nameof(userFlags));
-
-            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
-            if (!this.ModelState.IsValid)
-            {
-                var result = this.userFlagsRequestValidator.GenerateErrorResponse(this.ModelState);
-                throw new InvalidArgumentsStewardException(result);
-            }
-
-            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            var validatedFlags = this.mapper.Map<SteelheadUserFlags>(userFlags);
-            await this.steelheadPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
-                .ConfigureAwait(true);
-
-            var results = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-
-            return this.Ok(results);
-        }
 
         /// <summary>
         ///     Bans players.

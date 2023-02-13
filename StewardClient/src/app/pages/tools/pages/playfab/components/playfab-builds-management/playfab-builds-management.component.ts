@@ -16,10 +16,11 @@ import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source'
 import { pairwiseSkip } from '@helpers/rxjs';
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
-import { PlayFabBuildLock, PlayFabBuildLockRequest, PlayFabBuildSummary } from '@models/playfab';
+import { PlayFabBuildLock, PlayFabBuildSummary } from '@models/playfab';
+import { BlobStorageService } from '@services/blob-storage';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { cloneDeep, find } from 'lodash';
+import { cloneDeep, find, remove } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
@@ -32,7 +33,7 @@ export interface PlayFabBuildsManagementServiceContract {
   gameTitle: GameTitle;
   getPlayFabBuilds$(): Observable<PlayFabBuildSummary[]>;
   getPlayFabBuildLocks$(): Observable<PlayFabBuildLock[]>;
-  addPlayFabBuildLock$(buildLockRequest: PlayFabBuildLockRequest): Observable<PlayFabBuildLock>;
+  addPlayFabBuildLock$(buildLockId: GuidLikeString, reason: string): Observable<PlayFabBuildLock>;
   deletePlayFabBuildLock$(buildLockId: GuidLikeString): Observable<PlayFabBuildLock>;
 }
 
@@ -41,10 +42,19 @@ interface BuildFilters {
   lockStatus: LockFilterType;
 }
 
+type PlayFabBuildLockTableEntry = PlayFabBuildLock & {
+  monitor: ActionMonitor;
+};
+
 type PlayFabBuildSummaryTableEntry = PlayFabBuildSummary & {
   /** Build lock if it exists. Correlated through separate API request. */
   lock: PlayFabBuildLock;
 };
+
+interface PlayFabBuildLocksManagement {
+  max: number;
+  current: number;
+}
 
 enum LockFilterType {
   All,
@@ -67,11 +77,19 @@ export class PlayFabBuildsManagementComponent
   /** Component service contract. */
   @Input() public service: PlayFabBuildsManagementServiceContract;
 
-  public getPlayFabBuildsAndLocksMonitor = new ActionMonitor('GET PlayFab builds and build locks');
+  public getPlayFabBuildsAndLocksMonitor = new ActionMonitor('GET PlayFab builds & build locks');
+  public getPlayFabSettingsMonitor = new ActionMonitor('GET PlayFab settings');
+
+  public uncorrelatedBuildLocksColumns = ['buildDetails', 'lockDetails', 'actions'];
+  public uncorrelatedBuildLocksTable = new BetterMatTableDataSource<PlayFabBuildLockTableEntry>([]);
 
   public buildsTableColumns = ['isLocked', 'buildDetails', 'lockDetails', 'actions'];
   public buildsTable = new BetterMatTableDataSource<PlayFabBuildSummaryTableEntry>([]);
   public allBuildTableEntries: PlayFabBuildSummaryTableEntry[] = [];
+  public buildLocks: PlayFabBuildLocksManagement = {
+    max: -1,
+    current: -1,
+  };
 
   public playFabBuildsPermAttribute = PermAttributeName.ManagePlayFabBuildLocks;
 
@@ -84,7 +102,20 @@ export class PlayFabBuildsManagementComponent
 
   public LockFilterType = LockFilterType;
 
-  constructor(private readonly dialog: MatDialog) {
+  /** The number of available build locks. */
+  public get availableBuildLocks(): number {
+    return this.buildLocks.max - this.buildLocks.current;
+  }
+
+  /** Whether there are available build locks to use. */
+  public get hasAvailableBuildLocks(): boolean {
+    return this.availableBuildLocks > 0;
+  }
+
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly blobStorageService: BlobStorageService,
+  ) {
     super();
   }
 
@@ -101,6 +132,8 @@ export class PlayFabBuildsManagementComponent
       .subscribe((formFilters: BuildFilters) => {
         this.filterBuilds(formFilters);
       });
+
+    this.getPlayFabSettings();
   }
 
   /** Lifecycle hook. */
@@ -110,23 +143,34 @@ export class PlayFabBuildsManagementComponent
     }
 
     const getBuilds$ = this.service.getPlayFabBuilds$();
-
     const getBuildLocks$ = this.service.getPlayFabBuildLocks$();
 
     this.getPlayFabBuildsAndLocksMonitor = this.getPlayFabBuildsAndLocksMonitor.repeat();
     combineLatest([getBuilds$, getBuildLocks$])
       .pipe(this.getPlayFabBuildsAndLocksMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(([builds, buildLocks]) => {
-        const tableBulds = builds.map(build => {
+        const uncorrelatedBuildLocks = cloneDeep(buildLocks);
+        const tableBuilds = builds.map(build => {
           const mappedBuld = build as PlayFabBuildSummaryTableEntry;
-          const buildLock = find(buildLocks, lock => lock.id === build.id && !!lock.isLocked);
+          const buildLock = find(buildLocks, lock => lock.id === build.id);
           mappedBuld.lock = buildLock;
+
+          if (!!buildLock) {
+            remove(uncorrelatedBuildLocks, buildLock);
+          }
 
           return mappedBuld;
         });
 
-        this.allBuildTableEntries = tableBulds;
+        this.uncorrelatedBuildLocksTable.data = uncorrelatedBuildLocks.map(lock => {
+          const mappedLock = lock as PlayFabBuildLockTableEntry;
+          mappedLock.monitor = new ActionMonitor(`Delete build lock: ${lock.id}`);
+          return mappedLock;
+        });
+
+        this.allBuildTableEntries = tableBuilds;
         this.buildsTable.data = this.allBuildTableEntries;
+        this.buildLocks.current = buildLocks.length;
       });
   }
 
@@ -155,7 +199,31 @@ export class PlayFabBuildsManagementComponent
         // Undefined means nothing happened in dialog
         if (lock !== undefined) {
           item.lock = lock;
+          this.buildLocks.current += !!lock ? 1 : -1;
         }
+      });
+  }
+
+  /** Deletes an uncorrelated build lock. */
+  public deleteUncorrelatedBuildLock(lockToDelete: PlayFabBuildLockTableEntry): void {
+    lockToDelete.monitor = lockToDelete.monitor.repeat();
+
+    this.deletePlayFabBuildLock$(lockToDelete.id)
+      .pipe(lockToDelete.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        remove(this.uncorrelatedBuildLocksTable.data, lock => lock.id === lockToDelete.id);
+        this.buildLocks.current--;
+      });
+  }
+
+  /** Gets the PlayFab settings */
+  public getPlayFabSettings(): void {
+    this.getPlayFabSettingsMonitor = this.getPlayFabSettingsMonitor.repeat();
+    this.blobStorageService
+      .getPlayFabSettings$()
+      .pipe(this.getPlayFabSettingsMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(settings => {
+        this.buildLocks.max = settings.maxBuildLocks;
       });
   }
 
@@ -164,13 +232,7 @@ export class PlayFabBuildsManagementComponent
     buildId: GuidLikeString,
     lockReason: string,
   ): Observable<PlayFabBuildLock> {
-    const requestData = {
-      id: buildId,
-      reason: lockReason,
-      isLocked: true,
-    } as PlayFabBuildLockRequest;
-
-    return this.service.addPlayFabBuildLock$(requestData);
+    return this.service.addPlayFabBuildLock$(buildId, lockReason);
   }
 
   /** Deletes the PlayFab build lock. */

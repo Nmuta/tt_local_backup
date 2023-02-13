@@ -7,6 +7,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Forte;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -71,7 +72,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [Authorize(Policy = UserAttribute.AdminFeature)]
         public async Task<IActionResult> SetToolsAvailable([FromBody] ToolsAvailability updatedToolsAvailability)
         {
+            updatedToolsAvailability.ShouldNotBeNull(nameof(updatedToolsAvailability));
+
             var results = await this.blobStorageProvider.SetToolsAvailabilityAsync(updatedToolsAvailability).ConfigureAwait(true);
+
+            return this.Ok(results);
+        }
+
+        /// <summary>
+        ///     Sets the available Steward tools.
+        /// </summary>
+        [HttpPost("playfab")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
+        [SwaggerResponse(200, type: typeof(StewardPlayFabSettings))]
+        [Authorize(Policy = UserAttribute.ManagePlayFabSettings)]
+        [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.PlayFabSettings)]
+        public async Task<IActionResult> SetPlayFabSettings([FromBody] StewardPlayFabSettings updatedPlayfabSettings)
+        {
+            updatedPlayfabSettings.ShouldNotBeNull(nameof(updatedPlayfabSettings));
+
+            var results = await this.blobStorageProvider.SetStewardPlayFabSettingsAsync(updatedPlayfabSettings).ConfigureAwait(true);
 
             return this.Ok(results);
         }

@@ -2,10 +2,6 @@
 
 @include flex-navbar-fill;
 
-::ng-deep mat-card {
-  margin-bottom: $gap-medium;
-}
-
-mat-tab-group {
+.container {
   margin: $gap-medium;
 }

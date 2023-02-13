@@ -13,17 +13,9 @@ export interface PlayFabBuildSummary {
 export interface PlayFabBuildLock {
   id: GuidLikeString;
   reason: string;
-  isLocked: boolean;
   userId: string;
   playFabEnvironment: string;
   gameTitle: string;
   dateCreatedUtc: DateTime;
   metaData: string;
-}
-
-/** Model used for creating and updating PlayFab build locks. */
-export interface PlayFabBuildLockRequest {
-  id: GuidLikeString;
-  reason: string;
-  isLocked: boolean;
 }

@@ -21,8 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
         public string Reason { get; set; }
 
-        public bool IsLocked { get; set; }
-
         public string UserId { get; set; }
 
         public string PlayFabEnvironment { get; set; }

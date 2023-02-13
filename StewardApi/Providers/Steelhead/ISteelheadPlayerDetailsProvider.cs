@@ -59,16 +59,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             string endpoint);
 
         /// <summary>
-        ///     Gets user flags.
-        /// </summary>
-        Task<SteelheadUserFlags> GetUserFlagsAsync(ulong xuid, string endpoint);
-
-        /// <summary>
-        ///     Sets user flags.
-        /// </summary>
-        Task SetUserFlagsAsync(ulong xuid, SteelheadUserFlags userFlags, string endpoint);
-
-        /// <summary>
         ///     Bans users.
         /// </summary>
         Task<IList<BanResult>> BanUsersAsync(

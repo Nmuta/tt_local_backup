@@ -8,7 +8,7 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { find, has, includes } from 'lodash';
+import { find, has, includes, uniq } from 'lodash';
 import { filter, Observable, of, ReplaySubject, take, takeUntil, tap } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
@@ -29,6 +29,7 @@ export class PermAttributesService extends BaseService {
   private attributesInitialized: boolean = false;
   private isServiceFullyInitialized: boolean = false;
   private allPermAttributes: PermAttribute[];
+  private allPermAttributeNames: PermAttributeName[];
   private availableTitlesAndEnvironments: TitlesAndEnvironments = {
     [GameTitle.Forte]: [],
     [GameTitle.FM8]: [],
@@ -63,6 +64,11 @@ export class PermAttributesService extends BaseService {
   /** Gets all perm attributes. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
   public get permAttributes(): PermAttribute[] {
     return this.allPermAttributes;
+  }
+
+  /** Gets all perm attribute names. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
+  public get permAttributeNames(): PermAttributeName[] {
+    return this.allPermAttributeNames;
   }
 
   /**
@@ -149,6 +155,7 @@ export class PermAttributesService extends BaseService {
   /** Initiallizes the parm attributes service. */
   public initialize(attributes: PermAttribute[]): void {
     this.allPermAttributes = attributes;
+    this.allPermAttributeNames = uniq(attributes.map(x => x.attribute));
 
     // Build the available titles and environments model
     for (const attribute of this.allPermAttributes) {

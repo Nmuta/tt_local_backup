@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const ugcDetailsTile = <HomeTileInfoInternal>{
@@ -8,6 +9,15 @@ export const ugcDetailsTile = <HomeTileInfoInternal>{
   title: 'UGC Details',
   subtitle: 'User Generated Content',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],
+  allPermissions: [
+    PermAttributeName.FeatureUgc,
+    PermAttributeName.HideUgc,
+    PermAttributeName.UnhideUgc,
+    PermAttributeName.SetUgcGeoFlag,
+    PermAttributeName.CloneUgc,
+    PermAttributeName.ReportUgc,
+    PermAttributeName.PersistUgc,
+  ],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'View extended information about a single UGC item',

@@ -212,66 +212,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
         }
 
-        /// <inheritdoc/>
-        public async Task<SteelheadUserFlags> GetUserFlagsAsync(ulong xuid, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var userGroupResults = await this.steelheadService
-                    .GetUserGroupMembershipsAsync(
-                        xuid,
-                        Array.Empty<int>(),
-                        DefaultMaxResults,
-                        endpoint).ConfigureAwait(false);
-                var suspiciousResults = await this.steelheadService.GetIsUnderReviewAsync(
-                    xuid,
-                    endpoint).ConfigureAwait(false);
-
-                userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
-
-                return new SteelheadUserFlags
-                {
-                    IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
-                    IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
-                    IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
-                    IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                    IsUnderReview = suspiciousResults.isUnderReview
-                };
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"User flags not found for XUID: {xuid}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task SetUserFlagsAsync(ulong xuid, SteelheadUserFlags userFlags, string endpoint)
-        {
-            userFlags.ShouldNotBeNull(nameof(userFlags));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var addGroupList = this.PrepareGroupIds(userFlags, true);
-                var removeGroupList = this.PrepareGroupIds(userFlags, false);
-
-                await this.steelheadService.AddToUserGroupsAsync(
-                    xuid,
-                    addGroupList.ToArray(),
-                    endpoint).ConfigureAwait(false);
-                await this.steelheadService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray(), endpoint)
-                    .ConfigureAwait(false);
-                await this.steelheadService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview, endpoint)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"Update user flags failed for XUID: {xuid}.", ex);
-            }
-        }
-
         /// <inheritdoc />
         public async Task<IList<BanResult>> BanUsersAsync(
             IList<SteelheadBanParameters> banParameters,
@@ -455,17 +395,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 throw new NotFoundStewardException($"No racer schedule data found for XUID: {xuid}.", ex);
             }
-        }
-
-        private IList<int> PrepareGroupIds(SteelheadUserFlags userFlags, bool toggleOn)
-        {
-            var resultGroupIds = new List<int>();
-            if (userFlags.IsVip == toggleOn) { resultGroupIds.Add(VipUserGroupId); }
-            if (userFlags.IsUltimateVip == toggleOn) { resultGroupIds.Add(UltimateVipUserGroupId); }
-            if (userFlags.IsTurn10Employee == toggleOn) { resultGroupIds.Add(T10EmployeeUserGroupId); }
-            if (userFlags.IsEarlyAccess == toggleOn) { resultGroupIds.Add(WhitelistUserGroupId); }
-
-            return resultGroupIds;
         }
     }
 }

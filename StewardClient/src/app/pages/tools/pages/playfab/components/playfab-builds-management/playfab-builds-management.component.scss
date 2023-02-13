@@ -9,9 +9,34 @@ $actions-column-width: 250px;
   max-height: unset;
 }
 
-mat-form-field {
+mat-icon {
+  margin-right: $gap-small;
+}
+
+mat-expansion-panel {
+  margin-bottom: $gap-medium;
+
+  .mat-checkbox {
+    margin-left: $gap-small;
+  }
+}
+
+.mat-chip-list {
+  float: right;
+}
+
+form {
   max-width: $single-input-max-width;
-  width: 100%;
+
+  mat-button-toggle-group,
+  mat-button-toggle,
+  mat-form-field {
+    width: 100%;
+  }
+
+  mat-form-field {
+    margin-top: $gap-small;
+  }
 }
 
 table {

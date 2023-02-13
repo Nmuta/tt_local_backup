@@ -288,20 +288,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { UserFlagsRequestValidator = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlagsRequestValidator"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -613,62 +599,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Assert.
 
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task GetUserFlags_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.GetUserFlags(xuid).ConfigureAwait(false);
-
-            // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            Action().Should().NotBeNull();
-            var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as SteelheadUserFlags;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<SteelheadUserFlags>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task SetUserFlags_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var userFlags = Fixture.Create<SteelheadUserFlagsInput>();
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
-
-            // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            Action().Should().NotBeNull();
-            var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as SteelheadUserFlags;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<SteelheadUserFlags>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SetUserFlags_WithNullUserFlags_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlags"));
         }
 
         [TestMethod]
@@ -1481,7 +1411,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.SteelheadPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
                 this.SteelheadPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-                this.SteelheadPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadUserFlags>());
                 this.SteelheadPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<SteelheadBanParameters>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
@@ -1543,8 +1472,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public IRequestValidator<SteelheadBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadBanParametersInput>>();
 
-            public IRequestValidator<SteelheadUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadUserFlagsInput>>();
-
             public SteelheadController Build() => new SteelheadController(
                 new MemoryCache(new MemoryCacheOptions()),
                 this.ActionLogger,
@@ -1565,8 +1492,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,
-                this.BanParametersRequestValidator,
-                this.UserFlagsRequestValidator)
+                this.BanParametersRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }
