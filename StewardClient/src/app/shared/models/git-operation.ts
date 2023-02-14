@@ -12,7 +12,7 @@ export enum PullRequestStatus {
 /** The different string used in pull request titles. */
 export enum PullRequestSubject {
   MessageOfTheDay = 'MessageOfTheDay',
-  WorldOfForzaTile = 'WorldOfForzaTile',
+  WorldOfForzaTile = 'WoFTile',
 }
 
 /** Interface for a a git pull request. */

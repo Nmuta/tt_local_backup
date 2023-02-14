@@ -4,20 +4,9 @@ using Newtonsoft.Json.Converters;
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
     /// <summary>
-    ///     Tile sizes.
+    ///     World of Forza Image Text Tile Bridge.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum TileSize
-    {
-        Medium,
-
-        Large
-    }
-
-    /// <summary>
-    ///     World of Forza Tile Bridge.
-    /// </summary>
-    public class WofBridge
+    public class WofGenericPopupBridge
     {
         /// <summary>
         ///     Gets or sets the friendly name.
@@ -45,14 +34,19 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public LocTextBridge TileDescription { get; set; }
 
         /// <summary>
-        ///     Gets or sets content image path.
-        /// </summary>
-        public string ContentImagePath { get; set; }
-
-        /// <summary>
         ///     Gets or sets title image path.
         /// </summary>
         public string TileImagePath { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the popup title.
+        /// </summary>
+        public LocTextBridge PopupTitle { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the popup description.
+        /// </summary>
+        public LocTextBridge PopupDescription { get; set; }
 
         /// <summary>
         ///     Gets or sets the timer.

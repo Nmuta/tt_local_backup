@@ -21,7 +21,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -33,22 +33,22 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
 {
     /// <summary>
-    ///     Controller for steelhead Welcome Center's Message of the Day.
+    ///     Controller for steelhead World of Forza Deeplink Tile.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/welcomecenter/messageoftheday")]
+    [Route("api/v{version:apiVersion}/title/steelhead/welcomecenter/worldofforza/deeplink")]
     [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Topic.Pegasus)]
-    public class MessageOfTheDayController : V2SteelheadControllerBase
+    public class DeeplinkTileController : V2SteelheadControllerBase
     {
         private readonly ISteelheadPegasusService steelheadPegasusService;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MessageOfTheDayController"/> class.
+        ///     Initializes a new instance of the <see cref="DeeplinkTileController"/> class.
         /// </summary>
-        public MessageOfTheDayController(ISteelheadPegasusService steelheadPegasusService)
+        public DeeplinkTileController(ISteelheadPegasusService steelheadPegasusService)
         {
             steelheadPegasusService.ShouldNotBeNull(nameof(steelheadPegasusService));
 
@@ -56,38 +56,38 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         }
 
         /// <summary>
-        ///     Gets all Message of the Day entries to select.
+        ///     Gets all deeplink tile entries to select.
         /// </summary>
         [HttpGet("options")]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetMotDSelectionOptionsAsync()
+        public async Task<IActionResult> GetWorldOfForzaDeeplinkSelectionOptionsAsync()
         {
-            var choices = await this.steelheadPegasusService.GetMessageOfTheDaySelectionsAsync().ConfigureAwait(true);
+            Dictionary<Guid, string> choices = await this.steelheadPegasusService.GetWorldOfForzaDeeplinkSelectionsAsync().ConfigureAwait(true);
 
             return this.Ok(choices);
         }
 
         /// <summary>
-        ///     Gets current Message of the Day values for the entry
+        ///     Gets current values for the tile
         ///     with matching id.
         /// </summary>
         [HttpGet("{id}")]
-        [SwaggerResponse(200, type: typeof(MotdBridge))]
+        [SwaggerResponse(200, type: typeof(WofDeeplinkBridge))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetMotDCurrentValuesAsync(string id)
+        public async Task<IActionResult> GetWorldOfForzaDeeplinkCurrentValuesAsync(string id)
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            var motdbridge = await this.steelheadPegasusService.GetMessageOfTheDayCurrentValuesAsync(parsedId).ConfigureAwait(true);
+            WofDeeplinkBridge wofbridge = await this.steelheadPegasusService.GetWorldOfForzaDeeplinkTileAsync(parsedId).ConfigureAwait(true);
 
-            return this.Ok(motdbridge);
+            return this.Ok(wofbridge);
         }
 
         /// <summary>
-        ///     Edits and submit Message of the Day.
+        ///     Edits and submit a deeplink tile.
         /// </summary>
         [HttpPost("{id}")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
@@ -95,19 +95,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.WelcomeCenter)]
-        [Authorize(Policy = UserAttribute.UpdateMessageOfTheDay)]
-        public async Task<IActionResult> EditAndSubmitMessageOfTheDay(string id, [FromBody] MotdBridge messageOfTheDayBridge)
+        [Authorize(Policy = UserAttribute.UpdateWelcomeCenterTiles)]
+        public async Task<IActionResult> EditAndSubmitDeeplinkTile(string id, [FromBody] WofDeeplinkBridge wofTileBridge)
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            var commitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "MessageOfTheDay");
-            CommitRefProxy change = await this.steelheadPegasusService.EditMessageOfTheDayAsync(messageOfTheDayBridge, parsedId, commitComment).ConfigureAwait(true);
+            var commitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileDeeplink");
+            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaDeeplinkTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
 
             var user = this.User.UserClaims();
-            var pullRequestTitle = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestTitle, "MessageOfTheDay", user.EmailAddress);
+            var pullRequestTitle = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestTitle, "WoFTileDeeplink", user.EmailAddress);
             var pullRequestDescription = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestDescription, DateTime.UtcNow);
 
             var pullrequest = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(true);

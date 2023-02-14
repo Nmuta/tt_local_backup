@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -29,25 +30,25 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter.WorldOfForza
 {
     /// <summary>
-    ///     Controller for steelhead Welcome Center's World of Forza Tile.
+    ///     Controller for steelhead World of Forza Image Text Tile.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/welcomecenter/worldofforza")]
+    [Route("api/v{version:apiVersion}/title/steelhead/welcomecenter/worldofforza/imagetext")]
     [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Topic.Pegasus)]
-    public class WorldOfForzaTileController : V2SteelheadControllerBase
+    public class ImageTextTileController : V2SteelheadControllerBase
     {
         private readonly ISteelheadPegasusService steelheadPegasusService;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WorldOfForzaTileController"/> class.
+        ///     Initializes a new instance of the <see cref="ImageTextTileController"/> class.
         /// </summary>
-        public WorldOfForzaTileController(ISteelheadPegasusService steelheadPegasusService)
+        public ImageTextTileController(ISteelheadPegasusService steelheadPegasusService)
         {
             steelheadPegasusService.ShouldNotBeNull(nameof(steelheadPegasusService));
 
@@ -55,41 +56,38 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         }
 
         /// <summary>
-        ///     Gets all World of Forza entries to select.
+        ///     Gets all image text tile entries to select.
         /// </summary>
         [HttpGet("options")]
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetWorldOfForzaSelectionOptionsAsync()
+        public async Task<IActionResult> GetImageTextTileSelectionOptionsAsync()
         {
-            Dictionary<Guid, string> choices = await this.steelheadPegasusService.GetWorldOfForzaSelectionsAsync().ConfigureAwait(true);
+            Dictionary<Guid, string> choices = await this.steelheadPegasusService.GetWorldOfForzaImageTextTileSelectionsAsync().ConfigureAwait(true);
 
             return this.Ok(choices);
         }
 
         /// <summary>
-        ///     Gets current World of Forza values for the entry
+        ///     Gets current values for the tile
         ///     with matching id.
         /// </summary>
         [HttpGet("{id}")]
-        [SwaggerResponse(200, type: typeof(WofBridge))]
+        [SwaggerResponse(200, type: typeof(WofImageTextBridge))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetWorldOfForzaCurrentValuesAsync(string id)
+        public async Task<IActionResult> GetImageTextTileCurrentValuesAsync(string id)
         {
-            if (!Guid.TryParse(id, out var parsedId))
-            {
-                throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
-            }
+            var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            WofBridge wofbridge = await this.steelheadPegasusService.GetWorldOfForzaCurrentValuesAsync(parsedId).ConfigureAwait(true);
+            WofImageTextBridge wofbridge = await this.steelheadPegasusService.GetWorldOfForzaImageTextTileAsync(parsedId).ConfigureAwait(true);
 
             return this.Ok(wofbridge);
         }
 
         /// <summary>
-        ///     Edits and submit World of Forza.
+        ///     Edits and submit an image text tile.
         /// </summary>
         [HttpPost("{id}")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
@@ -97,24 +95,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.WelcomeCenter)]
-        [Authorize(Policy = UserAttribute.UpdateMessageOfTheDay)]
-        public async Task<IActionResult> EditAndSubmitWorldOfForza(string id, [FromBody] WofBridge wofTileBridge)
+        [Authorize(Policy = UserAttribute.UpdateWelcomeCenterTiles)]
+        public async Task<IActionResult> EditAndSubmitImageTextTile(string id, [FromBody] WofImageTextBridge wofTileBridge)
         {
-            if (!Guid.TryParse(id, out var parsedId))
-            {
-                throw new BadRequestStewardException($"ID could not be parsed as GUID. (id: {id})");
-            }
+            var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            var commitComment = "StewardApi: Edits WorldOfForzaTileImage";
-            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
+            var commitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileImageText");
+            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaImageTextTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
 
             var user = this.User.UserClaims();
-            var pullRequestTitle = $"Edits WorldOfForzaTileImage from Steward. Author: {user.EmailAddress}";
-            var pullRequestDescription = $"- Autogenerated pull request\n\t- Edited on {DateTime.UtcNow:u} (UTC)";
-
+            var pullRequestTitle = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestTitle, "WoFTileImageText", user.EmailAddress);
+            var pullRequestDescription = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestDescription, DateTime.UtcNow);
+            
             var pullrequest = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(true);
 
             return this.Ok(pullrequest);
