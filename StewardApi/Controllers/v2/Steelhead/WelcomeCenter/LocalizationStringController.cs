@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -54,6 +55,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         public async Task<IActionResult> WriteLocalizedStringsToPegasus(LocCategory category, [FromBody] IEnumerable<LocalizedStringBridge> localizedStringBridge)
         {
             localizedStringBridge.CheckForNullOrEmpty(nameof(localizedStringBridge));
+
+            var availableCategories = await this.steelheadPegasusService.GetLocalizationCategoriesFromRepoAsync().ConfigureAwait(true);
+            if (!availableCategories.Contains(category.ToString()))
+            {
+                throw new BadRequestStewardException($"The selected category is invalid: {category})");
+            }
 
             CommitRefProxy change = await this.steelheadPegasusService.WriteLocalizedStringsToPegasusAsync(category, localizedStringBridge).ConfigureAwait(true);
 

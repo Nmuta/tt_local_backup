@@ -168,5 +168,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Writes localized strings to Pegasus.
         /// </summary>
         public Task<CommitRefProxy> WriteLocalizedStringsToPegasusAsync(LocCategory category, IEnumerable<LocalizedStringBridge> localizedStrings);
+
+        /// <summary>
+        ///     Gets localization categories available in repository.
+        /// </summary>
+        public Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync();
     }
 }

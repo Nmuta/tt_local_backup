@@ -569,6 +569,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync()
+        {
+            var items = await this.azureDevOpsManager.ListItemsAsync("/Source/Localization").ConfigureAwait(false);
+            return items.Skip(1).Select(k => System.IO.Path.GetFileNameWithoutExtension(k.Path["/Source/Localization/Localization-".Length..]));
+        }
+
+        /// <inheritdoc/>
         public async Task<CommitRefProxy> WriteLocalizedStringsToPegasusAsync(LocCategory category, IEnumerable<LocalizedStringBridge> localizedStrings)
         {
             var path = $"{this.pathLocalizationFolder}/Localization-{category}.xml";
