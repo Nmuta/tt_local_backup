@@ -8,6 +8,7 @@ export const carDetailsTile = <HomeTileInfoInternal>{
   title: 'Car Details',
   subtitle: 'View full car details',
   supportedTitles: [GameTitle.FH5],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Search cars to view their full details.',

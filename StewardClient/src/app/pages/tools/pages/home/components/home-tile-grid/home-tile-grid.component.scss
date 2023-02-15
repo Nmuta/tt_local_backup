@@ -270,3 +270,7 @@ mat-icon[mat-card-avatar] {
   flex-grow: 1;
   background: url('/assets/promo/1.png') center center / cover fixed border-box;
 }
+
+::ng-deep .multiline-tooltip.multiline-tooltip.multiline-tooltip {
+  white-space: pre-line;
+}

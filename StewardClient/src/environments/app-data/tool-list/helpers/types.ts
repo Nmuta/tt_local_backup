@@ -28,6 +28,9 @@ export interface HomeTileInfoBase {
   /** The game titles this tool supports. */
   readonly supportedTitles: GameTitle[];
 
+  /** All of the permission attributes required to make full use of this tool. */
+  readonly allPermissions: PermAttributeName[];
+
   /** A URL to an image that represents this tool. As displayed at the top of the card body. */
   readonly imageUrl?: string;
 

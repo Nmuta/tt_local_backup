@@ -4,6 +4,7 @@ import {
   HomeTileRestrictionType,
   isHomeTileInfoExternal,
 } from '@environments/environment';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Extended HomeTileInfo for navigation usages. */
 export type HomeTileInfoForNav = HomeTileInfo &
@@ -11,6 +12,8 @@ export type HomeTileInfoForNav = HomeTileInfo &
     target: string;
     hasAccess: boolean;
     processedRestriction?: HomeTileRestrictionType;
+    foundWritePermissions: PermAttributeName[];
+    writePermissionsTooltip: string;
   };
 
 /** Sets target property on external links. Internal links are returned with default target value. */

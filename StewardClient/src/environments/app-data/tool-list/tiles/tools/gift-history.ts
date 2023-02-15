@@ -8,6 +8,7 @@ export const giftHistoryTile = <HomeTileInfoInternal>{
   title: 'Gift History',
   subtitle: 'View past gifts',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'View gifting history by player or LSP group',

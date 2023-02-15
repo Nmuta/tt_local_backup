@@ -8,6 +8,7 @@ export const kustoTile = <HomeTileInfoInternal>{
   title: 'Kusto',
   subtitle: 'Make kusto queries',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Perform stored and custom Kusto queries',

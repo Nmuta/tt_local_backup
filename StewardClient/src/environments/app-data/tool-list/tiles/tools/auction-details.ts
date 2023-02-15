@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const auctionDetailsTile = <HomeTileInfoInternal>{
@@ -8,6 +9,7 @@ export const auctionDetailsTile = <HomeTileInfoInternal>{
   title: 'Auction Details',
   subtitle: 'Live auction data',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5],
+  allPermissions: [PermAttributeName.DeleteAuction],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'View the current state of an auction',

@@ -1,4 +1,5 @@
 import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
 
 export const playerInfoTile = <HomeTileInfoInternal>{
@@ -8,6 +9,13 @@ export const playerInfoTile = <HomeTileInfoInternal>{
   title: 'Player Details',
   subtitle: 'Detailed player info',
   supportedTitles: [GameTitle.FH3, GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+  allPermissions: [
+    PermAttributeName.BanConsole,
+    PermAttributeName.DeleteBan,
+    PermAttributeName.UpdateUserFlags,
+    PermAttributeName.AddProfileNote,
+    PermAttributeName.SetReportWeight,
+  ],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'First stop for detailed player info',
