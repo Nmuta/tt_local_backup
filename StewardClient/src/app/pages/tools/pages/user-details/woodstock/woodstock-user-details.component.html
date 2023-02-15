@@ -55,11 +55,12 @@
           <woodstock-player-notifications [identity]="identity"></woodstock-player-notifications>
         </div>
       </mat-tab>
-      <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
+      <!-- TODO: Remove after a couple weeks if no one shouts (2023/02/09) -->
+      <!-- <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
         <div class="tab-container">
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
         </div>
-      </mat-tab>
+      </mat-tab> -->
       <mat-tab *ngIf="!isSpecialXuid">
         <div class="tab-container">
           <ng-template mat-tab-label>
