@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '4166c37e-344e-44a9-b4cc-7b82bd5d3f61',
+      shortText: 'Added support for Generic Popup and Deeplink tiles',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'e692ef6b-2eab-4a24-827b-c09e9442142c',
       shortText: 'Homepage now filters by user write permissions on load',
