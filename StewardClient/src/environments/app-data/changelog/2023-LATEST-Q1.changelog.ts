@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserBanning,
+      },
+      uuid: '7eb2d58b-4dca-4811-a4b4-62eed1894be9',
+      shortText: 'Update list of ban reasons',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '4166c37e-344e-44a9-b4cc-7b82bd5d3f61',
       shortText: 'Added support for Generic Popup and Deeplink tiles',
