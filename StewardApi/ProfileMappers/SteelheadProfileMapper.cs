@@ -336,20 +336,34 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<LocTextMotd, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofEntry, WofBridge>()
+            this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();
-            this.CreateMap<LocTextWof, LocTextBridge>()
+            this.CreateMap<WofGenericPopupEntry, WofGenericPopupBridge>()
                 .ReverseMap();
-            this.CreateMap<WofTimer, TimerBridge>()
+            this.CreateMap<WofDeeplinkEntry, WofDeeplinkBridge>()
+                .ForMember(dest => dest.Championship, opt => opt.MapFrom(src => src.Destination.Setting.Championship.@ref))
+                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.Destination.Setting.Series.@ref))
+                .ForMember(dest => dest.Ladder, opt => opt.MapFrom(src => src.Destination.Setting.Ladder.@ref))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Destination.Category.@ref))
+                .ForMember(dest => dest.DestinationType, opt => opt.MapFrom(src => this.PrepareDestinationType(src.Destination.type)))
+                .ForMember(dest => dest.BuildersCupSettingType, opt => opt.MapFrom(src => this.PrepareBuildersCupSettingType(src.Destination.Setting)));
+
+            this.CreateMap<WofDeeplinkBridge, WofDeeplinkEntry>()
+                .ForMember(dest => dest.Destination, opt => opt.MapFrom(src => this.PrepareRootDestination(src)));
+
+            this.CreateMap<LocTextBaseWof, LocTextBridge>()
+                .ReverseMap();
+            this.CreateMap<WofBaseTimer, TimerBridge>()
                 .ForMember(dest => dest.TimerType, opt => opt.MapFrom(src => src.TimerType))
                 .ForMember(dest => dest.TimerCustomRange, opt => opt.MapFrom(src => src.CustomRange))
                 .ReverseMap();
-            this.CreateMap<WofTimerCustomRange, TimerCustomRange>()
+            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRange>()
                 .ForMember(dest => dest.FromPoints, opt => opt.MapFrom(src => src.From))
                 .ForMember(dest => dest.ToPoints, opt => opt.MapFrom(src => src.To))
                 .ReverseMap();
-            this.CreateMap<WofRangePoint, TimerCustomRangePoint>()
+            this.CreateMap<WofBaseRangePoint, TimerCustomRangePoint>()
                 .ReverseMap();
+
             this.CreateMap<ForzaUserIds, BasicPlayer>()
                 // Map empty string to null
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => string.IsNullOrEmpty(src.gamertag) ? null : src.gamertag))
@@ -364,7 +378,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ScoreboardTypeId, opt => opt.MapFrom(src => (int)ScoreboardType.Rivals))
                 .ForMember(dest => dest.ScoreType, opt => opt.MapFrom(src => src.ScoreType))
                 .ForMember(dest => dest.ScoreTypeId, opt => opt.MapFrom(src => src.ScoreType))
-                .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int) src.Buckets.Select(x => x.CarRestrictions.CarClassId).First()));
+                .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.Buckets.Select(x => x.CarRestrictions.CarClassId).First()));
 
             this.CreateMap<SteelheadLiveOpsContent.CarClass, CarClass>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarClassId));
@@ -403,6 +417,115 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.PullRequestId))
                 .ForMember(dest => dest.WebUrl, opt => opt.MapFrom(source => $"{source.Repository.WebUrl}/pullrequest/{source.PullRequestId}"))
                 .ForMember(dest => dest.CreationDateUtc, opt => opt.MapFrom(source => source.CreationDate));
+        }
+
+        private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
+        {
+            if (rootBuildersCupSetting == null)
+            {
+                return null;
+            }
+
+            if (rootBuildersCupSetting.type == "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting")
+            {
+                return BuildersCupSettingType.Homepage;
+            }
+
+            if (rootBuildersCupSetting.type == "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting")
+            {
+                return BuildersCupSettingType.Ladder;
+            }
+
+            if (rootBuildersCupSetting.type == "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting")
+            {
+                return BuildersCupSettingType.Series;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private DestinationType PrepareDestinationType(string rootDestinationType)
+        {
+            if (rootDestinationType == "WorldOfForza.WoFToRacersCupConfig")
+            {
+                return DestinationType.RacersCup;
+            }
+
+            if (rootDestinationType == "WorldOfForza.WoFToBuildersCupConfig")
+            {
+                return DestinationType.BuildersCup;
+            }
+
+            if (rootDestinationType == "WorldOfForza.WoFToShowroomConfig")
+            {
+                return DestinationType.Showroom;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private WofBaseDestination PrepareRootDestination(WofDeeplinkBridge deeplinkBridge)
+        {
+            if (deeplinkBridge.DestinationType == DestinationType.RacersCup)
+            {
+                return new WofBaseDestination()
+                {
+                    type = "WorldOfForza.WoFToRacersCupConfig"
+                };
+            }
+
+            if (deeplinkBridge.DestinationType == DestinationType.Showroom)
+            {
+                return new WofBaseDestination()
+                {
+                    Category = new WorldOfForzaWoFTileDeeplinkDestinationCategory() { @ref = deeplinkBridge.Category },
+                    type = "WorldOfForza.WoFToShowroomConfig",
+                    CategoryId = new WorldOfForzaWoFTileDeeplinkDestinationCategoryId()
+                };
+            }
+
+            if (deeplinkBridge.DestinationType == DestinationType.BuildersCup)
+            {
+                WorldOfForzaWoFTileDeeplinkDestinationSetting settings = null;
+                if (deeplinkBridge.BuildersCupSettingType == BuildersCupSettingType.Homepage)
+                {
+                    settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
+                    {
+                        type = "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting"
+                    };
+                }
+
+                if (deeplinkBridge.BuildersCupSettingType == BuildersCupSettingType.Ladder)
+                {
+                    settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
+                    {
+                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship},
+                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder},
+                        type = "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting",
+                    };
+                }
+
+                if (deeplinkBridge.BuildersCupSettingType == BuildersCupSettingType.Series)
+                {
+                    settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
+                    {
+                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
+                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series},
+                        type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting"
+                    };
+                }
+
+                return new WofBaseDestination()
+                {
+                    Setting = settings,
+                    type = "WorldOfForza.WoFToBuildersCupConfig",
+                    CupId = new WorldOfForzaWoFTileDeeplinkDestinationCupId(),
+                    SeriesId = new WorldOfForzaWoFTileDeeplinkDestinationSeriesId(),
+                    LadderId = new WorldOfForzaWoFTileDeeplinkDestinationLadderId(),
+                };
+            }
+
+            return null;
         }
     }
 }

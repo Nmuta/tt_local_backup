@@ -1,0 +1,44 @@
+<form [formGroup]="formGroup" class="sf-wrapper">
+  <div class="sf-vertical">
+    <steelhead-general-tile [formControl]="formControls.baseTile"></steelhead-general-tile>
+
+    <mat-form-field appearance="fill" class="sf-default-hint">
+      <mat-label>Content Image Path</mat-label>
+      <input type="text" matInput [formControl]="formControls.contentImagePath" />
+      <button
+        type="button"
+        mat-button
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearContentImagePath()"
+        [disabled]="formControls.contentImagePath.disabled"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <div *waitForMonitor="submitWelcomeCenterTileMonitor" class="sf-horizontal">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="submitChanges()"
+        [disabled]="!isInEditMode || !verifyModification.checked || !formGroup.valid"
+      >
+        Submit Modification
+      </button>
+      <mat-checkbox
+        #verifyModification
+        stateManager
+        [permissionAttribute]="permAttribute"
+        [permissionTitle]="gameTitle"
+        [disabled]="!isInEditMode"
+        matTooltip="Verify Modification"
+        >Verify Modification</mat-checkbox
+      >
+    </div>
+  </div>
+</form>
+<span *ngIf="pullRequestUrl">
+  A pull request for your changes has been created. You can access it
+  <a target="_blank" href="{{ pullRequestUrl }}"> here </a>
+</span>

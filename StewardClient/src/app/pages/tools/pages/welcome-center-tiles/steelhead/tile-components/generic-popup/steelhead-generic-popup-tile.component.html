@@ -1,0 +1,41 @@
+<form [formGroup]="formGroup" class="sf-wrapper">
+  <div class="sf-vertical">
+    <steelhead-general-tile [formControl]="formControls.baseTile"></steelhead-general-tile>
+
+    <select-localized-string
+      [service]="localizationSelectServiceContract"
+      [formControl]="formControls.localizedPopupTitle"
+      label="Popup Title"
+      formControlName="localizedPopupTitle"
+    ></select-localized-string>
+    <select-localized-string
+      [service]="localizationSelectServiceContract"
+      [formControl]="formControls.localizedPopupDescription"
+      label="Popup Description"
+      formControlName="localizedPopupDescription"
+    ></select-localized-string>
+    <div *waitForMonitor="submitWelcomeCenterTileMonitor" class="sf-horizontal">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="submitChanges()"
+        [disabled]="!isInEditMode || !verifyModification.checked || !formGroup.valid"
+      >
+        Submit Modification
+      </button>
+      <mat-checkbox
+        #verifyModification
+        stateManager
+        [permissionAttribute]="permAttribute"
+        [permissionTitle]="gameTitle"
+        [disabled]="!isInEditMode"
+        matTooltip="Verify Modification"
+        >Verify Modification</mat-checkbox
+      >
+    </div>
+  </div>
+</form>
+<span *ngIf="pullRequestUrl">
+  A pull request for your changes has been created. You can access it
+  <a target="_blank" href="{{ pullRequestUrl }}"> here </a>
+</span>

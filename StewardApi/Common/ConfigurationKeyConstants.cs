@@ -246,16 +246,6 @@
         public const string SteelheadContentOrganizationUrl = "Git:SteelheadContentOrganizationUrl";
 
         /// <summary>
-        ///     The Steelhead Message of the Day Path in the Steelhead Content repo.
-        /// </summary>
-        public const string SteelheadMessageOfTheDayPath = "Git:SteelheadMessageOfTheDayPath";
-
-        /// <summary>
-        ///     The Steelhead World of Forza path in the Steelhead Content repo.
-        /// </summary>
-        public const string SteelheadWorldOfForzaPath = "Git:SteelheadWorldOfForzaPath";
-
-        /// <summary>
         ///     The Steelhead format pipeline build definitoin key.
         /// </summary>
         public const string SteelheadFormatPipelineBuildDefinition = "Git:SteelheadFormatPipelineBuildDefinition";
