@@ -251,11 +251,6 @@
         public const string SteelheadFormatPipelineBuildDefinition = "Git:SteelheadFormatPipelineBuildDefinition";
 
         /// <summary>
-        ///     The Steelhead localization folder key.
-        /// </summary>
-        public const string SteelheadLocalizationFolderPath = "Git:SteelheadLocalizationFolderPath";
-
-        /// <summary>
         ///    The Woodstock PlayFab dev title id.
         /// </summary>
         public const string WoodstockPlayFabDevTitleId = "WoodstockEnvironment:PlayFab:Dev:TitleId";
