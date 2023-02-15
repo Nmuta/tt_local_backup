@@ -54,6 +54,17 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static readonly XName NullElementXname = NamespaceElement + "null";
 
         /// <summary>
+        ///     Steelhead xml namespaces.
+        /// </summary>
+        public static readonly XmlSerializerNamespaces SteelheadXmlNamespaces
+            = new XmlSerializerNamespaces(
+                new XmlQualifiedName[]
+                {
+                    new XmlQualifiedName(string.Empty, "scribble:title-content"),
+                    new XmlQualifiedName("x", "scribble:x"),
+                });
+
+        /// <summary>
         ///     Recursively builds a tree of metadata from deserilized xml object.
         /// </summary>
         public static Node BuildMetaData(object target, Node root, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)

@@ -207,5 +207,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Runs the specified build pipeline.
         /// </summary>
         public Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push);
+
+        /// <summary>
+        ///     Writes localized strings to Pegasus.
+        /// </summary>
+        public Task<CommitRefProxy> WriteLocalizedStringsToPegasusAsync(LocCategory category, IEnumerable<LocalizedStringBridge> localizedStrings);
+
+        /// <summary>
+        ///     Gets localization categories available in repository.
+        /// </summary>
+        public Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync();
     }
 }
