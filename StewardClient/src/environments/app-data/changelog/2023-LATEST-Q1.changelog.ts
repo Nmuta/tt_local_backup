@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'ce8f3f39-9cf5-4aa0-82fd-d64b4c082b29',
+      shortText: 'Persist and Clone UGC success popup stays on-screen until dismissed',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
       uuid: '7b106529-7c3e-49be-b09c-072fe1e6be67',
       shortText: 'Remove old auctions tab in favor of auction logs tab',
