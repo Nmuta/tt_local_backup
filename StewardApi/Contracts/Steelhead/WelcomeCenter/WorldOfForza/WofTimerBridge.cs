@@ -9,35 +9,23 @@ using Newtonsoft.Json.Converters;
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
     /// <summary>
-    ///     Timer types.
-    /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum TimerType
-    {
-        ToStartOrToEnd,
-        ToEnd,
-        ToStart,
-    }
-
-    /// <summary>
     ///     Timer bridge.
     /// </summary>
     public class WofTimerBridge
     {
         /// <summary>
-        ///     Gets or sets the instance of timer.
-        /// </summary>
-        public string InstanceType { get; set; }
-
-        /// <summary>
         ///     Gets or sets the timer type.
         /// </summary>
         public TimerType TimerType { get; set; }
+
+        public string TypeName { get; set; }
 
         /// <summary>
         ///     Gets or sets the custom range object.
         /// </summary>
         public TimerCustomRange CustomRange { get; set; }
+
+        public TimerReferenceBridge TimerReference { get; set; }
     }
 
     /// <summary>
@@ -46,6 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public class TimerReferenceBridge
     {
         public Guid RefId { get; set; }
+        public TimerInstance TimerInstance { get; set; }
         public LadderBridge LadderBridge { get; set; }
         public SeriesBridge SeriesBridge { get; set; }
         public SeasonBridge SeasonBridge { get; set; }

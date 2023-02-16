@@ -21,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -336,8 +337,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<LocTextMotd, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
-                .ReverseMap();
             this.CreateMap<WofGenericPopupEntry, WofGenericPopupBridge>()
                 .ReverseMap();
             this.CreateMap<WofDeeplinkEntry, WofDeeplinkBridge>()
@@ -353,11 +352,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LocTextBaseWof, LocTextBridge>()
                 .ReverseMap();
+            this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
+                .ReverseMap();
             this.CreateMap<WofBaseTimer, WofTimerBridge>()
                 .ReverseMap();
+            this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
+            this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();
             this.CreateMap<WofBaseTimerCustomRange, TimerCustomRange>()
-                .ForMember(dest => dest.From, opt => opt.MapFrom(src => src.From))
-                .ForMember(dest => dest.To, opt => opt.MapFrom(src => src.To))
                 .ReverseMap();
             this.CreateMap<WofBaseRangePoint, TimerCustomRangePoint>()
                 .ReverseMap();

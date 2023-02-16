@@ -538,7 +538,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var entry = this.mapper.Map<WofImageTextEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
 
-            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.ImageTextTile).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(commitComment, entry, element, PegasusFilePath.ImageTextTile).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -547,7 +547,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var entry = this.mapper.Map<WofGenericPopupEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
 
-            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.GenericPopupTile).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(commitComment, entry, element, PegasusFilePath.GenericPopupTile).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -556,7 +556,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var entry = this.mapper.Map<WofDeeplinkEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
 
-            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.DeeplinkTile).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(commitComment, entry, element, PegasusFilePath.DeeplinkTile).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -682,12 +682,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return choices;
         }
 
-        private async Task<CommitRefProxy> GetWelcomeCenterTileCommitAsync(string commitComment, WofBaseTileEntry entry, XElement element, string filePath)
+        private async Task<CommitRefProxy> CommitWelcomeCenterTileAsync(string commitComment, WofBaseTileEntry entry, XElement element, string filePath)
         {
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
-            element.Elements().Where(x => x.Name.LocalName == "Destination").Remove();
+            element.Elements().Where(x => x.Name.LocalName == "Destination" || x.Name.LocalName == "Timer").Remove();
 
             WelcomeCenterHelpers.FillXml(element, tree);
 

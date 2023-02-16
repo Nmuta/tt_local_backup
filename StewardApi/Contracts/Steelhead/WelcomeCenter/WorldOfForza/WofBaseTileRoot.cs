@@ -26,6 +26,31 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Large
     }
 
+    /// <summary>
+    ///     Timer types.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum TimerType
+    {
+        ToStartOrToEnd,
+        ToEnd,
+        ToStart,
+    }
+
+    /// <summary>
+    ///     Timer instances. To be used
+    ///     strictly for mapping purposes.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum TimerInstance
+    {
+        NotSet,
+        Ladder,
+        Series,
+        Season,
+        Chapter
+    }
+
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -74,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         // This prop appears to be unused in the Pegasus xml.
         public object EndTextOverride { get; set; }
 
-        public string TimerType { get; set; }
+        public TimerType TimerType { get; set; }
 
         public WofBaseTimeDisplayFrom TimeDisplayFrom { get; set; }
 
@@ -88,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         [WriteToPegasus]
         [XmlAttribute("type", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string InstanceType { get; set; }
+        public string TypeName { get; set; }
 
         [WriteToPegasus]
         [XmlElement("Ladder", Type = typeof(Ladder))]
@@ -101,17 +126,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     public class WofBaseTimerReference
     {
+        [WriteToPegasus]
         [XmlAttribute("ref")]
         public Guid RefId { get; set; }
 
         [XmlIgnore]
-        public virtual string Name { get; set; }
+        public virtual TimerInstance TimerInstance { get; }
     }
 
-    public class Ladder : WofBaseTimerReference { public override string Name => "Ladder"; }
-    public class Series : WofBaseTimerReference { public override string Name => "Series"; }
-    public class Season : WofBaseTimerReference { public override string Name => "Season"; }
-    public class Chapter : WofBaseTimerReference { public override string Name => "Chapter"; }
+    public class Ladder : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Ladder; }
+    public class Series : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Series; }
+    public class Season : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Season; }
+    public class Chapter : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Chapter; }
 
     // This prop appears to be unused in the Pegasus Xml.
     [Serializable]
