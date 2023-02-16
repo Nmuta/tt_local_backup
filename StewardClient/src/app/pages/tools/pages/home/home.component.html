@@ -24,7 +24,7 @@
         />
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedFilter($event)">
-        <mat-optgroup label="Permission">
+        <mat-optgroup *ngIf="userRole === roleToLoadPermissionFilterFor" label="Permission">
           <mat-option *ngFor="let chip of permissionFilterOptions | async" [value]="chip">
             {{ chip.value | deppoh }}
           </mat-option>

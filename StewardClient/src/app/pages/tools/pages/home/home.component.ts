@@ -90,6 +90,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     { value: GameTitle.FH5, type: FilterType.Title },
     { value: GameTitle.FM8, type: FilterType.Title },
   ];
+  public roleToLoadPermissionFilterFor = UserRole.GeneralUser;
   public preparedPermissionFilters: FilterChip[] = [
     { value: 'Tools with available actions', type: FilterType.Permission },
   ];
@@ -160,7 +161,9 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
         });
 
         // Start with the write permission filter filled in.
-        this.filters.push(...this.startupFilters);
+        if (this.userRole === UserRole.GeneralUser) {
+          this.filters.push(...this.startupFilters);
+        }
 
         this.unauthorizedTiles.all = unauthorizedNavbarItems;
 

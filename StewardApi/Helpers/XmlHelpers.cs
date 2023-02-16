@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -64,10 +65,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <typeparam name="T">The type to serialize.</typeparam>
         public static async Task<string> SerializeAsync<T>(T obj, XmlSerializerNamespaces namespaces = null)
         {
-            using var stringwriter = new StringWriter();
+            using var stringwriter = new Utf8StringWriter();
             using var xmlWriter = XmlWriter.Create(stringwriter, new XmlWriterSettings { Indent = true, Encoding = System.Text.Encoding.UTF8 });
             await Task.Run(() => new XmlSerializer(typeof(T)).Serialize(xmlWriter, obj, namespaces)).ConfigureAwait(false);
             return stringwriter.ToString();
+        }
+
+        private class Utf8StringWriter : StringWriter
+        {
+            public override Encoding Encoding => Encoding.UTF8;
         }
     }
 }

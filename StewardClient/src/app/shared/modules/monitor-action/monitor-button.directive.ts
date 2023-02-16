@@ -3,7 +3,7 @@ import { Directive, forwardRef, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HCI } from '@environments/environment';
-import { isBoolean, isObject } from 'lodash';
+import { isBoolean, isNumber, isObject } from 'lodash';
 import { STEWARD_DISABLE_STATE_PROVIDER } from '../state-managers/injection-tokens';
 import { ErrorSnackbarComponent } from './error-snackbar/error-snackbar.component';
 import { MonitorBaseDirective } from './monitor.base.directive';
@@ -27,6 +27,7 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
   private shouldMonitorCompleteWithSnackbar = false;
 
   private templateColor = undefined;
+  private snackbarDuration = HCI.Toast.Duration.Standard;
   private alternateCompleteSnackbarComponent: ComponentType<unknown> = undefined;
 
   /** When set, disables the host component when the monitor state is `active`. */
@@ -62,6 +63,20 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
   @Input()
   public set color(value: string) {
     this.templateColor = value;
+    this.updateHostState();
+  }
+
+  /**
+   * The duration value in seconds for how long to show the snackbar for this button.
+   * To use the default duration, remove this input entirely.
+   */
+  @Input()
+  public set monitorSnackbarDuration(value: number | 'forever') {
+    if (!isNumber(value) && value != 'forever') {
+      throw new Error(`${value} is not an acceptable input for monitorSnackbarDuration`);
+    }
+
+    this.snackbarDuration = isNumber(value) ? value : null;
     this.updateHostState();
   }
 
@@ -104,7 +119,7 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
       this.snackBar.openFromComponent(ErrorSnackbarComponent, {
         data: this.monitor,
         panelClass: ['snackbar-warn'],
-        duration: HCI.Toast.Duration.Standard,
+        duration: this.snackbarDuration,
       });
     }
 
@@ -113,13 +128,13 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
         this.snackBar.openFromComponent(this.alternateCompleteSnackbarComponent, {
           data: this.monitor,
           panelClass: ['snackbar-success'],
-          duration: HCI.Toast.Duration.Standard,
+          duration: this.snackbarDuration,
         });
       } else {
         this.snackBar.openFromComponent(SuccessSnackbarComponent, {
           data: this.monitor,
           panelClass: ['snackbar-success'],
-          duration: HCI.Toast.Duration.Standard,
+          duration: this.snackbarDuration,
         });
       }
     }

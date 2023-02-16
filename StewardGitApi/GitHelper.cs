@@ -85,11 +85,12 @@ namespace StewardGitApi
         internal static async Task<GitItem> GetItemAsync(AzureContext context, string path, GitObjectType gitObjectType)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
-            TeamProjectReference project = await GetProjectAsync(context).ConfigureAwait(false);
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
+            var projectId = context.Settings.Ids.projectId;
 
             // get a filepath we know exists
             List<GitItem> gitItems = await gitClient.GetItemsAsync(
+                projectId,
                 repo.Id,
                 scopePath: path,
                 recursionLevel: VersionControlRecursionType.OneLevel).ConfigureAwait(false);
@@ -100,6 +101,24 @@ namespace StewardGitApi
             GitItem item = await gitClient.GetItemAsync(repo.Id, filepath, includeContent: true).ConfigureAwait(false);
 
             return item;
+        }
+
+        /// <summary>
+        ///     Gets a list of items from the repository.
+        /// </summary>
+        internal static async Task<IEnumerable<GitItem>> ListItemsAsync(AzureContext context, string path)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+            GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
+            var projectId = context.Settings.Ids.projectId;
+
+            List<GitItem> gitItems = await gitClient.GetItemsAsync(
+                projectId,
+                repo.Id,
+                scopePath: path,
+                recursionLevel: VersionControlRecursionType.OneLevel).ConfigureAwait(false);
+
+            return gitItems;
         }
 
         /// <summary>

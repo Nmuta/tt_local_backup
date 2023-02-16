@@ -4,30 +4,31 @@
 #pragma warning disable SA1601 // Partial elements should be documented
 #pragma warning disable IDE1006 // Naming Styles
 
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "scribble:x")]
-    [XmlRoot("content-set", Namespace = "scribble:x", IsNullable = false)]
-    public partial class WofRoot : XmlRootBase<WofRoot, WofEntry>
+    /// <summary>
+    ///     Tile sizes.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum TileSize
     {
-        [XmlElement("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content")]
-        public override List<WofEntry> Entries { get; set; }
+        Medium,
+        Large
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    [XmlRoot("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content", IsNullable = false)]
-    public partial class WofEntry
+    public partial class WofBaseTileEntry
     {
         [PegEdit]
         public string FriendlyName { get; set; }
@@ -35,38 +36,27 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [PegEdit]
         public string Size { get; set; }
 
-        public WofTimer Timer { get; set; }
+        public WofBaseTimer Timer { get; set; }
 
-        public WofDisplayConditions DisplayConditions { get; set; }
+        public WofBaseDisplayConditions DisplayConditions { get; set; }
 
         public object Cooldowns { get; set; }
 
         public object CMSTileID { get; set; }
 
         [PegEdit]
-        public LocTextWof TileTitle { get; set; }
+        public LocTextBaseWof TileTitle { get; set; }
 
         [PegEdit]
-        public LocTextWof TileType { get; set; }
+        public LocTextBaseWof TileType { get; set; }
 
         [PegEdit]
-        public LocTextWof TileDescription { get; set; }
+        public LocTextBaseWof TileDescription { get; set; }
 
         [PegEdit]
         public string TileImagePath { get; set; }
 
         public string TelemetryTag { get; set; }
-
-        public LocTextWof PopupTitle { get; set; }
-
-        public LocTextWof PopupHeader { get; set; }
-
-        public LocTextWof PopupSubHeader { get; set; }
-
-        public LocTextWof PopupDescription { get; set; }
-
-        [PegEdit]
-        public string ContentImagePath { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid id { get; set; }
@@ -75,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WofTimer
+    public partial class WofBaseTimer
     {
         // This prop appears to be unused in the Pegasus xml.
         public object StartTextOverride { get; set; }
@@ -85,12 +75,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         public string TimerType { get; set; }
 
-        public WofTimeDisplayFrom TimeDisplayFrom { get; set; }
+        public WofBaseTimeDisplayFrom TimeDisplayFrom { get; set; }
 
-        public WofTimeDisplayTo TimeDisplayTo { get; set; }
+        public WofBaseTimeDisplayTo TimeDisplayTo { get; set; }
 
         [XmlElement("CustomRange")]
-        public WofTimerCustomRange CustomRange { get; set; }
+        public WofBaseTimerCustomRange CustomRange { get; set; }
 
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
@@ -103,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WofTimeDisplayFrom
+    public partial class WofBaseTimeDisplayFrom
     {
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
@@ -113,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WofTimeDisplayTo
+    public partial class WofBaseTimeDisplayTo
     {
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
@@ -122,21 +112,21 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WofTimerCustomRange
+    public partial class WofBaseTimerCustomRange
     {
         [PegEdit]
         [XmlElement("From")]
-        public WofRangePoint[] From { get; set; }
+        public WofBaseRangePoint[] From { get; set; }
 
         [PegEdit]
         [XmlElement("To")]
-        public WofRangePoint[] To { get; set; }
+        public WofBaseRangePoint[] To { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WofRangePoint
+    public partial class WofBaseRangePoint
     {
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
@@ -153,17 +143,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WofDisplayConditions
+    public partial class WofBaseDisplayConditions
     {
         [XmlElement(Namespace = "scribble:x")]
-        public item item { get; set; }
+        public BaseItem item { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     [XmlRoot(Namespace = "scribble:x", IsNullable = false)]
-    public partial class item
+    public partial class BaseItem
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified)]
         public string @ref { get; set; }
@@ -172,7 +162,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class LocTextWof
+    public partial class LocTextBaseWof
     {
         [XmlElement(Namespace = "scribble:x")]
         public string @base { get; set; }

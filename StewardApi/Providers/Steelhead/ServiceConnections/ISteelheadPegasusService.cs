@@ -123,26 +123,70 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<XElement> GetMessageOfTheDayElementAsync(Guid id);
 
         /// <summary>
-        ///     Edits and saves World of Forza Tile
+        ///     Edits and saves World of Forza Image Text Tile
         ///     using deserialized xml entry.
         /// </summary>
-        Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofBridge wofTileBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id, string commitComment);
 
         /// <summary>
-        ///     Gets current World of Forza values for the entry
+        ///     Edits and saves World of Forza Generic Popup Tile
+        ///     using deserialized xml entry.
+        /// </summary>
+        Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id, string commitComment);
+
+        /// <summary>
+        ///     Edits and saves World of Forza Deeplink Tile
+        ///     using deserialized xml entry.
+        /// </summary>
+        Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id, string commitComment);
+
+        /// <summary>
+        ///     Gets current World of Forza Image Text Tile values for the entry
         ///     with matching id.
         /// </summary>
-        Task<WofBridge> GetWorldOfForzaCurrentValuesAsync(Guid id);
+        Task<WofImageTextBridge> GetWorldOfForzaImageTextTileAsync(Guid id);
 
         /// <summary>
-        ///     Gets World of Forza selection options.
+        ///     Gets current World of Forza Generic Popup Tile values for the entry
+        ///     with matching id.
         /// </summary>
-        Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync();
+        Task<WofGenericPopupBridge> GetWorldOfForzaGenericPopupTileAsync(Guid id);
 
         /// <summary>
-        ///     Gets a World of Forza entry as an Xelement.
+        ///     Gets current World of Forza Deeplink Tile values for the entry
+        ///     with matching id.
         /// </summary>
-        Task<XElement> GetWorldOfForzaElementAsync(Guid id);
+        Task<WofDeeplinkBridge> GetWorldOfForzaDeeplinkTileAsync(Guid id);
+
+        /// <summary>
+        ///     Gets World of Forza Image Text tile selection options.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetWorldOfForzaImageTextTileSelectionsAsync();
+
+        /// <summary>
+        ///     Gets World of Forza Generic Popup tile selection options.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetWorldOfForzaGenericPopupSelectionsAsync();
+
+        /// <summary>
+        ///     Gets World of Forza Deeplink tile selection options.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetWorldOfForzaDeeplinkSelectionsAsync();
+
+        /// <summary>
+        ///     Gets a World of Forza Image Text entry as an Xelement.
+        /// </summary>
+        Task<XElement> GetWorldOfForzaImageTextTileElementAsync(Guid id);
+
+        /// <summary>
+        ///     Gets a World of Forza Generic Popup entry as an Xelement.
+        /// </summary>
+        Task<XElement> GetWorldOfForzaGenericPopupTileElementAsync(Guid id);
+
+        /// <summary>
+        ///     Gets a World of Forza Deeplink entry as an Xelement.
+        /// </summary>
+        Task<XElement> GetWorldOfForzaDeeplinkTileElementAsync(Guid id);
 
         /// <summary>
         ///     Gets pull pull requests from the steward user.
@@ -163,5 +207,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Runs the specified build pipeline.
         /// </summary>
         public Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push);
+
+        /// <summary>
+        ///     Writes localized strings to Pegasus.
+        /// </summary>
+        public Task<CommitRefProxy> WriteLocalizedStringsToPegasusAsync(LocCategory category, IEnumerable<LocalizedStringBridge> localizedStrings);
+
+        /// <summary>
+        ///     Gets localization categories available in repository.
+        /// </summary>
+        public Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync();
     }
 }
