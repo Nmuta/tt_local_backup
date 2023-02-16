@@ -320,7 +320,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
             var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>>(
-                CMSFileNames.PlaylistDataForService,
+                CMSFileNames.PlaylistData,
                 environment: pegasusEnvironment,
                 slot: pegasusSlot,
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
@@ -334,9 +334,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
-            var fileName = "LiveOps_RacersCupChampionshipScheduleV4";
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
-                fileName,
+                CMSFileNames.RacersCupV4,
                 environment: pegasusEnvironment,
                 slot: pegasusSlot,
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
@@ -348,7 +347,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
         {
             var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
-            var fileName = "LiveOps_BuildersCupFeaturedCup-en-US";
+            var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US");
 
             var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
                 fileName,

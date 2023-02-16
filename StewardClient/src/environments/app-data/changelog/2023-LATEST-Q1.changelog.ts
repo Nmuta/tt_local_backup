@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '895a09a4-87a3-4158-8ef5-dd5784daa728d',
+      shortText: 'Add car restrictions to event details view',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
       uuid: '97733f8ab-7e8b-4b39-a1a3-b88693efeb83',
       shortText: 'Modify player UGC keyword filter to match regardless of casing',
