@@ -29,6 +29,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: 'd92f49d2-3518-49d6-b5f9-b894f994c2e4',
+      shortText: 'Homepage available actions filter only loads for General User role',
+      longText: [
+        'Some users are still using the old permission role system.',
+        "Since they don't have the new permissions there's no value in loading the filter on startup.",
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'e692ef6b-2eab-4a24-827b-c09e9442142c',
       shortText: 'Homepage now filters by user write permissions on load',
     },
