@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '97733f8ab-7e8b-4b39-a1a3-b88693efeb83',
+      shortText: 'Modify player UGC keyword filter to match regardless of casing',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: 'ce8f3f39-9cf5-4aa0-82fd-d64b4c082b29',
       shortText: 'Persist and Clone UGC success popup stays on-screen until dismissed',

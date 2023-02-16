@@ -13,7 +13,7 @@ import {
   UgcType as UgcType,
 } from '@models/ugc-filters';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { cloneDeep, orderBy } from 'lodash';
+import { cloneDeep, includes, orderBy } from 'lodash';
 
 export type UgcLookup = {
   usingIdentities?: boolean;
@@ -116,8 +116,8 @@ export abstract class PlayerUgcBaseComponent
     if (!!this.ugcFilters.keyword) {
       filteredContent = filteredContent.filter(
         x =>
-          x.title.indexOf(this.ugcFilters.keyword) >= 0 ||
-          x.description.indexOf(this.ugcFilters.keyword) >= 0,
+          includes(x.title.toUpperCase(), this.ugcFilters.keyword.toUpperCase()) ||
+          includes(x.description.toUpperCase(), this.ugcFilters.keyword.toUpperCase()),
       );
     }
 
