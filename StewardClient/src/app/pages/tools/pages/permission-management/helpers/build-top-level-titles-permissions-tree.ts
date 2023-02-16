@@ -5,7 +5,7 @@ import {
   PermAttributeName,
 } from '@services/perm-attributes/perm-attributes';
 import { includes, keys } from 'lodash';
-import { AttributeTreeNode, TitleEnvironments } from '../permission-management.component';
+import { AttributeTreeNode, TitleEnvironments } from '../permission-management.models';
 
 /**
  * Builds the permission attributes tree structure with titles at the top level.

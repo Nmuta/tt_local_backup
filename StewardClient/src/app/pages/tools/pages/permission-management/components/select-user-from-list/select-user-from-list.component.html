@@ -1,0 +1,54 @@
+<ng-container *waitForMonitor="getUsersActionMonitor">
+  <mat-form-field class="name-filter">
+    <mat-label>Name Filter</mat-label>
+    <input matInput [formControl]="nameFilterFormControl" />
+    <button
+      type="button"
+      mat-button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear name filter"
+      (click)="nameFilterFormControl.setValue('')"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <ng-container *ngFor="let user of filteredUsers">
+    <mat-divider></mat-divider>
+    <div class="user-container" (click)="selectUserToManage$.next(user)">
+      <div>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="userActionMenu"
+          aria-label="Possible user actions"
+          clickStop
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #userActionMenu="matMenu">
+          <button
+            [disabled]="!isUserSelected"
+            mat-menu-item
+            (click)="userAttributesChange.emit(user.attributes)"
+          >
+            Clone permissions to active user
+          </button>
+        </mat-menu>
+        <button mat-icon-button aria-label="Select or unselect a user">
+          <mat-icon *ngIf="user.objectId === selectedUserId; else notSelectedCheckboxTemplate"
+            >check_box</mat-icon
+          >
+        </button>
+      </div>
+      <div class="user-info">
+        <span class="name">{{ user.name }}</span
+        ><br />
+        <span class="email">{{ user.emailAddress }}</span>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #notSelectedCheckboxTemplate>
+  <mat-icon>check_box_outline_blank</mat-icon>
+</ng-template>

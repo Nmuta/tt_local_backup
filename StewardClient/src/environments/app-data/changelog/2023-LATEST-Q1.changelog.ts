@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '6d2cf0a5-e77c-4326-adde-94f7f3900491',
+      shortText: 'Move permission management user list out to its own component',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: '895a09a4-87a3-4158-8ef5-dd5784daa728d',
       shortText: 'Add car restrictions to event details view',
