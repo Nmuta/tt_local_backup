@@ -1,0 +1,94 @@
+<form [formGroup]="formGroup" class="sf-wrapper">
+  <div class="sf-vertical">
+    <steelhead-general-tile [formControl]="formControls.baseTile"></steelhead-general-tile>
+
+    <mat-form-field class="sf-default-hint" appearance="fill">
+      <mat-label>Select Destination Type</mat-label>
+      <mat-select [formControl]="formControls.destinationType">
+        <mat-option *ngFor="let type of destinationType" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.RacersCup">
+      Not Implemented
+    </ng-container>
+    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.BuildersCup">
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Destination Type</mat-label>
+        <mat-select [formControl]="formControls.settingType">
+          <mat-option *ngFor="let setting of buildersCupSetting" [value]="setting">
+            {{ setting }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- Only Homepage settings does not have championship dropdown -->
+      <ng-container *ngIf="formControls.settingType.value !== buildersCupSettingTypes.Homepage">
+        <mat-form-field class="sf-default-hint" appearance="fill">
+          <mat-label>Select Championship</mat-label>
+          <mat-select [formControl]="formControls.championship">
+            <mat-option
+              *ngFor="let championship of championships | keyvalue"
+              [value]="championship.key"
+            >
+              {{ championship.value | humanize }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      <ng-container *ngIf="formControls.settingType.value === buildersCupSettingTypes.Ladder">
+        <mat-form-field class="sf-default-hint" appearance="fill">
+          <mat-label>Select Ladder</mat-label>
+          <mat-select [formControl]="formControls.ladder">
+            <mat-option *ngFor="let ladder of ladders | keyvalue" [value]="ladder.key">
+              {{ ladder.value | humanize }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      <ng-container *ngIf="formControls.settingType.value === buildersCupSettingTypes.Series">
+        <mat-form-field class="sf-default-hint" appearance="fill">
+          <mat-label>Select Series</mat-label>
+          <mat-select [formControl]="formControls.series">
+            <mat-option *ngFor="let serie of series | keyvalue" [value]="serie.key">
+              {{ serie.value | humanize }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.Showroom">
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Showroom Category</mat-label>
+        <mat-select [formControl]="formControls.category">
+          <mat-option *ngFor="let category of showRoomCategories | keyvalue" [value]="category.key">
+            {{ category.value | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+    <div *waitForMonitor="submitWelcomeCenterTileMonitor" class="sf-horizontal">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="submitChanges()"
+        [disabled]="!isInEditMode || !verifyModification.checked || !formGroup.valid"
+      >
+        Submit Modification
+      </button>
+      <mat-checkbox
+        #verifyModification
+        stateManager
+        [permissionAttribute]="permAttribute"
+        [permissionTitle]="gameTitle"
+        [disabled]="!isInEditMode"
+        matTooltip="Verify Modification"
+        >Verify Modification</mat-checkbox
+      >
+    </div>
+  </div>
+</form>
+<span *ngIf="pullRequestUrl">
+  A pull request for your changes has been created. You can access it
+  <a target="_blank" href="{{ pullRequestUrl }}"> here </a>
+</span>

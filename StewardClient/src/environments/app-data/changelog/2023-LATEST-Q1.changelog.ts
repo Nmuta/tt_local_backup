@@ -8,6 +8,26 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '97733f8ab-7e8b-4b39-a1a3-b88693efeb83',
+      shortText: 'Modify player UGC keyword filter to match regardless of casing',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'ce8f3f39-9cf5-4aa0-82fd-d64b4c082b29',
+      shortText: 'Persist and Clone UGC success popup stays on-screen until dismissed',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '7b106529-7c3e-49be-b09c-072fe1e6be67',
+      shortText: 'Remove old auctions tab in favor of auction logs tab',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '4166c37e-344e-44a9-b4cc-7b82bd5d3f61',
+      shortText: 'Added support for Generic Popup and Deeplink tiles',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'd92f49d2-3518-49d6-b5f9-b894f994c2e4',
       shortText: 'Homepage available actions filter only loads for General User role',
