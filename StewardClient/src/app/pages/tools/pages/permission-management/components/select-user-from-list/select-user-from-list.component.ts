@@ -6,6 +6,7 @@ import { HCI } from '@environments/environment';
 import { UserRole } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { UserModelWithPermissions } from '@models/user.model';
+import { V2UsersService } from '@services/api-v2/users/users.service';
 import { PermAttribute } from '@services/perm-attributes/perm-attributes';
 import { UserService } from '@services/user';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -30,6 +31,8 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
   @Output() public userAttributesChange = new EventEmitter<PermAttribute[]>();
 
   public getUsersActionMonitor = new ActionMonitor('GET all Steward users');
+  public postSyncUsersDbActionMonitor = new ActionMonitor('POST sync users DB');
+
   public allUsers: UserModelWithPermissions[];
   public filteredUsers: UserModelWithPermissions[];
   public selectedUser: UserModelWithPermissions;
@@ -45,7 +48,11 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
     return this.selectedUser?.objectId ?? '';
   }
 
-  constructor(private readonly dialog: MatDialog, private readonly userService: UserService) {
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly userService: UserService,
+    private readonly v2UsersService: V2UsersService,
+  ) {
     super();
   }
 
@@ -91,8 +98,29 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
       });
   }
 
+  /** Sets the  */
+  public updateUserAttributes(userId: GuidLikeString, updatedAttributes: PermAttribute[]): void {
+    const foundUser = find(this.allUsers, user => user.objectId == userId);
+
+    if (!!foundUser) {
+      foundUser.attributes = updatedAttributes;
+      this.nameFilterFormControl.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+    }
+  }
+
+  /** Syncs the user DB. */
+  public syncUsersDb(): void {
+    this.postSyncUsersDbActionMonitor = this.postSyncUsersDbActionMonitor.repeat();
+    this.v2UsersService
+      .syncDb$()
+      .pipe(this.postSyncUsersDbActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.initStewardUsersList();
+      });
+  }
+
   /** Gets the Steward user list and loads it into the component. */
-  public initStewardUsersList(): void {
+  private initStewardUsersList(): void {
     this.getUsersActionMonitor = this.getUsersActionMonitor.repeat();
     this.userService
       .getAllStewardUsers$()
@@ -106,15 +134,5 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
 
         this.filteredUsers = cloneDeep(this.allUsers);
       });
-  }
-
-  /** Sets the  */
-  public updateUserAttributes(userId: GuidLikeString, updatedAttributes: PermAttribute[]): void {
-    const foundUser = find(this.allUsers, user => user.objectId == userId);
-
-    if (!!foundUser) {
-      foundUser.attributes = updatedAttributes;
-      this.nameFilterFormControl.updateValueAndValidity({ onlySelf: true, emitEvent: true });
-    }
   }
 }

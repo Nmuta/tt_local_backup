@@ -15,9 +15,7 @@ import {
   PermissionAttributeList,
   PermissionsService,
 } from '@services/api-v2/permissions/permissions.service';
-import { V2UsersService } from '@services/api-v2/users/users.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { UserService } from '@services/user';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import {
   EndpointKeyMemoryState,
@@ -62,7 +60,6 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   public selectedUser: UserModelWithPermissions;
   public selectedUserHasPermChanges: boolean = false;
 
-  public postSyncUsersDbActionMonitor = new ActionMonitor('POST sync users DB');
   public getPermissionsActionMonitor = new ActionMonitor('GET permision attributes');
   public titleEnvironments: TitleEnvironments = {
     [GameTitle.Forte]: [],
@@ -103,8 +100,6 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly userService: UserService,
-    private readonly v2UsersService: V2UsersService,
     private readonly permissionsService: PermissionsService,
   ) {
     super();
@@ -225,18 +220,6 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
 
   /** Whether the node has a child */
   public hasChild = (_: number, _nodeData: AttributeTreeFlatNode) => _nodeData.expandable;
-
-  /** Syncs the user DB. */
-  public syncUsersDb(): void {
-    this.postSyncUsersDbActionMonitor = this.postSyncUsersDbActionMonitor.repeat();
-    this.v2UsersService
-      .syncDb$()
-      .pipe(this.postSyncUsersDbActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        // TODO
-        // this.initStewardUsersList();
-      });
-  }
 
   private initAttributeTree(): void {
     this.endpointKeys$

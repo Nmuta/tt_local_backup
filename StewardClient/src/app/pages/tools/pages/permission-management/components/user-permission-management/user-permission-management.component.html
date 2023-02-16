@@ -1,37 +1,12 @@
 <div class="steward-layout-with-sidebar">
   <div class="steward-layout-sidebar-group">
     <div class="steward-layout-pane">
-      <button
-        mat-raised-button
-        color="primary"
-        class="sync-users-button"
-        (click)="syncUsersDb()"
-        [disabled]="!selectUserComponent?.getUsersActionMonitor?.isDone"
-        [monitor]="postSyncUsersDbActionMonitor"
-        stateManager
-        monitorDisable
-        monitorCompleteSnackbar
-        monitorWarnSnackbar
-      >
-        Sync Users DB
-        <button-spinner
-          [monitor]="postSyncUsersDbActionMonitor"
-          defaultIcon="sync"
-        ></button-spinner>
-      </button>
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Steward Users</mat-card-title>
-          <mat-card-subtitle>List of all non-admin users</mat-card-subtitle>
-        </mat-card-header>
-
-        <select-user-from-list
-          [allowSelection]="getPermissionsActionMonitor.isDone"
-          [verifyUserChange]="selectedUserHasPermChanges"
-          (selectedUserChange)="newUserSelected($event)"
-          (userAttributesChange)="clonePermissions($event)"
-        ></select-user-from-list>
-      </mat-card>
+      <select-user-from-list
+        [allowSelection]="getPermissionsActionMonitor.isDone"
+        [verifyUserChange]="selectedUserHasPermChanges"
+        (selectedUserChange)="newUserSelected($event)"
+        (userAttributesChange)="clonePermissions($event)"
+      ></select-user-from-list>
     </div>
   </div>
 
