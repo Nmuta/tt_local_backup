@@ -3,7 +3,7 @@
   color="primary"
   class="sync-users-button"
   (click)="syncUsersDb()"
-  [disabled]="!selectUserComponent?.getUsersActionMonitor?.isDone"
+  [disabled]="!getUsersActionMonitor?.isDone"
   [monitor]="postSyncUsersDbActionMonitor"
   stateManager
   monitorDisable
