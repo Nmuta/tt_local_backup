@@ -42,6 +42,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '11b4301b-756a-4015-a7c1-7ca817741dde',
+      shortText: 'Add ability to override a player cms.',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'e692ef6b-2eab-4a24-827b-c09e9442142c',
       shortText: 'Homepage now filters by user write permissions on load',

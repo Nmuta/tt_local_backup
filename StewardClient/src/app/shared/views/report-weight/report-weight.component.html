@@ -1,6 +1,8 @@
 <mat-card>
-  <mat-card-title>Player Report Weight</mat-card-title>
-  <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+  <mat-card-header>
+    <mat-card-title>Player Report Weight</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+  </mat-card-header>
   <p *ngIf="currentReportWeight?.type === ReportWeightType.Default">
     <b>Player report weight:</b> {{ currentReportWeight.weight }}
   </p>
