@@ -1,5 +1,7 @@
 ﻿#pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1516 // Elements should be separated by blank line
 
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -20,18 +22,40 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     /// <summary>
     ///     Timer bridge.
     /// </summary>
-    public class TimerBridge
+    public class WofTimerBridge
     {
+        /// <summary>
+        ///     Gets or sets the instance of timer.
+        /// </summary>
+        public string InstanceType { get; set; }
+
         /// <summary>
         ///     Gets or sets the timer type.
         /// </summary>
         public TimerType TimerType { get; set; }
 
         /// <summary>
-        /// Gets or sets the custom range object.
+        ///     Gets or sets the custom range object.
         /// </summary>
         public TimerCustomRange CustomRange { get; set; }
     }
+
+    /// <summary>
+    ///     Timer reference bridge.
+    /// </summary>
+    public class TimerReferenceBridge
+    {
+        public Guid RefId { get; set; }
+        public LadderBridge LadderBridge { get; set; }
+        public SeriesBridge SeriesBridge { get; set; }
+        public SeasonBridge SeasonBridge { get; set; }
+        public ChapterBridge ChapterBridge { get; set; }
+    }
+
+    public class LadderBridge { }
+    public class SeriesBridge { }
+    public class SeasonBridge { }
+    public class ChapterBridge { }
 
     /// <summary>
     ///     Custom range bridge.

@@ -86,8 +86,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
 
-        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string type { get; set; }
+        [WriteToPegasus]
+        [XmlAttribute("type", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public string InstanceType { get; set; }
 
         [WriteToPegasus]
         [XmlElement("Ladder", Type = typeof(Ladder))]
@@ -100,6 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     public class WofBaseTimerReference
     {
+        [XmlAttribute("ref")]
         public Guid RefId { get; set; }
 
         [XmlIgnore]

@@ -353,7 +353,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LocTextBaseWof, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofBaseTimer, TimerBridge>()
+            this.CreateMap<WofBaseTimer, WofTimerBridge>()
                 .ReverseMap();
             this.CreateMap<WofBaseTimerCustomRange, TimerCustomRange>()
                 .ForMember(dest => dest.From, opt => opt.MapFrom(src => src.From))
