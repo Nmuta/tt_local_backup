@@ -3,14 +3,15 @@
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1601 // Partial elements should be documented
 #pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable SA1516 // Elements should be separated by blank line
 
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Newtonsoft.Json.Converters;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
@@ -30,10 +31,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WofBaseTileEntry
     {
-        [PegEdit]
+        [WriteToPegasus]
         public string FriendlyName { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public string Size { get; set; }
 
         public WofBaseTimer Timer { get; set; }
@@ -44,16 +45,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         public object CMSTileID { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextBaseWof TileTitle { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextBaseWof TileType { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextBaseWof TileDescription { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public string TileImagePath { get; set; }
 
         public string TelemetryTag { get; set; }
@@ -87,7 +88,28 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string type { get; set; }
+
+        [WriteToPegasus]
+        [XmlElement("Ladder", Type = typeof(Ladder))]
+        [XmlElement("Series", Type = typeof(Series))]
+        [XmlElement("Season", Type = typeof(Season))]
+        [XmlElement("Chapter", Type = typeof(Chapter))]
+        public WofBaseTimerReference TimerReference { get; set; }
     }
+
+    [Serializable]
+    public class WofBaseTimerReference
+    {
+        public Guid RefId { get; set; }
+
+        [XmlIgnore]
+        public virtual string Name { get; set; }
+    }
+
+    public class Ladder : WofBaseTimerReference { public override string Name => "Ladder"; }
+    public class Series : WofBaseTimerReference { public override string Name => "Series"; }
+    public class Season : WofBaseTimerReference { public override string Name => "Season"; }
+    public class Chapter : WofBaseTimerReference { public override string Name => "Chapter"; }
 
     // This prop appears to be unused in the Pegasus Xml.
     [Serializable]
@@ -114,11 +136,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WofBaseTimerCustomRange
     {
-        [PegEdit]
+        [WriteToPegasus]
         [XmlElement("From")]
         public WofBaseRangePoint[] From { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         [XmlElement("To")]
         public WofBaseRangePoint[] To { get; set; }
     }
@@ -132,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
 
         // TODO Check if this property can be DateTime.
-        [PegEdit(AnonymousField = true)]
+        [WriteToPegasus(AnonymousField = true)]
         [XmlText]
         public string Text { get; set; }
 
@@ -173,11 +195,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locdef { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string locref { get; set; }
     }

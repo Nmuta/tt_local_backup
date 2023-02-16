@@ -16,26 +16,26 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WofBaseDestination
     {
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationCategory Category { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationCategoryId CategoryId { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationSetting Setting { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationCupId CupId { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationLadderId LadderId { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationSeriesId SeriesId { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public string type { get; set; }
     }
 
@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationCategory
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public string @ref { get; set; }
     }
 
@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationCategoryId
     {
         [XmlElement(Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public object @null { get; set; }
     }
 
@@ -64,17 +64,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WorldOfForzaWoFTileDeeplinkDestinationSetting
     {
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship Championship { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationSettingSeries Series { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationSettingLadder Ladder { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public string type { get; set; }
     }
 
@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public string @ref { get; set; }
     }
 
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationSettingSeries
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public string @ref { get; set; }
     }
 
@@ -104,7 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationSettingLadder
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public string @ref { get; set; }
     }
 
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationCupId
     {
         [XmlElement(Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public object @null { get; set; }
     }
 
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationLadderId
     {
         [XmlElement(Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public object @null { get; set; }
     }
 
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WorldOfForzaWoFTileDeeplinkDestinationSeriesId
     {
         [XmlElement(Namespace = "scribble:x")]
-        [PegEdit]
+        [WriteToPegasus]
         public object @null { get; set; }
     }
 }

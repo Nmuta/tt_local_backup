@@ -6,12 +6,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
     ///     Signals whether Steward writes to this Pegasus data.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    internal sealed class PegEditAttribute : Attribute
+    internal sealed class WriteToPegasusAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PegEditAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="WriteToPegasusAttribute"/> class.
         /// </summary>
-        public PegEditAttribute()
+        public WriteToPegasusAttribute()
         {
         }
 

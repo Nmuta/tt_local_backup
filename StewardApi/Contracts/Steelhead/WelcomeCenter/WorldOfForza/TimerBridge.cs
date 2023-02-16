@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// <summary>
         /// Gets or sets the custom range object.
         /// </summary>
-        public TimerCustomRange TimerCustomRange { get; set; }
+        public TimerCustomRange CustomRange { get; set; }
     }
 
     /// <summary>
@@ -41,12 +41,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// <summary>
         ///     Gets or sets a list of custom range staring points.
         /// </summary>
-        public List<TimerCustomRangePoint> FromPoints { get; set; }
+        public List<TimerCustomRangePoint> From { get; set; }
 
         /// <summary>
         ///     Gets or sets a list of custom range end points.
         /// </summary>
-        public List<TimerCustomRangePoint> ToPoints { get; set; }
+        public List<TimerCustomRangePoint> To { get; set; }
     }
 
     /// <summary>

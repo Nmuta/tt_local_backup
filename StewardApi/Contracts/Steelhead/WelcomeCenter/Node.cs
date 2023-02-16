@@ -43,14 +43,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         ///     Gets or sets a value indicating whether the node's
         ///     <see cref="Value"/> should be wrapped in a CDATA tag
         ///     to ignore XML markup (i.e., treat the value as a verbatim string).
-        ///     See <see cref="PegEditAttribute.AddCdataMarkupToEntry"/>.
+        ///     See <see cref="WriteToPegasusAttribute.AddCdataMarkupToEntry"/>.
         /// </summary>
         public bool IsCdata { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the node's value is
         ///     backed by an anonymous property in the deserialized model.
-        ///     See <see cref="PegEditAttribute.AnonymousField"/>.
+        ///     See <see cref="WriteToPegasusAttribute.AnonymousField"/>.
         /// </summary>
         public bool IsAnonymousField { get; set; }
 

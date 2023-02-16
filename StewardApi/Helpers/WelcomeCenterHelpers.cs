@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             foreach (PropertyInfo property in target.GetType().GetProperties())
             {
-                if (property.GetCustomAttribute<PegEditAttribute>() != null && property.PropertyType.IsClass && property.PropertyType != typeof(string))
+                if (property.GetCustomAttribute<WriteToPegasusAttribute>() != null && property.PropertyType.IsClass && property.PropertyType != typeof(string))
                 {
                     object value = property.GetValue(target);
                     if (value == null)
@@ -156,7 +156,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         root.Children.Add(child);
                     }
                 }
-                else if (property.GetCustomAttribute<PegEditAttribute>() != null)
+                else if (property.GetCustomAttribute<WriteToPegasusAttribute>() != null)
                 {
                     // Create the node with metadata.
                     XNamespace xnamespace = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace
@@ -170,8 +170,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         ? xnamespace + property.Name
                         : xnamespace + name;
 
-                    bool isCdata = property.GetCustomAttribute<PegEditAttribute>()?.AddCdataMarkupToEntry ?? false;
-                    bool isAnony = property.GetCustomAttribute<PegEditAttribute>()?.AnonymousField ?? false;
+                    bool isCdata = property.GetCustomAttribute<WriteToPegasusAttribute>()?.AddCdataMarkupToEntry ?? false;
+                    bool isAnony = property.GetCustomAttribute<WriteToPegasusAttribute>()?.AnonymousField ?? false;
                     bool isAttri = property.GetCustomAttribute<XmlAttributeAttribute>() != null;
 
                     object value = property.GetValue(target);
