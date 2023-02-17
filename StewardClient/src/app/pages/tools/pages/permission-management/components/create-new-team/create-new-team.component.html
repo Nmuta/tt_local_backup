@@ -25,23 +25,30 @@
       <!-- <form class="example-form"> -->
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Team lead</mat-label>
-        <input type="text"
+        <input
+          type="text"
           matInput
           [formControl]="formControls.filterLead"
-          [matAutocomplete]="auto">
-          <button
-            type="button"
-            mat-button
-            matSuffix
-            mat-icon-button
-            aria-label="Clear team lead"
-            (click)="onSelected(null)"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="autoCompleteDisplayFn" (optionSelected)="onSelected($event)">
+          [matAutocomplete]="auto"
+        />
+        <button
+          type="button"
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear team lead"
+          (click)="onSelected(null)"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete
+          autoActiveFirstOption
+          #auto="matAutocomplete"
+          [displayWith]="autoCompleteDisplayFn"
+          (optionSelected)="onSelected($event)"
+        >
           <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-            {{ user.name }} | {{ user.emailAddress }} - 
+            {{ user.name }} | {{ user.emailAddress }} -
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

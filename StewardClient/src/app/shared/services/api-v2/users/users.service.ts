@@ -18,7 +18,9 @@ export class V2UsersService {
 
   /** Creates a new Steward team. */
   public createNewStewardTeam$(newTeam: StewardTeam): Observable<StewardTeam> {
-    console.log(newTeam)
-    return this.api.postRequest$<StewardTeam>(`${this.basePath}/${newTeam.teamLeadId}/team`, newTeam);
+    return this.api.postRequest$<StewardTeam>(
+      `${this.basePath}/${newTeam.teamLeadId}/team`,
+      newTeam,
+    );
   }
 }

@@ -18,20 +18,18 @@ import { StewardTeam } from '../../permission-management.models';
   styleUrls: ['./create-new-team.component.scss'],
 })
 export class CreateNewTeamComponent extends BaseComponent implements OnInit {
-
   public getUsersActionMonitor = new ActionMonitor('GET all Steward users');
   public createTeamActionMonitor = new ActionMonitor('POST create new Steward team');
 
   public allUsers: UserModel[];
   public filteredUsers$: Observable<UserModel[]>;
-  
+
   public formControls = {
     name: new FormControl('', Validators.required),
     filterLead: new FormControl(''),
-    lead: new FormControl('', Validators.required)
+    lead: new FormControl('', Validators.required),
   };
   public formGroup = new FormGroup(this.formControls);
-
 
   constructor(
     private readonly userService: UserService,
@@ -60,8 +58,8 @@ export class CreateNewTeamComponent extends BaseComponent implements OnInit {
     );
   }
 
-   /** Creates a new Steward team. */
-   public createStewardTeam(): void {
+  /** Creates a new Steward team. */
+  public createStewardTeam(): void {
     if (!this.formGroup.valid) {
       return;
     }
@@ -82,21 +80,20 @@ export class CreateNewTeamComponent extends BaseComponent implements OnInit {
         this.formControls.lead.setValue('');
         // Reload team list
       });
-
   }
 
   /** The autocomplete text display function. */
   public autoCompleteDisplayFn(user: UserModel): string {
-    if(!user) {
+    if (!user) {
       return '';
     }
 
-    return `${user.name} | ${user.emailAddress}`
+    return `${user.name} | ${user.emailAddress}`;
   }
 
   /** Action when user is selected from autocomplete */
   public onSelected(event: MatAutocompleteSelectedEvent): void {
-    if(!event) {
+    if (!event) {
       this.formControls.filterLead.setValue(null);
     }
 
@@ -104,11 +101,16 @@ export class CreateNewTeamComponent extends BaseComponent implements OnInit {
   }
 
   private _filter(value: string): UserModel[] {
-    if(!value || typeof value !== 'string') {
+    if (!value || typeof value !== 'string') {
       return this.allUsers;
     }
 
     const filterValue = value.toLowerCase();
-    return this.allUsers.filter(user => user.name.toLowerCase().includes(filterValue) || user.emailAddress.toLowerCase().includes(filterValue) || user.objectId.toLowerCase().includes(filterValue) );
+    return this.allUsers.filter(
+      user =>
+        user.name.toLowerCase().includes(filterValue) ||
+        user.emailAddress.toLowerCase().includes(filterValue) ||
+        user.objectId.toLowerCase().includes(filterValue),
+    );
   }
 }

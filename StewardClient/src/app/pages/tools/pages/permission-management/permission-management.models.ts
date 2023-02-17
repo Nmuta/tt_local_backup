@@ -25,9 +25,9 @@ export type TitleEnvironments = { [key: string]: string[] };
 
 /** Represents a Steward team. */
 export type StewardTeam = {
-  name: string,
-  members: GuidLikeString[],
+  name: string;
+  members: GuidLikeString[];
 
   // Client-only
-  teamLeadId: GuidLikeString,
+  teamLeadId: GuidLikeString;
 };
