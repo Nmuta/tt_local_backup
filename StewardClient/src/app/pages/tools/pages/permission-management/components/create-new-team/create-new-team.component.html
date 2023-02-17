@@ -1,0 +1,64 @@
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>group_add</mat-icon>
+    <mat-card-title>Create New Team</mat-card-title>
+  </mat-card-header>
+
+  <ng-container *waitForMonitor="getUsersActionMonitor">
+    <form [formGroup]="formGroup">
+      <mat-form-field>
+        <mat-label>Team name</mat-label>
+        <input matInput [formControl]="formControls.name" />
+        <button
+          type="button"
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear team name"
+          (click)="formControls.name.setValue('')"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <!-- auto complete of users here -->
+
+      <!-- <form class="example-form"> -->
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Team lead</mat-label>
+        <input type="text"
+          matInput
+          [formControl]="formControls.filterLead"
+          [matAutocomplete]="auto">
+          <button
+            type="button"
+            mat-button
+            matSuffix
+            mat-icon-button
+            aria-label="Clear team lead"
+            (click)="onSelected(null)"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="autoCompleteDisplayFn" (optionSelected)="onSelected($event)">
+          <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
+            {{ user.name }} | {{ user.emailAddress }} - 
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <!-- </form> -->
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="createStewardTeam()"
+        [disabled]="!formGroup.valid"
+        stateManager
+        [monitor]="createTeamActionMonitor"
+        monitorDisable
+      >
+        Create
+        <button-spinner [monitor]="createTeamActionMonitor"></button-spinner>
+      </button>
+    </form>
+  </ng-container>
+</mat-card>

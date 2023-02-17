@@ -35,6 +35,8 @@ import { UserPermissionManagementComponent } from './components/user-permission-
 import { MatTabsModule } from '@angular/material/tabs';
 import { TeamPermissionManagementComponent } from './components/team-permission-management/team-permission-management.component';
 import { SelectUserFromListComponent } from './components/select-user-from-list/select-user-from-list.component';
+import { CreateNewTeamComponent } from './components/create-new-team/create-new-team.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 /** Module for Steward permission management. */
 @NgModule({
@@ -45,6 +47,7 @@ import { SelectUserFromListComponent } from './components/select-user-from-list/
     VerifyUserSwitchDialogComponent,
     VerifyUserPermissionChangeDialogComponent,
     SelectUserFromListComponent,
+    CreateNewTeamComponent,
   ],
   imports: [
     PermisisionManagementRoutingModule,
@@ -78,6 +81,7 @@ import { SelectUserFromListComponent } from './components/select-user-from-list/
     DirectivesModule,
     MatMenuModule,
     MatTabsModule,
+    MatAutocompleteModule,
   ],
   exports: [],
 })

@@ -1,0 +1,10 @@
+@import '/src/styles/mixins';
+
+.mat-form-field, button {
+  width: 100%;
+}
+
+.sync-users-button {
+  margin-bottom: $gap-small;
+  width: 100%;
+}

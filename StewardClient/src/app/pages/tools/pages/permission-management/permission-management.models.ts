@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import { PermAttribute } from '@services/perm-attributes/perm-attributes';
 
 /**
@@ -21,3 +22,12 @@ export class AttributeTreeFlatNode {
 
 /** Key/Value pairing for titles and their environments */
 export type TitleEnvironments = { [key: string]: string[] };
+
+/** Represents a Steward team. */
+export type StewardTeam = {
+  name: string,
+  members: GuidLikeString[],
+
+  // Client-only
+  teamLeadId: GuidLikeString,
+};
