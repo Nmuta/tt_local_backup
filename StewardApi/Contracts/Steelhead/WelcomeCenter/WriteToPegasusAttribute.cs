@@ -29,5 +29,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         ///     'Text'. <code><![CDATA[<color>green<color/>]]></code>
         /// </summary>
         public bool AnonymousField { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this element
+        ///     is a base type with multiple exchangable derived types.
+        /// </summary>
+        public bool IsMultiElement { get; set; }
     }
 }

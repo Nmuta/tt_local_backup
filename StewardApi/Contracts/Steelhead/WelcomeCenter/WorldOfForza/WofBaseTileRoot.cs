@@ -62,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [WriteToPegasus]
         public string Size { get; set; }
 
+        [WriteToPegasus]
         public WofBaseTimer Timer { get; set; }
 
         public WofBaseDisplayConditions DisplayConditions { get; set; }
@@ -99,6 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         // This prop appears to be unused in the Pegasus xml.
         public object EndTextOverride { get; set; }
 
+        [WriteToPegasus]
         public TimerType TimerType { get; set; }
 
         public WofBaseTimeDisplayFrom TimeDisplayFrom { get; set; }
@@ -115,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlAttribute("type", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string TypeName { get; set; }
 
-        [WriteToPegasus]
+        [WriteToPegasus(IsMultiElement = true)]
         [XmlElement("Ladder", Type = typeof(Ladder))]
         [XmlElement("Series", Type = typeof(Series))]
         [XmlElement("Season", Type = typeof(Season))]
@@ -127,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public class WofBaseTimerReference
     {
         [WriteToPegasus]
-        [XmlAttribute("ref")]
+        [XmlAttribute("ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid RefId { get; set; }
 
         [XmlIgnore]

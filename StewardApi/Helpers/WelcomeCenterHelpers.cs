@@ -123,7 +123,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     }
 
                     XNamespace xnamespace = property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
-                    XName path = xnamespace + property.Name;
+
+                    // If the property is a multi-element base type,
+                    // use the derived type's name else base's name.
+                    XName path = property.GetCustomAttribute<WriteToPegasusAttribute>()?.IsMultiElement ?? false
+                        ? xnamespace + value.GetType().Name
+                        : xnamespace + property.Name;
 
                     if (value.GetType().IsArray)
                     {
@@ -224,23 +229,10 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     }
                     else
                     {
-                        // Check if element does not exist
                         if (!el.Descendants(child.Path).Any())
                         {
-                            if (child.Children.Any(x => !x.IsAttributeField))
-                            {
-                                // If the element has children that are not attribute, create a non self-closing tag
-                                var newElement = XElement.Parse($"<{child.Path.LocalName}></{child.Path.LocalName}>");
-                                newElement.Name = child.Path;
-                                el.Add(newElement);
-                            }
-                            else
-                            {
-                                // If the element only has attribute children, the tag can be self-closing
-                                var newElement = XElement.Parse($"<{child.Path.LocalName} />");
-                                newElement.Name = child.Path;
-                                el.Add(newElement);
-                            }
+                            // If the element does not exist, create it.
+                            el.Add(new XElement(child.Path, child.Value));
                         }
 
                         FillXml(el.Descendants(child.Path).First(), child);

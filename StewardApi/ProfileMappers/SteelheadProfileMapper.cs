@@ -354,7 +354,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofBaseTimer, WofTimerBridge>()
+            this.CreateMap<WofTimerBridge, WofBaseTimer>()
+                .ForMember(dest => dest.TypeName, opt => opt.MapFrom(src => $"WorldOfForza.TileTimer{src.TimerReference.TimerInstance}"))
                 .ReverseMap();
             this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
             this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();
