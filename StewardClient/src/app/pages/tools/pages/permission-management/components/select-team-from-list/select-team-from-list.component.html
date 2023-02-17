@@ -1,10 +1,10 @@
 <mat-card>
   <mat-card-header>
     <mat-icon mat-card-avatar>group_add</mat-icon>
-    <mat-card-title>Create New Team</mat-card-title>
+    <mat-card-title>Create Steward Team</mat-card-title>
   </mat-card-header>
 
-  <ng-container *waitForMonitor="getUsersActionMonitor">
+  <ng-container *waitForMonitor="initComponentActionMonitor">
     <form [formGroup]="formGroup">
       <mat-form-field>
         <mat-label>Team name</mat-label>
@@ -20,10 +20,8 @@
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-      <!-- auto complete of users here -->
 
-      <!-- <form class="example-form"> -->
-      <mat-form-field class="example-full-width" appearance="fill">
+      <mat-form-field appearance="fill">
         <mat-label>Team lead</mat-label>
         <input
           type="text"
@@ -37,22 +35,21 @@
           matSuffix
           mat-icon-button
           aria-label="Clear team lead"
-          (click)="onSelected(null)"
+          (click)="onUserSelected(null)"
         >
           <mat-icon>close</mat-icon>
         </button>
         <mat-autocomplete
           autoActiveFirstOption
           #auto="matAutocomplete"
-          [displayWith]="autoCompleteDisplayFn"
-          (optionSelected)="onSelected($event)"
+          [displayWith]="userAutoCompleteDisplayFn"
+          (optionSelected)="onUserSelected($event)"
         >
           <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-            {{ user.name }} | {{ user.emailAddress }} -
+            {{ user.name }} | {{ user.emailAddress }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <!-- </form> -->
 
       <button
         mat-raised-button
@@ -67,5 +64,39 @@
         <button-spinner [monitor]="createTeamActionMonitor"></button-spinner>
       </button>
     </form>
+  </ng-container>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>group</mat-icon>
+    <mat-card-title>Steward Teams</mat-card-title>
+  </mat-card-header>
+
+  <ng-container *waitForMonitor="initComponentActionMonitor">
+    <mat-form-field appearance="fill">
+      <mat-label>Select team</mat-label>
+      <input type="text" matInput [formControl]="teamFormControl" [matAutocomplete]="auto" />
+      <button
+        type="button"
+        mat-button
+        matSuffix
+        mat-icon-button
+        aria-label="Clear team"
+        (click)="onTeamSelected(null)"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        [displayWith]="teamAutoCompleteDisplayFn"
+        (optionSelected)="onTeamSelected($event)"
+      >
+        <mat-option *ngFor="let team of filteredTeams$ | async" [value]="team">
+          {{ team.name }} | {{ team?.teamLead?.name ?? 'Unknown lead' }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
   </ng-container>
 </mat-card>

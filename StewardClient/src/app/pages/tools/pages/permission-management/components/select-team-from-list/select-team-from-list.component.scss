@@ -1,5 +1,9 @@
 @import '/src/styles/mixins';
 
+mat-card {
+  margin-bottom: $gap-small;
+}
+
 .mat-form-field,
 button {
   width: 100%;

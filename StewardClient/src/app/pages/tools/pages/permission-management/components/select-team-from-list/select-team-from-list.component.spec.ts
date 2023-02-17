@@ -7,11 +7,11 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { createMockOldPermissionsService } from '@services/old-permissions';
 import { createMockUserService } from '@services/user';
-import { CreateNewTeamComponent } from './create-new-team.component';
+import { SelectTeamFromListComponent } from './select-team-from-list.component';
 
-describe('CreateNewTeamComponent', () => {
-  let component: CreateNewTeamComponent;
-  let fixture: ComponentFixture<CreateNewTeamComponent>;
+describe('SelectTeamFromListComponent', () => {
+  let component: SelectTeamFromListComponent;
+  let fixture: ComponentFixture<SelectTeamFromListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,7 +22,7 @@ describe('CreateNewTeamComponent', () => {
         NgxsModule.forRoot([]),
         MatDialogModule,
       ],
-      declarations: [CreateNewTeamComponent],
+      declarations: [SelectTeamFromListComponent],
       providers: [
         createMockBackgroundJobService(),
         createMockUserService(),
@@ -30,7 +30,7 @@ describe('CreateNewTeamComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CreateNewTeamComponent);
+    fixture = TestBed.createComponent(SelectTeamFromListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

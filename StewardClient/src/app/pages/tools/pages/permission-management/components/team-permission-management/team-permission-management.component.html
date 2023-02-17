@@ -1,7 +1,9 @@
 <div class="steward-layout-with-sidebar">
   <div class="steward-layout-sidebar-group">
     <div class="steward-layout-pane">
-      <create-new-team></create-new-team>
+      <select-team-from-list
+        (selectedTeamChange)="selectedTeamChange($event)"
+      ></select-team-from-list>
     </div>
   </div>
 
@@ -12,6 +14,12 @@
         <mat-card-subtitle>Add and remove users within as team</mat-card-subtitle>
         <div class="sf-spacer"></div>
       </mat-card-header>
+      <ng-container *ngIf="!!selectedTeam">
+        <div>{{ selectedTeam.name }} | {{ selectedTeam.teamLead.objectId }}</div>
+        <div *ngFor="let member of selectedTeam.members">
+          -- <steward-user [objectId]="member"></steward-user>
+        </div>
+      </ng-container>
     </mat-card>
   </div>
 </div>

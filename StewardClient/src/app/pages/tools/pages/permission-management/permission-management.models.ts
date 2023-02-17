@@ -1,4 +1,5 @@
 import { GuidLikeString } from '@models/extended-types';
+import { UserModel } from '@models/user.model';
 import { PermAttribute } from '@services/perm-attributes/perm-attributes';
 
 /**
@@ -29,5 +30,5 @@ export type StewardTeam = {
   members: GuidLikeString[];
 
   // Client-only
-  teamLeadId: GuidLikeString;
+  teamLead: UserModel;
 };
