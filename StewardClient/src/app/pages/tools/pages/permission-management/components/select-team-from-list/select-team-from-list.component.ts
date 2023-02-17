@@ -56,8 +56,10 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
     combineLatest([getUsers$, getTeams$])
       .pipe(this.initComponentActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(([users, teams]) => {
+        // Only GeneralUsers with perm attributes can be a lead.
         const generalUsers = users.filter(user => user.role === UserRole.GeneralUser);
 
+        // TODO: We should be using a filter on this to ignore people who already have teams.
         this.allUsers = sortBy(generalUsers, user => {
           return user.name;
         }) as UserModel[];
@@ -99,7 +101,7 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
 
     this.createTeamActionMonitor = this.createTeamActionMonitor.repeat();
     this.v2UsersService
-      .createNewStewardTeam$(newTeam)
+      .setStewardTeam$(newTeam)
       .pipe(this.createTeamActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.formControls.name.setValue('');
@@ -115,7 +117,7 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
       return '';
     }
 
-    return `${user.name} | ${user.emailAddress}`;
+    return `${user.name} (${user.emailAddress})`;
   }
 
   /** The autocomplete text display function for user list. */
@@ -124,7 +126,7 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
       return '';
     }
 
-    return `${team.name} | ${team?.teamLead?.name ?? 'Unknown lead'}`;
+    return `${team.name} (${team?.teamLead?.name ?? 'Unknown lead'})`;
   }
 
   /** Action when user is selected from autocomplete */
@@ -140,6 +142,7 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
   public onTeamSelected(event: MatAutocompleteSelectedEvent): void {
     if (!event) {
       this.teamFormControl.setValue(null);
+      return;
     }
 
     const selectedTeam = event?.option?.value ?? null;

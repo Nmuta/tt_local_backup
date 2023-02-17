@@ -22,8 +22,8 @@ export class V2UsersService {
     return this.api.getRequest$<Map<GuidLikeString, StewardTeam>>(`${this.basePath}/teams`);
   }
 
-  /** Creates a new Steward team. */
-  public createNewStewardTeam$(newTeam: StewardTeam): Observable<StewardTeam> {
+  /** Sets Steward team. */
+  public setStewardTeam$(newTeam: StewardTeam): Observable<StewardTeam> {
     return this.api.postRequest$<StewardTeam>(
       `${this.basePath}/${newTeam.teamLead.objectId}/team`,
       newTeam,

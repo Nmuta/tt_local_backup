@@ -46,7 +46,7 @@
           (optionSelected)="onUserSelected($event)"
         >
           <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-            {{ user.name }} | {{ user.emailAddress }}
+            {{ user.name }} ({{ user.emailAddress }})
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -61,7 +61,7 @@
         monitorDisable
       >
         Create
-        <button-spinner [monitor]="createTeamActionMonitor"></button-spinner>
+        <button-spinner [monitor]="createTeamActionMonitor" defaultIcon="add"></button-spinner>
       </button>
     </form>
   </ng-container>
@@ -71,6 +71,7 @@
   <mat-card-header>
     <mat-icon mat-card-avatar>group</mat-icon>
     <mat-card-title>Steward Teams</mat-card-title>
+    <mat-card-subtitle>Select to manage</mat-card-subtitle>
   </mat-card-header>
 
   <ng-container *waitForMonitor="initComponentActionMonitor">
@@ -94,7 +95,7 @@
         (optionSelected)="onTeamSelected($event)"
       >
         <mat-option *ngFor="let team of filteredTeams$ | async" [value]="team">
-          {{ team.name }} | {{ team?.teamLead?.name ?? 'Unknown lead' }}
+          {{ team.name }} ({{ team?.teamLead?.name ?? 'Unknown lead' }})
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

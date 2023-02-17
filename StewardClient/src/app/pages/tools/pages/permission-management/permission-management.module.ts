@@ -62,6 +62,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTooltipModule,
     MatTableModule,
     MatPaginatorModule,
+    MatPaginatorModule,
     TextFieldModule,
     JsonDumpModule,
     MatProgressSpinnerModule,
