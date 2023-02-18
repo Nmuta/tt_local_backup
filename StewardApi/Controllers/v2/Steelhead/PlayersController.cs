@@ -310,7 +310,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     try
                     {
                         var userResult = await services.LiveOpsService.GetLiveOpsUserDataByGamerTag(
-                                param.Gamertag).ConfigureAwait(false);
+                                param.Gamertag).ConfigureAwait(true);
 
                         param.Xuid = userResult.userData.qwXuid;
                     }
@@ -332,7 +332,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
                     var result = await services.UserManagementService
                         .BanUsers(mappedBanParameters.ToArray(), mappedBanParameters.Count)
-                        .ConfigureAwait(false);
+                        .ConfigureAwait(true);
 
                     banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
                 }
@@ -352,7 +352,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                                         TitleConstants.SteelheadCodeName,
                                         requesterObjectId,
                                         parameters,
-                                        endpoint).ConfigureAwait(false);
+                                        endpoint).ConfigureAwait(true);
                         }
                         catch (Exception ex)
                         {
