@@ -9,6 +9,10 @@ table {
   margin-bottom: $gap-medium;
 }
 
+.remove-btn {
+  margin: $gap-small 0;
+}
+
 mat-form-field {
   display: block;
   max-width: $single-input-max-width * 2;

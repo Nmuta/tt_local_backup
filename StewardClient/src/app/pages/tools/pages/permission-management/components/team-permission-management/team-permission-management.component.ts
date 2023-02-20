@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
@@ -9,8 +8,15 @@ import { UserModel } from '@models/user.model';
 import { V2UsersService } from '@services/api-v2/users/users.service';
 import { UserService } from '@services/user';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { cloneDeep, find } from 'lodash';
 import { map, Observable, startWith, takeUntil } from 'rxjs';
 import { StewardTeam } from '../../permission-management.models';
+
+interface PendingTeamChanges {
+  originalMemberList: UserModel[];
+  add: UserModel[];
+  remove: UserModel[];
+}
 
 /** Displays the Steward teams permission management tool. */
 @Component({
@@ -36,8 +42,14 @@ export class TeamPermissionManagementComponent
   public formGroup = new FormGroup(this.formControls);
   public filteredUsers$: Observable<UserModel[]>;
 
-  public membersTable = new BetterMatTableDataSource<string>();
+  public membersTable = new BetterMatTableDataSource<UserModel>();
   public displayedColumns = ['name', 'id', 'actions'];
+
+  public pendingChanges: PendingTeamChanges = {
+    originalMemberList: [],
+    add: [],
+    remove: [],
+  };
 
   constructor(
     private readonly userService: UserService,
@@ -71,10 +83,18 @@ export class TeamPermissionManagementComponent
   public selectedTeamChange(team: StewardTeam): void {
     this.selectedTeam = team;
     this.formControls.name.setValue(this.selectedTeam.name);
+    const originalMemberList = this.selectedTeam.members.map(memberId =>
+      find(this.allUsers, user => user.objectId === memberId),
+    );
+    this.membersTable.data = originalMemberList;
+
+    this.pendingChanges = {
+      originalMemberList: cloneDeep(originalMemberList),
+      add: [],
+      remove: [],
+    };
 
     // Remove team lead from list of available users to add to team
-    // TODO - this needs to be moved separatly OR
-    // We just handle invalid users during time of adding (prefer this as this is just a admin tool)
     this.availableUsers = this.allUsers.filter(user => {
       if (
         !!this.selectedTeam &&
@@ -83,8 +103,6 @@ export class TeamPermissionManagementComponent
         return user;
       }
     });
-
-    this.membersTable.data = this.selectedTeam.members;
   }
 
   /** Saves the team changes. */
@@ -95,7 +113,7 @@ export class TeamPermissionManagementComponent
 
     const team: StewardTeam = {
       name: this.formControls.name.value,
-      members: this.selectedTeam.members,
+      members: this.membersTable.data.map(member => member.objectId),
       teamLead: this.selectedTeam.teamLead,
     };
 
@@ -104,20 +122,37 @@ export class TeamPermissionManagementComponent
       .setStewardTeam$(team)
       .pipe(this.saveTeamMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(updatedTeam => {
-        this.selectedTeam = updatedTeam;
-
-        // Update the team in the selection tile.
+        // Reset team members and tool initialization
+        this.selectedTeam.members = updatedTeam.members;
+        this.selectedTeamChange(this.selectedTeam);
       });
   }
 
   /** Adds user to the team members list. */
-  public addUserToTeam(event: MatAutocompleteSelectedEvent): void {
-    if (!event) {
+  public addUserToTeam(user: UserModel): void {
+    if (!user) {
       return;
     }
 
     this.formControls.filterUser.setValue('');
-    this.membersTable.data.push(event?.option?.value ?? undefined);
+    const membersTable = this.membersTable.data;
+    const inMembersTable = !!find(this.membersTable.data, u => u.objectId === user.objectId);
+    if (!inMembersTable) {
+      membersTable.push(user);
+      this.membersTable.data = membersTable;
+    }
+
+    this.updatePendingChanges(user, true);
+  }
+
+  /** Removes user to the team members list. */
+  public removeUserFromTeam(user: UserModel): void {
+    if (!user) {
+      return;
+    }
+
+    this.membersTable.data = this.membersTable.data.filter(u => u.objectId !== user.objectId);
+    this.updatePendingChanges(user, false);
   }
 
   /** The autocomplete text display function for user list. */
@@ -141,5 +176,23 @@ export class TeamPermissionManagementComponent
         user.emailAddress.toLowerCase().includes(filterValue) ||
         user.objectId.toLowerCase().includes(filterValue),
     );
+  }
+
+  private updatePendingChanges(user: UserModel, add: boolean): void {
+    this.pendingChanges.add = this.pendingChanges.add.filter(u => user.objectId !== u.objectId);
+    this.pendingChanges.remove = this.pendingChanges.remove.filter(
+      u => user.objectId !== u.objectId,
+    );
+
+    // Update pending changes only if it updates the original members list
+    const isUserInOriginalList = !!find(
+      this.pendingChanges.originalMemberList,
+      member => member.objectId === user.objectId,
+    );
+    if (!isUserInOriginalList && add) {
+      this.pendingChanges.add.push(user);
+    } else if (isUserInOriginalList && !add) {
+      this.pendingChanges.remove.push(user);
+    }
   }
 }

@@ -37,6 +37,7 @@ import { TeamPermissionManagementComponent } from './components/team-permission-
 import { SelectUserFromListComponent } from './components/select-user-from-list/select-user-from-list.component';
 import { SelectTeamFromListComponent } from './components/select-team-from-list/select-team-from-list.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
 
 /** Module for Steward permission management. */
 @NgModule({
@@ -82,6 +83,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     DirectivesModule,
     MatMenuModule,
     MatTabsModule,
+    MatChipsModule,
     MatAutocompleteModule,
   ],
   exports: [],
