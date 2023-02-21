@@ -499,8 +499,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
                     {
-                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship},
-                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder},
+                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
+                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder },
                         type = "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting",
                     };
                 }
@@ -510,7 +510,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
                     {
                         Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
-                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series},
+                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series },
                         type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting"
                     };
                 }

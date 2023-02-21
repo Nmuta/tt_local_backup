@@ -72,142 +72,31 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static Node BuildMetaData(object target, Node root, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
         {
             Node tree = BuildMetaDataCore(target, root);
-
             BakeLocTextComments(tree, locstrings);
 
             return tree;
-        }
 
-        /// <summary>
-        /// Applies localization comments for formatter.
-        /// </summary>
-        public static void BakeLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
-        {
-            var children = tree.Children;
-            foreach (var child in children)
+            static void BakeLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
             {
-                if (child.Path.LocalName == "loc-ref" && child.IsAttributeField && child.Value != null)
+                var children = tree.Children;
+                foreach (var child in children)
                 {
-                    Guid guid = Guid.Parse((string)child.Value);
-                    if (locstrings.TryGetValue(guid, out var localizedStrings))
+                    if (child.Path.LocalName == "loc-ref" && child.IsAttributeField && child.Value != null)
                     {
-                        var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
-                        if (loc != null)
+                        Guid guid = Guid.Parse((string)child.Value);
+                        if (locstrings.TryGetValue(guid, out var localizedStrings))
                         {
-                            child.Comment = $" loc: {loc.Message} (base) ";
-                        }
-                    }
-                }
-
-                BakeLocTextComments(child, locstrings);
-            }
-        }
-
-        /// <summary>
-        ///     Recursively builds a tree of metadata from
-        ///     deserialized xml object.
-        /// </summary>
-        private static Node BuildMetaDataCore(object target, Node root)
-        {
-            foreach (PropertyInfo property in target.GetType().GetProperties())
-            {
-                if (property.GetCustomAttribute<WriteToPegasusAttribute>() != null && property.PropertyType.IsClass && property.PropertyType != typeof(string))
-                {
-                    object value = property.GetValue(target);
-
-                    XNamespace xnamespace = property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
-
-                    // If the property is a multi-element base type,
-                    // use the derived type's name else base's name.
-                    XName path = property.GetCustomAttribute<WriteToPegasusAttribute>()?.IsMultiElement ?? false
-                        ? xnamespace + value.GetType().Name
-                        : xnamespace + property.Name;
-
-                    if (value == null)
-                    {
-                        // This condition is a safety measure in case a class-type propeprty in the deserialized model is
-                        // annotated with [WriteToPegasus], but that property doesn't have a value because the bridge did not have a value
-                        // for it when the bridge was mapped to the xml object. So skip the current property
-                        // and go to the next one. This avoids a null reference on `target` on the next recursive call.
-
-                        if (root.ToString() == "Head" || root.Parent.Value != null)
-                        {
-                            // Create the node null if the parent is valid. But
-                            // Do not create any of the null node's children. This
-                            // allows for easier creation of elements with <x:null/> inside.
-                            root.Children.Add(new Node()
+                            var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
+                            if (loc != null)
                             {
-                                Value = null,
-                                Path = path,
-                                Parent = root
-                            });
-                        }
-
-                        continue;
-                    }
-
-                    if (value.GetType().IsArray)
-                    {
-                        int k = 0;
-                        root.IsArray = true;
-                        foreach (var innervalue in (object[])value)
-                        {
-                            Node ret = BuildMetaDataCore(innervalue, new Node()
-                            {
-                                Value = null,
-                                Path = path,
-                                Parent = root
-                            });
-
-                            ret.Index = k;
-                            root.Children.Add(ret);
-                            k++;
+                                child.Comment = $" loc: {loc.Message} (base) ";
+                            }
                         }
                     }
-                    else
-                    {
-                        // Recurse, then add created node to root.
-                        Node child = BuildMetaDataCore(value, new Node()
-                        {
-                            Value = null,
-                            Path = path,
-                            Parent = root
-                        });
 
-                        root.Children.Add(child);
-                    }
-                }
-                else if (property.GetCustomAttribute<WriteToPegasusAttribute>() != null)
-                {
-                    // Create the node with metadata.
-                    XNamespace xnamespace = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace
-                        ?? property.GetCustomAttribute<XmlAttributeAttribute>()?.Namespace
-                        ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
-
-                    string name = property.GetCustomAttribute<XmlElementAttribute>()?.ElementName
-                        ?? property.GetCustomAttribute<XmlAttributeAttribute>()?.AttributeName;
-
-                    XName path = string.IsNullOrEmpty(name)
-                        ? xnamespace + property.Name
-                        : xnamespace + name;
-
-                    bool isCdata = property.GetCustomAttribute<WriteToPegasusAttribute>()?.AddCdataMarkupToEntry ?? false;
-                    bool isAttri = property.GetCustomAttribute<XmlAttributeAttribute>() != null;
-
-                    object value = property.GetValue(target);
-
-                    root.Children.Add(new Node()
-                    {
-                        Value = value,
-                        Path = path,
-                        Parent = root,
-                        IsCdata = isCdata,
-                        IsAttributeField = isAttri,
-                    });
+                    BakeLocTextComments(child, locstrings);
                 }
             }
-
-            return root;
         }
 
         /// <summary>
@@ -336,6 +225,113 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 : XElement.Parse(el.FirstNode.ToString()).Name;
 
             return xname == NullElementXname;
+        }
+
+        /// <summary>
+        ///     Recursively builds a tree of metadata from
+        ///     deserialized xml object.
+        /// </summary>
+        private static Node BuildMetaDataCore(object target, Node root)
+        {
+            foreach (PropertyInfo property in target.GetType().GetProperties())
+            {
+                if (property.GetCustomAttribute<WriteToPegasusAttribute>() != null && property.PropertyType.IsClass && property.PropertyType != typeof(string))
+                {
+                    object value = property.GetValue(target);
+
+                    XNamespace xnamespace = property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
+
+                    // If the property is a multi-element base type,
+                    // use the derived type's name else base's name.
+                    XName path = property.GetCustomAttribute<WriteToPegasusAttribute>()?.IsMultiElement ?? false
+                        ? xnamespace + value.GetType().Name
+                        : xnamespace + property.Name;
+
+                    if (value == null)
+                    {
+                        // This condition is a safety measure in case a class-type propeprty in the deserialized model is
+                        // annotated with [WriteToPegasus], but that property doesn't have a value because the bridge did not have a value
+                        // for it when the bridge was mapped to the xml object. So skip the current property
+                        // and go to the next one. This avoids a null reference on `target` on the next recursive call.
+
+                        if (root.ToString() == "Head" || root.Parent.Value != null)
+                        {
+                            // Create the node null if the parent is valid. But
+                            // Do not create any of the null node's children. This
+                            // allows for easier creation of elements with <x:null/> inside.
+                            root.Children.Add(new Node()
+                            {
+                                Value = null,
+                                Path = path,
+                                Parent = root
+                            });
+                        }
+
+                        continue;
+                    }
+
+                    if (value.GetType().IsArray)
+                    {
+                        int k = 0;
+                        root.IsArray = true;
+                        foreach (var innervalue in (object[])value)
+                        {
+                            Node ret = BuildMetaDataCore(innervalue, new Node()
+                            {
+                                Value = null,
+                                Path = path,
+                                Parent = root
+                            });
+
+                            ret.Index = k;
+                            root.Children.Add(ret);
+                            k++;
+                        }
+                    }
+                    else
+                    {
+                        // Recurse, then add created node to root.
+                        Node child = BuildMetaDataCore(value, new Node()
+                        {
+                            Value = null,
+                            Path = path,
+                            Parent = root
+                        });
+
+                        root.Children.Add(child);
+                    }
+                }
+                else if (property.GetCustomAttribute<WriteToPegasusAttribute>() != null)
+                {
+                    // Create the node with metadata.
+                    XNamespace xnamespace = property.GetCustomAttribute<XmlElementAttribute>()?.Namespace
+                        ?? property.GetCustomAttribute<XmlAttributeAttribute>()?.Namespace
+                        ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
+
+                    string name = property.GetCustomAttribute<XmlElementAttribute>()?.ElementName
+                        ?? property.GetCustomAttribute<XmlAttributeAttribute>()?.AttributeName;
+
+                    XName path = string.IsNullOrEmpty(name)
+                        ? xnamespace + property.Name
+                        : xnamespace + name;
+
+                    bool isCdata = property.GetCustomAttribute<WriteToPegasusAttribute>()?.AddCdataMarkupToEntry ?? false;
+                    bool isAttri = property.GetCustomAttribute<XmlAttributeAttribute>() != null;
+
+                    object value = property.GetValue(target);
+
+                    root.Children.Add(new Node()
+                    {
+                        Value = value,
+                        Path = path,
+                        Parent = root,
+                        IsCdata = isCdata,
+                        IsAttributeField = isAttri,
+                    });
+                }
+            }
+
+            return root;
         }
     }
 }
