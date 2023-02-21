@@ -60,7 +60,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   public selectedUser: UserModelWithPermissions;
   public selectedUserHasPermChanges: boolean = false;
 
-  public getPermissionsActionMonitor = new ActionMonitor('GET permision attributes');
+  public getPermissionsActionMonitor = new ActionMonitor('GET permission attributes');
   public titleEnvironments: TitleEnvironments = {
     [GameTitle.Forte]: [],
     [GameTitle.FM8]: [],
