@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-using StorefrontManagementService = Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
-=======
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
->>>>>>> 6859ac9bebafc141552615d635ff3df7994af4ba
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 #pragma warning disable SA1516 // Blank lines
