@@ -25,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
@@ -202,6 +203,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var results = await this.BanUsersAsync(
                 banParameters,
+                this.Services.LiveOpsService,
+                this.Services.UserManagementService,
                 requesterObjectId).ConfigureAwait(true);
 
             var bannedXuids = results.Where(banResult => banResult.Error == null)
@@ -263,6 +266,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 {
                     var results = await this.BanUsersAsync(
                         banParameters,
+                        this.Services.LiveOpsService,
+                        this.Services.UserManagementService,
                         requesterObjectId).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
@@ -293,6 +298,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
         private async Task<IList<BanResult>> BanUsersAsync(
             IList<SteelheadBanParameters> banParameters,
+            ILiveOpsService liveOpsService,
+            IUserManagementService userManagementService,
             string requesterObjectId)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
@@ -300,7 +307,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             const int maxXuidsPerRequest = 10;
             var endpoint = this.SteelheadEndpoint.Value;
-            var services = this.Services;
 
             foreach (var param in banParameters)
             {
@@ -315,7 +321,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                     try
                     {
-                        var userResult = await services.LiveOpsService.GetLiveOpsUserDataByGamerTag(
+                        var userResult = await liveOpsService.GetLiveOpsUserDataByGamerTag(
                                 param.Gamertag).ConfigureAwait(true);
 
                         param.Xuid = userResult.userData.qwXuid;
@@ -336,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     var paramBatch = banParameters.ToList()
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await services.UserManagementService
+                    var result = await userManagementService
                         .BanUsers(mappedBanParameters.ToArray(), mappedBanParameters.Count)
                         .ConfigureAwait(true);
 
