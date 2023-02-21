@@ -328,26 +328,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
         private static bool IsNullElement(XElement el)
         {
-            XName xname;
+            // FirstNode == null example: <From x:when="#bcfeaturedrace"/> (self closing)
+            // FirstNode != null example: <Day>7</Day> or <Day><x:null/></Day>
 
-            if (el.FirstNode == null)
-            {
-                // example: <From x:when="#bcfeaturedrace" />
-                xname = XElement.Parse(el.ToString()).Name;
-            }
-            else
-            {
-                try
-                {
-                    xname = XElement.Parse(el.FirstNode.ToString()).Name;
-                }
-                catch (XmlException)
-                {
-                    // got anonymous property's value
-                    // instead of outerxml.
-                    return false;
-                }
-            }
+            XName xname = el.FirstNode == null
+                ? XElement.Parse(el.ToString()).Name
+                : XElement.Parse(el.FirstNode.ToString()).Name;
 
             return xname == NullElementXname;
         }
