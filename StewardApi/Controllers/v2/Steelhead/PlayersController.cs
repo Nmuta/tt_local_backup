@@ -58,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         private readonly IActionLogger actionLogger;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
+        private readonly ILoggingService loggingService;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
         private readonly IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator;
 
@@ -70,6 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             IActionLogger actionLogger,
             IJobTracker jobTracker,
             IScheduler scheduler,
+            ILoggingService loggingService,
             ISteelheadBanHistoryProvider banHistoryProvider,
             IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator)
         {
@@ -78,6 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             scheduler.ShouldNotBeNull(nameof(scheduler));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
 
@@ -86,6 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             this.actionLogger = actionLogger;
             this.jobTracker = jobTracker;
             this.scheduler = scheduler;
+            this.loggingService = loggingService;
             this.banHistoryProvider = banHistoryProvider;
             this.banParametersRequestValidator = banParametersRequestValidator;
         }
@@ -271,8 +275,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
