@@ -63,7 +63,7 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
     let pendingUser: UserModelWithPermissions;
     this.selectUserToManage$
       .pipe(
-        // filter(() => this.getPermissionsActionMonitor.isDone), Need to wait on this before allowing selection (Input)
+        filter(() => this.allowSelection),
         filter(v => !!v),
         tap(v => (pendingUser = v)),
         // Check for pending changes before switching
@@ -98,7 +98,7 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
       });
   }
 
-  /** Sets the  */
+  /** Sets the user's perm attributes.  */
   public updateUserAttributes(userId: GuidLikeString, updatedAttributes: PermAttribute[]): void {
     const foundUser = find(this.allUsers, user => user.objectId == userId);
 
