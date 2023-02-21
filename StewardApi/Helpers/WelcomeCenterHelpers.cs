@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -105,22 +107,13 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         ///     Recursively builds a tree of metadata from
         ///     deserialized xml object.
         /// </summary>
-        /// <typeparam name="T">The type of target.</typeparam>
-        private static Node BuildMetaDataCore<T>(T target, Node root)
+        private static Node BuildMetaDataCore(object target, Node root)
         {
             foreach (PropertyInfo property in target.GetType().GetProperties())
             {
                 if (property.GetCustomAttribute<WriteToPegasusAttribute>() != null && property.PropertyType.IsClass && property.PropertyType != typeof(string))
                 {
                     object value = property.GetValue(target);
-                    if (value == null)
-                    {
-                        // Safety measure in case someone marks a class-type propeprty in the deserialized model with [PegEdit],
-                        // but that property doesn't have a value because the bridge did not have a value
-                        // for it when the bridge was mapped to the xml object. So skip the current property
-                        // and go to the next one. This avoids a null reference on `target` on the next recursive call.
-                        continue;
-                    }
 
                     XNamespace xnamespace = property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
 
@@ -129,6 +122,29 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     XName path = property.GetCustomAttribute<WriteToPegasusAttribute>()?.IsMultiElement ?? false
                         ? xnamespace + value.GetType().Name
                         : xnamespace + property.Name;
+
+                    if (value == null)
+                    {
+                        // This condition is a safety measure in case a class-type propeprty in the deserialized model is
+                        // annotated with [WriteToPegasus], but that property doesn't have a value because the bridge did not have a value
+                        // for it when the bridge was mapped to the xml object. So skip the current property
+                        // and go to the next one. This avoids a null reference on `target` on the next recursive call.
+
+                        if (root.ToString() == "Head" || root.Parent.Value != null)
+                        {
+                            // Create the node null if the parent is valid. But
+                            // Do not create any of the null node's children. This
+                            // allows for easier creation of elements with <x:null/> inside.
+                            root.Children.Add(new Node()
+                            {
+                                Value = null,
+                                Path = path,
+                                Parent = root
+                            });
+                        }
+
+                        continue;
+                    }
 
                     if (value.GetType().IsArray)
                     {
@@ -176,7 +192,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         : xnamespace + name;
 
                     bool isCdata = property.GetCustomAttribute<WriteToPegasusAttribute>()?.AddCdataMarkupToEntry ?? false;
-                    bool isAnony = property.GetCustomAttribute<WriteToPegasusAttribute>()?.AnonymousField ?? false;
                     bool isAttri = property.GetCustomAttribute<XmlAttributeAttribute>() != null;
 
                     object value = property.GetValue(target);
@@ -187,7 +202,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         Path = path,
                         Parent = root,
                         IsCdata = isCdata,
-                        IsAnonymousField = isAnony,
                         IsAttributeField = isAttri,
                     });
                 }
@@ -201,99 +215,114 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static void FillXml(XElement el, Node root)
         {
-            var children = root.Children;
-
-            if (children.Count > 0)
+            if (root.Children.Count == 0)
             {
-                foreach (var child in children)
-                {
-                    if (IsNullElement(el))
-                    {
-                        el.FirstNode.ReplaceWith(HandleNullElement(root, child));
-                    }
-                    else if (child.IsArray)
-                    {
-                        var descend = el.Descendants(child.Path).First();
-                        foreach (var c in child.Children)
-                        {
-                            FillXml(descend.Descendants(c.Path).ElementAt(c.Index), c);
-                        }
-                    }
-                    else if (child.IsAnonymousField && child.Children.Count == 0)
-                    {
-                        SetElementValue(el, child);
-                    }
-                    else if (child.IsAttributeField)
-                    {
-                        HandleAttribute(el, child);
-                    }
-                    else
-                    {
-                        if (!el.Descendants(child.Path).Any())
-                        {
-                            // If the element does not exist, create it.
-                            el.Add(new XElement(child.Path, child.Value));
-                        }
+                SetNodeValue(root, el, root.Path, root.Value);
+                return;
+            }
 
-                        FillXml(el.Descendants(child.Path).First(), child);
+            foreach (var child in root.Children)
+            {
+                if (DoesNotExist(el, child) && !child.IsAttributeField)
+                {
+                    // If the element does not exist, create it.
+                    el.Add(new XElement(child.Path, child.Value));
+                }
+
+                if (child.IsArray)
+                {
+                    var descend = el.Descendants(child.Path).First();
+                    foreach (var c in child.Children)
+                    {
+                        FillXml(descend.Descendants(c.Path).ElementAt(c.Index), c);
                     }
                 }
+                else if (child.IsAttributeField)
+                {
+                    HandleAttribute(el, child);
+                }
+                else
+                {
+                    FillXml(el.Descendants(child.Path).First(), child);
+                }
             }
-            else
-            {
-                SetElementValue(el, root);
-            }
+        }
+
+        private static bool DoesNotExist(XElement el, Node child)
+        {
+            return !el.Descendants(child.Path).Any();
         }
 
         private static void HandleAttribute(XElement el, Node child)
         {
-            if (child.Path.LocalName == "loc-ref" || child.Path.LocalName == "loc-def")
+            if (child.Value == null || (child.Value is Guid guid && guid == Guid.Empty))
             {
-                if (child.Value != null)
+                SetNodeValue(child, el, child.Path, null);
+                return;
+            }
+
+            if (child.Path.LocalName != "loc-ref" && child.Path.LocalName != "loc-def")
+            {
+                SetNodeValue(child, el, child.Path, child.Value);
+                return;
+            }
+
+            // Always remove loc-def, replace with loc-ref.
+            SetNodeValue(child, el, child.Path.Namespace + "loc-def", null);
+            SetNodeValue(child, el, child.Path.Namespace + "loc-ref", child.Value);
+
+            // remove nodes from loc-refs: (description, base, skiploc)
+            el.RemoveNodes();
+        }
+
+        private static void SetNodeValue(Node node, XElement el, XName path, object value)
+        {
+            if (node.IsAttributeField)
+            {
+                el.SetAttributeValue(path, value);
+                HandleComment(node, el);
+                return;
+            }
+
+            if (node.Value == null)
+            {
+                // create <x:null />
+                el.Value = string.Empty;
+                if (IsNullElement(el))
                 {
-                    // Null check ignores the non-existant loc-ref or loc-def.
-                    // Always remove loc-def, replace with loc-ref.
-                    el.SetAttributeValue(child.Path.Namespace + "loc-def", null);
-                    el.SetAttributeValue(child.Path.Namespace + "loc-ref", child.Value);
-
-                    // remove nodes from loc-refs: (description, base, skiploc)
+                    el.FirstNode.ReplaceWith(new XElement(NullElementXname));
+                }
+                else
+                {
                     el.RemoveNodes();
-
-                    if (child.Comment != null)
-                    {
-                        if (el.PreviousNode is XComment cNode)
-                        {
-                            cNode.Value = child.Comment;
-                        }
-                        else
-                        {
-                            el.AddBeforeSelf(new XComment(child.Comment));
-                        }
-                    }
+                    el.Add(new XElement(NullElementXname));
                 }
             }
             else
             {
-                el.SetAttributeValue(child.Path, child.Value);
+                el.FirstNode.ReplaceWith(node.Value.ToString());
             }
-        }
 
-        private static void SetElementValue(XElement el, Node node)
-        {
-            if (node.Value == null)
+            if (node.IsCdata)
             {
-                el.Value = string.Empty;
-                el.Add(new XElement(NullElementXname));
+                el.FirstNode?.ReplaceWith(path, new XCData(value.ToString()));
             }
-            else if (node.IsCdata)
+
+            HandleComment(node, el);
+
+            static void HandleComment(Node node, XElement el)
             {
-                var newElement = XElement.Parse($"<{el.Name.LocalName}><![CDATA[{node.Value}]]></{el.Name.LocalName}>");
-                newElement.Name = node.Path;
-                el.ReplaceWith(newElement);
-            }
-            else
-            {
-                el.Value = node.Value.ToString();
+                if (node.Comment != null)
+                {
+                    if (el.PreviousNode is XComment cNode)
+                    {
+                        cNode.Value = node.Comment;
+                    }
+                    else
+                    {
+                        el.AddBeforeSelf(new XComment(node.Comment));
+                    }
+                }
             }
         }
 
@@ -321,23 +350,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
 
             return xname == NullElementXname;
-        }
-
-        private static XElement HandleNullElement(Node root, Node child)
-        {
-            if (child.Value == null)
-            {
-                return new XElement(NullElementXname);
-            }
-            else if (child.Children.Count > 0)
-            {
-                throw new WelcomeCenterXmlException(
-                    $"Generating nested elements from a null element is not supported: root: {root.Path}, child: {child.Path}");
-            }
-            else
-            {
-                return new XElement(child.Path, child.Value);
-            }
         }
     }
 }

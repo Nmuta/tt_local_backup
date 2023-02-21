@@ -48,13 +48,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public bool IsCdata { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the node's value is
-        ///     backed by an anonymous property in the deserialized model.
-        ///     See <see cref="WriteToPegasusAttribute.AnonymousField"/>.
-        /// </summary>
-        public bool IsAnonymousField { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether this node is an attribute.
         /// </summary>
         public bool IsAttributeField { get; set; }

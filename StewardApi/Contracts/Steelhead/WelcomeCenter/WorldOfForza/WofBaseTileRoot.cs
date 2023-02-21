@@ -44,7 +44,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TimerInstance
     {
-        NotSet,
         Ladder,
         Series,
         Season,
@@ -184,7 +183,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
 
         // TODO Check if this property can be DateTime.
-        [WriteToPegasus(AnonymousField = true)]
+        [WriteToPegasus]
         [XmlText]
         public string Text { get; set; }
 

@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
             return new TimerReferenceBridge
             {
                 RefId = source != null ? source.RefId : Guid.Empty,
-                TimerInstance = source != null ? source.TimerInstance : TimerInstance.NotSet,
+                TimerInstance = source != null ? source.TimerInstance : TimerInstance.Ladder,
                 ChapterBridge = new ChapterBridge(),
                 LadderBridge = new LadderBridge(),
                 SeriesBridge = new SeriesBridge(),
