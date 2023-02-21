@@ -162,3 +162,11 @@ export enum PegasusProjectionSlot {
   LiveSteward = 'live-steward',
   Daily = 'daily',
 }
+
+/** Enum for Pegasus Projection Slots. */
+export enum PegasusEnvironment {
+  Cert = 'cert',
+  Dev = 'dev',
+  Flight = 'flight',
+  Prod = 'prod',
+}
