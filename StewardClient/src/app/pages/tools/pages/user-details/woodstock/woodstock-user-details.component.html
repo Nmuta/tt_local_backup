@@ -10,6 +10,16 @@
             <woodstock-report-weight [identity]="identity"></woodstock-report-weight>
           </div>
 
+          <!-- TODO Change layout to this when CMS Override is done #1434184 -->
+          <!-- <div class="sf-horizontal">
+            <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
+            <woodstock-report-weight [identity]="identity"></woodstock-report-weight>
+          </div>
+          <div class="sf-horizontal">
+            <woodstock-player-game-details [identity]="identity"></woodstock-player-game-details>
+            <woodstock-cms-override [identity]="identity"></woodstock-cms-override>
+          </div> -->
+
           <woodstock-ban-history [xuid]="identity.xuid"></woodstock-ban-history>
           <woodstock-profile-notes [identity]="identity"></woodstock-profile-notes>
           <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
@@ -55,11 +65,12 @@
           <woodstock-player-notifications [identity]="identity"></woodstock-player-notifications>
         </div>
       </mat-tab>
-      <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
+      <!-- TODO: Remove after a couple weeks if no one shouts (2023/02/09) -->
+      <!-- <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
         <div class="tab-container">
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
         </div>
-      </mat-tab>
+      </mat-tab> -->
       <mat-tab *ngIf="!isSpecialXuid">
         <div class="tab-container">
           <ng-template mat-tab-label>
@@ -120,7 +131,7 @@
             <woodstock-player-ugc
               #ugcLayerGroup
               [identity]="identity"
-              [contentType]="UgcType.EventBlueprint"
+              [contentType]="UgcType.LayerGroup"
               [usingIdentities]="true"
             ></woodstock-player-ugc>
           </mat-tab>

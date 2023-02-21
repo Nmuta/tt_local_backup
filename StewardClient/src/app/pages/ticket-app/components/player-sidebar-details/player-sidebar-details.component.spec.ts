@@ -7,7 +7,6 @@ import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
-import { createMockGravityService } from '@services/gravity';
 import { createMockSunriseService } from '@services/sunrise';
 import { of, throwError } from 'rxjs';
 import { createMockOpusService } from '@services/opus';
@@ -31,7 +30,6 @@ describe('PlayerSidebarDetailsBaseComponent', () => {
       providers: [
         createMockWindowService(),
         ...createMockMsalServices(),
-        createMockGravityService(),
         createMockSunriseService(),
         createMockApolloService(),
         createMockOpusService(),

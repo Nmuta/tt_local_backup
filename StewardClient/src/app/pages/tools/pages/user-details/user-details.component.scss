@@ -13,10 +13,8 @@
   color: #fff !important;
 }
 
-:host ::ng-deep {
-  mat-toolbar {
-    font-size: $font-size-subnavbar;
-  }
+:host ::ng-deep mat-toolbar {
+  font-size: $font-size-subnavbar;
   & .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
     line-height: initial;
   }

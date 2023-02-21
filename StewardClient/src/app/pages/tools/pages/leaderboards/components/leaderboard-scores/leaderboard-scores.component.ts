@@ -5,7 +5,6 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
   EventEmitter,
 } from '@angular/core';
@@ -20,6 +19,7 @@ import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime
 import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { DeviceType, GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import {
@@ -246,7 +246,7 @@ export class LeaderboardScoresComponent
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<LeaderboardScoresComponent>): void {
     if (!!changes.externalSelectedScore && !!this.externalSelectedScore) {
       this.jumpFormControls.score.setValue(this.externalSelectedScore.score.toNumber());
       this.jumpToScore();

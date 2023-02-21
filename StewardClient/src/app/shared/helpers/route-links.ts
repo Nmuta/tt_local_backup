@@ -71,3 +71,8 @@ export function getWelcomeCenterTilesRoute(gameTitle: GameTitle) {
 export function getAuctionDetailsRoute(gameTitle: GameTitle, auctionId: string) {
   return ['/app/tools/auction-details/', gameTitle, auctionId];
 }
+
+/** Make PlayFab route. */
+export function getPlayFabRoute(gameTitle: GameTitle) {
+  return ['/app/tools/playfab/', gameTitle];
+}

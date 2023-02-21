@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Creates a steward user.
         /// </summary>
-        Task CreateStewardUserAsync(string id, string name, string email, string role, string attributes);
+        Task CreateStewardUserAsync(string id, string name, string email, string role, string attributes, string team);
 
         /// <summary>
         ///     Updates a steward user.
@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Updates a steward user.
         /// </summary>
-        Task UpdateStewardUserAsync(string id, string name, string email, string role, string attributes);
+        Task UpdateStewardUserAsync(string id, string name, string email, string role, string attributes, string team);
 
         /// <summary>
         ///     Retrieves a steward user.

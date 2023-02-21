@@ -45,9 +45,9 @@ describe('WoodstockComponent - Ticket App', () => {
         expect(result).toBeTruthy();
       });
     });
-    describe('When gameTitle does not match Gravity', () => {
+    describe('When gameTitle does not match Woodstock', () => {
       it('should return true', () => {
-        const result = component.isInCorrectTitleRoute(GameTitleCodeName.Street);
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.FH4);
 
         expect(result).toBeFalsy();
       });
@@ -57,7 +57,7 @@ describe('WoodstockComponent - Ticket App', () => {
   describe('Method: requestPlayerIdentity$', () => {
     const gamertag = faker.name.firstName();
 
-    it('should send request to mockGravityService.getPlayerIdentity ', () => {
+    it('should send request to mockWoodstockService.getPlayerIdentity ', () => {
       component.requestPlayerIdentity$(gamertag);
 
       expect(mockWoodstockService.getPlayerIdentity$).toHaveBeenCalledWith({ gamertag: gamertag });

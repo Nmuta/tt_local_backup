@@ -3,11 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatChipsModule } from '@angular/material/chips';
 import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { createMockSteelheadInventoryService } from '@services/api-v2/steelhead/inventory/steelhead-inventory.service.mock';
+import { SteelheadPlayerInventoryService } from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service';
 import {
-  SteelheadService,
-  createMockSteelheadService,
-  MockSteelheadService,
-} from '@services/steelhead';
+  createMockSteelheadPlayerInventoryService,
+  MockSteelheadPlayerInventoryService,
+} from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service.mock';
+import { createMockSteelheadService } from '@services/steelhead';
 import { first } from 'lodash';
 import { baseTests } from '../player-inventory-profiles-picker/player-inventory-profile-picker.base.component.spec';
 
@@ -15,17 +17,23 @@ import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead-play
 
 describe('SteelheadPlayerInventoryProfilePickerComponent', () => {
   let fixture: ComponentFixture<SteelheadPlayerInventoryProfilePickerComponent>;
-  let service: MockSteelheadService;
+  let mockSteelheadPlayerInventoryService: SteelheadPlayerInventoryService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadPlayerInventoryProfilePickerComponent],
-      providers: [createMockSteelheadService()],
+      providers: [
+        createMockSteelheadService(),
+        createMockSteelheadPlayerInventoryService(),
+        createMockSteelheadInventoryService(),
+      ],
       imports: [MatChipsModule],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    service = TestBed.inject(SteelheadService) as unknown as MockSteelheadService;
+    mockSteelheadPlayerInventoryService = TestBed.inject(
+      SteelheadPlayerInventoryService,
+    ) as unknown as SteelheadPlayerInventoryService;
   });
 
   beforeEach(() => {
@@ -36,7 +44,7 @@ describe('SteelheadPlayerInventoryProfilePickerComponent', () => {
   baseTests(
     () => fixture,
     () => first(SteelheadPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockSteelheadService().getPlayerInventoryProfilesByXuid$,
-    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
+    () => new MockSteelheadPlayerInventoryService(null).getInventoryProfilesByXuid$,
+    fn => (mockSteelheadPlayerInventoryService.getInventoryProfilesByXuid$ = fn),
   );
 });

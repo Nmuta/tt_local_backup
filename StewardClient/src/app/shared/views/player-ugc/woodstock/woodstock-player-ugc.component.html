@@ -4,6 +4,7 @@
   <woodstock-ugc-table
     [content]="filteredUgcContent"
     [contentType]="contentType"
+    (ugcItemsRemoved)="removeUgcItems($event)"
   ></woodstock-ugc-table>
 </ng-container>
 

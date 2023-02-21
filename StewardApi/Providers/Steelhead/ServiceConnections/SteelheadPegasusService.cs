@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using AutoMapper;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
@@ -21,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
@@ -32,6 +34,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
+using PullRequest = Turn10.LiveOps.StewardApi.Contracts.Git.PullRequest;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {
@@ -45,8 +48,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.PegasusCmsDefaultSteelhead,
-            ConfigurationKeyConstants.SteelheadMessageOfTheDayPath,
-            ConfigurationKeyConstants.SteelheadWorldOfForzaPath,
             ConfigurationKeyConstants.KeyVaultUrl,
             ConfigurationKeyConstants.SteelheadContentAccessToken,
             ConfigurationKeyConstants.SteelheadContentOrganizationUrl,
@@ -55,8 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         };
 
         private readonly string cmsEnvironment;
-        private readonly string pathMessageOfTheDay;
-        private readonly string pathWorldOfForzaTile;
+        private readonly string formatPipelineBuildDefinition;
         private readonly CMSRetrievalHelper cmsRetrievalHelper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IMapper mapper;
@@ -96,8 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.mapper = mapper;
 
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
-            this.pathMessageOfTheDay = configuration[ConfigurationKeyConstants.SteelheadMessageOfTheDayPath];
-            this.pathWorldOfForzaTile = configuration[ConfigurationKeyConstants.SteelheadWorldOfForzaPath];
+            this.formatPipelineBuildDefinition = configuration[ConfigurationKeyConstants.SteelheadFormatPipelineBuildDefinition];
 
             string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
                 configuration[ConfigurationKeyConstants.KeyVaultUrl],
@@ -125,56 +124,66 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
-            var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
+            var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}";
 
-            var localizationIdsMapping = await this.cmsRetrievalHelper
-                .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
-                    LocalizationStringIdsMappings,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
-
-            var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
-            foreach (var supportedLocale in supportedLocales)
+            async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStrings(bool useInternalIds)
             {
-                var filename = $"{LocalizationFileAntecedent}{supportedLocale.Locale}";
+                var results = new Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>();
 
-                var localizedStrings = await this.cmsRetrievalHelper
-                    .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
-                        filename,
+                var localizationIdsMapping = await this.cmsRetrievalHelper
+                    .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
+                        LocalizationStringIdsMappings,
                         this.cmsEnvironment,
                         slot: "daily").ConfigureAwait(false);
 
-                foreach (var locStringKey in localizedStrings.Keys)
+                var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
+                foreach (var supportedLocale in supportedLocales)
                 {
-                    var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+                    var filename = $"{LocalizationFileAntecedent}{supportedLocale.Locale}";
 
-                    var localizedResult = new LiveOpsContracts.LocalizedString()
-                    {
-                        Message = localizedStrings[locStringKey].LocString,
-                        Category = localizedStrings[locStringKey].Category,
-                        LanguageCode = supportedLocale.Locale,
-                        IsTranslated = isTranslated,
-                    };
+                    var localizedStrings = await this.cmsRetrievalHelper
+                        .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
+                            filename,
+                            this.cmsEnvironment,
+                            slot: "daily").ConfigureAwait(false);
 
-                    if (!results.ContainsKey(locStringKey))
+                    foreach (var locStringKey in localizedStrings.Keys)
                     {
-                        // Create if not exists in dictionary
-                        results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
+                        var isTranslated = !localizedStrings[locStringKey].LocString.Contains("[Not Translated]", StringComparison.InvariantCulture);
+
+                        var localizedResult = new LiveOpsContracts.LocalizedString()
+                        {
+                            Message = localizedStrings[locStringKey].LocString,
+                            Category = localizedStrings[locStringKey].Category,
+                            LanguageCode = supportedLocale.Locale,
+                            IsTranslated = isTranslated,
+                        };
+
+                        if (!results.ContainsKey(locStringKey))
+                        {
+                            // Create if not exists in dictionary
+                            results[locStringKey] = new List<LiveOpsContracts.LocalizedString>();
+                        }
+
+                        results[locStringKey].Add(localizedResult);
                     }
-
-                    results[locStringKey].Add(localizedResult);
                 }
+
+                // Remap the ids to the right ids from the mapping file
+                if (useInternalIds)
+                {
+                    return results
+                        .Where(p => localizationIdsMapping.ContainsKey(p.Key))
+                        .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
+                }
+                
+                this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
+
+                return results;
             }
 
-            // Remap the ids to the right ids from the mapping file
-            if (useInternalIds)
-            {
-                return results
-                    .Where(p => localizationIdsMapping.ContainsKey(p.Key))
-                    .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
-            }
-
-            return results;
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>>(localizedStringCacheKey)
+                   ?? await GetLocalizedStrings(useInternalIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -311,7 +320,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
             var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>>(
-                CMSFileNames.PlaylistDataForService,
+                CMSFileNames.PlaylistData,
                 environment: pegasusEnvironment,
                 slot: pegasusSlot,
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
@@ -325,9 +334,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
-            var fileName = "RacersCupChampionshipScheduleV4";
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
-                fileName,
+                CMSFileNames.RacersCupV4,
                 environment: pegasusEnvironment,
                 slot: pegasusSlot,
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
@@ -335,26 +343,42 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return scheduleData;
         }
 
-        /// <inheritdoc/>
-        public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
         {
-            var pushed = await this.azureDevOpsManager.CommitAndPushAsync(changes, null).ConfigureAwait(false);
+            var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
+            var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US");
 
-            return pushed;
+            var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
+                fileName,
+                environment: this.cmsEnvironment,
+                slot: pegasusSlot).ConfigureAwait(false);
+
+            return featuredCupData.Single();
         }
 
         /// <inheritdoc/>
-        public async Task<GitPullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
+        public async Task<SteelheadLiveOpsContent.WorldOfForzaConfigV3> GetWelcomeCenterDataAsync()
         {
-            var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription, null).ConfigureAwait(false);
+            var filename = CMSFileNames.WorldOfForzaConfig;
+            var wofConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaConfigV3>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
 
-            return pullrequest;
+            return wofConfig;
+        }
+
+        /// <inheritdoc/>
+        public async Task<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync()
+        {
+            var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US");
+            var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
+
+            return wofTileCollection;
         }
 
         /// <inheritdoc/>
         public async Task<XElement> GetMessageOfTheDayElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.MessageOfTheDay, GitObjectType.Blob).ConfigureAwait(false);
 
             XDocument doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "UserMessages.MessageOfTheDay")
@@ -369,7 +393,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<MotdBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.MessageOfTheDay, GitObjectType.Blob).ConfigureAwait(false);
 
             MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
             MotdEntry entry = root.Entries.Where(motd => motd.idAttribute == id).First();
@@ -382,7 +406,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathMessageOfTheDay, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.MessageOfTheDay, GitObjectType.Blob).ConfigureAwait(false);
             MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
@@ -411,7 +435,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             {
                 CommitComment = commitComment,
                 NewFileContent = newXml,
-                PathToFile = this.pathMessageOfTheDay,
+                PathToFile = PegasusFilePath.MessageOfTheDay,
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
 
@@ -419,26 +443,238 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<WofBridge> GetWorldOfForzaCurrentValuesAsync(Guid id)
+        public async Task<WofImageTextBridge> GetWorldOfForzaImageTextTileAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.ImageTextTile, GitObjectType.Blob).ConfigureAwait(false);
 
-            WofRoot root = await item.Content.DeserializeAsync<WofRoot>().ConfigureAwait(false);
-            WofEntry entry = root.Entries.Where(wof => wof.id == id).First();
+            WofImageTextRoot root = await item.Content.DeserializeAsync<WofImageTextRoot>().ConfigureAwait(false);
+            WofImageTextEntry entry = root.Entries.Where(wof => wof.id == id).First();
 
-            var subset = this.mapper.Map<WofBridge>(entry);
+            var subset = this.mapper.Map<WofImageTextBridge>(entry);
 
             return subset;
         }
 
         /// <inheritdoc/>
-        public async Task<Dictionary<Guid, string>> GetWorldOfForzaSelectionsAsync()
+        public async Task<WofGenericPopupBridge> GetWorldOfForzaGenericPopupTileAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
-            WofRoot root = await item.Content.DeserializeAsync<WofRoot>().ConfigureAwait(false);
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.GenericPopupTile, GitObjectType.Blob).ConfigureAwait(false);
 
+            WofGenericPopupRoot root = await item.Content.DeserializeAsync<WofGenericPopupRoot>().ConfigureAwait(false);
+            WofGenericPopupEntry entry = root.Entries.Where(wof => wof.id == id).First();
+
+            var subset = this.mapper.Map<WofGenericPopupBridge>(entry);
+
+            return subset;
+        }
+
+        /// <inheritdoc/>
+        public async Task<WofDeeplinkBridge> GetWorldOfForzaDeeplinkTileAsync(Guid id)
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.DeeplinkTile, GitObjectType.Blob).ConfigureAwait(false);
+
+            WofDeeplinkRoot root = await item.Content.DeserializeAsync<WofDeeplinkRoot>().ConfigureAwait(false);
+            WofDeeplinkEntry entry = root.Entries.Where(wof => wof.id == id).First();
+
+            var subset = this.mapper.Map<WofDeeplinkBridge>(entry);
+
+            return subset;
+        }
+
+        /// <inheritdoc/>
+        public async Task<Dictionary<Guid, string>> GetWorldOfForzaImageTextTileSelectionsAsync()
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.ImageTextTile, GitObjectType.Blob).ConfigureAwait(false);
+            WofImageTextRoot root = await item.Content.DeserializeAsync<WofImageTextRoot>().ConfigureAwait(false);
+
+            return GetWelcomeCenterTileDictionary(root.Entries);
+        }
+
+        /// <inheritdoc/>
+        public async Task<Dictionary<Guid, string>> GetWorldOfForzaGenericPopupSelectionsAsync()
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.GenericPopupTile, GitObjectType.Blob).ConfigureAwait(false);
+            WofGenericPopupRoot root = await item.Content.DeserializeAsync<WofGenericPopupRoot>().ConfigureAwait(false);
+
+            return GetWelcomeCenterTileDictionary(root.Entries);
+        }
+
+        /// <inheritdoc/>
+        public async Task<Dictionary<Guid, string>> GetWorldOfForzaDeeplinkSelectionsAsync()
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.DeeplinkTile, GitObjectType.Blob).ConfigureAwait(false);
+            WofDeeplinkRoot root = await item.Content.DeserializeAsync<WofDeeplinkRoot>().ConfigureAwait(false);
+
+            return GetWelcomeCenterTileDictionary(root.Entries);
+        }
+
+        /// <inheritdoc/>
+        public async Task<XElement> GetWorldOfForzaImageTextTileElementAsync(Guid id)
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.ImageTextTile, GitObjectType.Blob).ConfigureAwait(false);
+
+            return GetXmlElement(id, item, "WorldOfForza.WoFTileImageText");
+        }
+
+        /// <inheritdoc/>
+        public async Task<XElement> GetWorldOfForzaGenericPopupTileElementAsync(Guid id)
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.GenericPopupTile, GitObjectType.Blob).ConfigureAwait(false);
+
+            return GetXmlElement(id, item, "WorldOfForza.WoFTileGenericPopup");
+        }
+
+        /// <inheritdoc/>
+        public async Task<XElement> GetWorldOfForzaDeeplinkTileElementAsync(Guid id)
+        {
+            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusFilePath.DeeplinkTile, GitObjectType.Blob).ConfigureAwait(false);
+
+            return GetXmlElement(id, item, "WorldOfForza.WoFTileDeeplink");
+        }
+
+        /// <inheritdoc/>
+        public async Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id, string commitComment)
+        {
+            var entry = this.mapper.Map<WofImageTextEntry>(wofTileBridge);
+            XElement element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
+
+            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.ImageTextTile).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id, string commitComment)
+        {
+            var entry = this.mapper.Map<WofGenericPopupEntry>(wofTileBridge);
+            XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
+
+            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.GenericPopupTile).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id, string commitComment)
+        {
+            var entry = this.mapper.Map<WofDeeplinkEntry>(wofTileBridge);
+            XElement element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
+
+            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.DeeplinkTile).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<PullRequest>> GetPullRequestsAsync(PullRequestStatus status, string subject = null)
+        {
+            var allPrs = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null).ConfigureAwait(false);
+
+            var filteredPrs = allPrs.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrEmpty(subject))
+            {
+                filteredPrs = filteredPrs.Where(pr => pr.Title.Contains(subject, StringComparison.InvariantCulture));
+            }
+
+            var formattedPrs = this.mapper.Map<List<PullRequest>>(filteredPrs);
+
+            return formattedPrs;
+        }
+
+        /// <inheritdoc/>
+        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
+        {
+            return await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitRef>> GetAllBranchesAsync()
+        {
+            return await this.azureDevOpsManager.GetAllBranchesAsync().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<Build> RunFormatPipelineAsync(GitPush push)
+        {
+            return await this.azureDevOpsManager.RunPipelineAsync(
+                push, int.Parse(this.formatPipelineBuildDefinition, System.Globalization.CultureInfo.InvariantCulture)).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<GitPush> CommitAndPushAsync(CommitRefProxy[] changes)
+        {
+            return await this.azureDevOpsManager.CommitAndPushAsync(changes).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<PullRequest> CreatePullRequestAsync(GitPush pushed, string pullRequestTitle, string pullRequestDescription)
+        {
+            var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
+
+            return this.mapper.Map<PullRequest>(pullrequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync()
+        {
+            var items = await this.azureDevOpsManager.ListItemsAsync(PegasusFilePath.LocalizationFolder).ConfigureAwait(false);
+            return items.Skip(1).Select(k => System.IO.Path.GetFileNameWithoutExtension(k.Path[$"{PegasusFilePath.LocalizationFolder}/Localization-".Length..]));
+        }
+
+        /// <inheritdoc/>
+        public async Task<CommitRefProxy> WriteLocalizedStringsToPegasusAsync(LocCategory category, IEnumerable<LocalizedStringBridge> localizedStrings)
+        {
+            var path = $"{PegasusFilePath.LocalizationFolder}/Localization-{category}.xml";
+
+            var item = await this.azureDevOpsManager.GetItemAsync(path, GitObjectType.Blob).ConfigureAwait(false);
+
+            var xmlObj = await item.Content.DeserializeAsync<LocalizedStringRoot>().ConfigureAwait(false);
+
+            foreach (var loc in localizedStrings)
+            {
+                var entry = this.mapper.Map<LocEntry>(loc);
+
+                entry.id = Guid.NewGuid();
+                entry.LocString.locdef = Guid.NewGuid().ToString();
+                entry.Category = loc.Category.ToString();
+                entry.SubCategory = loc.SubCategory.ToString();
+
+                xmlObj.LocalizationEntries.Add(entry);
+            }
+
+            var appendedXmlStr = await XmlHelpers.SerializeAsync(xmlObj, WelcomeCenterHelpers.SteelheadXmlNamespaces).ConfigureAwait(false);
+
+            // Now fix the CData sections for {scribble:x}base elements
+            var xdoc = XDocument.Parse(appendedXmlStr);
+            var cdataSearchTarget = WelcomeCenterHelpers.NamespaceElement + "base";
+            foreach (var el in xdoc.Descendants(cdataSearchTarget))
+            {
+                el.FirstNode.ReplaceWith(new XCData(el.Value));
+            }
+
+            var finalXmlString = xdoc.ToXmlString();
+
+            var change = new CommitRefProxy()
+            {
+                CommitComment = $"Add localized string to {path}",
+                NewFileContent = finalXmlString,
+                PathToFile = path,
+                VersionControlChangeType = VersionControlChangeType.Edit
+            };
+
+            return change;
+        }
+
+        private static XElement GetXmlElement(Guid id, GitItem item, string typeNamespace)
+        {
+            XDocument doc = XDocument.Parse(item.Content);
+            var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + typeNamespace)
+                .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
+                .FirstOrDefault();
+
+            selectedElement.ShouldNotBeNull(nameof(selectedElement));
+            return selectedElement;
+        }
+
+        private static Dictionary<Guid, string> GetWelcomeCenterTileDictionary(IEnumerable<WofBaseTileEntry> entries)
+        {
             var choices = new Dictionary<Guid, string>();
-            foreach (WofEntry entry in root.Entries)
+            foreach (var entry in entries)
             {
                 choices.Add(entry.id, entry.FriendlyName);
             }
@@ -446,29 +682,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return choices;
         }
 
-        /// <inheritdoc/>
-        public async Task<XElement> GetWorldOfForzaElementAsync(Guid id)
+        private async Task<CommitRefProxy> GetWelcomeCenterTileCommitAsync(string commitComment, WofBaseTileEntry entry, XElement element, string filePath)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(this.pathWorldOfForzaTile, GitObjectType.Blob, null).ConfigureAwait(false);
-
-            XDocument doc = XDocument.Parse(item.Content);
-            var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "WorldOfForza.WoFTileImageText")
-                .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
-                .FirstOrDefault();
-
-            selectedElement.ShouldNotBeNull(nameof(selectedElement));
-
-            return selectedElement;
-        }
-
-        /// <inheritdoc/>
-        public async Task<CommitRefProxy> EditWorldOfForzaTileAsync(WofBridge wofTileBridge, Guid id, string commitComment)
-        {
-            var entry = this.mapper.Map<WofEntry>(wofTileBridge);
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
-            XElement element = await this.GetWorldOfForzaElementAsync(id).ConfigureAwait(false);
+            element.Elements().Where(x => x.Name.LocalName == "Destination").Remove();
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
@@ -478,45 +697,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             {
                 CommitComment = commitComment,
                 NewFileContent = newXml,
-                PathToFile = this.pathWorldOfForzaTile,
+                PathToFile = filePath,
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
 
             return change;
-        }
-
-        /// <inheritdoc/>
-        public async Task<IEnumerable<(GitPullRequest, string authorEmail)>> GetPullRequestsAsync(PullRequestStatus status)
-        {
-            var allPrs = await this.azureDevOpsManager.GetPullRequestsIntoDefaultBranchAsync(status, null, null).ConfigureAwait(false);
-
-            var filteredPrs = allPrs.Where(pr => pr.CreatedBy.UniqueName.Equals("t10stwrd@microsoft.com", StringComparison.OrdinalIgnoreCase));
-
-            IEnumerable<(GitPullRequest pr, string authorEmail)> formattedPrs = filteredPrs.Select(pr =>
-            {
-                var match = pr.Title.ExtractEmail().FirstOrDefault();
-                string authorEmail = match?.Value;
-
-                return (pr, authorEmail);
-            });
-
-            return formattedPrs;
-        }
-
-        /// <inheritdoc/>
-        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
-        {
-            var pullRequest = await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(false);
-
-            return pullRequest;
-        }
-
-        /// <inheritdoc/>
-        public async Task<IEnumerable<GitRef>> GetAllBranchesAsync()
-        {
-            var branches = await this.azureDevOpsManager.GetAllBranchesAsync().ConfigureAwait(false);
-
-            return branches;
         }
     }
 }

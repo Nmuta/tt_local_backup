@@ -9,6 +9,7 @@ import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.comp
 import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 import { UserDetailsComponent } from './user-details.component';
 import { GeneralUserDetailsComponent } from './general/general-user-details.component';
+import { ForteUserDetailsComponent } from './forte/forte-user-details.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'forte',
+        component: ForteUserDetailsComponent,
+        canActivate: [TitleMemorySetGuard],
         pathMatch: 'full',
       },
       {

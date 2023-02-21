@@ -8,8 +8,8 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { find, has, includes } from 'lodash';
-import { Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { find, has, includes, uniq } from 'lodash';
+import { filter, Observable, of, ReplaySubject, take, takeUntil, tap } from 'rxjs';
 import { PermAttribute, PermAttributeName } from './perm-attributes';
 
 type TitlesAndEnvironments = {
@@ -26,25 +26,61 @@ export class PermAttributesService extends BaseService {
   // TODO: This will need to be revisted once all users are moved to V2
   // and we have determined how we want to handle admin grouping
   private userRole: UserRole;
+  private attributesInitialized: boolean = false;
+  private isServiceFullyInitialized: boolean = false;
   private allPermAttributes: PermAttribute[];
+  private allPermAttributeNames: PermAttributeName[];
   private availableTitlesAndEnvironments: TitlesAndEnvironments = {
+    [GameTitle.Forte]: [],
     [GameTitle.FM8]: [],
     [GameTitle.FM7]: [],
     [GameTitle.FH5]: [],
     [GameTitle.FH4]: [],
   };
   private selectedEndpoints = {
+    [GameTitle.Forte]: null,
     [GameTitle.FM8]: null,
     [GameTitle.FM7]: null,
     [GameTitle.FH5]: null,
     [GameTitle.FH4]: null,
   };
 
-  private isInitialized$ = new ReplaySubject<void>(1);
+  private tryInitialization$ = new ReplaySubject<void>(1);
 
   /** Helper function that timeouts state checks for user profile. */
   public get initializationGuard$(): Observable<void> {
-    return this.isInitialized$.pipe(takeUntil(this.onDestroy$));
+    if (this.isServiceFullyInitialized) {
+      return of(null);
+    }
+
+    return this.tryInitialization$.pipe(
+      filter(() => this.attributesInitialized && !!this.userRole),
+      tap(() => (this.isServiceFullyInitialized = true)),
+      take(1), // Complete observable after initialization
+      takeUntil(this.onDestroy$),
+    );
+  }
+
+  /** Gets all perm attributes. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
+  public get permAttributes(): PermAttribute[] {
+    return this.allPermAttributes;
+  }
+
+  /** Gets all perm attribute names. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
+  public get permAttributeNames(): PermAttributeName[] {
+    return this.allPermAttributeNames;
+  }
+
+  /**
+   * Returns the current initialization state of the service.
+   * Use initializationGuard$ if you want to wait for the service to be initialized.
+   */
+  public get isServiceInitialized(): boolean {
+    return this.isServiceFullyInitialized;
+  }
+
+  public get isAdmin(): boolean {
+    return this.userRole === UserRole.LiveOpsAdmin;
   }
 
   public get isUsingV1Auth(): boolean {
@@ -100,6 +136,7 @@ export class PermAttributesService extends BaseService {
 
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.selectedEndpoints = {
+        [GameTitle.Forte]: latest.forteEndpointKey,
         [GameTitle.FM8]: latest.steelheadEndpointKey,
         [GameTitle.FM7]: latest.apolloEndpointKey,
         [GameTitle.FH5]: latest.woodstockEndpointKey,
@@ -111,12 +148,14 @@ export class PermAttributesService extends BaseService {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(profile => {
         this.userRole = profile.role;
+        this.tryInitialization$.next();
       });
   }
 
   /** Initiallizes the parm attributes service. */
   public initialize(attributes: PermAttribute[]): void {
     this.allPermAttributes = attributes;
+    this.allPermAttributeNames = uniq(attributes.map(x => x.attribute));
 
     // Build the available titles and environments model
     for (const attribute of this.allPermAttributes) {
@@ -133,13 +172,22 @@ export class PermAttributesService extends BaseService {
       }
     }
 
-    this.isInitialized$.next();
+    this.attributesInitialized = true;
+    this.tryInitialization$.next();
   }
 
   /** Returns true if user has permission to feature attribute. */
-  public hasFeaturePermission(attr: PermAttributeName, title?: GameTitle): boolean {
-    if (this.isUsingV1Auth) {
+  public hasFeaturePermission(
+    attr: PermAttributeName,
+    title?: GameTitle,
+    allowV1Auth?: boolean,
+  ): boolean {
+    if (this.isAdmin) {
       return true;
+    }
+
+    if (this.isUsingV1Auth) {
+      return allowV1Auth;
     }
 
     const titleToCheck = title ?? '';

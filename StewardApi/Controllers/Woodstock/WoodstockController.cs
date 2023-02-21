@@ -483,31 +483,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets credit updates.
-        /// </summary>
-        [HttpGet("player/xuid({xuid})/creditUpdates")]
-        [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetCreditUpdates(
-            ulong xuid,
-            [FromQuery] int startIndex = 0,
-            [FromQuery] int maxResults = DefaultMaxResults)
-        {
-            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var result = await this.woodstockPlayerDetailsProvider.GetCreditUpdatesAsync(
-                xuid,
-                startIndex,
-                maxResults,
-                endpoint).ConfigureAwait(true);
-
-            return this.Ok(result);
-        }
-
-        /// <summary>
         ///     Gets player auctions.
         /// </summary>
         [HttpGet("player/xuid({xuid})/auctions")]
@@ -948,32 +923,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Hides UGC.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.CommunityManager)]
-        [HttpPost("storefront/ugc/{ugcId}/hide")]
-        [SwaggerResponse(200)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.HideUgc)]
-        public async Task<IActionResult> HideUGC(string ugcId)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(ugcId, out var itemIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
-            }
-
-            await this.storefrontProvider.HideUgcAsync(itemIdGuid, endpoint).ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
         ///     Unhides player UGC content.
         /// </summary>
         [AuthorizeRoles(
@@ -1071,10 +1020,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
-                $"Woodstock Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+                $"Woodstock Banning: {banParameters.Count} recipients.",
+                this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1425,6 +1375,334 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+<<<<<<< HEAD
+=======
+        ///     Updates player inventories with given items.
+        /// </summary>
+        [HttpPost("gifting/players/useBackgroundProcessing")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
+            [FromBody] WoodstockGroupGift groupGift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+            var stringBuilder = new StringBuilder();
+
+            this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
+            this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
+                throw new InvalidArgumentsStewardException(errorResponse);
+            }
+
+            foreach (var xuid in groupGift.Xuids)
+            {
+                var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory)
+                .ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
+            }
+
+            var jobId = await this.jobTracker.CreateNewJobAsync(
+                groupGift.ToJson(),
+                requesterObjectId,
+                $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.",
+                this.Response).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    var allowedToExceedCreditLimit =
+                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+                    var response = await this.woodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                        groupGift,
+                        requesterObjectId,
+                        allowedToExceedCreditLimit,
+                        endpoint).ConfigureAwait(true);
+
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
+                        .ConfigureAwait(true);
+
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
+                        .ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
+        }
+
+        /// <summary>
+        ///     Updates player inventories with given items.
+        /// </summary>
+        [HttpPost("gifting/players")]
+        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        public async Task<IActionResult> UpdateGroupInventories(
+            [FromBody] WoodstockGroupGift groupGift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+            var stringBuilder = new StringBuilder();
+
+            this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
+            this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
+                throw new InvalidArgumentsStewardException(errorResponse);
+            }
+
+            foreach (var xuid in groupGift.Xuids)
+            {
+                var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
+                    .ConfigureAwait(true);
+                if (!playerExists)
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
+            }
+
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.woodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                groupGift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
+
+            var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                .ConfigureAwait(true);
+
+            return this.Ok(response);
+        }
+
+        /// <summary>
+        ///     Updates inventories for an LSP group.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.GeneralUser,
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [HttpPost("gifting/groupId({groupId})")]
+        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
+        public async Task<IActionResult> UpdateGroupInventories(
+            int groupId,
+            [FromBody] WoodstockGift gift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            gift.ShouldNotBeNull(nameof(gift));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+            this.giftRequestValidator.Validate(gift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
+
+                throw new InvalidArgumentsStewardException(result);
+            }
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
+            }
+
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.woodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(
+                groupId,
+                gift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
+            return this.Ok(response);
+        }
+
+        /// <summary>
+        ///     Gift players a car livery.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.GeneralUser,
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager,
+            UserRole.MediaTeam)]
+        [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] ExpirableGroupGift groupGift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Xuids.EnsureValidXuids();
+            groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var xuid in groupGift.Xuids)
+            {
+                if (!await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint).ConfigureAwait(true))
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var livery = await this.storefrontProvider.GetUgcLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
+            if (livery == null)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
+            }
+
+            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    var response = await this.woodstockPlayerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint).ConfigureAwait(true);
+
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+
+                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+
+                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
+                        .ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
+        }
+
+        /// <summary>
+        ///     Updates inventories for an LSP group.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.GeneralUser,
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
+        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
+        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] ExpirableGift gift)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+
+            groupId.ShouldNotBeNull(nameof(groupId));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
+
+            var livery = await this.storefrontProvider.GetUgcLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
+            if (livery == null)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
+            }
+
+            var response = await this.woodstockPlayerInventoryProvider.SendCarLiveryAsync(gift, groupId, livery, requesterObjectId, endpoint).ConfigureAwait(true);
+            return this.Ok(response);
+        }
+
+        /// <summary>
+>>>>>>> 6859ac9bebafc141552615d635ff3df7994af4ba
         ///     Gets the gift histories.
         /// </summary>
         [HttpGet("player/xuid({xuid})/giftHistory")]
@@ -1977,19 +2255,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 deletedScores).ConfigureAwait(true);
 
             return this.Ok();
-        }
-
-        /// <summary>
-        ///     Creates a job and puts the job ID in the response header.
-        /// </summary>
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
 
         /// <summary>

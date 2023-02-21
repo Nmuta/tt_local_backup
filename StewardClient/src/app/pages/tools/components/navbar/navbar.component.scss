@@ -70,7 +70,7 @@
 }
 
 :host ::ng-deep .cdk-drag {
-  background-color: app-color-default-contrast($app-primary);
+  background-color: app-color-default($app-background);
   border-radius: $border-radius-button;
   &,
   * {

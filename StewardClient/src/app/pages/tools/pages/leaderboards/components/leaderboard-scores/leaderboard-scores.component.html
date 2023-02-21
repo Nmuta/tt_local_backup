@@ -151,7 +151,6 @@
         *ngIf="!deleteLeaderboardScoresMonitor.isActive; else deleteLeaderboardScoresTemplate"
       >
         <table mat-table [dataSource]="leaderboardScores" class="full-width">
-          position
           <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef>Position</th>
             <td mat-cell *matCellDef="let entry">{{ entry.position }}</td>

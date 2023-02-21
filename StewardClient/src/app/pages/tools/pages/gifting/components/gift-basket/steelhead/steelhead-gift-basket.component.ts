@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, forwardRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, OnInit, OnChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SteelheadGift, SteelheadGroupGift, SteelheadMasterInventory } from '@models/steelhead';
 import { BackgroundJob } from '@models/background-job';
@@ -22,6 +22,7 @@ import { LocalizedStringsMap } from '@models/localization';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { SteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/gift/steelhead-players-gift.service';
 import { SteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 /** Steelhead gift basket. */
 @Component({
@@ -93,7 +94,7 @@ export class SteelheadGiftBasketComponent
    * https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1363280
    * Lifecycle hook.
    */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<SteelheadGiftBasketComponent>): void {
     if (!!changes.usingPlayerIdentities) {
       // We temporarily have group gifting restrictions with cars
       // Recalculate item errors if switching between player/group gifting

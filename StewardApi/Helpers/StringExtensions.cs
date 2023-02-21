@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
@@ -48,6 +51,33 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             if (string.IsNullOrWhiteSpace(source)) { return null; }
             return emailRegex.Matches(source);
+        }
+
+        /// <summary>
+        ///     Tries to parse string as specific enum. Throws if it cannot.
+        /// </summary>
+        public static TEnum TryParseEnumElseThrow<TEnum>(this string source, string additionalErrorMessageContext = "N/A")
+            where TEnum : struct, Enum
+        {
+            if (!Enum.TryParse<TEnum>(source, out var parsedSource))
+            {
+                throw new InvalidArgumentsStewardException($"Failed to parse string to enum. (context: {additionalErrorMessageContext}) (string: {source}) (enum: {nameof(TEnum)})");
+            }
+
+            return parsedSource;
+        }
+
+        /// <summary>
+        ///     Tries to parse string as Guid. Throws if it cannot.
+        /// </summary>
+        public static Guid TryParseGuidElseThrow(this string source, string additionalErrorMessageContext = "N/A")
+        {
+            if (!Guid.TryParse(source, out var parsedSource))
+            {
+                throw new InvalidArgumentsStewardException($"Failed to parse string to Guid. (context: {additionalErrorMessageContext}) (string: {source})");
+            }
+
+            return parsedSource;
         }
     }
 }

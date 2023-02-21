@@ -1,5 +1,6 @@
 /** List of all perm attributes. */
 export enum PermAttributeName {
+  TitleAccess = 'TitleAccess',
   AddLocalizedString = 'AddLocalizedString',
   AddProfileNote = 'AddProfileNote',
   AdminFeature = 'AdminFeature',
@@ -11,9 +12,7 @@ export enum PermAttributeName {
   DeleteLeaderboardScores = 'DeleteLeaderboardScores',
   FeatureUgc = 'FeatureUgc',
   GiftGroup = 'GiftGroup',
-  GiftGroupLivery = 'GiftGroupLivery',
   GiftPlayer = 'GiftPlayer',
-  GiftPlayerLivery = 'GiftPlayerLivery',
   HideUgc = 'HideUgc',
   MessageGroup = 'MessageGroup',
   MessagePlayer = 'MessagePlayer',
@@ -35,6 +34,8 @@ export enum PermAttributeName {
   UpdateMessageOfTheDay = 'UpdateMessageOfTheDay',
   UpdateWelcomeCenterTiles = 'UpdateWelcomeCenterTiles',
   CreateAuctions = 'CreateAuctions',
+  ManagePlayFabBuildLocks = 'ManagePlayFabBuildLocks',
+  ManagePlayFabSettings = 'ManagePlayFabSettings',
 }
 
 /** Full perm attribute details. */

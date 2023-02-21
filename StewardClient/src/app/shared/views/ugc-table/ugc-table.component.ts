@@ -2,10 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -32,6 +33,10 @@ import { GuidLikeString } from '@models/extended-types';
 import { saveAs } from 'file-saver';
 import { chunk, cloneDeep, flatten } from 'lodash';
 import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SuccessSnackbarComponent } from '@shared/modules/monitor-action/success-snackbar/success-snackbar.component';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -42,12 +47,20 @@ export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'actions',
 ];
 
-/** Extended type from HideableUgc. */
+/** Extended type from PlayerUgcItem. */
 export type PlayerUgcItemTableEntries = PlayerUgcItem & {
+  /** Link to the ugc detail page of that specific ugc item */
   ugcDetailsLink?: string[];
+  /** Sets if the row is selected */
+  selected?: boolean;
 };
 
-export const UGC_TABLE_COLUMNS_EXPANDO = ['exando-ugcInfo', 'thumbnailOneImageBase64', 'actions'];
+export const UGC_TABLE_COLUMNS_EXPANDO = [
+  'expandButton',
+  'exando-ugcInfo',
+  'thumbnailOneImageBase64',
+  'actions',
+];
 
 /** A component for a UGC content table. */
 @Component({
@@ -65,10 +78,13 @@ export abstract class UgcTableBaseComponent
 {
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  /** REVIEW-COMMENT: Player UGC items. */
+  /** Player UGC items. */
   @Input() content: PlayerUgcItem[];
-  /** REVIEW-COMMENT: Content type. Default to {@link UgcType.Unknown}. */
+  /** Content type of the UGC shown. Default to {@link UgcType.Unknown}. */
   @Input() contentType: UgcType = UgcType.Unknown;
+  /** Output when UGC items are hidden. */
+  @Output() ugcItemsRemoved = new EventEmitter<string[]>();
+
   public readonly THUMBNAIL_LOOKUP_BATCH_SIZE = 250;
   public readonly THUMBNAIL_LOOKUP_MAX_CONCURRENCY = 4;
 
@@ -82,17 +98,21 @@ export abstract class UgcTableBaseComponent
   public ugcCount: number;
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
+  public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
   public ugcDetailsLinkSupported: boolean = true;
+  public ugcHidingSupported: boolean = true;
   public ugcType = UgcType;
   public liveryGiftingRoute: string[];
+  public selectedUgcs: PlayerUgcItemTableEntries[] = [];
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
+  public readonly hideUgcPermission = PermAttributeName.HideUgc;
 
   public abstract gameTitle: GameTitle;
 
-  constructor() {
+  constructor(private readonly snackbar: MatSnackBar) {
     super();
   }
 
@@ -101,6 +121,7 @@ export abstract class UgcTableBaseComponent
   public abstract retrievePhotoThumbnails(
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
+  public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
 
   /** Angular hook. */
   public ngOnInit(): void {
@@ -117,7 +138,7 @@ export abstract class UgcTableBaseComponent
   }
 
   /** Angular hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: BetterSimpleChanges<UgcTableBaseComponent>): void {
     if (!!changes.content) {
       const ugcItemsToProcess: PlayerUgcItemTableEntries[] = this.content;
 
@@ -203,6 +224,72 @@ export abstract class UgcTableBaseComponent
       .subscribe(base64Content => {
         saveAs(base64Content, 'Photos.zip');
       });
+  }
+
+  /** Logic when row is selected. */
+  public onRowSelected(ugc: PlayerUgcItemTableEntries): void {
+    ugc.selected = !ugc.selected;
+
+    if (ugc.selected) {
+      this.selectedUgcs.push(ugc);
+    } else {
+      const selectedUgcIndex = this.selectedUgcs.findIndex(s => s.id === ugc.id);
+      if (selectedUgcIndex >= 0) {
+        this.selectedUgcs.splice(selectedUgcIndex, 1);
+      }
+    }
+  }
+
+  /** Hide multiple ugc items. */
+  public hideMultipleUgc(ugcs: PlayerUgcItemTableEntries[]): void {
+    this.hideUgcMonitor = this.hideUgcMonitor.repeat();
+
+    const ugcIds = ugcs.map(ugc => ugc.id);
+    this.hideUgc(ugcIds)
+      .pipe(this.hideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(failedUgcs => {
+        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
+        // the backend was successful (200)
+        if (failedUgcs.length > 0) {
+          this.snackbar.open(
+            `Failed to hide some or all of the following UGC items : ${failedUgcs.join('\n')}`,
+            'Okay',
+            {
+              panelClass: 'snackbar-warn',
+            },
+          );
+        } else {
+          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
+            data: this.hideUgcMonitor,
+            panelClass: ['snackbar-success'],
+          });
+        }
+
+        // Remove ugcId that failed from the list of ugcIds
+        failedUgcs.forEach(failedUgc => {
+          const index = ugcIds.indexOf(failedUgc);
+          ugcIds.splice(index, 1);
+        });
+        // Remove hidden ugcs from the table
+        // The ugcTableDataSource data property is a reference to this.content
+        ugcIds.forEach(ugcId => {
+          const index = this.content.findIndex(x => x.id == ugcId);
+          this.content.splice(index, 1);
+        });
+        // Send ugcIds to be removed to parent component
+        this.ugcItemsRemoved.emit(ugcIds);
+        this.selectedUgcs = [];
+        this.ugcTableDataSource.data.forEach(ugcTableElement => {
+          ugcTableElement.selected = false;
+        });
+        this.ugcTableDataSource._updateChangeSubscription();
+      });
+  }
+
+  /** Unselects all selected ugc items. */
+  public unselectAllUgcItems(): void {
+    this.selectedUgcs = [];
+    this.ugcTableDataSource.data.map(s => (s.selected = false));
   }
 
   private lookupThumbnails(photoIds: string[]): Observable<LookupThumbnailsResult[]> {

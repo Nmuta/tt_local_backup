@@ -336,30 +336,6 @@ describe('WoodstockService', () => {
     });
   });
 
-  describe('Method: getCreditHistoryByXuid', () => {
-    const xuid = fakeXuid();
-    const startIndex = 0;
-    const maxResults = faker.datatype.number(5_000);
-
-    beforeEach(() => {
-      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service getRequest$ with the expected params', done => {
-      const httpParams = new HttpParams()
-        .set('startIndex', startIndex.toString())
-        .set('maxResults', maxResults.toString());
-
-      service.getCreditHistoryByXuid$(xuid, startIndex, maxResults).subscribe(() => {
-        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/player/xuid(${xuid})/creditUpdates`,
-          httpParams,
-        );
-        done();
-      });
-    });
-  });
-
   describe('Method: getBackstagePassHistoryByXuid', () => {
     const xuid = fakeXuid();
 
@@ -629,24 +605,6 @@ describe('WoodstockService', () => {
           scoreIds,
           undefined,
           new HttpHeaders().set('endpointKey', `Woodstock|${endpointKeyOverride}`),
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: hideUgc', () => {
-    const ugcId = faker.datatype.uuid();
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest$ with the expected params', done => {
-      service.hideUgc$(ugcId).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/storefront/ugc/${ugcId}/hide`,
-          null,
         );
         done();
       });

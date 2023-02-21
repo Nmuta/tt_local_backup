@@ -13,7 +13,6 @@ import {
   WoodstockBanResult,
   WoodstockBanSummary,
   WoodstockConsoleDetailsEntry,
-  WoodstockCreditDetailsEntry,
   WoodstockGiftHistory,
   WoodstockMasterInventory,
   WoodstockPlayerAccountInventory,
@@ -39,7 +38,7 @@ import {
 import { AuctionFilters } from '@models/auction-filters';
 import { PlayerAuction } from '@models/player-auction';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
-import { PlayerUgcItem, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
+import { ClonedItemResult, PlayerUgcItem, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
 import { SimpleCar } from '@models/cars';
@@ -359,21 +358,6 @@ export class WoodstockService {
     );
   }
 
-  /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid$(
-    xuid: BigNumber,
-    startIndex: number = 0,
-    maxResults: number = 100,
-  ): Observable<WoodstockCreditDetailsEntry[]> {
-    const httpParams = new HttpParams()
-      .set('startIndex', startIndex.toString())
-      .set('maxResults', maxResults.toString());
-    return this.apiService.getRequest$<WoodstockCreditDetailsEntry[]>(
-      `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
-      httpParams,
-    );
-  }
-
   /** Gets a player's history of backstage passes by XUID. */
   public getBackstagePassHistoryByXuid$(xuid: BigNumber): Observable<BackstagePassHistory[]> {
     return this.apiService.getRequest$<BackstagePassHistory[]>(
@@ -498,13 +482,13 @@ export class WoodstockService {
     );
   }
 
-  /** Hide UGC item. */
-  public hideUgc$(ugcId: string): Observable<void> {
-    return this.apiService.postRequest$<void>(
-      `${this.basePath}/storefront/ugc/${ugcId}/hide`,
-      null,
-    );
-  }
+  // /** Hide UGC item. */
+  // public hideUgc$(ugcId: string): Observable<void> {
+  //   return this.apiService.postRequest$<void>(
+  //     `${this.basePath}/storefront/ugc/${ugcId}/hide`,
+  //     null,
+  //   );
+  // }
 
   /** Unhide UGC item. */
   public unhideUgc$(
@@ -524,8 +508,8 @@ export class WoodstockService {
   }
 
   /** Persist UGC item to the system user. */
-  public cloneUgc$(ugcId: string, contentType: UgcType): Observable<unknown> {
-    return this.apiService.postRequest$<unknown>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
+  public cloneUgc$(ugcId: string, contentType: UgcType): Observable<ClonedItemResult> {
+    return this.apiService.postRequest$<ClonedItemResult>(`${this.basePathV2}/ugc/${ugcId}/clone`, {
       contentType,
       keepGuid: true, // admin pages default was true
       isSearchable: true, // admin pages default was true

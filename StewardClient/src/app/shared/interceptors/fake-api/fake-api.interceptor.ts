@@ -37,17 +37,6 @@ import { ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/a
 import { ApolloPlayerXuidConsolesFakeApi } from './apis/title/apollo/player/xuid/consoleDetails';
 import { ApolloPlayerXuidUserFlagsFakeApi } from './apis/title/apollo/player/xuid/userFlags';
 
-import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
-import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/inventory';
-import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity/player/xuid/profileId/inventory';
-import { GravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/inventory';
-import { GravityPlayerT10IdProfileIdInventoryFakeApi } from './apis/title/gravity/player/t10Id/profileId/inventory';
-import { GravityPlayerT10IdGiftHistoryFakeApi } from './apis/title/gravity/player/t10Id/giftHistory';
-import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
-import { GravityPlayerT10IdDetailsFakeApi } from './apis/title/gravity/player/t10Id/details';
-import { GravityMasterInventoryFakeApi } from './apis/title/gravity/masterInventory';
-import { GravityGiftingPlayerFakeApi } from './apis/title/gravity/gifting/players';
-
 import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
 import { OpusPlayerProfileIdInventoryFakeApi } from './apis/title/opus/player/profileId/inventory';
 import { OpusPlayerXuidInventoryFakeApi } from './apis/title/opus/player/xuid/inventory';
@@ -58,7 +47,6 @@ import { SunriseConsoleIsBannedFakeApi } from './apis/title/sunrise/console/isBa
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayerXuidConsolesFakeApi } from './apis/title/sunrise/player/xuid/consoleDetails';
-import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/player/xuid/creditUpdates';
 import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/player/xuid/profileSummary';
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
@@ -97,6 +85,9 @@ import { WoodstockLeaderboardScoresTopTopFakeApi } from './apis/title/woodstock/
 import { WoodstockLeaderboardScoresDeleteFakeApi } from './apis/title/woodstock/leaderboard/scores/delete';
 import { WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi } from './apis/title/woodstock/leaderboard/scores/near-player/xuid';
 
+import { SteelheadPlayerInventoryProfilesFakeApi } from './apis/v2/steelhead/player/xuid/profiles';
+import { SteelheadPlayerInventoryFakeApi } from './apis/v2/steelhead/player/xuid/inventory';
+
 import { LoggerService, LogTopic } from '@services/logger';
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
 import { PipelineGetFakeApi } from './apis/pipeline/get';
@@ -107,6 +98,10 @@ import { SettingsGetEndpointsFakeApi } from './apis/title/settings/lspEndpoints'
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
+  // Steelhead
+  SteelheadPlayerInventoryProfilesFakeApi,
+  SteelheadPlayerInventoryFakeApi,
+
   // Woodstock
   WoodstockPlayerXuidBackstagePassHistoryFakeApi,
   WoodstockPlayerXuidAccountInventoryFakeApi,
@@ -118,25 +113,10 @@ const fakeApiConstructors = [
   WoodstockLeaderboardScoresDeleteFakeApi,
   WoodstockLeaderboardScoresNearPlayerXuidTopFakeApi,
 
-  // Gravity
-  GravityPlayerGamertagDetailsFakeApi,
-  GravityPlayerXuidInventoryFakeApi,
-  GravityPlayerXuidProfileIdInventoryFakeApi,
-  GravityPlayerT10IdDetailsFakeApi,
-  GravityPlayerT10IdInventoryFakeApi,
-  GravityPlayerT10IdProfileIdInventoryFakeApi,
-  GravityPlayerT10IdInventoryFakeApi,
-  GravityPlayerXuidInventoryFakeApi,
-  GravityPlayerT10IdGiftHistoryFakeApi,
-  GravityPlayersIdentitiesFakeApi,
-  GravityMasterInventoryFakeApi,
-  GravityGiftingPlayerFakeApi,
-
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
   SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi,
   SunrisePlayerXuidConsolesFakeApi,
-  SunrisePlayerXuidCreditUpdatesFakeApi,
   SunrisePlayerXuidUserFlagsFakeApi,
   SunrisePlayerXuidProfileSummaryFakeApi,
   SunrisePlayerXuidBanHistoryFakeApi,

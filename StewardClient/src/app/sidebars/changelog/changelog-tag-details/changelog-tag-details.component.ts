@@ -117,15 +117,13 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
         titles = [entryAsArea?.title as GameTitle];
       }
 
-      const result = titles
-        .filter(title => title !== GameTitle.Street)
-        .map(
-          title =>
-            ({
-              title: this.gameTitleAbbreviationPipe.transform(title),
-              tooltip: this.gameTitleFullNamePipe.transform(title),
-            } as ChanglogEntryChip),
-        );
+      const result = titles.map(
+        title =>
+          ({
+            title: this.gameTitleAbbreviationPipe.transform(title),
+            tooltip: this.gameTitleFullNamePipe.transform(title),
+          } as ChanglogEntryChip),
+      );
 
       return result;
     }

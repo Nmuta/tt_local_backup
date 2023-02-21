@@ -5,7 +5,7 @@ import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
 import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.base.component';
 
-/** Gravity Player Details */
+/** Sunrise Player Details */
 @Component({
   selector: 'sunrise-player-sidebar-details',
   templateUrl: '../player-sidebar-details.component.html',

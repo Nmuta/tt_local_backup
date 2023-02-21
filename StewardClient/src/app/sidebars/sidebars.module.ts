@@ -31,6 +31,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatInputModule } from '@angular/material/input';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -96,6 +98,8 @@ export const sidebarRoutes = [
     MonitorActionModule,
     DirectivesModule,
     PipesModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
   exports: [RouterModule],
 })

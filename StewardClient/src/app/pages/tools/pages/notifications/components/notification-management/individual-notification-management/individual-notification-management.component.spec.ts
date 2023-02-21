@@ -17,7 +17,7 @@ import BigNumber from 'bignumber.js';
 
 /** Test notification management service for player. */
 class TestNotificationManagementService implements IndividualNotificationManagementContract {
-  public gameTitle: GameTitle.Street;
+  public gameTitle: GameTitle.FH5;
   /** Get player notification. */
   public getPlayerNotifications$(): Observable<PlayerNotification[]> {
     return null;

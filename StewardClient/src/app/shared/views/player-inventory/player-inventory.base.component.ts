@@ -1,16 +1,7 @@
 import BigNumber from 'bignumber.js';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloMasterInventory } from '@models/apollo';
-import { GravityPlayerInventory } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { OpusMasterInventory } from '@models/opus';
@@ -20,9 +11,9 @@ import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operato
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
 import { cloneDeep } from 'lodash';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type AcceptablePlayerInventoryTypeUnion =
-  | GravityPlayerInventory
   | SunriseMasterInventory
   | ApolloMasterInventory
   | OpusMasterInventory;
@@ -132,7 +123,11 @@ export abstract class PlayerInventoryBaseComponent<
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(
+    changes: BetterSimpleChanges<
+      PlayerInventoryBaseComponent<PlayerInventoryType, IdentityResultType>
+    >,
+  ): void {
     if (changes['identity']) {
       if (changes.identity.currentValue !== changes.identity.previousValue) {
         this.identity$.next(this.identity);

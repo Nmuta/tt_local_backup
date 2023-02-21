@@ -62,7 +62,8 @@ describe('StewardUserComponent', () => {
             .and.returnValue(of(validUsers));
         });
         it('should set user email to returned user email value.', () => {
-          component.ngOnChanges(null);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component.ngOnChanges(<any>null);
           expect(component.user.emailAddress).toEqual(validUsers[0].emailAddress);
         });
       });

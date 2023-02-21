@@ -227,57 +227,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            async Task<SteelheadUserFlags> Action() => await provider.GetUserFlagsAsync(xuid, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<SteelheadUserFlags>();
-            result.IsEarlyAccess.Should().BeFalse();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SetUserFlagsAsync_WithValidParameters_DoesNotThrow()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var userFlags = Fixture.Create<SteelheadUserFlags>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, userFlags, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void SetUserFlagsAsync_WithNullUserFlags_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, null, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlags"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task BanUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

@@ -22,5 +22,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets title.
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Compare this attribute to another.
+        /// </summary>
+        /// <param name="b">Attribute to compare.</param>
+        /// <returns>True if attributes match.</returns>
+        public bool Matches(AuthorizationAttribute b)
+        {
+            return string.Compare(this.Attribute ?? string.Empty, b.Attribute ?? string.Empty, true, System.Globalization.CultureInfo.InvariantCulture) == 0 &&
+                    string.Compare(this.Environment ?? string.Empty, b.Environment ?? string.Empty, true, System.Globalization.CultureInfo.InvariantCulture) == 0 &&
+                    string.Compare(this.Title ?? string.Empty, b.Title ?? string.Empty, true, System.Globalization.CultureInfo.InvariantCulture) == 0;
+        }
     }
 }

@@ -59,6 +59,8 @@
                   (click)="sendReward(gameColumn)"
                   [monitor]="singlePostMonitors[gameColumn]"
                   stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="serviceContract?.gameTitle"
                   monitorDisable
                   monitorWarnSnackbar
                 >
@@ -86,7 +88,7 @@
             monitorWarnSnackbar
           >
             Send Missing Loyalty Rewards
-            <button-spinner [monitor]="postMonitor" defaultIcon="none"></button-spinner>
+            <button-spinner [monitor]="postMonitor" defaultIcon="send"></button-spinner>
           </button>
           <mat-checkbox
             #verifyAction

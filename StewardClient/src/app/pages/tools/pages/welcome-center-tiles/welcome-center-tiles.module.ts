@@ -28,10 +28,23 @@ import { DateTimePickersModule } from '@components/date-time-pickers/date-time-p
 import { LuxonDateModule } from 'ngx-material-luxon';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { LuxonModule } from 'luxon-angular';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { GeneralTileComponent } from './steelhead/tile-components/steelhead-general-tile.component';
+import { ImageTextTileComponent } from './steelhead/tile-components/image-text/steelhead-image-text-tile.component';
+import { GenericPopupTileComponent } from './steelhead/tile-components/generic-popup/steelhead-generic-popup-tile.component';
+import { DeeplinkTileComponent } from './steelhead/tile-components/deeplink/steelhead-deeplink-tile.component';
 /** Module for displaying welcome center tiles tool. */
 @NgModule({
-  declarations: [WelcomeCenterTilesComponent, SteelheadWelcomeCenterTilesComponent],
+  declarations: [
+    WelcomeCenterTilesComponent,
+    SteelheadWelcomeCenterTilesComponent,
+    ImageTextTileComponent,
+    GeneralTileComponent,
+    GenericPopupTileComponent,
+    DeeplinkTileComponent,
+  ],
   imports: [
     WelcomeCenterTilesRouterModule,
     CommonModule,
@@ -61,6 +74,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     LuxonDateModule,
     StandardDateModule,
     MatDatepickerModule,
+    PermissionsModule,
+    LuxonModule,
+    VerifyCheckboxModule,
   ],
   exports: [],
 })

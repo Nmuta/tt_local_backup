@@ -448,29 +448,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets credit updates.
-        /// </summary>
-        [HttpGet("player/xuid({xuid})/creditUpdates")]
-        [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
-        public async Task<IActionResult> GetCreditUpdates(
-            ulong xuid,
-            [FromQuery] int startIndex = DefaultStartIndex,
-            [FromQuery] int maxResults = DefaultMaxResults)
-        {
-            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-
-            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            var result = await this.sunrisePlayerDetailsProvider.GetCreditUpdatesAsync(
-                xuid,
-                startIndex,
-                maxResults,
-                endpoint).ConfigureAwait(true);
-
-            return this.Ok(result);
-        }
-
-        /// <summary>
         ///     Gets player auctions.
         /// </summary>
         [HttpGet("player/xuid({xuid})/auctions")]
@@ -748,32 +725,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Hides UGC.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.CommunityManager)]
-        [HttpPost("storefront/ugc/{ugcId}/hide")]
-        [SwaggerResponse(200)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.HideUgc)]
-        public async Task<IActionResult> HideUGC(string ugcId)
-        {
-            var endpoint = GetSunriseEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(ugcId, out var itemIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
-            }
-
-            await this.storefrontProvider.HideUgcAsync(itemIdGuid, endpoint).ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
         ///     Unhides player UGC content.
         /// </summary>
         [AuthorizeRoles(
@@ -928,10 +879,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
-                $"Sunrise Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+                $"Sunrise Banning: {banParameters.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1340,10 +1291,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(
+            var jobId = await this.jobTracker.CreateNewJobAsync(
                 groupGift.ToJson(),
                 requesterObjectId,
-                $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+                $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1507,7 +1458,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1540,7 +1491,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1580,7 +1531,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroupLivery)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -1963,16 +1914,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
 
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)

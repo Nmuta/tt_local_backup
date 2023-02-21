@@ -27,14 +27,24 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
                 modelState.AddModelError("UserFlags.IsUnderReview", $"{nameof(model.IsUnderReview)} must not be null.");
             }
 
-            if (!model.IsVip.HasValue)
+            if (!model.IsSteamVip.HasValue)
             {
-                modelState.AddModelError("UserFlags.IsVip", $"{nameof(model.IsVip)} must not be null.");
+                modelState.AddModelError("UserFlags.IsSteamVip", $"{nameof(model.IsSteamVip)} must not be null.");
             }
 
-            if (!model.IsUltimateVip.HasValue)
+            if (!model.IsSteamUltimateVip.HasValue)
             {
-                modelState.AddModelError("UserFlags.IsUltimateVip", $"{nameof(model.IsUltimateVip)} must not be null.");
+                modelState.AddModelError("UserFlags.IsSteamUltimateVip", $"{nameof(model.IsSteamUltimateVip)} must not be null.");
+            }
+
+            if (!model.IsGamecoreVip.HasValue)
+            {
+                modelState.AddModelError("UserFlags.IsGamecoreVip", $"{nameof(model.IsGamecoreVip)} must not be null.");
+            }
+
+            if (!model.IsGamecoreUltimateVip.HasValue)
+            {
+                modelState.AddModelError("UserFlags.IsGamecoreUltimateVip", $"{nameof(model.IsGamecoreUltimateVip)} must not be null.");
             }
         }
 

@@ -28,8 +28,8 @@ import { HelpPopoverIconComponent } from '@shared/modules/help/help-popover-icon
 })
 export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit {
   @ViewChild(HelpPopoverIconComponent) helpPopoverIcon: HelpPopoverIconComponent;
-  /** REVIEW-COMMENT: Pegasus slot id. Default to {@link PegasusProjectionSlot.Live}. */
-  @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Live;
+  /** REVIEW-COMMENT: Pegasus slot id. Default to {@link PegasusProjectionSlot.Daily}. */
+  @Input() public pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.Daily;
   public gameTitle = GameTitle.FM8;
   public searchUgc$ = new Subject<UgcSearchFilters>();
   public ugcContent: PlayerUgcItem[] = [];
@@ -41,6 +41,7 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
     gameTitle: this.gameTitle,
     makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
     supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.Tune],
+    specialIdentitiesAllowed: [],
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,
   };

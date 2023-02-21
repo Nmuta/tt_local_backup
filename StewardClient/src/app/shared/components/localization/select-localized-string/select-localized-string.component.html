@@ -3,6 +3,7 @@
     <mat-form-field [formGroup]="formGroup" class="sf-full-width sf-default-hint">
       <mat-label>{{ label }}</mat-label>
       <mat-select
+        [required]="isRequired"
         [formControl]="formControls.selectedLocalizedStringInfo"
         [compareWith]="comparisonFunction"
       >

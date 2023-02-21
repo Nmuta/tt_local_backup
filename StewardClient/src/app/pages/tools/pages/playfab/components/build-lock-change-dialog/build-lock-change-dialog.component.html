@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>{{ dialogTitle }}</h1>
+<div>
+  <b>Name:</b> {{ data?.build.name }} <br />
+  <b>Id:</b> {{ data?.build.id }}
+</div>
+<div mat-dialog-content>
+  <ng-container *ngIf="data?.lockBuild; else unlockBuildContentTemplate">
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill">
+        <mat-label>Reason for locking build</mat-label>
+        <textarea matInput [formControl]="formControls?.reason" cdkTextareaAutosize></textarea>
+      </mat-form-field>
+    </form>
+  </ng-container>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="undefined">Go Back</button>
+  <button
+    mat-raised-button
+    [color]="buttonColor"
+    [verifyWith]="verifyAction"
+    cdkFocusInitial
+    (click)="commitAction()"
+    stateManager
+    [monitor]="actionMonitor"
+    monitorDisable
+    monitorCompleteSnackbar
+    monitorWarnSnackbar
+  >
+    {{ buttonText }}
+    <button-spinner [monitor]="actionMonitor" [defaultIcon]="buttonIcon"></button-spinner>
+  </button>
+  <mat-checkbox
+    #verifyAction
+    stateManager
+    [monitor]="actionMonitor"
+    [permissionAttribute]="playFabBuildsPermAttribute"
+    [permissionTitle]="data.gameTitle"
+    [disabled]="formGroup.invalid"
+    monitorDisable
+    matTooltip="Verify"
+    aria-label="Verify"
+    >Verify</mat-checkbox
+  >
+</div>
+
+<ng-template #unlockBuildContentTemplate>
+  <div class="unlock-message">Are you sure you want to remove the lock on this build?</div>
+</ng-template>

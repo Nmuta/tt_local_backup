@@ -7,6 +7,7 @@ import { UgcType } from '@models/ugc-filters';
 import { Observable, throwError } from 'rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** Displays apollo UGC content in a table. */
 @Component({
@@ -17,9 +18,10 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 export class ApolloUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitle.FM7;
   public ugcDetailsLinkSupported: boolean = false;
+  public ugcHidingSupported = false;
 
-  constructor(private readonly apolloService: ApolloService) {
-    super();
+  constructor(private readonly apolloService: ApolloService, snackbar: MatSnackBar) {
+    super(snackbar);
   }
 
   /** Gets player UGC item. */
@@ -30,5 +32,10 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
   /** Retrieve Photo thumnbnails. */
   public retrievePhotoThumbnails(_ugcIds: GuidLikeString[]): Observable<LookupThumbnailsResult[]> {
     return throwError(new Error('Apollo does not support bulk photo thumbnail lookup.'));
+  }
+
+  /** Hide multiple Ugcs. */
+  public hideUgc(_ugcIds: string[]): Observable<string[]> {
+    return throwError(new Error('Apollo does not support hiding ugc items.'));
   }
 }

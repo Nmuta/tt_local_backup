@@ -15,8 +15,6 @@ export class GameTitleFullNamePipe implements PipeTransform {
         return GameTitleName.FH5;
       case GameTitle.FM8:
         return GameTitleName.FM8;
-      case GameTitle.Street:
-        return GameTitleName.Street;
       case GameTitle.FH4:
         return GameTitleName.FH4;
       case GameTitle.FM7:

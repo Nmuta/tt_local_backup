@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AdminPages } from '@environments/app-data/tool-list/tiles/external-dropdown/admin-pages';
 import {
-  AdminPages,
   AppIcon,
   CommonAccessLevels,
   ExtraIcon,

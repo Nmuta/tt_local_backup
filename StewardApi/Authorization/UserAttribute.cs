@@ -10,6 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 #pragma warning disable SA1600 // Elements should be documented
     public static class UserAttribute
     {
+        public const string TitleAccess = nameof(TitleAccess);
         public const string AddLocalizedString = nameof(AddLocalizedString);
         public const string AddProfileNote = nameof(AddProfileNote);
         public const string AdminFeature = nameof(AdminFeature);
@@ -21,9 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string DeleteLeaderboardScores = nameof(DeleteLeaderboardScores);
         public const string FeatureUgc = nameof(FeatureUgc);
         public const string GiftGroup = nameof(GiftGroup);
-        public const string GiftGroupLivery = nameof(GiftGroupLivery);
         public const string GiftPlayer = nameof(GiftPlayer);
-        public const string GiftPlayerLivery = nameof(GiftPlayerLivery);
         public const string HideUgc = nameof(HideUgc);
         public const string MessageGroup = nameof(MessageGroup);
         public const string MessagePlayer = nameof(MessagePlayer);
@@ -45,6 +44,8 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string UpdateMessageOfTheDay = nameof(UpdateMessageOfTheDay);
         public const string UpdateWelcomeCenterTiles = nameof(UpdateWelcomeCenterTiles);
         public const string CreateAuctions = nameof(CreateAuctions);
+        public const string ManagePlayFabBuildLocks = nameof(ManagePlayFabBuildLocks);
+        public const string ManagePlayFabSettings = nameof(ManagePlayFabSettings);
 
         public static IEnumerable<string> AllAttributes()
         {

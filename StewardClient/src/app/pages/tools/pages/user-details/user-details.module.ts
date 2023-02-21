@@ -13,7 +13,6 @@ import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
 import { OpusUserDetailsComponent } from './opus/opus-user-details.component';
 import { ApolloUserDetailsComponent } from './apollo/apollo-user-details.component';
-import { GravityUserDetailsComponent } from './gravity/gravity-user-details.component';
 import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
@@ -47,6 +46,10 @@ import { ReportWeightModule } from '@views/report-weight/report-weight.module';
 import { LoyaltyRewardsModule } from '@views/loyalty-rewards/loyalty-rewards.module';
 import { PlayerProfileManagementModule } from '@views/player-profile-management/player-profile-management.module';
 import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-details.module';
+import { ForteUserDetailsComponent } from './forte/forte-user-details.component';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -55,9 +58,9 @@ import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-de
     SunriseUserDetailsComponent,
     OpusUserDetailsComponent,
     ApolloUserDetailsComponent,
-    GravityUserDetailsComponent,
     SteelheadUserDetailsComponent,
     WoodstockUserDetailsComponent,
+    ForteUserDetailsComponent,
     GeneralUserDetailsComponent,
   ],
   imports: [
@@ -100,8 +103,11 @@ import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-de
     MonitorActionModule,
     PlayerUgcModule,
     ReportWeightModule,
+    CmsOverrideModule,
     LoyaltyRewardsModule,
     PlayerProfileManagementModule,
+    StateManagersModule,
+    PermissionsModule,
   ],
 })
 export class UserDetailsModule {}

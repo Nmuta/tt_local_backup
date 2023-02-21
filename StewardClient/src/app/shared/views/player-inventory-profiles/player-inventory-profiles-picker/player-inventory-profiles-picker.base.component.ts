@@ -1,16 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloPlayerInventoryProfile } from '@models/apollo';
-import { GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { OpusPlayerInventoryProfile } from '@models/opus';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
@@ -20,20 +11,19 @@ import { isEmpty, sortBy } from 'lodash';
 import { EMPTY, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap, map } from 'rxjs/operators';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type AcceptableInventoryProfileTypes =
   | WoodstockPlayerInventoryProfile
   | SteelheadPlayerInventoryProfile
   | SunrisePlayerInventoryProfile
   | OpusPlayerInventoryProfile
-  | GravityPseudoPlayerInventoryProfile
   | ApolloPlayerInventoryProfile;
 
 type AcceptableInventoryProfileTypesIntersectionIntermediate = WoodstockPlayerInventoryProfile &
   SteelheadPlayerInventoryProfile &
   SunrisePlayerInventoryProfile &
   OpusPlayerInventoryProfile &
-  GravityPseudoPlayerInventoryProfile &
   ApolloPlayerInventoryProfile;
 
 type AcceptableInventoryProfileTypesIntersection =
@@ -103,7 +93,11 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(
+    changes: BetterSimpleChanges<
+      PlayerInventoryProfilesPickerBaseComponent<IdentityResultType, InventoryProfileType>
+    >,
+  ): void {
     if (changes['identity']) {
       this.identity$.next(this.identity);
     }

@@ -27,6 +27,10 @@
             <h3>Qualification Options</h3>
             <table class="info-table full-width">
               <tr>
+                <th>Allowed Cars</th>
+                <td>{{ selectedEvent?.meta?.carRestrictions }}</td>
+              </tr>
+              <tr>
                 <th>Lap Limit</th>
                 <td>
                   {{
@@ -47,10 +51,6 @@
           <div class="game-options" *ngFor="let options of selectedEvent?.meta.gameOptions">
             <h3>{{ options.eventSessionType | humanize }}</h3>
             <table class="info-table full-width">
-              <tr>
-                <th>Car Restriction</th>
-                <td>{{ options.carRestrictions }}</td>
-              </tr>
               <tr>
                 <th>Time of Day</th>
                 <td>{{ options.timeOfDay | date: 'h:mm a' }}</td>

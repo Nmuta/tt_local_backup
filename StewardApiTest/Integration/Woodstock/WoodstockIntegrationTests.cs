@@ -488,16 +488,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
         }
 
-        //TODO uncomment once this is resolved: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903920
-        //[TestMethod]
-        //[TestCategory("Integration")]
-        //public async Task GetCreditUpdates()
-        //{
-        //    var result = await stewardClient.GetCreditUpdatesAsync(xuid, TestConstants.DefaultStartIndex, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetCreditUpdates()
+        {
+            var result = await stewardClient.GetCreditUpdatesAsync(xuid, TestConstants.DefaultStartIndex, TestConstants.DefaultMaxResults).ConfigureAwait(false);
 
-        //    Assert.IsNotNull(result);
-        //    Assert.IsTrue(result.Any());
-        //}
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+        }
 
         [TestMethod]
         [TestCategory("Integration")]
@@ -510,7 +509,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -1764,7 +1763,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task HideAndUnhideUGC()
         {
-            await stewardClient.HideUGCAsync(liveryUgcId);
+            await stewardClient.HideUGCAsync(liveryUgcId, false);
             var unhiddenResult2 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
             var hiddenResult2 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
             Assert.IsTrue(hiddenResult2.Where(item => item.UgcId == liveryUgcId).ToList().Count > 0);

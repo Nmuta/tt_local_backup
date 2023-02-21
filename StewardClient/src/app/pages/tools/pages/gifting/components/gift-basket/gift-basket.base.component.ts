@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitle, UserRole } from '@models/enums';
@@ -13,7 +13,6 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import { GravityGift } from '@models/gravity';
 import { SunriseGift } from '@models/sunrise';
 import { ApolloGift } from '@models/apollo';
 import { Store } from '@ngxs/store';
@@ -28,12 +27,13 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
 import { SteelheadGift } from '@models/steelhead';
 import { WoodstockGift } from '@models/woodstock';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];
 };
-export type GiftUnion = SteelheadGift | WoodstockGift | GravityGift | SunriseGift | ApolloGift;
+export type GiftUnion = SteelheadGift | WoodstockGift | SunriseGift | ApolloGift;
 export type GiftBasketModel = MasterInventoryItem & { edit?: boolean; restriction?: string };
 export enum GiftReason {
   LostSave = 'Lost Save',
@@ -171,7 +171,9 @@ export abstract class GiftBasketBaseComponent<
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(
+    changes: BetterSimpleChanges<GiftBasketBaseComponent<IdentityT, MasterInventoryT>>,
+  ): void {
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
         ? PermAttributeName.GiftPlayer

@@ -13,5 +13,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
         Cloudy,
         Overcast,
         Thunderstorm,
+        Rainy
     }
 }

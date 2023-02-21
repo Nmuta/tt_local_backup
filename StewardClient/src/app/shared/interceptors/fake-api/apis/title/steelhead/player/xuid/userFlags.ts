@@ -24,8 +24,10 @@ export class SteelheadPlayerXuidUserFlagsFakeApi extends FakeApiBase {
   /** Generate an example. */
   public static make(): SteelheadUserFlags {
     return {
-      isVip: false,
-      isUltimateVip: false,
+      isGamecoreVip: false,
+      isGamecoreUltimateVip: false,
+      isSteamVip: false,
+      isSteamUltimateVip: false,
       isTurn10Employee: false,
       isUnderReview: false,
       isEarlyAccess: false,

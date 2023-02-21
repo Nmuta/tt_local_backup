@@ -21,6 +21,15 @@
       align-items: center;
     }
 
+    .align-items-flex-start.align-items-flex-start.align-items-flex-start {
+      align-items: flex-start;
+    }
+
+    // align element to start from the right instead of the left
+    &.sf-right {
+      justify-content: flex-end;
+    }
+
     // get the spacing right
     margin: -1em;
     > * {

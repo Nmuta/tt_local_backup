@@ -85,6 +85,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Graph" Version="4.11.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.8.2" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
@@ -93,7 +94,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="SteelheadLiveOpsContent" Version="1.6.21" />
+    <PackageReference Include="PlayFabAllSDK" Version="1.144.230123" />
+    <PackageReference Include="SteelheadLiveOpsContent" Version="1.6.31" />
 	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

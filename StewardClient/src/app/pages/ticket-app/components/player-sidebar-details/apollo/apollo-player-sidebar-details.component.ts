@@ -5,7 +5,7 @@ import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
 import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.base.component';
 
-/** Gravity Player Details */
+/** Apollo Player Details */
 @Component({
   selector: 'apollo-player-sidebar-details',
   templateUrl: '../player-sidebar-details.component.html',

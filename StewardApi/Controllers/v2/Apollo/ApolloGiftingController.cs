@@ -100,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [HttpPost("livery/{liveryId}/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayerLivery)]
+        [Authorize(Policy = UserAttribute.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(string liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -168,7 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [HttpPost("livery/{liveryId}/groupId/{groupId}")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroupLivery)]
+        [Authorize(Policy = UserAttribute.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(string liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -186,16 +186,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             var response = await this.playerInventoryProvider.SendCarLiveryAsync(gift, groupId, livery, requesterObjectId, this.ApolloEndpoint.Value).ConfigureAwait(true);
 
             return this.Ok(response);
-        }
-
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
-        {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
-                .ConfigureAwait(true);
-
-            this.Response.Headers.Add("jobId", jobId);
-
-            return jobId;
         }
     }
 }

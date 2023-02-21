@@ -708,62 +708,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetCreditUpdates_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = Fixture.Create<int>();
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            Action().Should().NotBeNull();
-            var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<CreditUpdate>;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<List<CreditUpdate>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetCreditUpdates_WithNegativeStartIndex_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var startIndex = -1;
-            var maxResults = Fixture.Create<int>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetCreditUpdates_WithNegativeMaxResults_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = -1;
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task GetBackstagePassUpdates_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1865,21 +1809,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void HideUgc_WithValidInputs_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var ugcId = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.HideUGC(ugcId).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void UnhideUgc_WithValidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -1998,7 +1927,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.StorefrontProvider.GetUgcPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.GetUgcTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.SetUgcFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
-                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
+                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<HttpResponse>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
             }

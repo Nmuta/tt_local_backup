@@ -13,7 +13,6 @@ import {
   SunriseBanResult,
   SunriseBanSummary,
   SunriseConsoleDetailsEntry,
-  SunriseCreditDetailsEntry,
   SunriseGift,
   SunriseGiftHistory,
   SunriseGroupGift,
@@ -414,21 +413,6 @@ export class SunriseService {
     );
   }
 
-  /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid$(
-    xuid: BigNumber,
-    startIndex: number = 0,
-    maxResults: number = 100,
-  ): Observable<SunriseCreditDetailsEntry[]> {
-    const httpParams = new HttpParams()
-      .set('startIndex', startIndex.toString())
-      .set('maxResults', maxResults.toString());
-    return this.apiService.getRequest$<SunriseCreditDetailsEntry[]>(
-      `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
-      httpParams,
-    );
-  }
-
   /** Gets a player's history of backstage passes by XUID. */
   public getBackstagePassHistoryByXuid$(xuid: BigNumber): Observable<BackstagePassHistory[]> {
     return this.apiService.getRequest$<BackstagePassHistory[]>(
@@ -520,14 +504,6 @@ export class SunriseService {
   public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
     return this.apiService.getRequest$<HideableUgc[]>(
       `${this.basePath}/storefront/xuid(${xuid})/hidden`,
-    );
-  }
-
-  /** Hide UGC item. */
-  public hideUgc$(ugcId: string): Observable<void> {
-    return this.apiService.postRequest$<void>(
-      `${this.basePath}/storefront/ugc/${ugcId}/hide`,
-      null,
     );
   }
 

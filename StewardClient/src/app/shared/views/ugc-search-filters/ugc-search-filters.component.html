@@ -6,6 +6,7 @@
           class="player-selection-max-width"
           [disableLookupTypes]="['t10Id']"
           [allowSelection]="false"
+          [specialIdentitiesAllowed]="this.serviceContract.specialIdentitiesAllowed"
           [rejectionFn]="serviceContract.rejectionFn"
           (found)="playerIdentityFound($event)"
         ></player-selection-single>

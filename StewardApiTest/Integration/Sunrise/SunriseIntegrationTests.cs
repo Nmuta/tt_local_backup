@@ -511,7 +511,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -1829,7 +1829,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task HideAndUnhideUGC()
         {
-            await stewardClient.HideUGCAsync(liveryUgcId);
+            await stewardClient.HideUGCAsync(liveryUgcId, false);
             var unhiddenResult2 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
             var hiddenResult2 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
             Assert.IsTrue(hiddenResult2.Where(item => item.UgcId == liveryUgcId).ToList().Count > 0);

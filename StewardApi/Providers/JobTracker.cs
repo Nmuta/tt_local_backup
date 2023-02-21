@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -62,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason)
+        public async Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason, HttpResponse httpResponse)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
             reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
@@ -92,6 +93,8 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
                 await this.blobRepository.ReleaseBlobLeaseAsync(string.Empty, jobId, JobContainerName, leaseId)
                     .ConfigureAwait(false);
+
+                httpResponse.Headers.Add("jobId", jobId);
 
                 return jobId;
             }

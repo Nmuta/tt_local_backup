@@ -8,18 +8,11 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output
 {
     /// <summary>
-    ///     Represents Welcome Center tile values used by UI
+    ///     Represents Welcome Center tile values used by UI.
     /// </summary>
     public class WelcomeCenterTileOutput
     {
-        public string TileTypeV3 { get; set; }
-
-        public short Priority { get; set; }
-
-        public TileSize Size { get; set; }
-
-        // TODO: Don't use JObject, this should by all rights be using ConditionSettings, but was blocking on deserializing abstract class
-        public List<JObject> DisplayConditionDataList { get; set; }
+        public SteelheadLiveOpsContent.TileSize Size { get; set; }
 
         public string TileFriendlyName { get; set; }
 

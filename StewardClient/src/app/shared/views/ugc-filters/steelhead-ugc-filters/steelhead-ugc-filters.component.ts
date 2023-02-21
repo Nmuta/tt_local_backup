@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusProjectionSlot } from '@models/enums';
 import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
 
 /** Component for Steelhead UGC filters. */
@@ -10,4 +10,5 @@ import { UgcFiltersBaseComponent } from '../ugc-filters.base.component';
 })
 export class SteelheadUgcFiltersComponent extends UgcFiltersBaseComponent {
   public gameTitle = GameTitle.FM8;
+  public PegasusProjectionSlot = PegasusProjectionSlot;
 }
