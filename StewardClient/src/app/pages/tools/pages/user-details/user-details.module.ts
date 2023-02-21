@@ -49,6 +49,7 @@ import { PlayerGameDetailsModule } from '@views/user-game-details/player-game-de
 import { ForteUserDetailsComponent } from './forte/forte-user-details.component';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -102,6 +103,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MonitorActionModule,
     PlayerUgcModule,
     ReportWeightModule,
+    CmsOverrideModule,
     LoyaltyRewardsModule,
     PlayerProfileManagementModule,
     StateManagersModule,
