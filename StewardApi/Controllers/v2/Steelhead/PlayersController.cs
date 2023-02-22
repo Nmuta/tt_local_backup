@@ -258,8 +258,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 $"Steelhead Banning: {banParameters.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
-            var x = this.Services.LiveOpsService;
-            var y = this.Services.UserManagementService;
+            var liveOpsService = this.Services.LiveOpsService;
+            var userManagementService = this.Services.UserManagementService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -269,8 +269,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 {
                     var results = await this.BanUsersAsync(
                         banParameters,
-                        x,
-                        y,
+                        liveOpsService,
+                        userManagementService,
                         requesterObjectId).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
