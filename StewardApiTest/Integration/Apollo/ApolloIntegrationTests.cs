@@ -1270,7 +1270,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
+                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed || status == BackgroundJobStatus.CompletedWithErrors;
 
                 jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
@@ -1307,7 +1307,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
+                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed || status == BackgroundJobStatus.CompletedWithErrors;
 
                 jobResult = JsonConvert.DeserializeObject<IList<GiftResponse<ulong>>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
