@@ -258,6 +258,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 $"Steelhead Banning: {banParameters.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
+            var x = this.Services.LiveOpsService;
+            var y = this.Services.UserManagementService;
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
@@ -266,8 +269,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 {
                     var results = await this.BanUsersAsync(
                         banParameters,
-                        this.Services.LiveOpsService,
-                        this.Services.UserManagementService,
+                        x,
+                        y,
                         requesterObjectId).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
