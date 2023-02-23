@@ -34,6 +34,7 @@ export class TeamPermissionManagementComponent
   public availableUsers: UserModel[];
 
   public getUsersMonitor = new ActionMonitor('GET Steward users');
+  public getTeamMonitor = new ActionMonitor('GET Steward team');
   public saveTeamMonitor = new ActionMonitor('POST save team changes');
   public formControls = {
     name: new FormControl('', Validators.required),
@@ -80,28 +81,36 @@ export class TeamPermissionManagementComponent
   }
 
   /** Logic when a new team is selected. */
-  public selectedTeamChange(team: StewardTeam): void {
-    this.selectedTeam = team;
-    this.formControls.name.setValue(this.selectedTeam.name);
-    const originalMemberList = this.selectedTeam.members.map(memberId =>
-      find(this.allUsers, user => user.objectId === memberId),
-    );
-    this.membersTable.data = originalMemberList;
+  public selectedTeamChange(selectedTeam: StewardTeam): void {
+    const teamLead = selectedTeam.teamLead;
+    this.getTeamMonitor = this.getTeamMonitor.repeat();
+    this.v2UserService.getStewardTeam$(teamLead.objectId).pipe(
+      this.getTeamMonitor.monitorSingleFire(),
+      takeUntil(this.onDestroy$),
+    ).subscribe(team => {
+      team.teamLead = teamLead;
+      this.selectedTeam = team;
+      this.formControls.name.setValue(this.selectedTeam.name);
+      const originalMemberList = this.selectedTeam.members.map(memberId =>
+        find(this.allUsers, user => user.objectId === memberId),
+      );
+      this.membersTable.data = originalMemberList;
 
-    this.pendingChanges = {
-      originalMemberList: cloneDeep(originalMemberList),
-      add: [],
-      remove: [],
-    };
+      this.pendingChanges = {
+        originalMemberList: cloneDeep(originalMemberList),
+        add: [],
+        remove: [],
+      };
 
-    // Remove team lead from list of available users to add to team
-    this.availableUsers = this.allUsers.filter(user => {
-      if (
-        !!this.selectedTeam &&
-        this.selectedTeam.teamLead.objectId.toLowerCase() !== user.objectId.toLowerCase()
-      ) {
-        return user;
-      }
+      // Remove team lead from list of available users to add to team
+      this.availableUsers = this.allUsers.filter(user => {
+        if (
+          !!this.selectedTeam &&
+          this.selectedTeam.teamLead.objectId.toLowerCase() !== user.objectId.toLowerCase()
+        ) {
+          return user;
+        }
+      });
     });
   }
 

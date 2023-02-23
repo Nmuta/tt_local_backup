@@ -25,7 +25,7 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
   public initComponentActionMonitor = new ActionMonitor('GET all Steward users');
   public createTeamActionMonitor = new ActionMonitor('POST create new Steward team');
 
-  public allUsers: UserModel[];
+  public availableTeamLeads: UserModel[];
   public filteredUsers$: Observable<UserModel[]>;
   public allTeams: StewardTeam[];
   public filteredTeams$: Observable<StewardTeam[]>;
@@ -56,11 +56,8 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
     combineLatest([getUsers$, getTeams$])
       .pipe(this.initComponentActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(([users, teams]) => {
-        // Only GeneralUsers with perm attributes can be a lead.
-        const generalUsers = users.filter(user => user.role === UserRole.GeneralUser);
-
-        // TODO: We should be using a filter on this to ignore people who already have teams.
-        this.allUsers = sortBy(generalUsers, user => {
+        const availableTeamLeads = users.filter(user => user.role === UserRole.GeneralUser && !user.team);
+        this.availableTeamLeads = sortBy(availableTeamLeads, user => {
           return user.name;
         }) as UserModel[];
 
@@ -93,9 +90,10 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
       return;
     }
 
+    const teamLead = this.formControls.lead.value as UserModel;
     const newTeam: StewardTeam = {
       name: this.formControls.name.value,
-      teamLead: this.formControls.lead.value as UserModel,
+      teamLead: teamLead,
       members: [],
     };
 
@@ -103,11 +101,21 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
     this.v2UsersService
       .setStewardTeam$(newTeam)
       .pipe(this.createTeamActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(() => {
+      .subscribe((team) => {
         this.formControls.name.setValue('');
         this.formControls.filterLead.setValue('');
         this.formControls.lead.setValue('');
-        // Reload team list
+
+        const newTeam = {
+          name: team.name,
+          members: team.members,
+          teamLead: teamLead,
+        } as StewardTeam;
+        this.allTeams.push(newTeam);
+        this.selectedTeamChange.emit(newTeam);
+
+        this.availableTeamLeads = this.availableTeamLeads.filter(user => user.objectId.toLowerCase() !== teamLead.objectId.toLowerCase());
+        this.formControls.filterLead.updateValueAndValidity({ emitEvent: true});
       });
   }
 
@@ -160,11 +168,11 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
 
   private _filterUsers(value: string): UserModel[] {
     if (!value || typeof value !== 'string') {
-      return this.allUsers;
+      return this.availableTeamLeads;
     }
 
     const filterValue = value.toLowerCase();
-    return this.allUsers.filter(
+    return this.availableTeamLeads.filter(
       user =>
         user.name.toLowerCase().includes(filterValue) ||
         user.emailAddress.toLowerCase().includes(filterValue) ||

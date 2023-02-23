@@ -22,6 +22,11 @@ export class V2UsersService {
     return this.api.getRequest$<Map<GuidLikeString, StewardTeam>>(`${this.basePath}/teams`);
   }
 
+  /** Gets Steward team. */
+  public getStewardTeam$(teamLeadId: GuidLikeString): Observable<StewardTeam> {
+    return this.api.getRequest$<StewardTeam>(`${this.basePath}/${teamLeadId}/team`,);
+  }
+
   /** Sets Steward team. */
   public setStewardTeam$(newTeam: StewardTeam): Observable<StewardTeam> {
     return this.api.postRequest$<StewardTeam>(
