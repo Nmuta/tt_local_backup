@@ -580,6 +580,10 @@ describe('WoodstockService', () => {
       .set('startAt', startAt.toString())
       .set('maxResults', maxResults.toString());
 
+    const expectedHeaders = new HttpHeaders()
+      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
+      .set('endpoint-woodstock', endpointKeyOverride);
+
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
@@ -621,7 +625,7 @@ describe('WoodstockService', () => {
           expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
             `${service.basePath}/leaderboard/scores/top`,
             expectedParams,
-            new HttpHeaders().set('endpointKey', `Woodstock|${endpointKeyOverride}`),
+            expectedHeaders,
           );
           done();
         });
@@ -644,6 +648,10 @@ describe('WoodstockService', () => {
       .set('pivotId', pivotId.toString())
       .set('maxResults', maxResults.toString());
 
+    const expectedHeaders = new HttpHeaders()
+      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
+      .set('endpoint-woodstock', endpointKeyOverride);
+
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
@@ -685,7 +693,7 @@ describe('WoodstockService', () => {
           expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
             `${service.basePath}/leaderboard/scores/near-player/${xuid}`,
             expectedParams,
-            new HttpHeaders().set('endpointKey', `Woodstock|${endpointKeyOverride}`),
+            expectedHeaders,
           );
           done();
         });
@@ -695,6 +703,10 @@ describe('WoodstockService', () => {
   describe('Method: deleteLeaderboardScores', () => {
     const scoreIds = [faker.datatype.uuid(), faker.datatype.uuid(), faker.datatype.uuid()];
     const endpointKeyOverride = faker.random.word();
+
+    const expectedHeaders = new HttpHeaders()
+      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
+      .set('endpoint-woodstock', endpointKeyOverride);
 
     beforeEach(() => {
       apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
@@ -718,7 +730,7 @@ describe('WoodstockService', () => {
           `${service.basePath}/leaderboard/scores/delete`,
           scoreIds,
           undefined,
-          new HttpHeaders().set('endpointKey', `Woodstock|${endpointKeyOverride}`),
+          expectedHeaders,
         );
         done();
       });

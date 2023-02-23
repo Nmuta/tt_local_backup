@@ -178,7 +178,8 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   public setLeaderboardQueryParams(): void {
     const leaderboard = this.formControls.leaderboard.value as Leaderboard;
     const deviceTypes = this.formControls.deviceTypes.value as DeviceType[];
-    this.deviceTypesString = deviceTypes?.length > 0 ? deviceTypes.join(', ') : null;
+    this.setDeviceTypesString(deviceTypes);
+
     const targetEnvironment = this.formControls.leaderboardEnvironment
       .value as LeaderboardEnvironment;
 
@@ -320,6 +321,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         .filter(deviceType => !!deviceType);
 
       this.formControls.deviceTypes.setValue(foundDeviceTypes);
+      this.setDeviceTypesString(foundDeviceTypes);
     }
   }
 
@@ -369,5 +371,9 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
 
     scoreTypeGroup.items = scoreTypeFilter;
     carClasseGroup.items = carClassFilter;
+  }
+
+  private setDeviceTypesString(deviceTypes): void {
+    this.deviceTypesString = deviceTypes?.length > 0 ? deviceTypes.join(', ') : null;
   }
 }

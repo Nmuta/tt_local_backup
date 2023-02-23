@@ -45,7 +45,7 @@ export class WoodstockLeaderboardStatsComponent {
         endpointKeyOverride,
       ),
     getLeaderboardTalentIdentities$: () =>
-      this.leaderboardTalentService.getLeaderboardTalentIdentities$(),
+      this.leaderboardTalentService.getRetailLeaderboardTalentIdentities$(),
   };
 
   constructor(

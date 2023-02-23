@@ -23,6 +23,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -56,6 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         private readonly ISteelheadItemsProvider itemsProvider;
         private readonly IActionLogger actionLogger;
         private readonly IJobTracker jobTracker;
+        private readonly ILoggingService loggingService;
         private readonly IScheduler scheduler;
         private readonly IMapper mapper;
         private readonly ISteelheadPlayerInventoryProvider playerInventoryProvider;
@@ -70,6 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             ISteelheadItemsProvider itemsProvider,
             IActionLogger actionLogger,
             IJobTracker jobTracker,
+            ILoggingService loggingService,
             IScheduler scheduler,
             IMapper mapper,
             ISteelheadPlayerInventoryProvider playerInventoryProvider,
@@ -80,6 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             mapper.ShouldNotBeNull(nameof(mapper));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
@@ -90,6 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             this.itemsProvider = itemsProvider;
             this.actionLogger = actionLogger;
             this.jobTracker = jobTracker;
+            this.loggingService = loggingService;
             this.scheduler = scheduler;
             this.mapper = mapper;
             this.playerInventoryProvider = playerInventoryProvider;
@@ -168,8 +173,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -236,8 +243,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
