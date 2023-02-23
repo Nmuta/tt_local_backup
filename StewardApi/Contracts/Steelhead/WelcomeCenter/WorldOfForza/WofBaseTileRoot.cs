@@ -64,6 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [WriteToPegasus]
         public WofBaseTimer Timer { get; set; }
 
+        [WriteToPegasus]
         public WofBaseDisplayConditions DisplayConditions { get; set; }
 
         public object Cooldowns { get; set; }
@@ -125,6 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     }
 
     [Serializable]
+    [DesignerCategory("code")]
     public class TextOverride
     {
         [WriteToPegasus]
@@ -204,18 +206,23 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WofBaseDisplayConditions
     {
-        [XmlElement(Namespace = "scribble:x")]
-        public BaseItem item { get; set; }
+        [WriteToPegasus]
+        [XmlElement("item", Namespace = "scribble:x")]
+        public BaseItem[] Item { get; set; }
     }
 
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
-    [XmlRoot(Namespace = "scribble:x", IsNullable = false)]
     public partial class BaseItem
     {
-        [XmlAttribute(Form = XmlSchemaForm.Qualified)]
-        public string @ref { get; set; }
+        [WriteToPegasus]
+        [XmlAttribute("ref", Form = XmlSchemaForm.Qualified)]
+        public Guid RefId { get; set; }
+
+        [WriteToPegasus]
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public string when { get; set; }
     }
 
     [Serializable]

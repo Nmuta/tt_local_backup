@@ -123,6 +123,11 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     var descend = el.Descendants(child.Path).First();
                     foreach (var c in child.Children)
                     {
+                        if (descend.Elements().Count() <= c.Index)
+                        {
+                            descend.Add(new XElement(c.Path));
+                        }
+
                         FillXml(descend.Descendants(c.Path).ElementAt(c.Index), c);
                     }
                 }
@@ -175,16 +180,20 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
             if (node.Value == null)
             {
-                // create <x:null />
+                // create <x:null /> or <!-- empty array -->
                 el.Value = string.Empty;
+                XNode xnode = node.IsArray
+                    ? new XComment(" empty array ")
+                    : new XElement(NullElementXname);
+
                 if (IsNullElement(el))
                 {
-                    el.FirstNode.ReplaceWith(new XElement(NullElementXname));
+                    el.FirstNode.ReplaceWith(xnode);
                 }
                 else
                 {
                     el.RemoveNodes();
-                    el.Add(new XElement(NullElementXname));
+                    el.Add(xnode);
                 }
             }
             else
@@ -269,6 +278,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                         continue;
                     }
+
+                    var ttype = value.GetType();
 
                     if (value.GetType().IsArray)
                     {

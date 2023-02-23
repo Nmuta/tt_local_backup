@@ -355,9 +355,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();
             this.CreateMap<WofTimerBridge, WofBaseTimer>()
-                .ForMember(dest => dest.TypeName, opt => opt.MapFrom(src => $"WorldOfForza.TileTimer{src.TimerReference.TimerInstance}"))
+                .ForMember(dest => dest.TypeName, opt => opt.MapFrom(src => $"WorldOfForza.TileTimer{src.TimerReference.TimerInstance}")) // can that be hidden in bridge?
                 .ReverseMap();
             this.CreateMap<TextOverrideBridge, TextOverride>()
+                .ReverseMap();
+            this.CreateMap<WofDisplayConditionsBridge, WofBaseDisplayConditions>()
+                .ReverseMap();
+            this.CreateMap<ItemBridge, BaseItem>()
                 .ReverseMap();
             this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
             this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();

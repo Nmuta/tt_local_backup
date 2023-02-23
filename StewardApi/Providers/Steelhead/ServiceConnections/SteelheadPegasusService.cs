@@ -687,7 +687,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
 
-            element.Elements().Where(x => x.Name.LocalName == "Destination" || x.Name.LocalName == "Timer").Remove();
+            element.Elements().Where(
+                x => x.Name.LocalName == "Destination"
+                || x.Name.LocalName == "Timer"
+                || x.Name.LocalName == "DisplayConditions")
+                .Remove();
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
