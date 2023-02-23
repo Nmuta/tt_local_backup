@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'ab4ed9dc-47f4-4c27-91d8-e8ef57fe046e',
+      shortText: 'Fix leaderboard bugs',
+      longText: [
+        'Talented users are now loading if endpoint is set to Studio',
+        'Device types displaying properly on page load',
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '6d2cf0a5-e77c-4326-adde-94f7f3900491',
       shortText: 'Move permission management user list out to its own component',
