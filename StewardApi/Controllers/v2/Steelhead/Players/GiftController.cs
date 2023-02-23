@@ -146,12 +146,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
+                Thread.Sleep(10000);
                 // Throwing within the hosting environment background worker seems to have significant consequences.
                 // Do not throw.
                 try
                 {
                     var allowedToExceedCreditLimit =
                         userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+                    // When replacing the player inventory provider, be careful of race conditions
                     var response = await this.playerInventoryProvider.UpdatePlayerInventoriesAsync(
                         services,
                         groupGift,
