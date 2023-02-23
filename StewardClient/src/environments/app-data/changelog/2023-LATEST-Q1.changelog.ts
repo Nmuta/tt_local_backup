@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'f27c15dc-f9de-4667-b4b8-859f7a13a643',
+      shortText: 'Fix permission error',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: '65ac43da-bbe4-4936-aca8-c7752f5844c4',
       shortText: 'Readd back in old auctions tab',
