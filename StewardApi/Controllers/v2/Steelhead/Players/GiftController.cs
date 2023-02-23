@@ -226,6 +226,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 // Do not throw.
                 try
                 {
+                    // When replacing the player inventory provider, be careful of race conditions
                     var response = await this.playerInventoryProvider.SendCarLiveryAsync(this.Services, groupGift, mappedLivery, requesterObjectId).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
