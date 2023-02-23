@@ -107,11 +107,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         [WriteToPegasus]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locdef { get; set; }
+        public Guid locdef { get; set; }
 
         [WriteToPegasus]
         [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locref { get; set; }
+        public Guid locref { get; set; }
     }
 
     [Serializable]
@@ -127,10 +127,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         [WriteToPegasus]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locdef { get; set; }
+        public Guid locdef { get; set; }
 
         [WriteToPegasus]
         [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locref { get; set; }
+        public Guid locref { get; set; }
     }
 }

@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 {
                     if (child.Path.LocalName == "loc-ref" && child.IsAttributeField && child.Value != null)
                     {
-                        Guid guid = Guid.Parse((string)child.Value);
+                        Guid guid = new Guid(child.Value.ToString());
                         if (locstrings.TryGetValue(guid, out var localizedStrings))
                         {
                             var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
             foreach (var child in root.Children)
             {
-                if (DoesNotExist(el, child) && !child.IsAttributeField)
+                if (ElementDoesNotExist(el, child) && !child.IsAttributeField)
                 {
                     // If the element does not exist, create it.
                     el.Add(new XElement(child.Path, child.Value));
@@ -137,7 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
         }
 
-        private static bool DoesNotExist(XElement el, Node child)
+        private static bool ElementDoesNotExist(XElement el, Node child)
         {
             return !el.Descendants(child.Path).Any();
         }

@@ -93,11 +93,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     public partial class WofBaseTimer
     {
-        // This prop appears to be unused in the Pegasus xml.
-        public object StartTextOverride { get; set; }
+        [WriteToPegasus]
+        public TextOverride StartTextOverride { get; set; }
 
-        // This prop appears to be unused in the Pegasus xml.
-        public object EndTextOverride { get; set; }
+        [WriteToPegasus]
+        public TextOverride EndTextOverride { get; set; }
 
         [WriteToPegasus]
         public TimerType TimerType { get; set; }
@@ -122,6 +122,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlElement("Season", Type = typeof(Season))]
         [XmlElement("Chapter", Type = typeof(Chapter))]
         public WofBaseTimerReference TimerReference { get; set; }
+    }
+
+    [Serializable]
+    public class TextOverride
+    {
+        [WriteToPegasus]
+        [XmlAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public Guid RefId { get; set; }
     }
 
     [Serializable]
@@ -226,10 +234,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         [WriteToPegasus]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locdef { get; set; }
+        public Guid locdef { get; set; }
 
         [WriteToPegasus]
-        [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locref { get; set; }
+        [XmlAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public Guid locref { get; set; }
     }
 }
