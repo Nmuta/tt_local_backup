@@ -101,6 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Hide Multiple Ugc.", this.Response).ConfigureAwait(true);
+            var storefrontService = this.Services.Storefront;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -114,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     {
                         try
                         {
-                            await this.Services.Storefront.HideUGC(ugcId).ConfigureAwait(true);
+                            await storefrontService.HideUGC(ugcId).ConfigureAwait(true);
                         }
                         catch (Exception)
                         {

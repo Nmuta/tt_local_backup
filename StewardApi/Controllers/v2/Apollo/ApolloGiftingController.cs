@@ -144,6 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                 // Do not throw.
                 try
                 {
+                    // Before refactoring, please check the repo ReadMe -> Steward -> Docs -> Background Jobs and Race Conditions
                     var response = await this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, this.ApolloEndpoint.Value).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);

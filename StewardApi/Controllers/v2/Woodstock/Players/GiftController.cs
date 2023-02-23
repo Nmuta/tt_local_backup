@@ -43,10 +43,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager,
-            UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.CommunityManager,
+        UserRole.MediaTeam)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Players, Topic.Gifting)]
     public class GiftController : V2WoodstockControllerBase
@@ -157,6 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 {
                     var allowedToExceedCreditLimit =
                         userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+                    // Before refactoring, please check the repo ReadMe -> Steward -> Docs -> Background Jobs and Race Conditions
                     var response = await this.playerInventoryProvider.UpdatePlayerInventoriesAsync(
                         groupGift,
                         requesterObjectId,
@@ -222,6 +223,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 // Do not throw.
                 try
                 {
+                    // When replacing the player inventory provider, be careful of race conditions
                     var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint)).ToList();
                     await Task.WhenAll(jobs).ConfigureAwait(false);
 

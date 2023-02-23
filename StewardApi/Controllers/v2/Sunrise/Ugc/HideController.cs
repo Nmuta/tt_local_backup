@@ -98,6 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.Ugc
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Sunrise Hide Multiple Ugc.", this.Response).ConfigureAwait(true);
+            var storefrontService = this.Services.StorefrontService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -111,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.Ugc
                     {
                         try
                         {
-                            await this.Services.StorefrontService.HideUGC(ugcId).ConfigureAwait(true);
+                            await storefrontService.HideUGC(ugcId).ConfigureAwait(true);
                         }
                         catch (Exception)
                         {

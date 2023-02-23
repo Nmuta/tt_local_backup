@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -164,7 +165,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             }
             else
             {
-                var response = await this.AddUsersToUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
+                var response = await this.AddUsersToUserGroupAsync(userGroupId, userList, this.Services.UserManagementService).ConfigureAwait(false);
                 return this.Ok(response);
             }
         }
@@ -252,6 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
 
             var userCount = (userList.Xuids?.Length ?? 0) + (userList.Gamertags?.Length ?? 0);
             var jobId = await this.jobTracker.CreateNewJobAsync(userList.ToJson(), requesterObjectId, $"Apollo Add Users to User Group: {userCount} users added.", this.Response).ConfigureAwait(true);
+            var userManagementService = this.Services.UserManagementService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -259,7 +261,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                 // Do not throw.
                 try
                 {
-                    var response = await this.AddUsersToUserGroupAsync(userGroupId, userList).ConfigureAwait(false);
+                    var response = await this.AddUsersToUserGroupAsync(userGroupId, userList, userManagementService).ConfigureAwait(false);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
@@ -278,7 +280,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         }
 
         // Add users to a user group using xuids and/or gamertags
-        private async Task<UserGroupBulkOperationStatusOutput> AddUsersToUserGroupAsync(int groupId, UpdateUserGroupInput userList)
+        private async Task<UserGroupBulkOperationStatusOutput> AddUsersToUserGroupAsync(int groupId, UpdateUserGroupInput userList, IUserManagementService userManagementService)
         {
             var failedUsers = new List<BasicPlayer>();
 
@@ -295,7 +297,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                 {
                     new ForzaUserGroupOperationPage() { userIds = userIdsChunk }
                 };
-                var bulkOperationOutput = await this.Services.UserManagementService.CreateUserGroupBulkOperationV2(ForzaBulkOperationType.Add, groupId, userGroupPageArray).ConfigureAwait(false);
+                var bulkOperationOutput = await userManagementService.CreateUserGroupBulkOperationV2(ForzaBulkOperationType.Add, groupId, userGroupPageArray).ConfigureAwait(false);
                 failedUsers.AddRange(this.mapper.SafeMap<IEnumerable<BasicPlayer>>(bulkOperationOutput.failedUsers.SelectMany(x => x.userIds)));
             }
 
