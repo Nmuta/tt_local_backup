@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         {
             if (string.IsNullOrEmpty(this.Team) || "null".Equals(this.Team, System.StringComparison.OrdinalIgnoreCase))
             {
-                return new Team(); // Empty team
+                return null;
             }
 
             return JsonConvert.DeserializeObject<Team>(this.Team);
