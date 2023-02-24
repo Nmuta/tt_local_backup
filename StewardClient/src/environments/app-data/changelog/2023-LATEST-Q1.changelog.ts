@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserBanning,
+      },
+      uuid: '7eb2d58b-4dca-4811-a4b4-62eed1894be9',
+      shortText: 'Update list of ban reasons',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '28348e1d-a311-4f49-be39-9e7663898d5a',
       shortText: 'Update contact us dev list',
