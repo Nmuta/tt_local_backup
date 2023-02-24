@@ -10,6 +10,7 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
+import _ from 'lodash';
 import { first } from 'lodash';
 import { Duration } from 'luxon';
 import { Observable } from 'rxjs';
@@ -266,7 +267,7 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
       }),
     );
 
-    if (!banReasons.includes(selection)) {
+    if (!_.includes(banReasons, selection)) {
       return { requireReasonListMatch: true };
     }
 
