@@ -36,7 +36,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import BigNumber from 'bignumber.js';
 import { compact, find, orderBy } from 'lodash';
-import { catchError, EMPTY, Observable, takeUntil } from 'rxjs';
+import { catchError, combineLatest, EMPTY, Observable, of, takeUntil } from 'rxjs';
 
 export interface LeaderboardStatsContract {
   talentUserGroupId: number;
@@ -133,33 +133,44 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnChange
 
   /** Lifecycle hook. */
   public ngOnChanges(changes: BetterSimpleChanges<LeaderboardStatsComponent>): void {
+    this.getLeaderboardScoresMonitor = this.getLeaderboardScoresMonitor.repeat();
     const foundQueryChange = !!changes.leaderboard && !!this.leaderboard?.query;
     const foundScoresDeleted = !!changes.scoresDeleted && this.scoresDeleted?.length > 0;
 
     if (foundQueryChange || foundScoresDeleted) {
-      this.getLeaderboardScores$(this.leaderboard.query).subscribe(scores => {
-        this.scores = scores;
-        if (scores.length > 0) {
-          const talentScores = this.talentIdentities.map(x => {
-            return this.scores.find(y => y.xuid.isEqualTo(x.xuid));
-          });
-          this.sortedTalentScores = compact(
-            orderBy(talentScores, [
-              function (o) {
-                return o?.position.toNumber();
-              },
-            ]),
-          );
-          this.updateDisplayedTalentCount();
+      const getLeaderboardScores$ = this.getLeaderboardScores$(this.leaderboard.query);
+      const getTalentedUsers$ = this.getTalentedUsers$();
 
-          this.averageMean =
-            scores.map(s => s.score.toNumber()).reduce((a, b) => a + b) / scores.length;
-          this.standardDeviation = this.generateStandardDeviation(
-            scores.map(s => s.score.toNumber()),
-          );
-          this.generateGraphData();
-        }
-      });
+      combineLatest([getLeaderboardScores$, getTalentedUsers$])
+        .pipe(this.getLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+        .subscribe(([scores, identities]) => {
+          this.scores = scores;
+
+          if (identities) {
+            this.talentIdentities = identities;
+          }
+
+          if (scores.length > 0) {
+            const talentScores = this.talentIdentities.map(x => {
+              return this.scores.find(y => y.xuid.isEqualTo(x.xuid));
+            });
+            this.sortedTalentScores = compact(
+              orderBy(talentScores, [
+                function (o) {
+                  return o?.position.toNumber();
+                },
+              ]),
+            );
+            this.updateDisplayedTalentCount();
+
+            this.averageMean =
+              scores.map(s => s.score.toNumber()).reduce((a, b) => a + b) / scores.length;
+            this.standardDeviation = this.generateStandardDeviation(
+              scores.map(s => s.score.toNumber()),
+            );
+            this.generateGraphData();
+          }
+        });
     }
 
     if (foundQueryChange) {
@@ -170,13 +181,6 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnChange
       this.displayTalentUsers =
         this.leaderboard.query.leaderboardEnvironment.toLowerCase() == LeaderboardEnvironment.Prod;
       if (this.displayTalentUsers) {
-        this.service
-          .getLeaderboardTalentIdentities$()
-          .pipe(this.getLeaderboardTalentMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-          .subscribe(identities => {
-            this.talentIdentities = identities;
-          });
-
         this.talentFormControls.numberToShow.valueChanges
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(() => {
@@ -280,7 +284,6 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnChange
   };
 
   private getLeaderboardScores$(query: LeaderboardQuery): Observable<LeaderboardScore[]> {
-    this.getLeaderboardScoresMonitor = this.getLeaderboardScoresMonitor.repeat();
     return this.service
       .getLeaderboardScores$(
         query.scoreboardTypeId,
@@ -293,10 +296,17 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnChange
         getLspEndpointFromLeaderboardEnvironment(query.leaderboardEnvironment),
       )
       .pipe(
-        this.getLeaderboardScoresMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
         takeUntil(this.onDestroy$),
       );
+  }
+
+  private getTalentedUsers$(): Observable<IdentityResultAlphaBatch> {
+    if (this.talentIdentities?.length > 0) {
+      return of(undefined);
+    }
+
+    return this.service.getLeaderboardTalentIdentities$().pipe(takeUntil(this.onDestroy$));
   }
 
   private generateGraphData(): void {
