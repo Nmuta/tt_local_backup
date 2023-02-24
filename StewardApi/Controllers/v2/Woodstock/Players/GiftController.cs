@@ -149,6 +149,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
+            var proxyBundle = this.ServicesWithProdLiveStewardCms;
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
@@ -162,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                         groupGift,
                         requesterObjectId,
                         allowedToExceedCreditLimit,
-                        this.ServicesWithProdLiveStewardCms).ConfigureAwait(true);
+                        proxyBundle).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
