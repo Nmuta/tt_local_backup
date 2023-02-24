@@ -103,6 +103,10 @@ const STANDARD_BAN_REASONS: StandardBanReasons = [
       'Variable Offenses (Suspension length determined by Support Agent based on severity of offense)',
     values: ['T10/PG Employee Harassment', 'Ban-Dodging'],
   },
+  {
+    group: 'Developer',
+    values: ['Testing'],
+  },
 ];
 
 export const _filter = (opt: string[], value: string): string[] => {
@@ -159,7 +163,10 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
 
   public formControls = {
     banArea: new FormControl(this.defaults.banArea, [Validators.required]),
-    banReason: new FormControl(this.defaults.banReason, [Validators.required]),
+    banReason: new FormControl(this.defaults.banReason, [
+      Validators.required,
+      this.requireReasonListMatch.bind(this),
+    ]),
     banDuration: new FormControl(this.defaults.banDuration, [Validators.required]),
     checkboxes: {
       banAllXboxes: new FormControl(this.defaults.checkboxes.banAllXboxes),
@@ -249,5 +256,20 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
     }
 
     return { invalidForm: { valid: false, message: 'fields are invalid' } };
+  }
+
+  private requireReasonListMatch(control: FormControl): ValidationErrors | null {
+    const selection = control.value;
+    const banReasons = [].concat(
+      ...STANDARD_BAN_REASONS.map(g => {
+        return g.values;
+      }),
+    );
+
+    if (!banReasons.includes(selection)) {
+      return { requireReasonListMatch: true };
+    }
+
+    return null;
   }
 }
