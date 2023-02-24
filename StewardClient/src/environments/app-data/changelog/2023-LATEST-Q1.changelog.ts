@@ -17,6 +17,35 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       ],
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '28348e1d-a311-4f49-be39-9e7663898d5a',
+      shortText: 'Update contact us dev list',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'f27c15dc-f9de-4667-b4b8-859f7a13a643',
+      shortText: 'Fix permission error',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '65ac43da-bbe4-4936-aca8-c7752f5844c4',
+      shortText: 'Readd back in old auctions tab',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'ab4ed9dc-47f4-4c27-91d8-e8ef57fe046e',
+      shortText: 'Fix leaderboard bugs',
+      longText: [
+        'Talented users are now loading if endpoint is set to Studio',
+        'Device types displaying properly on page load',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6d2cf0a5-e77c-4326-adde-94f7f3900491',
+      shortText: 'Move permission management user list out to its own component',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: '895a09a4-87a3-4158-8ef5-dd5784daa728d',
       shortText: 'Add car restrictions to event details view',

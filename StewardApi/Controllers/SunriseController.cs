@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
-        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
+        [Authorize(Policy = UserAttribute.UpdateUserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] SunriseUserFlagsInput userFlags)
@@ -909,8 +909,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -1319,8 +1321,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -1509,8 +1513,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }

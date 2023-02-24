@@ -9,9 +9,11 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
@@ -26,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     public sealed class JobsController : ControllerBase
     {
         private readonly IJobTracker jobTracker;
+        private readonly ILoggingService loggingService;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
 
@@ -34,14 +37,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         public JobsController(
             IJobTracker jobTracker,
+            ILoggingService loggingService,
             IMapper mapper,
             IScheduler scheduler)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             mapper.ShouldNotBeNull(nameof(mapper));
             scheduler.ShouldNotBeNull(nameof(scheduler));
 
             this.jobTracker = jobTracker;
+            this.loggingService = loggingService;
             this.mapper = mapper;
             this.scheduler = scheduler;
         }
@@ -68,8 +74,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     await Task.Delay(jobTimeInMilliseconds, cancellationToken).ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Fake background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, objectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
@@ -109,8 +117,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                             postBody)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Fake background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, objectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
@@ -150,8 +160,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                             postBody)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Fake background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, objectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }

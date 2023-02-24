@@ -36,17 +36,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         private readonly IJobTracker jobTracker;
+        private readonly ILoggingService loggingService;
         private readonly IScheduler scheduler;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HideController"/> class.
         /// </summary>
-        public HideController(IJobTracker jobTracker, IScheduler scheduler)
+        public HideController(
+            IJobTracker jobTracker,
+            ILoggingService loggingService,
+            IScheduler scheduler)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             scheduler.ShouldNotBeNull(nameof(scheduler));
 
             this.jobTracker = jobTracker;
+            this.loggingService = loggingService;
             this.scheduler = scheduler;
         }
 
@@ -95,6 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Hide Multiple Ugc.", this.Response).ConfigureAwait(true);
+            var storefrontService = this.Services.Storefront;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -108,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     {
                         try
                         {
-                            await this.Services.Storefront.HideUGC(ugcId).ConfigureAwait(true);
+                            await storefrontService.HideUGC(ugcId).ConfigureAwait(true);
                         }
                         catch (Exception)
                         {
@@ -120,8 +127,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, failedUgc).ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
