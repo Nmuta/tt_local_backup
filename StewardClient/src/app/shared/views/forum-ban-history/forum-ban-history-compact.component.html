@@ -1,0 +1,27 @@
+<mat-accordion *ngIf="!isLoading && !loadError; else failstate">
+  <mat-expansion-panel *ngFor="let entry of banList">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span>{{ entry.featureArea | humanize }}</span>
+      </mat-panel-title>
+      <mat-panel-description>
+        <span class="timespan">{{
+          entry.startTimeUtc | dateTimeToJsDate | date: 'shortDate'
+        }}</span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ul>
+      <li><b>Issued Date:</b> {{ entry.startTimeUtc | dateTimeToJsDate | date: 'short' }}</li>
+      <li><b>Feature Area:</b> {{ entry.featureArea | humanize }}</li>
+      <li>
+        <b>Banned By: </b> <steward-user [objectId]="entry.requesterObjectId"> </steward-user>
+      </li>
+      <li><b>Ban Reason:</b> {{ entry.reason }}</li>
+    </ul>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>

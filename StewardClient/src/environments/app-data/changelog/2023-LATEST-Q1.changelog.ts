@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
+      uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
+      shortText: 'Add ability to record forum ban',
+      longText: [
+        'Forum ban are saved in Steward for reference and do not actually ban users on forums.',
+        'History of forum ban can be seen on the General tab of Player Details',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: '895a09a4-87a3-4158-8ef5-dd5784daa728d',
       shortText: 'Add car restrictions to event details view',

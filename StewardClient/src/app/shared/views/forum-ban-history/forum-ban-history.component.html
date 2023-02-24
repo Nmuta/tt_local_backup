@@ -1,0 +1,37 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Ban History</mat-card-title>
+    <mat-card-subtitle>Forum</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <table mat-table [dataSource]="banList" multiTemplateDataRows>
+        <ng-container matColumnDef="reason">
+          <th mat-header-cell *matHeaderCellDef>Reason</th>
+          <td mat-cell *matCellDef="let entry">
+            <steward-user [objectId]="entry.requesterObjectId"> </steward-user>: {{ entry.reason }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="featureArea">
+          <th mat-header-cell *matHeaderCellDef>Feature Area</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.featureArea | humanize }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="issuedTimeUtc">
+          <th mat-header-cell *matHeaderCellDef>Issued Date</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.startTimeUtc | date: 'short' }}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay" class="element-row"></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>

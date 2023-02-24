@@ -36,6 +36,8 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { ForumBanningComponent } from './pages/forum/forum-banning.component';
+import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -45,6 +47,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     SunriseBanningComponent,
     SteelheadBanningComponent,
     WoodstockBanningComponent,
+    ForumBanningComponent,
     BanOptionsComponent,
     DurationPickerComponent,
   ],
@@ -80,6 +83,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,
+    ForumBanHistoryModule,
   ],
 })
 export class UserBanningModule {}

@@ -37,6 +37,11 @@ export function getUserBanningRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.UserBanning, gameTitle);
 }
 
+/** Make user banning route. */
+export function getForumBanningRoute() {
+  return [`/app/tools/${NavbarTool.UserBanning}/forum`];
+}
+
 /** Make user group management route. */
 export function getUserGroupManagementRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.UserGroupManagement, gameTitle);

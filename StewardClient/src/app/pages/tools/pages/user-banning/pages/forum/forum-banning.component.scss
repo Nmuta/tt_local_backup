@@ -1,0 +1,9 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+.mat-checkbox {
+  margin-left: $gap-small;
+}
