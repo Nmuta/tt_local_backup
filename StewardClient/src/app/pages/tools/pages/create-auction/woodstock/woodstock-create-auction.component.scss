@@ -3,3 +3,7 @@
 :host {
   @include flex-column-fill();
 }
+
+mat-tab-group {
+  margin: $gap-medium;
+}

@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -57,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         };
 
         private readonly IActionLogger actionLogger;
+        private readonly ILoggingService loggingService;
         private readonly IApolloPlayerDetailsProvider playerDetailsProvider;
         private readonly IApolloPlayerInventoryProvider playerInventoryProvider;
         private readonly IApolloStorefrontProvider storefrontProvider;
@@ -68,6 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         /// </summary>
         public ApolloGiftingController(
             IActionLogger actionLogger,
+            ILoggingService loggingService,
             IApolloPlayerDetailsProvider playerDetailsProvider,
             IApolloPlayerInventoryProvider playerInventoryProvider,
             IApolloStorefrontProvider storefrontProvider,
@@ -77,6 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             IMapper mapper)
         {
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             playerDetailsProvider.ShouldNotBeNull(nameof(playerDetailsProvider));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
@@ -87,6 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.actionLogger = actionLogger;
+            this.loggingService = loggingService;
             this.playerDetailsProvider = playerDetailsProvider;
             this.playerInventoryProvider = playerInventoryProvider;
             this.storefrontProvider = storefrontProvider;
@@ -139,6 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                 // Do not throw.
                 try
                 {
+                    // Before refactoring, please check the repo ReadMe -> Steward -> Docs -> Background Jobs and Race Conditions
                     var response = await this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, this.ApolloEndpoint.Value).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
@@ -149,8 +155,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }

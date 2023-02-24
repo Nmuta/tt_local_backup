@@ -320,7 +320,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
             var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>>(
-                CMSFileNames.PlaylistDataForService,
+                CMSFileNames.PlaylistData,
                 environment: pegasusEnvironment,
                 slot: pegasusSlot,
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
@@ -334,9 +334,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             pegasusEnvironment ??= this.cmsEnvironment;
             pegasusSlot ??= SteelheadPegasusSlot.Daily;
 
-            var fileName = "LiveOps_RacersCupChampionshipScheduleV4";
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
-                fileName,
+                CMSFileNames.RacersCupV4,
                 environment: pegasusEnvironment,
                 slot: pegasusSlot,
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
@@ -348,7 +347,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
         {
             var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
-            var fileName = "LiveOps_BuildersCupFeaturedCup-en-US";
+            var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US");
 
             var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
                 fileName,
@@ -375,7 +374,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return wofTileCollection;
         }
-
 
         /// <inheritdoc/>
         public async Task<XElement> GetMessageOfTheDayElementAsync(Guid id)
@@ -609,6 +607,57 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
 
             return this.mapper.Map<PullRequest>(pullrequest);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync()
+        {
+            var items = await this.azureDevOpsManager.ListItemsAsync(PegasusFilePath.LocalizationFolder).ConfigureAwait(false);
+            return items.Skip(1).Select(k => System.IO.Path.GetFileNameWithoutExtension(k.Path[$"{PegasusFilePath.LocalizationFolder}/Localization-".Length..]));
+        }
+
+        /// <inheritdoc/>
+        public async Task<CommitRefProxy> WriteLocalizedStringsToPegasusAsync(LocCategory category, IEnumerable<LocalizedStringBridge> localizedStrings)
+        {
+            var path = $"{PegasusFilePath.LocalizationFolder}/Localization-{category}.xml";
+
+            var item = await this.azureDevOpsManager.GetItemAsync(path, GitObjectType.Blob).ConfigureAwait(false);
+
+            var xmlObj = await item.Content.DeserializeAsync<LocalizedStringRoot>().ConfigureAwait(false);
+
+            foreach (var loc in localizedStrings)
+            {
+                var entry = this.mapper.Map<LocEntry>(loc);
+
+                entry.id = Guid.NewGuid();
+                entry.LocString.locdef = Guid.NewGuid().ToString();
+                entry.Category = loc.Category.ToString();
+                entry.SubCategory = loc.SubCategory.ToString();
+
+                xmlObj.LocalizationEntries.Add(entry);
+            }
+
+            var appendedXmlStr = await XmlHelpers.SerializeAsync(xmlObj, WelcomeCenterHelpers.SteelheadXmlNamespaces).ConfigureAwait(false);
+
+            // Now fix the CData sections for {scribble:x}base elements
+            var xdoc = XDocument.Parse(appendedXmlStr);
+            var cdataSearchTarget = WelcomeCenterHelpers.NamespaceElement + "base";
+            foreach (var el in xdoc.Descendants(cdataSearchTarget))
+            {
+                el.FirstNode.ReplaceWith(new XCData(el.Value));
+            }
+
+            var finalXmlString = xdoc.ToXmlString();
+
+            var change = new CommitRefProxy()
+            {
+                CommitComment = $"Add localized string to {path}",
+                NewFileContent = finalXmlString,
+                PathToFile = path,
+                VersionControlChangeType = VersionControlChangeType.Edit
+            };
+
+            return change;
         }
 
         private static XElement GetXmlElement(Guid id, GitItem item, string typeNamespace)

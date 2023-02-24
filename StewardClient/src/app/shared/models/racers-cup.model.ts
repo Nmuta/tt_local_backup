@@ -24,7 +24,7 @@ export interface RacersCupSeries {
 export interface RacersCupEvent {
   name: string;
   playlistName: string;
-  openPracticeInMinutes: BigNumber;
+  carRestrictions: string;
   eventWindows: RacersCupEventWindow[];
   gameOptions: RacersCupGameOptions[];
   qualificationOptions: RacersCupQualificationOptions;

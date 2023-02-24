@@ -17,10 +17,11 @@ export class ExternalRedirectComponent implements OnInit {
   private readonly stewardTeamEmails: string[] = [
     'luke.geiken@microsoft.com',
     'madden.osei@microsoft.com',
-    'v-jyates@microsoft.com',
+    'jordan.yates@turn10.msgamestudios.com',
     'sharerdavid@microsoft.com',
     'caleb.moore@microsoft.com',
     'v-blebois@microsoft.com',
+    'ellen.porter@microsoft.com',
   ];
 
   constructor(private readonly store: Store, private readonly route: ActivatedRoute) {}

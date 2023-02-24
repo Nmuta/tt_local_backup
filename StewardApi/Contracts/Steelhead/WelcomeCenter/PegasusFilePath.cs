@@ -15,5 +15,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public const string ImageTextTile = "/Source/WorldOfForza/WoFTileImageText.xml";
         public const string GenericPopupTile = "/Source/WorldOfForza/WoFTileGenericPopup.xml";
         public const string DeeplinkTile = "/Source/WorldOfForza/WoFTileDeeplink.xml";
+        public const string LocalizationFolder = "/Source/Localization";
     }
 }

@@ -52,7 +52,7 @@ export interface RacersCupMeta {
   eventWindow: RacersCupEventWindow;
   gameOptions: RacersCupGameOptions[];
   qualificationOptions: RacersCupQualificationOptions;
-  eventOpenPracticeInMinutes: BigNumber;
+  carRestrictions: string;
   raceDuration: BigNumber;
   weekTooltip: string;
 }
@@ -314,7 +314,7 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
               eventWindow: eventWindow,
               gameOptions: event.gameOptions,
               qualificationOptions: event.qualificationOptions,
-              eventOpenPracticeInMinutes: event.openPracticeInMinutes,
+              carRestrictions: event.carRestrictions,
               raceDuration: new BigNumber(
                 eventWindow.endTimeUtc.diff(eventWindow.startTimeUtc, ['minutes']).minutes,
               ),

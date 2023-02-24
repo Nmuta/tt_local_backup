@@ -16,6 +16,50 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Update list of ban reasons',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '28348e1d-a311-4f49-be39-9e7663898d5a',
+      shortText: 'Update contact us dev list',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'f27c15dc-f9de-4667-b4b8-859f7a13a643',
+      shortText: 'Fix permission error',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '65ac43da-bbe4-4936-aca8-c7752f5844c4',
+      shortText: 'Readd back in old auctions tab',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'ab4ed9dc-47f4-4c27-91d8-e8ef57fe046e',
+      shortText: 'Fix leaderboard bugs',
+      longText: [
+        'Talented users are now loading if endpoint is set to Studio',
+        'Device types displaying properly on page load',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6d2cf0a5-e77c-4326-adde-94f7f3900491',
+      shortText: 'Move permission management user list out to its own component',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
+      uuid: '895a09a4-87a3-4158-8ef5-dd5784daa728d',
+      shortText: 'Add car restrictions to event details view',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '97733f8ab-7e8b-4b39-a1a3-b88693efeb83',
+      shortText: 'Modify player UGC keyword filter to match regardless of casing',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'ce8f3f39-9cf5-4aa0-82fd-d64b4c082b29',
+      shortText: 'Persist and Clone UGC success popup stays on-screen until dismissed',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
       uuid: '7b106529-7c3e-49be-b09c-072fe1e6be67',
       shortText: 'Remove old auctions tab in favor of auction logs tab',
@@ -24,6 +68,20 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '4166c37e-344e-44a9-b4cc-7b82bd5d3f61',
       shortText: 'Added support for Generic Popup and Deeplink tiles',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd92f49d2-3518-49d6-b5f9-b894f994c2e4',
+      shortText: 'Homepage available actions filter only loads for General User role',
+      longText: [
+        'Some users are still using the old permission role system.',
+        "Since they don't have the new permissions there's no value in loading the filter on startup.",
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '11b4301b-756a-4015-a7c1-7ca817741dde',
+      shortText: 'Add ability to override a player cms.',
     },
     {
       tag: ChangelogTag.General,
