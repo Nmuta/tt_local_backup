@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class EndpointSelectionComponent extends BaseComponent implements OnInit {
   /** REVIEW-COMMENT: Game title. */
-  @Input() public titleCodeName: GameTitleCodeName;
+  @Input() public titleCodeName: GameTitleCodeName | string;
   @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
 
   public displayEndpointName: string;
