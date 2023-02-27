@@ -25,7 +25,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public user: UserModel;
-  public userTeamLead: UserModel;
+  public teamLead: UserModel;
   public loading: boolean;
   public accessToken: string;
 
@@ -155,7 +155,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
       .getTeamLead$(user.objectId)
       .pipe(this.getTeamLeadMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(teadLead => {
-        this.userTeamLead = teadLead;
+        this.teamLead = teadLead;
       });
   }
 }

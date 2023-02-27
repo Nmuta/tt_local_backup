@@ -26,20 +26,20 @@
         <tr>
           <th>Tead Name</th>
           <td>
-            <standard-copy>{{ !!userTeamLead ? userTeamLead?.team?.name : 'N/A' }}</standard-copy>
+            <standard-copy>{{ !!teamLead ? teamLead?.team?.name : 'N/A' }}</standard-copy>
           </td>
         </tr>
         <tr>
           <th>Tead Lead</th>
           <td>
-            <standard-copy>{{ !!userTeamLead ? userTeamLead.name : adminTeamLead }}</standard-copy>
+            <standard-copy>{{ !!teamLead ? teamLead.name : adminTeamLead }}</standard-copy>
           </td>
         </tr>
         <tr>
           <th>Tead Lead Email</th>
           <td>
             <standard-copy>{{
-              !!userTeamLead ? userTeamLead.emailAddress : adminTeamLeadEmail
+              !!teamLead ? teamLead.emailAddress : adminTeamLeadEmail
             }}</standard-copy>
           </td>
         </tr>
