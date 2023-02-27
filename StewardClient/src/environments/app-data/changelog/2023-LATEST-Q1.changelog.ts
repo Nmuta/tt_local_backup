@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: ChangelogTag.General,
       uuid: 'd4f293ab-d3ae-4b1f-b1f9-d95e0e1c0e41',
-      shortText: 'Display team information in profile and contact us message',
+      shortText: 'Display team information in profile',
     },
     {
       tag: ChangelogTag.Internal,
