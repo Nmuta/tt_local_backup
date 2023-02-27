@@ -165,6 +165,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         }
 
         /// <summary>
+        ///     Gets all Steward teams.
+        /// </summary>
+        [HttpGet("teams")]
+        [SwaggerResponse(200, type: typeof(IDictionary<string, Team>))]
+        public async Task<IActionResult> GetTeamsAsync(string userId)
+        {
+            var internalUsers = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);
+            var users = this.mapper.Map<IList<StewardUser>>(internalUsers);
+
+            var teams = new Dictionary<string, Team>();
+            users.ForEach(user =>
+            {
+                if (user.Team != null)
+                {
+                    teams.Add(user.ObjectId, user.Team);
+                }
+            });
+
+            return this.Ok(teams);
+        }
+
+        /// <summary>
         ///     Gets user team.
         /// </summary>
         [HttpGet("{userId}/team")]

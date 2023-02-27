@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'c74997cf-d6d3-40a6-bde6-8c0e5f710387',
+      shortText: 'Add new admin tool to manage Steward teams',
+    },
+    {
       tag: {
         title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
         tool: NavbarTool.UserBanning,
