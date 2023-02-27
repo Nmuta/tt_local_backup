@@ -101,7 +101,7 @@ describe('SteelheadPlayerProfileService', () => {
       resetTrueSkillData: faker.datatype.boolean(),
       resetUserInventoryData: faker.datatype.boolean(),
       resetUserSafetyRatingData: faker.datatype.boolean(),
-      softDeleteInventory: faker.datatype.boolean(),
+      resetUgcProfileData: faker.datatype.boolean(),
     } as ResetProfileOptions;
 
     const fakeResponse = faker.datatype.uuid();

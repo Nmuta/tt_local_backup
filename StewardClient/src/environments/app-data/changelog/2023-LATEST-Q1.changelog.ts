@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '2b2a95a2-d759-40f9-9a0d-ec9509d4b20b',
+      shortText: 'Update to latest Steelhead Forzaclient nuget',
+    },
+    {
       tag: {
         title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
         tool: NavbarTool.UserBanning,

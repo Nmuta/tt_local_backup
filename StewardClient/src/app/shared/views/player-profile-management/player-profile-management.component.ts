@@ -101,7 +101,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     resetTrueSkillData: false,
     resetUserInventoryData: false,
     resetUserSafetyRatingData: false,
-    softDeleteInventory: false,
+    resetUgcProfileData: false,
   };
   public resetFormControls = {
     verifyAction: new FormControl(this.resetFormDefaults.verifyAction, Validators.requiredTrue),
@@ -130,8 +130,8 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
       this.resetFormDefaults.resetUserSafetyRatingData,
       Validators.required,
     ),
-    softDeleteInventory: new FormControl(
-      this.resetFormDefaults.softDeleteInventory,
+    resetUgcProfileData: new FormControl(
+      this.resetFormDefaults.resetUgcProfileData,
       Validators.required,
     ),
   };
@@ -227,7 +227,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
         resetTrueSkillData: this.resetFormControls.resetTrueSkillData.value,
         resetUserInventoryData: this.resetFormControls.resetUserInventoryData.value,
         resetUserSafetyRatingData: this.resetFormControls.resetUserSafetyRatingData.value,
-        softDeleteInventory: this.resetFormControls.softDeleteInventory.value,
+        resetUgcProfileData: this.resetFormControls.resetUgcProfileData.value,
       } as ResetProfileOptions)
       .pipe(this.resetTemplateMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(updatedProfileId => {
@@ -245,6 +245,6 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     this.resetFormControls.resetTrueSkillData.setValue(true);
     this.resetFormControls.resetUserInventoryData.setValue(true);
     this.resetFormControls.resetUserSafetyRatingData.setValue(true);
-    this.resetFormControls.softDeleteInventory.setValue(true);
+    this.resetFormControls.resetUgcProfileData.setValue(true);
   }
 }

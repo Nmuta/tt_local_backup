@@ -109,7 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             [FromQuery] bool resetTrueSkillData = true,
             [FromQuery] bool resetUserInventoryData = true,
             [FromQuery] bool resetUserSafetyRatingData = true,
-            [FromQuery] bool softDeleteInventory = true)
+            [FromQuery] bool resetUgcProfileData = true)
         {
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
@@ -128,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 ResetTrueSkillTrackerData = resetTrueSkillData,
                 ResetUserInventoryData = resetUserInventoryData,
                 ResetUserSafetyRatingData = resetUserSafetyRatingData,
-                SoftDeleteUserInventoryData = softDeleteInventory,
+                ResetUGCProfileData = resetUgcProfileData,
             };
 
             var response = await services.LiveOpsService.ResetProfile(configuration, profileIdAsGuid).ConfigureAwait(true);

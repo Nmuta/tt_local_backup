@@ -80,14 +80,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         ///     Gets player auctions.
         /// </summary>
         Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters, string endpoint);
-
-        /// <summary>
-        ///     Gets player Racer's Cup Schedule.
-        /// </summary>
-        Task<RacersCupSchedule> GetCmsRacersCupScheduleForUserAsync(
-            ulong xuid,
-            DateTime startTimeUtc,
-            int daysForward,
-            string endpoint);
     }
 }

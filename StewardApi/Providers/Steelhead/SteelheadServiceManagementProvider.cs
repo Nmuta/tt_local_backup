@@ -70,24 +70,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleAsync(string environment, string slotId, string snapshotId, DateTime startTimeUtc, int daysForward, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var result = await this.steelheadService.GetCmsRacersCupScheduleAsync(environment, slotId, snapshotId, startTimeUtc, daysForward, Array.Empty<ForzaEventSessionType>(), endpoint)
-                    .ConfigureAwait(false);
-
-                return this.mapper.Map<RacersCupSchedule>(result.scheduleData);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No racer schedule data found for {TitleConstants.SteelheadFullName}", ex);
-            }
-        }
-
-        /// <inheritdoc />
         public async Task<Guid> AddStringToLocalizeAsync(LocalizedStringData data, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
