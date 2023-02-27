@@ -21,7 +21,7 @@ export type StewardUserDisplayOption = 'name' | 'email';
 export class StewardUserComponent extends BaseComponent implements OnInit, OnChanges {
   /** Steward user id. */
   @Input() public objectId: GuidLikeString;
-  /** Steward user id. */
+  /** Display options for the Steward user. Defaults to user's email. */
   @Input() public displayOption: StewardUserDisplayOption = 'email';
 
   public user: UserModel;
