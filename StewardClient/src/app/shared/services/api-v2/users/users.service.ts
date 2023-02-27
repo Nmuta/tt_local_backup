@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
+import { UserModel } from '@models/user.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { StewardTeam } from '@tools-app/pages/permission-management/permission-management.models';
 import { Observable } from 'rxjs';
@@ -24,7 +25,12 @@ export class V2UsersService {
 
   /** Gets Steward team. */
   public getStewardTeam$(teamLeadId: GuidLikeString): Observable<StewardTeam> {
-    return this.api.getRequest$<StewardTeam>(`${this.basePath}/${teamLeadId}/team`,);
+    return this.api.getRequest$<StewardTeam>(`${this.basePath}/${teamLeadId}/team`);
+  }
+
+  /** Gets user's team lead. Null if they have none; */
+  public getTeamLead$(userId: GuidLikeString): Observable<UserModel> {
+    return this.api.getRequest$<UserModel>(`${this.basePath}/${userId}/teamLead`);
   }
 
   /** Sets Steward team. */

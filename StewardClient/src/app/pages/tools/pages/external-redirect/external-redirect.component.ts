@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
+import { EmailAddresses } from '@shared/constants';
 import { UserState } from '@shared/state/user/user.state';
 
 export const enum ExternalRedirectOption {
@@ -22,6 +23,7 @@ export class ExternalRedirectComponent implements OnInit {
     'caleb.moore@microsoft.com',
     'v-blebois@microsoft.com',
     'ellen.porter@microsoft.com',
+    'stephen.edmonds@playground-games.com',
   ];
 
   constructor(private readonly store: Store, private readonly route: ActivatedRoute) {}
@@ -62,7 +64,7 @@ export class ExternalRedirectComponent implements OnInit {
   /** Generates email href. */
   private emailContactHref(senderEmail: string, senderRole: string): string {
     return (
-      'mailto:t10liveopstools@microsoft.com' +
+      `mailto:${EmailAddresses.LiveOpsAdmins}` +
       '?subject=[Steward - Contact Us] (Add subject here)' +
       `&body=(Add message here)\n\n` +
       `Email: ${senderEmail}\n` +

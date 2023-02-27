@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   selector: '[waitForMonitor]',
 })
 export class WaitForMonitorDirective extends BaseDirective implements OnChanges, OnInit {
-  /** REVIEW-COMMENT: ActionMonitor to wait for before displaying content. */
+  /** ActionMonitor to wait for before displaying content. */
   @Input() waitForMonitor: ActionMonitor;
 
   public subscription: Subscription;

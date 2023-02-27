@@ -56,7 +56,9 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
     combineLatest([getUsers$, getTeams$])
       .pipe(this.initComponentActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(([users, teams]) => {
-        const availableTeamLeads = users.filter(user => user.role === UserRole.GeneralUser && !user.team);
+        const availableTeamLeads = users.filter(
+          user => user.role === UserRole.GeneralUser && !user.team,
+        );
         this.availableTeamLeads = sortBy(availableTeamLeads, user => {
           return user.name;
         }) as UserModel[];
@@ -101,7 +103,7 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
     this.v2UsersService
       .setStewardTeam$(newTeam)
       .pipe(this.createTeamActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe((team) => {
+      .subscribe(team => {
         this.formControls.name.setValue('');
         this.formControls.filterLead.setValue('');
         this.formControls.lead.setValue('');
@@ -114,8 +116,10 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
         this.allTeams.push(newTeam);
         this.selectedTeamChange.emit(newTeam);
 
-        this.availableTeamLeads = this.availableTeamLeads.filter(user => user.objectId.toLowerCase() !== teamLead.objectId.toLowerCase());
-        this.formControls.filterLead.updateValueAndValidity({ emitEvent: true});
+        this.availableTeamLeads = this.availableTeamLeads.filter(
+          user => user.objectId.toLowerCase() !== teamLead.objectId.toLowerCase(),
+        );
+        this.formControls.filterLead.updateValueAndValidity({ emitEvent: true });
       });
   }
 

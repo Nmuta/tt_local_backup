@@ -127,62 +127,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             return this.Ok();
         }
 
-        private async Task SyncAddNewUserAsync(StewardUser userToAdd)
-        {
-            try
-            {
-                var aadUserProfile = await this.msGraphService.GetAadUserAsync(userToAdd.ObjectId).ConfigureAwait(true);
-                if (aadUserProfile == null)
-                {
-                    throw new UnknownFailureStewardException($"Failed to pull AAD user profile during sync. (aadUserId: {userToAdd.ObjectId})");
-                }
-
-                userToAdd.EmailAddress = aadUserProfile.Mail;
-                await this.stewardUserProvider.CreateStewardUserAsync(userToAdd).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to add new AAD user to DB during sync. (aadUserId: {userToAdd.ObjectId})", ex);
-            }
-        }
-
-        private async Task SyncUpdateUserAsync(StewardUserInternal userToUpdate)
-        {
-            try
-            {
-                await this.stewardUserProvider.UpdateStewardUserAsync(
-                    userToUpdate.ObjectId,
-                    userToUpdate.Name,
-                    userToUpdate.EmailAddress,
-                    userToUpdate.Role,
-                    userToUpdate.Attributes,
-                    userToUpdate.Team).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to updated AAD user to DB during sync. (aadUserId: {userToUpdate.ObjectId})", ex);
-            }
-        }
-
         /// <summary>
         ///     Gets all Steward teams.
         /// </summary>
         [HttpGet("teams")]
         [SwaggerResponse(200, type: typeof(IDictionary<string, Team>))]
-        public async Task<IActionResult> GetTeamsAsync(string userId)
+        public async Task<IActionResult> GetTeamsAsync()
         {
-            var internalUsers = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);
-            var users = this.mapper.Map<IList<StewardUser>>(internalUsers);
-
-            var teams = new Dictionary<string, Team>();
-            users.ForEach(user =>
-            {
-                if (user.Team != null)
-                {
-                    teams.Add(user.ObjectId, user.Team);
-                }
-            });
-
+            var teams = await this.GetAllTeamsAsync().ConfigureAwait(true);
             return this.Ok(teams);
         }
 
@@ -225,6 +177,88 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             await this.stewardUserProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
             return await this.GetTeamAsync(userId).ConfigureAwait(true);
+        }
+
+        /// <summary>
+        ///     Gets user's team lead.
+        /// </summary>
+        [HttpGet("{userId}/teamLead")]
+        [SwaggerResponse(200, type: typeof(StewardUser))]
+        public async Task<IActionResult> GetUsersTeamLeadAsync(string userId)
+        {
+            var parsedUserId = userId.TryParseGuidElseThrow("userId");
+            var teams = await this.GetAllTeamsAsync().ConfigureAwait(true);
+
+            foreach (var team in teams)
+            {
+                var members = team.Value.Members;
+                var isUserMember = members.FirstOrDefault(member => member == parsedUserId) != default(Guid);
+                if (isUserMember)
+                {
+                    var teamLead = await this.stewardUserProvider.GetStewardUserAsync(team.Key).ConfigureAwait(true);
+                    var mappedTeamLead = this.mapper.SafeMap<StewardUser>(teamLead);
+                    return this.Ok(mappedTeamLead);
+                }
+            }
+
+            return this.Ok(null);
+        }
+
+        /// <summary>
+        ///     Gets all Steward teams.
+        /// </summary>
+        private async Task<IDictionary<string, Team>> GetAllTeamsAsync()
+        {
+            var internalUsers = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);
+            var users = this.mapper.Map<IList<StewardUser>>(internalUsers);
+
+            var teams = new Dictionary<string, Team>();
+            users.ForEach(user =>
+            {
+                if (user.Team != null)
+                {
+                    teams.Add(user.ObjectId, user.Team);
+                }
+            });
+
+            return teams;
+        }
+
+        private async Task SyncAddNewUserAsync(StewardUser userToAdd)
+        {
+            try
+            {
+                var aadUserProfile = await this.msGraphService.GetAadUserAsync(userToAdd.ObjectId).ConfigureAwait(true);
+                if (aadUserProfile == null)
+                {
+                    throw new UnknownFailureStewardException($"Failed to pull AAD user profile during sync. (aadUserId: {userToAdd.ObjectId})");
+                }
+
+                userToAdd.EmailAddress = aadUserProfile.Mail;
+                await this.stewardUserProvider.CreateStewardUserAsync(userToAdd).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to add new AAD user to DB during sync. (aadUserId: {userToAdd.ObjectId})", ex);
+            }
+        }
+
+        private async Task SyncUpdateUserAsync(StewardUserInternal userToUpdate)
+        {
+            try
+            {
+                await this.stewardUserProvider.UpdateStewardUserAsync(
+                    userToUpdate.ObjectId,
+                    userToUpdate.Name,
+                    userToUpdate.EmailAddress,
+                    userToUpdate.Role,
+                    userToUpdate.Attributes,
+                    userToUpdate.Team).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to updated AAD user to DB during sync. (aadUserId: {userToUpdate.ObjectId})", ex);
+            }
         }
     }
 }

@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'd4f293ab-d3ae-4b1f-b1f9-d95e0e1c0e41',
+      shortText: 'Display team information in profile and contact us message',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '28348e1d-a311-4f49-be39-9e7663898d5a',
       shortText: 'Update contact us dev list',
