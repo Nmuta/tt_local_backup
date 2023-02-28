@@ -58,10 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
 
-            if (!Guid.TryParse(profileId, out var profileIdAsGuid))
-            {
-                throw new BadRequestStewardException("Profile ID could not be parsed as GUID.");
-            }
+            var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
             await services.LiveOpsService.SaveProfile(profileIdAsGuid, templateName, overwriteIfExists).ConfigureAwait(true);
             return this.Ok();
@@ -85,15 +82,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
 
-            if (!Guid.TryParse(profileId, out var profileIdAsGuid))
-            {
-                throw new BadRequestStewardException("Profile ID could not be parsed as GUID.");
-            }
+            var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
-            if(!Enum.TryParse<ForzaSandbox>(forzaSandbox, out var sandboxEnum))
-            {
-                throw new BadRequestStewardException("Forza Sandbox could not be parsed as a valid input.");
-            }
+            var sandboxEnum = forzaSandbox.TryParseEnumElseThrow<ForzaSandbox>("Forza Sandbox could not be parsed.");
 
             var response = await services.LiveOpsService.LoadProfile(profileIdAsGuid, templateName, continueOnBreakingChanges, sandboxEnum).ConfigureAwait(true);
             return this.Ok(response.currentProfileId);
@@ -123,10 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
 
-            if (!Guid.TryParse(profileId, out var profileIdAsGuid))
-            {
-                throw new BadRequestStewardException("Profile ID could not be parsed as GUID.");
-            }
+            var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
             var configuration = new ForzaProfileResetConfiguration()
             {

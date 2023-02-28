@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '6ca4b560-726c-4d07-b313-01946c666460',
+      shortText: 'Add sandbox selection to profile load tool',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '2b2a95a2-d759-40f9-9a0d-ec9509d4b20b',
       shortText: 'Update to latest Steelhead Forzaclient nuget',
