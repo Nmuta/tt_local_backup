@@ -37,7 +37,6 @@ describe('ProfileComponent', () => {
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
-
       ],
       declarations: [ProfileComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
