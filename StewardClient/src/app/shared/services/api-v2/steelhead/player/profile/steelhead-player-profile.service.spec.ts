@@ -81,10 +81,9 @@ describe('SteelheadPlayerProfileService', () => {
           forzaSandbox,
         )
         .subscribe(response => {
-          const params = new HttpParams().set(
-            'continueOnBreakingChanges',
-            continueOnBreakingChanges.toString(),
-          );
+          const params = new HttpParams()
+            .append('continueOnBreakingChanges', continueOnBreakingChanges.toString())
+            .append('forzaSandbox', ForzaSandbox.Test);
 
           expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
             `${service.basePath}/${xuid}/profile/${profileId}/load`,
