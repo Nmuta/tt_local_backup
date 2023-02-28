@@ -170,3 +170,9 @@ export enum PegasusEnvironment {
   Flight = 'flight',
   Prod = 'prod',
 }
+
+/** Enum for Forza Sandbox, used when loading profiles. */
+export enum ForzaSandbox {
+  Retail = 'Retail',
+  Test = 'Test',
+}

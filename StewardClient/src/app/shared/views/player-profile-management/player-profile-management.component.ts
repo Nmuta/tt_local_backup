@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
-import { GameTitle } from '@models/enums';
+import { ForzaSandbox, GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { ResetProfileOptions } from '@models/reset-profile-options';
 import { UserModel } from '@models/user.model';
@@ -27,6 +27,7 @@ export interface PlayerProfileManagementServiceContract {
     profileId: GuidLikeString,
     templateName: string,
     continueOnBreakingChanges: boolean,
+    forzaSandbox: ForzaSandbox,
   ) => Observable<GuidLikeString>;
   resetPlayerProfile$: (
     xuid: BigNumber,
@@ -62,6 +63,8 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   public playerConsentText: string = 'I have received player consent for this action';
 
+  public forzaSandboxEnum = ForzaSandbox;
+
   public saveFormDefaults = {
     verifyAction: false,
     template: '',
@@ -81,6 +84,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     verifyAction: false,
     template: '',
     continueOnBreakingChanges: false,
+    forzaSandbox: ForzaSandbox.Retail,
   };
   public loadFormControls = {
     verifyAction: new FormControl(this.loadFormDefaults.verifyAction, Validators.requiredTrue),
@@ -89,6 +93,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
       this.loadFormDefaults.continueOnBreakingChanges,
       Validators.required,
     ),
+    forzaSandbox: new FormControl(this.loadFormDefaults.forzaSandbox, Validators.required),
   };
   public loadFormGroup = new FormGroup(this.loadFormControls);
 
@@ -203,6 +208,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
         this.externalProfileId,
         this.loadFormControls.template.value,
         this.loadFormControls.continueOnBreakingChanges.value,
+        this.loadFormControls.forzaSandbox.value,
       )
       .pipe(this.loadTemplateMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(updatedProfileId => {

@@ -49,10 +49,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task<LiveOpsService.LoadProfileOutput> LoadProfile(
             Guid profileId,
             string templateName,
-            bool continueOnBreakingChanges);
+            bool continueOnBreakingChanges,
+            ForzaSandbox userSandbox);
 
         /// <summary>
-        ///     Gets all profile template names;
+        ///     Gets all profile template names.
         /// </summary>
         Task<LiveOpsService.GetAllProfileTemplateNamesOutput> GetAllProfileTemplateNames();
 

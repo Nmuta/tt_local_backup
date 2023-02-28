@@ -76,7 +76,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Profile)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttribute.UpdateProfile)]
-        public async Task<IActionResult> LoadPlayerProfile(ulong xuid, string profileId, [FromBody] string templateName, [FromQuery] bool continueOnBreakingChanges)
+        public async Task<IActionResult> LoadPlayerProfile(
+            ulong xuid, string profileId,
+            [FromBody] string templateName,
+            [FromQuery] bool continueOnBreakingChanges,
+            [FromQuery] string forzaSandbox)
         {
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
@@ -86,7 +90,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new BadRequestStewardException("Profile ID could not be parsed as GUID.");
             }
 
-            var response = await services.LiveOpsService.LoadProfile(profileIdAsGuid, templateName, continueOnBreakingChanges).ConfigureAwait(true);
+            if(!Enum.TryParse<ForzaSandbox>(forzaSandbox, out var sandboxEnum))
+            {
+                throw new BadRequestStewardException("Forza Sandbox could not be parsed as a valid input.");
+            }
+
+            var response = await services.LiveOpsService.LoadProfile(profileIdAsGuid, templateName, continueOnBreakingChanges, sandboxEnum).ConfigureAwait(true);
             return this.Ok(response.currentProfileId);
         }
 

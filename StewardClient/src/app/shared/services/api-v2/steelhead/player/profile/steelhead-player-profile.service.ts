@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ForzaSandbox } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { ResetProfileOptions } from '@models/reset-profile-options';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
@@ -36,11 +37,9 @@ export class SteelheadPlayerProfileService {
     profileId: GuidLikeString,
     templateName: string,
     continueOnBreakingChanges: boolean = false,
+    forzaSandbox: ForzaSandbox,
   ): Observable<GuidLikeString> {
-    const params = new HttpParams().set(
-      'continueOnBreakingChanges',
-      continueOnBreakingChanges.toString(),
-    );
+    const params = new HttpParams().append('continueOnBreakingChanges', continueOnBreakingChanges.toString()).append('forzaSandbox', forzaSandbox);
 
     return this.api.postRequest$<GuidLikeString>(
       `${this.basePath}/${xuid}/profile/${profileId}/load`,

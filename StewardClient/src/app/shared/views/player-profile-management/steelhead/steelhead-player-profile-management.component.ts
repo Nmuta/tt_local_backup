@@ -37,12 +37,13 @@ export class SteelheadPlayerProfileManagementComponent {
           templateName,
           overwriteIfExists,
         ),
-      loadTemplateToPlayerProfile$: (xuid, profileId, templateName, continueOnBreakingChanges) =>
+      loadTemplateToPlayerProfile$: (xuid, profileId, templateName, continueOnBreakingChanges, forzaSandbox) =>
         playerProfileService.loadTemplateToPlayerProfile$(
           xuid,
           profileId,
           templateName,
           continueOnBreakingChanges,
+          forzaSandbox,
         ),
       resetPlayerProfile$: (xuid, profileId, options) =>
         playerProfileService.resetPlayerProfile$(xuid, profileId, options),
