@@ -24,6 +24,7 @@ import {
   SetThemeEnvironmentWarning,
   RefreshEndpointKeys,
   SetForteEndpointKey,
+  ConfigureShowVerifyCheckboxPopup,
 } from './user-settings.actions';
 
 /** Defines the user state model. */
@@ -32,6 +33,7 @@ export class UserSettingsStateModel {
   public enableStagingApi: boolean;
   public appVersion: string;
   public showAppUpdatePopup: boolean;
+  public showVerifyCheckboxPopup: boolean;
   public apolloEndpointKey: string;
   public sunriseEndpointKey: string;
   public woodstockEndpointKey: string;
@@ -56,6 +58,7 @@ export class UserSettingsStateModel {
     steelheadEndpointKey: undefined,
     forteEndpointKey: undefined,
     showAppUpdatePopup: true,
+    showVerifyCheckboxPopup: true,
     themeOverride: undefined,
     themeEnvironmentWarning: !environment.production ? 'warn' : undefined,
   },
@@ -99,6 +102,15 @@ export class UserSettingsState {
     action: ConfigureAppUpdatePopup,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ showAppUpdatePopup: action.show }));
+  }
+
+  /** Sets the state of whether the verify checkbox popup should show. */
+  @Action(ConfigureShowVerifyCheckboxPopup, { cancelUncompleted: true })
+  public setShowVerifyCheckboxPopup$(
+    ctx: StateContext<UserSettingsStateModel>,
+    action: ConfigureAppUpdatePopup,
+  ): Observable<UserSettingsStateModel> {
+    return of(ctx.patchState({ showVerifyCheckboxPopup: action.show }));
   }
 
   /** Sets the navbar tool list. */
@@ -295,6 +307,16 @@ export class UserSettingsState {
   @Selector()
   public static showAppUpdatePopup(state: UserSettingsStateModel): boolean {
     return state.showAppUpdatePopup;
+  }
+
+  /** Selector for state show verify checkbox popup. */
+  @Selector()
+  public static showVerifyCheckboxPopup(state: UserSettingsStateModel): boolean {
+    if (state.showVerifyCheckboxPopup === undefined) {
+      return true;
+    }
+
+    return state.showVerifyCheckboxPopup;
   }
 
   /** Selector for app's apollo endpoint. */

@@ -55,6 +55,7 @@
               <div class="ban-action-container">
                 <button
                   mat-raised-button
+                  class="sf-button"
                   color="warn"
                   (click)="submitBan()"
                   clickStop
@@ -67,17 +68,19 @@
                 >
                   Ban
                   <button-spinner [monitor]="banActionMonitor" defaultIcon="gavel"></button-spinner>
+                  <mat-checkbox
+                    class="sf-button-checkbox"
+                    #confirmBan
+                    stateManager
+                    [monitor]="banActionMonitor"
+                    monitorDisable
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
+                    clickStop
+                  >
+                  </mat-checkbox>
+                  <verify-help-popover></verify-help-popover>
                 </button>
-                <mat-checkbox
-                  #confirmBan
-                  stateManager
-                  [monitor]="banActionMonitor"
-                  monitorDisable
-                  [permissionAttribute]="permAttribute"
-                  [permissionTitle]="gameTitle"
-                >
-                  Verify ban
-                </mat-checkbox>
               </div>
             </form>
           </ng-container>
