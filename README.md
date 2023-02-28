@@ -85,3 +85,9 @@ You have multiple options to run client unit tests.
 ### API
 API testing is simple and can all be done through Visual Studio's **Test Explorer**
 
+## Docs
+### Background Jobs and Race Conditions
+Specifically in V2 type controllers, be aware that running background jobs must maintain a local variable of any proxied services
+that the background job relies on to complete. Never call 'this.Services...' inside of a background job, always declare a local 
+var outside the background Task 'var liveOpsService = this.Services.LiveOpsService' and then use 'liveOpsService' to make
+any relevant requests.

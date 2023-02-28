@@ -25,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
@@ -58,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         private readonly IActionLogger actionLogger;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
+        private readonly ILoggingService loggingService;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
         private readonly IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator;
 
@@ -70,6 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             IActionLogger actionLogger,
             IJobTracker jobTracker,
             IScheduler scheduler,
+            ILoggingService loggingService,
             ISteelheadBanHistoryProvider banHistoryProvider,
             IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator)
         {
@@ -78,6 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             scheduler.ShouldNotBeNull(nameof(scheduler));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
 
@@ -86,6 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             this.actionLogger = actionLogger;
             this.jobTracker = jobTracker;
             this.scheduler = scheduler;
+            this.loggingService = loggingService;
             this.banHistoryProvider = banHistoryProvider;
             this.banParametersRequestValidator = banParametersRequestValidator;
         }
@@ -198,6 +203,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var results = await this.BanUsersAsync(
                 banParameters,
+                this.Services.LiveOpsService,
+                this.Services.UserManagementService,
                 requesterObjectId).ConfigureAwait(true);
 
             var bannedXuids = results.Where(banResult => banResult.Error == null)
@@ -251,6 +258,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 $"Steelhead Banning: {banParameters.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
+            var liveOpsService = this.Services.LiveOpsService;
+            var userManagementService = this.Services.UserManagementService;
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
@@ -259,6 +269,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 {
                     var results = await this.BanUsersAsync(
                         banParameters,
+                        liveOpsService,
+                        userManagementService,
                         requesterObjectId).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
@@ -271,8 +283,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -287,6 +301,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
         private async Task<IList<BanResult>> BanUsersAsync(
             IList<SteelheadBanParameters> banParameters,
+            ILiveOpsService liveOpsService,
+            IUserManagementService userManagementService,
             string requesterObjectId)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
@@ -294,7 +310,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             const int maxXuidsPerRequest = 10;
             var endpoint = this.SteelheadEndpoint.Value;
-            var services = this.Services;
 
             foreach (var param in banParameters)
             {
@@ -309,8 +324,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                     try
                     {
-                        var userResult = await services.LiveOpsService.GetLiveOpsUserDataByGamerTag(
-                                param.Gamertag).ConfigureAwait(false);
+                        var userResult = await liveOpsService.GetLiveOpsUserDataByGamerTag(
+                                param.Gamertag).ConfigureAwait(true);
 
                         param.Xuid = userResult.userData.qwXuid;
                     }
@@ -330,9 +345,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     var paramBatch = banParameters.ToList()
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await services.UserManagementService
+                    var result = await userManagementService
                         .BanUsers(mappedBanParameters.ToArray(), mappedBanParameters.Count)
-                        .ConfigureAwait(false);
+                        .ConfigureAwait(true);
 
                     banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
                 }
@@ -352,7 +367,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                                         TitleConstants.SteelheadCodeName,
                                         requesterObjectId,
                                         parameters,
-                                        endpoint).ConfigureAwait(false);
+                                        endpoint).ConfigureAwait(true);
                         }
                         catch (Exception ex)
                         {

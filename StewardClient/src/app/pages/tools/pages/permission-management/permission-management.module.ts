@@ -31,13 +31,24 @@ import { VerifyUserSwitchDialogComponent } from './components/verify-user-switch
 import { VerifyUserPermissionChangeDialogComponent } from './components/verify-user-permissions-change-dialog/verify-user-permissions-change-dialog.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { UserPermissionManagementComponent } from './components/user-permission-management/user-permission-management.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TeamPermissionManagementComponent } from './components/team-permission-management/team-permission-management.component';
+import { SelectUserFromListComponent } from './components/select-user-from-list/select-user-from-list.component';
+import { SelectTeamFromListComponent } from './components/select-team-from-list/select-team-from-list.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
 
-/** Module for displaying the available apps, or a login button. */
+/** Module for Steward permission management. */
 @NgModule({
   declarations: [
+    UserPermissionManagementComponent,
+    TeamPermissionManagementComponent,
     PermissionManagementComponent,
     VerifyUserSwitchDialogComponent,
     VerifyUserPermissionChangeDialogComponent,
+    SelectUserFromListComponent,
+    SelectTeamFromListComponent,
   ],
   imports: [
     PermisisionManagementRoutingModule,
@@ -51,6 +62,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatInputModule,
     MatTooltipModule,
     MatTableModule,
+    MatPaginatorModule,
     MatPaginatorModule,
     TextFieldModule,
     JsonDumpModule,
@@ -70,6 +82,9 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDialogModule,
     DirectivesModule,
     MatMenuModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
   exports: [],
 })

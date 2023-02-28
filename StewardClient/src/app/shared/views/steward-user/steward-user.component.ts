@@ -7,6 +7,9 @@ import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 
+/** The supported display options for Steward user */
+export type StewardUserDisplayOption = 'name' | 'email';
+
 /**
  *  Retrieves and displays Steward user information.
  */
@@ -16,8 +19,10 @@ import { BetterSimpleChanges } from '@helpers/simple-changes';
   styleUrls: ['./steward-user.component.scss'],
 })
 export class StewardUserComponent extends BaseComponent implements OnInit, OnChanges {
-  /** REVIEW-COMMENT: Steward user id. */
+  /** Steward user id. */
   @Input() public objectId: GuidLikeString;
+  /** Display options for the Steward user. Defaults to user's email. */
+  @Input() public displayOption: StewardUserDisplayOption = 'email';
 
   public user: UserModel;
 

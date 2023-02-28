@@ -8,6 +8,48 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'c74997cf-d6d3-40a6-bde6-8c0e5f710387',
+      shortText: 'Add new admin tool to manage Steward teams',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserBanning,
+      },
+      uuid: '7eb2d58b-4dca-4811-a4b4-62eed1894be9',
+      shortText: 'Update list of ban reasons',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '28348e1d-a311-4f49-be39-9e7663898d5a',
+      shortText: 'Update contact us dev list',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'f27c15dc-f9de-4667-b4b8-859f7a13a643',
+      shortText: 'Fix permission error',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '65ac43da-bbe4-4936-aca8-c7752f5844c4',
+      shortText: 'Readd back in old auctions tab',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'ab4ed9dc-47f4-4c27-91d8-e8ef57fe046e',
+      shortText: 'Fix leaderboard bugs',
+      longText: [
+        'Talented users are now loading if endpoint is set to Studio',
+        'Device types displaying properly on page load',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6d2cf0a5-e77c-4326-adde-94f7f3900491',
+      shortText: 'Move permission management user list out to its own component',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.RacersCup },
       uuid: '895a09a4-87a3-4158-8ef5-dd5784daa728d',
       shortText: 'Add car restrictions to event details view',
