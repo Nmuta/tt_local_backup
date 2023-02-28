@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '69abd636-ffb4-4400-ada0-3819fff430d4',
+      shortText: 'Add ability to delete Steward teams',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'c74997cf-d6d3-40a6-bde6-8c0e5f710387',
       shortText: 'Add new admin tool to manage Steward teams',
     },

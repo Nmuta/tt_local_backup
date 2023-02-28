@@ -34,4 +34,9 @@ export class V2UsersService {
       newTeam,
     );
   }
+
+  /** Deletes Steward team. */
+  public deleteStewardTeam$(teamLeadId: GuidLikeString): Observable<void> {
+    return this.api.deleteRequest$<void>(`${this.basePath}/${teamLeadId}/team`);
+  }
 }
