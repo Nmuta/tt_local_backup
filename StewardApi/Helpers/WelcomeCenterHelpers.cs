@@ -198,7 +198,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
             else
             {
-                el.FirstNode.ReplaceWith(node.Value.ToString());
+                el.FirstNode?.ReplaceWith(node.Value.ToString());
             }
 
             if (node.IsCdata)
@@ -250,24 +250,26 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                     XNamespace xnamespace = property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
 
-                    // If the property is a multi-element base type,
-                    // use the derived type's name else base's name.
-                    XName path = property.GetCustomAttribute<WriteToPegasusAttribute>()?.IsMultiElement ?? false
-                        ? xnamespace + value.GetType().Name
-                        : xnamespace + property.Name;
+                    // If value is null take the base name.
+                    // If the property is a non-null multi-element base type, use the derived name.
+                    XName path = value == null
+                        ? xnamespace + property.Name
+                        : property.GetCustomAttribute<WriteToPegasusAttribute>()?.IsMultiElement ?? false
+                            ? xnamespace + value.GetType().Name
+                            : xnamespace + property.Name;
 
                     if (value == null)
                     {
-                        // This condition is a safety measure in case a class-type propeprty in the deserialized model is
-                        // annotated with [WriteToPegasus], but that property doesn't have a value because the bridge did not have a value
-                        // for it when the bridge was mapped to the xml object. So skip the current property
-                        // and go to the next one. This avoids a null reference on `target` on the next recursive call.
+                        // This block is a safety measure in case a class-type propeprty
+                        // in the deserialized model is annotated with [WriteToPegasus],
+                        // but that property is null because its bridge equivalent was null
+                        // when mapped to the xml object. So skip the current property,
+                        // avoiding a null reference on `target` on the next recursive call.
 
-                        if (root.ToString() == "Head" || root.Parent.Value != null)
+                        if (root.Parent == null || root.Parent.Value != null)
                         {
-                            // Create the node null if the parent is valid. But
-                            // Do not create any of the null node's children. This
-                            // allows for easier creation of elements with <x:null/> inside.
+                            // Create the node if the parent is valid. But do not create its children.
+                            // Allows for easier creation of elements with <x:null/> inside.
                             root.Children.Add(new Node()
                             {
                                 Value = null,
@@ -278,8 +280,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                         continue;
                     }
-
-                    var ttype = value.GetType();
 
                     if (value.GetType().IsArray)
                     {
