@@ -3,6 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import faker from '@faker-js/faker';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { ForzaSandbox } from '@models/enums';
 import { ResetProfileOptions } from '@models/reset-profile-options';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
@@ -60,6 +61,7 @@ describe('SteelheadPlayerProfileService', () => {
     const profileId = faker.datatype.uuid();
     const templateNames = faker.datatype.string(10);
     const continueOnBreakingChanges = faker.datatype.boolean();
+    const forzaSandbox = ForzaSandbox.Test;
 
     const fakeResponse = faker.datatype.uuid();
 
@@ -71,7 +73,13 @@ describe('SteelheadPlayerProfileService', () => {
 
     it('should call service.postRequest$ with correct params', done => {
       service
-        .loadTemplateToPlayerProfile$(xuid, profileId, templateNames, continueOnBreakingChanges)
+        .loadTemplateToPlayerProfile$(
+          xuid,
+          profileId,
+          templateNames,
+          continueOnBreakingChanges,
+          forzaSandbox,
+        )
         .subscribe(response => {
           const params = new HttpParams().set(
             'continueOnBreakingChanges',

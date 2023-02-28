@@ -39,7 +39,9 @@ export class SteelheadPlayerProfileService {
     continueOnBreakingChanges: boolean = false,
     forzaSandbox: ForzaSandbox,
   ): Observable<GuidLikeString> {
-    const params = new HttpParams().append('continueOnBreakingChanges', continueOnBreakingChanges.toString()).append('forzaSandbox', forzaSandbox);
+    const params = new HttpParams()
+      .append('continueOnBreakingChanges', continueOnBreakingChanges.toString())
+      .append('forzaSandbox', forzaSandbox);
 
     return this.api.postRequest$<GuidLikeString>(
       `${this.basePath}/${xuid}/profile/${profileId}/load`,
