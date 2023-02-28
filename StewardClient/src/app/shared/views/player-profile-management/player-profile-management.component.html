@@ -7,6 +7,14 @@
           <form [formGroup]="loadFormGroup" class="sf-wrapper">
             <div class="sf-vertical">
               <mat-form-field appearance="fill">
+                <mat-label>Select Sandbox</mat-label>
+                <mat-select [formControl]="loadFormControls.forzaSandbox">
+                  <mat-option *ngFor="let sandbox of forzaSandboxEnum" [value]="sandbox">
+                    {{ sandbox }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Select Profile Template</mat-label>
                 <mat-select [formControl]="loadFormControls.template">
                   <mat-option *ngFor="let template of profileTemplates" [value]="template">
@@ -14,19 +22,9 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div class="sf-horizontal">
-                <mat-button-toggle-group [formControl]="loadFormControls.forzaSandbox">
-                  <mat-button-toggle [value]="forzaSandboxEnum.Retail"
-                    >Load to Retail Sandbox</mat-button-toggle
-                  >
-                  <mat-button-toggle [value]="forzaSandboxEnum.Test"
-                    >Load to Test Sandbox</mat-button-toggle
-                  >
-                </mat-button-toggle-group>
-                <mat-checkbox [formControl]="loadFormControls.continueOnBreakingChanges"
-                  >Continue On Breaking Changes</mat-checkbox
-                >
-              </div>
+              <mat-checkbox [formControl]="loadFormControls.continueOnBreakingChanges"
+                >Continue On Breaking Changes</mat-checkbox
+              >
               <div class="sf-horizontal">
                 <button
                   mat-raised-button

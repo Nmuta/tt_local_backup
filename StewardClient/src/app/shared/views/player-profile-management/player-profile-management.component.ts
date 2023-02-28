@@ -10,6 +10,7 @@ import { Store } from '@ngxs/store';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
+import { keys } from 'lodash';
 import { Observable, takeUntil } from 'rxjs';
 
 /** Required params for player profile management. */
@@ -63,7 +64,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   public playerConsentText: string = 'I have received player consent for this action';
 
-  public forzaSandboxEnum = ForzaSandbox;
+  public forzaSandboxEnum = keys(ForzaSandbox);
 
   public saveFormDefaults = {
     verifyAction: false,
