@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BuildersCupCalendar },
+      uuid: '88fcfa1c-96e6-4d18-bd75-5428aed9ec5c91',
+      shortText: 'Add series event windows, car restrictions, and filtering',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '69abd636-ffb4-4400-ada0-3819fff430d4',
       shortText: 'Add ability to delete Steward teams',

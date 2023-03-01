@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup
 {
     /// <summary>
-    ///     Represents the dynamic tours added and removed from Builder's Cup
+    ///     Represents the dynamic tours added and removed from Builder's Cup.
     /// </summary>
     /// <remarks>In Pegasus these are called 'ladders' not 'tours'.</remarks>
     public sealed class BuildersCupFeaturedTour
@@ -32,5 +34,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup
         ///     Gets or sets the time the Tour closes.
         /// </summary>
         public DateTime CloseTimeUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the time the Tour's Series.
+        /// </summary>
+        public IEnumerable<BuildersCupChampionshipSeries> ChampionshipSeries { get; set; }
     }
 }

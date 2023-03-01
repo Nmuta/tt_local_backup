@@ -38,10 +38,19 @@ import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
 import { BuildersCupCalendarRoutingModule } from './builders-cup-calendar.routing';
 import { BuildersCupCalendarComponent } from './builders-cup-calendar.component';
 import { SteelheadBuildersCupCalendarViewComponent } from './components/builders-cup-calendar-view/steelhead/steelhead-builders-cup-calendar-view.component';
+import { SteelheadBuildersCupSeriesCardComponent } from './components/builders-cup-series-card/steelhead/steelhead-builders-cup-series-card.component';
+import { SteelheadBuildersCupLadderModalComponent } from './components/builders-cup-ladder-modal/steelhead/steelhead-builders-cup-ladder-modal.component';
+import { BuildersCupKeyComponent } from './components/builders-cup-key/builders-cup-key.component';
 
 /** A module for Builders Cup calendar. */
 @NgModule({
-  declarations: [BuildersCupCalendarComponent, SteelheadBuildersCupCalendarViewComponent],
+  declarations: [
+    BuildersCupCalendarComponent,
+    SteelheadBuildersCupCalendarViewComponent,
+    SteelheadBuildersCupSeriesCardComponent,
+    SteelheadBuildersCupLadderModalComponent,
+    BuildersCupKeyComponent,
+  ],
   imports: [
     CommonModule,
     DataPrivacyNoticeModule,
