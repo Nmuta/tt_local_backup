@@ -162,6 +162,12 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
     this.selectedTeamChange.emit(selectedTeam);
   }
 
+  /** Logic when a team is deleted. */
+  public onTeamDeleted(): void {
+    this.onTeamSelected(null);
+    this.ngOnInit();
+  }
+
   private getStewardUsers$(): Observable<UserModel[]> {
     return this.userService.getAllStewardUsers$();
   }

@@ -12,3 +12,12 @@
     }
   }
 }
+
+@each $name, $set in $color-sets {
+  $count: list.length($set);
+  @for $i from 1 through $count {
+    .unique-event-background-color-#{$i}-of-#{$count} {
+      background-color: list.nth($set, $i);
+    }
+  }
+}
