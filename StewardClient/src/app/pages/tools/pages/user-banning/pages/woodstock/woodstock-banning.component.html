@@ -53,6 +53,21 @@
             <form [formGroup]="formGroup">
               <ban-options [formControl]="formControls.banOptions"></ban-options>
               <div class="ban-action-container">
+                <!-- <mat-checkbox
+                    class="sf-button-checkbox"
+                    #confirmBan
+                    stateManager
+                    [monitor]="banActionMonitor"
+                    monitorDisable
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
+                    clickStop
+                  >
+                </mat-checkbox> -->
+                <button mat-mini-fab color="accent">
+                  <mat-icon>lock</mat-icon>
+                  <verify-help-popover></verify-help-popover>
+                </button>
                 <button
                   mat-raised-button
                   class="sf-button"
@@ -63,13 +78,13 @@
                   monitorDisable
                   [monitor]="banActionMonitor"
                   [disabled]="!canBan()"
-                  [verifyWith]="confirmBan"
+                 
                   matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
                 >
                   Ban
                   <button-spinner [monitor]="banActionMonitor" defaultIcon="gavel"></button-spinner>
                 </button>
-                <mat-checkbox
+                <!-- <mat-checkbox
                   class="sf-button-checkbox"
                   #confirmBan
                   stateManager
@@ -80,7 +95,7 @@
                   clickStop
                 >
                 </mat-checkbox>
-                <verify-help-popover></verify-help-popover>
+                <verify-help-popover></verify-help-popover> -->
               </div>
             </form>
           </ng-container>
