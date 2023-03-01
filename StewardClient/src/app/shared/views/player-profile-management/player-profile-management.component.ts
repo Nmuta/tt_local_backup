@@ -16,6 +16,8 @@ import { Observable, takeUntil } from 'rxjs';
 /** Required params for player profile management. */
 export interface PlayerProfileManagementServiceContract {
   gameTitle: GameTitle;
+  employeeGroupId: BigNumber;
+  getUserGroupMembership$: (groupId: BigNumber, xuid: BigNumber) => Observable<boolean>;
   getPlayerProfileTemplates$: () => Observable<string[]>;
   savePlayerProfileTemplate$: (
     xuid: BigNumber,
@@ -55,6 +57,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   public hasAccessToTool: boolean = false;
 
+  public getGroupMembershipMonitor = new ActionMonitor('Get group membership');
   public getTemplatesMonitor = new ActionMonitor('Get profile templates');
   public saveTemplateMonitor = new ActionMonitor('Save profile template');
   public loadTemplateMonitor = new ActionMonitor('Load profile template');
@@ -64,7 +67,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   public playerConsentText: string = 'I have received player consent for this action';
 
-  public forzaSandboxEnum = keys(ForzaSandbox);
+  public forzaSandboxEnum: string[] = [ForzaSandbox.Retail];
 
   public saveFormDefaults = {
     verifyAction: false,
@@ -167,6 +170,14 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
       .subscribe(templates => {
         this.profileTemplates = templates;
       });
+
+    this.service.getUserGroupMembership$(this.service.employeeGroupId, this.xuid)
+    .pipe(this.getGroupMembershipMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+    .subscribe(isEmployee => {
+      if (isEmployee) {
+        this.forzaSandboxEnum.push(ForzaSandbox.Test)
+      }
+    });
   }
 
   /** Lifecycle hook. */

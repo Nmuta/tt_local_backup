@@ -4,6 +4,8 @@ import { GuidLikeString } from '@models/extended-types';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SteelheadPlayerProfileService } from '@services/api-v2/steelhead/player/profile/steelhead-player-profile.service';
 import { SteelheadProfileTemplatesService } from '@services/api-v2/steelhead/profile-templates/steelhead-profile-templates.service';
+import { SteelheadUserGroupService } from '@services/api-v2/steelhead/user-group/steelhead-user-group.service';
+import BigNumber from 'bignumber.js';
 import { PlayerProfileManagementServiceContract } from '../player-profile-management.component';
 
 /**
@@ -25,10 +27,13 @@ export class SteelheadPlayerProfileManagementComponent {
 
   constructor(
     playerProfileService: SteelheadPlayerProfileService,
+    userGroupService: SteelheadUserGroupService,
     profileTemplateService: SteelheadProfileTemplatesService,
   ) {
     this.service = {
       gameTitle: GameTitle.FM8,
+      employeeGroupId: new BigNumber(4),
+      getUserGroupMembership$: (userGroupId, xuid) => userGroupService.getUserGroupMembership$(userGroupId, xuid),
       getPlayerProfileTemplates$: () => profileTemplateService.getProfileTemplates$(),
       savePlayerProfileTemplate$: (xuid, profileId, templateName, overwriteIfExists) =>
         playerProfileService.savePlayerProfileTemplate$(
