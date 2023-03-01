@@ -1,10 +1,11 @@
-import { Component, forwardRef, Inject } from '@angular/core';
+import { Component, forwardRef, Inject, ViewChild } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { cloneDeep, first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { UgcType } from '@models/ugc-filters';
 import { GuidLikeString } from '@models/extended-types';
+import { SteelheadPlayerProfileManagementComponent } from '@views/player-profile-management/steelhead/steelhead-player-profile-management.component';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -13,6 +14,8 @@ import { GuidLikeString } from '@models/extended-types';
   styleUrls: ['./steelhead-user-details.component.scss'],
 })
 export class SteelheadUserDetailsComponent {
+  @ViewChild(SteelheadPlayerProfileManagementComponent)
+  profileManager: SteelheadPlayerProfileManagementComponent;
   public profile: SteelheadPlayerInventoryProfile;
 
   public readonly UgcType = UgcType;
@@ -51,5 +54,10 @@ export class SteelheadUserDetailsComponent {
     const tmpProfile = cloneDeep(this.profile);
     tmpProfile.externalProfileId = newExternalProfileId;
     this.profile = tmpProfile;
+  }
+
+  /** Called when player flags are changed. */
+  public flagsUpdated(): void {
+    this.profileManager.checkUserGroupMembership();
   }
 }

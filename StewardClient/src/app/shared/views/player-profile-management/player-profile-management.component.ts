@@ -10,8 +10,7 @@ import { Store } from '@ngxs/store';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
-import { keys } from 'lodash';
-import { Observable, takeUntil } from 'rxjs';
+import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 /** Required params for player profile management. */
 export interface PlayerProfileManagementServiceContract {
@@ -46,14 +45,16 @@ export interface PlayerProfileManagementServiceContract {
   styleUrls: ['./player-profile-management.component.scss'],
 })
 export class PlayerProfileManagementComponent extends BaseComponent implements OnInit, OnChanges {
-  /** REVIEW-COMMENT: Player xuid. */
+  /** Player xuid. */
   @Input() public xuid: BigNumber;
-  /** REVIEW-COMMENT: External profile id. */
+  /** External profile id. */
   @Input() public externalProfileId: GuidLikeString;
-  /** REVIEW-COMMENT: The player profile management service. */
+  /** The player profile management service. */
   @Input() public service: PlayerProfileManagementServiceContract;
-  /** REVIEW-COMMENT: Output when profile id is updated. */
+  /**  Output when profile id is updated. */
   @Output() public externalProfileIdUpdated = new EventEmitter<GuidLikeString>();
+
+  private readonly getGroupMembership$ = new Subject<void>();
 
   public hasAccessToTool: boolean = false;
 
@@ -67,7 +68,9 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   public playerConsentText: string = 'I have received player consent for this action';
 
-  public forzaSandboxEnum: string[] = [ForzaSandbox.Retail];
+  public forzaSandboxEnumDefault: string[] = [ForzaSandbox.Retail];
+  public forzaSandboxEnumEmployee: string[] = [ForzaSandbox.Retail, ForzaSandbox.Test];
+  public forzaSandboxEnum: string[] = this.forzaSandboxEnumDefault;
 
   public saveFormDefaults = {
     verifyAction: false,
@@ -171,13 +174,28 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
         this.profileTemplates = templates;
       });
 
-    this.service.getUserGroupMembership$(this.service.employeeGroupId, this.xuid)
-    .pipe(this.getGroupMembershipMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    .subscribe(isEmployee => {
-      if (isEmployee) {
-        this.forzaSandboxEnum.push(ForzaSandbox.Test)
-      }
-    });
+    this.getGroupMembership$
+      .pipe(
+        tap(() => (this.getGroupMembershipMonitor = this.getGroupMembershipMonitor.repeat())),
+        switchMap(() => {
+          return this.service.getUserGroupMembership$(this.service.employeeGroupId, this.xuid).pipe(
+            this.getGroupMembershipMonitor.monitorSingleFire(),
+            catchError(() => {
+              return EMPTY;
+            }),
+          );
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(isEmployee => {
+        if (isEmployee) {
+          this.forzaSandboxEnum = this.forzaSandboxEnumEmployee;
+        } else {
+          this.forzaSandboxEnum = this.forzaSandboxEnumDefault;
+        }
+      });
+
+    this.getGroupMembership$.next();
   }
 
   /** Lifecycle hook. */
@@ -185,6 +203,11 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     if (!this.service) {
       throw new Error('No service contract provided for PlayerProfileManagementComponent');
     }
+  }
+
+  /** Reverifies user group membership. */
+  public checkUserGroupMembership(): void {
+    this.getGroupMembership$.next();
   }
 
   /** Saves the profile to the template. */
