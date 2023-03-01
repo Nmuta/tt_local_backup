@@ -4,36 +4,60 @@
       <ng-template matTabLabel>Load Template To Profile</ng-template>
       <ng-template matTabContent>
         <div class="tab-container load-template-container" *waitForMonitor="getTemplatesMonitor">
-          <form [formGroup]="loadFormGroup">
-            <mat-form-field appearance="fill">
-              <mat-label>Select Profile Template</mat-label>
-              <mat-select [formControl]="loadFormControls.template">
-                <mat-option *ngFor="let template of profileTemplates" [value]="template">
-                  {{ template }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-checkbox [formControl]="loadFormControls.continueOnBreakingChanges"
-              >Continue On Breaking Changes</mat-checkbox
-            >
-            <button
-              mat-raised-button
-              color="primary"
-              [disabled]="!loadFormGroup.valid"
-              (click)="loadTemplateToProfile()"
-              clickStop
-              [monitor]="loadTemplateMonitor"
-              stateManager
-              monitorDisable
-              monitorWarnSnackbar
-              monitorCompleteSnackbar
-            >
-              Load Template
-              <button-spinner [monitor]="loadTemplateMonitor" defaultIcon="upload"></button-spinner>
-            </button>
-            <mat-checkbox class="inline" [formControl]="loadFormControls.verifyAction">{{
-              playerConsentText
-            }}</mat-checkbox>
+          <form [formGroup]="loadFormGroup" class="sf-wrapper">
+            <div class="sf-vertical">
+              <div>
+                <mat-form-field appearance="fill">
+                  <mat-label>Select Sandbox</mat-label>
+                  <mat-select [formControl]="loadFormControls.forzaSandbox">
+                    <mat-option *ngFor="let sandbox of forzaSandboxEnum" [value]="sandbox">
+                      {{ sandbox }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <help-popover-icon cardTitle="Where's the test sandbox?">
+                  <span
+                    >To load to a profile's test sandbox, the user must be a member of the Turn10
+                    Employee group. You can assign this group with the player flags tool in the User
+                    Details tab.</span
+                  >
+                </help-popover-icon>
+              </div>
+              <mat-form-field appearance="fill">
+                <mat-label>Select Profile Template</mat-label>
+                <mat-select [formControl]="loadFormControls.template">
+                  <mat-option *ngFor="let template of profileTemplates" [value]="template">
+                    {{ template }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-checkbox [formControl]="loadFormControls.continueOnBreakingChanges"
+                >Continue On Breaking Changes</mat-checkbox
+              >
+              <div class="sf-horizontal">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  [disabled]="!loadFormGroup.valid"
+                  (click)="loadTemplateToProfile()"
+                  clickStop
+                  [monitor]="loadTemplateMonitor"
+                  stateManager
+                  monitorDisable
+                  monitorWarnSnackbar
+                  monitorCompleteSnackbar
+                >
+                  Load Template
+                  <button-spinner
+                    [monitor]="loadTemplateMonitor"
+                    defaultIcon="upload"
+                  ></button-spinner>
+                </button>
+                <mat-checkbox class="inline" [formControl]="loadFormControls.verifyAction">{{
+                  playerConsentText
+                }}</mat-checkbox>
+              </div>
+            </div>
           </form>
         </div>
       </ng-template>
@@ -99,8 +123,8 @@
             <mat-checkbox [formControl]="resetFormControls.resetUserSafetyRatingData"
               >Reset User Safety Rating Data</mat-checkbox
             >
-            <mat-checkbox [formControl]="resetFormControls.softDeleteInventory"
-              >Soft Delete Inventory</mat-checkbox
+            <mat-checkbox [formControl]="resetFormControls.resetUgcProfileData"
+              >Reset UGC Profile Data</mat-checkbox
             >
             <button
               mat-raised-button
