@@ -73,11 +73,17 @@
           <inline-spinner [monitor]="ugcLiveries.getMonitor | renderGuard"
             >({{ ugcLiveries?.ugcContent?.length }})</inline-spinner
           >
+          <inline-spinner [monitor]="ugcLayerGroup.getMonitor | renderGuard"
+            >({{ ugcLayerGroup?.ugcContent?.length }})</inline-spinner
+          >
           <inline-spinner [monitor]="ugcPhotos.getMonitor | renderGuard"
             >({{ ugcPhotos?.ugcContent?.length }})</inline-spinner
           >
           <inline-spinner [monitor]="ugcTunes.getMonitor | renderGuard"
             >({{ ugcTunes?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="ugcEvents.getMonitor | renderGuard"
+            >({{ ugcEvents?.ugcContent?.length }})</inline-spinner
           >
           <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner>
         </ng-template>
@@ -93,6 +99,20 @@
               #ugcLiveries
               [identity]="identity"
               [contentType]="UgcType.Livery"
+              [usingIdentities]="true"
+            ></sunrise-player-ugc>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Layer Groups
+              <inline-spinner [monitor]="ugcLayerGroup.getMonitor | renderGuard"
+                >({{ ugcLayerGroup?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <sunrise-player-ugc
+              #ugcLayerGroup
+              [identity]="identity"
+              [contentType]="UgcType.LayerGroup"
               [usingIdentities]="true"
             ></sunrise-player-ugc>
           </mat-tab>
@@ -131,12 +151,12 @@
                 >({{ ugcEvents?.ugcContent?.length }})</inline-spinner
               >
             </ng-template>
-            <woodstock-player-ugc
+            <sunrise-player-ugc
               #ugcEvents
               [identity]="identity"
               [contentType]="UgcType.EventBlueprint"
               [usingIdentities]="true"
-            ></woodstock-player-ugc>
+            ></sunrise-player-ugc>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
