@@ -93,13 +93,16 @@ export class UgcDetailsComponent extends BaseComponent implements OnInit {
           return; // do not redirect when there is a missing ID (this breaks things)
         }
 
-        this.steelheadRouterLink = ['.', 'steelhead', id];
-        this.woodstockRouterLink = ['.', 'woodstock', id];
-        this.sunriseRouterLink = ['.', 'sunrise', id];
+        // Remove whitespace from UGC share codes
+        const cleanedId = id.replace(/\s/g, '');
 
-        this.sharedLookupService.doLookup(id);
+        this.steelheadRouterLink = ['.', 'steelhead', cleanedId];
+        this.woodstockRouterLink = ['.', 'woodstock', cleanedId];
+        this.sunriseRouterLink = ['.', 'sunrise', cleanedId];
 
-        this.router.navigate([id], {
+        this.sharedLookupService.doLookup(cleanedId);
+
+        this.router.navigate([cleanedId], {
           relativeTo: this.route.children[0],
           skipLocationChange: true,
         });

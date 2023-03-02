@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'e498e3b6-b949-11ed-afa1-0242ac120002',
+      shortText: 'Removing whitespace from strings in search box on UGC Details',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '91cdf725-4d0d-45cc-9d26-520e86e2a113',
       shortText: 'Rename mat tree node functions to remove boilerplate todo prefix',
