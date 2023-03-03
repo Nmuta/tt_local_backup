@@ -1,1 +1,8 @@
-<span>{{ user?.emailAddress || objectId }}</span>
+<span [ngSwitch]="displayOption">
+  <span *ngSwitchCase="'name'">
+    {{ user?.name || objectId }}
+  </span>
+  <span *ngSwitchDefault>
+    {{ user?.emailAddress || objectId }}
+  </span>
+</span>

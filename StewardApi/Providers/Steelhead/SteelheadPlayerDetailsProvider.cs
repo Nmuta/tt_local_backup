@@ -378,23 +378,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
             }
         }
-
-        /// <inheritdoc />
-        public async Task<RacersCupSchedule> GetCmsRacersCupScheduleForUserAsync(ulong xuid, DateTime startTimeUtc, int daysForward, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                var result = await this.steelheadService.GetCmsRacersCupScheduleForUserAsync(xuid, startTimeUtc, daysForward, Array.Empty<ForzaEventSessionType>(), endpoint)
-                    .ConfigureAwait(false);
-
-                return this.mapper.Map<RacersCupSchedule>(result.scheduleData);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No racer schedule data found for XUID: {xuid}.", ex);
-            }
-        }
     }
 }

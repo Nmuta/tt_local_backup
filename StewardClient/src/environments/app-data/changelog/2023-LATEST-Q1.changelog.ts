@@ -17,6 +17,49 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'e498e3b6-b949-11ed-afa1-0242ac120002',
+      shortText: 'Remove whitespace from strings in search box on UGC Details',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '91cdf725-4d0d-45cc-9d26-520e86e2a113',
+      shortText: 'Rename mat tree node functions to remove boilerplate todo prefix',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '6ca4b560-726c-4d07-b313-01946c666460',
+      shortText: 'Add sandbox selection to profile load tool',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '2b2a95a2-d759-40f9-9a0d-ec9509d4b20b',
+      shortText: 'Update to latest Steelhead Forzaclient nuget',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BuildersCupCalendar },
+      uuid: '88fcfa1c-96e6-4d18-bd75-5428aed9ec5c91',
+      shortText: 'Add series event windows, car restrictions, and filtering',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '69abd636-ffb4-4400-ada0-3819fff430d4',
+      shortText: 'Add ability to delete Steward teams',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'c74997cf-d6d3-40a6-bde6-8c0e5f710387',
+      shortText: 'Add new admin tool to manage Steward teams',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserBanning,
+      },
+      uuid: '7eb2d58b-4dca-4811-a4b4-62eed1894be9',
+      shortText: 'Update list of ban reasons',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '28348e1d-a311-4f49-be39-9e7663898d5a',
       shortText: 'Update contact us dev list',

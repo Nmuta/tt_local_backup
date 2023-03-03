@@ -60,8 +60,13 @@ describe('BanOptionsComponent', () => {
 
   describe('Form Validation Contract', () => {
     it('(completed form) should be marked valid', () => {
-      component.formControls.banReason.setValue('Hello, world!');
+      component.formControls.banReason.setValue('Testing');
       expect(component.validate(null)).toBeFalsy();
+    });
+
+    it('(completed form) should be marked invalid', () => {
+      component.formControls.banReason.setValue('Hello, world!');
+      expect(component.validate(null)).toBeTruthy();
     });
 
     it('(empty ban reason) should be marked invalid', () => {
