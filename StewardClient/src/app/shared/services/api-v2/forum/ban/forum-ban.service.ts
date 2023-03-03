@@ -5,12 +5,12 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
-/** The /v2/title/multi/players/forumBan endpoints. */
+/** The /v2/title/forum/players/ban endpoints. */
 @Injectable({
   providedIn: 'root',
 })
 export class ForumBanService {
-  public readonly basePath: string = 'title/multi/players/forumBan';
+  public readonly basePath: string = 'title/forum/players/ban';
   constructor(private readonly api: ApiV2Service) {}
 
   /** Bans players by a list of XUIDs. */

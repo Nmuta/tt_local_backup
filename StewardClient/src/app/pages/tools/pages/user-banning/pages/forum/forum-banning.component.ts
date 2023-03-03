@@ -6,12 +6,13 @@ import { AugmentedCompositeIdentity } from '@views/player-selection/player-selec
 import { chain, Dictionary, filter, keyBy } from 'lodash';
 import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { ForumBanService } from '@services/api-v2/all/players/forum-ban.service';
 import { ForumBanRequest } from '@models/forum-ban-request.model';
 import { ForumBanSummary } from '@models/forum-ban-summary.model';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { DateTime } from 'luxon';
+import { ForumBanService } from '@services/api-v2/forum/ban/forum-ban.service';
 
 type BanReasonGroup = { group: string; values: string[] };
 type StandardBanReasons = BanReasonGroup[];
@@ -49,7 +50,7 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
 
   public formControls = {
     banReason: new FormControl('', [Validators.required]),
-    issuedDate: new FormControl(null, [Validators.required]),
+    issuedDate: new FormControl(DateTime.utc().startOf('day'), [Validators.required]),
   };
 
   public formGroup = new FormGroup(this.formControls);

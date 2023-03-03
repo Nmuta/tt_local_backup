@@ -1,4 +1,4 @@
-<mat-accordion *ngIf="!isLoading && !loadError; else failstate">
+<mat-accordion *waitForMonitor="getMonitor">
   <mat-expansion-panel *ngFor="let entry of banList">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -20,8 +20,3 @@
     </ul>
   </mat-expansion-panel>
 </mat-accordion>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
-</ng-template>

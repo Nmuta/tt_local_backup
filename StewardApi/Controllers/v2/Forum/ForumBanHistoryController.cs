@@ -10,12 +10,12 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Forum
 {
     /// <summary>
     ///     Forum ban history controller.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/multi/player/{xuid}/forumBanHistory")]
+    [Route("api/v{version:apiVersion}/title/forum/player/{xuid}/banHistory")]
     [LogTagTitle(TitleLogTags.TitleAgnostic)]
     [ApiController]
     [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]

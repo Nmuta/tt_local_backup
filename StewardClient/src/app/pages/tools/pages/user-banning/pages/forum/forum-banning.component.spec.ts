@@ -1,11 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ForumBanningComponent } from './forum-banning.component';
-import { createMockForumBanService } from '@services/api-v2/all/players/forum-ban.service.mock';
-import { ForumBanService } from '@services/api-v2/all/players/forum-ban.service';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { IdentityResultAlpha } from '@models/identity-query.model';
+import { ForumBanService } from '@services/api-v2/forum/ban/forum-ban.service';
+import { createMockForumBanService } from '@services/api-v2/forum/ban/forum-ban.service.mock';
 
 describe('ForumBanningComponent', () => {
   let component: ForumBanningComponent;

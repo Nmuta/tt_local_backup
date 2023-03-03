@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,12 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Players
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Forum
 {
     /// <summary>
     ///     Forum ban controller.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/multi/players/forumBan")]
+    [Route("api/v{version:apiVersion}/title/forum/players/ban")]
     [LogTagTitle(TitleLogTags.TitleAgnostic)]
     [ApiController]
     [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
@@ -49,6 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Players
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Banning)]
+        [AutoActionLogging(TitleCodeName.None, StewardAction.Add, StewardSubject.Ban)]
         [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> ForumBanPlayers(
             [FromBody] IList<ForumBanParametersInput> banInput)

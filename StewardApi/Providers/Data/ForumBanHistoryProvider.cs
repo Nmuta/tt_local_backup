@@ -21,7 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         };
 
         private readonly string forumDefaultEndpoint = string.Empty;
-        private readonly string forumDefaultTitle = "Forum";
         private readonly IKustoStreamingLogger kustoStreamingLogger;
         private readonly IKustoProvider kustoProvider;
         private readonly string kustoDatabase;
@@ -55,11 +54,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             var banHistory = new LiveOpsBanHistory()
             {
                 Xuid = (long)xuid,
-                Title = this.forumDefaultTitle,
+                Title = TitleConstants.Forum,
                 RequesterObjectId = requesterObjectId,
                 Reason = banParameters.Reason,
                 StartTimeUtc = banParameters.IssuedDateUtc,
-                FeatureArea = this.forumDefaultTitle,
+                FeatureArea = TitleConstants.Forum,
                 BanParameters = "N/A",
                 Endpoint = this.forumDefaultEndpoint
             };
@@ -80,7 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         {
             try
             {
-                var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, this.forumDefaultTitle, this.forumDefaultEndpoint)
+                var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, TitleConstants.Forum, this.forumDefaultEndpoint)
                     .ConfigureAwait(false);
                 var results = banHistoryResult.ToList();
 
@@ -107,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 foreach (var xuid in xuids)
                 {
-                    var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, "Forum", this.forumDefaultEndpoint).ConfigureAwait(false);
+                    var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, TitleConstants.Forum, this.forumDefaultEndpoint).ConfigureAwait(false);
                     banSummaryResults.Add(new BanSummary()
                     {
                         BanCount = banHistoryResult.Count,
