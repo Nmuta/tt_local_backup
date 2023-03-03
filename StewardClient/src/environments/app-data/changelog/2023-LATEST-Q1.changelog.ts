@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'e498e3b6-b949-11ed-afa1-0242ac120002',
-      shortText: 'Removing whitespace from strings in search box on UGC Details',
+      shortText: 'Remove whitespace from strings in search box on UGC Details',
     },
     {
       tag: ChangelogTag.Internal,
