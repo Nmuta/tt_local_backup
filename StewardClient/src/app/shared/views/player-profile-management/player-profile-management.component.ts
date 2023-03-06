@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
-import { GameTitle } from '@models/enums';
+import { ForzaSandbox, GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { ResetProfileOptions } from '@models/reset-profile-options';
 import { UserModel } from '@models/user.model';
@@ -10,11 +10,13 @@ import { Store } from '@ngxs/store';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
-import { Observable, takeUntil } from 'rxjs';
+import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 /** Required params for player profile management. */
 export interface PlayerProfileManagementServiceContract {
   gameTitle: GameTitle;
+  employeeGroupId: BigNumber;
+  getUserGroupMembership$: (groupId: BigNumber, xuid: BigNumber) => Observable<boolean>;
   getPlayerProfileTemplates$: () => Observable<string[]>;
   savePlayerProfileTemplate$: (
     xuid: BigNumber,
@@ -27,6 +29,7 @@ export interface PlayerProfileManagementServiceContract {
     profileId: GuidLikeString,
     templateName: string,
     continueOnBreakingChanges: boolean,
+    forzaSandbox: ForzaSandbox,
   ) => Observable<GuidLikeString>;
   resetPlayerProfile$: (
     xuid: BigNumber,
@@ -42,17 +45,20 @@ export interface PlayerProfileManagementServiceContract {
   styleUrls: ['./player-profile-management.component.scss'],
 })
 export class PlayerProfileManagementComponent extends BaseComponent implements OnInit, OnChanges {
-  /** REVIEW-COMMENT: Player xuid. */
+  /** Player xuid. */
   @Input() public xuid: BigNumber;
-  /** REVIEW-COMMENT: External profile id. */
+  /** External profile id. */
   @Input() public externalProfileId: GuidLikeString;
-  /** REVIEW-COMMENT: The player profile management service. */
+  /** The player profile management service. */
   @Input() public service: PlayerProfileManagementServiceContract;
-  /** REVIEW-COMMENT: Output when profile id is updated. */
+  /**  Output when profile id is updated. */
   @Output() public externalProfileIdUpdated = new EventEmitter<GuidLikeString>();
+
+  private readonly getGroupMembership$ = new Subject<void>();
 
   public hasAccessToTool: boolean = false;
 
+  public getGroupMembershipMonitor = new ActionMonitor('Get group membership');
   public getTemplatesMonitor = new ActionMonitor('Get profile templates');
   public saveTemplateMonitor = new ActionMonitor('Save profile template');
   public loadTemplateMonitor = new ActionMonitor('Load profile template');
@@ -61,6 +67,10 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
   public profileTemplates: string[] = [];
 
   public playerConsentText: string = 'I have received player consent for this action';
+
+  public forzaSandboxEnumDefault: string[] = [ForzaSandbox.Retail];
+  public forzaSandboxEnumEmployee: string[] = [ForzaSandbox.Retail, ForzaSandbox.Test];
+  public forzaSandboxEnum: string[] = this.forzaSandboxEnumDefault;
 
   public saveFormDefaults = {
     verifyAction: false,
@@ -81,6 +91,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     verifyAction: false,
     template: '',
     continueOnBreakingChanges: false,
+    forzaSandbox: ForzaSandbox.Retail,
   };
   public loadFormControls = {
     verifyAction: new FormControl(this.loadFormDefaults.verifyAction, Validators.requiredTrue),
@@ -89,6 +100,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
       this.loadFormDefaults.continueOnBreakingChanges,
       Validators.required,
     ),
+    forzaSandbox: new FormControl(this.loadFormDefaults.forzaSandbox, Validators.required),
   };
   public loadFormGroup = new FormGroup(this.loadFormControls);
 
@@ -101,7 +113,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     resetTrueSkillData: false,
     resetUserInventoryData: false,
     resetUserSafetyRatingData: false,
-    softDeleteInventory: false,
+    resetUgcProfileData: false,
   };
   public resetFormControls = {
     verifyAction: new FormControl(this.resetFormDefaults.verifyAction, Validators.requiredTrue),
@@ -130,8 +142,8 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
       this.resetFormDefaults.resetUserSafetyRatingData,
       Validators.required,
     ),
-    softDeleteInventory: new FormControl(
-      this.resetFormDefaults.softDeleteInventory,
+    resetUgcProfileData: new FormControl(
+      this.resetFormDefaults.resetUgcProfileData,
       Validators.required,
     ),
   };
@@ -161,6 +173,29 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
       .subscribe(templates => {
         this.profileTemplates = templates;
       });
+
+    this.getGroupMembership$
+      .pipe(
+        tap(() => (this.getGroupMembershipMonitor = this.getGroupMembershipMonitor.repeat())),
+        switchMap(() => {
+          return this.service.getUserGroupMembership$(this.service.employeeGroupId, this.xuid).pipe(
+            this.getGroupMembershipMonitor.monitorSingleFire(),
+            catchError(() => {
+              return EMPTY;
+            }),
+          );
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(isEmployee => {
+        if (isEmployee) {
+          this.forzaSandboxEnum = this.forzaSandboxEnumEmployee;
+        } else {
+          this.forzaSandboxEnum = this.forzaSandboxEnumDefault;
+        }
+      });
+
+    this.getGroupMembership$.next();
   }
 
   /** Lifecycle hook. */
@@ -168,6 +203,11 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     if (!this.service) {
       throw new Error('No service contract provided for PlayerProfileManagementComponent');
     }
+  }
+
+  /** Reverifies user group membership. */
+  public checkUserGroupMembership(): void {
+    this.getGroupMembership$.next();
   }
 
   /** Saves the profile to the template. */
@@ -203,6 +243,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
         this.externalProfileId,
         this.loadFormControls.template.value,
         this.loadFormControls.continueOnBreakingChanges.value,
+        this.loadFormControls.forzaSandbox.value,
       )
       .pipe(this.loadTemplateMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(updatedProfileId => {
@@ -227,7 +268,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
         resetTrueSkillData: this.resetFormControls.resetTrueSkillData.value,
         resetUserInventoryData: this.resetFormControls.resetUserInventoryData.value,
         resetUserSafetyRatingData: this.resetFormControls.resetUserSafetyRatingData.value,
-        softDeleteInventory: this.resetFormControls.softDeleteInventory.value,
+        resetUgcProfileData: this.resetFormControls.resetUgcProfileData.value,
       } as ResetProfileOptions)
       .pipe(this.resetTemplateMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(updatedProfileId => {
@@ -245,6 +286,6 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     this.resetFormControls.resetTrueSkillData.setValue(true);
     this.resetFormControls.resetUserInventoryData.setValue(true);
     this.resetFormControls.resetUserSafetyRatingData.setValue(true);
-    this.resetFormControls.softDeleteInventory.setValue(true);
+    this.resetFormControls.resetUgcProfileData.setValue(true);
   }
 }

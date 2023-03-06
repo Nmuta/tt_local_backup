@@ -168,6 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Gets all Steward teams.
         /// </summary>
         [HttpGet("teams")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(IDictionary<string, Team>))]
         public async Task<IActionResult> GetTeamsAsync(string userId)
         {
@@ -225,6 +226,36 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             await this.stewardUserProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
             return await this.GetTeamAsync(userId).ConfigureAwait(true);
+        }
+
+        /// <summary>
+        ///     Deletes user team.
+        /// </summary>
+        [HttpDelete("{userId}/team")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
+        [AutoActionLogging(TitleCodeName.None, StewardAction.Delete, StewardSubject.UserTeam)]
+        [Authorize(Policy = UserAttribute.AdminFeature)]
+        public async Task<IActionResult> DeleteTeamAsync(string userId)
+        {
+            var user = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
+            if (user == null)
+            {
+                throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {userId})");
+            }
+
+            var mappedUser = this.mapper.SafeMap<StewardUser>(user);
+            if (mappedUser.Team == null)
+            {
+                throw new InvalidArgumentsStewardException($"Steward user does not have a team. (userId: {userId})");
+            }
+
+            mappedUser.Team = null;
+            await this.stewardUserProvider.UpdateStewardUserAsync(mappedUser).ConfigureAwait(true);
+
+            return this.Ok();
         }
     }
 }

@@ -9,10 +9,26 @@
 
   <div class="steward-layout-pane steward-layout-fill reference-inventory">
     <mat-card class="steward-layout-sticky-scroll">
-      <mat-card-header class="sf-header">
+      <mat-card-header class="sf-header sf-align-center">
         <mat-card-title>Manage Team</mat-card-title>
         <mat-card-subtitle>Add and remove users within as team</mat-card-subtitle>
         <div class="sf-spacer"></div>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="deleteTeam()"
+          stateManager
+          [verifyWith]="verifyDelete"
+          [monitor]="deleteTeamMonitor"
+          monitorDisable
+        >
+          Delete Team
+          <button-spinner [monitor]="deleteTeamMonitor" defaultIcon="delete"></button-spinner>
+        </button>
+        <mat-checkbox class="sf-verify-checkbox" [disabled]="!selectedTeam" #verifyDelete
+          >Verify</mat-checkbox
+        >
+
         <button
           mat-raised-button
           color="primary"
@@ -121,14 +137,14 @@
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Name</th>
               <td mat-cell *matCellDef="let member">
-                {{ member.name }}
+                {{ member?.name ?? 'Unknown' }}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef>Id</th>
               <td mat-cell *matCellDef="let member">
-                {{ member.objectId }}
+                {{ member?.objectId ?? 'Unknown' }}
               </td>
             </ng-container>
 

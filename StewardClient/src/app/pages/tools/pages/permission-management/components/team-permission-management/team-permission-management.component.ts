@@ -11,6 +11,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep, find } from 'lodash';
 import { map, Observable, startWith, takeUntil } from 'rxjs';
 import { StewardTeam } from '../../permission-management.models';
+import { SelectTeamFromListComponent } from '../select-team-from-list/select-team-from-list.component';
 
 interface PendingTeamChanges {
   originalMemberList: UserModel[];
@@ -28,6 +29,7 @@ export class TeamPermissionManagementComponent
   implements OnInit, AfterViewInit
 {
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(SelectTeamFromListComponent) sidebarComponent: SelectTeamFromListComponent;
 
   public selectedTeam: StewardTeam;
   public allUsers: UserModel[];
@@ -36,6 +38,7 @@ export class TeamPermissionManagementComponent
   public getUsersMonitor = new ActionMonitor('GET Steward users');
   public getTeamMonitor = new ActionMonitor('GET Steward team');
   public saveTeamMonitor = new ActionMonitor('POST save team changes');
+  public deleteTeamMonitor = new ActionMonitor('DELETE team');
   public formControls = {
     name: new FormControl('', Validators.required),
     filterUser: new FormControl(''),
@@ -134,6 +137,19 @@ export class TeamPermissionManagementComponent
         // Reset team members and tool initialization
         this.selectedTeam.members = updatedTeam.members;
         this.selectedTeamChange(this.selectedTeam);
+      });
+  }
+
+  /** Deletes user team. */
+  public deleteTeam(): void {
+    this.deleteTeamMonitor = this.deleteTeamMonitor.repeat();
+    this.v2UserService
+      .deleteStewardTeam$(this.selectedTeam.teamLead.objectId)
+      .pipe(this.deleteTeamMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        // Reload sidebar lists
+        this.sidebarComponent.onTeamDeleted();
+        this.selectedTeam = undefined;
       });
   }
 
