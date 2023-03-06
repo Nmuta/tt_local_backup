@@ -36,6 +36,9 @@ describe('CmsOverrideComponent', () => {
     setUserCmsOverride$: () => {
       return of();
     },
+    deleteUserCmsOverride$: () => {
+      return of();
+    },
   };
 
   beforeEach(async () => {

@@ -25,6 +25,8 @@ export class WoodstockCmsOverrideComponent {
       getUserCmsOverride$: xuid => woodstockPlayerCmsOverrideService.getCmsOverrideByXuid$(xuid),
       setUserCmsOverride$: (xuid: BigNumber, cmsOverride: PlayerCmsOverride) =>
         woodstockPlayerCmsOverrideService.setCmsOverrideByXuid$(xuid, cmsOverride),
+      deleteUserCmsOverride$: (xuid: BigNumber) =>
+        woodstockPlayerCmsOverrideService.deleteCmsOverrideByXuid$(xuid),
     };
   }
 }
