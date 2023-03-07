@@ -81,3 +81,8 @@ export function getAuctionDetailsRoute(gameTitle: GameTitle, auctionId: string) 
 export function getPlayFabRoute(gameTitle: GameTitle) {
   return ['/app/tools/playfab/', gameTitle];
 }
+
+/** Make user details route. gameTitle is string to accommodate the General tab. */
+export function getUserDetailsRoute(gameTitle: string) {
+  return ['/app/tools/user-details/', gameTitle];
+}

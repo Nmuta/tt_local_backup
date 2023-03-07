@@ -7,3 +7,7 @@
 .mat-checkbox {
   margin-left: $gap-small;
 }
+
+.warn {
+  color: app-color-default($app-warn);
+}

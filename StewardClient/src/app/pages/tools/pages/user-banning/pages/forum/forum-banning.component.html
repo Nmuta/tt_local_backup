@@ -48,6 +48,7 @@
         <mat-card-subtitle>Forum</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
+        <span class="warn"> Forum Banning through Steward is not doing any actual banning. </span>
         <ng-container *waitForMonitor="banActionMonitor">
           <form [formGroup]="formGroup" class="sf-wrapper">
             <div class="sf-vertical">
@@ -76,7 +77,7 @@
                 >
               </mat-form-field>
               <div>
-                <mat-form-field appearance="fill" class="sf-default-hint">
+                <mat-form-field appearance="fill">
                   <mat-label>Issued Date (mm/dd/yyyy)</mat-label>
                   <input
                     matInput
@@ -85,6 +86,7 @@
                   />
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
+                  <mat-hint>The date the ban was given to the player</mat-hint>
                 </mat-form-field>
               </div>
               <div>

@@ -38,6 +38,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { ForumBanningComponent } from './pages/forum/forum-banning.component';
 import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
+import { MatIconModule } from '@angular/material/icon';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -84,6 +85,7 @@ import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-histor
     MonitorActionModule,
     PermissionsModule,
     ForumBanHistoryModule,
+    MatIconModule,
   ],
 })
 export class UserBanningModule {}
