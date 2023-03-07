@@ -64,27 +64,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Gets the user's profile notes.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
+        //[SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetHasPlayedRecordAsync(
             ulong xuid,
             [FromQuery] string externalProfileId)
         {
-            externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
+            //externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
             //xuid.IsValidXuid();
 
-            if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
-            }
+            //if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
+            //{
+            //    throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
+            //}
 
             try
             {
-                var response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
-                var result = this.mapper.Map<IList<HasPlayedRecord>>(response.records);
+                var response = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
+                //var result = this.mapper.Map<IList<HasPlayedRecord>>(response.records);
 
-                return this.Ok(result);
+                return this.Ok(response.titlesPlayed);
             }
             catch (Exception ex)
             {
@@ -110,43 +110,45 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromQuery] string externalProfileId, [FromBody] string[] gameTitles)
         {
             //xuid.IsValidXuid();
-            externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
-            gameTitles.ShouldNotBeNull(nameof(gameTitles));
+            //externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
+            //gameTitles.ShouldNotBeNull(nameof(gameTitles));
 
-            if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
-            }
+            //if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
+            //{
+            //    throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
+            //}
 
-            var gameTitleIds = new List<int>();
-            var unparsedGameTitles = new StringBuilder();
+            //var gameTitleIds = new List<int>();
+            //var unparsedGameTitles = new StringBuilder();
 
-            foreach (var gameTitle in gameTitles)
-            {
-                if (!Enum.TryParse(typeof(Turn10.UGC.Contracts.GameTitle), gameTitle, true, out var gameTitleEnum))
-                {
-                    unparsedGameTitles.Append(gameTitle);
-                }
-                else
-                {
-                    gameTitleIds.Add((int)gameTitleEnum);
-                }
-            }
+            //foreach (var gameTitle in gameTitles)
+            //{
+            //    if (!Enum.TryParse(typeof(Turn10.UGC.Contracts.GameTitle), gameTitle, true, out var gameTitleEnum))
+            //    {
+            //        unparsedGameTitles.Append(gameTitle);
+            //    }
+            //    else
+            //    {
+            //        gameTitleIds.Add((int)gameTitleEnum);
+            //    }
+            //}
 
-            if (unparsedGameTitles.Length > 0)
-            {
-                throw new InvalidArgumentsStewardException($"Game titles: {unparsedGameTitles} were not found.");
-            }
+            //if (unparsedGameTitles.Length > 0)
+            //{
+            //    throw new InvalidArgumentsStewardException($"Game titles: {unparsedGameTitles} were not found.");
+            //}
 
-            try
-            {
-                await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, gameTitleIds.ToArray())
-                    .ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to send loyalty rewards. (XUID: {xuid})", ex);
-            }
+            //try
+            //{
+            //    await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, gameTitleIds.ToArray())
+            //        .ConfigureAwait(true);
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new UnknownFailureStewardException($"Failed to send loyalty rewards. (XUID: {xuid})", ex);
+            //}
+
+            await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, Forza.WebServices.FM8.Generated.ForzaLoyaltyRewardsSupportedTitles.ForzaHorizon2).ConfigureAwait(true);
 
             return this.Ok();
         }
