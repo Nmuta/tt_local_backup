@@ -17,6 +17,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '947b953a-d168-432b-a743-9e449ba30441',
+      shortText: 'Searching now includes both featured and non-featured UGC content',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '5ac93e91-e6c3-46fa-a0e7-117fc6720930',
+      shortText: "Add ability to remove a player's cms override",
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'e498e3b6-b949-11ed-afa1-0242ac120002',
       shortText: 'Remove whitespace from strings in search box on UGC Details',

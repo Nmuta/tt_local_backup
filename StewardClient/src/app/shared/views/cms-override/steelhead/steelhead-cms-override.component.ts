@@ -25,6 +25,8 @@ export class SteelheadCmsOverrideComponent {
       getUserCmsOverride$: xuid => steelheadPlayerCmsOverrideService.getCmsOverrideByXuid$(xuid),
       setUserCmsOverride$: (xuid: BigNumber, cmsOverride: PlayerCmsOverride) =>
         steelheadPlayerCmsOverrideService.setCmsOverrideByXuid$(xuid, cmsOverride),
+      deleteUserCmsOverride$: (xuid: BigNumber) =>
+        steelheadPlayerCmsOverrideService.deleteCmsOverrideByXuid$(xuid),
     };
   }
 }
