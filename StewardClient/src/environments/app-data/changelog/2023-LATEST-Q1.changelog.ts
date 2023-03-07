@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'b9020fef-2d19-4e8e-8b5c-6fbc3e87f709',
+      shortText: 'Stop player selection re-lookup when removing player',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '947b953a-d168-432b-a743-9e449ba30441',
       shortText: 'Searching now includes both featured and non-featured UGC content',
