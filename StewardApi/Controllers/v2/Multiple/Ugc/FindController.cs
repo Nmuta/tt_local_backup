@@ -210,7 +210,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
             try
             {
                 var ugcList = await this.SteelheadServices.Value.StorefrontManagementService.SearchUGC(
-                    new ServicesLiveOpsFM8.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1 },
+                    new ServicesLiveOpsFM8.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1, ShowBothUnfeaturedAndFeatured = true },
                     type,
                     includeThumbnails: true,
                     1).ConfigureAwait(false);
@@ -231,7 +231,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
             try
             {
                 var ugcList = await this.fh5Service.SearchUgcContentAsync(
-                    new ServicesLiveOpsFH5.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1},
+                    new ServicesLiveOpsFH5.ForzaUGCSearchRequest { ShareCode = shareCodeOrId, Xuid = ulong.MaxValue, CarId = -1, KeywordIdOne = -1, KeywordIdTwo = -1, ShowBothUnfeaturedAndFeatured = true },
                     type,
                     this.WoodstockEndpoint.Value,
                     includeThumbnails: true).ConfigureAwait(false);
