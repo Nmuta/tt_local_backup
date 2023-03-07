@@ -97,7 +97,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             var getUgc = SearchUGC();
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getUgc, getCars).ConfigureAwait(true);
 
@@ -147,7 +150,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             var getLivery = GetLiveryAsync();
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getLivery, getCars).ConfigureAwait(true);
 
@@ -175,7 +181,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             var getPhoto = this.GetPhotoAsync(parsedUgcId);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
 
@@ -254,7 +263,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             var getTune = GetTuneAsync();
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getTune, getCars).ConfigureAwait(true);
 
@@ -311,7 +323,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             var getUgcItems = GetUgcItemBySharecodeAsync();
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 

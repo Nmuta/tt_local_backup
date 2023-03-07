@@ -237,7 +237,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var exceptions = new List<Exception>();
             var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<Leaderboard>(), exceptions);
-            var getCarClasses = this.pegasusService.GetCarClassesAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<CarClass>(), exceptions);
+            var getCarClasses = this.pegasusService.GetCarClassesAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<CarClass>(), new Action<Exception>(ex =>
+            {
+                // Leaderboards will work without car class association. Log custom exception for tracking purposes.
+                this.loggingService.LogException(new AppInsightsException("Failed to get car classes from Pegasus when building leaderboards", ex));
+            }));
 
             await Task.WhenAll(getPegasusLeaderboards, getCarClasses).ConfigureAwait(false);
 
@@ -262,11 +266,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     }
                 }
 
-            }
-            else
-            {
-                // Leaderboards will work without car class association. Log custom exception for tracking purposes.
-                this.loggingService.LogException(new AppInsightsException("Failed to get car classes from Pegasus when building leaderboards", getCarClasses.Exception));
             }
 
             return leaderboards;
