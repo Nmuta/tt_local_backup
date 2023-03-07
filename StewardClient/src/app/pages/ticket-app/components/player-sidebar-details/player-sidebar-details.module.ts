@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -17,32 +18,33 @@ import { WoodstockPlayerSidebarDetailsComponent } from './woodstock/woodstock-pl
 
 /** A domain module for displaying player details (designed for ticket-app). */
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
-    MatListModule,
-    ErrorSpinnerModule,
-    PlayerDetailsItemModule,
-    JsonDumpModule,
-  ],
-  exports: [
-    WoodstockPlayerSidebarDetailsComponent,
-    SteelheadPlayerSidebarDetailsComponent,
-    SunrisePlayerSidebarDetailsComponent,
-    ApolloPlayerSidebarDetailsComponent,
-    OpusPlayerSidebarDetailsComponent,
-    SteelheadPlayerSidebarDetailsComponent,
-  ],
-  declarations: [
-    WoodstockPlayerSidebarDetailsComponent,
-    SteelheadPlayerSidebarDetailsComponent,
-    SunrisePlayerSidebarDetailsComponent,
-    ApolloPlayerSidebarDetailsComponent,
-    OpusPlayerSidebarDetailsComponent,
-    SteelheadPlayerSidebarDetailsComponent,
-  ],
+    exports: [
+        WoodstockPlayerSidebarDetailsComponent,
+        SteelheadPlayerSidebarDetailsComponent,
+        SunrisePlayerSidebarDetailsComponent,
+        ApolloPlayerSidebarDetailsComponent,
+        OpusPlayerSidebarDetailsComponent,
+        SteelheadPlayerSidebarDetailsComponent,
+    ],
+    declarations: [
+        WoodstockPlayerSidebarDetailsComponent,
+        SteelheadPlayerSidebarDetailsComponent,
+        SunrisePlayerSidebarDetailsComponent,
+        ApolloPlayerSidebarDetailsComponent,
+        OpusPlayerSidebarDetailsComponent,
+        SteelheadPlayerSidebarDetailsComponent,
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        FontAwesomeModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        MatListModule,
+        ErrorSpinnerModule,
+        PlayerDetailsItemModule,
+        JsonDumpModule,
+        PipesModule
+    ]
 })
 export class PlayerSidebarDetailsModule {}

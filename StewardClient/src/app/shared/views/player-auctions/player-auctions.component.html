@@ -2,7 +2,7 @@
   <mat-card-content>
     <mat-card-header>
       <mat-card-title>Auctions</mat-card-title>
-      <mat-card-subtitle>{{ gameTitle }} (Max results 100, filter to find more) </mat-card-subtitle>
+      <mat-card-subtitle>{{ gameTitle | humanize }} (Max results 100, filter to find more) </mat-card-subtitle>
     </mat-card-header>
     <sunrise-auction-filters
       (newAuctionFilterSearch)="searchAuctions($event)"

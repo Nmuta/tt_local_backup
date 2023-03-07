@@ -21,6 +21,7 @@ import { GiftResponse } from '@models/gift-response';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SunriseGiftLiveryComponent', () => {
   let fixture: ComponentFixture<SunriseGiftLiveryComponent>;
@@ -38,7 +39,7 @@ describe('SunriseGiftLiveryComponent', () => {
         NgxsModule.forRoot(),
         ReactiveFormsModule,
       ],
-      declarations: [SunriseGiftLiveryComponent],
+      declarations: [SunriseGiftLiveryComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockSunriseService(), createMockBackgroundJobService()],
     }).compileComponents();

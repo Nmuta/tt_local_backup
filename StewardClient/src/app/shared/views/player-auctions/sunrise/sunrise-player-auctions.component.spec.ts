@@ -11,6 +11,7 @@ import { SunrisePlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/ti
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SunrisePlayerAuctionsComponent', () => {
   let component: SunrisePlayerAuctionsComponent;
@@ -19,7 +20,7 @@ describe('SunrisePlayerAuctionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SunrisePlayerAuctionsComponent, BigJsonPipe],
+      declarations: [SunrisePlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
