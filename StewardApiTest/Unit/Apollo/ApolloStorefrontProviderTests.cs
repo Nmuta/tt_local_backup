@@ -12,6 +12,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.UGC.Contracts;
@@ -157,10 +158,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 this.ApolloService.SearchUgcContentAsync(Arg.Any<ForzaUGCSearchV2Request>(), Arg.Any<ForzaUGCContentType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCV2Output>());
                 this.ApolloService.GetPlayerLiveryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCLiveryOutput>());
-                this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
+                this.Mapper.SafeMap<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
                 var ugcItem = Fixture.Create<ApolloUgcLiveryItem>();
                 ugcItem.GameTitle = (int)GameTitle.FM7;
-                this.Mapper.Map<ApolloUgcLiveryItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcItem);
+                this.Mapper.SafeMap<ApolloUgcLiveryItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcItem);
             }
 
             public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();

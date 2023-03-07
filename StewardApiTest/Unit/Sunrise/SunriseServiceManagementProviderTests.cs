@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
@@ -184,8 +185,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             {
                 this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
                 this.SunriseService.GetAuctionBlockListAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<AuctionManagementService.GetAuctionBlocklistOutput>());
-                this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
-                this.Mapper.Map<IList<AuctionBlockListEntry>>(Arg.Any<ForzaAuctionBlocklistEntry[]>()).Returns(Fixture.Create<IList<AuctionBlockListEntry>>());
+                this.Mapper.SafeMap<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
+                this.Mapper.SafeMap<IList<AuctionBlockListEntry>>(Arg.Any<ForzaAuctionBlocklistEntry[]>()).Returns(Fixture.Create<IList<AuctionBlockListEntry>>());
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

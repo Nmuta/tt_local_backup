@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.UGC.Contracts;
@@ -258,14 +259,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCPhotoOutput>());
                 this.SunriseService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCTuneOutput>());
                 this.SunriseService.GetHiddenUgcForUserAsync(Arg.Any<int>(), Arg.Any<ulong>(), Arg.Any<Forza.UserGeneratedContent.FH4.Generated.FileType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontService.GetHiddenUGCForUserOutput>());
-                this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
+                this.Mapper.SafeMap<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
                 var ugcItem = Fixture.Create<UgcItem>();
                 var ugcLiveryItem = Fixture.Create<UgcLiveryItem>();
                 ugcItem.GameTitle = (int)GameTitle.FH4;
                 ugcLiveryItem.GameTitle = (int)GameTitle.FH4;
-                this.Mapper.Map<UgcItem>(Arg.Any<ForzaPhotoData>()).Returns(ugcItem);
-                this.Mapper.Map<UgcLiveryItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcLiveryItem);
-                this.Mapper.Map<UgcItem>(Arg.Any<ForzaTuneData>()).Returns(ugcItem);
+                this.Mapper.SafeMap<UgcItem>(Arg.Any<ForzaPhotoData>()).Returns(ugcItem);
+                this.Mapper.SafeMap<UgcLiveryItem>(Arg.Any<ForzaLiveryData>()).Returns(ugcLiveryItem);
+                this.Mapper.SafeMap<UgcItem>(Arg.Any<ForzaTuneData>()).Returns(ugcItem);
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

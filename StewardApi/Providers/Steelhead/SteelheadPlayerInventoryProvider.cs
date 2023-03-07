@@ -9,6 +9,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 
 // Using this for type safety when sending gifts to LSP.
@@ -49,19 +50,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Services.LiveOps.FM8.Generated.UserInventoryManagementService.GetAdminUserProfilesOutput response = null;
+
             try
             {
-                var response = await this.steelheadService.GetAdminUserProfilesAsync(
+                response = await this.steelheadService.GetAdminUserProfilesAsync(
                     xuid,
                     MaxProfileResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<SteelheadInventoryProfile>>(response.profiles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
             }
+
+            return this.mapper.SafeMap<IList<SteelheadInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc />
@@ -128,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var response = new List<GiftResponse<ulong>>();
-            var gift = this.mapper.Map<SteelheadGift>(groupGift);
+            var gift = this.mapper.SafeMap<SteelheadGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
                 response.Add(await this.UpdatePlayerInventoryAsync(

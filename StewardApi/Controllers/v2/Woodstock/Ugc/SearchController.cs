@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
@@ -74,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
-            var searchParameters = this.mapper.Map<ForzaUGCSearchRequest>(parameters);
+            var searchParameters = this.mapper.SafeMap<ForzaUGCSearchRequest>(parameters);
 
             var getUgc = this.storefrontProvider.SearchUgcContentAsync(typeEnum, searchParameters, this.WoodstockEndpoint.Value);
             var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();

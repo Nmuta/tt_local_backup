@@ -48,11 +48,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
-            var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
+            var mappedFilters = this.mapper.SafeMap<ForzaUGCSearchRequest>(filters);
+            var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
             var results = await this.sunriseService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<UgcItem>>(results.result);
+            return this.mapper.SafeMap<IList<UgcItem>>(results.result);
         }
 
         /// <inheritdoc />
@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var liveryOutput = await this.sunriseService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
-            var livery = this.mapper.Map<UgcLiveryItem>(liveryOutput.result);
+            var livery = this.mapper.SafeMap<UgcLiveryItem>(liveryOutput.result);
 
             if (livery.GameTitle != (int)GameTitle.FH4)
             {
@@ -77,7 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var photoOutput = await this.sunriseService.GetPlayerPhotoAsync(photoId, endpoint).ConfigureAwait(false);
-            var photo = this.mapper.Map<UgcItem>(photoOutput.result);
+            var photo = this.mapper.SafeMap<UgcItem>(photoOutput.result);
 
             if (photo.GameTitle != (int)GameTitle.FH4)
             {
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var tuneOutput = await this.sunriseService.GetPlayerTuneAsync(tuneId, endpoint).ConfigureAwait(false);
-            var tune = this.mapper.Map<UgcItem>(tuneOutput.result);
+            var tune = this.mapper.SafeMap<UgcItem>(tuneOutput.result);
 
             if (tune.GameTitle != (int)GameTitle.FH4)
             {
@@ -127,16 +127,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.LiveOps.FH4.Generated.ForzaAuction forzaAuctions = null;
+
             try
             {
-                var forzaAuctions = await this.sunriseService.GetAuctionDataAsync(auctionId, endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<AuctionData>(forzaAuctions);
+                forzaAuctions = await this.sunriseService.GetAuctionDataAsync(auctionId, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Auction Data lookup failed for auction {auctionId}.", ex);
             }
+
+            return this.mapper.SafeMap<AuctionData>(forzaAuctions);
         }
 
         /// <inheritdoc />
@@ -169,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 results.AddRange(photos.GetAwaiter().GetResult().ugcData);
             }
 
-            var convertedResults = this.mapper.Map<List<HideableUgc>>(results);
+            var convertedResults = this.mapper.SafeMap<List<HideableUgc>>(results);
 
             return convertedResults;
         }

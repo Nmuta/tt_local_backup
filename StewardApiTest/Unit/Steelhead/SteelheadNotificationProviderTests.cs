@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -332,10 +333,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadService.GetAllUserGroupMessagesAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<NotificationManagementService.GetAllUserGroupMessagesOutput>());
                 this.SteelheadService.GetUserGroupMessageAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<NotificationManagementService.GetUserGroupMessageOutput>());
                 this.SteelheadService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<NotificationManagementService.SendMessageNotificationToMultipleUsersOutput>());
-                this.Mapper.Map<IList<Notification>>(Arg.Any<ForzaLiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
-                this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
-                this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
+                this.Mapper.SafeMap<IList<Notification>>(Arg.Any<ForzaLiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.SafeMap<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
+                this.Mapper.SafeMap<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.Mapper.SafeMap<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
             }
 
             public ISteelheadService SteelheadService { get; set; } = Substitute.For<ISteelheadService>();

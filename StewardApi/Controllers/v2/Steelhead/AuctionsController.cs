@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.LiveOps.FH4.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +65,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Auctions)]
         public async Task<IActionResult> GetAuctionDetails(string auctionId)
         {
+            Turn10.Services.LiveOps.FM8.Generated.AuctionManagementService.GetAuctionDataOutput results = null;
+
             if (!Guid.TryParse(auctionId, out var auctionIdAsGuid))
             {
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
@@ -71,14 +74,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                var results = await this.Services.AuctionManagementService.GetAuctionData(auctionIdAsGuid).ConfigureAwait(true);
-
-                return this.Ok(this.mapper.Map<AuctionData>(results.auction));
+                results = await this.Services.AuctionManagementService.GetAuctionData(auctionIdAsGuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get auction. (auctionId: {auctionId})", ex);
             }
+
+            return this.Ok(this.mapper.SafeMap<AuctionData>(results.auction));
         }
 
         /// <summary>

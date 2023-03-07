@@ -9,6 +9,7 @@ using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -188,23 +189,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetLeaderboardTalent()
         {
+            UserManagementService.GetUserGroupUsersOutput leaderboardTalent = null;
+
+            UserManagementService.GetUserIdsOutput result = null;
+
             try
             {
-                var leaderboardTalent = await this.Services.UserManagementService.GetUserGroupUsers(LeaderboardTalentGroupId, 0, LeaderboardTalentMaxResults).ConfigureAwait(true);
-
-                var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(leaderboardTalent.xuids);
-
-                var result = await this.Services.UserManagementService.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
-
-                var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
-                identityResults.SetErrorsForInvalidXuids();
-
-                return this.Ok(identityResults.Where(x => x.Error == null));
+                leaderboardTalent = await this.Services.UserManagementService.GetUserGroupUsers(LeaderboardTalentGroupId, 0, LeaderboardTalentMaxResults).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to lookup users in leaderboard talent user group. (userGroupId: {LeaderboardTalentGroupId})", ex);
             }
+
+            var convertedQueries = this.mapper.SafeMap<ForzaPlayerLookupParameters[]>(leaderboardTalent.xuids);
+
+            try
+            {
+                result = await this.Services.UserManagementService.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get users IDs for player lookup parameters. (userGroupId: {LeaderboardTalentGroupId})", ex);
+            }
+
+            var identityResults = this.mapper.SafeMap<IList<IdentityResultAlpha>>(result.playerLookupResult);
+            identityResults.SetErrorsForInvalidXuids();
+
+            return this.Ok(identityResults.Where(x => x.Error == null));
         }
 
         /// <summary>

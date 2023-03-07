@@ -7,6 +7,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
@@ -321,9 +322,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetUserGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.GetAllUserGroupMessagesOutput>());
                 this.WoodstockService.GetUserGroupNotificationAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.GetUserGroupMessageOutput>());
                 this.WoodstockService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>());
-                this.Mapper.Map<IList<Notification>>(Arg.Any<ServicesLiveOps.ForzaLiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
-                this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ServicesLiveOps.ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
-                this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ServicesLiveOps.ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.Mapper.SafeMap<IList<Notification>>(Arg.Any<ServicesLiveOps.ForzaLiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.SafeMap<IList<UserGroupNotification>>(Arg.Any<ServicesLiveOps.ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
+                this.Mapper.SafeMap<IList<MessageSendResult<ulong>>>(Arg.Any<ServicesLiveOps.ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
