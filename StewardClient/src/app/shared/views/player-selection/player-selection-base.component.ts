@@ -132,7 +132,7 @@ export abstract class PlayerSelectionBaseComponent
 
   /** Emitted when the foundIdentities list changes. */
   protected foundIdentities$ = new Subject<AugmentedCompositeIdentity[]>();
-  public lookupIdentitiessMonitor = new ActionMonitor('Lookup identities');
+  public lookupIdentitiesMonitor = new ActionMonitor('Lookup identities');
 
   // this has to be its own value because we don't have the actual thing until ngAfterViewInit, and lookupList is called before that
   private lookupTypeGroupChange$ = new Subject<void>();
@@ -352,11 +352,11 @@ export abstract class PlayerSelectionBaseComponent
       return;
     }
 
-    this.lookupIdentitiessMonitor = this.lookupIdentitiessMonitor.repeat();
+    this.lookupIdentitiesMonitor = this.lookupIdentitiesMonitor.repeat();
     this.multi
       .getPlayerIdentities$(this.lookupType, newQueries as AnyIdentityQuery[])
       .pipe(
-        this.lookupIdentitiessMonitor.monitorSingleFire(),
+        this.lookupIdentitiesMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),
         takeUntil(this.lookupTypeGroupChange$),
       )
