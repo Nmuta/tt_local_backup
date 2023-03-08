@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'a17731bc-0dc1-402b-a7b3-82f5e78dbe5a',
+      shortText: 'Fix tool styling to match other game titles',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserBanning },
       uuid: '7880276c-1f28-4927-8f80-7fbc92acf04a',
       shortText: 'Show error when valid ban reason is not selected',
