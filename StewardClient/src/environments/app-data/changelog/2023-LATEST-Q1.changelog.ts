@@ -13,6 +13,21 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Show error when valid ban reason is not selected',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: 'd4f293ab-d3ae-4b1f-b1f9-d95e0e1c0e41',
+      shortText: 'Display team information in profile & contact us messages',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'b9020fef-2d19-4e8e-8b5c-6fbc3e87f709',
+      shortText: 'Stop player selection re-lookup when removing player',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '29d3b079-5e0f-48a7-8062-9f6398b878ba',
+      shortText: 'Update gameTitle to be humanized throughout front-end',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '947b953a-d168-432b-a743-9e449ba30441',
       shortText: 'Searching now includes both featured and non-featured UGC content',

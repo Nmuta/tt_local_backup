@@ -7,6 +7,7 @@ import { ApolloGamertagsComponent } from './apollo-gamertags.component';
 import faker from '@faker-js/faker';
 import { ApolloSharedConsoleUser } from '@models/apollo';
 import { ActivatedRoute } from '@angular/router';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 const activatedRouteMock = {
   pathFromRoot: [
@@ -24,7 +25,7 @@ describe('ApolloGamertagsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ApolloGamertagsComponent],
+      declarations: [ApolloGamertagsComponent, HumanizePipe],
       providers: [
         createMockApolloService(),
         {

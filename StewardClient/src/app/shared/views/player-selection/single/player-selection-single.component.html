@@ -5,13 +5,22 @@
   #lookupTypeGroup="matButtonToggleGroup"
   [(ngModel)]="lookupType"
 >
-  <mat-button-toggle *ngIf="!disableLookupTypes.includes('gamertag')" value="gamertag"
+  <mat-button-toggle
+    *ngIf="!disableLookupTypes.includes('gamertag')"
+    [disabled]="lookupIdentitiesMonitor.isActive"
+    value="gamertag"
     >GTAG</mat-button-toggle
   >
-  <mat-button-toggle *ngIf="!disableLookupTypes.includes('xuid')" value="xuid"
+  <mat-button-toggle
+    *ngIf="!disableLookupTypes.includes('xuid')"
+    [disabled]="lookupIdentitiesMonitor.isActive"
+    value="xuid"
     >XUID</mat-button-toggle
   >
-  <mat-button-toggle *ngIf="!disableLookupTypes.includes('t10Id')" value="t10Id"
+  <mat-button-toggle
+    *ngIf="!disableLookupTypes.includes('t10Id')"
+    [disabled]="lookupIdentitiesMonitor.isActive"
+    value="t10Id"
     >T10</mat-button-toggle
   >
 </mat-button-toggle-group>

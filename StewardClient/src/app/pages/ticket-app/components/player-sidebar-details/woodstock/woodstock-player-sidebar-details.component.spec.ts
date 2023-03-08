@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { WoodstockPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/gamertag/details';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('WoodstockPlayerSidebarDetailsComponent', () => {
   let mockWoodstockService: WoodstockService;
@@ -25,7 +26,7 @@ describe('WoodstockPlayerSidebarDetailsComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [WoodstockPlayerSidebarDetailsComponent],
+      declarations: [WoodstockPlayerSidebarDetailsComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockWindowService(),

@@ -23,6 +23,7 @@ import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { ApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/apollo-gifting.service';
 import { createMockApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/apollo-gifting.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('ApolloGiftLiveryComponent', () => {
   let fixture: ComponentFixture<ApolloGiftLiveryComponent>;
@@ -41,7 +42,7 @@ describe('ApolloGiftLiveryComponent', () => {
         NgxsModule.forRoot(),
         ReactiveFormsModule,
       ],
-      declarations: [ApolloGiftLiveryComponent],
+      declarations: [ApolloGiftLiveryComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockBackgroundJobService(),

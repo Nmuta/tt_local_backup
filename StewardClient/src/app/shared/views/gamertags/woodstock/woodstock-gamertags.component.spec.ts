@@ -8,6 +8,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 import { WoodstockGamertagsComponent } from './woodstock-gamertags.component';
 import { ActivatedRoute } from '@angular/router';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 const activatedRouteMock = {
   pathFromRoot: [
@@ -25,7 +26,7 @@ describe('WoodstockGamertagsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WoodstockGamertagsComponent],
+      declarations: [WoodstockGamertagsComponent, HumanizePipe],
       providers: [
         createMockWoodstockService(),
         {
