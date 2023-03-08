@@ -31,6 +31,9 @@
     </mat-autocomplete>
     <mat-hint>This reason will be shown to the player.</mat-hint>
     <mat-error *ngIf="formControls.banReason.hasError('required')">Missing ban reason</mat-error>
+    <mat-error *ngIf="formControls.banReason.hasError('requireReasonListMatch')"
+      >Please select a ban reason from the dropdown</mat-error
+    >
   </mat-form-field>
 
   <duration-picker [formControl]="formControls.banDuration"></duration-picker>
