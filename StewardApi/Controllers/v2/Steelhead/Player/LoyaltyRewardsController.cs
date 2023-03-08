@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -68,8 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetHasPlayedRecordAsync(
-            ulong xuid,
-            [FromQuery] string externalProfileId)
+            ulong xuid)
         {
             //externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
             //xuid.IsValidXuid();
@@ -107,31 +107,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
-        public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromQuery] string externalProfileId, [FromBody] string[] gameTitles)
+        public async Task<IActionResult> UpdateTitlesUserPlayed(ulong xuid, [FromBody] string[] gameTitles)
         {
             //xuid.IsValidXuid();
-            //externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
             //gameTitles.ShouldNotBeNull(nameof(gameTitles));
 
-            //if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
-            //{
-            //    throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
-            //}
+            var gameTitleIds = new List<ForzaLoyaltyRewardsSupportedTitles>();
+            var unparsedGameTitles = new StringBuilder();
 
-            //var gameTitleIds = new List<int>();
-            //var unparsedGameTitles = new StringBuilder();
-
-            //foreach (var gameTitle in gameTitles)
-            //{
-            //    if (!Enum.TryParse(typeof(Turn10.UGC.Contracts.GameTitle), gameTitle, true, out var gameTitleEnum))
-            //    {
-            //        unparsedGameTitles.Append(gameTitle);
-            //    }
-            //    else
-            //    {
-            //        gameTitleIds.Add((int)gameTitleEnum);
-            //    }
-            //}
+            foreach (var gameTitle in gameTitles)
+            {
+                if (!Enum.TryParse(gameTitle, true, out ForzaLoyaltyRewardsSupportedTitles gameTitleEnum))
+                {
+                    unparsedGameTitles.Append(gameTitle);
+                }
+                else
+                {
+                    gameTitleIds.Add(gameTitleEnum);
+                }
+            }
 
             //if (unparsedGameTitles.Length > 0)
             //{
@@ -148,7 +142,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             //    throw new UnknownFailureStewardException($"Failed to send loyalty rewards. (XUID: {xuid})", ex);
             //}
 
-            await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, Forza.WebServices.FM8.Generated.ForzaLoyaltyRewardsSupportedTitles.ForzaHorizon2).ConfigureAwait(true);
+            await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, ForzaLoyaltyRewardsSupportedTitles.ForzaHorizon2).ConfigureAwait(true);
 
             return this.Ok();
         }
