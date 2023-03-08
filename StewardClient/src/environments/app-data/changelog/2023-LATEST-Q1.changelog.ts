@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Display team information in profile & contact us messages',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: 'b9020fef-2d19-4e8e-8b5c-6fbc3e87f709',
+      shortText: 'Stop player selection re-lookup when removing player',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '29d3b079-5e0f-48a7-8062-9f6398b878ba',
       shortText: 'Update gameTitle to be humanized throughout front-end',
