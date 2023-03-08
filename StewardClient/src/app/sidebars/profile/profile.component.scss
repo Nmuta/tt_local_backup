@@ -4,9 +4,14 @@
   margin-bottom: $gap-medium;
 }
 
+.profile-actions {
+  margin-top: $gap-large;
+}
+
 button {
   display: block;
   margin-bottom: $gap-medium;
+  width: $button-min-size;
 }
 
 pre {

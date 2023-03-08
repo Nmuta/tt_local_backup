@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: 'd4f293ab-d3ae-4b1f-b1f9-d95e0e1c0e41',
+      shortText: 'Display team information in profile & contact us messages',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'b9020fef-2d19-4e8e-8b5c-6fbc3e87f709',
       shortText: 'Stop player selection re-lookup when removing player',
     },

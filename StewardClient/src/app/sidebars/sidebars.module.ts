@@ -33,6 +33,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -100,6 +101,7 @@ export const sidebarRoutes = [
     PipesModule,
     StateManagersModule,
     PermissionsModule,
+    StandardCopyModule,
   ],
   exports: [RouterModule],
 })
