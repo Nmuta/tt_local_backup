@@ -47,8 +47,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.LoyaltyRewards)]
     public class LoyaltyRewardsController : V2SteelheadControllerBase
     {
-        private const int DefaultMaxResults = 500;
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -65,38 +63,36 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Gets the user's profile notes.
         /// </summary>
         [HttpGet]
-        //[SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
+        [SwaggerResponse(200, type: typeof(IList<ForzaLoyaltyRewardsSupportedTitles>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetHasPlayedRecordAsync(
             ulong xuid)
         {
-            //externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
             //xuid.IsValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            //if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
-            //{
-            //    throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
-            //}
-
+            ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
             try
             {
                 var response = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
-                //var result = this.mapper.Map<IList<HasPlayedRecord>>(response.records);
-
-                return this.Ok(response.titlesPlayed);
+                titlesPlayed = response.titlesPlayed;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"No record of legacy titles played found. (XUID: {xuid})", ex);
             }
+
+            var convertedList = this.mapper.SafeMap<IList<SteelheadLoyaltyRewardsSupportedTitle>>(titlesPlayed);
+
+            return this.Ok(convertedList);
         }
 
         /// <summary>
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
-        [HttpPost("rewards/send")]
-        [SwaggerResponse(200)]
+        [HttpPost("update")]
+        [SwaggerResponse(200, type: typeof(IList<ForzaLoyaltyRewardsSupportedTitles>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -105,46 +101,38 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             UserRole.CommunityManager)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
-        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
+        [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
-        public async Task<IActionResult> UpdateTitlesUserPlayed(ulong xuid, [FromBody] string[] gameTitles)
+        public async Task<IActionResult> UpdateTitlesUserPlayed(ulong xuid, [FromBody] string gameTitle)
         {
             //xuid.IsValidXuid();
-            //gameTitles.ShouldNotBeNull(nameof(gameTitles));
+            gameTitle.ShouldNotBeNull(nameof(gameTitle));
 
-            var gameTitleIds = new List<ForzaLoyaltyRewardsSupportedTitles>();
-            var unparsedGameTitles = new StringBuilder();
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            foreach (var gameTitle in gameTitles)
+            if (!Enum.TryParse(gameTitle, true, out SteelheadLoyaltyRewardsSupportedTitle gameTitleEnum))
             {
-                if (!Enum.TryParse(gameTitle, true, out ForzaLoyaltyRewardsSupportedTitles gameTitleEnum))
-                {
-                    unparsedGameTitles.Append(gameTitle);
-                }
-                else
-                {
-                    gameTitleIds.Add(gameTitleEnum);
-                }
+                throw new InvalidArgumentsStewardException($"Game title: {gameTitle} was not found.");
             }
 
-            //if (unparsedGameTitles.Length > 0)
-            //{
-            //    throw new InvalidArgumentsStewardException($"Game titles: {unparsedGameTitles} were not found.");
-            //}
+            var convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(gameTitleEnum);
 
-            //try
-            //{
-            //    await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, gameTitleIds.ToArray())
-            //        .ConfigureAwait(true);
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new UnknownFailureStewardException($"Failed to send loyalty rewards. (XUID: {xuid})", ex);
-            //}
+            ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
+            try
+            {
+                await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, convertedEnum).ConfigureAwait(true);
 
-            await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, ForzaLoyaltyRewardsSupportedTitles.ForzaHorizon2).ConfigureAwait(true);
+                var updatedLoyalty = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
+                titlesPlayed = updatedLoyalty.titlesPlayed;
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to update titles played. (XUID: {xuid})", ex);
+            }
 
-            return this.Ok();
+            var convertedList = this.mapper.SafeMap<IList<SteelheadLoyaltyRewardsSupportedTitle>>(titlesPlayed);
+
+            return this.Ok(convertedList);
         }
     }
 }
