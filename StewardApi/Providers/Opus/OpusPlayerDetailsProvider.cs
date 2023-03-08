@@ -33,9 +33,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             query.ShouldNotBeNull(nameof(query));
 
+            OpusPlayerDetails result = null;
+
             try
             {
-                var result = new OpusPlayerDetails();
+                result = new OpusPlayerDetails();
 
                 if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
                 {
@@ -56,12 +58,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
                     result = playerDetails ??
                              throw new NotFoundStewardException($"No profile found for Gamertag: {query.Gamertag}.");
                 }
-
-                var identity = this.mapper.Map<IdentityResultAlpha>(result);
-                identity.Query = query;
-                identity.SetErrorForInvalidXuid();
-
-                return identity;
             }
             catch (Exception ex)
             {
@@ -72,6 +68,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
 
                 throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
+
+            var identity = this.mapper.SafeMap<IdentityResultAlpha>(result);
+            identity.Query = query;
+            identity.SetErrorForInvalidXuid();
+
+            return identity;
         }
 
         /// <inheritdoc />
@@ -79,36 +81,40 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
+            Forza.WebServices.FH3.Generated.UserService.GetUserMasterDataByGamerTagOutput response = null;
+
             try
             {
-                var response = await this.opusService.GetUserMasterDataByGamerTagAsync(gamertag).ConfigureAwait(false);
-
-                return this.mapper.Map<OpusPlayerDetails>(response.userMasterData);
+                response = await this.opusService.GetUserMasterDataByGamerTagAsync(gamertag).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
             }
+
+            return this.mapper.SafeMap<OpusPlayerDetails>(response.userMasterData);
         }
 
         /// <inheritdoc />
         public async Task<OpusPlayerDetails> GetPlayerDetailsAsync(ulong xuid)
         {
+            Forza.WebServices.FH3.Generated.UserService.GetUserMasterDataByXuidOutput response = null;
+
             try
             {
-                var response = await this.opusService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
+                response = await this.opusService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 if (response.userMasterData.Region <= 0)
                 {
                     throw new NotFoundStewardException($"No player found for XUID: {xuid}.");
                 }
-
-                return this.mapper.Map<OpusPlayerDetails>(response.userMasterData);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<OpusPlayerDetails>(response.userMasterData);
         }
 
         /// <inheritdoc />

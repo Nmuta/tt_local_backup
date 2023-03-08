@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
@@ -116,12 +117,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.PegasusService.GetEmotesAsync().Returns(Fixture.Create<IEnumerable<WoodstockLiveOpsContent.EmoteData>>());
                 this.PegasusService.GetQuickChatLinesAsync().Returns(Fixture.Create<IEnumerable<WoodstockLiveOpsContent.QuickChat>>());
 
-                this.Mapper.Map<IEnumerable<SimpleCar>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.DataCar>>()).Returns(Fixture.Create<IEnumerable<SimpleCar>>());
-                this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.DataCar>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
-                this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.CarHorn>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
-                this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.VanityItem>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
-                this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.EmoteData>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
-                this.Mapper.Map<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.QuickChat>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
+                this.Mapper.SafeMap<IEnumerable<SimpleCar>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.DataCar>>()).Returns(Fixture.Create<IEnumerable<SimpleCar>>());
+                this.Mapper.SafeMap<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.DataCar>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
+                this.Mapper.SafeMap<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.CarHorn>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
+                this.Mapper.SafeMap<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.VanityItem>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
+                this.Mapper.SafeMap<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.EmoteData>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
+                this.Mapper.SafeMap<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.QuickChat>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
             }
             
             public IWoodstockPegasusService PegasusService { get; set; } = Substitute.For<IWoodstockPegasusService>();

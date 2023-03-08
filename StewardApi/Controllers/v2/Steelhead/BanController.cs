@@ -77,29 +77,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             banEntryId.ShouldBeGreaterThanValue(-1);
 
             var service = this.SteelheadServices.Value.UserManagementService;
+
+            var forzaExpireBanParameters =
+                this.mapper.SafeMap<ForzaUserExpireBanParameters>(banEntryId);
+
+            UserManagementService.ExpireBanEntriesOutput response = null;
+
             try
             {
-                var forzaExpireBanParameters =
-                    this.mapper.Map<ForzaUserExpireBanParameters>(banEntryId);
-
                 ForzaUserExpireBanParameters[] parameterArray = { forzaExpireBanParameters };
 
-                var response = await service.ExpireBanEntries(parameterArray, 1)
+                response = await service.ExpireBanEntries(parameterArray, 1)
                     .ConfigureAwait(false);
-
-                var result = this.mapper.Map<UnbanResult>(response.unbanResults[0]);
-
-                if (!result.Success)
-                {
-                    throw new BadRequestStewardException($"Failed to expire ban with ID: {banEntryId}");
-                }
-
-                return Ok(result);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to expire ban with ID: {banEntryId}.", ex);
             }
+
+            var result = this.mapper.SafeMap<UnbanResult>(response.unbanResults[0]);
+
+            if (!result.Success)
+            {
+                throw new BadRequestStewardException($"Failed to expire ban with ID: {banEntryId}");
+            }
+
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -117,24 +120,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var banEntryIds = new int[] { banEntryId };
             var service = this.SteelheadServices.Value.UserManagementService;
+
+            UserManagementService.DeleteBanEntriesOutput response = null;
+
             try
             {
-                var response = await service.DeleteBanEntries(banEntryIds)
+                response = await service.DeleteBanEntries(banEntryIds)
                     .ConfigureAwait(false);
-
-                var result = this.mapper.Map<UnbanResult>(response.unbanResults[0]);
-
-                if (!result.Success && !result.Deleted)
-                {
-                    throw new BadRequestStewardException($"Failed to delete ban with ID: {banEntryId}");
-                }
-
-                return Ok(result);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to delete ban with ID: {banEntryId}.", ex);
             }
+
+            var result = this.mapper.SafeMap<UnbanResult>(response.unbanResults[0]);
+
+            if (!result.Success && !result.Deleted)
+            {
+                throw new BadRequestStewardException($"Failed to delete ban with ID: {banEntryId}");
+            }
+
+            return this.Ok(result);
         }
     }
 }

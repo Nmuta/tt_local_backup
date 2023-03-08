@@ -81,7 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
-            var searchParameters = this.mapper.Map<ForzaUGCSearchRequest>(parameters);
+            var searchParameters = this.mapper.SafeMap<ForzaUGCSearchRequest>(parameters);
 
             var getUgc = this.storefrontProvider.SearchUgcContentAsync(typeEnum, searchParameters, this.WoodstockEndpoint.Value);
             var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>

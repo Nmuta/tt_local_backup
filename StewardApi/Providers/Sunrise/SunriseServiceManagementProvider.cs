@@ -7,6 +7,7 @@ using Forza.LiveOps.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
@@ -42,24 +43,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetUserGroupsOutput result = null;
+
             try
             {
-                var result = await this.sunriseService.GetUserGroupsAsync(0, GroupLookupMaxResults, endpoint)
+                result = await this.sunriseService.GetUserGroupsAsync(0, GroupLookupMaxResults, endpoint)
                     .ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
-
-                if (lspGroups.Count > GroupLookupMaxResults - 50)
-                {
-                    this.loggingService.LogException(new ApproachingLimitAppInsightsException(
-                        $"LSP group lookup for {TitleConstants.SunriseFullName} is nearing the maximum lookup value."));
-                }
-
-                return lspGroups;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.SunriseFullName}", ex);
             }
+
+            var lspGroups = this.mapper.SafeMap<IList<LspGroup>>(result.userGroups);
+
+            if (lspGroups.Count > GroupLookupMaxResults - 50)
+            {
+                this.loggingService.LogException(new ApproachingLimitAppInsightsException(
+                    $"LSP group lookup for {TitleConstants.SunriseFullName} is nearing the maximum lookup value."));
+            }
+
+            return lspGroups;
         }
 
         /// <inheritdoc />
@@ -68,16 +72,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            AuctionManagementService.GetAuctionBlocklistOutput forzaAuctions = null;
+
             try
             {
-                var forzaAuctions = await this.sunriseService.GetAuctionBlockListAsync(maxResults, endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<AuctionBlockListEntry>>(forzaAuctions.blocklistEntries);
+                forzaAuctions = await this.sunriseService.GetAuctionBlockListAsync(maxResults, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Search auctions block list failed.", ex);
             }
+
+            return this.mapper.SafeMap<IList<AuctionBlockListEntry>>(forzaAuctions.blocklistEntries);
         }
 
         /// <inheritdoc />
@@ -86,10 +92,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             blockListEntries.ShouldNotBeNull(nameof(blockListEntries));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            var convertedEntries = this.mapper.SafeMap<ForzaAuctionBlocklistEntry[]>(blockListEntries);
+
             try
             {
-                var convertedEntries = this.mapper.Map<ForzaAuctionBlocklistEntry[]>(blockListEntries);
-
                 await this.sunriseService.AddAuctionBlocklistEntriesAsync(convertedEntries, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)

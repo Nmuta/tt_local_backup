@@ -184,7 +184,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var status = await this.jobTracker.GetJobStatusAsync(jobId).ConfigureAwait(true);
 
-            var output = this.mapper.Map<BackgroundJob>(status);
+            var output = this.mapper.SafeMap<BackgroundJob>(status);
 
             return this.Ok(output);
         }
@@ -199,7 +199,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var results = await this.jobTracker.GetInProgressJobsAsync().ConfigureAwait(true);
 
-            var outputResults = this.mapper.Map<IList<BackgroundJob>>(results);
+            var outputResults = this.mapper.SafeMap<IList<BackgroundJob>>(results);
 
             return this.Ok(outputResults);
         }
@@ -215,7 +215,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId, resultsFrom.Value).ConfigureAwait(true);
 
-            var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
+            var output = this.mapper.SafeMap<IList<BackgroundJob>>(jobs);
 
             return this.Ok(output);
         }

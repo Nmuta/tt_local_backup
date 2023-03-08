@@ -48,10 +48,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+            var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
             var results = await this.woodstockService.GetPlayerUgcContentAsync(xuid, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<WoodstockUgcItem>>(results.result);
+            return this.mapper.SafeMap<IList<WoodstockUgcItem>>(results.result);
         }
 
         /// <inheritdoc />
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
             var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
 
-            return this.mapper.Map<IList<WoodstockUgcItem>>(filteredResults);
+            return this.mapper.SafeMap<IList<WoodstockUgcItem>>(filteredResults);
         }
 
         /// <inheritdoc />
@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var liveryOutput = await this.woodstockService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
-            var livery = this.mapper.Map<WoodstockUgcLiveryItem>(liveryOutput.result);
+            var livery = this.mapper.SafeMap<WoodstockUgcLiveryItem>(liveryOutput.result);
 
             if (livery.GameTitle != (int)GameTitle.FH5)
             {
@@ -105,7 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var photoOutput = await this.woodstockService.GetPlayerPhotoAsync(photoId, endpoint).ConfigureAwait(false);
-            var photo = this.mapper.Map<WoodstockUgcItem>(photoOutput.result);
+            var photo = this.mapper.SafeMap<WoodstockUgcItem>(photoOutput.result);
 
             if (photo.GameTitle != (int)GameTitle.FH5)
             {
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var tuneOutput = await this.woodstockService.GetPlayerTuneAsync(tuneId, endpoint).ConfigureAwait(false);
-            var tune = this.mapper.Map<WoodstockUgcItem>(tuneOutput.result);
+            var tune = this.mapper.SafeMap<WoodstockUgcItem>(tuneOutput.result);
 
             if (tune.GameTitle != (int)GameTitle.FH5)
             {
@@ -137,7 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var eventBlueprintOutput = await this.woodstockService.GetEventBlueprintAsync(eventBlueprintId, endpoint).ConfigureAwait(false);
-            var eventBlueprint = this.mapper.Map<WoodstockUgcItem>(eventBlueprintOutput.result);
+            var eventBlueprint = this.mapper.SafeMap<WoodstockUgcItem>(eventBlueprintOutput.result);
 
             if (eventBlueprint.GameTitle != (int)GameTitle.FH5)
             {
@@ -153,7 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var communityChallengeOutput = await this.woodstockService.GetCommunityChallengeAsync(communityChallengeId, endpoint).ConfigureAwait(false);
-            var communityChallenge = this.mapper.Map<WoodstockUgcItem>(communityChallengeOutput.communityChallengeData);
+            var communityChallenge = this.mapper.SafeMap<WoodstockUgcItem>(communityChallengeOutput.communityChallengeData);
 
             if (communityChallenge.GameTitle != (int)GameTitle.FH5)
             {
@@ -187,16 +187,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            ServicesLiveOps.ForzaAuction forzaAuctions = null;
+
             try
             {
-                var forzaAuctions = await this.woodstockService.GetAuctionDataAsync(auctionId, endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<AuctionData>(forzaAuctions);
+                forzaAuctions = await this.woodstockService.GetAuctionDataAsync(auctionId, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get auction data. (auctionId: {auctionId})", ex);
             }
+
+            return this.mapper.SafeMap<AuctionData>(forzaAuctions);
         }
 
         /// <inheritdoc />
@@ -258,7 +260,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 results.AddRange(eventBlueprints.GetAwaiter().GetResult().ugcData);
             }
 
-            var convertedResults = this.mapper.Map<List<HideableUgc>>(results);
+            var convertedResults = this.mapper.SafeMap<List<HideableUgc>>(results);
 
             return convertedResults;
         }

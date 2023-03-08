@@ -83,17 +83,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
-            var searchParameters = this.mapper.Map<ServicesLiveOps.ForzaUGCSearchRequest>(parameters);
+            var searchParameters = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCSearchRequest>(parameters);
 
             async Task<IList<UgcItem>> SearchUGC()
             {
-                var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+                var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
                 var results = await this.Services.StorefrontManagementService.SearchUGC(searchParameters, mappedContentType, false, DefaultMaxResults).ConfigureAwait(false);
 
                 // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
                 var filteredResults = results.result.Where(result => searchParameters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
 
-                return this.mapper.Map<IList<UgcItem>>(filteredResults);
+                return this.mapper.SafeMap<IList<UgcItem>>(filteredResults);
             }
 
             var getUgc = SearchUGC();
@@ -131,22 +131,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             async Task<UgcItem> GetLiveryAsync()
             {
+                StorefrontManagementService.GetUGCLiveryOutput liveryOutput = null;
+
                 try
                 {
-                    var liveryOutput = await this.Services.StorefrontManagementService.GetUGCLivery(parsedUgcId).ConfigureAwait(false);
-                    var livery = this.mapper.Map<UgcLiveryItem>(liveryOutput.result);
-
-                    if (livery.GameTitle != (int)GameTitle.FM8)
-                    {
-                        throw new NotFoundStewardException($"Livery id could not found: {parsedUgcId}");
-                    }
-
-                    return livery;
+                    liveryOutput = await this.Services.StorefrontManagementService.GetUGCLivery(parsedUgcId).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
                     throw new UnknownFailureStewardException($"No livery found. (ugcId: {parsedUgcId}).", ex);
                 }
+
+                var livery = this.mapper.SafeMap<UgcLiveryItem>(liveryOutput.result);
+
+                if (livery.GameTitle != (int)GameTitle.FM8)
+                {
+                    throw new NotFoundStewardException($"Livery id could not found: {parsedUgcId}");
+                }
+
+                return livery;
             }
 
             var getLivery = GetLiveryAsync();
@@ -244,22 +247,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             async Task<UgcItem> GetTuneAsync()
             {
+                StorefrontManagementService.GetUGCTuneOutput tuneOutput = null;
+
                 try
                 {
-                    var tuneOutput = await this.Services.StorefrontManagementService.GetUGCTune(parsedUgcId).ConfigureAwait(false);
-                    var tune = this.mapper.Map<UgcItem>(tuneOutput.result);
-
-                    if (tune.GameTitle != (int)GameTitle.FM8)
-                    {
-                        throw new NotFoundStewardException($"Tune id could not found: {parsedUgcId}");
-                    }
-
-                    return tune;
+                    tuneOutput = await this.Services.StorefrontManagementService.GetUGCTune(parsedUgcId).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
                     throw new UnknownFailureStewardException($"No tune found. (ugcId: {parsedUgcId}).", ex);
                 }
+
+                var tune = this.mapper.SafeMap<UgcItem>(tuneOutput.result);
+
+                if (tune.GameTitle != (int)GameTitle.FM8)
+                {
+                    throw new NotFoundStewardException($"Tune id could not found: {parsedUgcId}");
+                }
+
+                return tune;
             }
 
             var getTune = GetTuneAsync();
@@ -304,7 +310,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             async Task<IList<UgcItem>> GetUgcItemBySharecodeAsync()
             {
-                var mappedContentType = this.mapper.Map<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+                var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
 
                 StorefrontManagementService.SearchUGCOutput results;
                 try
@@ -343,22 +349,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
         private async Task<UgcItem> GetPhotoAsync(Guid ugcId)
         {
+            StorefrontManagementService.GetUGCPhotoOutput photoOutput = null;
+
             try
             {
-                var photoOutput = await this.Services.StorefrontManagementService.GetUGCPhoto(ugcId).ConfigureAwait(false);
-                var photo = this.mapper.Map<UgcItem>(photoOutput.result);
-
-                if (photo.GameTitle != (int)GameTitle.FM8)
-                {
-                    throw new NotFoundStewardException($"Photo id could not found: {ugcId}");
-                }
-
-                return photo;
+                photoOutput = await this.Services.StorefrontManagementService.GetUGCPhoto(ugcId).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"No photo found. (ugcId: {ugcId}).", ex);
             }
+
+            var photo = this.mapper.SafeMap<UgcItem>(photoOutput.result);
+
+            if (photo.GameTitle != (int)GameTitle.FM8)
+            {
+                throw new NotFoundStewardException($"Photo id could not found: {ugcId}");
+            }
+
+            return photo;
         }
     }
 }

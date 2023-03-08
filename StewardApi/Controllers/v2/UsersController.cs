@@ -241,7 +241,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         private async Task<IDictionary<string, Team>> GetAllTeamsAsync()
         {
             var internalUsers = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);
-            var users = this.mapper.Map<IList<StewardUser>>(internalUsers);
+            var users = this.mapper.SafeMap<IList<StewardUser>>(internalUsers);
 
             var teams = new Dictionary<string, Team>();
             users.ForEach(user =>

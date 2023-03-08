@@ -83,17 +83,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             async Task<IList<UgcItem>> GetPlayerUgcAsync(ulong xuid, UgcType ugcType)
             {
+                var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
+
+                StorefrontManagementService.GetUGCForUserOutput results = null;
+
                 try
                 {
-                    var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
-                    var results = await this.Services.StorefrontManagementService.GetUGCForUser(xuid, mappedContentType, false, this.ugcMaxResults, false).ConfigureAwait(false);
-
-                    return this.mapper.Map<IList<UgcItem>>(results.result);
+                    results = await this.Services.StorefrontManagementService.GetUGCForUser(xuid, mappedContentType, false, this.ugcMaxResults, false).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
                     throw new UnknownFailureStewardException($"Failed to get player UGC. (xuid: {xuid}) (ugcType: {ugcType})", ex);
                 }
+
+                return this.mapper.SafeMap<IList<UgcItem>>(results.result);
             }
 
             var getUgcItems = GetPlayerUgcAsync(xuid, parseUgcType);
