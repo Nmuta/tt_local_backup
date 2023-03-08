@@ -227,6 +227,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 {
                     var teamLead = await this.stewardUserProvider.GetStewardUserAsync(team.Key).ConfigureAwait(true);
                     var mappedTeamLead = this.mapper.SafeMap<StewardUser>(teamLead);
+
                     return this.Ok(mappedTeamLead);
                 }
             }

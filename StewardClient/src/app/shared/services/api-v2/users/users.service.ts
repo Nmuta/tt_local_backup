@@ -30,7 +30,7 @@ export class V2UsersService {
     return this.api.getRequest$<StewardTeam>(`${this.basePath}/${teamLeadId}/team`);
   }
 
-  /** Gets user's team lead. Null if they have none; */
+  /** Gets user's team lead. Null if they have none. */
   public getTeamLead$(userId: GuidLikeString): Observable<UserModel> {
     if (this.teamLead !== undefined) {
       return of(this.teamLead);
