@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserBanning },
+      uuid: '7880276c-1f28-4927-8f80-7fbc92acf04a',
+      shortText: 'Show error when valid ban reason is not selected',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'd4f293ab-d3ae-4b1f-b1f9-d95e0e1c0e41',
       shortText: 'Display team information in profile & contact us messages',
