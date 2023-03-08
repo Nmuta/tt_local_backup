@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Stop player selection re-lookup when removing player',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '29d3b079-5e0f-48a7-8062-9f6398b878ba',
+      shortText: 'Update gameTitle to be humanized throughout front-end',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '947b953a-d168-432b-a743-9e449ba30441',
       shortText: 'Searching now includes both featured and non-featured UGC content',
