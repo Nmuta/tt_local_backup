@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -45,17 +46,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     {
         private readonly int ugcMaxResults = 8_000;
         private readonly ISteelheadItemsProvider itemsProvider;
+        private readonly ILoggingService loggingService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UgcController"/> class.
         /// </summary>
-        public UgcController(ISteelheadItemsProvider itemsProvider, IMapper mapper)
+        public UgcController(ISteelheadItemsProvider itemsProvider, ILoggingService loggingService, IMapper mapper)
         {
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.itemsProvider = itemsProvider;
+            this.loggingService = loggingService;
             this.mapper = mapper;
         }
 
@@ -70,10 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
-            if (!Enum.TryParse(ugcType, out UgcType parseUgcType))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid UGC type provided. (type: {ugcType})");
-            }
+            var parseUgcType = ugcType.TryParseEnumElseThrow<UgcType>(nameof(ugcType));
 
             if (parseUgcType == UgcType.Unknown)
             {
@@ -96,7 +97,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
 
             var getUgcItems = GetPlayerUgcAsync(xuid, parseUgcType);
-            var getCars = this.itemsProvider.GetCarsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 

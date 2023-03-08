@@ -50,7 +50,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             var exceptions = new List<Exception>();
             var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<Leaderboard>(), exceptions);
-            var getCarClasses = this.pegasusService.GetCarClassesAsync().SuccessOrDefault(Array.Empty<CarClass>(), exceptions);
+            var getCarClasses = this.pegasusService.GetCarClassesAsync().SuccessOrDefault(Array.Empty<CarClass>(), new Action<Exception>(ex =>
+            {
+                // Leaderboards will work without car class association. Log custom exception for tracking purposes.
+                this.loggingService.LogException(new AppInsightsException("Failed to get car classes from Pegasus when building leaderboards", ex));
+            }));
 
             await Task.WhenAll(getPegasusLeaderboards, getCarClasses).ConfigureAwait(false);
 
@@ -62,24 +66,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
 
             var leaderboards = getPegasusLeaderboards.GetAwaiter().GetResult();
+            var carClasses = getCarClasses.GetAwaiter().GetResult();
+            var carClassesDict = carClasses.ToDictionary(carClass => carClass.Id);
 
-            if (getCarClasses.IsCompletedSuccessfully)
+            foreach (var leaderboard in leaderboards)
             {
-                var carClasses = getCarClasses.GetAwaiter().GetResult();
-                var carClassesDict = carClasses.ToDictionary(carClass => carClass.Id);
-                foreach (var leaderboard in leaderboards)
+                if (carClassesDict.TryGetValue(leaderboard.CarClassId, out CarClass carClass))
                 {
-                    if (carClassesDict.TryGetValue(leaderboard.CarClassId, out CarClass carClass))
-                    {
-                        leaderboard.CarClass = carClass.DisplayName;
-                    }
+                    leaderboard.CarClass = carClass.DisplayName;
                 }
-
-            }
-            else
-            {
-                // Leaderboards will work without car class association. Log custom exception for tracking purposes.
-                this.loggingService.LogException(new AppInsightsException("Failed to get car classes from Pegasus when building leaderboards", getCarClasses.Exception));
             }
 
             return leaderboards;
