@@ -11,6 +11,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SteelheadPlayerAuctionsComponent } from './steelhead-player-auctions.component';
 import { createMockSteelheadService } from '@services/steelhead';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SteelheadPlayerAuctionsComponent', () => {
   let component: SteelheadPlayerAuctionsComponent;
@@ -19,7 +20,7 @@ describe('SteelheadPlayerAuctionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SteelheadPlayerAuctionsComponent, BigJsonPipe],
+      declarations: [SteelheadPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockSteelheadService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
