@@ -76,7 +76,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     });
                 }
 
-                results.Add(this.mapper.SafeMap<StewardUser>(user));
+                try
+                {
+                    results.Add(this.mapper.Map<StewardUser>(user));
+                }
+                catch (Exception ex)
+                {
+                    results.Add(new StewardUser
+                    {
+                        Error = new StewardError($"Mapping failed for user: {userObjectId}.", ex)
+                    });
+                }
             }
 
             return this.Ok(results);
