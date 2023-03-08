@@ -21,7 +21,11 @@ import { SteelheadPlayerAuctionsComponent } from './steelhead/steelhead-player-a
 
 /** Display for player auctions. */
 @NgModule({
-  declarations: [SunrisePlayerAuctionsComponent, WoodstockPlayerAuctionsComponent, SteelheadPlayerAuctionsComponent],
+  declarations: [
+    SunrisePlayerAuctionsComponent,
+    WoodstockPlayerAuctionsComponent,
+    SteelheadPlayerAuctionsComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -40,6 +44,10 @@ import { SteelheadPlayerAuctionsComponent } from './steelhead/steelhead-player-a
     LuxonModule,
     ImageModalModule,
   ],
-  exports: [SunrisePlayerAuctionsComponent, WoodstockPlayerAuctionsComponent, SteelheadPlayerAuctionsComponent],
+  exports: [
+    SunrisePlayerAuctionsComponent,
+    WoodstockPlayerAuctionsComponent,
+    SteelheadPlayerAuctionsComponent,
+  ],
 })
 export class PlayerAuctionsModule {}

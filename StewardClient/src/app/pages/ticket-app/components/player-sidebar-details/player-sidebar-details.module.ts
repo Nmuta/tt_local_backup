@@ -18,33 +18,33 @@ import { WoodstockPlayerSidebarDetailsComponent } from './woodstock/woodstock-pl
 
 /** A domain module for displaying player details (designed for ticket-app). */
 @NgModule({
-    exports: [
-        WoodstockPlayerSidebarDetailsComponent,
-        SteelheadPlayerSidebarDetailsComponent,
-        SunrisePlayerSidebarDetailsComponent,
-        ApolloPlayerSidebarDetailsComponent,
-        OpusPlayerSidebarDetailsComponent,
-        SteelheadPlayerSidebarDetailsComponent,
-    ],
-    declarations: [
-        WoodstockPlayerSidebarDetailsComponent,
-        SteelheadPlayerSidebarDetailsComponent,
-        SunrisePlayerSidebarDetailsComponent,
-        ApolloPlayerSidebarDetailsComponent,
-        OpusPlayerSidebarDetailsComponent,
-        SteelheadPlayerSidebarDetailsComponent,
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        FontAwesomeModule,
-        MatCardModule,
-        MatProgressSpinnerModule,
-        MatListModule,
-        ErrorSpinnerModule,
-        PlayerDetailsItemModule,
-        JsonDumpModule,
-        PipesModule
-    ]
+  exports: [
+    WoodstockPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
+    SunrisePlayerSidebarDetailsComponent,
+    ApolloPlayerSidebarDetailsComponent,
+    OpusPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
+  ],
+  declarations: [
+    WoodstockPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
+    SunrisePlayerSidebarDetailsComponent,
+    ApolloPlayerSidebarDetailsComponent,
+    OpusPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FontAwesomeModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatListModule,
+    ErrorSpinnerModule,
+    PlayerDetailsItemModule,
+    JsonDumpModule,
+    PipesModule,
+  ],
 })
 export class PlayerSidebarDetailsModule {}
