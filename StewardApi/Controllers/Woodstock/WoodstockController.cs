@@ -512,19 +512,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {sort}");
             }
 
-            var results = await this.woodstockPlayerDetailsProvider
-                .GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint)
-                .ConfigureAwait(true);
+            var getAuctions = this.woodstockPlayerDetailsProvider.GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint);
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
-            var cars = await this.itemsProvider.GetCarsAsync<SimpleCar>().ConfigureAwait(true);
-            var carsDict = cars.ToDictionary(car => car.Id);
+            await Task.WhenAll(getAuctions, getCars).ConfigureAwait(true);
 
-            foreach (var auction in results)
+            var auctions = getAuctions.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+
+            foreach (var auction in auctions)
             {
                 auction.ItemName = carsDict.TryGetValue(auction.ModelId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
-            return this.Ok(results);
+            return this.Ok(auctions);
         }
 
         /// <summary>
@@ -616,14 +620,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>(WoodstockPegasusSlot.LiveSteward);
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>(WoodstockPegasusSlot.LiveSteward).SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
             var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
 
             await Task.WhenAll(getBlockList, getCars).ConfigureAwait(true);
 
             var blockList = getBlockList.GetAwaiter().GetResult();
-
             var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+
             foreach (var entry in blockList)
             {
                 entry.Description = carsDict.TryGetValue(entry.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
@@ -692,7 +699,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 xuid,
                 typeEnum,
                 endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -731,7 +741,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 filters,
                 endpoint,
                 includeThumbnails: true);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -759,7 +772,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUgcLiveryAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getLivery, getCars).ConfigureAwait(true);
 
@@ -785,7 +801,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUgcPhotoAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
 
@@ -811,7 +830,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUgcTuneAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getTune, getCars).ConfigureAwait(true);
 

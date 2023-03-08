@@ -34,28 +34,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             string endpoint);
 
         /// <summary>
-        ///     Gets Racer's Cup schedule for user.
-        /// </summary>
-        Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCmsRacersCupScheduleForUserAsync(
-            ulong xuid,
-            DateTime startDateUtc,
-            int daysForward,
-            ForzaEventSessionType[] gameOptionsFilter,
-            string endpoint);
-
-        /// <summary>
-        ///     Gets Racer's Cup schedule.
-        /// </summary>
-        Task<LiveOpsService.GetCMSRacersCupScheduleOutput> GetCmsRacersCupScheduleAsync(
-            string environment,
-            string slotId,
-            string snapshotId,
-            DateTime startDateUtc,
-            int daysForward,
-            ForzaEventSessionType[] gameOptionsFilter,
-            string endpoint);
-
-        /// <summary>
         ///     Gets player auctions.
         /// </summary>
         Task<AuctionManagementService.SearchAuctionHouseOutput> SearchAuctionsAsync(
@@ -277,22 +255,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<UserInventoryManagementService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(
             ulong xuid,
             uint maxProfiles,
-            string endpoint);
-
-        /// <summary>
-        ///     Removes car from player inventory profile.
-        /// </summary>
-        Task RemoveCarFromUserInventoryWithCarIdAsync(
-            int carId,
-            int profileId,
-            string endpoint);
-
-        /// <summary>
-        ///     Removes car from player inventory profile.
-        /// </summary>
-        Task RemoveCarFromUserInventoryWithVinAsync(
-            Guid vin,
-            int profileId,
             string endpoint);
 
         /// <summary>

@@ -52,6 +52,30 @@
           >Verify CMS Override</mat-checkbox
         >
       </div>
+      <div class="sf-horizontal" *ngIf="hasCmsOverride">
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="deleteCmsOverride()"
+          stateManager
+          [monitor]="deleteMonitor"
+          monitorDisable
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
+          [verifyWith]="verifyDeleteCmsOverride"
+        >
+          Delete CMS Override
+        </button>
+        <mat-checkbox
+          #verifyDeleteCmsOverride
+          stateManager
+          [monitor]="deleteMonitor"
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+          matTooltip="Verify Cms Override Removal"
+          >Verify CMS Override Removal</mat-checkbox
+        >
+      </div>
     </div>
   </form>
 </mat-card>

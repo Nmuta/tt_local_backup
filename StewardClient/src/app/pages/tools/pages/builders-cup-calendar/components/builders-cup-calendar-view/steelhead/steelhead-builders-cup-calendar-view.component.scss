@@ -11,6 +11,10 @@
   justify-content: center;
 }
 
+div.calendar-control-panel {
+  display: grid;
+}
+
 .calendar-view-switch {
   padding-bottom: 1em;
 }

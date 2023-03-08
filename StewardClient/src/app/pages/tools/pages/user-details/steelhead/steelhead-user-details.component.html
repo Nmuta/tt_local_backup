@@ -4,20 +4,15 @@
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="User Details">
         <div class="tab-container">
-          <steelhead-user-flags [identity]="identity"></steelhead-user-flags>
-          <steelhead-player-game-details [identity]="identity"></steelhead-player-game-details>
-          <steelhead-report-weight [identity]="identity"></steelhead-report-weight>
-
-          <!-- TODO Change layout to this when CMS Override is done #1434184 -->
-          <!-- <div class="sf-horizontal">
-            <steelhead-user-flags [identity]="identity"></steelhead-user-flags>
+          <div class="sf-horizontal do-not-align-item">
+            <steelhead-user-flags
+              [identity]="identity"
+              (flagsUpdated)="flagsUpdated()"
+            ></steelhead-user-flags>
             <steelhead-report-weight [identity]="identity"></steelhead-report-weight>
-          </div>
-          <div class="sf-horizontal">
             <steelhead-player-game-details [identity]="identity"></steelhead-player-game-details>
             <steelhead-cms-override [identity]="identity"></steelhead-cms-override>
-          </div> -->
-
+          </div>
           <steelhead-ban-history [xuid]="identity.xuid"></steelhead-ban-history>
           <entitlements [identity]="identity"></entitlements>
           <steelhead-gamertags [identity]="identity"></steelhead-gamertags>

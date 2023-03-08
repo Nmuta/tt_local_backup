@@ -14,6 +14,46 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '29d3b079-5e0f-48a7-8062-9f6398b878ba',
+      shortText: 'Update gameTitle to be humanized throughout front-end',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '947b953a-d168-432b-a743-9e449ba30441',
+      shortText: 'Searching now includes both featured and non-featured UGC content',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '5ac93e91-e6c3-46fa-a0e7-117fc6720930',
+      shortText: "Add ability to remove a player's cms override",
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'e498e3b6-b949-11ed-afa1-0242ac120002',
+      shortText: 'Remove whitespace from strings in search box on UGC Details',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '91cdf725-4d0d-45cc-9d26-520e86e2a113',
+      shortText: 'Rename mat tree node functions to remove boilerplate todo prefix',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '6ca4b560-726c-4d07-b313-01946c666460',
+      shortText: 'Add sandbox selection to profile load tool',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '2b2a95a2-d759-40f9-9a0d-ec9509d4b20b',
+      shortText: 'Update to latest Steelhead Forzaclient nuget',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BuildersCupCalendar },
+      uuid: '88fcfa1c-96e6-4d18-bd75-5428aed9ec5c91',
+      shortText: 'Add series event windows, car restrictions, and filtering',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '69abd636-ffb4-4400-ada0-3819fff430d4',
       shortText: 'Add ability to delete Steward teams',
     },

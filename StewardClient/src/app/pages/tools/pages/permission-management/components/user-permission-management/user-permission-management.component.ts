@@ -178,7 +178,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   }
 
   /** Toggle the node selection. Select/deselect all the descendants node. */
-  public todoItemSelectionToggle(node: AttributeTreeFlatNode): void {
+  public itemSelectionToggle(node: AttributeTreeFlatNode): void {
     this.selectedUserHasPermChanges = true;
     const descendants = this.treeControl.getDescendants(node);
     const descendantsPartiallySelected = this.descendantsPartiallySelected(node);
@@ -187,7 +187,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   }
 
   /** Toggle the node selection. Select/deselect all the descendants node. */
-  public todoLeafItemSelectionToggle(node: AttributeTreeFlatNode): void {
+  public leafItemSelectionToggle(node: AttributeTreeFlatNode): void {
     this.selectedUserHasPermChanges = true;
     node.isChecked = !node.isChecked;
     const parent = this.getParentNode(node);

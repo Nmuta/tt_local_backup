@@ -317,43 +317,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             result.Should().BeOfType<List<LiveOpsBanHistory>>();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task GetCmsRacersCupScheduleAsync_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var startTime = DateTime.UtcNow.AddMinutes(1);
-            var daysForward = Fixture.Create<int>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            async Task<RacersCupSchedule> Action() => await provider.GetCmsRacersCupScheduleForUserAsync(xuid, startTime, daysForward, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<RacersCupSchedule>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetCmsRacersCupScheduleAsync_WithNullEndpoint_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var startTime = DateTime.UtcNow.AddMinutes(1);
-            var daysForward = Fixture.Create<int>();
-
-
-            // Act.
-            Func<Task<RacersCupSchedule>> action = async () => await provider.GetCmsRacersCupScheduleForUserAsync(xuid, startTime, daysForward, null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "endpoint"));
-        }
-
         private List<SteelheadBanParameters> GenerateBanParameters()
         {
             var newParams = new SteelheadBanParameters
@@ -388,7 +351,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
                 this.SteelheadUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserBanSummariesOutput>());
                 this.SteelheadUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
-                this.SteelheadUserService.GetCmsRacersCupScheduleForUserAsync(Arg.Any<ulong>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<ForzaEventSessionType[]>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleForUserOutput>());
                 this.Mapper.Map<SteelheadPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -397,7 +359,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SteelheadPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
-                this.Mapper.Map<RacersCupSchedule>(Arg.Any<ForzaRacersCupScheduleData>()).Returns(Fixture.Create<RacersCupSchedule>());
             }
 
             public ISteelheadService SteelheadUserService { get; set; } = Substitute.For<ISteelheadService>();

@@ -20,17 +20,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         Task<IList<LspGroup>> GetLspGroupsAsync(string endpoint);
 
         /// <summary>
-        ///     Gets CMS Racer Cup schedule.
-        /// </summary>
-        Task<RacersCupSchedule> GetCmsRacersCupScheduleAsync(
-            string environment,
-            string slotId,
-            string snapshotId,
-            DateTime startTimeUtc,
-            int daysForward,
-            string endpoint);
-
-        /// <summary>
         ///     Submits string to Pegasus for localization.
         /// </summary>
         Task<Guid> AddStringToLocalizeAsync(LocalizedStringData data, string endpoint);

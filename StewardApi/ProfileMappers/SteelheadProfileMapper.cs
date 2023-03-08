@@ -287,6 +287,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => UgcSearchConstants.NoCarId))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
+                .ForMember(dest => dest.ShowBothUnfeaturedAndFeatured, opt => opt.MapFrom(source => true))
                 .ReverseMap();
             this.CreateMap<UgcSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
                 .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
@@ -408,10 +409,26 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<SteelheadLiveOpsContent.EWeatherConditionType, RacersCupWeatherConditionType>();
 
+            this.CreateMap<SteelheadLiveOpsContent.CarRestrictions, Contracts.Steelhead.BuildersCup.CarRestrictions>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.CarClassId))
+                .ForMember(dest => dest.CarClassName, opt => opt.MapFrom(src => src.CarClassId));
+            this.CreateMap<SteelheadLiveOpsContent.BuildersCupSeriesDataV3, BuildersCupChampionshipSeries>()
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.AllowedCars, opt => opt.MapFrom(src =>
+                    src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider) ?
+                        (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist :
+                        new List<DataCar>()))
+                .ForMember(dest => dest.AllowedCarClass, opt => opt.MapFrom(src =>
+                    src.SelectableCars.GetType() == typeof(RefCarRestrictionsProvider) ?
+                        (src.SelectableCars as RefCarRestrictionsProvider).CarRestrictions :
+                        null));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
                 .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
                 .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime));
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.ChampionshipSeries, opt => opt.MapFrom(src => src.ChampionshipSeriesData));
 
             this.CreateMap<GitPullRequest, PullRequest>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.PullRequestId))
