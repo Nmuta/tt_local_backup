@@ -141,6 +141,12 @@
           <steelhead-player-auctions [identity]="identity"></steelhead-player-auctions>
         </div>
       </mat-tab> -->
+      <mat-tab label="Loyalty">
+        <div class="tab-container">
+          <steelhead-loyalty-rewards [identity]="identity"></steelhead-loyalty-rewards>
+          <entitlements [identity]="identity"></entitlements>
+        </div>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

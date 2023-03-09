@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents a title which Steelhead rewards users for having played.
     /// </summary>
-    public enum SteelheadLoyaltyRewardsSupportedTitle
+    public enum SteelheadLoyaltyRewardsTitle
     {
         FH5,
         FH4,

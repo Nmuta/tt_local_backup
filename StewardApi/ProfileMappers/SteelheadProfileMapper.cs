@@ -436,7 +436,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.WebUrl, opt => opt.MapFrom(source => $"{source.Repository.WebUrl}/pullrequest/{source.PullRequestId}"))
                 .ForMember(dest => dest.CreationDateUtc, opt => opt.MapFrom(source => source.CreationDate));
 
-            this.CreateMap<SteelheadLoyaltyRewardsSupportedTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
+            this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)

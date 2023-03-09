@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new UnknownFailureStewardException($"No record of legacy titles played found. (XUID: {xuid})", ex);
             }
 
-            var convertedList = this.mapper.SafeMap<IList<SteelheadLoyaltyRewardsSupportedTitle>>(titlesPlayed);
+            var convertedList = this.mapper.SafeMap<IList<SteelheadLoyaltyRewardsTitle>>(titlesPlayed);
 
             return this.Ok(convertedList);
         }
@@ -91,8 +91,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         /// <summary>
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
-        [HttpPost("update")]
-        [SwaggerResponse(200, type: typeof(IList<ForzaLoyaltyRewardsSupportedTitles>))]
+        [HttpPost]
+        [SwaggerResponse(200)]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -110,29 +110,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            if (!Enum.TryParse(gameTitle, true, out SteelheadLoyaltyRewardsSupportedTitle gameTitleEnum))
+            if (!Enum.TryParse(gameTitle, true, out SteelheadLoyaltyRewardsTitle gameTitleEnum))
             {
                 throw new InvalidArgumentsStewardException($"Game title: {gameTitle} was not found.");
             }
 
             var convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(gameTitleEnum);
 
-            ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
             try
             {
                 await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, convertedEnum).ConfigureAwait(true);
 
-                var updatedLoyalty = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
-                titlesPlayed = updatedLoyalty.titlesPlayed;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to update titles played. (XUID: {xuid})", ex);
             }
 
-            var convertedList = this.mapper.SafeMap<IList<SteelheadLoyaltyRewardsSupportedTitle>>(titlesPlayed);
-
-            return this.Ok(convertedList);
+            return this.Ok();
         }
     }
 }
