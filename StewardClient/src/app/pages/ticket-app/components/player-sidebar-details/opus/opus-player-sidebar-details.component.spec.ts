@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { createMockOpusService, OpusService } from '@services/opus';
 import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('OpusPlayerSidebarDetailsComponent', () => {
   let mockOpusService: OpusService;
@@ -25,7 +26,7 @@ describe('OpusPlayerSidebarDetailsComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [OpusPlayerSidebarDetailsComponent],
+      declarations: [OpusPlayerSidebarDetailsComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockWindowService(),

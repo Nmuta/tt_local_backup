@@ -82,19 +82,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var notifications = new List<Notification>();
 
+            NotificationsManagementService.LiveOpsRetrieveForUserOutput response = null;
+
             try
             {
-                var response = await this.Services.NotificationManagementService.LiveOpsRetrieveForUser(
+                response = await this.Services.NotificationManagementService.LiveOpsRetrieveForUser(
                     xuid,
                     maxResults).ConfigureAwait(false);
-
-                notifications.AddRange(this.mapper.Map<IList<Notification>>(response.results));
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException(
                     $"Failed to retrieve messages for player. (xuid: {xuid})", ex);
             }
+
+            notifications.AddRange(this.mapper.SafeMap<IList<Notification>>(response.results));
 
             return this.Ok(notifications);
         }
@@ -144,15 +146,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             Notification message = null;
+
+            NotificationsManagementService.GetNotificationOutput response = null;
+
             try
             {
-                var response = await this.Services.NotificationManagementService.GetNotification(xuid, messageIdAsGuid).ConfigureAwait(true);
-                message = this.mapper.Map<Notification>(response.notification);
+                response = await this.Services.NotificationManagementService.GetNotification(xuid, messageIdAsGuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"Failed to get message. (messageId: {messageIdAsGuid})", ex);
             }
+
+            message = this.mapper.SafeMap<Notification>(response.notification);
 
             return this.Ok(message);
         }

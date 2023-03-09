@@ -17,10 +17,15 @@ import { AuctionFiltersModule } from '../auction-filters/auction-filters.module'
 import { LuxonModule } from 'luxon-angular';
 import { ImageModalModule } from '@views/image-modal/image-modal.module';
 import { WoodstockPlayerAuctionsComponent } from './woodstock/woodstock-player-auctions.component';
+import { SteelheadPlayerAuctionsComponent } from './steelhead/steelhead-player-auctions.component';
 
 /** Display for player auctions. */
 @NgModule({
-  declarations: [SunrisePlayerAuctionsComponent, WoodstockPlayerAuctionsComponent],
+  declarations: [
+    SunrisePlayerAuctionsComponent,
+    WoodstockPlayerAuctionsComponent,
+    SteelheadPlayerAuctionsComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -28,7 +33,6 @@ import { WoodstockPlayerAuctionsComponent } from './woodstock/woodstock-player-a
     MatTableModule,
     MatTooltipModule,
     FontAwesomeModule,
-    PipesModule,
     ErrorSpinnerModule,
     JsonDumpModule,
     MatIconModule,
@@ -40,6 +44,10 @@ import { WoodstockPlayerAuctionsComponent } from './woodstock/woodstock-player-a
     LuxonModule,
     ImageModalModule,
   ],
-  exports: [SunrisePlayerAuctionsComponent, WoodstockPlayerAuctionsComponent],
+  exports: [
+    SunrisePlayerAuctionsComponent,
+    WoodstockPlayerAuctionsComponent,
+    SteelheadPlayerAuctionsComponent,
+  ],
 })
 export class PlayerAuctionsModule {}

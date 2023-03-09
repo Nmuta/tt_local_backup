@@ -16,6 +16,7 @@ using Turn10.Services.LiveOps.FM8.Generated;
 
 using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -87,7 +88,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public Dependencies()
             {
                 this.SteelheadService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
-                this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
+                this.Mapper.SafeMap<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
             }
 
             public ISteelheadService SteelheadService { get; set; } = Substitute.For<ISteelheadService>();

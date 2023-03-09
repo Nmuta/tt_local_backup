@@ -7,3 +7,8 @@ export enum GiftIdentityAntecedent {
   T10Id = 'T10Id',
   LspGroupId = 'LspGroupId',
 }
+
+/** Useful email addresses. */
+export enum EmailAddresses {
+  LiveOpsAdmins = 't10liveopstools@microsoft.com',
+}

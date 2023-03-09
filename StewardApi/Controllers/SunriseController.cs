@@ -365,7 +365,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var validatedFlags = this.mapper.Map<SunriseUserFlags>(userFlags);
+            var validatedFlags = this.mapper.SafeMap<SunriseUserFlags>(userFlags);
             await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 
@@ -878,7 +878,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SunriseBanParameters>>(banInput);
             var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
@@ -959,7 +959,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SunriseBanParameters>>(banInput);
             var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(
                 banParameters,
                 requesterObjectId,

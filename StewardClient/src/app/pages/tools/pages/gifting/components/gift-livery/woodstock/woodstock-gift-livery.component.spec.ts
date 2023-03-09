@@ -21,6 +21,7 @@ import { GiftResponse } from '@models/gift-response';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('WoodstockGiftLiveryComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftLiveryComponent>;
@@ -38,7 +39,7 @@ describe('WoodstockGiftLiveryComponent', () => {
         NgxsModule.forRoot(),
         ReactiveFormsModule,
       ],
-      declarations: [WoodstockGiftLiveryComponent],
+      declarations: [WoodstockGiftLiveryComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockBackgroundJobService(), createMockWoodstockService()],
     }).compileComponents();

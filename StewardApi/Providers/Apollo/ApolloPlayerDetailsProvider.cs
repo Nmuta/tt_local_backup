@@ -52,9 +52,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             query.ShouldNotBeNull(nameof(query));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            ApolloPlayerDetails result = null;
+
             try
             {
-                var result = new ApolloPlayerDetails();
+                result = new ApolloPlayerDetails();
 
                 if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
                 {
@@ -76,12 +78,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     result = playerDetails ??
                              throw new NotFoundStewardException($"No player found for Gamertag: {query.Gamertag}.");
                 }
-
-                var identity = this.mapper.Map<IdentityResultAlpha>(result);
-                identity.Query = query;
-                identity.SetErrorForInvalidXuid();
-
-                return identity;
             }
             catch (Exception ex)
             {
@@ -92,6 +88,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
+
+            var identity = this.mapper.SafeMap<IdentityResultAlpha>(result);
+            identity.Query = query;
+            identity.SetErrorForInvalidXuid();
+
+            return identity;
         }
 
         /// <inheritdoc />
@@ -100,17 +102,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserService.LiveOpsGetUserDataByGamertagOutput response = null;
+
             try
             {
-                var response = await this.apolloService.LiveOpsGetUserDataByGamertagAsync(gamertag, endpoint)
+                response = await this.apolloService.LiveOpsGetUserDataByGamertagAsync(gamertag, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<ApolloPlayerDetails>(response.returnData);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
             }
+
+            return this.mapper.SafeMap<ApolloPlayerDetails>(response.returnData);
         }
 
         /// <inheritdoc />
@@ -118,22 +122,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserService.LiveOpsGetUserDataByXuidOutput response = null;
+
             try
             {
-                var response = await this.apolloService.LiveOpsGetUserDataByXuidAsync(xuid, endpoint)
+                response = await this.apolloService.LiveOpsGetUserDataByXuidAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
                 if (response.returnData.CurrentProfileId <= 0)
                 {
                     throw new NotFoundStewardException($"No player found for XUID: {xuid}.");
                 }
-
-                return this.mapper.Map<ApolloPlayerDetails>(response.returnData);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<ApolloPlayerDetails>(response.returnData);
         }
 
         /// <inheritdoc />
@@ -268,22 +274,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             banEntryId.ShouldBeGreaterThanValue(-1);
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserService.ExpireBanEntriesOutput result = null;
+            var forzaExpireBanParameters = this.mapper.SafeMap<ForzaUserExpireBanParameters>(banEntryId);
+
             try
             {
-                var forzaExpireBanParameters =
-                    this.mapper.Map<ForzaUserExpireBanParameters>(banEntryId);
-
                 ForzaUserExpireBanParameters[] parameterArray = { forzaExpireBanParameters };
 
-                var result = await this.apolloService.ExpireBanEntriesAsync(parameterArray, 1, endpoint)
+                result = await this.apolloService.ExpireBanEntriesAsync(parameterArray, 1, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to expire ban. (banId: {banEntryId}).", ex);
             }
+
+            return this.mapper.SafeMap<UnbanResult>(result.unbanResults[0]);
         }
 
         /// <inheritdoc />
@@ -295,17 +301,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var banEntryIds = new int[] { banEntryId };
+            UserService.DeleteBanEntriesOutput result = null;
+
             try
             {
-                var result = await this.apolloService.DeleteBanEntriesAsync(banEntryIds, endpoint)
+                result = await this.apolloService.DeleteBanEntriesAsync(banEntryIds, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to delete ban. (banId: {banEntryId}).", ex);
             }
+
+            return this.mapper.SafeMap<UnbanResult>(result.unbanResults[0]);
         }
 
         /// <inheritdoc />
@@ -343,6 +351,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserService.GetUserBanSummariesV2Output result = null;
+
             try
             {
                 if (xuids.Count == 0)
@@ -350,24 +360,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     return new List<BanSummary>();
                 }
 
-                var result = await this.apolloService.GetUserBanSummariesAsync(
+                result = await this.apolloService.GetUserBanSummariesAsync(
                     xuids.ToArray(),
                     endpoint).ConfigureAwait(false);
-
-                var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
-
-                banSummaryResults = banSummaryResults.Select(data =>
-                {
-                    data.UserExists = !string.IsNullOrWhiteSpace(data.Gamertag);
-                    return data;
-                }).ToList();
-
-                return banSummaryResults;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"User ban summary lookup has failed.", ex);
             }
+
+            var banSummaryResults = this.mapper.SafeMap<IList<BanSummary>>(result.banSummaries);
+
+            banSummaryResults = banSummaryResults.Select(data =>
+            {
+                data.UserExists = !string.IsNullOrWhiteSpace(data.Gamertag);
+                return data;
+            }).ToList();
+
+            return banSummaryResults;
         }
 
         /// <inheritdoc />
@@ -375,17 +385,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserService.GetConsolesOutput response = null;
+
             try
             {
-                var response = await this.apolloService.GetConsolesAsync(xuid, maxResults, endpoint)
+                response = await this.apolloService.GetConsolesAsync(xuid, maxResults, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No consoles found for Xuid: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<ConsoleDetails>>(response.consoles);
         }
 
         /// <inheritdoc />
@@ -413,20 +425,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserService.GetSharedConsoleUsersOutput response = null;
+
             try
             {
-                var response = await this.apolloService.GetSharedConsoleUsersAsync(
+                response = await this.apolloService.GetSharedConsoleUsersAsync(
                     xuid,
                     startIndex,
                     maxResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No shared console users found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
         }
 
         /// <inheritdoc/>

@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { SteelheadPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/gamertag/details';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SteelheadPlayerSidebarDetailsComponent', () => {
   let mockSteelheadService: SteelheadService;
@@ -25,7 +26,7 @@ describe('SteelheadPlayerSidebarDetailsComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [SteelheadPlayerSidebarDetailsComponent],
+      declarations: [SteelheadPlayerSidebarDetailsComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockWindowService(),

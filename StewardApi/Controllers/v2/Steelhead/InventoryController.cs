@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -78,18 +79,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 var service = this.Services.LiveOpsService;
 
+                Forza.WebServices.FM8.Generated.LiveOpsService.GetAdminUserInventoryByProfileIdOutput response = null;
+
                 try
                 {
-                    var response = await service.GetAdminUserInventoryByProfileId(profileId)
+                    response = await service.GetAdminUserInventoryByProfileId(profileId)
                         .ConfigureAwait(false);
-                    var playerInventoryDetails = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                    return playerInventoryDetails;
                 }
                 catch (Exception ex)
                 {
                     throw new UnknownFailureStewardException($"Failed to retrieve player inventory. (profileId: {profileId})", ex);
                 }
+
+                var playerInventoryDetails = this.mapper.SafeMap<SteelheadPlayerInventory>(response.summary);
+
+                return playerInventoryDetails;
             }
 
             var getPlayerInventory = GetInventory();

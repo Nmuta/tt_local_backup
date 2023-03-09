@@ -272,7 +272,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<ApolloBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<ApolloBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -355,7 +355,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<ApolloBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<ApolloBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -625,7 +625,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var validatedFlags = this.mapper.Map<ApolloUserFlags>(userFlags);
+            var validatedFlags = this.mapper.SafeMap<ApolloUserFlags>(userFlags);
             await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 
