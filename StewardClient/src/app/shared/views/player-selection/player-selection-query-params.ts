@@ -138,10 +138,9 @@ function hasParam(param: string): boolean {
 
 /** Removes special characters from a gamertag */
 function cleanGamertagForQueryParam(gamertag: string): string {
-  if (gamertag == null)
-  {
+  if (gamertag == null) {
     return '';
   }
-  
+
   return gamertag.replace(/[^a-zA-Z0-9,;\-.!? ]/g, '');
 }
