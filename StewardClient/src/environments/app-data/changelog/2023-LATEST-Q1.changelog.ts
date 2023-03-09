@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: 'a962db50-cf71-4cae-8d42-87ce32fe5063',
+      shortText: 'Add Loyalty tab with Loyalty Rewards tool',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '947b953a-d168-432b-a743-9e449ba30441',
       shortText: 'Searching now includes both featured and non-featured UGC content',
