@@ -43,7 +43,13 @@ export function handleOldPlayerSelectionQueryParams(params: Params, router: Rout
 
 /** Maps router query params to player selection query param object. */
 export function mapPlayerSelectionQueryParam(params: Params): PlayerSelectionQueryParam {
-  const gamertagParam = params[QueryParam.Gamertag];
+  let gamertagParam;
+
+  // Strips special characters from GTAG before search (handles #)
+  if (params[QueryParam.Gamertag] != null) {
+    gamertagParam = params[QueryParam.Gamertag].replace(/[^a-zA-Z0-9,;\-.!? ]/g, '', '');
+  }
+
   const xuidParam = params[QueryParam.Xuid];
   const t10IdParam = params[QueryParam.T10Id];
 
