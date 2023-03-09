@@ -9,7 +9,7 @@ export enum SteelheadLoyaltyRewardsTitle {
   FH2 = 'FH2',
   FH3 = 'FH3',
   FH4 = 'FH4',
-  FH5 = 'FH5',  
+  FH5 = 'FH5',
   FM2 = 'FM2',
   FM3 = 'FM3',
   FM4 = 'FM4',
@@ -18,7 +18,6 @@ export enum SteelheadLoyaltyRewardsTitle {
   FM7 = 'FM7',
   Street = 'Street',
 }
-
 
 /** The /v2/steelhead/buildersCup endpoints. */
 @Injectable({
@@ -33,8 +32,11 @@ export class SteelheadLoyaltyRewardsService {
     return this.api.getRequest$<SteelheadLoyaltyRewardsTitle[]>(`${this.basePath}/${xuid}/loyalty`);
   }
 
-  /** Get a player's previously played titles. */
-  public postUserLoyalty$(xuid: BigNumber, title: SteelheadLoyaltyRewardsTitle): Observable<null> {
-    return this.api.postRequest$<null>(`${this.basePath}/${xuid}/loyalty`, title);
+  /** sets a player's previously played titles, granting legacy rewards as well. */
+  public postUserLoyalty$(
+    xuid: BigNumber,
+    titles: SteelheadLoyaltyRewardsTitle[],
+  ): Observable<null> {
+    return this.api.postRequest$<null>(`${this.basePath}/${xuid}/loyalty`, titles);
   }
 }

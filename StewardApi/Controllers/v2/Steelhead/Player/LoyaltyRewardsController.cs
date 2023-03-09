@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -48,15 +49,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     public class LoyaltyRewardsController : V2SteelheadControllerBase
     {
         private readonly IMapper mapper;
+        private readonly ILoggingService loggingService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LoyaltyRewardsController"/> class.
         /// </summary>
-        public LoyaltyRewardsController(IMapper mapper)
+        public LoyaltyRewardsController(IMapper mapper, ILoggingService loggingService)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
 
             this.mapper = mapper;
+            this.loggingService = loggingService;
         }
 
         /// <summary>
@@ -103,28 +107,49 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
-        public async Task<IActionResult> UpdateTitlesUserPlayed(ulong xuid, [FromBody] string gameTitle)
+        public async Task<IActionResult> UpdateTitlesUserPlayed(ulong xuid, [FromBody] IList<string> gameTitles)
         {
             //xuid.IsValidXuid();
-            gameTitle.ShouldNotBeNull(nameof(gameTitle));
+            gameTitles.ShouldNotBeNull(nameof(gameTitles));
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            if (!Enum.TryParse(gameTitle, true, out SteelheadLoyaltyRewardsTitle gameTitleEnum))
+            var invalidGameTitles = new List<string>();
+            var validGameTitles = new List<SteelheadLoyaltyRewardsTitle>();
+
+            foreach (var gameTitle in gameTitles)
             {
-                throw new InvalidArgumentsStewardException($"Game title: {gameTitle} was not found.");
+                if (!Enum.TryParse(gameTitle, true, out SteelheadLoyaltyRewardsTitle gameTitleEnum))
+                {
+                    invalidGameTitles.Add(gameTitle);
+                }
+
+                validGameTitles.Add(gameTitleEnum);
             }
 
-            var convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(gameTitleEnum);
-
-            try
+            if (invalidGameTitles.Count > 0)
             {
-                await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, convertedEnum).ConfigureAwait(true);
-
+                throw new InvalidArgumentsStewardException($"Game titles: {invalidGameTitles} were not found.");
             }
-            catch (Exception ex)
+
+            var gameTitleEnums = new List<ForzaLoyaltyRewardsSupportedTitles>();
+            foreach (var validTitle in validGameTitles)
             {
-                throw new UnknownFailureStewardException($"Failed to update titles played. (XUID: {xuid})", ex);
+                var convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(validTitle);
+                gameTitleEnums.Add(convertedEnum);
+            }
+
+            foreach (var titleEnum in gameTitleEnums)
+            {
+                try
+                {
+                    await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, titleEnum).ConfigureAwait(true);
+
+                }
+                catch (Exception ex)
+                {
+                    this.loggingService.LogException(new AppInsightsException($"Failed to add {titleEnum} to {xuid}'s previously played titles.", ex));
+                }
             }
 
             return this.Ok();

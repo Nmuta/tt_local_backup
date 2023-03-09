@@ -8,9 +8,11 @@ import { of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { SteelheadLoyaltyRewardsService, SteelheadLoyaltyRewardsTitle } from '@services/api-v2/steelhead/player/loyalty-rewards/steelhead-loyalty-rewards.service';
-import { chain, includes, keys } from 'lodash';
-import { Dictionary } from 'ts-essentials';
+import {
+  SteelheadLoyaltyRewardsService,
+  SteelheadLoyaltyRewardsTitle,
+} from '@services/api-v2/steelhead/player/loyalty-rewards/steelhead-loyalty-rewards.service';
+import { includes, keys } from 'lodash';
 
 type LoyaltyRewardsDataInterface = {
   label: string;
@@ -33,18 +35,23 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
   public getHasPlayedRecord$ = new Subject<void>();
   public hasPlayedRecordTable = new BetterMatTableDataSource<LoyaltyRewardsDataInterface>();
   public displayedColumns: string[] = [];
-  public getMonitor = new ActionMonitor('GET Has played Records');
+  public getMonitor = new ActionMonitor('GET Has played records');
+  public postMonitor = new ActionMonitor('POST Update played records');
   public actionLabel: string = 'updateHasPlayed';
   public singlePostMonitors: { [key: string]: ActionMonitor } = {};
 
   public gameTitleColumns = keys(SteelheadLoyaltyRewardsTitle);
   public playedTitles: SteelheadLoyaltyRewardsTitle[] = [];
+  public titlesToSend: string[] = [];
 
-  public disableSingleActions: boolean = true;
+  public allowSend: boolean = false;
 
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
 
-  constructor(protected readonly store: Store, private loyaltyRewardsService: SteelheadLoyaltyRewardsService,) {
+  constructor(
+    protected readonly store: Store,
+    private loyaltyRewardsService: SteelheadLoyaltyRewardsService,
+  ) {
     super();
   }
 
@@ -55,6 +62,8 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
         tap(() => {
           this.hasPlayedRecordTable.data = [];
           this.displayedColumns = [];
+          this.playedTitles = [];
+          this.titlesToSend = [];
         }),
         switchMap(() => {
           if (!this.identity?.xuid) {
@@ -88,25 +97,35 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
         this.singlePostMonitors = actions;
         this.hasPlayedRecordTable.data = convertedData;
         this.displayedColumns = ['label', ...this.gameTitleColumns];
-        console.log(this.hasPlayedRecordTable)
       });
 
     this.getHasPlayedRecord$.next();
   }
 
   /** Called to manually send out a reward. */
-  public updateTitlesPlayed(gameAbbriviation: string): void {
+  public updateTitlesPlayed(): void {
     if (!this.identity.xuid || this.identity.xuid.isNaN()) {
       return;
     }
-    this.singlePostMonitors[gameAbbriviation] = this.singlePostMonitors[gameAbbriviation].repeat();
 
-    console.log(gameAbbriviation)
-    //TODO update played titles
+    this.postMonitor = this.postMonitor.repeat();
+    this.loyaltyRewardsService
+      .postUserLoyalty$(this.identity.xuid, this.titlesToSend as SteelheadLoyaltyRewardsTitle[])
+      .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(_ => {
+        this.getHasPlayedRecord$.next();
+        this.allowSend = false;
+      });
   }
 
-  /** Controls disabled state for single Legacy titles. */
-  public toggleSingleSend($event: MatCheckboxChange): void {
-    this.disableSingleActions = !$event.checked;
+  /** Controls disabled state for updating titles that have been played. */
+  public toggleTitleSend($event: MatCheckboxChange, gameTitle: string): void {
+    if ($event.checked) {
+      this.titlesToSend.push(gameTitle);
+      this.allowSend = true;
+    } else {
+      this.titlesToSend = this.titlesToSend.filter(title => title != gameTitle);
+      this.allowSend = this.titlesToSend.length > 0;
+    }
   }
 }

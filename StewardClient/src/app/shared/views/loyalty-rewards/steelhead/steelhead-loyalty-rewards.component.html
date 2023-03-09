@@ -4,8 +4,9 @@
     <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
     <help-popover-icon cardTitle="Loyalty Rewards">
       <span
-        >When clicking the 'Send Loyalty Rewards' button, the tool will send out a reward for each
-        title the user has a record of playing but hasn't received a gift for.</span
+        >When clicking the 'Update Has Played' button, the tool will mark the selected titles as
+        played. The user should recieve the associated loyalty rewards on next login. They will not
+        arrive via notification, and this action is not currently revertable.</span
       >
     </help-popover-icon>
   </mat-card-header>
@@ -16,17 +17,21 @@
           <ng-container matColumnDef="label">
             <th mat-header-cell *matHeaderCellDef>Label</th>
             <td mat-cell *matCellDef="let entry">
-              <span
-                >{{ entry.label | humanize }}
-                <mat-checkbox
+              <span>
+                <button
                   *ngIf="entry.label === actionLabel"
+                  mat-raised-button
+                  color="primary"
+                  [monitor]="postMonitor"
                   stateManager
-                  [permissionAttribute]="permAttribute"
-                  [permissionTitle]="gameTitle"
-                  [checked]="!disableSingleActions"
-                  (change)="toggleSingleSend($event)"
+                  [disabled]="!allowSend"
+                  monitorDisable
+                  monitorWarnSnackbar
+                  (click)="updateTitlesPlayed()"
                 >
-                </mat-checkbox>
+                  {{ entry.label | humanize }}
+                  <button-spinner [monitor]="postMonitor" defaultIcon="send"></button-spinner>
+                </button>
               </span>
             </td>
           </ng-container>
@@ -42,7 +47,15 @@
                 >
               </span>
               <span *ngIf="row.label === 'updateHasPlayed'">
-                <button
+                <mat-checkbox
+                  *ngIf="!row.titles[gameColumn]"
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
+                  (change)="toggleTitleSend($event, gameColumn)"
+                >
+                </mat-checkbox>
+                <!-- <button
                   *ngIf="!row.titles[gameColumn]"
                   mat-raised-button
                   color="primary"
@@ -60,7 +73,7 @@
                     [monitor]="singlePostMonitors[gameColumn]"
                     defaultIcon="send"
                   ></button-spinner>
-                </button>
+                </button> -->
               </span>
             </td>
           </ng-container>

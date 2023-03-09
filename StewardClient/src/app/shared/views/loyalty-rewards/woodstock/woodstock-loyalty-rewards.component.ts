@@ -53,7 +53,10 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
 
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
 
-  constructor(protected readonly store: Store, private woodstockPlayerService: WoodstockPlayerService,) {
+  constructor(
+    protected readonly store: Store,
+    private woodstockPlayerService: WoodstockPlayerService,
+  ) {
     super();
   }
 
