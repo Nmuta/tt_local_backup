@@ -81,5 +81,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Add a product to a profile's purchased entitlements.
         /// </summary>
         Task AdminEntitlePurchasable(int profileId, string productId);
+
+        /// <summary>
+        ///     Set driver level and prestige rank by xuid.
+        /// </summary>
+        Task SetDriverLevel(ulong xuid, uint driverLevel, uint prestigeRank);
+
+        /// <summary>
+        ///     Get driver level, prestige rank and experience points for a given xuid.
+        /// </summary>
+        Task<GetDriverLevelOutput> GetDriverLevel(ulong xuid);
     }
 }
