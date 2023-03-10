@@ -139,7 +139,7 @@ function hasParam(param: string): boolean {
 /** Removes special characters from a gamertag */
 function cleanGamertagForQueryParam(gamertag: string): string {
   if (gamertag == null || gamertag == undefined) {
-    return '';
+    return gamertag;
   }
 
   return gamertag.replace(new RegExp('#', 'g'), '');
