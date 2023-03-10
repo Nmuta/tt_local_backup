@@ -71,5 +71,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Gets specific user inventory by Profile ID.
         /// </summary>
         Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
+
+        /// <summary>
+        ///     Gets purchased entitlements by Profile ID.
+        /// </summary>
+        Task<GetAdminPurchasablesOutput> GetAdminPurchasables(int profileId);
+
+        /// <summary>
+        ///     Add a product to a profile's purchased entitlements.
+        /// </summary>
+        Task AdminEntitlePurchasable(int profileId, string productId);
     }
 }

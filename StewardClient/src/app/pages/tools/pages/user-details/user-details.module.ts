@@ -50,6 +50,7 @@ import { ForteUserDetailsComponent } from './forte/forte-user-details.component'
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
+import { PaidEntitlementsModule } from '@views/paid-entitlements/paid-entitlements.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -108,6 +109,7 @@ import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
     PlayerProfileManagementModule,
     StateManagersModule,
     PermissionsModule,
+    PaidEntitlementsModule,
   ],
 })
 export class UserDetailsModule {}
