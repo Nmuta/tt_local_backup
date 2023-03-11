@@ -551,7 +551,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         {
             var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUgcObject(tuneId).ConfigureAwait(false);
+            return await storefrontService.GetUgc(tuneId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
