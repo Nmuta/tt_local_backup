@@ -545,6 +545,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
+            Guid tuneId,
+            string endpoint)
+        {
+            var storefrontService = await this.serviceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.GetUgcObject(tuneId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(
             int maxUgcCount,
             ulong xuid,
