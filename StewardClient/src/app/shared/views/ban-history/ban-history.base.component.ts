@@ -10,6 +10,7 @@ import { LiveOpsExtendedBanDescription } from '@models/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { getUserDetailsRoute } from '@helpers/route-links';
 
 /** Extended type from LiveOpsExtendedBanDescription. */
 type BanHistoryTableEntry = LiveOpsExtendedBanDescription & {
@@ -41,6 +42,8 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
 
   /** Columns to always display. */
   private baseColumns = ['state', 'reason', 'banDetails', 'startTimeUtc', 'expireTimeUtc'];
+
+  public generalRouterLink = getUserDetailsRoute('general');
 
   public actionsEnabled: boolean = false;
 

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
+import { ForumBanningComponent } from './pages/forum/forum-banning.component';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
 import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
 import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.component';
@@ -41,6 +42,12 @@ const routes: Routes = [
         path: 'apollo',
         canActivate: [TitleMemorySetGuard],
         component: ApolloBanningComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'forum',
+        canActivate: [TitleMemorySetGuard],
+        component: ForumBanningComponent,
         pathMatch: 'full',
       },
     ],

@@ -1,7 +1,21 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header class="sf-header">
     <mat-card-title>Ban History</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <button
+      mat-stroked-button
+      mat-button
+      color="primary"
+      class="forum-ban-link"
+      [routerLink]="generalRouterLink"
+      queryParamsHandling="preserve"
+    >
+      <help-popover-icon cardTitle="Forum Ban History">
+        <div>Forum Bans can be found in the General tab of Player Details</div>
+      </help-popover-icon>
+      <span>Looking for Forum Bans?</span>
+    </button>
   </mat-card-header>
   <mat-card-content>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
