@@ -12,6 +12,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
@@ -122,6 +123,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public IWoodstockItemsProvider ItemsProvider { get; set; } = Substitute.For<IWoodstockItemsProvider>();
 
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+
             public IMapper mapper { get; set; } = Substitute.ForPartsOf<Mapper>(new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new WoodstockProfileMapper());
@@ -131,6 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             public SearchController Build() => new SearchController(
                 this.storefrontProvider,
                 this.ItemsProvider,
+                this.LoggingService,
                 mapper)
             { ControllerContext = this.ControllerContext };
         }

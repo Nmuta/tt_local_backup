@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
@@ -67,17 +68,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
+            Services.LiveOps.FM8.Generated.UserManagementService.GetConsolesOutput response = null;
+
             try
             {
-                var response = await this.Services.UserManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(true);
-                var result = this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
-
-                return this.Ok(result);
+                response = await this.Services.UserManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"No consoles found. (XUID: {xuid})", ex);
             }
+
+            var result = this.mapper.SafeMap<IList<ConsoleDetails>>(response.consoles);
+
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -93,21 +97,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
+            Services.LiveOps.FM8.Generated.UserManagementService.GetSharedConsoleUsersOutput response = null;
+
             try
             {
-                var response = await this.Services.UserManagementService.GetSharedConsoleUsers(
+                response = await this.Services.UserManagementService.GetSharedConsoleUsers(
                         xuid,
                         startIndex,
                         maxResults).ConfigureAwait(true);
-
-                var result = this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
-
-                return this.Ok(result);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"No shared console users found. (XUID: {xuid})", ex);
             }
+
+            var result = this.mapper.SafeMap<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
+
+            return this.Ok(result);
         }
     }
 }

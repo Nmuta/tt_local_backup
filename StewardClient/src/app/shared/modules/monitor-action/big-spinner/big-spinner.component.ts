@@ -8,6 +8,6 @@ import { ActionMonitor } from '../action-monitor';
   styleUrls: ['./big-spinner.component.scss'],
 })
 export class BigSpinnerComponent {
-  /** REVIEW-COMMENT: ActionMonitor that decide whether the spinner is shown. */
+  /** ActionMonitor that decide whether the spinner is shown. */
   @Input() monitor: ActionMonitor;
 }

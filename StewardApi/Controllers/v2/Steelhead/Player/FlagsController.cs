@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
@@ -118,7 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var validatedFlags = this.mapper.Map<SteelheadUserFlags>(userFlags);
+            var validatedFlags = this.mapper.SafeMap<SteelheadUserFlags>(userFlags);
 
             var service = this.Services.UserManagementService;
             try

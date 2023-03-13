@@ -5,6 +5,7 @@ using AutoMapper;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 
@@ -40,24 +41,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FM7.Generated.UserManagementService.GetUserGroupsOutput result = null;
+
             try
             {
-                var result = await this.apolloService.GetUserGroupsAsync(0, GroupLookupMaxResults, endpoint)
+                result = await this.apolloService.GetUserGroupsAsync(0, GroupLookupMaxResults, endpoint)
                     .ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
-
-                if (lspGroups.Count > GroupLookupMaxResults - 50)
-                {
-                    this.loggingService.LogException(new ApproachingLimitAppInsightsException(
-                        $"LSP group lookup for {TitleConstants.ApolloFullName} is nearing the maximum lookup value."));
-                }
-
-                return lspGroups;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.ApolloFullName}", ex);
             }
+
+            var lspGroups = this.mapper.SafeMap<IList<LspGroup>>(result.userGroups);
+
+            if (lspGroups.Count > GroupLookupMaxResults - 50)
+            {
+                this.loggingService.LogException(new ApproachingLimitAppInsightsException(
+                    $"LSP group lookup for {TitleConstants.ApolloFullName} is nearing the maximum lookup value."));
+            }
+
+            return lspGroups;
         }
     }
 }

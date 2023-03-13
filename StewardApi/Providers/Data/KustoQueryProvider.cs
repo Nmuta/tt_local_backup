@@ -11,6 +11,7 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -77,18 +78,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task<IList<KustoQuery>> GetKustoQueriesAsync()
         {
+            IList<KustoQueryInternal> result = null;
+
             try
             {
                 var tableQuery = new TableQuery<KustoQueryInternal>();
 
-                var result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<KustoQuery>>(result);
+                result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException("Failed to lookup saved Kusto Queries.", ex);
             }
+
+            return this.mapper.SafeMap<IList<KustoQuery>>(result);
         }
 
         /// <inheritdoc />
