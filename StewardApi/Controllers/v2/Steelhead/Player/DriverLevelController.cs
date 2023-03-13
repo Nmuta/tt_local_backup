@@ -100,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to set driver level for player. (XUID: {xuid})", ex);
+                throw new UnknownFailureStewardException($"Failed to set driver level for player. (XUID: {xuid} -- Driver Level: {driverLevel} -- Prestige Rank: {prestigeRank})", ex);
             }
 
             return this.Ok();
