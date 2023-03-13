@@ -23,6 +23,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Added ability to grant a user paid entitlements',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: 'cb5b78a6-4021-42ea-b7b6-80ede3e97326',
+      shortText: 'Remove special characters from gamertag lookup on paste or when manually typed',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserBanning },
       uuid: '7880276c-1f28-4927-8f80-7fbc92acf04a',
       shortText: 'Show error when valid ban reason is not selected',
