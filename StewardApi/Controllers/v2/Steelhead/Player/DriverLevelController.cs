@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException($"No driver level found for player. (XUID: {xuid})", ex);
+                throw new UnknownFailureStewardException($"No driver level found for player. (XUID: {xuid})", ex);
             }
 
             var mappedResponse = this.mapper.SafeMap<SteelheadDriverLevel>(response);
@@ -90,17 +90,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttribute.SetDriverLevel)]
-        public async Task<IActionResult> SetDriverLevel(ulong xuid, uint driverLevel, uint prestigeRank)
+        public async Task<IActionResult> SetDriverLevel(ulong xuid, [FromBody] SteelheadDriverLevel newDriverLevel)
         {
             //xuid.IsValidXuid();
 
             try
             {
-                await this.Services.LiveOpsService.SetDriverLevel(xuid, driverLevel, prestigeRank).ConfigureAwait(false);
+                await this.Services.LiveOpsService.SetDriverLevel(xuid, newDriverLevel.DriverLevel, newDriverLevel.PrestigeRank).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to set driver level for player. (XUID: {xuid} -- Driver Level: {driverLevel} -- Prestige Rank: {prestigeRank})", ex);
+                throw new UnknownFailureStewardException($"Failed to set driver level for player. (XUID: {xuid}) (driverLevel: {newDriverLevel.DriverLevel}) (prestigeRank: {newDriverLevel.PrestigeRank})", ex);
             }
 
             return this.Ok();
