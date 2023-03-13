@@ -32,7 +32,7 @@ export class UserBanningComponent {
     },
     {
       name: 'Forum',
-      codename: 'Forum',
+      codename: undefined,
       route: getForumBanningRoute(),
     },
   ];
