@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { UserState } from '@shared/state/user/user.state';
 import { SteelheadLoyaltyRewardsComponent } from './steelhead-loyalty-rewards.component';
 
@@ -20,7 +21,7 @@ describe('SteelheadLoyaltyRewardsComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [SteelheadLoyaltyRewardsComponent],
+      declarations: [SteelheadLoyaltyRewardsComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
