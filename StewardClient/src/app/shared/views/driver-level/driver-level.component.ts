@@ -14,7 +14,7 @@ export interface DriverLevelServiceContract {
   /** Game title the service contract is associated with. */
   gameTitle: GameTitle;
   getDriverLevel$(xuid: BigNumber): Observable<PlayerDriverLevel>;
-  setDriverLevel$(xuid: BigNumber, driverLevel: PlayerDriverLevel): Observable<PlayerDriverLevel>
+  setDriverLevel$(xuid: BigNumber, driverLevel: PlayerDriverLevel): Observable<PlayerDriverLevel>;
 }
 
 /** Component to get and set a player's cms override. */
@@ -32,7 +32,7 @@ export class DriverLevelComponent extends BaseComponent implements OnChanges {
   public formControls = {
     driverLevel: new FormControl('', [Validators.required, Validators.min(1), Validators.max(999)]),
     prestigeRank: new FormControl('', [Validators.required, Validators.min(0), Validators.max(99)]),
-    experiencePoints: new FormControl({value: '', disabled: true}, Validators.required)
+    experiencePoints: new FormControl({ value: '', disabled: true }, Validators.required),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -62,11 +62,11 @@ export class DriverLevelComponent extends BaseComponent implements OnChanges {
       this.getMonitor = this.setMonitor.repeat();
 
       this.service
-      .getDriverLevel$(this.xuid)
-      .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(driverLevel => {
-        this.formGroup.setValue(driverLevel);
-      });
+        .getDriverLevel$(this.xuid)
+        .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+        .subscribe(driverLevel => {
+          this.formGroup.setValue(driverLevel);
+        });
     }
   }
 
@@ -75,10 +75,10 @@ export class DriverLevelComponent extends BaseComponent implements OnChanges {
     this.setMonitor = this.setMonitor.repeat();
 
     this.service
-    .setDriverLevel$(this.xuid, this.formGroup.value)
-    .pipe(this.setMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    .subscribe(driverLevel => {
-      this.formGroup.setValue(driverLevel);
-    });
+      .setDriverLevel$(this.xuid, this.formGroup.value)
+      .pipe(this.setMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(driverLevel => {
+        this.formGroup.setValue(driverLevel);
+      });
   }
 }

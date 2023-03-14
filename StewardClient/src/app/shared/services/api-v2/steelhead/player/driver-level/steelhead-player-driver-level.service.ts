@@ -18,7 +18,13 @@ export class SteelheadPlayerDriverLevelService {
   }
 
   /** Sets player driver level. */
-  public setDriverLevelByXuid$(xuid: BigNumber, driverLevel: PlayerDriverLevel): Observable<PlayerDriverLevel> {
-    return this.api.postRequest$<PlayerDriverLevel>(`${this.basePath}/${xuid}/driverLevel`, driverLevel);
+  public setDriverLevelByXuid$(
+    xuid: BigNumber,
+    driverLevel: PlayerDriverLevel,
+  ): Observable<PlayerDriverLevel> {
+    return this.api.postRequest$<PlayerDriverLevel>(
+      `${this.basePath}/${xuid}/driverLevel`,
+      driverLevel,
+    );
   }
 }

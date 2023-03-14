@@ -112,7 +112,7 @@ import { DriverLevelModule } from '@views/driver-level/driver-level.module';
     PermissionsModule,
     PaidEntitlementsModule,
     ForumBanHistoryModule,
-    DriverLevelModule
+    DriverLevelModule,
   ],
 })
 export class UserDetailsModule {}

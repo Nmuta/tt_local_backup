@@ -23,7 +23,8 @@ export class SteelheadDriverLevelComponent {
     this.service = {
       gameTitle: GameTitle.FM8,
       getDriverLevel$: xuid => steelheadPlayerDriverLevelService.getDriverLevelByXuid$(xuid),
-      setDriverLevel$: (xuid: BigNumber, driverLevel: PlayerDriverLevel) => steelheadPlayerDriverLevelService.setDriverLevelByXuid$(xuid, driverLevel)
+      setDriverLevel$: (xuid: BigNumber, driverLevel: PlayerDriverLevel) =>
+        steelheadPlayerDriverLevelService.setDriverLevelByXuid$(xuid, driverLevel),
     };
   }
 }
