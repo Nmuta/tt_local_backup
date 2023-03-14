@@ -62,18 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             //xuid.IsValidXuid();
 
-            LiveOpsService.GetDriverLevelOutput response = null;
-
-            try
-            {
-                response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"No driver level found for player. (XUID: {xuid})", ex);
-            }
-
-            var mappedResponse = this.mapper.SafeMap<SteelheadDriverLevel>(response);
+            var mappedResponse = await this.RetrieveDriverLevel(xuid).ConfigureAwait(true);
 
             return this.Ok(mappedResponse);
         }
@@ -103,7 +92,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new UnknownFailureStewardException($"Failed to set driver level for player. (XUID: {xuid}) (driverLevel: {newDriverLevel.DriverLevel}) (prestigeRank: {newDriverLevel.PrestigeRank})", ex);
             }
 
-            return this.Ok();
+            var mappedResponse = await this.RetrieveDriverLevel(xuid).ConfigureAwait(true);
+
+            return this.Ok(mappedResponse);
+        }
+
+        /// <summary>
+        ///     Retrieves the driver level for a xuid
+        /// </summary>
+        private async Task<SteelheadDriverLevel> RetrieveDriverLevel(ulong xuid)
+        {
+            LiveOpsService.GetDriverLevelOutput response = null;
+
+            try
+            {
+                response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"No driver level found for player. (XUID: {xuid})", ex);
+            }
+
+            var mappedResponse = this.mapper.SafeMap<SteelheadDriverLevel>(response);
+
+            return mappedResponse;
         }
     }
 }

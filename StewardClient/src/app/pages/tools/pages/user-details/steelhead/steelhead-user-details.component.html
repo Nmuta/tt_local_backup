@@ -5,6 +5,7 @@
       <mat-tab label="User Details">
         <div class="tab-container sf-wrapper">
           <div class="sf-horizontal do-not-align-item">
+            <steelhead-driver-level [identity]="identity"></steelhead-driver-level>
             <steelhead-user-flags
               [identity]="identity"
               (flagsUpdated)="flagsUpdated()"

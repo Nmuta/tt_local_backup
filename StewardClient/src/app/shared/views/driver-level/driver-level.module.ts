@@ -21,7 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 
-/** Module for getting and setting a player's cms override. */
+/** Module for getting and setting a player's driver level. */
 @NgModule({
   declarations: [DriverLevelComponent, SteelheadDriverLevelComponent],
   imports: [
