@@ -436,6 +436,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.WebUrl, opt => opt.MapFrom(source => $"{source.Repository.WebUrl}/pullrequest/{source.PullRequestId}"))
                 .ForMember(dest => dest.CreationDateUtc, opt => opt.MapFrom(source => source.CreationDate));
 
+            this.CreateMap<LiveOpsService.GetDriverLevelOutput, SteelheadDriverLevel>()
+                .ForMember(dest => dest.ExperiencePoints, opt => opt.MapFrom(source => source.driverExperiencePoints));
+
             this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
         }
 

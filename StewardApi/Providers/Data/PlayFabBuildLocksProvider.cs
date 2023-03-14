@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
 
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], "table-storage-connection-string").GetAwaiter().GetResult();
+            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], configuration[ConfigurationKeyConstants.CosmosSharedTableSecretName]).GetAwaiter().GetResult();
 
             configuration.Bind("PlayFabBuildLocksStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

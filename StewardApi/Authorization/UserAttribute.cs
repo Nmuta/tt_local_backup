@@ -31,6 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string RemoveAllUsersFromGroup = nameof(RemoveAllUsersFromGroup);
         public const string SendLoyaltyRewards = nameof(SendLoyaltyRewards);
         public const string ServicesFeature = nameof(ServicesFeature);
+        public const string SetDriverLevel = nameof(SetDriverLevel);
         public const string SetReportWeight = nameof(SetReportWeight);
         public const string SetUgcGeoFlag = nameof(SetUgcGeoFlag);
         public const string UnhideUgc = nameof(UnhideUgc);
@@ -46,6 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string CreateAuctions = nameof(CreateAuctions);
         public const string ManagePlayFabBuildLocks = nameof(ManagePlayFabBuildLocks);
         public const string ManagePlayFabSettings = nameof(ManagePlayFabSettings);
+        public const string GrantPaidEntitlements = nameof(GrantPaidEntitlements);
 
         public static IEnumerable<string> AllAttributes()
         {

@@ -13,6 +13,35 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add Loyalty tab with Loyalty Rewards tool',
     },
     {
+      tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
+      uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
+      shortText: 'Add ability to record forum ban',
+      longText: [
+        'Forum ban are saved in Steward for reference and do not actually ban users on forums.',
+        'History of forum ban can be seen on the General tab of Player Details',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
+      shortText: 'Fix persisting UGC content',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'a17731bc-0dc1-402b-a7b3-82f5e78dbe5a',
+      shortText: 'Fix tool styling to match other game titles',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '7dcff416-9146-4f98-a6ee-fe8381f418c5',
+      shortText: 'Added ability to grant a user paid entitlements',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'cb5b78a6-4021-42ea-b7b6-80ede3e97326',
+      shortText: 'Remove special characters from gamertag lookup on paste or when manually typed',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserBanning },
       uuid: '7880276c-1f28-4927-8f80-7fbc92acf04a',
       shortText: 'Show error when valid ban reason is not selected',

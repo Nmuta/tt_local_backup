@@ -37,6 +37,11 @@ export function getUserBanningRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.UserBanning, gameTitle);
 }
 
+/** Make user banning route. */
+export function getForumBanningRoute() {
+  return [`/app/tools/${NavbarTool.UserBanning}/forum`];
+}
+
 /** Make user group management route. */
 export function getUserGroupManagementRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.UserGroupManagement, gameTitle);
@@ -75,4 +80,9 @@ export function getAuctionDetailsRoute(gameTitle: GameTitle, auctionId: string) 
 /** Make PlayFab route. */
 export function getPlayFabRoute(gameTitle: GameTitle) {
   return ['/app/tools/playfab/', gameTitle];
+}
+
+/** Make user details route. gameTitle is string to accommodate the General tab. */
+export function getUserDetailsRoute(gameTitle: string) {
+  return ['/app/tools/user-details/', gameTitle];
 }
