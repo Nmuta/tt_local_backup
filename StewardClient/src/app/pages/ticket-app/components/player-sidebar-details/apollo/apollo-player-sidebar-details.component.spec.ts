@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { ApolloPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/gamertag/details';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('ApolloPlayerSidebarDetailsComponent', () => {
   let mockApolloService: ApolloService;
@@ -25,7 +26,7 @@ describe('ApolloPlayerSidebarDetailsComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [ApolloPlayerSidebarDetailsComponent],
+      declarations: [ApolloPlayerSidebarDetailsComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockWindowService(),

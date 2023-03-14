@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
@@ -54,17 +55,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNull(nameof(endpoint));
 
+            Forza.WebServices.FM7.Generated.UserInventoryService.GetAdminUserInventoryOutput response = null;
+
             try
             {
-                var response = await this.apolloService.GetAdminUserInventoryAsync(xuid, endpoint)
+                response = await this.apolloService.GetAdminUserInventoryAsync(xuid, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<ApolloPlayerInventory>(response.summary);
         }
 
         /// <inheritdoc/>
@@ -72,17 +75,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNull(nameof(endpoint));
 
+            Forza.WebServices.FM7.Generated.UserInventoryService.GetAdminUserInventoryByProfileIdOutput response = null;
+
             try
             {
-                var response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
+               response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
+
+            return this.mapper.SafeMap<ApolloPlayerInventory>(response.summary);
         }
 
         /// <inheritdoc/>
@@ -90,17 +95,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             endpoint.ShouldNotBeNull(nameof(endpoint));
 
+            Forza.WebServices.FM7.Generated.UserInventoryService.GetAdminUserProfilesOutput response = null;
+
             try
             {
-                var response = await this.apolloService.GetAdminUserProfilesAsync(xuid, MaxProfileResults, endpoint)
+                response = await this.apolloService.GetAdminUserProfilesAsync(xuid, MaxProfileResults, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<ApolloInventoryProfile>>(response.profiles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
             }
+
+            return this.mapper.SafeMap<IList<ApolloInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc />
@@ -170,7 +177,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             endpoint.ShouldNotBeNull(nameof(endpoint));
 
             var response = new List<GiftResponse<ulong>>();
-            var gift = this.mapper.Map<ApolloGift>(groupGift);
+            var gift = this.mapper.SafeMap<ApolloGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
                 response.Add(await this.UpdatePlayerInventoryAsync(
@@ -245,7 +252,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var result = await this.apolloService.SendCarLiveryAsync(groupGift.Xuids.ToArray(), livery.Id, endpoint).ConfigureAwait(false);
 
-            var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
+            var giftResponses = this.mapper.SafeMap<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
             foreach (var giftResponse in giftResponses)
             {

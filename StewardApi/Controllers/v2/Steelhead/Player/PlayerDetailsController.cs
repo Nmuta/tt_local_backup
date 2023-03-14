@@ -68,19 +68,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
+            Forza.WebServices.FM8.Generated.LiveOpsService.GetLiveOpsUserDataByGamerTagOutput response = null;
+
             try
             {
-                var response = await this.Services.LiveOpsService.GetLiveOpsUserDataByGamerTag(gamertag)
+                response = await this.Services.LiveOpsService.GetLiveOpsUserDataByGamerTag(gamertag)
                     .ConfigureAwait(false);
-
-                var result = this.mapper.Map<SteelheadPlayerDetails>(response.userData);
-
-                return this.Ok(result);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"No player found. (Gamertag: {gamertag})", ex);
             }
+
+            var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
+
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -91,19 +93,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetPlayerDetails(
             ulong xuid)
         {
+            Forza.WebServices.FM8.Generated.LiveOpsService.GetLiveOpsUserDataByXuidOutput response = null;
+
             try
             {
-                var response = await this.Services.LiveOpsService.GetLiveOpsUserDataByXuid(xuid)
+                response = await this.Services.LiveOpsService.GetLiveOpsUserDataByXuid(xuid)
                     .ConfigureAwait(false);
-
-                var result = this.mapper.Map<SteelheadPlayerDetails>(response.userData);
-
-                return this.Ok(result);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"No player found. (XUID: {xuid})", ex);
             }
+
+            var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
+
+            return this.Ok(result);
         }
 
         /// <summary>

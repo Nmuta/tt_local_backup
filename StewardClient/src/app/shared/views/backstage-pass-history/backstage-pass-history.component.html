@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Backstage Pass History</mat-card-title>
-    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <ng-container *ngIf="!getMonitor?.isActive && !getMonitor?.status?.error; else failstate">

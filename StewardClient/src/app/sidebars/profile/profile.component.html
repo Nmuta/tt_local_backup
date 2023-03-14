@@ -3,14 +3,54 @@
     <mat-card-title>User Profile</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <pre>
-<b>Email:</b> {{ user?.emailAddress }}
-<b>Role:</b> {{ user?.role }}
-    </pre>
-    <button class="refresh-button" mat-raised-button color="accent" (click)="refreshLoginToken()">
-      Refresh Role
-    </button>
-    <button mat-raised-button color="accent" (click)="logout()">Logout</button>
+    <table class="info-table sf-full-width">
+      <tr>
+        <th>Email</th>
+        <td>
+          <standard-copy>{{ user?.emailAddress }}</standard-copy>
+        </td>
+      </tr>
+      <tr>
+        <th>Role</th>
+        <td>
+          <standard-copy>{{ user?.role | humanize }}</standard-copy>
+        </td>
+      </tr>
+      <tr>
+        <th>Id</th>
+        <td>
+          <standard-copy>{{ user?.objectId }}</standard-copy>
+        </td>
+      </tr>
+      <ng-container *waitForMonitor="getTeamLeadMonitor">
+        <tr>
+          <th>Tead Name</th>
+          <td>
+            <standard-copy>{{ !!teamLead ? teamLead?.team?.name : 'N/A' }}</standard-copy>
+          </td>
+        </tr>
+        <tr>
+          <th>Tead Lead</th>
+          <td>
+            <standard-copy>{{ !!teamLead ? teamLead.name : adminTeamLead }}</standard-copy>
+          </td>
+        </tr>
+        <tr>
+          <th>Tead Lead Email</th>
+          <td>
+            <standard-copy>{{
+              !!teamLead ? teamLead.emailAddress : adminTeamLeadEmail
+            }}</standard-copy>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+    <div class="profile-actions">
+      <button class="refresh-button" mat-raised-button color="accent" (click)="refreshLoginToken()">
+        Refresh Role
+      </button>
+      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    </div>
   </mat-card-content>
 </mat-card>
 

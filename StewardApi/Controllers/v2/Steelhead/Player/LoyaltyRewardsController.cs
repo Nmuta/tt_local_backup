@@ -79,17 +79,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
             }
 
+            Services.LiveOps.FM8.Generated.UserManagementService.GetHasPlayedRecordOutput response = null;
+
             try
             {
-                var response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
-                var result = this.mapper.Map<IList<HasPlayedRecord>>(response.records);
-
-                return this.Ok(result);
+                response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"No record of legacy titles played found. (XUID: {xuid})", ex);
             }
+
+            var result = this.mapper.SafeMap<IList<HasPlayedRecord>>(response.records);
+
+            return this.Ok(result);
         }
 
         /// <summary>

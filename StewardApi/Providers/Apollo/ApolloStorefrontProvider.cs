@@ -7,6 +7,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.UGC.Contracts;
 using ForzaUGCSearchV2Request = Forza.WebServices.FM7.Generated.ForzaUGCSearchV2Request;
@@ -42,10 +43,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
+            var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
             var results = await this.apolloService.GetPlayerUgcContentAsync(xuid, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<ApolloUgcItem>>(results.result);
+            return this.mapper.SafeMap<IList<ApolloUgcItem>>(results.result);
         }
 
         /// <inheritdoc />
@@ -60,11 +61,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            var mappedFilters = this.mapper.Map<ForzaUGCSearchV2Request>(filters);
-            var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
+            var mappedFilters = this.mapper.SafeMap<ForzaUGCSearchV2Request>(filters);
+            var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
             var results = await this.apolloService.SearchUgcContentAsync(mappedFilters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<ApolloUgcItem>>(results.result);
+            return this.mapper.SafeMap<IList<ApolloUgcItem>>(results.result);
         }
 
         /// <inheritdoc />
@@ -73,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var liveryOutput = await this.apolloService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
-            var livery = this.mapper.Map<ApolloUgcLiveryItem>(liveryOutput.result);
+            var livery = this.mapper.SafeMap<ApolloUgcLiveryItem>(liveryOutput.result);
 
             if (livery.GameTitle != (int)GameTitle.FM7)
             {

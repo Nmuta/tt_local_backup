@@ -43,11 +43,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
         public async Task<WoodstockMasterInventory> GetMasterInventoryAsync()
         {
-            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<DataCar>(), new List<Exception>());
-            var getCarHorns = this.pegasusService.GetCarHornsAsync().SuccessOrDefault(Array.Empty<CarHorn>(), new List<Exception>());
-            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<VanityItem>(), new List<Exception>());
-            var getEmotes = this.pegasusService.GetEmotesAsync().SuccessOrDefault(Array.Empty<EmoteData>(), new List<Exception>());
-            var getQuickChatLines = this.pegasusService.GetQuickChatLinesAsync().SuccessOrDefault(Array.Empty<QuickChat>(), new List<Exception>());
+            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<DataCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus cars.", ex));
+            }));
+            var getCarHorns = this.pegasusService.GetCarHornsAsync().SuccessOrDefault(Array.Empty<CarHorn>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus car horns.", ex));
+            }));
+            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<VanityItem>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus vanity items.", ex));
+            }));
+            var getEmotes = this.pegasusService.GetEmotesAsync().SuccessOrDefault(Array.Empty<EmoteData>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus emotes.", ex));
+            }));
+            var getQuickChatLines = this.pegasusService.GetQuickChatLinesAsync().SuccessOrDefault(Array.Empty<QuickChat>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus quick chat lines.", ex));
+            }));
 
             await Task.WhenAll(getCars, getCarHorns, getVanityItems, getEmotes, getQuickChatLines).ConfigureAwait(false);
 
@@ -61,37 +76,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
                     new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
                 },
-                Cars = this.mapper.Map<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
-                CarHorns = this.mapper.Map<IList<MasterInventoryItem>>(getCarHorns.GetAwaiter().GetResult()),
-                VanityItems = this.mapper.Map<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
-                Emotes = this.mapper.Map<IList<MasterInventoryItem>>(getEmotes.GetAwaiter().GetResult().ToList()),
-                QuickChatLines = this.mapper.Map<IList<MasterInventoryItem>>(getQuickChatLines.GetAwaiter().GetResult().ToList()),
+                Cars = this.mapper.SafeMap<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
+                CarHorns = this.mapper.SafeMap<IList<MasterInventoryItem>>(getCarHorns.GetAwaiter().GetResult()),
+                VanityItems = this.mapper.SafeMap<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
+                Emotes = this.mapper.SafeMap<IList<MasterInventoryItem>>(getEmotes.GetAwaiter().GetResult().ToList()),
+                QuickChatLines = this.mapper.SafeMap<IList<MasterInventoryItem>>(getQuickChatLines.GetAwaiter().GetResult().ToList()),
             };
-
-            if (getCars.IsFaulted)
-            {
-                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus cars.", getCars.Exception));
-            }
-
-            if (getCarHorns.IsFaulted)
-            {
-                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus car horns.", getCarHorns.Exception));
-            }
-
-            if (getVanityItems.IsFaulted)
-            {
-                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus vanity items.", getVanityItems.Exception));
-            }
-
-            if (getEmotes.IsFaulted)
-            {
-                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus emotes.", getEmotes.Exception));
-            }
-
-            if (getQuickChatLines.IsFaulted)
-            {
-                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus quick chat lines.", getQuickChatLines.Exception));
-            }
 
             return masterInventory;
         }
@@ -100,15 +90,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         public async Task<IEnumerable<T>> GetCarsAsync<T>(string slotId = WoodstockPegasusSlot.Live)
             where T : SimpleCar
         {
+            IEnumerable<DataCar> cars = null;
+
             try
             {
-                var cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
-                return this.mapper.Map<IEnumerable<T>>(cars);
+                cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Failed to get Woodstock Pegasus cars.", ex);
             }
+
+            return this.mapper.SafeMap<IEnumerable<T>>(cars);
         }
     }
 }

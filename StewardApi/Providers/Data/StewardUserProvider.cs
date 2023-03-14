@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             var tableStorageProperties = new TableStorageProperties();
             var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(
                 configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                "table-storage-connection-string").GetAwaiter().GetResult();
+                configuration[ConfigurationKeyConstants.CosmosTableSecretName]).GetAwaiter().GetResult();
 
             configuration.Bind("StewardUserStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -78,18 +79,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             {
                 var service = this.Services.LiveOpsService;
 
+                Forza.WebServices.FM8.Generated.LiveOpsService.GetAdminUserInventoryOutput response = null;
+
                 try
                 {
-                    var response = await service.GetAdminUserInventory(xuid)
+                    response = await service.GetAdminUserInventory(xuid)
                         .ConfigureAwait(false);
-                    var playerInventoryDetails = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
-
-                    return playerInventoryDetails;
                 }
                 catch (Exception ex)
                 {
                     throw new UnknownFailureStewardException($"Failed to retrieve player inventory. (XUID: {xuid})", ex);
                 }
+
+                var playerInventoryDetails = this.mapper.SafeMap<SteelheadPlayerInventory>(response.summary);
+
+                return playerInventoryDetails;
             }
 
             var getPlayerInventory = GetInventory();
@@ -129,18 +133,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             IList<SteelheadInventoryProfile> inventoryProfileSummary;
             var service = this.Services.UserInventoryManagementService;
 
+            Services.LiveOps.FM8.Generated.UserInventoryManagementService.GetAdminUserProfilesOutput response = null;
+
             try
             {
-                var response = await service.GetAdminUserProfiles(
+                 response = await service.GetAdminUserProfiles(
                     xuid,
                     MaxProfileResults).ConfigureAwait(false);
-
-                inventoryProfileSummary = this.mapper.Map<IList<SteelheadInventoryProfile>>(response.profiles);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to retrieve player inventory profiles. (XUID: {xuid})", ex);
             }
+
+            inventoryProfileSummary = this.mapper.SafeMap<IList<SteelheadInventoryProfile>>(response.profiles);
+
 
             if (inventoryProfileSummary == null)
             {

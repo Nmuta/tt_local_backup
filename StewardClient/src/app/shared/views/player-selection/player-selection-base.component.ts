@@ -39,6 +39,7 @@ import {
   routeToUpdatedPlayerSelectionQueryParams,
 } from './player-selection-query-params';
 import { QueryParam } from '@models/query-params';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
@@ -131,6 +132,7 @@ export abstract class PlayerSelectionBaseComponent
 
   /** Emitted when the foundIdentities list changes. */
   protected foundIdentities$ = new Subject<AugmentedCompositeIdentity[]>();
+  public lookupIdentitiesMonitor = new ActionMonitor('Lookup identities');
 
   // this has to be its own value because we don't have the actual thing until ngAfterViewInit, and lookupList is called before that
   private lookupTypeGroupChange$ = new Subject<void>();
@@ -217,6 +219,12 @@ export abstract class PlayerSelectionBaseComponent
       )
       .subscribe(currentType => {
         this.updateRouteFromType(currentType);
+
+        // We use query for chip information. Update original query object to use new type
+        this.foundIdentities.map(
+          identity => (identity.query[currentType] = identity.general[currentType]),
+        );
+        this.foundIdentities$.next(this.foundIdentities);
       });
   }
 
@@ -296,11 +304,12 @@ export abstract class PlayerSelectionBaseComponent
    */
   private handleNewValues(values: string[]): void {
     this.foundIdentities = this.foundIdentities.filter(
-      identity => !!values.find(val => val === identity.general[this.lookupType]),
+      identity => !!values.find(val => val === identity.general[this.lookupType].toString()),
     );
+
     this.foundIdentities$.next(this.foundIdentities);
     this.knownIdentities = new Set(
-      this.foundIdentities.map(identity => identity.query[this.lookupType]),
+      this.foundIdentities.map(identity => identity.general[this.lookupType].toString()),
     );
 
     const uniqueValues = chain(values)
@@ -343,9 +352,14 @@ export abstract class PlayerSelectionBaseComponent
       return;
     }
 
+    this.lookupIdentitiesMonitor = this.lookupIdentitiesMonitor.repeat();
     this.multi
       .getPlayerIdentities$(this.lookupType, newQueries as AnyIdentityQuery[])
-      .pipe(takeUntil(this.onDestroy$), takeUntil(this.lookupTypeGroupChange$))
+      .pipe(
+        this.lookupIdentitiesMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+        takeUntil(this.lookupTypeGroupChange$),
+      )
       .subscribe(allResults => {
         // replace the results inline
         for (const result of allResults) {

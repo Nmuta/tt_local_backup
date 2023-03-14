@@ -8,6 +8,7 @@ import { SteelheadBanSummary } from '@models/steelhead';
 import { ApolloBanSummary } from '@models/apollo';
 import { WoodstockBanSummary } from '@models/woodstock';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { ForumBanSummary } from '@models/forum-ban-summary.model';
 
 export interface BanQuery {
   isLoading: boolean;
@@ -19,7 +20,8 @@ type AnyBanSummary =
   | SunriseBanSummary
   | SteelheadBanSummary
   | ApolloBanSummary
-  | WoodstockBanSummary;
+  | WoodstockBanSummary
+  | ForumBanSummary;
 
 /** Displays the ban chip icons for a given identity/query. */
 @Component({

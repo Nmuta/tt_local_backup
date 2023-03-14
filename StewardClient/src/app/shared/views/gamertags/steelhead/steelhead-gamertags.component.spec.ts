@@ -8,6 +8,7 @@ import { SteelheadSharedConsoleUser } from '@models/steelhead';
 import { ActivatedRoute } from '@angular/router';
 import { SteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service';
 import { createMockSteelheadPlayerConsolesService } from '@services/api-v2/steelhead/player/consoles/steelhead-player-consoles.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 const activatedRouteMock = {
   pathFromRoot: [
@@ -25,7 +26,7 @@ describe('SteelheadGamertagsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SteelheadGamertagsComponent],
+      declarations: [SteelheadGamertagsComponent, HumanizePipe],
       providers: [
         createMockSteelheadPlayerConsolesService(),
         {

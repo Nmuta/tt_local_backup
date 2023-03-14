@@ -87,19 +87,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var auctions = new List<PlayerAuction>();
 
+            var forzaAuctionFilters = this.mapper.SafeMap<ForzaAuctionFilters>(new AuctionFilters(carId, makeId, statusEnum, sortEnum));
+
+            AuctionManagementService.SearchAuctionHouseOutput forzaAuctions = null;
+
             try
             {
-                var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(new AuctionFilters(carId, makeId, statusEnum, sortEnum));
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.Services.AuctionManagementService.SearchAuctionHouse(forzaAuctionFilters)
+                forzaAuctions = await this.Services.AuctionManagementService.SearchAuctionHouse(forzaAuctionFilters)
                     .ConfigureAwait(true);
-
-                auctions.AddRange(this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions));
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to search player auctions. (XUID: {xuid})", ex);
             }
+
+            auctions.AddRange(this.mapper.SafeMap<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions));
 
             var cars = await this.itemsProvider.GetCarsAsync().ConfigureAwait(true);
             var carsDict = cars.ToDictionary(car => car.Id);

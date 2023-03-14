@@ -8,6 +8,11 @@
           <entitlements [identity]="identity"></entitlements>
         </div>
       </mat-tab>
+      <mat-tab label="Forum Ban History">
+        <div class="tab-container">
+          <forum-ban-history [xuid]="identity.xuid"></forum-ban-history>
+        </div>
+      </mat-tab>
     </mat-tab-group>
   </section>
 </ng-container>

@@ -8,6 +8,7 @@ using Forza.WebServices.FH3.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using static Forza.WebServices.FH3.Generated.OnlineProfileService;
@@ -108,8 +109,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
                 this.OpusService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.OpusService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
                 this.OpusService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.Mapper.Map<OpusPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<OpusPlayerInventory>());
-                this.Mapper.Map<IList<OpusInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<OpusInventoryProfile>>());
+                this.Mapper.SafeMap<OpusPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<OpusPlayerInventory>());
+                this.Mapper.SafeMap<IList<OpusInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<OpusInventoryProfile>>());
             }
 
             public IOpusService OpusService { get; set; } = Substitute.For<IOpusService>();
