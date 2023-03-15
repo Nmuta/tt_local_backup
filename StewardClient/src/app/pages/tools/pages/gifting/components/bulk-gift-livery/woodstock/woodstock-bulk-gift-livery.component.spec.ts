@@ -21,12 +21,12 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PastableSingleInputComponent } from '@views/pastable-single-input/pastable-single-input.component';
 import { WoodstockBulkGiftLiveryComponent } from './woodstock-bulk-gift-livery.component';
-import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
-import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-player-gift.service.mock';
+import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service.mock';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service.mock';
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 
 describe('WoodstockGiftLiveryComponent', () => {
   let fixture: ComponentFixture<WoodstockBulkGiftLiveryComponent>;

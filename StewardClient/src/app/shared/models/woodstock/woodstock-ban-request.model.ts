@@ -17,15 +17,19 @@ export enum WoodstockBanArea {
   UserGeneratedContent = 'UserGeneratedContent',
 }
 
-/** A single part of the bulk /v1/title/Woodstock/players/ban request model */
+export interface WoodstockBanDuration {
+  duration: Duration;
+  banAllDevices: boolean;
+  isPermanentBan: boolean;
+}
+
+/** A single part of the bulk /v2/title/Woodstock/players/ban request model */
 export interface WoodstockBanRequest {
   xuid?: BigNumber;
   gamertag?: string;
-  banAllConsoles: boolean;
-  banAllPcs: boolean;
   deleteLeaderboardEntries: boolean;
-  sendReasonNotification: boolean;
   reason: string;
   featureArea: WoodstockBanArea;
-  duration: Duration;
+  overrideBanDuration: boolean;
+  banDuration: WoodstockBanDuration;
 }

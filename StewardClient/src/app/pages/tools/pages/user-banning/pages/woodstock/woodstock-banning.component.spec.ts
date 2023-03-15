@@ -15,6 +15,7 @@ import { toDateTime } from '@helpers/luxon';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { BanResultsUnion } from '../base/user-banning.base.component';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { createMockWoodstockPlayersBanService } from '@services/api-v2/woodstock/players/ban/woodstock-players-ban.service.mock';
 
 describe('WoodstockBanningComponent', () => {
   let component: WoodstockBanningComponent;
@@ -26,7 +27,7 @@ describe('WoodstockBanningComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockBanningComponent],
-      providers: [createMockWoodstockService(), createMockBackgroundJobService()],
+      providers: [createMockWoodstockService(), createMockBackgroundJobService(), createMockWoodstockPlayersBanService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

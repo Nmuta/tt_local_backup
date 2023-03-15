@@ -682,7 +682,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         public async Task BanPlayers_DurationNull()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Duration = default;
+            banParameters[0].BanDuration = default;
 
             try
             {
@@ -700,7 +700,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         public async Task BanPlayers_DurationZero()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Duration = TimeSpan.Zero;
+            banParameters[0].BanDuration = TimeSpan.Zero;
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
 
             try
@@ -719,7 +719,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         public async Task BanPlayers_DurationNegative()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Duration = TimeSpan.FromMinutes(-10);
+            banParameters[0].BanDuration = TimeSpan.FromMinutes(-10);
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
 
             try
@@ -1903,7 +1903,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
                     FeatureArea = "Matchmaking",
                     Reason = "This is an automated test.",
                     StartTimeUtc = DateTime.UtcNow,
-                    Duration = TimeSpan.FromMinutes(5),
+                    BanDuration = TimeSpan.FromMinutes(5),
                     BanAllConsoles = false,
                     BanAllPcs = false,
                     DeleteLeaderboardEntries = false,

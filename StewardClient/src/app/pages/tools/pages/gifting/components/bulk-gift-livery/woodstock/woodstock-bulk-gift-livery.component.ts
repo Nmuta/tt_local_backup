@@ -9,7 +9,7 @@ import { LspGroup } from '@models/lsp-group';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service';
-import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { WoodstockService } from '@services/woodstock';
 import BigNumber from 'bignumber.js';

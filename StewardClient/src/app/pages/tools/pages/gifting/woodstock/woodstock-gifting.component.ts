@@ -23,10 +23,10 @@ import { UgcType } from '@models/ugc-filters';
 import { GiftResponse } from '@models/gift-response';
 import { chain } from 'lodash';
 import { DateTime } from 'luxon';
-import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/woodstock-players-gift.service';
 import { DefaultGiftExpireTimeSpanInDays } from '@helpers/bignumbers';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 
 /**
  * List of special liveries from Community team.

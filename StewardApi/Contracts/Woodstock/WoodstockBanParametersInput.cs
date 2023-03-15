@@ -18,14 +18,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         public string FeatureArea { get; set; }
 
         /// <summary>
-        ///     Gets or sets the start time.
+        ///     Gets or sets the ban configuration id.
         /// </summary>
-        public DateTime? StartTimeUtc { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the duration.
-        /// </summary>
-        public TimeSpan? Duration { get; set; }
+        public Guid BanConfigurationId { get; set; }
 
         /// <summary>
         ///     Gets or sets the xuid.
@@ -38,23 +33,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         public string Gamertag { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to ban all consoles.
-        /// </summary>
-        public bool? BanAllConsoles { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether to ban all PCs.
-        /// </summary>
-        public bool? BanAllPcs { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether to delete leader board entries.
         /// </summary>
         public bool? DeleteLeaderboardEntries { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to send reason notification.
+        ///     Gets or sets a value indicating whether to override the ban duration.
         /// </summary>
-        public bool? SendReasonNotification { get; set; }
+        public bool OverrideBanDuration { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the duration.
+        /// </summary>
+        public WoodstockBanDurationInput BanDuration { get; set; }
     }
 }

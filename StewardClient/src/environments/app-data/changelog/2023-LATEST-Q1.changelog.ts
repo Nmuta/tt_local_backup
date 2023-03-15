@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
+      shortText: 'New way of banning implemented',
+      longText: [
+        'New Ban Configuration field allow the selection of a predefined configuration for a ban',
+        'New optional Override Duration option to force a duration, a devices ban or a permanent ban',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
       shortText: 'Fix persisting UGC content',

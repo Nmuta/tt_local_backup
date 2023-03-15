@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using WoodstockLiveOpsContent;
+using BanConfiguration = Turn10.LiveOps.StewardApi.Contracts.Common.BanConfiguration;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using CarHorn = WoodstockLiveOpsContent.CarHorn;
 using QuickChat = WoodstockLiveOpsContent.QuickChat;
@@ -64,5 +65,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Gets supported locales.
         /// </summary>
         Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync();
+
+        /// <summary>
+        ///     Gets ban configurations.
+        /// </summary>
+        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync();
     }
 }
