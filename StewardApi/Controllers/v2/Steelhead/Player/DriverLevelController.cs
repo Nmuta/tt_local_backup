@@ -83,6 +83,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             //xuid.IsValidXuid();
 
+            newDriverLevel.DriverLevel.ShouldBeGreaterThanOrEqual(1, nameof(newDriverLevel.DriverLevel));
+            newDriverLevel.DriverLevel.ShouldBeLessThanOrEqual(999, nameof(newDriverLevel.DriverLevel));
+            newDriverLevel.PrestigeRank.ShouldBeGreaterThanOrEqual(0, nameof(newDriverLevel.PrestigeRank));
+            newDriverLevel.PrestigeRank.ShouldBeLessThanOrEqual(9, nameof(newDriverLevel.PrestigeRank));
+
             try
             {
                 await this.Services.LiveOpsService.SetDriverLevel(xuid, newDriverLevel.DriverLevel, newDriverLevel.PrestigeRank).ConfigureAwait(false);
