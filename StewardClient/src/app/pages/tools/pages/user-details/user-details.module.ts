@@ -51,6 +51,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
 import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
 import { PaidEntitlementsModule } from '@views/paid-entitlements/paid-entitlements.module';
 import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
+import { DriverLevelModule } from '@views/driver-level/driver-level.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -111,6 +112,7 @@ import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-histor
     PermissionsModule,
     PaidEntitlementsModule,
     ForumBanHistoryModule,
+    DriverLevelModule,
   ],
 })
 export class UserDetailsModule {}
