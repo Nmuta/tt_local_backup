@@ -30,13 +30,9 @@ export class SunriseUgcDetailsComponent extends BaseComponent implements OnInit 
 
   private applyData(): void {
     this.hasTypeLookup = {};
-    console.log('A')
     if (this.sharedLookupService.locations?.fh4) {
-      console.log('B')
-      console.log(this.sharedLookupService.locations)
       for (const type of this.sharedLookupService.locations.fh4) {
         this.hasTypeLookup[type as UgcType] = true;
-        console.log(type)
       }
     }
   }
