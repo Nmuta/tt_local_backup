@@ -31,7 +31,7 @@ export class DriverLevelComponent extends BaseComponent implements OnChanges {
 
   public formControls = {
     driverLevel: new FormControl('', [Validators.required, Validators.min(1), Validators.max(999)]),
-    prestigeRank: new FormControl('', [Validators.required, Validators.min(0), Validators.max(99)]),
+    prestigeRank: new FormControl('', [Validators.required, Validators.min(0), Validators.max(9)]),
     experiencePoints: new FormControl({ value: '', disabled: true }, Validators.required),
   };
 
