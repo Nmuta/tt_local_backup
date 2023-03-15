@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 
-/** The /v2/title/{steelhead}/{xuid}/driverLevel model */
+/** The /v2/title/{steelhead}/player/{xuid}/driverLevel model */
 export interface PlayerDriverLevel {
   driverLevel: BigNumber;
   prestigeRank: BigNumber;

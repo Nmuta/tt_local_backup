@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '8832d741-8529-4316-881c-ccc2dbff141f',
+      shortText: 'Implement UI for Driver Level/Prestige Rank in Player Details',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
       uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
       shortText: 'Add ability to record forum ban',
