@@ -15,7 +15,7 @@ import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.s
 export class SunriseRedirectComponent extends BaseComponent implements OnInit {
   public GameTitleCodeName = GameTitleCodeName;
 
-  public supportedTypes = [UgcType.Livery, UgcType.Photo, UgcType.Tune];
+  public supportedTypes = [UgcType.Livery, UgcType.Photo, UgcType.Tune, ];
   public hasTypeLookup = {};
 
   constructor(

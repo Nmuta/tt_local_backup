@@ -68,16 +68,26 @@ export const WoodstockSupportedUgcTypes = [
 ];
 
 /** Types and metadata relating to supported UGC Types. */
-export interface WoodstockExtendedSupportedUgcType {
+export interface ExtendedSupportedUgcType {
   ugcType: UgcType;
   alternateName?: string;
 }
-/** Ordered list of Supported UGC Types */
-export const WoodstockExtendedSupportedUgcTypes: WoodstockExtendedSupportedUgcType[] = [
+
+/** Ordered list of Supported UGC Types for Woodstock*/
+export const WoodstockExtendedSupportedUgcTypes: ExtendedSupportedUgcType[] = [
   { ugcType: UgcType.Livery },
   { ugcType: UgcType.LayerGroup, alternateName: 'Vinyl' },
   { ugcType: UgcType.Photo },
   { ugcType: UgcType.Tune },
   { ugcType: UgcType.EventBlueprint },
   { ugcType: UgcType.CommunityChallenge },
+];
+
+/** Ordered list of Supported UGC Types for Sunrise*/
+export const SunriseExtendedSupportedUgcTypes: ExtendedSupportedUgcType[] = [
+  { ugcType: UgcType.Livery },
+  { ugcType: UgcType.LayerGroup, alternateName: 'Vinyl' },
+  { ugcType: UgcType.Photo },
+  { ugcType: UgcType.Tune },
+  { ugcType: UgcType.EventBlueprint },
 ];
