@@ -8,7 +8,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
-
 import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
 import { OpusUserDetailsComponent } from './opus/opus-user-details.component';
@@ -51,6 +50,8 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
 import { PaidEntitlementsModule } from '@views/paid-entitlements/paid-entitlements.module';
+import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
+import { DriverLevelModule } from '@views/driver-level/driver-level.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -110,6 +111,8 @@ import { PaidEntitlementsModule } from '@views/paid-entitlements/paid-entitlemen
     StateManagersModule,
     PermissionsModule,
     PaidEntitlementsModule,
+    ForumBanHistoryModule,
+    DriverLevelModule,
   ],
 })
 export class UserDetailsModule {}

@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
             this.hubManager = hubManager;
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], "table-storage-connection-string").GetAwaiter().GetResult();
+            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], configuration[ConfigurationKeyConstants.CosmosTableSecretName]).GetAwaiter().GetResult();
 
             configuration.Bind("BackgroundJobStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

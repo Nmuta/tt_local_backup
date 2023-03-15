@@ -17,6 +17,25 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       ],
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '044af69b-02c5-42cb-8834-776b3e418007',
+      shortText: 'Recipient updates to contact us forms',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '8832d741-8529-4316-881c-ccc2dbff141f',
+      shortText: 'Implement UI for Driver Level/Prestige Rank in Player Details',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
+      uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
+      shortText: 'Add ability to record forum ban',
+      longText: [
+        'Forum ban are saved in Steward for reference and do not actually ban users on forums.',
+        'History of forum ban can be seen on the General tab of Player Details',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
       shortText: 'Fix persisting UGC content',
@@ -30,6 +49,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '7dcff416-9146-4f98-a6ee-fe8381f418c5',
       shortText: 'Added ability to grant a user paid entitlements',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'cb5b78a6-4021-42ea-b7b6-80ede3e97326',
+      shortText: 'Remove special characters from gamertag lookup on paste or when manually typed',
     },
     {
       tag: { title: 'all', tool: NavbarTool.UserBanning },
