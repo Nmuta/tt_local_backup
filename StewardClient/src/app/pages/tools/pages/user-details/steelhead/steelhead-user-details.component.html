@@ -5,7 +5,6 @@
       <mat-tab label="User Details">
         <div class="tab-container sf-wrapper">
           <div class="sf-horizontal do-not-align-item">
-            <steelhead-driver-level [identity]="identity"></steelhead-driver-level>
             <steelhead-user-flags
               [identity]="identity"
               (flagsUpdated)="flagsUpdated()"
@@ -13,6 +12,7 @@
             <steelhead-report-weight [identity]="identity"></steelhead-report-weight>
             <steelhead-player-game-details [identity]="identity"></steelhead-player-game-details>
             <steelhead-cms-override [identity]="identity"></steelhead-cms-override>
+            <steelhead-driver-level [identity]="identity"></steelhead-driver-level>
           </div>
           <steelhead-paid-entitlements [identity]="identity"></steelhead-paid-entitlements>
           <steelhead-ban-history [xuid]="identity.xuid"></steelhead-ban-history>
