@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class UIntExtensions
     {
         /// <summary>
-        ///     Checks if a source uint is greater than a specified value.
+        ///     Checks if a source uint is greater than or equal to a specified value.
         /// </summary>
         public static void ShouldBeGreaterThanOrEqual(this uint source, uint value, string context)
         {
@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         }
 
         /// <summary>
-        ///     Checks if a source uint is less than a specified value.
+        ///     Checks if a source uint is less than or equal to a specified value.
         /// </summary>
         public static void ShouldBeLessThanOrEqual(this uint source, uint value, string context)
         {
