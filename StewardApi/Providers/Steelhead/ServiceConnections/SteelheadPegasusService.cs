@@ -558,7 +558,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<WofGenericPopupEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
-            var deleteElements = new List<string> { "Destination" };
+            var deleteElements = new List<string> { "Destination", "Timer" };
 
             return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.GenericPopupTile, deleteElements).ConfigureAwait(false);
         }

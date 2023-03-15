@@ -366,9 +366,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
             this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();
-            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRange>()
+            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRangeBridge>()
                 .ReverseMap();
-            this.CreateMap<WofBaseRangePoint, TimerCustomRangePoint>()
+            this.CreateMap<WofBaseRangePoint, RangePointBridge>()
                 .ReverseMap();
 
             this.CreateMap<ForzaUserIds, BasicPlayer>()

@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         public TextOverrideBridge EndTextOverride { get; set; }
 
-        public TimerCustomRange CustomRange { get; set; }
+        public TimerCustomRangeBridge CustomRange { get; set; }
 
         public TimerReferenceBridge TimerReference { get; set; }
     }
@@ -49,14 +49,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid RefId { get; set; }
     }
 
-    public class TimerCustomRange
+    public class TimerCustomRangeBridge
     {
-        public List<TimerCustomRangePoint> From { get; set; }
+        public List<RangePointBridge> From { get; set; }
 
-        public List<TimerCustomRangePoint> To { get; set; }
+        public List<RangePointBridge> To { get; set; }
     }
 
-    public class TimerCustomRangePoint
+    public class RangePointBridge
     {
         /// <summary>
         ///     Gets or sets the text property. This property
