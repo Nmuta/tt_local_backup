@@ -55,25 +55,6 @@
                   (change)="toggleTitleSend($event, gameColumn)"
                 >
                 </mat-checkbox>
-                <!-- <button
-                  *ngIf="!row.titles[gameColumn]"
-                  mat-raised-button
-                  color="primary"
-                  [matTooltip]="'Send Loyalty Reward for: ' + gameColumn"
-                  [disabled]="disableSingleActions"
-                  (click)="updateTitlesPlayed(gameColumn)"
-                  [monitor]="singlePostMonitors[gameColumn]"
-                  stateManager
-                  [permissionAttribute]="permAttribute"
-                  [permissionTitle]="gameTitle"
-                  monitorDisable
-                  monitorWarnSnackbar
-                >
-                  <button-spinner
-                    [monitor]="singlePostMonitors[gameColumn]"
-                    defaultIcon="send"
-                  ></button-spinner>
-                </button> -->
               </span>
             </td>
           </ng-container>
