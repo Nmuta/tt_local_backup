@@ -14,13 +14,29 @@ import { UserState } from '@shared/state/user/user.state';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { DriverLevelComponent, DriverLevelServiceContract } from './driver-level.component';
+import { of } from 'rxjs';
+import BigNumber from 'bignumber.js';
+import faker from '@faker-js/faker';
+import { PlayerDriverLevel } from '@models/player-driver-level.model';
 
 describe('DriverLevelComponent', () => {
   let component: DriverLevelComponent;
   let fixture: ComponentFixture<DriverLevelComponent>;
 
+  const mockDriverLevel = {
+    driverLevel: new BigNumber(faker.datatype.number()),
+    prestigeRank: new BigNumber(faker.datatype.number()),
+    experiencePoints: new BigNumber(faker.datatype.number()),
+  } as PlayerDriverLevel;
+
   const mockService: DriverLevelServiceContract = {
-    gameTitle: GameTitle.FH5,
+    gameTitle: GameTitle.FM8,
+    getDriverLevel$: () => {
+      return of(mockDriverLevel);
+    },
+    setDriverLevel$: () => {
+      return of(mockDriverLevel);
+    },
   };
 
   beforeEach(async () => {

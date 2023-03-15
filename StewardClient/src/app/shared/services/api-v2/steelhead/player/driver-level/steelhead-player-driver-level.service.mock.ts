@@ -1,33 +1,29 @@
 import { ValueProvider } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
-import { SteelheadPlayerCmsOverrideService } from './steelhead-player-driver-level.service';
+import { SteelheadPlayerDriverLevelService } from './steelhead-player-driver-level.service';
 
 /** Defines the mock for the API Service. */
-export class MockSteelheadPlayerCmsOverrideService {
+export class MockSteelheadPlayerDriverLevelService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getCmsOverrideByXuid$ = jasmine
-    .createSpy('getCmsOverrideByXuid$')
+  public getDriverLevel$ = jasmine
+    .createSpy('getDriverLevel$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of())));
 
-  public setCmsOverrideByXuid$ = jasmine
-    .createSpy('setCmsOverrideByXuid$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of())));
-
-  public deleteCmsOverrideByXuid$ = jasmine
-    .createSpy('deleteCmsOverrideByXuid$')
+  public setDriverLevel$ = jasmine
+    .createSpy('setDriverLevel$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of())));
 
   constructor(private readonly generator$: () => unknown) {}
 }
 
 /** Creates an injectable mock for Steelhead Cms Override Service. */
-export function createMockSteelheadPlayerCmsOverrideService(
+export function createMockSteelheadPlayerDriverLevelService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
-    provide: SteelheadPlayerCmsOverrideService,
-    useValue: new MockSteelheadPlayerCmsOverrideService(returnValueGenerator),
+    provide: SteelheadPlayerDriverLevelService,
+    useValue: new MockSteelheadPlayerDriverLevelService(returnValueGenerator),
   };
 }
