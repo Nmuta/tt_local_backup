@@ -114,5 +114,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter.World
 
             return this.Ok(pullrequest);
         }
+
+        /// <summary>
+        ///     Gets display conditions.
+        /// </summary>
+        [HttpGet("displayconditions")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
+        public async Task<IActionResult> GetDisplayConditions()
+        {
+            var conditions = await this.steelheadPegasusService.GetDisplayConditionsAsync().ConfigureAwait(true);
+
+            return this.Ok(conditions);
+        }
     }
 }

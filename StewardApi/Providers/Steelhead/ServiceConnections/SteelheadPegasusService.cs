@@ -122,6 +122,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync()
+        {
+            var displayConditions =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>>(
+                     SteelheadLiveOpsContent.CMSFileNames.TileDisplayConditions,
+                     this.cmsEnvironment,
+                     slot: "daily").ConfigureAwait(false);
+
+            return displayConditions;
+        }
+
+        /// <inheritdoc />
         public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
             var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}";
@@ -423,7 +435,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.Map<MotdEntry>(messageOfTheDayBridge);
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, null);
 
             XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
@@ -687,7 +699,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private async Task<CommitRefProxy> CommitWelcomeCenterTileAsync(WofBaseTileEntry entry, XElement element, string filePath, IEnumerable<string> deleteTargets)
         {
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
+            var displayConditions = await this.GetDisplayConditionsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, displayConditions);
 
             // deleted elements will be rewritten.
             foreach (var target in deleteTargets)

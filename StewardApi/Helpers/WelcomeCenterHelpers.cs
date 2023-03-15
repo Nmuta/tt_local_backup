@@ -69,33 +69,67 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Recursively builds a tree of metadata from deserilized xml object.
         /// </summary>
-        public static Node BuildMetaData(object target, Node root, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
+        public static Node BuildMetaData(
+            object target,
+            Node root,
+            Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings,
+            Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition> displayConditions)
         {
-            Node tree = BuildMetaDataCore(target, root);
-            BakeLocTextComments(tree, locstrings);
+            Node tree = BuildTree(target, root);
+
+            // TODO: improve the parameter handling logic for BuildMetaData.
+            if (locstrings != null)
+            {
+                BakeLocTextComments(tree, locstrings);
+            }
+
+            if (displayConditions != null)
+            {
+                BakeDisplayConditions(tree, displayConditions);
+            }
 
             return tree;
+        }
 
-            static void BakeLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
+        private static void BakeDisplayConditions(Node tree, Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition> displayConditions)
+        {
+            // DisplayConditions are top level. No need to recurse.
+            var child = tree.Children.Where(node => node.Path.LocalName == "DisplayConditions").FirstOrDefault();
+            if (child == null)
             {
-                var children = tree.Children;
-                foreach (var child in children)
+                return;
+            }
+
+            foreach (var item in child.Children)
+            {
+                Node refNode = item.Children.Where(node => node.Path.LocalName == "ref").First();
+                if (displayConditions.TryGetValue((Guid)refNode.Value, out var condition))
                 {
-                    if (child.Path.LocalName == "loc-ref" && child.IsAttributeField && child.Value != null)
+                    // comments must be placed on nodes with values.
+                    refNode.Comment = $" ref: {condition.FriendlyName} (LiveConditions.{condition.ToString()["SteelheadLiveOpsContent.".Length..]}) ";
+                }
+            }
+        }
+
+        private static void BakeLocTextComments(Node tree, Dictionary<Guid, List<LiveOpsContracts.LocalizedString>> locstrings)
+        {
+            var children = tree.Children;
+            foreach (var child in children)
+            {
+                if (child.Path.LocalName == "loc-ref" && child.IsAttributeField && child.Value != null)
+                {
+                    var guid = new Guid(child.Value.ToString());
+                    if (locstrings.TryGetValue(guid, out var localizedStrings))
                     {
-                        Guid guid = new Guid(child.Value.ToString());
-                        if (locstrings.TryGetValue(guid, out var localizedStrings))
+                        var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
+                        if (loc != null)
                         {
-                            var loc = localizedStrings.Where(param => param.LanguageCode == "en-US").FirstOrDefault();
-                            if (loc != null)
-                            {
-                                child.Comment = $" loc: {loc.Message} (base) ";
-                            }
+                            child.Comment = $" loc: {loc.Message} (base) ";
                         }
                     }
-
-                    BakeLocTextComments(child, locstrings);
                 }
+
+                BakeLocTextComments(child, locstrings);
             }
         }
 
@@ -240,7 +274,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         ///     Recursively builds a tree of metadata from
         ///     deserialized xml object.
         /// </summary>
-        private static Node BuildMetaDataCore(object target, Node root)
+        private static Node BuildTree(object target, Node root)
         {
             foreach (PropertyInfo property in target.GetType().GetProperties())
             {
@@ -287,7 +321,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         root.IsArray = true;
                         foreach (var innervalue in (object[])value)
                         {
-                            Node ret = BuildMetaDataCore(innervalue, new Node()
+                            Node ret = BuildTree(innervalue, new Node()
                             {
                                 Value = null,
                                 Path = path,
@@ -302,7 +336,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     else
                     {
                         // Recurse, then add created node to root.
-                        Node child = BuildMetaDataCore(value, new Node()
+                        Node child = BuildTree(value, new Node()
                         {
                             Value = null,
                             Path = path,

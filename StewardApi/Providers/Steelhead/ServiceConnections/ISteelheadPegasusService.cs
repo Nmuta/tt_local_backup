@@ -219,5 +219,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets localization categories available in repository.
         /// </summary>
         public Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync();
+
+        /// <summary>
+        ///     Gets display conditions.
+        /// </summary>
+        Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync();
     }
 }

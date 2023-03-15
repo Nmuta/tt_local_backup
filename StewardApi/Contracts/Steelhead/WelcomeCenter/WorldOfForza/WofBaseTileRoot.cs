@@ -150,7 +150,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public class Season : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Season; }
     public class Chapter : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Chapter; }
 
-    // This prop appears to be unused in the Pegasus Xml.
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -160,7 +159,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
-    // This prop appears to be unused in the Pegasus Xml.
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -207,8 +205,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WofBaseDisplayConditions
     {
         [WriteToPegasus]
-        [XmlElement("item", Namespace = "scribble:x")]
-        public BaseItem[] Item { get; set; }
+        [XmlElement(Namespace = "scribble:x")]
+        public BaseItem[] item { get; set; }
     }
 
     [Serializable]
