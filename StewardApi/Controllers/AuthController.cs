@@ -62,16 +62,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var userObjectId in users.UserObjectIds)
             {
+                StewardUserInternal user = null;
+
                 try
                 {
-                    var user = await this.stewardUserProvider.GetStewardUserAsync(userObjectId).ConfigureAwait(true);
-                    results.Add(this.mapper.Map<StewardUser>(user));
+                    user = await this.stewardUserProvider.GetStewardUserAsync(userObjectId).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
                     results.Add(new StewardUser
                     {
                         Error = new NotFoundStewardError($"Lookup failed for Azure object ID: {userObjectId}.", ex)
+                    });
+                }
+
+                try
+                {
+                    results.Add(this.mapper.Map<StewardUser>(user));
+                }
+                catch (Exception ex)
+                {
+                    results.Add(new StewardUser
+                    {
+                        Error = new StewardError($"Mapping failed for user: {userObjectId}.", ex)
                     });
                 }
             }

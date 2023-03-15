@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
@@ -250,7 +251,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                         Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>());
                 this.PegasusService.GetCarClassesAsync().Returns(Fixture.Create<IEnumerable<CarClass>>());
                 this.PegasusService.GetLeaderboardsAsync(Arg.Any<string>()).Returns(Fixture.Create<IEnumerable<Leaderboard>>());
-                this.Mapper.Map<IEnumerable<LeaderboardScore>>(Arg.Any<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>())
+                this.Mapper.SafeMap<IEnumerable<LeaderboardScore>>(Arg.Any<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>>())
                     .Returns(Fixture.Create<IEnumerable<LeaderboardScore>>());
             }
 

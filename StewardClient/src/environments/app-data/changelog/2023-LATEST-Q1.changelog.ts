@@ -8,6 +8,65 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
+      uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
+      shortText: 'Add ability to record forum ban',
+      longText: [
+        'Forum ban are saved in Steward for reference and do not actually ban users on forums.',
+        'History of forum ban can be seen on the General tab of Player Details',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
+      shortText: 'Fix persisting UGC content',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'a17731bc-0dc1-402b-a7b3-82f5e78dbe5a',
+      shortText: 'Fix tool styling to match other game titles',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '7dcff416-9146-4f98-a6ee-fe8381f418c5',
+      shortText: 'Added ability to grant a user paid entitlements',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'cb5b78a6-4021-42ea-b7b6-80ede3e97326',
+      shortText: 'Remove special characters from gamertag lookup on paste or when manually typed',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserBanning },
+      uuid: '7880276c-1f28-4927-8f80-7fbc92acf04a',
+      shortText: 'Show error when valid ban reason is not selected',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd4f293ab-d3ae-4b1f-b1f9-d95e0e1c0e41',
+      shortText: 'Display team information in profile & contact us messages',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'b9020fef-2d19-4e8e-8b5c-6fbc3e87f709',
+      shortText: 'Stop player selection re-lookup when removing player',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '29d3b079-5e0f-48a7-8062-9f6398b878ba',
+      shortText: 'Update gameTitle to be humanized throughout front-end',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '947b953a-d168-432b-a743-9e449ba30441',
+      shortText: 'Searching now includes both featured and non-featured UGC content',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '5ac93e91-e6c3-46fa-a0e7-117fc6720930',
+      shortText: "Add ability to remove a player's cms override",
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'e498e3b6-b949-11ed-afa1-0242ac120002',
       shortText: 'Remove whitespace from strings in search box on UGC Details',

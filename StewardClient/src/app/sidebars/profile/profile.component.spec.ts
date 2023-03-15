@@ -22,6 +22,7 @@ import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
 import faker from '@faker-js/faker';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('ProfileComponent', () => {
   let mockRouter: Router;
@@ -37,7 +38,7 @@ describe('ProfileComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [ProfileComponent],
+      declarations: [ProfileComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockWindowService(),

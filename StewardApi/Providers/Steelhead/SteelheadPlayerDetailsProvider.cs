@@ -57,22 +57,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             queries.ShouldNotBeNull(nameof(queries));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetUserIdsOutput result = null;
+
+            var convertedQueries = this.mapper.SafeMap<ForzaPlayerLookupParameters[]>(queries);
+
             try
             {
-                var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
-
-                var result = await this.steelheadService.LookupPlayersAsync(convertedQueries, endpoint)
+                result = await this.steelheadService.LookupPlayersAsync(convertedQueries, endpoint)
                     .ConfigureAwait(false);
-
-                var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
-                identityResults.SetErrorsForInvalidXuids();
-
-                return identityResults;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
+
+            var identityResults = this.mapper.SafeMap<IList<IdentityResultAlpha>>(result.playerLookupResult);
+            identityResults.SetErrorsForInvalidXuids();
+
+            return identityResults;
         }
 
         /// <inheritdoc />
@@ -81,19 +83,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            LiveOpsService.GetLiveOpsUserDataByGamerTagOutput response = null;
+
             try
             {
-                var response = await this.steelheadService.GetUserDataByGamertagAsync(gamertag, endpoint)
+                response = await this.steelheadService.GetUserDataByGamertagAsync(gamertag, endpoint)
                     .ConfigureAwait(false);
 
                 if (response.userData.region <= 0) { return null; }
-
-                return this.mapper.Map<SteelheadPlayerDetails>(response.userData);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
             }
+
+            return this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
         }
 
         /// <inheritdoc />
@@ -101,19 +105,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            LiveOpsService.GetLiveOpsUserDataByXuidOutput response = null;
+
             try
             {
-                var response = await this.steelheadService.GetUserDataByXuidAsync(xuid, endpoint)
+                response = await this.steelheadService.GetUserDataByXuidAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
                 if (response.userData.region <= 0) { return null; }
-
-                return this.mapper.Map<SteelheadPlayerDetails>(response.userData);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
         }
 
         /// <inheritdoc />
@@ -158,17 +164,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetConsolesOutput response = null;
+
             try
             {
-                var response = await this.steelheadService.GetConsolesAsync(xuid, maxResults, endpoint)
+                response = await this.steelheadService.GetConsolesAsync(xuid, maxResults, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No consoles found for Xuid: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<ConsoleDetails>>(response.consoles);
         }
 
         /// <inheritdoc />
@@ -196,20 +204,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetSharedConsoleUsersOutput response = null;
+
             try
             {
-                var response = await this.steelheadService.GetSharedConsoleUsersAsync(
+                response = await this.steelheadService.GetSharedConsoleUsersAsync(
                         xuid,
                         startIndex,
                         maxResults,
                         endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No shared console users found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
         }
 
         /// <inheritdoc />
@@ -305,6 +315,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetUserBanSummariesOutput result = null;
+
             try
             {
                 if (xuids.Count == 0)
@@ -312,17 +324,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                     return new List<BanSummary>();
                 }
 
-                var result = await this.steelheadService.GetUserBanSummariesAsync(xuids.ToArray(), endpoint)
+                result = await this.steelheadService.GetUserBanSummariesAsync(xuids.ToArray(), endpoint)
                     .ConfigureAwait(false);
-
-                var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
-
-                return banSummaryResults;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Ban Summary lookup has failed.", ex);
             }
+
+            var banSummaryResults = this.mapper.SafeMap<IList<BanSummary>>(result.banSummaries);
+
+            return banSummaryResults;
         }
 
         /// <inheritdoc />
@@ -364,19 +376,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             filters.ShouldNotBeNull(nameof(filters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            var forzaAuctionFilters = this.mapper.SafeMap<ForzaAuctionFilters>(filters);
+
+            AuctionManagementService.SearchAuctionHouseOutput forzaAuctions = null;
+
             try
             {
-                var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.steelheadService.SearchAuctionsAsync(forzaAuctionFilters, endpoint)
+                forzaAuctions = await this.steelheadService.SearchAuctionsAsync(forzaAuctionFilters, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
             }
             catch (Exception ex)
             {
                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
             }
+
+            return this.mapper.SafeMap<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
         }
     }
 }

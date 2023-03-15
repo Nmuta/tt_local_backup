@@ -1,0 +1,17 @@
+@import '/src/styles/mixins';
+
+table {
+  width: 100%;
+}
+
+tr.element-row:not(.expanded-row):hover {
+  background: $table-tr-hover;
+}
+
+tr.element-row:not(.expanded-row):active {
+  background: $table-tr-active;
+}
+
+.element-row td {
+  border-bottom-width: 0;
+}

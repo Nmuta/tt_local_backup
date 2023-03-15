@@ -85,19 +85,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             var notifications = new List<UserGroupNotification>();
+
+            NotificationsManagementService.GetAllUserGroupMessagesOutput response = null;
+
             try
             {
-                var response = await this.Services.NotificationManagementService.GetAllUserGroupMessages(
+                response = await this.Services.NotificationManagementService.GetAllUserGroupMessages(
                     groupId,
                     maxResults).ConfigureAwait(true);
-
-                notifications.AddRange(this.mapper.Map<IList<UserGroupNotification>>(response.userGroupMessages));
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException(
                     $"Failed to retrieve all messages for user group: {groupId}.", ex);
             }
+
+            notifications.AddRange(this.mapper.SafeMap<IList<UserGroupNotification>>(response.userGroupMessages));
 
             return this.Ok(notifications);
         }
@@ -134,7 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(communityMessage.DeviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ForzaLiveDeviceType>(communityMessage.DeviceType);
             Guid notificationId = Guid.Empty;
             var messageResponse = new MessageSendResult<int>
             {
@@ -237,7 +240,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                     $"Cannot edit notification of type: {message.NotificationType}.");
             }
 
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(editParameters.DeviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ForzaLiveDeviceType>(editParameters.DeviceType);
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
@@ -332,9 +335,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new UnknownFailureStewardException($"Failed to delete user group message. (messageId: {messageIdAsGuid}) (groupId: {groupId})", ex);
             }
 
+            var deviceType = this.mapper.SafeMap<DeviceType>(forzaMessage.DeviceType);
+
             try
             {
-                var deivceType = this.mapper.Map<DeviceType>(forzaMessage.DeviceType);
                 var notificationHistory = new NotificationHistory
                 {
                     Id = messageId.ToString(),
@@ -344,7 +348,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                     RecipientId = groupId.ToString(CultureInfo.InvariantCulture),
                     Type = forzaMessage.NotificationType,
                     RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
-                    DeviceType = deivceType.ToString(),
+                    DeviceType = deviceType.ToString(),
                     GiftType = GiftType.None.ToString(),
                     BatchReferenceId = string.Empty,
                     Action = NotificationAction.Delete.ToString(),

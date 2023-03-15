@@ -5,10 +5,11 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { Clipboard } from '@helpers/clipboard';
 import { GameTitle, UserRole } from '@models/enums';
 import { Select, Store } from '@ngxs/store';
+import { V2UsersService } from '@services/api-v2/users/users.service';
 import { WoodstockPlayerNotificationsService } from '@services/api-v2/woodstock/player/notifications/woodstock-player-notifications.service';
+import { EmailAddresses } from '@shared/constants';
 import { UserModel } from '@shared/models/user.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { WindowService } from '@shared/services/window';
 import { BreakAccessToken, LogoutUser, RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { combineLatest, Observable } from 'rxjs';
@@ -24,6 +25,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public user: UserModel;
+  public teamLead: UserModel;
   public loading: boolean;
   public accessToken: string;
 
@@ -38,12 +40,17 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   };
   public deleteNotificationsFormGroup = new FormGroup(this.deleteNotificationsFormControls);
 
+  public readonly adminTeamLead = 'Live Ops Admins';
+  public readonly adminTeamLeadEmail = EmailAddresses.LiveOpsAdmins;
+
+  public getTeamLeadMonitor = new ActionMonitor(`GET user's team lead`);
+
   constructor(
     private readonly router: Router,
     private readonly store: Store,
-    private readonly windowService: WindowService,
     private readonly clipboard: Clipboard,
     private readonly woodstockPlayerNotificationsService: WoodstockPlayerNotificationsService,
+    private readonly v2UsersService: V2UsersService,
   ) {
     super();
   }
@@ -67,6 +74,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             `name=${profile.name}`,
             `objectId=${profile.objectId}`,
           ].join('&');
+
+          this.getTeamLead(this.user);
         },
         _error => {
           this.loading = false;
@@ -137,6 +146,16 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         }
 
         this.deleteNotificationsFormControls.xuid.setValue(null);
+      });
+  }
+
+  private getTeamLead(user: UserModel): void {
+    this.getTeamLeadMonitor = this.getTeamLeadMonitor.repeat();
+    this.v2UsersService
+      .getTeamLead$(user.objectId)
+      .pipe(this.getTeamLeadMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(teadLead => {
+        this.teamLead = teadLead;
       });
   }
 }

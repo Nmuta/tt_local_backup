@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Paid Entitlements</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="paidEntitlementFormGroup" class="sf-wrapper">
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Select Entitlement</mat-label>
+          <mat-select [formControl]="paidEntitlementFormControls.entitlement">
+            <mat-option
+              *ngFor="let entitlement of availableEntitlements"
+              [value]="entitlement.productId"
+            >
+              {{
+                entitlement?.description?.length > 0
+                  ? entitlement.description
+                  : 'Missing Description:' + entitlement?.productId
+              }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="sf-horizontal">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="sendEntitlement()"
+            [disabled]="!this.paidEntitlementFormGroup.valid"
+            stateManager
+            [monitor]="putMonitor"
+            monitorDisable
+            monitorWarnSnackbar
+            monitorCompleteSnackbar
+            [verifyWith]="verifySubmission"
+          >
+            Send Entitlement
+            <button-spinner
+              [monitor]="putMonitor"
+              defaultIcon="arrow_circle_right"
+            ></button-spinner>
+          </button>
+          <mat-checkbox
+            #verifySubmission
+            stateManager
+            [permissionAttribute]="grantPaidEntitlementAttribute"
+            [permissionTitle]="serviceContract.gameTitle"
+            [permissionSupportV1Auth]="false"
+            [monitor]="putMonitor"
+            >Verify</mat-checkbox
+          >
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

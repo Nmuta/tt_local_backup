@@ -13,6 +13,7 @@ import { createMockOpusService } from '@services/opus';
 import { createMockApolloService } from '@services/apollo';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import faker from '@faker-js/faker';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('PlayerSidebarDetailsBaseComponent', () => {
   let fixture: ComponentFixture<PlayerSidebarDetailsBaseComponent<never>>;
@@ -25,7 +26,7 @@ describe('PlayerSidebarDetailsBaseComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [PlayerSidebarDetailsBaseComponent],
+      declarations: [PlayerSidebarDetailsBaseComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockWindowService(),

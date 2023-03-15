@@ -51,8 +51,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         public async Task<SteelheadMasterInventory> GetMasterInventoryAsync()
         {
 
-            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.DataCar>(), new List<Exception>());
-            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.VanityItem>(), new List<Exception>());
+            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.DataCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus cars.", ex));
+            }));
+            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.VanityItem>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus vanity items.", ex));
+            }));
 
             await Task.WhenAll(getCars, /*getCarHorns,*/ getVanityItems /*getEmotes,*/ /*getQuickChatLines*/).ConfigureAwait(false);
 
@@ -62,19 +68,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                 {
                     new MasterInventoryItem { Id = -1, Description = "Credits" },
                 },
-                Cars = this.mapper.Map<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
-                VanityItems = this.mapper.Map<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
+                Cars = this.mapper.SafeMap<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
+                VanityItems = this.mapper.SafeMap<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
             };
-
-            if (getCars.IsFaulted)
-            {
-                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus cars.", getCars.Exception));
-            }
-
-            if (getVanityItems.IsFaulted)
-            {
-                this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus vanity items.", getVanityItems.Exception));
-            }
 
             return masterInventory;
         }

@@ -144,7 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryIdAsGuid).ConfigureAwait(true);
-            var mappedLivery = this.mapper.Map<UgcItem>(livery);
+            var mappedLivery = this.mapper.SafeMap<UgcItem>(livery);
             if (livery == null)
             {
                 throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryIdAsGuid}");

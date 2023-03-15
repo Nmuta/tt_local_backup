@@ -27,6 +27,8 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { HelpModule } from '@shared/modules/help/help.module';
+import { RouterModule } from '@angular/router';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
@@ -61,6 +63,8 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,
+    HelpModule,
+    RouterModule,
   ],
   exports: [
     WoodstockBanHistoryComponent,

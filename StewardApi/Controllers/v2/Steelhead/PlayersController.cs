@@ -116,21 +116,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             var service = this.Services.UserManagementService;
+            var convertedQueries = this.mapper.SafeMap<ForzaPlayerLookupParameters[]>(identityQueries);
+            UserManagementService.GetUserIdsOutput result = null;
+
             try
             {
-                var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(identityQueries);
-
-                var result = await service.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
-
-                var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
-                identityResults.SetErrorsForInvalidXuids();
-
-                return this.Ok(identityResults);
+                result = await service.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
+
+            var identityResults = this.mapper.SafeMap<IList<IdentityResultAlpha>>(result.playerLookupResult);
+            identityResults.SetErrorsForInvalidXuids();
+
+            return this.Ok(identityResults);
         }
 
         /// <summary>
@@ -149,19 +150,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 return this.Ok(new List<BanSummary>());
             }
 
+            UserManagementService.GetUserBanSummariesOutput result = null;
+
             try
             {
-                var result = await this.Services.UserManagementService.GetUserBanSummaries(xuids.ToArray(), xuids.Count)
+                result = await this.Services.UserManagementService.GetUserBanSummaries(xuids.ToArray(), xuids.Count)
                     .ConfigureAwait(true);
-
-                var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
-
-                return this.Ok(banSummaryResults);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Ban Summary lookup has failed.", ex);
             }
+
+            var banSummaryResults = this.mapper.SafeMap<IList<BanSummary>>(result.banSummaries);
+
+            return this.Ok(banSummaryResults);
         }
 
         /// <summary>
@@ -193,7 +196,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<SteelheadBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SteelheadBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -244,7 +247,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<SteelheadBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SteelheadBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {

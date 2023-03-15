@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     CMSFileNames.CarClasses,
                     this.cmsEnvironment,
                     slot: slotId).ConfigureAwait(false);
-                var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
+                var carClasses = this.mapper.SafeMap<IEnumerable<CarClass>>(pegasusCarClasses);
 
                 this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
 
@@ -245,7 +245,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             {
                 var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
                 var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<RivalEvent>>(filename, pegasusEnvironment, slot: slotId).ConfigureAwait(false);
-                var leaderboards = this.mapper.Map<IEnumerable<Leaderboard>>(pegasusLeaderboards);
+                var leaderboards = this.mapper.SafeMap<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
                 this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
 
@@ -410,7 +410,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
             MotdEntry entry = root.Entries.Where(motd => motd.idAttribute == id).First();
 
-            var subset = this.mapper.Map<MotdBridge>(entry);
+            var subset = this.mapper.SafeMap<MotdBridge>(entry);
 
             return subset;
         }
@@ -433,7 +433,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id)
         {
-            var entry = this.mapper.Map<MotdEntry>(messageOfTheDayBridge);
+            var entry = this.mapper.SafeMap<MotdEntry>(messageOfTheDayBridge);
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, null);
 
@@ -461,7 +461,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             WofImageTextRoot root = await item.Content.DeserializeAsync<WofImageTextRoot>().ConfigureAwait(false);
             WofImageTextEntry entry = root.Entries.Where(wof => wof.id == id).First();
 
-            var subset = this.mapper.Map<WofImageTextBridge>(entry);
+            var subset = this.mapper.SafeMap<WofImageTextBridge>(entry);
 
             return subset;
         }
@@ -474,7 +474,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             WofGenericPopupRoot root = await item.Content.DeserializeAsync<WofGenericPopupRoot>().ConfigureAwait(false);
             WofGenericPopupEntry entry = root.Entries.Where(wof => wof.id == id).First();
 
-            var subset = this.mapper.Map<WofGenericPopupBridge>(entry);
+            var subset = this.mapper.SafeMap<WofGenericPopupBridge>(entry);
 
             return subset;
         }
@@ -487,7 +487,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             WofDeeplinkRoot root = await item.Content.DeserializeAsync<WofDeeplinkRoot>().ConfigureAwait(false);
             WofDeeplinkEntry entry = root.Entries.Where(wof => wof.id == id).First();
 
-            var subset = this.mapper.Map<WofDeeplinkBridge>(entry);
+            var subset = this.mapper.SafeMap<WofDeeplinkBridge>(entry);
 
             return subset;
         }
@@ -546,7 +546,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id)
         {
-            var entry = this.mapper.Map<WofImageTextEntry>(wofTileBridge);
+            var entry = this.mapper.SafeMap<WofImageTextEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
             var deleteElements = new List<string> { "Timer", "DisplayConditions" };
 
@@ -556,7 +556,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id)
         {
-            var entry = this.mapper.Map<WofGenericPopupEntry>(wofTileBridge);
+            var entry = this.mapper.SafeMap<WofGenericPopupEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
             var deleteElements = new List<string> { "Destination" };
 
@@ -566,7 +566,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id)
         {
-            var entry = this.mapper.Map<WofDeeplinkEntry>(wofTileBridge);
+            var entry = this.mapper.SafeMap<WofDeeplinkEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
             var deleteElements = new List<string> { "Destination" };
 
@@ -585,7 +585,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 filteredPrs = filteredPrs.Where(pr => pr.Title.Contains(subject, StringComparison.InvariantCulture));
             }
 
-            var formattedPrs = this.mapper.Map<List<PullRequest>>(filteredPrs);
+            var formattedPrs = this.mapper.SafeMap<List<PullRequest>>(filteredPrs);
 
             return formattedPrs;
         }
@@ -620,7 +620,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var pullrequest = await this.azureDevOpsManager.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(false);
 
-            return this.mapper.Map<PullRequest>(pullrequest);
+            return this.mapper.SafeMap<PullRequest>(pullrequest);
         }
 
         /// <inheritdoc/>
@@ -641,7 +641,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             foreach (var loc in localizedStrings)
             {
-                var entry = this.mapper.Map<LocEntry>(loc);
+                var entry = this.mapper.SafeMap<LocEntry>(loc);
 
                 entry.id = Guid.NewGuid();
                 entry.LocString.locdef = Guid.NewGuid();
