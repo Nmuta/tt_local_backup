@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '044af69b-02c5-42cb-8834-776b3e418007',
+      shortText: 'Recipient updates to contact us forms',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
       uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
       shortText: 'Add ability to record forum ban',
