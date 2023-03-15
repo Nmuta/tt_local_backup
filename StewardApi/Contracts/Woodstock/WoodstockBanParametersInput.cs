@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         /// <summary>
         ///     Gets or sets the ban configuration id.
         /// </summary>
-        public Guid BanConfigurationId { get; set; }
+        public string BanConfigurationId { get; set; }
 
         /// <summary>
         ///     Gets or sets the xuid.

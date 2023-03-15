@@ -143,6 +143,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
     const bans: WoodstockBanRequest[] = identities.map(identity => {
       return <WoodstockBanRequest>{
         xuid: identity.xuid,
+        banConfigurationId: this.formControls.banConfiguration.value,
         deleteLeaderboardEntries: this.formControls.deleteLeaderboardEntries.value,
         reason: this.formControls.banReason.value,
         featureArea: this.formControls.banArea.value as WoodstockBanArea,
