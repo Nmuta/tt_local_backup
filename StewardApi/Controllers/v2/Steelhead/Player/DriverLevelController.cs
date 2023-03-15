@@ -62,6 +62,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             //xuid.IsValidXuid();
 
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
             var mappedResponse = await this.RetrieveDriverLevel(xuid).ConfigureAwait(true);
 
             return this.Ok(mappedResponse);
@@ -82,6 +84,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> SetDriverLevel(ulong xuid, [FromBody] SteelheadDriverLevel newDriverLevel)
         {
             //xuid.IsValidXuid();
+
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             newDriverLevel.DriverLevel.ShouldBeGreaterThanOrEqual(1, nameof(newDriverLevel.DriverLevel));
             newDriverLevel.DriverLevel.ShouldBeLessThanOrEqual(999, nameof(newDriverLevel.DriverLevel));
