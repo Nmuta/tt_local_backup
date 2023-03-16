@@ -230,10 +230,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 for (var i = 0; i < banInput.Count; i += maxXuidsPerRequest)
                 {
                     var paramBatch = banInput.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banInput.Count - i));
-                    var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParametersV2>>(paramBatch);
+                    var mappedBanParameters = this.mapper.SafeMap<IList<ForzaUserBanParametersV2>>(paramBatch);
                     var result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
 
-                    banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
+                    banResults.AddRange(this.mapper.SafeMap<IList<BanResult>>(result.banResults));
                 }
 
                 foreach (var result in banResults)
