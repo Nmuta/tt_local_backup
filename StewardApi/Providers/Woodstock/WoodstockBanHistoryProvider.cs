@@ -50,17 +50,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             int banEntryId,
             string title,
             string requesterObjectId,
-            WoodstockBanParametersInput banParameter,
+            WoodstockBanParametersInput banParameters,
             BanResult banResult,
             string endpoint)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
-            banParameter.ShouldNotBeNull(nameof(banParameter));
+            banParameters.ShouldNotBeNull(nameof(banParameters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             // Gamertags must be set to null for NGP. v-joyate 20201123
-            banParameter.Gamertag = null;
+            banParameters.Gamertag = null;
 
             var banHistory = new LiveOpsBanHistory(
                 (long) xuid,
@@ -69,9 +69,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 requesterObjectId,
                 banResult.BanDescription.StartTimeUtc,
                 banResult.BanDescription.ExpireTimeUtc,
-                banParameter.FeatureArea,
-                banParameter.Reason,
-                banParameter.ToJson(),
+                banParameters.FeatureArea,
+                banParameters.Reason,
+                banParameters.ToJson(),
                 endpoint);
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
