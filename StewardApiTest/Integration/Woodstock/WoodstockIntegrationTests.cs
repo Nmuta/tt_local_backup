@@ -560,6 +560,149 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
+        public async Task BanPlayers()
+        {
+            var banParameters = this.GenerateBanParameters();
+
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+            Assert.IsNull(result[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [Ignore]
+        public async Task BanPlayers_InvalidXuid()
+        {
+            var banParameters = this.GenerateBanParameters();
+            banParameters[0].Xuid = TestConstants.InvalidXuid;
+            banParameters[0].Gamertag = null;
+
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+            Assert.IsNotNull(result[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_InvalidGamertag()
+        {
+            var banParameters = GenerateBanParameters();
+            banParameters[0].Xuid = null;
+            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
+
+            try
+            {
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_Unauthorized()
+        {
+            var banParameters = GenerateBanParameters();
+
+            try
+            {
+                await unauthorizedClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_InvalidFeatureArea()
+        {
+            var banParameters = GenerateBanParameters();
+            banParameters[0].FeatureArea = "invalidFeatureArea";
+
+            try
+            {
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_NoXuidsOrGamertagsProvided()
+        {
+            var banParameters = GenerateBanParameters();
+            banParameters[0].Xuid = default;
+            banParameters[0].Gamertag = null;
+
+            try
+            {
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [Ignore]
+        public async Task BanPlayers_UseBackgroundProcessing()
+        {
+            var banParameters = GenerateBanParameters();
+
+            var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
+
+            Assert.IsNull(result.ToList()[0].Error);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result[0].BanDescription.FeatureArea));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [Ignore]
+        public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
+        {
+            var banParameters = GenerateBanParameters();
+            banParameters[0].Xuid = TestConstants.InvalidXuid;
+
+            var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.CompletedWithErrors).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.ToList()[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
+        {
+            var banParameters = GenerateBanParameters();
+            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
+            banParameters[0].Xuid = null;
+
+            var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Failed).ConfigureAwait(false);
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetBanSummaries()
         {
             var result = await stewardClient.GetBanSummariesAsync(new List<ulong> { xuid }).ConfigureAwait(false);
@@ -1603,6 +1746,59 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             Assert.AreEqual(expectedStatus, status);
 
             return jobResult;
+        }
+
+        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, IList<WoodstockBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        {
+            var headersToValidate = new List<string> { "jobId" };
+
+            var response = await stewardTestingClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate).ConfigureAwait(false);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            bool jobCompleted;
+            IList<BanResult> jobResults;
+            BackgroundJobStatus status;
+
+            do
+            {
+                var backgroundJob = await stewardTestingClient.GetJobStatusAsync(response.Headers["jobId"]).ConfigureAwait(false);
+
+                status = backgroundJob.Status;
+
+                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.CompletedWithErrors || status == BackgroundJobStatus.Failed;
+
+                jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
+                    JsonConvert.SerializeObject(backgroundJob.RawResult));
+
+                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
+                {
+                    break;
+                }
+            } while (!jobCompleted);
+
+            Assert.AreEqual(expectedStatus, status);
+
+            return jobResults;
+        }
+
+        private IList<WoodstockBanParametersInput> GenerateBanParameters()
+        {
+            return new List<WoodstockBanParametersInput>
+            {
+                new WoodstockBanParametersInput
+                {
+                    Xuid = xuid,
+                    Gamertag = gamertag,
+                    FeatureArea = "Matchmaking",
+                    Reason = "This is an automated test.",
+                    BanConfigurationId = "test",
+                    OverrideBanDuration = false,
+                    BanDuration = null,
+                    DeleteLeaderboardEntries = false
+                }
+            };
         }
 
         private WoodstockMasterInventory CreateGiftInventory()

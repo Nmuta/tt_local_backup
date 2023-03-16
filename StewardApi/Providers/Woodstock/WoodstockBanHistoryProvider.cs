@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             banParameters.Gamertag = null;
 
             var banHistory = new LiveOpsBanHistory(
-                (long) xuid,
+                (long)xuid,
                 banEntryId,
                 title,
                 requesterObjectId,
