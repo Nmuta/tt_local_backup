@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         Task<CloneUgcFileOutput> CloneUgcFile(Guid fileId, string shareCode, ForzaUGCContentType contentType, bool isSearchable, bool keepGuid);
 
         /// <summary>
-        ///     Gets user data by xuid.
+        ///     Gets user data by gamertag.
         /// </summary>
         Task<GetLiveOpsUserDataByGamerTagV2Output> GetLiveOpsUserDataByGamerTagV2(string gamertag);
     }

@@ -20,7 +20,6 @@ using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
@@ -46,31 +45,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
     public sealed class CarsController : V2WoodstockControllerBase
     {
         private readonly IWoodstockItemsProvider itemsProvider;
-        private readonly IWoodstockPegasusService pegasusService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CarsController"/> class.
         /// </summary>
-        public CarsController(IWoodstockItemsProvider itemsProvider, IWoodstockPegasusService pegasusService)
+        public CarsController(IWoodstockItemsProvider itemsProvider)
         {
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
-            pegasusService.ShouldNotBeNull(nameof(pegasusService));
 
             this.itemsProvider = itemsProvider;
-            this.pegasusService = pegasusService;
-        }
-
-        /// <summary>
-        ///     Gets player CMS override.
-        /// </summary>
-        [HttpGet("test")]
-        [SwaggerResponse(200)]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        public async Task<IActionResult> asdf()
-        {
-            var asdf = await this.pegasusService.GetBanConfigurationsAsync().ConfigureAwait(false);
-
-            return this.Ok();
         }
 
         /// <summary>
