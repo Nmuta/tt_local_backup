@@ -17,6 +17,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
+      shortText: 'Add additional properties',
+      longText: [
+        'Add properties including: powertrain name, region name, car class name,',
+        'car type name, performance index, series, and release date.',
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '044af69b-02c5-42cb-8834-776b3e418007',
       shortText: 'Recipient updates to contact us forms',
