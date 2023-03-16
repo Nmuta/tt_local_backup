@@ -143,15 +143,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup,
                     (id) => this.fh4Service.GetPlayerUgcObjectAsync(id, this.SunriseEndpoint.Value),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCObjectOutput>(
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCTuneOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH4.ForzaUGCContentType.Tune,
-                    (id) => this.fh4Service.GetPlayerUgcObjectAsync(id, this.SunriseEndpoint.Value),
+                    (id) => this.fh4Service.GetPlayerTuneAsync(id, this.SunriseEndpoint.Value),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Tune),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCObjectOutput>(
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCPhotoOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH4.ForzaUGCContentType.Photo,
-                    (id) => this.fh4Service.GetPlayerUgcObjectAsync(id, this.SunriseEndpoint.Value),
+                    (id) => this.fh4Service.GetPlayerPhotoAsync(id, this.SunriseEndpoint.Value),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Photo),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCObjectOutput>(
                     shareCodeOrId,

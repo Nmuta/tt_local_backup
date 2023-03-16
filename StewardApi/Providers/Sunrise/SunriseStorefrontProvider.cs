@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var photoOutput = await this.sunriseService.GetPlayerUgcObjectAsync(photoId, endpoint).ConfigureAwait(false);
+            var photoOutput = await this.sunriseService.GetPlayerPhotoAsync(photoId, endpoint).ConfigureAwait(false);
             var photo = this.mapper.SafeMap<UgcItem>(photoOutput.result);
 
             if (photo.GameTitle != (int)GameTitle.FH4)
@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var tuneOutput = await this.sunriseService.GetPlayerUgcObjectAsync(tuneId, endpoint).ConfigureAwait(false);
+            var tuneOutput = await this.sunriseService.GetPlayerTuneAsync(tuneId, endpoint).ConfigureAwait(false);
             var tune = this.mapper.SafeMap<UgcItem>(tuneOutput.result);
 
             if (tune.GameTitle != (int)GameTitle.FH4)

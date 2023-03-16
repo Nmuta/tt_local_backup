@@ -349,6 +349,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Get a player photo.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhotoAsync(
+            Guid photoId,
+            string endpoint);
+
+        /// <summary>
+        ///     Get a player tune.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTuneAsync(
+            Guid tuneId,
+            string endpoint);
+
+        /// <summary>
         ///     Get a player's UGC by id.
         /// </summary>
         Task<StorefrontManagementService.GetUGCObjectOutput> GetPlayerUgcObjectAsync(
