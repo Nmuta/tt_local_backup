@@ -106,24 +106,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return await ServiceClient.SendRequestAsync<List<CreditUpdate>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<BanResult>> BanPlayersAsync(IList<WoodstockBanParametersInput> banParameters)
-        {
-            banParameters.ShouldNotBeNull(nameof(banParameters));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}players/ban");
-
-            return await ServiceClient.SendRequestAsync<IList<BanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters, headers: this.headers).ConfigureAwait(false);
-        }
-
-        public async Task<ResponseWithHeaders<BackgroundJob>> BanPlayersWithHeaderResponseAsync(IList<WoodstockBanParametersInput> banParameters, IList<string> headersToValidate)
-        {
-            banParameters.ShouldNotBeNull(nameof(banParameters));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}players/ban/useBackgroundProcessing");
-
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters, headers: this.headers).ConfigureAwait(false);
-        }
-
         public async Task<IList<BanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
