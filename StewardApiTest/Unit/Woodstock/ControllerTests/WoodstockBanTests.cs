@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var banParameters = GenerateBanParameters();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.BanPlayers(false, banParameters).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.BanPlayers(banParameters, false).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var controller = new Dependencies().Build();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(false, null).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, false).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
@@ -72,7 +72,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var banParameters = GenerateBanParameters();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(true, banParameters).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, true).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             var controller = new Dependencies().Build();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(true, null).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, true).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
