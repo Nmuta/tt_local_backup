@@ -448,20 +448,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             result.Should().BeOfType<List<LiveOpsBanHistory>>();
         }
 
-         private List<WoodstockBanParametersInput> GenerateBanParameters()
-        {
-            var newParams = new WoodstockBanParametersInput
-            {
-                Xuid = 111,
-                Gamertag = "gamerT1",
-                FeatureArea = "Matchmaking",
-                Reason = "Disgusting license plate.",
-                DeleteLeaderboardEntries = false,
-            };
-
-            return new List<WoodstockBanParametersInput> { newParams };
-        }
-
         private sealed class Dependencies
         {
             public Dependencies()
