@@ -119,8 +119,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
-            [FromQuery] bool useBackgroundProcessing = false,
-            [FromBody] IList<WoodstockBanParametersInput> banInput)
+            [FromBody] IList<WoodstockBanParametersInput> banInput,
+            [FromQuery] bool useBackgroundProcessing = false)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
