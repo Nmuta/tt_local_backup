@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [SwaggerResponse(200, type: typeof(IList<BanConfiguration>))]
         public async Task<IActionResult> GetBanConfigurations()
         {
-            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync().ConfigureAwait(false);
+            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync().ConfigureAwait(true);
 
             var banConfigurations = new List<BanConfiguration>();
 
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
-            [FromQuery] bool useBackgroundProcessing,
+            [FromQuery] bool useBackgroundProcessing = false,
             [FromBody] IList<WoodstockBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
@@ -142,14 +142,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
             if (useBackgroundProcessing)
             {
-                var response = await this.BanPlayersUseBackgroundProcessing(banInput, requesterObjectId).ConfigureAwait(false);
+                var response = await this.BanPlayersUseBackgroundProcessing(banInput, requesterObjectId).ConfigureAwait(true);
                 return response;
             }
             else
             {
                 var userManagementService = this.Services.UserManagementService;
                 var liveOpsService = this.Services.LiveOpsService;
-                var response = await this.BanPlayers(banInput, requesterObjectId, liveOpsService, userManagementService).ConfigureAwait(false);
+                var response = await this.BanPlayers(banInput, requesterObjectId, liveOpsService, userManagementService).ConfigureAwait(true);
                 return this.Ok(response);
             }
         }
