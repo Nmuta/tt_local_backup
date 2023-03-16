@@ -10,7 +10,9 @@ export class MockWoodstockPlayersBanService {
 
   public getBanConfigurations$ = jasmine.createSpy('getBanConfigurations').and.returnValue(of([]));
   public postBanPlayers$ = jasmine.createSpy('postBanPlayers').and.returnValue(of());
-  public postBanPlayersWithBackgroundProcessing$ = jasmine.createSpy('postBanPlayersWithBackgroundProcessing').and.returnValue(of());
+  public postBanPlayersWithBackgroundProcessing$ = jasmine
+    .createSpy('postBanPlayersWithBackgroundProcessing')
+    .and.returnValue(of());
 }
 /** Creates an injectable mock for Woodstock Players Ban Service. */
 export function createMockWoodstockPlayersBanService(): Provider {

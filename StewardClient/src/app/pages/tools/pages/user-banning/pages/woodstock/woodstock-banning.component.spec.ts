@@ -27,7 +27,11 @@ describe('WoodstockBanningComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockBanningComponent],
-      providers: [createMockWoodstockService(), createMockBackgroundJobService(), createMockWoodstockPlayersBanService()],
+      providers: [
+        createMockWoodstockService(),
+        createMockBackgroundJobService(),
+        createMockWoodstockPlayersBanService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
