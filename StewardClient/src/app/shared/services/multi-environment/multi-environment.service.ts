@@ -34,6 +34,7 @@ export interface ResultSet {
   steelhead: IdentityResultAlpha[];
   woodstock: IdentityResultAlpha[];
   forte: IdentityResultAlpha[];
+  forum: IdentityResultAlpha[]; // Stub, will always be empty array
 }
 
 /** A set of endpoints for all titles. Keys match @see ResultSet */
@@ -44,6 +45,7 @@ export interface EnvSet {
   steelhead: string;
   woodstock: string;
   forte: string;
+  forum: string;
 }
 
 /** A set of identity results across many users, for both Retail and whatever EnvSet is currently selected. */
@@ -77,6 +79,7 @@ type ResultsIntersection<T extends keyof ResultSet> =
   | ResultsComplete<T>
   | ResultsStandardOnly<T>
   | ResultsRetailOnly<T>;
+
 /** A set of Identity Results across all titles for a single user. */
 export interface SingleUserResultSet {
   sunrise: IdentityResultAlpha;
@@ -85,6 +88,7 @@ export interface SingleUserResultSet {
   steelhead: IdentityResultAlpha;
   woodstock: IdentityResultAlpha;
   forte: IdentityResultAlpha;
+  forum: IdentityResultAlpha; // Stub, will always be null
 }
 
 /** Identity information for a single user, for both Retail and whatever EnvSet is currently selected. */
