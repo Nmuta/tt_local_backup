@@ -13,6 +13,25 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add Loyalty tab with Loyalty Rewards tool',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
+      shortText: 'Add additional properties',
+      longText: [
+        'Add properties including: powertrain name, region name, car class name,',
+        'car type name, performance index, series, and release date.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '044af69b-02c5-42cb-8834-776b3e418007',
+      shortText: 'Recipient updates to contact us forms',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '8832d741-8529-4316-881c-ccc2dbff141f',
+      shortText: 'Implement UI for Driver Level/Prestige Rank in Player Details',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
       uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
       shortText: 'Add ability to record forum ban',
