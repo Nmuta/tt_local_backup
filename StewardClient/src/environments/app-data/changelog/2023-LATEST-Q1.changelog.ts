@@ -14,7 +14,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       longText: [
         'Fix filtering on disabled tools.',
         'Add MOTD to to GeneralUser for visibility and update restrictions.',
-        'Add Welcome Center Tiles to to GeneralUser for visibility and update restrictions.',
+        'Add Welcome Center Tiles to GeneralUser for visibility and update restrictions.',
         'Add restrictions to Create Auction.',
         'Add restrictions to Banning.',
       ],

@@ -1,6 +1,12 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels, HomeTileRestrictionType } from '../../helpers';
+import {
+  HomeTileInfoInternal,
+  AppIcon,
+  NavbarTool,
+  CommonAccessLevels,
+  HomeTileRestrictionType,
+} from '../../helpers';
 
 export const banningTile = <HomeTileInfoInternal>{
   icon: AppIcon.PlayerBan,
