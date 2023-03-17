@@ -30,6 +30,7 @@ export class SettingsGetEndpointsFakeApi extends FakeApiBase {
       woodstock: [{ name: faker.random.word() }],
       steelhead: [{ name: faker.random.word() }],
       forte: [{ name: faker.random.word() }],
+      forum: [{ name: faker.random.word() }],
     };
   }
 }

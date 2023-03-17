@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add Loyalty tab with Loyalty Rewards tool',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '21d83616-5d2f-4d74-95a4-27273bbbaa74',
+      shortText: 'Fully incorportate Forum as a game title with stubbed environment',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
       uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
       shortText: 'Add additional properties',

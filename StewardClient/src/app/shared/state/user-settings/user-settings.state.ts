@@ -37,6 +37,7 @@ export class UserSettingsStateModel {
   public woodstockEndpointKey: string;
   public steelheadEndpointKey: string;
   public forteEndpointKey: string;
+  public forumEndpointKey: string;
   public navbarTools: Partial<Record<NavbarTool, number>>;
   public themeOverride: ThemeOverrideOptions;
   public themeEnvironmentWarning: ThemeEnvironmentWarningOptions;
@@ -55,6 +56,7 @@ export class UserSettingsStateModel {
     woodstockEndpointKey: undefined,
     steelheadEndpointKey: undefined,
     forteEndpointKey: undefined,
+    forumEndpointKey: undefined,
     showAppUpdatePopup: true,
     themeOverride: undefined,
     themeEnvironmentWarning: !environment.production ? 'warn' : undefined,
@@ -232,6 +234,9 @@ export class UserSettingsState {
     const forteEndpointKeys = this.store.selectSnapshot<string[]>(
       EndpointKeyMemoryState.forteEndpointKeys,
     );
+    const forumEndpointKeys = this.store.selectSnapshot<string[]>(
+      EndpointKeyMemoryState.forumEndpointKeys,
+    );
 
     const isValidEndpointSelection = {
       apollo: apolloEndpointKeys.includes(state.apolloEndpointKey),
@@ -239,6 +244,7 @@ export class UserSettingsState {
       woodstock: woodstockEndpointKeys.includes(state.woodstockEndpointKey),
       steelhead: steelheadEndpointKeys.includes(state.steelheadEndpointKey),
       forte: forteEndpointKeys.includes(state.forteEndpointKey),
+      forum: forumEndpointKeys.includes(state.forumEndpointKey),
     };
 
     //First endpoint key returned by API is the default, clear out any state values for endpoints that no longer exist.
@@ -257,6 +263,9 @@ export class UserSettingsState {
     state.forteEndpointKey = isValidEndpointSelection.forte
       ? state.forteEndpointKey
       : forteEndpointKeys[0];
+    state.forumEndpointKey = isValidEndpointSelection.forum
+      ? state.forumEndpointKey
+      : forumEndpointKeys[0];
 
     ctx.setState(state);
 
@@ -265,7 +274,8 @@ export class UserSettingsState {
       !isValidEndpointSelection.sunrise ||
       !isValidEndpointSelection.woodstock ||
       !isValidEndpointSelection.steelhead ||
-      !isValidEndpointSelection.forte
+      !isValidEndpointSelection.forte ||
+      !isValidEndpointSelection.forum
     ) {
       return throwError(InitEndpointKeysError.SelectionRemoved);
     }
@@ -325,5 +335,11 @@ export class UserSettingsState {
   @Selector()
   public static forteEndpointKey(state: UserSettingsStateModel): string {
     return state.forteEndpointKey;
+  }
+
+  /** Selector for app's forte endpoint. */
+  @Selector()
+  public static forumEndpointKey(state: UserSettingsStateModel): string {
+    return state.forumEndpointKey;
   }
 }

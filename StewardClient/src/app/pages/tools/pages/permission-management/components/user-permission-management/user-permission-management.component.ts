@@ -67,6 +67,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     [GameTitle.FM7]: [],
     [GameTitle.FH5]: [],
     [GameTitle.FH4]: [],
+    [GameTitle.Forum]: [],
   };
 
   /** Tree views & filters */
@@ -230,7 +231,8 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
             latest.Sunrise.length > 0 &&
             latest.Woodstock.length > 0 &&
             latest.Steelhead.length > 0 &&
-            latest.Forte.length > 0
+            latest.Forte.length > 0 &&
+            latest.Forum.length > 0
           );
         }),
         tap(latest => {
@@ -239,6 +241,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
           this.titleEnvironments[GameTitle.FM7] = latest.Apollo;
           this.titleEnvironments[GameTitle.FH5] = latest.Woodstock;
           this.titleEnvironments[GameTitle.FH4] = latest.Sunrise;
+          this.titleEnvironments[GameTitle.Forum] = latest.Forum;
         }),
         switchMap(() =>
           this.permissionsService
