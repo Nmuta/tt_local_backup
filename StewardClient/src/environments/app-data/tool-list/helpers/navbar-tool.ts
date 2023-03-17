@@ -39,4 +39,5 @@ export enum NavbarTool {
   MessageOfTheDay = 'message-of-the-day',
   CreateAuction = 'create-auction',
   WelcomeCenterTiles = 'welcome-center-tiles',
+  Home = 'home',
 }
