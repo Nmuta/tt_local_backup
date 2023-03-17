@@ -13,6 +13,8 @@ import {
   SteelheadLoyaltyRewardsTitle,
 } from '@services/api-v2/steelhead/player/loyalty-rewards/steelhead-loyalty-rewards.service';
 import { includes, keys } from 'lodash';
+import { MatDialog } from '@angular/material/dialog';
+import { LoyaltyRewardsFailedDialogComponent } from '../loyalty-rewards-failed-dialog/loyalty-rewards-failed-dialog.component';
 
 type LoyaltyRewardsDataInterface = {
   label: string;
@@ -51,6 +53,7 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
   constructor(
     protected readonly store: Store,
     private loyaltyRewardsService: SteelheadLoyaltyRewardsService,
+    public dialog: MatDialog,
   ) {
     super();
   }
@@ -112,7 +115,18 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
     this.loyaltyRewardsService
       .postUserLoyalty$(this.identity.xuid, this.titlesToSend as SteelheadLoyaltyRewardsTitle[])
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(_ => {
+      .subscribe(userLoyaltyUpdateResults => {
+        const fullSuccess = this.titlesToSend.every(title => userLoyaltyUpdateResults[title]);
+
+        if (!fullSuccess) {
+          const failures = this.titlesToSend.filter(title => !userLoyaltyUpdateResults[title]);
+
+          this.dialog.open(LoyaltyRewardsFailedDialogComponent, {
+            data: {
+              failedTitles: failures.join(', '),
+            },
+          });
+        }
         this.getHasPlayedRecord$.next();
         this.allowSend = false;
       });

@@ -20,10 +20,15 @@ import { HelpModule } from '@shared/modules/help/help.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { WoodstockLoyaltyRewardsComponent } from './woodstock/woodstock-loyalty-rewards.component';
 import { SteelheadLoyaltyRewardsComponent } from './steelhead/steelhead-loyalty-rewards.component';
+import { LoyaltyRewardsFailedDialogComponent } from './loyalty-rewards-failed-dialog/loyalty-rewards-failed-dialog.component';
 
 /** Module for player entitlements data. */
 @NgModule({
-  declarations: [WoodstockLoyaltyRewardsComponent, SteelheadLoyaltyRewardsComponent],
+  declarations: [
+    WoodstockLoyaltyRewardsComponent,
+    SteelheadLoyaltyRewardsComponent,
+    LoyaltyRewardsFailedDialogComponent,
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -47,6 +52,7 @@ import { SteelheadLoyaltyRewardsComponent } from './steelhead/steelhead-loyalty-
     HelpModule,
     DirectivesModule,
     PermissionsModule,
+    MatDialogModule,
   ],
   exports: [WoodstockLoyaltyRewardsComponent, SteelheadLoyaltyRewardsComponent],
 })

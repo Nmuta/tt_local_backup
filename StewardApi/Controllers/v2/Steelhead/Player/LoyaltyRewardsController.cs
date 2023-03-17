@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -97,6 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         /// </summary>
         [HttpPost]
         [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(Dictionary<ForzaLoyaltyRewardsSupportedTitles, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -139,20 +142,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 gameTitleEnums.Add(convertedEnum);
             }
 
+            var successResponse = new Dictionary<ForzaLoyaltyRewardsSupportedTitles, bool>();
+            var partialSuccess = false;
             foreach (var titleEnum in gameTitleEnums)
             {
                 try
                 {
                     await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, titleEnum).ConfigureAwait(true);
-
+                    successResponse.Add(titleEnum, true);
                 }
                 catch (Exception ex)
                 {
                     this.loggingService.LogException(new AppInsightsException($"Failed to add {titleEnum} to {xuid}'s previously played titles.", ex));
+                    successResponse.Add(titleEnum, false);
+                    partialSuccess = true;
                 }
             }
 
-            return this.Ok();
+            if (partialSuccess)
+            {
+                return this.StatusCode((int)HttpStatusCode.PartialContent, successResponse);
+            }
+
+            return this.Ok(successResponse);
         }
     }
 }

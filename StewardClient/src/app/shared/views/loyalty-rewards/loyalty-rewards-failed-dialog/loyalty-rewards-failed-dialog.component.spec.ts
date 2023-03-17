@@ -1,18 +1,20 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { UserState } from '@shared/state/user/user.state';
-import { SteelheadLoyaltyRewardsComponent } from './steelhead-loyalty-rewards.component';
+import { LoyaltyRewardsFailedDialogComponent } from './loyalty-rewards-failed-dialog.component';
 
-describe('SteelheadLoyaltyRewardsComponent', () => {
-  let component: SteelheadLoyaltyRewardsComponent;
-  let fixture: ComponentFixture<SteelheadLoyaltyRewardsComponent>;
+describe('LoyaltyRewardsFailedDialogComponent', () => {
+  let component: LoyaltyRewardsFailedDialogComponent;
+  let fixture: ComponentFixture<LoyaltyRewardsFailedDialogComponent>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let mockMatDialogRef: any;
   let mockStore: Store;
 
   beforeEach(async () => {
@@ -21,9 +23,8 @@ describe('SteelheadLoyaltyRewardsComponent', () => {
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
-        MatDialogModule,
       ],
-      declarations: [SteelheadLoyaltyRewardsComponent, HumanizePipe],
+      declarations: [LoyaltyRewardsFailedDialogComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ...createMockMsalServices(),
@@ -39,13 +40,15 @@ describe('SteelheadLoyaltyRewardsComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SteelheadLoyaltyRewardsComponent);
+    fixture = TestBed.createComponent(LoyaltyRewardsFailedDialogComponent);
     component = fixture.debugElement.componentInstance;
     mockStore = TestBed.inject(Store);
     mockStore.dispatch = jasmine.createSpy('dispatch');
+    mockMatDialogRef = TestBed.inject(MatDialogRef);
+    mockMatDialogRef.close = jasmine.createSpy('close');
   });
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 });

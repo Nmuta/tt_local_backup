@@ -36,7 +36,10 @@ export class SteelheadLoyaltyRewardsService {
   public postUserLoyalty$(
     xuid: BigNumber,
     titles: SteelheadLoyaltyRewardsTitle[],
-  ): Observable<null> {
-    return this.api.postRequest$<null>(`${this.basePath}/${xuid}/loyalty`, titles);
+  ): Observable<Record<SteelheadLoyaltyRewardsTitle, boolean>> {
+    return this.api.postRequest$<Record<SteelheadLoyaltyRewardsTitle, boolean>>(
+      `${this.basePath}/${xuid}/loyalty`,
+      titles,
+    );
   }
 }
