@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
@@ -60,18 +61,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FH5_main.Generated.LiveOpsService.GetAdminUserInventoryOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetAdminUserInventoryAsync(xuid, endpoint)
+                response = await this.woodstockService.GetAdminUserInventoryAsync(xuid, endpoint)
                     .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<WoodstockPlayerInventory>(response.summary);
-
-                return playerInventoryDetails;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
+
+            var playerInventoryDetails = this.mapper.SafeMap<WoodstockPlayerInventory>(response.summary);
+
+            return playerInventoryDetails;
         }
 
         /// <inheritdoc />
@@ -79,18 +83,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FH5_main.Generated.LiveOpsService.GetAdminUserInventoryByProfileIdOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
+                response = await this.woodstockService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
                     .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<WoodstockPlayerInventory>(response.summary);
-
-                return inventoryProfile;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
+
+            var inventoryProfile = this.mapper.SafeMap<WoodstockPlayerInventory>(response.summary);
+
+            return inventoryProfile;
         }
 
         /// <inheritdoc />
@@ -98,19 +105,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Services.LiveOps.FH5_main.Generated.UserInventoryManagementService.GetAdminUserProfilesOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetAdminUserProfilesAsync(
+                response = await this.woodstockService.GetAdminUserProfilesAsync(
                     xuid,
                     MaxProfileResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<WoodstockInventoryProfile>>(response.profiles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
             }
+
+            return this.mapper.SafeMap<IList<WoodstockInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc />
@@ -118,17 +127,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FH5_main.Generated.RareCarShopService.AdminGetTokenBalanceOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetTokenBalanceAsync(xuid, endpoint)
+                response = await this.woodstockService.GetTokenBalanceAsync(xuid, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<WoodstockAccountInventory>(response.transactions);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No account found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<WoodstockAccountInventory>(response.transactions);
         }
 
         /// <inheritdoc />
@@ -202,7 +213,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var response = new List<GiftResponse<ulong>>();
-            var gift = this.mapper.Map<WoodstockGift>(groupGift);
+            var gift = this.mapper.SafeMap<WoodstockGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
                 response.Add(await this.UpdatePlayerInventoryAsync(
@@ -284,7 +295,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var hasExpiration = groupGift.ExpireAfterDays > 0;
             var result = await this.woodstockService.SendCarLiveryAsync(xuids, livery.Id, hasExpiration, groupGift.ExpireAfterDays, endpoint).ConfigureAwait(false);
 
-            var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
+            var giftResponses = this.mapper.SafeMap<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
             foreach (var giftResponse in giftResponses)
             {

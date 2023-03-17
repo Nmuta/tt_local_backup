@@ -11,6 +11,7 @@ using NSubstitute;
 using Turn10.Data.Azure;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Data
@@ -259,7 +260,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             {
                 this.TableStorageClientFactory.CreateTableStorageClient(Arg.Any<TableStorageProperties>()).Returns(TableStorageClient);
                 this.TableStorageClient.ExecuteQueryAsync(Arg.Any<TableQuery<KustoQueryInternal>>()).Returns(Fixture.Create<IList<KustoQueryInternal>>());
-                this.Mapper.Map<IList<KustoQuery>>(Arg.Any<IList<KustoQueryInternal>>()).Returns(Fixture.Create<IList<KustoQuery>>());
+                this.Mapper.SafeMap<IList<KustoQuery>>(Arg.Any<IList<KustoQueryInternal>>()).Returns(Fixture.Create<IList<KustoQuery>>());
             }
 
             public ITableStorageClientFactory TableStorageClientFactory { get; set; } = Substitute.For<ITableStorageClientFactory>();

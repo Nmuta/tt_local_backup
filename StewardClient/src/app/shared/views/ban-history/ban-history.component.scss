@@ -61,3 +61,12 @@ tr.element-row:not(.expanded-row):active {
 .mat-column-featureArea {
   padding-left: $gap-medium;
 }
+
+mat-card {
+  flex-grow: unset;
+  max-height: unset;
+}
+
+.forum-ban-link {
+  margin-top: $gap-medium;
+}

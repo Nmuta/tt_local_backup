@@ -7,6 +7,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
@@ -37,22 +38,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         public async Task<IList<LspGroup>> GetUserGroupsAsync(SteelheadProxyBundle services)
         {
 
+            UserManagementService.GetUserGroupsOutput result = null;
+
             try
             {
-                var result = await services.UserManagementService.GetUserGroups(0, GroupLookupMaxResults).ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
-                if (lspGroups.Count > GroupLookupMaxResults - 50)
-                {
-                    this.loggingService.LogException(new ApproachingLimitAppInsightsException(
-                        $"LSP group lookup for {TitleConstants.SteelheadFullName} is nearing the maximum lookup value."));
-                }
-
-                return lspGroups;
+                result = await services.UserManagementService.GetUserGroups(0, GroupLookupMaxResults).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to retrieve user groups for title: {TitleConstants.SteelheadFullName}", ex);
             }
+
+            var lspGroups = this.mapper.SafeMap<IList<LspGroup>>(result.userGroups);
+
+            if (lspGroups.Count > GroupLookupMaxResults - 50)
+            {
+                this.loggingService.LogException(new ApproachingLimitAppInsightsException(
+                    $"LSP group lookup for {TitleConstants.SteelheadFullName} is nearing the maximum lookup value."));
+            }
+
+            return lspGroups;
         }
     }
 }

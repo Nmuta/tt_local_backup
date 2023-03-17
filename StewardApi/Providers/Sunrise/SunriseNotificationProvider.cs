@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
@@ -48,20 +49,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            NotificationsManagementService.LiveOpsRetrieveForUserExOutput notifications = null;
+
             try
             {
-                var notifications = await this.sunriseService.LiveOpsRetrieveForUserAsync(
+                notifications = await this.sunriseService.LiveOpsRetrieveForUserAsync(
                     xuid,
                     maxResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<Notification>>(notifications.results);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException(
                     $"Notifications for player with XUID: {xuid} could not be found.", ex);
             }
+
+            return this.mapper.SafeMap<IList<Notification>>(notifications.results);
         }
 
         /// <inheritdoc />
@@ -73,20 +76,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
 
+            NotificationsManagementService.GetAllUserGroupMessagesOutput notifications = null;
+
             try
             {
-                var notifications = await this.sunriseService.GetUserGroupNotificationsAsync(
+                notifications = await this.sunriseService.GetUserGroupNotificationsAsync(
                     groupId,
                     maxResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<UserGroupNotification>>(notifications.userGroupMessages);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException(
                     $"An error occurred while querying notifications for LSP group with ID: {groupId}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<UserGroupNotification>>(notifications.userGroupMessages);
         }
 
         /// <inheritdoc />
@@ -94,19 +99,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             Guid notificationId,
             string endpoint)
         {
+            NotificationsManagementService.GetUserGroupMessageOutput notification = null;
+
             try
             {
-                var notification = await this.sunriseService.GetUserGroupNotificationAsync(
+                 notification = await this.sunriseService.GetUserGroupNotificationAsync(
                     notificationId,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<UserGroupNotification>(notification.userGroupMessage);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException(
                     $"An error occurred while querying for LSP group notification with ID: {notificationId}.", ex);
             }
+
+            return this.mapper.SafeMap<UserGroupNotification>(notification.userGroupMessage);
         }
 
         /// <inheritdoc />
@@ -124,20 +131,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             var messageSendResults = new List<MessageSendResult<ulong>>();
 
+            NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput results = null;
+
             try
             {
-                var results = await this.sunriseService.SendMessageNotificationToMultipleUsersAsync(
+                results = await this.sunriseService.SendMessageNotificationToMultipleUsersAsync(
                     xuids,
                     message,
                     expireTimeUtc,
                     endpoint).ConfigureAwait(false);
-
-                messageSendResults = this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults).ToList();
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException("Notifications failed to send.", ex);
             }
+
+            messageSendResults = this.mapper.SafeMap<IList<MessageSendResult<ulong>>>(results.messageSendResults).ToList();
 
             var batchReferenceId = Guid.NewGuid();
             foreach (var messageResult in messageSendResults)
@@ -197,7 +206,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 PlayerOrLspGroup = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
             };
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ForzaLiveDeviceType>(deviceType);
 
             try
             {
@@ -330,7 +339,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ForzaLiveDeviceType>(deviceType);
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
@@ -473,12 +482,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     endpoint).ConfigureAwait(false);
 
                 groupMessage = notificationInfo.userGroupMessage;
-                deviceType = this.mapper.Map<DeviceType>(groupMessage.DeviceType);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"LSP failed to delete group message with Notification ID: {notificationId}", ex);
             }
+
+            deviceType = this.mapper.SafeMap<DeviceType>(groupMessage.DeviceType);
 
             try
             {

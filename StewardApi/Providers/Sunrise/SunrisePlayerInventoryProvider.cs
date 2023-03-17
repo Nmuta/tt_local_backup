@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
@@ -59,19 +60,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.LiveOps.FH4.Generated.UserInventoryService.GetAdminUserInventoryOutput result = null;
+
             try
             {
-                var result = await this.sunriseService.GetAdminUserInventoryAsync(xuid, endpoint)
+                result = await this.sunriseService.GetAdminUserInventoryAsync(xuid, endpoint)
                     .ConfigureAwait(false);
-
-                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(result.summary);
-
-                return playerInventoryDetails;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
+
+            var playerInventoryDetails = this.mapper.SafeMap<SunrisePlayerInventory>(result.summary);
+
+            return playerInventoryDetails;
         }
 
         /// <inheritdoc />
@@ -79,18 +82,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.LiveOps.FH4.Generated.UserInventoryService.GetAdminUserInventoryByProfileIdOutput response = null;
+
             try
             {
-                var response = await this.sunriseService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
+                response = await this.sunriseService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
                     .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
-
-                return inventoryProfile;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
+
+            var inventoryProfile = this.mapper.SafeMap<SunrisePlayerInventory>(response.summary);
+
+            return inventoryProfile;
         }
 
         /// <inheritdoc />
@@ -98,17 +104,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.LiveOps.FH4.Generated.UserInventoryService.GetAdminUserProfilesOutput response = null;
+
             try
             {
-                var response = await this.sunriseService.GetAdminUserProfilesAsync(xuid, MaxProfileResults, endpoint)
+                response = await this.sunriseService.GetAdminUserProfilesAsync(xuid, MaxProfileResults, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
             }
+
+            return this.mapper.SafeMap<IList<SunriseInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc />
@@ -116,16 +124,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FH4.Generated.RareCarShopService.AdminGetTokenBalanceOutput response = null;
+
             try
             {
-                var response = await this.sunriseService.GetTokenBalanceAsync(xuid, endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<SunriseAccountInventory>(response.transactions);
+                response = await this.sunriseService.GetTokenBalanceAsync(xuid, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No account found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<SunriseAccountInventory>(response.transactions);
         }
 
         /// <inheritdoc />
@@ -191,7 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var response = new List<GiftResponse<ulong>>();
-            var gift = this.mapper.Map<SunriseGift>(groupGift);
+            var gift = this.mapper.SafeMap<SunriseGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
                 response.Add(await this.UpdatePlayerInventoryAsync(
@@ -266,7 +276,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             var result = await this.sunriseService.SendCarLiveryAsync(groupGift.Xuids.ToArray(), livery.Id, endpoint).ConfigureAwait(false);
 
-            var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
+            var giftResponses = this.mapper.SafeMap<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
             foreach (var giftResponse in giftResponses)
             {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { getUserBanningRoute } from '@helpers/route-links';
+import { getUserBanningRoute, getForumBanningRoute } from '@helpers/route-links';
 import { GameTitleCodeName, GameTitleAbbreviation, GameTitle } from '@models/enums';
 
 /** The user banning component. */
@@ -29,6 +29,11 @@ export class UserBanningComponent {
       name: GameTitleAbbreviation.FM7,
       codename: GameTitleCodeName.FM7,
       route: getUserBanningRoute(GameTitle.FM7),
+    },
+    {
+      name: 'Forum',
+      codename: undefined,
+      route: getForumBanningRoute(),
     },
   ];
 }

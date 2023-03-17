@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using static Forza.WebServices.FH3.Generated.UserService;
@@ -160,8 +161,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             {
                 this.OpusService.GetUserMasterDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetUserMasterDataByGamerTagOutput>());
                 this.OpusService.GetUserMasterDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetUserMasterDataByXuidOutput>());
-                this.Mapper.Map<OpusPlayerDetails>(Arg.Any<UserMaster>()).Returns(Fixture.Create<OpusPlayerDetails>());
-                this.Mapper.Map<IdentityResultAlpha>(Arg.Any<OpusPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.Mapper.SafeMap<OpusPlayerDetails>(Arg.Any<UserMaster>()).Returns(Fixture.Create<OpusPlayerDetails>());
+                this.Mapper.SafeMap<IdentityResultAlpha>(Arg.Any<OpusPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
             public IOpusService OpusService { get; set; } = Substitute.For<IOpusService>();

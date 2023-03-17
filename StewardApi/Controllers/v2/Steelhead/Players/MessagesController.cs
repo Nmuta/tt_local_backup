@@ -92,22 +92,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 
             var notifications = new List<MessageSendResult<ulong>>();
 
+            NotificationsManagementService.SendMessageOutput results = null;
+
             try
             {
-                var results = await this.Services.NotificationManagementService.SendMessage(
+                results = await this.Services.NotificationManagementService.SendMessage(
                     communityMessage.Xuids.ToArray(),
                     localizedMessageGuid,
                     communityMessage.StartTimeUtc,
                     communityMessage.ExpireTimeUtc,
                     communityMessage.NotificationType).ConfigureAwait(true);
-
-                notifications.AddRange(this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults));
             }
             catch (Exception ex)
             {
 
                 throw new UnknownFailureStewardException("Failed to send messages to players.", ex);
             }
+
+            notifications.AddRange(this.mapper.SafeMap<IList<MessageSendResult<ulong>>>(results.messageSendResults));
 
             // TODO: Add notification logging for individual users Task(948868)
 

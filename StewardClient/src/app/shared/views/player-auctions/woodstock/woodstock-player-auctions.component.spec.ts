@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockWoodstockService } from '@services/woodstock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('WoodstockPlayerAuctionsComponent', () => {
   let component: WoodstockPlayerAuctionsComponent;
@@ -19,7 +20,7 @@ describe('WoodstockPlayerAuctionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [WoodstockPlayerAuctionsComponent, BigJsonPipe],
+      declarations: [WoodstockPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
       providers: [createMockWoodstockService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

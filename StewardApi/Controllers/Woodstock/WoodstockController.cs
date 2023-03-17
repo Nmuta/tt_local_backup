@@ -394,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var validatedFlags = this.mapper.Map<WoodstockUserFlags>(userFlags);
+            var validatedFlags = this.mapper.SafeMap<WoodstockUserFlags>(userFlags);
             await this.woodstockPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 
@@ -734,7 +734,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
-            var filters = this.mapper.Map<ForzaUGCSearchRequest>(new UgcFilters(ulong.MaxValue, shareCode));
+            var filters = this.mapper.SafeMap<ForzaUGCSearchRequest>(new UgcFilters(ulong.MaxValue, shareCode));
 
             var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
@@ -1034,7 +1034,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<WoodstockBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<WoodstockBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -1115,7 +1115,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<WoodstockBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<WoodstockBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {

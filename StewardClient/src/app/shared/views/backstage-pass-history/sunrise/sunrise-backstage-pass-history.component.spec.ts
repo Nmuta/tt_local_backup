@@ -5,6 +5,7 @@ import { SunriseBackstagePassHistoryComponent } from './sunrise-backstage-pass-h
 import { first } from 'lodash';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SunriseBackstagePassHistoryComponent', () => {
   let component: SunriseBackstagePassHistoryComponent;
@@ -14,7 +15,7 @@ describe('SunriseBackstagePassHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SunriseBackstagePassHistoryComponent],
+      declarations: [SunriseBackstagePassHistoryComponent, HumanizePipe],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
