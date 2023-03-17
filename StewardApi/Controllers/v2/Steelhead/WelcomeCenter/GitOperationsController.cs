@@ -70,13 +70,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         /// <summary>
         ///     Abandons pull request by id.
         /// </summary>
-        [HttpGet("pullrequest/abandon/{pullRequestId}")]
+        [HttpGet("pullrequest/abandon/{pullRequestId}/")]
         [SwaggerResponse(200, type: typeof(GitPullRequest))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> AbandonPullRequest(int pullRequestId)
+        public async Task<IActionResult> AbandonPullRequest(int pullRequestId, bool deleteSourceBranch)
         {
-            var pullRequest = await this.steelheadPegasusService.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(true);
+            var pullRequest = await this.steelheadPegasusService.AbandonPullRequestAsync(pullRequestId, deleteSourceBranch).ConfigureAwait(true);
 
             return this.Ok(pullRequest);
         }

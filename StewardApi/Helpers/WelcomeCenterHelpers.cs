@@ -62,8 +62,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             = new XmlSerializerNamespaces(
                 new XmlQualifiedName[]
                 {
-                    new XmlQualifiedName(string.Empty, "scribble:title-content"),
-                    new XmlQualifiedName("x", "scribble:x"),
+                    new XmlQualifiedName(string.Empty, NamespaceRoot.NamespaceName),
+                    new XmlQualifiedName(NamespaceElementPrefix, NamespaceElement.NamespaceName),
                 });
 
         /// <summary>
