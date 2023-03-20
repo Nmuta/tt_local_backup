@@ -62,7 +62,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-        <div *ngIf="errorSending" class="send-failed">
+        <div *ngIf="errorMessage" class="send-failed">
           <mat-error class="send-error">{{ errorMessage }}</mat-error>
         </div>
       </ng-container>

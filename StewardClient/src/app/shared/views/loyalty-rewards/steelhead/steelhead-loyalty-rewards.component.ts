@@ -48,7 +48,6 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
   public allowSend: boolean = false;
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
 
-  public errorSending: boolean = false;
   public errorMessage: string;
   private errorAntecedent: string = 'Failed to add the following titles to loyalty history: ';
 
@@ -112,7 +111,6 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
       return;
     }
 
-    this.errorSending = false;
     this.errorMessage = null;
     this.postMonitor = this.postMonitor.repeat();
 
@@ -125,7 +123,6 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
         if (!fullSuccess) {
           const failures = this.titlesToSend.filter(title => !userLoyaltyUpdateResults[title]);
           this.errorMessage = this.errorAntecedent + failures.join(', ');
-          this.errorSending = true;
         }
 
         this.getHasPlayedRecord$.next();
