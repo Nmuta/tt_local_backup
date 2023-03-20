@@ -24,6 +24,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
                 TimerInstance.Ladder => new Ladder() { RefId = source.RefId },
                 TimerInstance.Series => new Series() { RefId = source.RefId },
                 TimerInstance.Season => new Season() { RefId = source.RefId },
+                TimerInstance.Custom => null,
                 _ => throw new ArgumentException($"Cannot convert from timer reference bridge to timer reference subtype: {source.TimerInstance}"),
             };
         }
@@ -45,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
             return new TimerReferenceBridge
             {
                 RefId = source != null ? source.RefId : Guid.Empty,
-                TimerInstance = source != null ? source.TimerInstance : TimerInstance.Ladder,
+                TimerInstance = source != null ? source.TimerInstance : TimerInstance.Custom,
                 ChapterBridge = new ChapterBridge(),
                 LadderBridge = new LadderBridge(),
                 SeriesBridge = new SeriesBridge(),

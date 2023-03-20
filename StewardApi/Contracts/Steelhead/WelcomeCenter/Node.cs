@@ -58,6 +58,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public string Comment { get; set; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether the node's value is xml text.
+        ///     example: 'green' is xml text <Color>green</Color>).
+        ///     Note: These should never have children.
+        /// </summary>
+        public bool IsXmlText { get; set; }
+
+        /// <summary>
         ///     The name of othe node.
         /// </summary>
         public override string ToString()

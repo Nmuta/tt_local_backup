@@ -1,9 +1,11 @@
 ﻿#pragma warning disable SA1402 // File may only contain a single type
 #pragma warning disable SA1516 // Elements should be separated by blank line
 #pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1306 // Field names should begin with lower-case letter
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -58,11 +60,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
     public class RangePointBridge
     {
+        private DateTime InternalDateUtc;
+
         /// <summary>
         ///     Gets or sets the text property. This property
-        ///     should be marked anonymous in the model.
+        ///     is XmlText in the model, so its value is written
+        ///     but the property name is not created into an element.
         /// </summary>
-        public string Text { get; set; }
+        public string Text
+        {
+            get => this.InternalDateUtc.ToString("O");
+            set => this.InternalDateUtc = DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();
+        }
 
         /// <summary>
         ///     Gets or sets the when attribute from the model.

@@ -47,7 +47,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Ladder,
         Series,
         Season,
-        Chapter
+        Chapter,
+        Custom,
     }
 
     [Serializable]
@@ -107,6 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         public WofBaseTimeDisplayTo TimeDisplayTo { get; set; }
 
+        [WriteToPegasus]
         [XmlElement("CustomRange")]
         public WofBaseTimerCustomRange CustomRange { get; set; }
 
@@ -195,6 +197,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlText]
         public string Text { get; set; }
 
+        [WriteToPegasus]
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string when { get; set; }
     }

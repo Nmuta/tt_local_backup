@@ -77,7 +77,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             Node tree = BuildTree(target, root);
 
-            // TODO: improve the parameter handling logic for BuildMetaData.
             if (locstrings != null)
             {
                 BakeLocTextComments(tree, locstrings);
@@ -146,9 +145,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
             foreach (var child in root.Children)
             {
-                if (ElementDoesNotExist(el, child) && !child.IsAttributeField)
+                if (ElementDoesNotExist(el, child) && !child.IsAttributeField && !child.IsXmlText)
                 {
-                    // If the element does not exist, create it.
                     el.Add(new XElement(child.Path, child.Value));
                 }
 
@@ -157,10 +155,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     var descend = el.Descendants(child.Path).First();
                     foreach (var c in child.Children)
                     {
-                        if (descend.Elements().Count() <= c.Index)
-                        {
-                            descend.Add(new XElement(c.Path));
-                        }
+                        CheckForMissingElementAtCurrentIndex(descend, c);
 
                         FillXml(descend.Descendants(c.Path).ElementAt(c.Index), c);
                     }
@@ -169,10 +164,28 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 {
                     HandleAttribute(el, child);
                 }
+                else if (child.IsXmlText)
+                {
+                    SetNodeValue(child, el, child.Path, child.Value);
+                }
                 else
                 {
                     FillXml(el.Descendants(child.Path).First(), child);
                 }
+            }
+        }
+
+        private static void CheckForMissingElementAtCurrentIndex(XElement descend, Node c)
+        {
+            // A node's index is relative to its path.
+            // Note: pathAtValidIndex may not be necessary because
+            // all the elements along a path share the same name.
+            bool validIndex = descend.Elements(c.Path).Count() > c.Index;
+            bool pathAtValidIndex = validIndex && descend.Elements(c.Path).ElementAt(c.Index).Name == c.Path;
+
+            if (!pathAtValidIndex)
+            {
+                descend.Add(new XElement(c.Path));
             }
         }
 
@@ -232,7 +245,14 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
             else
             {
-                el.FirstNode?.ReplaceWith(node.Value.ToString());
+                if (node.IsXmlText)
+                {
+                    el.Value = node.Value.ToString();
+                }
+                else
+                {
+                    el.FirstNode?.ReplaceWith(node.Value.ToString());
+                }
             }
 
             if (node.IsCdata)
@@ -362,6 +382,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                     bool isCdata = property.GetCustomAttribute<WriteToPegasusAttribute>()?.AddCdataMarkupToEntry ?? false;
                     bool isAttri = property.GetCustomAttribute<XmlAttributeAttribute>() != null;
+                    bool isXmlTx = property.GetCustomAttribute<XmlTextAttribute>() != null;
 
                     object value = property.GetValue(target);
 
@@ -371,6 +392,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         Path = path,
                         Parent = root,
                         IsCdata = isCdata,
+                        IsXmlText = isXmlTx,
                         IsAttributeField = isAttri,
                     });
                 }
