@@ -13,8 +13,6 @@ import {
   SteelheadLoyaltyRewardsTitle,
 } from '@services/api-v2/steelhead/player/loyalty-rewards/steelhead-loyalty-rewards.service';
 import { includes, keys } from 'lodash';
-import { MatDialog } from '@angular/material/dialog';
-import { LoyaltyRewardsFailedDialogComponent } from '../loyalty-rewards-failed-dialog/loyalty-rewards-failed-dialog.component';
 
 type LoyaltyRewardsDataInterface = {
   label: string;
@@ -39,7 +37,8 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
   public displayedColumns: string[] = [];
   public getMonitor = new ActionMonitor('GET Has played records');
   public postMonitor = new ActionMonitor('POST Update played records');
-  public actionLabel: string = 'updateHasPlayed';
+  public actionLabel: string = 'Update Has Played';
+  public displayLabel: string = 'Has Played';
   public singlePostMonitors: { [key: string]: ActionMonitor } = {};
 
   public gameTitleColumns = keys(SteelheadLoyaltyRewardsTitle);
@@ -47,13 +46,15 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
   public titlesToSend: string[] = [];
 
   public allowSend: boolean = false;
-
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
+
+  public errorSending: boolean = false;
+  public errorMessage: string;
+  private errorAntecedent: string = 'Failed to add the following titles to loyalty history: ';
 
   constructor(
     protected readonly store: Store,
     private loyaltyRewardsService: SteelheadLoyaltyRewardsService,
-    public dialog: MatDialog,
   ) {
     super();
   }
@@ -93,7 +94,7 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
         });
 
         const convertedData: LoyaltyRewardsDataInterface[] = [
-          { label: 'hasPlayed', titles: hasPlayed },
+          { label: this.displayLabel, titles: hasPlayed },
           { label: this.actionLabel, titles: hasPlayed },
         ];
 
@@ -111,7 +112,10 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
       return;
     }
 
+    this.errorSending = false;
+    this.errorMessage = null;
     this.postMonitor = this.postMonitor.repeat();
+
     this.loyaltyRewardsService
       .postUserLoyalty$(this.identity.xuid, this.titlesToSend as SteelheadLoyaltyRewardsTitle[])
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
@@ -120,13 +124,10 @@ export class SteelheadLoyaltyRewardsComponent extends BaseComponent implements O
 
         if (!fullSuccess) {
           const failures = this.titlesToSend.filter(title => !userLoyaltyUpdateResults[title]);
-
-          this.dialog.open(LoyaltyRewardsFailedDialogComponent, {
-            data: {
-              failedTitles: failures.join(', '),
-            },
-          });
+          this.errorMessage = this.errorAntecedent + failures.join(', ');
+          this.errorSending = true;
         }
+
         this.getHasPlayedRecord$.next();
         this.allowSend = false;
       });

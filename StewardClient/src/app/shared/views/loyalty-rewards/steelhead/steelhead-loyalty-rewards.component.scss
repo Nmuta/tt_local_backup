@@ -20,3 +20,15 @@ button {
 .no-xuid {
   margin-top: $gap-medium;
 }
+
+.send-failed.send-failed.send-failed {
+  align-items: center;
+  width: 100%;
+  display: flex;
+  margin: auto;
+  margin-top: $gap-micro;
+}
+
+.send-error {
+  margin: auto;
+}

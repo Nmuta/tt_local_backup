@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
@@ -21,22 +20,10 @@ describe('SteelheadLoyaltyRewardsComponent', () => {
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
-        MatDialogModule,
       ],
       declarations: [SteelheadLoyaltyRewardsComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: 'test',
-        },
-      ],
+      providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadLoyaltyRewardsComponent);

@@ -20,15 +20,11 @@ import { HelpModule } from '@shared/modules/help/help.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { WoodstockLoyaltyRewardsComponent } from './woodstock/woodstock-loyalty-rewards.component';
 import { SteelheadLoyaltyRewardsComponent } from './steelhead/steelhead-loyalty-rewards.component';
-import { LoyaltyRewardsFailedDialogComponent } from './loyalty-rewards-failed-dialog/loyalty-rewards-failed-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 /** Module for player entitlements data. */
 @NgModule({
-  declarations: [
-    WoodstockLoyaltyRewardsComponent,
-    SteelheadLoyaltyRewardsComponent,
-    LoyaltyRewardsFailedDialogComponent,
-  ],
+  declarations: [WoodstockLoyaltyRewardsComponent, SteelheadLoyaltyRewardsComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -52,7 +48,7 @@ import { LoyaltyRewardsFailedDialogComponent } from './loyalty-rewards-failed-di
     HelpModule,
     DirectivesModule,
     PermissionsModule,
-    MatDialogModule,
+    MatFormFieldModule,
   ],
   exports: [WoodstockLoyaltyRewardsComponent, SteelheadLoyaltyRewardsComponent],
 })
