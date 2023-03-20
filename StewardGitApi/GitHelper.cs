@@ -411,7 +411,9 @@ namespace StewardGitApi
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
             (_, Guid repoId) = context.Settings.Ids;
 
-            GitRef aref = (await gitClient.GetRefsAsync(repoId, filter: $"heads/{branchName}").ConfigureAwait(false)).FirstOrDefault();
+            var branchNameNoRefs = WithoutRefsPrefix(branchName);
+
+            GitRef aref = (await gitClient.GetRefsAsync(repoId, filter: branchNameNoRefs).ConfigureAwait(false)).FirstOrDefault();
 
             return aref;
         }
@@ -459,7 +461,7 @@ namespace StewardGitApi
         {
             if (!refName.StartsWith("refs/", StringComparison.InvariantCulture))
             {
-                throw new ArgumentException("The ref name did not start with 'refs/'", nameof(refName));
+                throw new ArgumentException("Invalid ref. The ref name did not start with 'refs/'", nameof(refName));
             }
 
             return refName.Remove(0, "refs/".Length);
