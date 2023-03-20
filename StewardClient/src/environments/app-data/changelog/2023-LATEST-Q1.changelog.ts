@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: 'a962db50-cf71-4cae-8d42-87ce32fe5063',
+      shortText: 'Add Loyalty tab with Loyalty Rewards tool',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '21d83616-5d2f-4d74-95a4-27273bbbaa74',
       shortText: 'Fully incorportate Forum as a game title with stubbed environment',

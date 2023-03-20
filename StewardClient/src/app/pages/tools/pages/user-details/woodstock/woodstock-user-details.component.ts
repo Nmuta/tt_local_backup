@@ -5,9 +5,6 @@ import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UgcType } from '@models/ugc-filters';
-import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodstock-player.service';
-import { LoyaltyRewardsServiceContract } from '@views/loyalty-rewards/loyalty-rewards.component';
-import { GameTitle } from '@models/enums';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';
@@ -40,18 +37,8 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
     return this.parent.identity?.woodstock;
   }
 
-  /** The service contract for loyalty rewards. */
-  public loyaltyRewardsServiceContract: LoyaltyRewardsServiceContract = {
-    gameTitle: GameTitle.FH5,
-    getUserHasPlayedRecord$: (xuid, externalProfileId) =>
-      this.woodstockPlayerService.getUserHasPlayedRecord$(xuid, externalProfileId),
-    postResendLoyaltyRewards$: (xuid, externalProfileId, gameTitles) =>
-      this.woodstockPlayerService.postResendLoyaltyRewards$(xuid, externalProfileId, gameTitles),
-  };
-
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
-    private woodstockPlayerService: WoodstockPlayerService,
   ) {
     super();
 

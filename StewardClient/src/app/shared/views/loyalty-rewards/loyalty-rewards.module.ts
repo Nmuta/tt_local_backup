@@ -8,7 +8,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { LuxonModule } from 'luxon-angular';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { LoyaltyRewardsComponent } from './loyalty-rewards.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profiles.module';
@@ -19,10 +18,13 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { WoodstockLoyaltyRewardsComponent } from './woodstock/woodstock-loyalty-rewards.component';
+import { SteelheadLoyaltyRewardsComponent } from './steelhead/steelhead-loyalty-rewards.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 /** Module for player entitlements data. */
 @NgModule({
-  declarations: [LoyaltyRewardsComponent],
+  declarations: [WoodstockLoyaltyRewardsComponent, SteelheadLoyaltyRewardsComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -46,7 +48,8 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     HelpModule,
     DirectivesModule,
     PermissionsModule,
+    MatFormFieldModule,
   ],
-  exports: [LoyaltyRewardsComponent],
+  exports: [WoodstockLoyaltyRewardsComponent, SteelheadLoyaltyRewardsComponent],
 })
 export class LoyaltyRewardsModule {}
