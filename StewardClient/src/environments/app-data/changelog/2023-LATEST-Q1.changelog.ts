@@ -13,6 +13,18 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Fully incorportate Forum as a game title with stubbed environment',
     },
     {
+      tag: { title: 'all', tool: NavbarTool.Home },
+      uuid: '96adf13c-80b2-4406-8a81-ea1af0fc8e81',
+      shortText: 'General updates to home page',
+      longText: [
+        'Fix filtering on disabled tools.',
+        'Add MOTD to to GeneralUser for visibility and update restrictions.',
+        'Add Welcome Center Tiles to GeneralUser for visibility and update restrictions.',
+        'Add restrictions to Create Auction.',
+        'Add restrictions to Banning.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
       uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
       shortText: 'Add additional properties',
