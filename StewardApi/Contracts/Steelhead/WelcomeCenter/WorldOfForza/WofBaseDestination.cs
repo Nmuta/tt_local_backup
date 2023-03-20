@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
-        public string @ref { get; set; }
+        public Guid @ref { get; set; }
     }
 
     [Serializable]
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
-        public string @ref { get; set; }
+        public Guid @ref { get; set; }
     }
 
     [Serializable]
@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
-        public string @ref { get; set; }
+        public Guid @ref { get; set; }
     }
 
     [Serializable]
@@ -105,7 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
-        public string @ref { get; set; }
+        public Guid @ref { get; set; }
     }
 
     [Serializable]

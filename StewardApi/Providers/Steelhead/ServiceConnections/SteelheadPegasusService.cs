@@ -548,7 +548,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<WofImageTextEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
-            var deleteElements = new List<string> { "Timer", "DisplayConditions" };
+            var deleteElements = new List<string> { "DisplayConditions", "Timer" };
 
             return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.ImageTextTile, deleteElements).ConfigureAwait(false);
         }
@@ -558,7 +558,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<WofGenericPopupEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
-            var deleteElements = new List<string> { "Destination", "Timer" };
+            var deleteElements = new List<string> { "DisplayConditions", "Timer", "Destination" }; // check if popup contains destination.
 
             return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.GenericPopupTile, deleteElements).ConfigureAwait(false);
         }
@@ -568,7 +568,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<WofDeeplinkEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
-            var deleteElements = new List<string> { "Destination" };
+            var deleteElements = new List<string> { "DisplayConditions", "Timer", "Destination" };
 
             return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.DeeplinkTile, deleteElements).ConfigureAwait(false);
         }
