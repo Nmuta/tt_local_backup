@@ -372,7 +372,7 @@ namespace StewardGitApi
         /// <summary>
         ///     Abandons pull request.
         /// </summary>
-        internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId)
+        internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId, bool deleteSourceBranch)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
 
@@ -383,7 +383,35 @@ namespace StewardGitApi
                 Status = PullRequestStatus.Abandoned,
             };
 
-            return await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
+            GitPullRequest pullRequest = await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
+
+            if (deleteSourceBranch)
+            {
+                string sourceRefName = pullRequest.SourceRefName;
+                if (sourceRefName != null)
+                {
+                    GitRef gitref = await GitHelper.GetBranchAsync(context, sourceRefName).ConfigureAwait(false);
+
+                    await GitHelper.DeleteBranchAsync(context, gitref).ConfigureAwait(false);
+                }
+            }
+
+            return pullRequest;
+        }
+
+        /// <summary>
+        ///     Gets a single branch.
+        /// </summary>
+        internal static async Task<GitRef> GetBranchAsync(AzureContext context, string branchName)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+            (_, Guid repoId) = context.Settings.Ids;
+
+            var branchNameNoRefs = WithoutRefsPrefix(branchName);
+
+            GitRef aref = (await gitClient.GetRefsAsync(repoId, filter: branchNameNoRefs).ConfigureAwait(false)).FirstOrDefault();
+
+            return aref;
         }
 
         /// <summary>
@@ -429,7 +457,7 @@ namespace StewardGitApi
         {
             if (!refName.StartsWith("refs/", StringComparison.InvariantCulture))
             {
-                throw new ArgumentException("The ref name did not start with 'refs/'", nameof(refName));
+                throw new ArgumentException("Invalid ref. The ref name did not start with 'refs/'", nameof(refName));
             }
 
             return refName.Remove(0, "refs/".Length);
