@@ -387,11 +387,10 @@ namespace StewardGitApi
 
             if (deleteSourceBranch)
             {
-                string sourceRefName = pullRequest.SourceRefName;
-                if (sourceRefName != null)
-                {
-                    GitRef gitref = await GitHelper.GetBranchAsync(context, sourceRefName).ConfigureAwait(false);
+                GitRef gitref = await GitHelper.GetBranchAsync(context, pullRequest.SourceRefName).ConfigureAwait(false);
 
+                if (gitref != null)
+                {
                     await GitHelper.DeleteBranchAsync(context, gitref).ConfigureAwait(false);
                 }
             }
