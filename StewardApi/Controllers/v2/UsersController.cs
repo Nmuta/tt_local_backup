@@ -172,7 +172,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {userId})");
             }
 
-            // TODO: Update user cache
             var user = this.mapper.SafeMap<StewardUser>(internalUser);
             var updatedPerms = this.AddManageTeamToAttributesList(user.Attributes.ToList());
             user.Attributes = updatedPerms;
@@ -206,7 +205,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 throw new InvalidArgumentsStewardException($"Steward user does not have a team. (userId: {userId})");
             }
 
-            // TODO: Update user cache
             var updatedPerms = this.RemoveManageTeamFromAttributesList(mappedUser.Attributes.ToList());
             mappedUser.Attributes = updatedPerms;
             mappedUser.Team = null;
