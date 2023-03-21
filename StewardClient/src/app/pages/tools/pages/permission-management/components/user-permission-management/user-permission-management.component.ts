@@ -212,13 +212,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   /** Whether part of the descendants are selected. */
   public descendantsPartiallySelected(node: AttributeTreeFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
-    const activeDescendants = descendants.filter(node => !node.disabled);
-
-    let listToCheckAgainst = descendants;
-    if (activeDescendants.length > 0) {
-      listToCheckAgainst = activeDescendants;
-    }
-
+    const listToCheckAgainst = this.activeIfAvailable(descendants);
     const checkedValuesExist = !!listToCheckAgainst.find(x => x.isChecked);
     const uncheckedValuesExist = !!listToCheckAgainst.find(x => !x.isChecked);
 
@@ -360,15 +354,10 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
       }
 
       const allChildren = node.children;
-      const activeChildren = allChildren.filter(child => !child.disabled);
       if (allChildren.length > 0) {
         node.children = this.setAttributesInTree(allChildren, selectedAttributes);
 
-        let childrenToCheckAgainst = allChildren;
-        if (activeChildren.length > 0) {
-          childrenToCheckAgainst = activeChildren;
-        }
-
+        const childrenToCheckAgainst = this.activeIfAvailable(allChildren);
         const childrenCheckedCount = childrenToCheckAgainst.filter(child => child.isChecked).length;
         if (childrenCheckedCount === childrenToCheckAgainst.length) {
           node.isChecked = true;
@@ -436,5 +425,13 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     parent.isChecked = !!siblings.find(x => x.isChecked);
 
     this.setParentCheckedState(parent);
+  }
+
+  /** Returns list of active (non-disabled) nodes if there are any available. Else returns full node list. */
+  private activeIfAvailable<T extends AttributeTreeNode | AttributeTreeFlatNode>(
+    nodeList: T[],
+  ): T[] {
+    const activeNodeList = nodeList.filter(node => !node.disabled);
+    return activeNodeList.length > 0 ? activeNodeList : nodeList;
   }
 }
