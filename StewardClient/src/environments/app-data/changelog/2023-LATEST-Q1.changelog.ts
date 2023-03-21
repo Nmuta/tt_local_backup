@@ -8,6 +8,28 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: 'a962db50-cf71-4cae-8d42-87ce32fe5063',
+      shortText: 'Add Loyalty tab with Loyalty Rewards tool',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '21d83616-5d2f-4d74-95a4-27273bbbaa74',
+      shortText: 'Fully incorportate Forum as a game title with stubbed environment',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.Home },
+      uuid: '96adf13c-80b2-4406-8a81-ea1af0fc8e81',
+      shortText: 'General updates to home page',
+      longText: [
+        'Fix filtering on disabled tools.',
+        'Add MOTD to to GeneralUser for visibility and update restrictions.',
+        'Add Welcome Center Tiles to GeneralUser for visibility and update restrictions.',
+        'Add restrictions to Create Auction.',
+        'Add restrictions to Banning.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
       uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
       shortText: 'Add additional properties',

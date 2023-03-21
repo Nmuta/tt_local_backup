@@ -7,8 +7,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { HasPlayedRecord } from '@models/loyalty-rewards';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import BigNumber from 'bignumber.js';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { chain } from 'lodash';
@@ -17,24 +16,7 @@ import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environm
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-
-export interface LoyaltyRewardsServiceContract {
-  /** Game title the service contract is associated with. */
-  gameTitle: GameTitle;
-
-  /** Gets a record of which legacy titles a player has played. */
-  getUserHasPlayedRecord$(
-    xuid: BigNumber,
-    externalProfileId: GuidLikeString,
-  ): Observable<HasPlayedRecord[]>;
-
-  /** Sends loyalty rewards to user for given titles. */
-  postResendLoyaltyRewards$(
-    xuid: BigNumber,
-    externalProfileId: GuidLikeString,
-    gameTitles: string[],
-  ): Observable<void>;
-}
+import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodstock-player.service';
 
 type LoyaltyRewardsDataInterface = {
   label: string;
@@ -45,16 +27,15 @@ type LoyaltyRewardsDataInterface = {
  *  Loyalty Rewards component.
  */
 @Component({
-  selector: 'loyalty-rewards',
-  templateUrl: './loyalty-rewards.component.html',
-  styleUrls: ['./loyalty-rewards.component.scss'],
+  selector: 'woodstock-loyalty-rewards',
+  templateUrl: './woodstock-loyalty-rewards.component.html',
+  styleUrls: ['./woodstock-loyalty-rewards.component.scss'],
 })
-export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
-  /** REVIEW-COMMENT: The loyalty reward service. */
-  @Input() serviceContract: LoyaltyRewardsServiceContract;
-  /** REVIEW-COMMENT: Player identity. */
+export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements OnInit {
+  /** Player identity. */
   @Input() identity: IdentityResultAlpha;
 
+  public gameTitle: GameTitle = GameTitle.FH5;
   public externalProfileId: GuidLikeString;
   public profileId: string;
   public getHasPlayedRecord$ = new Subject<void>();
@@ -72,7 +53,10 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
 
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
 
-  constructor(protected readonly store: Store) {
+  constructor(
+    protected readonly store: Store,
+    private woodstockPlayerService: WoodstockPlayerService,
+  ) {
     super();
   }
 
@@ -81,7 +65,7 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.disableSendActions = !hasV1AccessToV1RestrictedFeature(
       V1RestrictedFeature.SendLoyaltyRewards,
-      this.serviceContract?.gameTitle,
+      this.gameTitle,
       user.role,
     );
 
@@ -100,7 +84,7 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
           }
 
           this.getMonitor = this.getMonitor.repeat();
-          return this.serviceContract
+          return this.woodstockPlayerService
             ?.getUserHasPlayedRecord$(this.identity?.xuid, this.externalProfileId)
             .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$));
         }),
@@ -160,7 +144,7 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
     }
     this.postMonitor = this.postMonitor.repeat();
 
-    this.serviceContract
+    this.woodstockPlayerService
       .postResendLoyaltyRewards$(
         this.identity?.xuid,
         this.externalProfileId,
@@ -179,7 +163,7 @@ export class LoyaltyRewardsComponent extends BaseComponent implements OnInit {
     }
     this.singlePostMonitors[gameAbbriviation] = this.singlePostMonitors[gameAbbriviation].repeat();
 
-    this.serviceContract
+    this.woodstockPlayerService
       .postResendLoyaltyRewards$(this.identity?.xuid, this.externalProfileId, [gameAbbriviation])
       .pipe(
         this.singlePostMonitors[gameAbbriviation].monitorSingleFire(),

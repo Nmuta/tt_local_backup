@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDa
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
@@ -437,6 +438,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LiveOpsService.GetDriverLevelOutput, SteelheadDriverLevel>()
                 .ForMember(dest => dest.ExperiencePoints, opt => opt.MapFrom(source => source.driverExperiencePoints));
+
+            this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)

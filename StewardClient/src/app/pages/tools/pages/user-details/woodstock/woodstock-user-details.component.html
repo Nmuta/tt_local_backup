@@ -180,8 +180,7 @@
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Loyalty">
         <div class="tab-container">
-          <loyalty-rewards [identity]="identity" [serviceContract]="loyaltyRewardsServiceContract">
-          </loyalty-rewards>
+          <woodstock-loyalty-rewards [identity]="identity"></woodstock-loyalty-rewards>
           <entitlements [identity]="identity"></entitlements>
         </div>
       </mat-tab>

@@ -35,6 +35,7 @@ describe('EndpointKeyMemoryState', () => {
       woodstock: [{ name: faker.random.word() }],
       steelhead: [{ name: faker.random.word() }],
       forte: [{ name: faker.random.word() }],
+      forum: [{ name: faker.random.word() }],
     };
 
     beforeEach(() => {
@@ -57,11 +58,14 @@ describe('EndpointKeyMemoryState', () => {
       );
 
       const forteValue = store.selectSnapshot<string[]>(EndpointKeyMemoryState.forteEndpointKeys);
+      const forumValue = store.selectSnapshot<string[]>(EndpointKeyMemoryState.forumEndpointKeys);
+
       expect(apolloValue).toEqual(endpoints.apollo.map(x => x.name));
       expect(sunriseValue).toEqual(endpoints.sunrise.map(x => x.name));
       expect(woodstockValue).toEqual(endpoints.woodstock.map(x => x.name));
       expect(steelheadValue).toEqual(endpoints.steelhead.map(x => x.name));
       expect(forteValue).toEqual(endpoints.forte.map(x => x.name));
+      expect(forumValue).toEqual(endpoints.forum.map(x => x.name));
     });
   });
 });
