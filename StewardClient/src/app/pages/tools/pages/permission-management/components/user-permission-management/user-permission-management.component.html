@@ -56,6 +56,7 @@
               class="checklist-leaf-node"
               [checked]="node.isChecked"
               (click)="leafItemSelectionToggle(node)"
+              [disabled]="node.disabled"
               >{{ node.name | humanize }}</mat-checkbox
             >
           </mat-tree-node>
@@ -73,6 +74,7 @@
               [checked]="node.isChecked"
               [indeterminate]="descendantsPartiallySelected(node)"
               (click)="itemSelectionToggle(node)"
+              [disabled]="node.disabled"
               >{{ node.name | humanize }}</mat-checkbox
             >
           </mat-tree-node>

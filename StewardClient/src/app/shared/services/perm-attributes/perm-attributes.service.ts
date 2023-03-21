@@ -154,6 +154,29 @@ export class PermAttributesService extends BaseService {
 
   /** Initiallizes the parm attributes service. */
   public initialize(attributes: PermAttribute[]): void {
+    attributes.push(
+      {
+        attribute: PermAttributeName.ManageStewardTeam,
+        title: '',
+        environment: '',
+      },
+      {
+        attribute: PermAttributeName.GiftPlayer,
+        title: GameTitle.FH4,
+        environment: 'Retail',
+      },
+      {
+        attribute: PermAttributeName.GiftPlayer,
+        title: GameTitle.FH4,
+        environment: 'Studio',
+      },
+      {
+        attribute: PermAttributeName.GiftPlayer,
+        title: GameTitle.FH5,
+        environment: 'Studio',
+      },
+    );
+
     this.allPermAttributes = attributes;
     this.allPermAttributeNames = uniq(attributes.map(x => x.attribute));
 

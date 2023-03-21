@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
+import { UserRole } from '@models/enums';
 import { MatRoutedTabData } from '@models/mat-routed-tab-data';
+import { UserModel } from '@models/user.model';
+import { Store } from '@ngxs/store';
+import { UserState } from '@shared/state/user/user.state';
 import { find, includes } from 'lodash';
 import { filter, takeUntil } from 'rxjs';
 
@@ -19,16 +23,26 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
     {
       name: 'Manage Teams',
       path: `/teams`,
+      hide: true,
     },
   ];
   public activeTab: MatRoutedTabData;
+  public isAdmin: boolean = false;
 
-  constructor(private readonly router: Router) {
+  constructor(private readonly router: Router, private readonly store: Store) {
     super();
   }
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
+    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
+    if (user.role === UserRole.LiveOpsAdmin) {
+      this.tabs.map(tab => {
+        tab.hide = false;
+        return tab;
+      });
+    }
+
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),

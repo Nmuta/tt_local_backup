@@ -21,7 +21,7 @@ import {
   EndpointKeyMemoryState,
   EndpointKeyMemoryModel,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
-import { cloneDeep, find, keys } from 'lodash';
+import { cloneDeep, find, keys, sortBy } from 'lodash';
 import { filter, map, Observable, switchMap, takeUntil, tap } from 'rxjs';
 import {
   VerifyUserPermissionChangeDialogComponent,
@@ -35,6 +35,7 @@ import {
   AttributeTreeNode,
 } from '../../permission-management.models';
 import { SelectUserFromListComponent } from '../select-user-from-list/select-user-from-list.component';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 enum TreeView {
   FeatureTopLevel = 'FeatureTopLevel',
@@ -102,6 +103,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   constructor(
     private readonly dialog: MatDialog,
     private readonly permissionsService: PermissionsService,
+    private readonly permAttributesService: PermAttributesService,
   ) {
     super();
   }
@@ -116,7 +118,11 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     );
     this.treeControl = new FlatTreeControl<AttributeTreeFlatNode>(this.getLevel, this.isExpandable);
 
-    this.initAttributeTree();
+    this.permAttributesService.initializationGuard$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.initAttributeTree();
+      });
   }
 
   /** Event when new user is selected. */
@@ -175,34 +181,46 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     }
 
     attributeTree = this.setAttributesInTree(attributeTree, selectedAttributes);
+    attributeTree = this.sortActiveNodesToTop(attributeTree);
     this.dataSource.data = attributeTree;
   }
 
   /** Toggle the node selection. Select/deselect all the descendants node. */
   public itemSelectionToggle(node: AttributeTreeFlatNode): void {
+    if (node.disabled) {
+      return;
+    }
+
     this.selectedUserHasPermChanges = true;
-    const descendants = this.treeControl.getDescendants(node);
+    const descendants = this.getActiveDescendants(node);
     const descendantsPartiallySelected = this.descendantsPartiallySelected(node);
     node.isChecked = descendantsPartiallySelected ? node.isChecked : !node.isChecked;
-    descendants.forEach(x => (x.isChecked = node.isChecked));
+    descendants.forEach(x => (x.isChecked = !x.disabled ? node.isChecked : x.isChecked));
+    this.setParentCheckedState(node);
   }
 
   /** Toggle the node selection. Select/deselect all the descendants node. */
   public leafItemSelectionToggle(node: AttributeTreeFlatNode): void {
+    if (node.disabled) {
+      return;
+    }
     this.selectedUserHasPermChanges = true;
     node.isChecked = !node.isChecked;
-    const parent = this.getParentNode(node);
-    if (!!parent) {
-      const siblings = this.treeControl.getDescendants(parent);
-      parent.isChecked = !!siblings.find(x => x.isChecked);
-    }
+    this.setParentCheckedState(node);
   }
 
   /** Whether part of the descendants are selected. */
   public descendantsPartiallySelected(node: AttributeTreeFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
-    const checkedValuesExist = !!descendants.find(x => x.isChecked);
-    const uncheckedValuesExist = !!descendants.find(x => !x.isChecked);
+    const activeDescendants = descendants.filter(node => !node.disabled);
+
+    let listToCheckAgainst = descendants;
+    if (activeDescendants.length > 0) {
+      listToCheckAgainst = activeDescendants;
+    }
+
+    const checkedValuesExist = !!listToCheckAgainst.find(x => x.isChecked);
+    const uncheckedValuesExist = !!listToCheckAgainst.find(x => !x.isChecked);
 
     return checkedValuesExist && uncheckedValuesExist;
   }
@@ -266,14 +284,13 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
       )
       .subscribe(attributes => {
         this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-        this.defaultFeatureTopLevelTreeNodes = buildTreeWithFeaturesTopLevel(
-          attributes,
-          this.titleEnvironments,
+        this.defaultFeatureTopLevelTreeNodes = this.disablePermissions(
+          buildTreeWithFeaturesTopLevel(attributes, this.titleEnvironments),
         );
-        this.defaultTitleTopLevelTreeNodes = buildTreeWithTitlesTopLevel(
-          attributes,
-          this.titleEnvironments,
+        this.defaultTitleTopLevelTreeNodes = this.disablePermissions(
+          buildTreeWithTitlesTopLevel(attributes, this.titleEnvironments),
         );
+
         this.dataSource.data = [];
       });
   }
@@ -297,6 +314,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     flatNode.attribute = node.attribute;
     flatNode.name = node.name;
     flatNode.isChecked = node.isChecked;
+    flatNode.disabled = node.disabled;
     flatNode.level = level;
     flatNode.expandable = !!node.children?.length;
     this.flatNodeMap.set(flatNode, node);
@@ -341,10 +359,18 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
         node.isChecked = hasAttribute;
       }
 
-      if (node.children.length > 0) {
-        node.children = this.setAttributesInTree(node.children, selectedAttributes);
-        const childrenCheckedCount = node.children.filter(child => child.isChecked).length;
-        if (childrenCheckedCount === node.children.length) {
+      const allChildren = node.children;
+      const activeChildren = allChildren.filter(child => !child.disabled);
+      if (allChildren.length > 0) {
+        node.children = this.setAttributesInTree(allChildren, selectedAttributes);
+
+        let childrenToCheckAgainst = allChildren;
+        if (activeChildren.length > 0) {
+          childrenToCheckAgainst = activeChildren;
+        }
+
+        const childrenCheckedCount = childrenToCheckAgainst.filter(child => child.isChecked).length;
+        if (childrenCheckedCount === childrenToCheckAgainst.length) {
           node.isChecked = true;
         }
       }
@@ -364,5 +390,51 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     }
 
     return selectedPerms;
+  }
+
+  /** Disables permissions in the attribute tree that the user doesn't have permissions to. */
+  private disablePermissions(treeNodes: AttributeTreeNode[]): AttributeTreeNode[] {
+    const userPermissions = this.permAttributesService.permAttributes;
+    return treeNodes.map(node => {
+      if (!!node.attribute) {
+        node.disabled = !find(userPermissions, node.attribute);
+      }
+
+      if (node.children.length > 0) {
+        this.disablePermissions(node.children);
+        const childrenDisabledCount = node.children.filter(child => child.disabled).length;
+        if (childrenDisabledCount === node.children.length) {
+          node.disabled = true;
+        }
+      }
+
+      return node;
+    });
+  }
+
+  /** Disables permissions in the attribute tree that the user doesn't have permissions to. */
+  private sortActiveNodesToTop(treeNodes: AttributeTreeNode[]): AttributeTreeNode[] {
+    treeNodes.forEach(node => {
+      node.children = this.sortActiveNodesToTop(node.children);
+    });
+
+    return sortBy(treeNodes, node => !!node.disabled);
+  }
+
+  /** Gets undisabled child nodes. */
+  private getActiveDescendants(node: AttributeTreeFlatNode): AttributeTreeFlatNode[] {
+    return this.treeControl.getDescendants(node).filter(node => !node.disabled);
+  }
+
+  private setParentCheckedState(node: AttributeTreeFlatNode): void {
+    const parent = this.getParentNode(node);
+    if (!parent) {
+      return;
+    }
+
+    const siblings = this.getActiveDescendants(parent);
+    parent.isChecked = !!siblings.find(x => x.isChecked);
+
+    this.setParentCheckedState(parent);
   }
 }
