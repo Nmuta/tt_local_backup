@@ -199,13 +199,9 @@ namespace StewardGitApi
             try
             {
                 var pr = await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
-                if (pr == null)
-                {
-                    throw new GitOperationException($"Pull request is in an unexpected state. " +
-                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
-                }
 
-                return pr;
+                return pr ?? throw new GitOperationException($"Pull request is in an unexpected state. " +
+                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
             }
             catch (Exception e) when (e is VssException or ProjectDoesNotExistException)
             {
@@ -376,7 +372,7 @@ namespace StewardGitApi
         /// <summary>
         ///     Abandons pull request.
         /// </summary>
-        internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId)
+        internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId, bool deleteSourceBranch)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
 
@@ -387,7 +383,34 @@ namespace StewardGitApi
                 Status = PullRequestStatus.Abandoned,
             };
 
-            return await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
+            GitPullRequest pullRequest = await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
+
+            if (deleteSourceBranch)
+            {
+                GitRef gitref = await GitHelper.GetBranchAsync(context, pullRequest.SourceRefName).ConfigureAwait(false);
+
+                if (gitref != null)
+                {
+                    await GitHelper.DeleteBranchAsync(context, gitref).ConfigureAwait(false);
+                }
+            }
+
+            return pullRequest;
+        }
+
+        /// <summary>
+        ///     Gets a single branch.
+        /// </summary>
+        internal static async Task<GitRef> GetBranchAsync(AzureContext context, string branchName)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+            (_, Guid repoId) = context.Settings.Ids;
+
+            var branchNameNoRefs = WithoutRefsPrefix(branchName);
+
+            GitRef aref = (await gitClient.GetRefsAsync(repoId, filter: branchNameNoRefs).ConfigureAwait(false)).FirstOrDefault();
+
+            return aref;
         }
 
         /// <summary>
@@ -410,7 +433,7 @@ namespace StewardGitApi
         {
             if (branch.StartsWith("refs/heads/", StringComparison.OrdinalIgnoreCase))
             {
-                branch = branch.Substring(11);
+                branch = branch[11..];
             }
 
             var buildClient = context.Connection.GetClient<BuildHttpClient>();
@@ -433,7 +456,7 @@ namespace StewardGitApi
         {
             if (!refName.StartsWith("refs/", StringComparison.InvariantCulture))
             {
-                throw new ArgumentException("The ref name did not start with 'refs/'", nameof(refName));
+                throw new ArgumentException("Invalid ref. The ref name did not start with 'refs/'", nameof(refName));
             }
 
             return refName.Remove(0, "refs/".Length);
@@ -446,7 +469,7 @@ namespace StewardGitApi
 
         private static string BuildBranchName(AzureContext context, string refId)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new ();
             sb.Append(AutogenBranchNameRoot);
             sb.Append('/');
             var name = string.Concat(GetCurrentUserDisplayName(context).Split()); // removes whitespace

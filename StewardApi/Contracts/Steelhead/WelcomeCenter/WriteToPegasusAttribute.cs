@@ -6,12 +6,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
     ///     Signals whether Steward writes to this Pegasus data.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    internal sealed class PegEditAttribute : Attribute
+    internal sealed class WriteToPegasusAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PegEditAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="WriteToPegasusAttribute"/> class.
         /// </summary>
-        public PegEditAttribute()
+        public WriteToPegasusAttribute()
         {
         }
 
@@ -23,11 +23,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public bool AddCdataMarkupToEntry { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the element's
-        ///     value has an anonymous property name. In the following example,
-        ///     the value 'green' is backed by a property in the deserialized model named
-        ///     'Text'. <code><![CDATA[<color>green<color/>]]></code>
+        ///     Gets or sets a value indicating whether this element
+        ///     is a base type with multiple exchangable derived types.
         /// </summary>
-        public bool AnonymousField { get; set; }
+        public bool IsMultiElement { get; set; }
     }
 }

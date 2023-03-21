@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlRoot("WorldOfForza.WoFTileDeeplink", Namespace = "scribble:title-content", IsNullable = false)]
     public partial class WofDeeplinkEntry : WofBaseTileEntry
     {
-        [PegEdit]
+        [WriteToPegasus]
         public WofBaseDestination Destination { get; set; }
     }
 }

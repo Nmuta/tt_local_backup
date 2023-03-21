@@ -54,6 +54,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public string skiploc { get; set; }
 
         [XmlAttributeAttribute("loc-def", Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locdef { get; set; }
+        public Guid locdef { get; set; }
     }
 }

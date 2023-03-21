@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
@@ -14,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDa
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
+using PullRequest = Turn10.LiveOps.StewardApi.Contracts.Git.PullRequest;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {
@@ -104,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Edits and saves Message of the Day
         ///     using deserialized xml entry.
         /// </summary>
-        Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id);
 
         /// <summary>
         ///     Gets current Message of the Day values for the entry
@@ -126,19 +128,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Edits and saves World of Forza Image Text Tile
         ///     using deserialized xml entry.
         /// </summary>
-        Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id);
 
         /// <summary>
         ///     Edits and saves World of Forza Generic Popup Tile
         ///     using deserialized xml entry.
         /// </summary>
-        Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id);
 
         /// <summary>
         ///     Edits and saves World of Forza Deeplink Tile
         ///     using deserialized xml entry.
         /// </summary>
-        Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id, string commitComment);
+        Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id);
 
         /// <summary>
         ///     Gets current World of Forza Image Text Tile values for the entry
@@ -196,7 +198,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         /// Abandons the pull request.
         /// </summary>
-        Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId);
+        Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId, bool deleteSourceBranch);
 
         /// <summary>
         ///     Gets all branches.
@@ -206,7 +208,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Runs the specified build pipeline.
         /// </summary>
-        public Task<Microsoft.TeamFoundation.Build.WebApi.Build> RunFormatPipelineAsync(GitPush push);
+        public Task<Build> RunFormatPipelineAsync(GitPush push);
 
         /// <summary>
         ///     Writes localized strings to Pegasus.
@@ -217,5 +219,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets localization categories available in repository.
         /// </summary>
         public Task<IEnumerable<string>> GetLocalizationCategoriesFromRepoAsync();
+
+        /// <summary>
+        ///     Gets display conditions.
+        /// </summary>
+        Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync();
     }
 }
