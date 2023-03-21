@@ -102,7 +102,7 @@ namespace StewardGitApi
         /// <summary>
         /// Abandons pull request.
         /// </summary>
-        public Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId);
+        public Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId, bool deleteSourceBranch);
 
         /// <summary>
         ///     Gets current user id.
