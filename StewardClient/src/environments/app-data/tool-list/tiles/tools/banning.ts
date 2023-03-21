@@ -1,6 +1,12 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import {
+  HomeTileInfoInternal,
+  AppIcon,
+  NavbarTool,
+  CommonAccessLevels,
+  HomeTileRestrictionType,
+} from '../../helpers';
 
 export const banningTile = <HomeTileInfoInternal>{
   icon: AppIcon.PlayerBan,
@@ -18,4 +24,9 @@ export const banningTile = <HomeTileInfoInternal>{
     import('../../../../../app/pages/tools/pages/user-banning/user-banning.module').then(
       m => m.UserBanningModule,
     ),
+  hideFromUnauthorized: true,
+  restriction: {
+    requiredPermissions: [PermAttributeName.BanPlayer],
+    action: HomeTileRestrictionType.Disable,
+  },
 };

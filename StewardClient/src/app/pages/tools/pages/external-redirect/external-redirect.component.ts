@@ -22,7 +22,7 @@ export const enum ExternalRedirectOption {
 export class ExternalRedirectComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  private readonly stewardTeamEmails: string[] = [
+  private readonly stewardTeamContacts: string[] = [
     'luke.geiken@microsoft.com',
     'madden.osei@microsoft.com',
     'jordan.yates@turn10.msgamestudios.com',
@@ -30,6 +30,13 @@ export class ExternalRedirectComponent extends BaseComponent implements OnInit {
     'caleb.moore@microsoft.com',
     'v-blebois@microsoft.com',
     'ellen.porter@microsoft.com',
+    'stephen.edmonds@playground-games.com',
+    'v-charlesyan@microsoft.com',
+  ];
+
+  private readonly stewardEmailContacts: string[] = [
+    EmailAddresses.LiveOpsAdmins,
+    'jordan.yates@turn10.msgamestudios.com',
     'stephen.edmonds@playground-games.com',
   ];
 
@@ -110,7 +117,7 @@ export class ExternalRedirectComponent extends BaseComponent implements OnInit {
   ): string {
     return (
       'https://teams.microsoft.com/l/chat/0/0' +
-      `?users=${this.stewardTeamEmails.join(',')}` +
+      `?users=${this.stewardTeamContacts.join(',')}` +
       '&topicName=Steward - Contact Us' +
       `&message=(Add message here)\n\n\n` +
       `Email: ${senderEmail}\n` +
@@ -129,7 +136,7 @@ export class ExternalRedirectComponent extends BaseComponent implements OnInit {
     teamLeadEmail: string,
   ): string {
     return (
-      `mailto:${EmailAddresses.LiveOpsAdmins}` +
+      `mailto:${this.stewardEmailContacts.join(';')}` +
       '?subject=[Steward - Contact Us] (Add subject here)' +
       `&body=(Add message here)\n\n` +
       `Email: ${senderEmail}\n` +

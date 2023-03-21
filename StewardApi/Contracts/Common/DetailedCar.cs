@@ -38,5 +38,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public int CountryId { get; set; }
 
         public bool IsAvailableInAutoshow { get; set; }
+
+        public double PerformanceIndex { get; set; }
+
+        public string PowertrainName { get; set; }
+
+        public string CarTypeName { get; set; }
+
+        public string CarClassName { get; set; }
+
+        public string RegionName { get; set; }
+
+        /// <remarks> Projected as 'ReleaseIndex'. </remarks>
+        public int Series { get; set; }
+
+        public DateTime ReleaseDateUtc { get; set; }
     }
 }
