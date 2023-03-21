@@ -18,6 +18,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
         /// </summary>
         public WofBaseTimerReference Convert(TimerReferenceBridge source, WofBaseTimerReference destination, ResolutionContext context)
         {
+            if (source.TimerInstance == TimerInstance.Custom && (source.LadderBridge != null || source.ChapterBridge != null || source.SeriesBridge != null || source.SeasonBridge != null))
+            {
+                throw new InvalidOperationException($"If '{TimerInstance.Custom}' is selected, the timer bridges must be null.");
+            }
+
             return source.TimerInstance switch
             {
                 TimerInstance.Chapter => new Chapter() { RefId = source.RefId },
@@ -25,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
                 TimerInstance.Series => new Series() { RefId = source.RefId },
                 TimerInstance.Season => new Season() { RefId = source.RefId },
                 TimerInstance.Custom => null,
-                _ => throw new ArgumentException($"Cannot convert from timer reference bridge to timer reference subtype: {source.TimerInstance}"),
+                _ => throw new ArgumentException($"Unsupported {nameof(TimerInstance)}: {source.TimerInstance}"),
             };
         }
     }

@@ -199,13 +199,9 @@ namespace StewardGitApi
             try
             {
                 var pr = await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
-                if (pr == null)
-                {
-                    throw new GitOperationException($"Pull request is in an unexpected state. " +
-                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
-                }
 
-                return pr;
+                return pr ?? throw new GitOperationException($"Pull request is in an unexpected state. " +
+                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
             }
             catch (Exception e) when (e is VssException or ProjectDoesNotExistException)
             {
@@ -410,7 +406,7 @@ namespace StewardGitApi
         {
             if (branch.StartsWith("refs/heads/", StringComparison.OrdinalIgnoreCase))
             {
-                branch = branch.Substring(11);
+                branch = branch[11..];
             }
 
             var buildClient = context.Connection.GetClient<BuildHttpClient>();
@@ -446,7 +442,7 @@ namespace StewardGitApi
 
         private static string BuildBranchName(AzureContext context, string refId)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new ();
             sb.Append(AutogenBranchNameRoot);
             sb.Append('/');
             var name = string.Concat(GetCurrentUserDisplayName(context).Split()); // removes whitespace
