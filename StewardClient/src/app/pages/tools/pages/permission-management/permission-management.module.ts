@@ -39,6 +39,7 @@ import { SelectTeamFromListComponent } from './components/select-team-from-list/
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for Steward permission management. */
 @NgModule({
@@ -87,6 +88,7 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
     MatChipsModule,
     MatAutocompleteModule,
     VerifyCheckboxModule,
+    HelpModule,
   ],
   exports: [],
 })
