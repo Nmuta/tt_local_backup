@@ -27,6 +27,30 @@ export enum BuildersCupSettingType {
   Ladder = 'Ladder',
 }
 
+/** Timer type */
+export enum TimerType {
+  ToStartOrToEnd = 'ToStartOrToEnd',
+  ToEnd = 'ToEnd',
+  ToStart = 'ToStart',
+}
+
+/** Timer instance as saved in the xml */
+export enum TimerInstance {
+  Ladder = 'WorldOfForza.TileTimerLadder',
+  Season = 'WorldOfForza.TileTimerSeason',
+  Chapter = 'WorldOfForza.TileTimerChapter',
+  Series = 'WorldOfForza.TileTimerSeries',
+  Custom = 'WorldOfForza.TileTimerCustom',
+}
+
+/** Timer reference type for the reference object */
+export enum TimerReferenceInstance {
+  Ladder = 'Ladder',
+  Series = 'Series',
+  Season = 'Season',
+  Chapter = 'Chapter',
+}
+
 /** Interface for a localized text object integrated in a welcome center tile. */
 export interface LocalizedText {
   skipLoc: string;
@@ -34,6 +58,34 @@ export interface LocalizedText {
   description: string;
   locdef: string;
   locref: string;
+}
+
+export interface TextOverride {
+  refId: string;
+}
+
+export interface CustomRangePoint {
+  text: string;
+  when: string;
+}
+
+export interface CustomRange {
+  from: CustomRangePoint;
+  to: CustomRangePoint;
+}
+
+export interface TimerReference {
+  refId: string;
+  timerInstance: TimerReferenceInstance;
+}
+
+export interface Timer {
+  timerType: TimerType;
+  typeName: TimerInstance;
+  startTextOverride: TextOverride;
+  endTextOverride: TextOverride;
+  customRange: CustomRange;
+  timerReference: TimerReference;
 }
 
 /** Base interface for a welcome center tile. */
@@ -44,6 +96,7 @@ export interface WelcomeCenterTile {
   tileType: LocalizedText;
   tileDescription: LocalizedText;
   tileImagePath: string;
+  timer: Timer;
   derivedType?: TileType;
 }
 

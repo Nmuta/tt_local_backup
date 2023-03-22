@@ -53,9 +53,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
     public class TimerCustomRangeBridge
     {
-        public List<RangePointBridge> From { get; set; }
+        public RangePointBridge From { get; set; }
 
-        public List<RangePointBridge> To { get; set; }
+        public RangePointBridge To { get; set; }
     }
 
     public class RangePointBridge

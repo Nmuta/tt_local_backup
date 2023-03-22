@@ -13,7 +13,13 @@ import { SelectLocalizedStringContract } from '@components/localization/select-l
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { GameTitle } from '@models/enums';
 import { LocalizedStringsMap } from '@models/localization';
-import { WelcomeCenterTile, WelcomeCenterTileSize } from '@models/welcome-center';
+import {
+  TimerReferenceInstance,
+  TimerType,
+  TimerInstance,
+  WelcomeCenterTile,
+  WelcomeCenterTileSize,
+} from '@models/welcome-center';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { filter, map, Observable, pairwise, startWith, takeUntil } from 'rxjs';
 
@@ -43,12 +49,24 @@ export class GeneralTileComponent extends BaseComponent {
   public localizationSelectServiceContract: SelectLocalizedStringContract;
   public sizes: string[] = [WelcomeCenterTileSize.Large, WelcomeCenterTileSize.Medium];
 
+  public timerInstanceEnum = TimerInstance;
+  public timerTypeEnum = TimerType;
+  public timerReferenceOptions: Map<string, string>;
+  public selectedTimerReferenceInstance: TimerReferenceInstance;
+
   public formControls = {
     size: new FormControl(null, [Validators.required]),
     localizedTileTitle: new FormControl({ value: {}, disabled: true }, [Validators.required]),
     localizedTileType: new FormControl({ value: {}, disabled: true }),
     localizedTileDescription: new FormControl({ value: {}, disabled: true }, [Validators.required]),
     tileImagePath: new FormControl(null),
+    timerInstance: new FormControl(),
+    timerLocalizedStartTextOverride: new FormControl({ value: {}, disabled: true }),
+    timerLocalizedEndTextOverride: new FormControl({ value: {}, disabled: true }),
+    timerType: new FormControl(TimerType.ToStartOrToEnd),
+    timerReferenceId: new FormControl(),
+    timerCustomFromDate: new FormControl(),
+    timerCustomToDate: new FormControl(),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
@@ -62,6 +80,37 @@ export class GeneralTileComponent extends BaseComponent {
         return steelheadLocalizationService.getLocalizedStrings$();
       },
     };
+
+    this.formControls.timerInstance.valueChanges.subscribe(data => {
+      // Change to switch case?
+      if (data == TimerInstance.Chapter) {
+        this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
+        this.timerReferenceOptions = new Map([
+          ['3a9b1321-792c-47d1-ad40-b2dc39bf62b3', 'Chapter 1: GA Pre-Season - Chapter 1'],
+          ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 1: GA Pre-Season - Chapter 1'],
+        ]);
+      } else if (data == TimerInstance.Ladder) {
+        this.selectedTimerReferenceInstance = TimerReferenceInstance.Ladder;
+        this.timerReferenceOptions = new Map([
+          ['6d3e623d-3b4f-4239-8cfd-85ac9b5ed573', 'Modern Race Car Tour'],
+          ['b4cfc5b1-fbf4-4cef-9fe9-9970d71bb642', 'Decades Tour'],
+        ]);
+      } else if (data == TimerInstance.Season) {
+        this.selectedTimerReferenceInstance = TimerReferenceInstance.Season;
+        this.timerReferenceOptions = new Map([
+          ['b0344978-c1cc-4cb0-bff8-422bb9cd21c2', 'Season 1:GA Pre-Season'],
+        ]);
+      } else if (data == TimerInstance.Series) {
+        this.selectedTimerReferenceInstance = TimerReferenceInstance.Series;
+        this.timerReferenceOptions = new Map([
+          ['03390be2-c878-40c3-8eab-f7370688ad04', 'Test Entry Series'],
+          ['1f3ce4b5-fade-4341-80cb-0006c8c9b122', 'Vintage LM Prototypes Series'],
+        ]);
+      } else if (data == TimerInstance.Custom) {
+        this.selectedTimerReferenceInstance = undefined;
+        this.timerReferenceOptions = undefined;
+      }
+    });
   }
 
   /** Clears the tile image path input */
@@ -93,6 +142,23 @@ export class GeneralTileComponent extends BaseComponent {
         this.formControls.localizedTileType.setValue({
           id: data.tileType.locref,
         });
+      }
+
+      // Timer
+      this.formControls.timerInstance.setValue(data.timer.typeName);
+      if (data.timer.startTextOverride?.refId) {
+        this.formControls.timerLocalizedStartTextOverride.setValue({
+          id: data.timer.startTextOverride.refId,
+        });
+      }
+      if (data.timer.endTextOverride?.refId) {
+        this.formControls.timerLocalizedEndTextOverride.setValue({
+          id: data.timer.endTextOverride.refId,
+        });
+      }
+      if (data.timer.customRange) {
+        this.formControls.timerCustomFromDate.setValue(data.timer.customRange.from.text);
+        this.formControls.timerCustomToDate.setValue(data.timer.customRange.to.text);
       }
     }
   }
@@ -133,5 +199,53 @@ export class GeneralTileComponent extends BaseComponent {
     }
 
     return null;
+  }
+
+  /** Set the basic field of a welcome center tile using the form values. */
+  public mapFormToWelcomeCenterTile(welcomeCenterTile: WelcomeCenterTile) {
+    welcomeCenterTile.tileImagePath = this.formControls.tileImagePath.value;
+    welcomeCenterTile.size = this.formControls.size.value;
+
+    // Localization data
+    welcomeCenterTile.tileDescription.locref = this.formControls.localizedTileDescription.value?.id;
+    welcomeCenterTile.tileTitle.locref = this.formControls.localizedTileTitle.value?.id;
+    welcomeCenterTile.tileType.locref = this.formControls.localizedTileType.value?.id;
+
+    // Timer
+    if (this.formControls.timerInstance.value) {
+      welcomeCenterTile.timer = {
+        endTextOverride: { refId: this.formControls.timerLocalizedEndTextOverride.value?.id },
+        startTextOverride: { refId: this.formControls.timerLocalizedStartTextOverride.value?.id },
+        timerType: this.formControls.timerType.value,
+        typeName: this.formControls.timerInstance.value,
+        customRange: undefined,
+        timerReference: undefined,
+      };
+
+      if (this.formControls.timerInstance.value == TimerInstance.Custom) {
+        welcomeCenterTile.timer.customRange = {
+          from: {
+            text: this.formControls.timerCustomFromDate.value,
+            when: undefined,
+          },
+          to: {
+            text: this.formControls.timerCustomToDate.value,
+            when: undefined,
+          },
+        };
+      } else {
+        welcomeCenterTile.timer.timerReference = {
+          refId: this.formControls.timerReferenceId.value,
+          timerInstance: this.selectedTimerReferenceInstance,
+        };
+      }
+    } else {
+      welcomeCenterTile.timer = null;
+    }
+  }
+
+  /** Removes the selected timer instance. */
+  public removeTimerInstance(): void {
+    this.formControls.timerInstance.setValue(undefined);
   }
 }
