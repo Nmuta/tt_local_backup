@@ -13,6 +13,7 @@
   <mat-icon>vpn_key</mat-icon>
 </button>
 <button
+  *ngIf="completionValue.clonedShareCode"
   mat-icon-button
   [cdkCopyToClipboard]="completionValue.clonedShareCode"
   matTooltip="Copy Share Code"

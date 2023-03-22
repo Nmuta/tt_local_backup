@@ -3,12 +3,12 @@ import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar'
 import { ClonedItemResult } from '@models/player-ugc-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
-/** A component that summarizes the results of a clone operation. */
+/** A component that summarizes the results of a ugc operation. */
 @Component({
-  templateUrl: './clone-snackbar.component.html',
-  styleUrls: ['./clone-snackbar.component.scss'],
+  templateUrl: './ugc-operation-snackbar.component.html',
+  styleUrls: ['./ugc-operation-snackbar.component.scss'],
 })
-export class CloneSnackbarComponent implements OnInit {
+export class UgcOperationSnackbarComponent implements OnInit {
   public completionValue: ClonedItemResult;
 
   /** Gets the label for the error. */
@@ -17,7 +17,7 @@ export class CloneSnackbarComponent implements OnInit {
   }
 
   constructor(
-    private readonly snackBarRef: MatSnackBarRef<CloneSnackbarComponent>,
+    private readonly snackBarRef: MatSnackBarRef<UgcOperationSnackbarComponent>,
     @Inject(MAT_SNACK_BAR_DATA) public monitor: ActionMonitor,
   ) {}
 
