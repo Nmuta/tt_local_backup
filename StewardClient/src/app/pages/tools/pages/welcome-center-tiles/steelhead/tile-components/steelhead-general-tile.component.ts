@@ -82,7 +82,6 @@ export class GeneralTileComponent extends BaseComponent {
     };
 
     this.formControls.timerInstance.valueChanges.subscribe(data => {
-      // Change to switch case?
       if (data == TimerInstance.Chapter) {
         this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
         this.timerReferenceOptions = new Map([

@@ -60,25 +60,30 @@ export interface LocalizedText {
   locref: string;
 }
 
+/** Interface for a timer loc string override */
 export interface TextOverride {
   refId: string;
 }
 
+/** Interface for a custom timer instance date. Text is a date as string */
 export interface CustomRangePoint {
   text: string;
   when: string;
 }
 
+/** Interface for a custom timer instance */
 export interface CustomRange {
   from: CustomRangePoint;
   to: CustomRangePoint;
 }
 
+/** Interface for a timer reference. RefId can be a Season, Chapter, etc Guid */
 export interface TimerReference {
   refId: string;
   timerInstance: TimerReferenceInstance;
 }
 
+/** Base interface for a welcome center timer. */
 export interface Timer {
   timerType: TimerType;
   typeName: TimerInstance;
