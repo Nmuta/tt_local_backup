@@ -145,6 +145,7 @@ export class GeneralTileComponent extends BaseComponent {
 
       // Timer
       this.formControls.timerInstance.setValue(data.timer.typeName);
+      this.formControls.timerType.setValue(data.timer.timerType);
       if (data.timer.startTextOverride?.refId) {
         this.formControls.timerLocalizedStartTextOverride.setValue({
           id: data.timer.startTextOverride.refId,
@@ -158,6 +159,9 @@ export class GeneralTileComponent extends BaseComponent {
       if (data.timer.customRange) {
         this.formControls.timerCustomFromDate.setValue(data.timer.customRange.from.text);
         this.formControls.timerCustomToDate.setValue(data.timer.customRange.to.text);
+      }
+      if (data.timer.timerReference) {
+        this.formControls.timerReferenceId.setValue(data.timer.timerReference.refId);
       }
     }
   }
