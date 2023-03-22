@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '4f2446fd-fd88-47f1-93c2-3ea350cca8f1',
+      shortText: 'Persist UGC success popup now allows the user to copy new ugc id',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: 'a962db50-cf71-4cae-8d42-87ce32fe5063',
       shortText: 'Add Loyalty tab with Loyalty Rewards tool',

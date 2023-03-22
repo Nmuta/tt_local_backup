@@ -129,11 +129,13 @@
                 monitorDisable
                 monitorWarn
                 monitorWarnSnackbar
-                monitorCompleteSnackbar
+                [monitorCompleteSnackbar]="ugcOperationSnackbarComponent"
+                monitorSnackbarDuration="forever"
                 [disabled]="!canPersistUgc"
               >
                 <help-popover-icon cardTitle="Persist UGC">
                   <p>Persisted UGC is duplicated on the System user (ID 1 in FH5).</p>
+                  <p>The snackbar that appears has options to copy the ID of the persisted item.</p>
                 </help-popover-icon>
                 Persist UGC
               </button>
@@ -159,7 +161,7 @@
                 monitorDisable
                 monitorWarn
                 monitorWarnSnackbar
-                [monitorCompleteSnackbar]="cloneSnackbarComponent"
+                [monitorCompleteSnackbar]="ugcOperationSnackbarComponent"
                 monitorSnackbarDuration="forever"
                 [disabled]="!canCloneUgc"
               >
