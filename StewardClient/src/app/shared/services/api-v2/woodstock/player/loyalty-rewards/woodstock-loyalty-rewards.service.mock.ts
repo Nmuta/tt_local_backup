@@ -4,7 +4,7 @@ import { WoodstockLoyaltyRewardsService } from './woodstock-loyalty-rewards.serv
 import { WoodstockLoyaltyRewardsTitle } from '@models/loyalty-rewards';
 
 /** Defines the mock for the API Service. */
-export class MockSteelheadLoyaltyRewardsService {
+export class MockWoodstockLoyaltyRewardsService {
   private result: WoodstockLoyaltyRewardsTitle[] = [WoodstockLoyaltyRewardsTitle.FH1];
 
   public getUserLoyalty$ = jasmine.createSpy('getUserLoyalty').and.returnValue(of(this.result));
@@ -12,12 +12,12 @@ export class MockSteelheadLoyaltyRewardsService {
   constructor(private readonly generator$: () => unknown) {}
 }
 
-/** Creates an injectable mock for Steelhead Builders Cup Service. */
-export function createMockSteelheadLoyaltyRewardsService(
+/** Creates an injectable mock for Woodstock Builders Cup Service. */
+export function createMockWoodstockLoyaltyRewardsService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
     provide: WoodstockLoyaltyRewardsService,
-    useValue: new MockSteelheadLoyaltyRewardsService(returnValueGenerator),
+    useValue: new MockWoodstockLoyaltyRewardsService(returnValueGenerator),
   };
 }
