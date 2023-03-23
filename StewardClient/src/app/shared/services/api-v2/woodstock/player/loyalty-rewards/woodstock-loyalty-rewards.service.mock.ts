@@ -1,10 +1,11 @@
 import { ValueProvider } from '@angular/core';
 import { of } from 'rxjs';
-import { SteelheadLoyaltyRewardsService } from './steelhead-loyalty-rewards.service';
+import { WoodstockLoyaltyRewardsService } from './woodstock-loyalty-rewards.service';
+import { WoodstockLoyaltyRewardsTitle } from '@models/loyalty-rewards';
 
 /** Defines the mock for the API Service. */
 export class MockSteelheadLoyaltyRewardsService {
-  private result: SteelheadLoyaltyRewardsTitle[] = [SteelheadLoyaltyRewardsTitle.FH];
+  private result: WoodstockLoyaltyRewardsTitle[] = [WoodstockLoyaltyRewardsTitle.FH1];
 
   public getUserLoyalty$ = jasmine.createSpy('getUserLoyalty').and.returnValue(of(this.result));
 
@@ -16,7 +17,7 @@ export function createMockSteelheadLoyaltyRewardsService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
-    provide: SteelheadLoyaltyRewardsService,
+    provide: WoodstockLoyaltyRewardsService,
     useValue: new MockSteelheadLoyaltyRewardsService(returnValueGenerator),
   };
 }
