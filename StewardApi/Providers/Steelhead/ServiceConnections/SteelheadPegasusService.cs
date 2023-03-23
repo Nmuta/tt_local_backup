@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -447,7 +448,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             {
                 NewFileContent = newXml,
                 PathToFile = PegasusFilePath.MessageOfTheDay,
-                VersionControlChangeType = VersionControlChangeType.Edit
+                VersionControlChangeType = VersionControlChangeType.Edit,
+                CommitMessage = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "MessageOfTheDay"),
             };
 
             return change;
@@ -548,9 +550,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<WofImageTextEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
-            var deleteElements = new List<string> { "DisplayConditions", "Timer" };
+            var commitMessage = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileImageText");
 
-            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.ImageTextTile, deleteElements).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.ImageTextTile, commitMessage).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -558,9 +560,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<WofGenericPopupEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
-            var deleteElements = new List<string> { "DisplayConditions", "Timer", "Destination" }; // check if popup contains destination.
+            var commitMessage = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileGenericPopup");
 
-            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.GenericPopupTile, deleteElements).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.GenericPopupTile, commitMessage).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -568,9 +570,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<WofDeeplinkEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
-            var deleteElements = new List<string> { "DisplayConditions", "Timer", "Destination" };
+            var commitMessage = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileDeeplink");
 
-            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.DeeplinkTile, deleteElements).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.DeeplinkTile, commitMessage).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -665,7 +667,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var change = new CommitRefProxy()
             {
-                CommitComment = $"Add localized string to {path}",
+                CommitMessage = $"Add localized string to {path}",
                 NewFileContent = finalXmlString,
                 PathToFile = path,
                 VersionControlChangeType = VersionControlChangeType.Edit
@@ -696,14 +698,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return choices;
         }
 
-        private async Task<CommitRefProxy> CommitWelcomeCenterTileAsync(WofBaseTileEntry entry, XElement element, string filePath, IEnumerable<string> deleteTargets)
+        private async Task<CommitRefProxy> CommitWelcomeCenterTileAsync(WofBaseTileEntry entry, XElement element, string sourceFilePath, string commitMessage)
         {
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
             var displayConditions = await this.GetDisplayConditionsAsync().ConfigureAwait(false);
             Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, displayConditions);
 
             // deleted elements will be rewritten.
-            foreach (var target in deleteTargets)
+            foreach (var target in new List<string>() { "Timer", "DisplayConditions", "Destination" })
             {
                 element.Elements().Where(k => k.Name.LocalName == target).Remove();
             }
@@ -714,8 +716,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var change = new CommitRefProxy()
             {
+                CommitMessage = commitMessage,
                 NewFileContent = newXml,
-                PathToFile = filePath,
+                PathToFile = sourceFilePath,
                 VersionControlChangeType = VersionControlChangeType.Edit
             };
 
