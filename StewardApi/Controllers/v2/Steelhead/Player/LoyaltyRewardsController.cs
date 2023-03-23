@@ -98,8 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(200)]
-        [SwaggerResponse(200, type: typeof(Dictionary<ForzaLoyaltyRewardsSupportedTitles, bool>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<SteelheadLoyaltyRewardsTitle, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
