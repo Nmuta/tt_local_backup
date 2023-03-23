@@ -32,6 +32,10 @@ export class WoodstockLoyaltyRewardsService {
   ): Observable<Record<WoodstockLoyaltyRewardsTitle, boolean>> {
     const params = new HttpParams().append('externalProfileId', externalProfileId);
 
-    return this.api.postRequest$<Record<WoodstockLoyaltyRewardsTitle, boolean>>(`${this.basePath}/${xuid}/loyalty`, gameTitles, params);
+    return this.api.postRequest$<Record<WoodstockLoyaltyRewardsTitle, boolean>>(
+      `${this.basePath}/${xuid}/loyalty`,
+      gameTitles,
+      params,
+    );
   }
 }
