@@ -20,7 +20,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDa
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -337,8 +339,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<LocTextMotd, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
-                .ReverseMap();
             this.CreateMap<WofGenericPopupEntry, WofGenericPopupBridge>()
                 .ReverseMap();
             this.CreateMap<WofDeeplinkEntry, WofDeeplinkBridge>()
@@ -354,15 +354,22 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LocTextBaseWof, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofBaseTimer, TimerBridge>()
-                .ForMember(dest => dest.TimerType, opt => opt.MapFrom(src => src.TimerType))
-                .ForMember(dest => dest.TimerCustomRange, opt => opt.MapFrom(src => src.CustomRange))
+            this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRange>()
-                .ForMember(dest => dest.FromPoints, opt => opt.MapFrom(src => src.From))
-                .ForMember(dest => dest.ToPoints, opt => opt.MapFrom(src => src.To))
+            this.CreateMap<WofTimerBridge, WofBaseTimer>()
+                .ForMember(dest => dest.TypeName, opt => opt.MapFrom(src => $"WorldOfForza.TileTimer{src.TimerReference.TimerInstance}"))
                 .ReverseMap();
-            this.CreateMap<WofBaseRangePoint, TimerCustomRangePoint>()
+            this.CreateMap<TextOverrideBridge, TextOverride>()
+                .ReverseMap();
+            this.CreateMap<WofDisplayConditionsBridge, WofBaseDisplayConditions>()
+                .ReverseMap();
+            this.CreateMap<ItemBridge, BaseItem>()
+                .ReverseMap();
+            this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
+            this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();
+            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRangeBridge>()
+                .ReverseMap();
+            this.CreateMap<WofBaseRangePoint, RangePointBridge>()
                 .ReverseMap();
 
             this.CreateMap<ForzaUserIds, BasicPlayer>()
@@ -437,6 +444,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LiveOpsService.GetDriverLevelOutput, SteelheadDriverLevel>()
                 .ForMember(dest => dest.ExperiencePoints, opt => opt.MapFrom(source => source.driverExperiencePoints));
+
+            this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
@@ -519,8 +528,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
                     {
-                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship},
-                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder},
+                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
+                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder },
                         type = "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting",
                     };
                 }
@@ -530,7 +539,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
                     {
                         Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
-                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series},
+                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series },
                         type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting"
                     };
                 }

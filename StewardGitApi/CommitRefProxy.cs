@@ -9,7 +9,7 @@ namespace StewardGitApi
     /// </summary>
     public class CommitRefProxy
     {
-        public string CommitComment { get; init; }
+        public string CommitComment { get; set; }
 
         public string PathToFile { get; init; }
 

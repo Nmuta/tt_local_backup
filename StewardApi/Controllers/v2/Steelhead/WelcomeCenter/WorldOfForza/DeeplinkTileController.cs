@@ -100,8 +100,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            var commitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileDeeplink");
-            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaDeeplinkTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
+            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaDeeplinkTileAsync(wofTileBridge, parsedId).ConfigureAwait(true);
+            change.CommitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileDeeplink");
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);

@@ -1,6 +1,12 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import {
+  HomeTileInfoInternal,
+  AppIcon,
+  NavbarTool,
+  CommonAccessLevels,
+  HomeTileRestrictionType,
+} from '../../helpers';
 
 export const auctionCreateTile = <HomeTileInfoInternal>{
   icon: AppIcon.CreateAuction,
@@ -18,4 +24,9 @@ export const auctionCreateTile = <HomeTileInfoInternal>{
     import('../../../../../app/pages/tools/pages/create-auction/create-auction.module').then(
       m => m.CreateAuctionModule,
     ),
+  hideFromUnauthorized: true,
+  restriction: {
+    requiredPermissions: [PermAttributeName.CreateAuctions],
+    action: HomeTileRestrictionType.Disable,
+  },
 };

@@ -10,6 +10,7 @@ export interface LspEndpoints {
   woodstock: LspEndpoint[];
   steelhead: LspEndpoint[];
   forte: LspEndpoint[];
+  forum: LspEndpoint[];
 }
 
 /** Navbar "default" endpoint. For displaying warnings. */
@@ -22,4 +23,5 @@ export const LspDefaultEndpoints: { [key in keyof LspEndpoints]: string } = {
   woodstock: RetailEndpoint,
   steelhead: RetailEndpoint,
   forte: 'Studio',
+  forum: RetailEndpoint,
 };

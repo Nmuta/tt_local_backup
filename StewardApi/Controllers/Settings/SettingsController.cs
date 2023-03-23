@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
                 Forte = typeof(ForteEndpoint).GetProperties()
                     .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
+                Forum = new List<LspEndpoint>() { new LspEndpoint("Retail") },
             };
 
             return this.Ok(validEndpoints);

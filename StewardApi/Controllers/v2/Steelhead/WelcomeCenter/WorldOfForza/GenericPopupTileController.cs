@@ -100,8 +100,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            var commitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileGenericPopup");
-            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaGenericPopupTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
+            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaGenericPopupTileAsync(wofTileBridge, parsedId).ConfigureAwait(true);
+            change.CommitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileGenericPopup");
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);

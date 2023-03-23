@@ -17,6 +17,7 @@ export class EndpointKeyMemoryModel {
   public [GameTitleCodeName.FH5]: string[];
   public [GameTitleCodeName.FM8]: string[];
   public [GameTitleCodeName.Forte]: string[];
+  public [GameTitleCodeName.Forum]: string[];
 }
 
 /** Memory state. */
@@ -29,6 +30,7 @@ export class EndpointKeyMemoryModel {
     [GameTitleCodeName.FH5]: [],
     [GameTitleCodeName.FM8]: [],
     [GameTitleCodeName.Forte]: [],
+    [GameTitleCodeName.Forum]: [],
   },
 })
 /** Defines the lsp group memory state. */
@@ -49,6 +51,7 @@ export class EndpointKeyMemoryState {
           [GameTitleCodeName.FH5]: clone(endpointKeys.woodstock.map(endpoint => endpoint.name)),
           [GameTitleCodeName.FM8]: clone(endpointKeys.steelhead.map(endpoint => endpoint.name)),
           [GameTitleCodeName.Forte]: clone(endpointKeys.forte.map(endpoint => endpoint.name)),
+          [GameTitleCodeName.Forum]: clone(endpointKeys.forum.map(endpoint => endpoint.name)),
         });
       }),
     );
@@ -82,5 +85,11 @@ export class EndpointKeyMemoryState {
   @Selector()
   public static apolloEndpointKeys(state: EndpointKeyMemoryModel): string[] {
     return state.Apollo;
+  }
+
+  /** Forum endpoint key selector. */
+  @Selector()
+  public static forumEndpointKeys(state: EndpointKeyMemoryModel): string[] {
+    return state.Forum;
   }
 }

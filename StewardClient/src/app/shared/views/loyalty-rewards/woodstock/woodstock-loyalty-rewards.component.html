@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Loyalty Rewards</mat-card-title>
-    <mat-card-subtitle>{{ serviceContract?.gameTitle }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
     <help-popover-icon cardTitle="Loyalty Rewards">
       <span
         >When clicking the 'Send Loyalty Rewards' button, the tool will send out a reward for each
@@ -27,7 +27,7 @@
                   *ngIf="entry.label === actionLabel"
                   stateManager
                   [permissionAttribute]="permAttribute"
-                  [permissionTitle]="serviceContract?.gameTitle"
+                  [permissionTitle]="gameTitle"
                   [checked]="!disableSingleActions"
                   (change)="toggleSingleSend($event)"
                   [disabled]="disableSendActions"
@@ -60,7 +60,7 @@
                   [monitor]="singlePostMonitors[gameColumn]"
                   stateManager
                   [permissionAttribute]="permAttribute"
-                  [permissionTitle]="serviceContract?.gameTitle"
+                  [permissionTitle]="gameTitle"
                   monitorDisable
                   monitorWarnSnackbar
                 >
@@ -94,7 +94,7 @@
             #verifyAction
             stateManager
             [permissionAttribute]="permAttribute"
-            [permissionTitle]="serviceContract?.gameTitle"
+            [permissionTitle]="gameTitle"
             [disabled]="titlesToSendRewardsTo.length === 0 || disableSendActions"
             [matTooltip]="!disableSendActions ? 'Verify Send Loyalty Rewards' : featureDisabledText"
             >{{
