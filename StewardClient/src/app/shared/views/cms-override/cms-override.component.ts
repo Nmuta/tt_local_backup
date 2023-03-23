@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle, PegasusEnvironment } from '@models/enums';
@@ -21,6 +21,9 @@ export interface CmsOverrideServiceContract {
 
   /** Gets a player's cms override. */
   setUserCmsOverride$(xuid: BigNumber, cmsOverride: PlayerCmsOverride): Observable<void>;
+
+  /** Deletes a player's cms override. */
+  deleteUserCmsOverride$(xuid: BigNumber): Observable<void>;
 }
 
 /** Component to get and set a player's cms override. */
@@ -30,7 +33,7 @@ export interface CmsOverrideServiceContract {
   styleUrls: ['./cms-override.component.scss'],
 })
 export class CmsOverrideComponent extends BaseComponent implements OnInit, OnChanges {
-  @ViewChild(MatCheckbox) verifyCheckbox: MatCheckbox;
+  @ViewChildren(MatCheckbox) verifyCheckboxes: QueryList<MatCheckbox>;
 
   /** The cms override service. */
   @Input() service: CmsOverrideServiceContract;
@@ -40,6 +43,7 @@ export class CmsOverrideComponent extends BaseComponent implements OnInit, OnCha
   public pegasusEnvironment = PegasusEnvironment;
   public currentCmsOverride: PlayerCmsOverride;
   public cmsEnvironments = keys(PegasusEnvironment).map(x => PegasusEnvironment[x]);
+  public hasCmsOverride = false;
 
   public formControls = {
     environment: new FormControl(''),
@@ -51,6 +55,7 @@ export class CmsOverrideComponent extends BaseComponent implements OnInit, OnCha
 
   public getMonitor = new ActionMonitor('Get player cms override');
   public postMonitor = new ActionMonitor('Set player cms override');
+  public deleteMonitor = new ActionMonitor('Delete player cms override');
 
   public readonly permAttribute = PermAttributeName.OverrideCms;
 
@@ -73,6 +78,7 @@ export class CmsOverrideComponent extends BaseComponent implements OnInit, OnCha
   /** Lifecycle hook. */
   public ngOnChanges(changes: BetterSimpleChanges<CmsOverrideComponent>): void {
     if (!!changes.xuid) {
+      this.hasCmsOverride = false;
       this.getMonitor = this.getMonitor.repeat();
       this.service
         .getUserCmsOverride$(this.xuid)
@@ -81,6 +87,10 @@ export class CmsOverrideComponent extends BaseComponent implements OnInit, OnCha
           this.formControls.environment.setValue(cmsOverride.environment);
           this.formControls.slot.setValue(cmsOverride.slot);
           this.formControls.snapshot.setValue(cmsOverride.snapshot);
+
+          if (cmsOverride.environment || cmsOverride.slot || cmsOverride.snapshot) {
+            this.hasCmsOverride = true;
+          }
         });
     }
   }
@@ -102,7 +112,30 @@ export class CmsOverrideComponent extends BaseComponent implements OnInit, OnCha
       .setUserCmsOverride$(this.xuid, cmsOverride)
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.verifyCheckbox.checked = false;
+        this.hasCmsOverride = true;
+        this.clearCheckboxes();
       });
+  }
+
+  /** Deletes a cms override for the player. */
+  public deleteCmsOverride(): void {
+    if (!this.xuid || this.xuid.isNaN()) {
+      return;
+    }
+
+    this.deleteMonitor = this.deleteMonitor.repeat();
+    this.service
+      .deleteUserCmsOverride$(this.xuid)
+      .pipe(this.deleteMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.hasCmsOverride = false;
+        this.clearCheckboxes();
+      });
+  }
+
+  private clearCheckboxes(): void {
+    for (const checkbox of this.verifyCheckboxes) {
+      checkbox.checked = false;
+    }
   }
 }

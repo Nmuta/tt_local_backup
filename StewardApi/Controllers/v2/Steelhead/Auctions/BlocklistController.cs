@@ -80,25 +80,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
             var getCars = this.itemsProvider.GetCarsAsync();
             var getBlockList = this.Services.AuctionManagementService.GetAuctionBlocklist(maxResults);
 
+            AuctionManagementService.GetAuctionBlocklistOutput getBlockListResults = null;
+
             try
             {
                 await Task.WhenAll(getBlockList, getCars).ConfigureAwait(true);
 
-                var getBlockListResults = getBlockList.GetAwaiter().GetResult();
-                var blockList = this.mapper.Map<IList<AuctionBlockListEntry>>(getBlockListResults.blocklistEntries);
-
-                var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
-                foreach (var entry in blockList)
-                {
-                    entry.Description = carsDict.TryGetValue(entry.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
-                }
-
-                return this.Ok(blockList);
+                getBlockListResults = getBlockList.GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get auction blocklist. (maxResults: {maxResults})", ex);
             }
+
+            var blockList = this.mapper.SafeMap<IList<AuctionBlockListEntry>>(getBlockListResults.blocklistEntries);
+
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+            foreach (var entry in blockList)
+            {
+                entry.Description = carsDict.TryGetValue(entry.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
+            }
+
+            return this.Ok(blockList);
         }
 
         /// <summary>
@@ -118,10 +121,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
+            var convertedEntries = this.mapper.SafeMap<ForzaAuctionBlocklistEntry[]>(entries);
+
             try
             {
-                var convertedEntries = this.mapper.Map<ForzaAuctionBlocklistEntry[]>(entries);
-
                 await this.Services.AuctionManagementService.AddToAuctionBlocklist(convertedEntries).ConfigureAwait(true);
             }
             catch (Exception ex)

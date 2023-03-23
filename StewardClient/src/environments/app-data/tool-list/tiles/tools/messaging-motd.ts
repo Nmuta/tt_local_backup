@@ -5,7 +5,7 @@ import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } fr
 export const motdTile = <HomeTileInfoInternal>{
   icon: AppIcon.MessageOfTheDay,
   tool: NavbarTool.MessageOfTheDay,
-  accessList: [UserRole.LiveOpsAdmin],
+  accessList: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   title: 'Message Of The Day',
   subtitle: 'Manage messages of the day',
   supportedTitles: [GameTitle.FM8],
@@ -20,7 +20,7 @@ export const motdTile = <HomeTileInfoInternal>{
     ).then(m => m.MessageOfTheDayModule),
   hideFromUnauthorized: true,
   restriction: {
-    requiredPermissions: [PermAttributeName.AdminFeature],
-    action: HomeTileRestrictionType.Hide,
+    requiredPermissions: [PermAttributeName.UpdateMessageOfTheDay],
+    action: HomeTileRestrictionType.Disable,
   },
 };

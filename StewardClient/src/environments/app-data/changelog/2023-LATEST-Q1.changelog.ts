@@ -8,6 +8,154 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '4f2446fd-fd88-47f1-93c2-3ea350cca8f1',
+      shortText: 'Persist UGC success popup now allows the user to copy new ugc id',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: 'a962db50-cf71-4cae-8d42-87ce32fe5063',
+      shortText: 'Add Loyalty tab with Loyalty Rewards tool',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '21d83616-5d2f-4d74-95a4-27273bbbaa74',
+      shortText: 'Fully incorportate Forum as a game title with stubbed environment',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.Home },
+      uuid: '96adf13c-80b2-4406-8a81-ea1af0fc8e81',
+      shortText: 'General updates to home page',
+      longText: [
+        'Fix filtering on disabled tools.',
+        'Add MOTD to to GeneralUser for visibility and update restrictions.',
+        'Add Welcome Center Tiles to GeneralUser for visibility and update restrictions.',
+        'Add restrictions to Create Auction.',
+        'Add restrictions to Banning.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
+      shortText: 'Add additional properties',
+      longText: [
+        'Add properties including: powertrain name, region name, car class name,',
+        'car type name, performance index, series, and release date.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '044af69b-02c5-42cb-8834-776b3e418007',
+      shortText: 'Recipient updates to contact us forms',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '8832d741-8529-4316-881c-ccc2dbff141f',
+      shortText: 'Implement UI for Driver Level/Prestige Rank in Player Details',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.UserBanning, NavbarTool.UserDetails] },
+      uuid: '4b5b61e5-baa1-4430-97e0-e05ea9f89e2b',
+      shortText: 'Add ability to record forum ban',
+      longText: [
+        'Forum ban are saved in Steward for reference and do not actually ban users on forums.',
+        'History of forum ban can be seen on the General tab of Player Details',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',
+      shortText: 'Fix persisting UGC content',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'a17731bc-0dc1-402b-a7b3-82f5e78dbe5a',
+      shortText: 'Fix tool styling to match other game titles',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '7dcff416-9146-4f98-a6ee-fe8381f418c5',
+      shortText: 'Added ability to grant a user paid entitlements',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'cb5b78a6-4021-42ea-b7b6-80ede3e97326',
+      shortText: 'Remove special characters from gamertag lookup on paste or when manually typed',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserBanning },
+      uuid: '7880276c-1f28-4927-8f80-7fbc92acf04a',
+      shortText: 'Show error when valid ban reason is not selected',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd4f293ab-d3ae-4b1f-b1f9-d95e0e1c0e41',
+      shortText: 'Display team information in profile & contact us messages',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'b9020fef-2d19-4e8e-8b5c-6fbc3e87f709',
+      shortText: 'Stop player selection re-lookup when removing player',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '29d3b079-5e0f-48a7-8062-9f6398b878ba',
+      shortText: 'Update gameTitle to be humanized throughout front-end',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '947b953a-d168-432b-a743-9e449ba30441',
+      shortText: 'Searching now includes both featured and non-featured UGC content',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '5ac93e91-e6c3-46fa-a0e7-117fc6720930',
+      shortText: "Add ability to remove a player's cms override",
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'e498e3b6-b949-11ed-afa1-0242ac120002',
+      shortText: 'Remove whitespace from strings in search box on UGC Details',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '91cdf725-4d0d-45cc-9d26-520e86e2a113',
+      shortText: 'Rename mat tree node functions to remove boilerplate todo prefix',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '6ca4b560-726c-4d07-b313-01946c666460',
+      shortText: 'Add sandbox selection to profile load tool',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '2b2a95a2-d759-40f9-9a0d-ec9509d4b20b',
+      shortText: 'Update to latest Steelhead Forzaclient nuget',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BuildersCupCalendar },
+      uuid: '88fcfa1c-96e6-4d18-bd75-5428aed9ec5c91',
+      shortText: 'Add series event windows, car restrictions, and filtering',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '69abd636-ffb4-4400-ada0-3819fff430d4',
+      shortText: 'Add ability to delete Steward teams',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'c74997cf-d6d3-40a6-bde6-8c0e5f710387',
+      shortText: 'Add new admin tool to manage Steward teams',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserBanning,
+      },
+      uuid: '7eb2d58b-4dca-4811-a4b4-62eed1894be9',
+      shortText: 'Update list of ban reasons',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '28348e1d-a311-4f49-be39-9e7663898d5a',
       shortText: 'Update contact us dev list',

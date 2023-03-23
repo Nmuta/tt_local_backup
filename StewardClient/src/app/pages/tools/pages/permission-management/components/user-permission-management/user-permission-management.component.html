@@ -55,7 +55,7 @@
             <mat-checkbox
               class="checklist-leaf-node"
               [checked]="node.isChecked"
-              (click)="todoLeafItemSelectionToggle(node)"
+              (click)="leafItemSelectionToggle(node)"
               >{{ node.name | humanize }}</mat-checkbox
             >
           </mat-tree-node>
@@ -72,7 +72,7 @@
             <mat-checkbox
               [checked]="node.isChecked"
               [indeterminate]="descendantsPartiallySelected(node)"
-              (click)="todoItemSelectionToggle(node)"
+              (click)="itemSelectionToggle(node)"
               >{{ node.name | humanize }}</mat-checkbox
             >
           </mat-tree-node>

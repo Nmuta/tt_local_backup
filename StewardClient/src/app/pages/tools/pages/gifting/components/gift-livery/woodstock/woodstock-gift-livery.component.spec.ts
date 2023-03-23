@@ -25,6 +25,7 @@ import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/
 import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-player-gift.service.mock';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 import { ZERO } from '@helpers/bignumbers';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('WoodstockGiftLiveryComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftLiveryComponent>;
@@ -44,7 +45,7 @@ describe('WoodstockGiftLiveryComponent', () => {
         NgxsModule.forRoot(),
         ReactiveFormsModule,
       ],
-      declarations: [WoodstockGiftLiveryComponent],
+      declarations: [WoodstockGiftLiveryComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockBackgroundJobService(),

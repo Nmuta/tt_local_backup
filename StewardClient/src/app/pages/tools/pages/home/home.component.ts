@@ -317,7 +317,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       const hasPermissionFilter = this.filters.some(filter => {
         return filter.type == FilterType.Permission;
       });
-      const passesPermissionCheck = !hasPermissionFilter || tile.foundWritePermissions.length > 0;
+      const passesPermissionCheck = !hasPermissionFilter || tile?.foundWritePermissions?.length > 0;
 
       return passesTitleCheck && passesTextCheck && passesPermissionCheck;
     });

@@ -1,12 +1,26 @@
 import { ValueProvider } from '@angular/core';
 import { of } from 'rxjs';
-import { SteelheadBuildersCupService } from './steelhead-builders-cup.service';
+import {
+  BuildersCupFeaturedTour,
+  SteelheadBuildersCupService,
+} from './steelhead-builders-cup.service';
 
 /** Defines the mock for the API Service. */
 export class MockSteelheadBuildersCupService {
-  public getBuildersCupScheduleForUser$ = jasmine
-    .createSpy('getBuildersCupScheduleForUser')
-    .and.returnValue(of({ series: [] }));
+  private result: BuildersCupFeaturedTour[] = [
+    {
+      name: 'Name',
+      description: 'Description',
+      isDisabled: false,
+      openTimeUtc: null,
+      closeTimeUtc: null,
+      championshipSeries: [],
+    },
+  ];
+
+  public getBuildersCupSchedule$ = jasmine
+    .createSpy('getBuildersCupSchedule')
+    .and.returnValue(of(this.result));
 
   constructor(private readonly generator$: () => unknown) {}
 }

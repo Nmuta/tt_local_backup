@@ -67,6 +67,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     [GameTitle.FM7]: [],
     [GameTitle.FH5]: [],
     [GameTitle.FH4]: [],
+    [GameTitle.Forum]: [],
   };
 
   /** Tree views & filters */
@@ -178,7 +179,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   }
 
   /** Toggle the node selection. Select/deselect all the descendants node. */
-  public todoItemSelectionToggle(node: AttributeTreeFlatNode): void {
+  public itemSelectionToggle(node: AttributeTreeFlatNode): void {
     this.selectedUserHasPermChanges = true;
     const descendants = this.treeControl.getDescendants(node);
     const descendantsPartiallySelected = this.descendantsPartiallySelected(node);
@@ -187,7 +188,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   }
 
   /** Toggle the node selection. Select/deselect all the descendants node. */
-  public todoLeafItemSelectionToggle(node: AttributeTreeFlatNode): void {
+  public leafItemSelectionToggle(node: AttributeTreeFlatNode): void {
     this.selectedUserHasPermChanges = true;
     node.isChecked = !node.isChecked;
     const parent = this.getParentNode(node);
@@ -230,7 +231,8 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
             latest.Sunrise.length > 0 &&
             latest.Woodstock.length > 0 &&
             latest.Steelhead.length > 0 &&
-            latest.Forte.length > 0
+            latest.Forte.length > 0 &&
+            latest.Forum.length > 0
           );
         }),
         tap(latest => {
@@ -239,6 +241,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
           this.titleEnvironments[GameTitle.FM7] = latest.Apollo;
           this.titleEnvironments[GameTitle.FH5] = latest.Woodstock;
           this.titleEnvironments[GameTitle.FH4] = latest.Sunrise;
+          this.titleEnvironments[GameTitle.Forum] = latest.Forum;
         }),
         switchMap(() =>
           this.permissionsService

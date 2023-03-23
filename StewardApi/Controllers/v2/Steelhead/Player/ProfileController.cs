@@ -58,10 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
 
-            if (!Guid.TryParse(profileId, out var profileIdAsGuid))
-            {
-                throw new BadRequestStewardException("Profile ID could not be parsed as GUID.");
-            }
+            var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
             await services.LiveOpsService.SaveProfile(profileIdAsGuid, templateName, overwriteIfExists).ConfigureAwait(true);
             return this.Ok();
@@ -76,17 +73,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Profile)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttribute.UpdateProfile)]
-        public async Task<IActionResult> LoadPlayerProfile(ulong xuid, string profileId, [FromBody] string templateName, [FromQuery] bool continueOnBreakingChanges)
+        public async Task<IActionResult> LoadPlayerProfile(
+            ulong xuid, string profileId,
+            [FromBody] string templateName,
+            [FromQuery] bool continueOnBreakingChanges,
+            [FromQuery] string forzaSandbox)
         {
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
 
-            if (!Guid.TryParse(profileId, out var profileIdAsGuid))
-            {
-                throw new BadRequestStewardException("Profile ID could not be parsed as GUID.");
-            }
+            var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
-            var response = await services.LiveOpsService.LoadProfile(profileIdAsGuid, templateName, continueOnBreakingChanges).ConfigureAwait(true);
+            var sandboxEnum = forzaSandbox.TryParseEnumElseThrow<ForzaSandbox>("Forza Sandbox could not be parsed.");
+
+            var response = await services.LiveOpsService.LoadProfile(profileIdAsGuid, templateName, continueOnBreakingChanges, sandboxEnum).ConfigureAwait(true);
             return this.Ok(response.currentProfileId);
         }
 
@@ -109,15 +109,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             [FromQuery] bool resetTrueSkillData = true,
             [FromQuery] bool resetUserInventoryData = true,
             [FromQuery] bool resetUserSafetyRatingData = true,
-            [FromQuery] bool softDeleteInventory = true)
+            [FromQuery] bool resetUgcProfileData = true)
         {
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
 
-            if (!Guid.TryParse(profileId, out var profileIdAsGuid))
-            {
-                throw new BadRequestStewardException("Profile ID could not be parsed as GUID.");
-            }
+            var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
             var configuration = new ForzaProfileResetConfiguration()
             {
@@ -128,7 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 ResetTrueSkillTrackerData = resetTrueSkillData,
                 ResetUserInventoryData = resetUserInventoryData,
                 ResetUserSafetyRatingData = resetUserSafetyRatingData,
-                SoftDeleteUserInventoryData = softDeleteInventory,
+                ResetUGCProfileData = resetUgcProfileData,
             };
 
             var response = await services.LiveOpsService.ResetProfile(configuration, profileIdAsGuid).ConfigureAwait(true);

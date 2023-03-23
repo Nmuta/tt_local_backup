@@ -5,12 +5,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { UserState } from '@shared/state/user/user.state';
-import { LoyaltyRewardsComponent } from './loyalty-rewards.component';
+import { SteelheadLoyaltyRewardsComponent } from './steelhead-loyalty-rewards.component';
 
-describe('LoyaltyRewardsComponent', () => {
-  let component: LoyaltyRewardsComponent;
-  let fixture: ComponentFixture<LoyaltyRewardsComponent>;
+describe('SteelheadLoyaltyRewardsComponent', () => {
+  let component: SteelheadLoyaltyRewardsComponent;
+  let fixture: ComponentFixture<SteelheadLoyaltyRewardsComponent>;
   let mockStore: Store;
 
   beforeEach(async () => {
@@ -20,12 +21,12 @@ describe('LoyaltyRewardsComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [LoyaltyRewardsComponent],
+      declarations: [SteelheadLoyaltyRewardsComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LoyaltyRewardsComponent);
+    fixture = TestBed.createComponent(SteelheadLoyaltyRewardsComponent);
     component = fixture.debugElement.componentInstance;
     mockStore = TestBed.inject(Store);
     mockStore.dispatch = jasmine.createSpy('dispatch');

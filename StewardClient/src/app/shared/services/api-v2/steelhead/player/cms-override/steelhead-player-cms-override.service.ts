@@ -21,4 +21,9 @@ export class SteelheadPlayerCmsOverrideService {
   public setCmsOverrideByXuid$(xuid: BigNumber, cmsOverride: PlayerCmsOverride): Observable<void> {
     return this.api.postRequest$<void>(`${this.basePath}/${xuid}/cmsOverride`, cmsOverride);
   }
+
+  /** Deletes player CMS override. */
+  public deleteCmsOverrideByXuid$(xuid: BigNumber): Observable<void> {
+    return this.api.deleteRequest$<void>(`${this.basePath}/${xuid}/cmsOverride`);
+  }
 }

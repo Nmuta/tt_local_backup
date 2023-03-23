@@ -64,22 +64,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             queries.ShouldNotBeNull(nameof(queries));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            var convertedQueries = this.mapper.SafeMap<ServicesLiveOps.ForzaPlayerLookupParameters[]>(queries);
+
+            UserManagementService.GetUserIdsOutput result = null;
+
             try
             {
-                var convertedQueries = this.mapper.Map<ServicesLiveOps.ForzaPlayerLookupParameters[]>(queries);
-
-                var result = await this.woodstockService.GetUserIdsAsync(convertedQueries, endpoint)
+                result = await this.woodstockService.GetUserIdsAsync(convertedQueries, endpoint)
                     .ConfigureAwait(false);
-
-                var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
-                identityResults.SetErrorsForInvalidXuids();
-
-                return identityResults;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
+
+            var identityResults = this.mapper.SafeMap<IList<IdentityResultAlpha>>(result.playerLookupResult);
+            identityResults.SetErrorsForInvalidXuids();
+
+            return identityResults;
         }
 
         /// <inheritdoc />
@@ -88,17 +90,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FH5_main.Generated.LiveOpsService.GetLiveOpsUserDataByGamerTagV2Output response = null;
+
             try
             {
-                var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag, endpoint)
+                response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<WoodstockPlayerDetails>(response.userData);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
             }
+
+            return this.mapper.SafeMap<WoodstockPlayerDetails>(response.userData);
         }
 
         /// <inheritdoc />
@@ -106,19 +110,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FH5_main.Generated.LiveOpsService.GetLiveOpsUserDataByXuidV2Output response = null;
+
             try
             {
-                var response = await this.woodstockService.GetUserDataByXuidAsync(xuid, endpoint)
+                response = await this.woodstockService.GetUserDataByXuidAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
                 if (response.userData.Region <= 0) { return null; }
-
-                return this.mapper.Map<WoodstockPlayerDetails>(response.userData);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<WoodstockPlayerDetails>(response.userData);
         }
 
         /// <inheritdoc />
@@ -163,17 +169,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetConsolesOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetConsolesAsync(xuid, maxResults, endpoint)
+                response = await this.woodstockService.GetConsolesAsync(xuid, maxResults, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No consoles found for Xuid: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<ConsoleDetails>>(response.consoles);
         }
 
         /// <inheritdoc />
@@ -201,20 +209,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetSharedConsoleUsersOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetSharedConsoleUsersAsync(
+                response = await this.woodstockService.GetSharedConsoleUsersAsync(
                         xuid,
                         startIndex,
                         maxResults,
                         endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No shared console users found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
         }
 
         /// <inheritdoc />
@@ -222,17 +232,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetAdminCommentsOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetProfileNotesAsync(xuid, 100, endpoint)
+                response = await this.woodstockService.GetProfileNotesAsync(xuid, 100, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<ProfileNote>>(response.adminComments);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No profile notes found for XUID: {xuid}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<ProfileNote>>(response.adminComments);
         }
 
         /// <inheritdoc />
@@ -315,18 +327,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            Forza.WebServices.FH5_main.Generated.LiveOpsService.GetProfileSummaryOutput result = null;
+
             try
             {
-                var result = await this.woodstockService.GetProfileSummaryAsync(xuid, endpoint)
+                result = await this.woodstockService.GetProfileSummaryAsync(xuid, endpoint)
                     .ConfigureAwait(false);
-                var profileSummary = this.mapper.Map<ProfileSummary>(result.forzaProfileSummary);
-
-                return profileSummary;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"Profile summary not found for XUID: {xuid}.", ex);
             }
+
+            var profileSummary = this.mapper.SafeMap<ProfileSummary>(result.forzaProfileSummary);
+
+            return profileSummary;
         }
 
         /// <inheritdoc />
@@ -352,7 +367,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                             maxResults,
                             endpoint)
                         .ConfigureAwait(false);
-                    var creditUpdates = this.mapper.Map<IList<CreditUpdate>>(result.credityUpdateEntries);
+                    var creditUpdates = this.mapper.SafeMap<IList<CreditUpdate>>(result.credityUpdateEntries);
 
                     this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
 
@@ -383,7 +398,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 {
                     var result = await this.woodstockService.GetTokenTransactionsAsync(xuid, endpoint)
                         .ConfigureAwait(false);
-                    var backstagePasses = this.mapper.Map<IList<BackstagePassUpdate>>(
+                    var backstagePasses = this.mapper.SafeMap<IList<BackstagePassUpdate>>(
                         result.transactions.Transactions);
 
                     this.refreshableCacheStore.PutItem(
@@ -505,22 +520,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             banEntryId.ShouldBeGreaterThanValue(-1);
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            var forzaExpireBanParameters = this.mapper.SafeMap<ServicesLiveOps.ForzaUserExpireBanParameters>(banEntryId);
+            UserManagementService.ExpireBanEntriesOutput result = null;
+
             try
             {
-                var forzaExpireBanParameters =
-                    this.mapper.Map<ServicesLiveOps.ForzaUserExpireBanParameters>(banEntryId);
-
                 ServicesLiveOps.ForzaUserExpireBanParameters[] parameterArray = { forzaExpireBanParameters };
 
-                var result = await this.woodstockService.ExpireBanEntriesAsync(parameterArray, 1, endpoint)
+                result = await this.woodstockService.ExpireBanEntriesAsync(parameterArray, 1, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to expire ban. (banId: {banEntryId}).", ex);
             }
+
+            return this.mapper.SafeMap<UnbanResult>(result.unbanResults[0]);
         }
 
         /// <inheritdoc />
@@ -532,23 +547,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var banEntryIds = new int[] { banEntryId };
+
+            UserManagementService.DeleteBanEntriesOutput result = null;
+
             try
             {
-                var result = await this.woodstockService.DeleteBanEntriesAsync(banEntryIds, endpoint)
+                result = await this.woodstockService.DeleteBanEntriesAsync(banEntryIds, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<UnbanResult>(result.unbanResults[0]);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to delete ban. (banId: {banEntryId}).", ex);
             }
+
+            return this.mapper.SafeMap<UnbanResult>(result.unbanResults[0]);
         }
 
         /// <inheritdoc />
         public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            UserManagementService.GetUserBanSummariesOutput result = null;
 
             try
             {
@@ -557,17 +577,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     return new List<BanSummary>();
                 }
 
-                var result = await this.woodstockService.GetUserBanSummariesAsync(xuids.ToArray(), endpoint)
+                result = await this.woodstockService.GetUserBanSummariesAsync(xuids.ToArray(), endpoint)
                     .ConfigureAwait(false);
-
-                var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
-
-                return banSummaryResults;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Ban Summary lookup has failed.", ex);
             }
+
+            var banSummaryResults = this.mapper.SafeMap<IList<BanSummary>>(result.banSummaries);
+
+            return banSummaryResults;
         }
 
         /// <inheritdoc />
@@ -609,19 +629,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             filters.ShouldNotBeNull(nameof(filters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            var forzaAuctionFilters = this.mapper.SafeMap<ServicesLiveOps.ForzaAuctionFilters>(filters);
+
+            AuctionManagementService.SearchAuctionHouseOutput forzaAuctions = null;
+
             try
             {
-                var forzaAuctionFilters = this.mapper.Map<ServicesLiveOps.ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.woodstockService.GetPlayerAuctionsAsync(forzaAuctionFilters, endpoint)
+                forzaAuctions = await this.woodstockService.GetPlayerAuctionsAsync(forzaAuctionFilters, endpoint)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
             }
             catch (Exception ex)
             {
                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
             }
+
+            return this.mapper.SafeMap<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
         }
 
         /// <inheritdoc />
@@ -631,15 +654,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            UserManagementService.GetUserReportWeightOutput response = null;
+
             try
             {
-                var response = await this.woodstockService.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
-                return this.mapper.Map<UserReportWeight>(response);
+                response = await this.woodstockService.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
             }
             catch(Exception ex)
             {
                 throw new UnknownFailureStewardException("Failed to get user report weight.", ex);
             }
+
+            return this.mapper.SafeMap<UserReportWeight>(response);
         }
 
         /// <inheritdoc />
@@ -650,9 +676,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            var mappedReportWeightType = this.mapper.SafeMap<ForzaUserReportWeightType>(reportWeightType);
+
             try
             {
-                var mappedReportWeightType = this.mapper.Map<ForzaUserReportWeightType>(reportWeightType);
                 await this.woodstockService.SetUserReportWeightTypeAsync(xuid, mappedReportWeightType, endpoint).ConfigureAwait(false);
 
                 if (reportWeightType == UserReportWeightType.Default)
@@ -675,7 +702,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var response = await this.woodstockService.GetHasPlayedRecordAsync(xuid, externalProfileId, endpoint).ConfigureAwait(false);
-            var results = this.mapper.Map<IList<HasPlayedRecord>>(response.records);
+            var results = this.mapper.SafeMap<IList<HasPlayedRecord>>(response.records);
             return results;
         }
 

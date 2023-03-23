@@ -36,6 +36,8 @@ export enum PermAttributeName {
   CreateAuctions = 'CreateAuctions',
   ManagePlayFabBuildLocks = 'ManagePlayFabBuildLocks',
   ManagePlayFabSettings = 'ManagePlayFabSettings',
+  GrantPaidEntitlements = 'GrantPaidEntitlements',
+  SetDriverLevel = 'SetDriverLevel',
 }
 
 /** Full perm attribute details. */

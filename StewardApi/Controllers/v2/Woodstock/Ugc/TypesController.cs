@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -42,13 +43,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     public class TypesController : V2WoodstockControllerBase
     {
         private readonly IWoodstockItemsProvider itemsProvider;
+        private readonly ILoggingService loggingService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TypesController"/> class.
         /// </summary>
-        public TypesController(IWoodstockItemsProvider itemsProvider)
+        public TypesController(IWoodstockItemsProvider itemsProvider, ILoggingService loggingService)
         {
+            itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
+
             this.itemsProvider = itemsProvider;
+            this.loggingService = loggingService;
         }
 
         /// <summary>
@@ -149,7 +155,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {id}");
             }
 
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
             var getAction = action(idAsGuid);
 
             await Task.WhenAll(getAction, getCars).ConfigureAwait(true);

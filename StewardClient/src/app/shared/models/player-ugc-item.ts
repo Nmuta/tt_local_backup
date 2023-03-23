@@ -54,6 +54,17 @@ export interface ClonedItemResult {
   clonedShareCode: string;
 }
 
+/** The result of a persisting operation. */
+export interface PersistedItemResult {
+  newFileId: string;
+}
+
+/** The result of a ugc operation (Cloning, persisting) */
+export interface UgcOperationResult {
+  fileId: string;
+  shareCode?: string;
+}
+
 /** Creates a fake player UGC item */
 export function fakePlayerUgcItem(): PlayerUgcItem {
   const id = faker.datatype.uuid();

@@ -10,6 +10,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using static Forza.WebServices.FM7.Generated.UserManagementService;
@@ -412,14 +413,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloService.GetIsUnderReviewAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
                 this.ApolloService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
                 this.ApolloService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupsOutput>());
-                this.Mapper.Map<ApolloPlayerDetails>(Arg.Any<CompositeUser>()).Returns(Fixture.Create<ApolloPlayerDetails>());
-                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResultV2[]>()).Returns(Fixture.Create<IList<BanResult>>());
-                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummaryV2[]>()).Returns(Fixture.Create<IList<BanSummary>>());
-                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescriptionV2[]>()).Returns(Fixture.Create<IList<BanDescription>>());
-                this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
-                this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
-                this.Mapper.Map<IList<LspGroup>>(Arg.Any<Forza.WebServices.FM7.Generated.ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
-                this.Mapper.Map<IdentityResultAlpha>(Arg.Any<ApolloPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.Mapper.SafeMap<ApolloPlayerDetails>(Arg.Any<CompositeUser>()).Returns(Fixture.Create<ApolloPlayerDetails>());
+                this.Mapper.SafeMap<IList<BanResult>>(Arg.Any<ForzaUserBanResultV2[]>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.Mapper.SafeMap<IList<BanSummary>>(Arg.Any<ForzaUserBanSummaryV2[]>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.Mapper.SafeMap<List<BanDescription>>(Arg.Any<ForzaUserBanDescriptionV2[]>()).Returns(Fixture.Create<IList<BanDescription>>());
+                this.Mapper.SafeMap<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.Mapper.SafeMap<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
+                this.Mapper.SafeMap<IList<LspGroup>>(Arg.Any<Forza.WebServices.FM7.Generated.ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
+                this.Mapper.SafeMap<IdentityResultAlpha>(Arg.Any<ApolloPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
             public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();

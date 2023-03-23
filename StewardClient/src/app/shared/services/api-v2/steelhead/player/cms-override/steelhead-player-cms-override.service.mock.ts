@@ -15,6 +15,10 @@ export class MockSteelheadPlayerCmsOverrideService {
     .createSpy('setCmsOverrideByXuid$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of())));
 
+  public deleteCmsOverrideByXuid$ = jasmine
+    .createSpy('deleteCmsOverrideByXuid$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of())));
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

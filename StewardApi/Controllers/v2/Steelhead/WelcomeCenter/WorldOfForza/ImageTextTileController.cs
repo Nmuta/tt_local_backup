@@ -100,8 +100,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter.World
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            var commitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileImageText");
-            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaImageTextTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
+            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaImageTextTileAsync(wofTileBridge, parsedId).ConfigureAwait(true);
+            change.CommitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileImageText");
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
@@ -109,10 +109,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter.World
             var user = this.User.UserClaims();
             var pullRequestTitle = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestTitle, "WoFTileImageText", user.EmailAddress);
             var pullRequestDescription = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestDescription, DateTime.UtcNow);
-            
+
             var pullrequest = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(true);
 
             return this.Ok(pullrequest);
+        }
+
+        /// <summary>
+        ///     Gets display conditions.
+        /// </summary>
+        [HttpGet("displayconditions")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
+        public async Task<IActionResult> GetDisplayConditions()
+        {
+            var conditions = await this.steelheadPegasusService.GetDisplayConditionsAsync().ConfigureAwait(true);
+
+            return this.Ok(conditions);
         }
     }
 }
