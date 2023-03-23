@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <param name="fileId">File to persist</param>
         /// <param name="title">Overrides the UGC title. Use empty string to persist the current title.</param>
         /// <param name="description">Overrides the UGC description. Use empty string to persist the current description.</param>
-        Task<PersistUgcFileOutput> PersistUgcFile(Guid fileId, string title, string description);
+        Task<LiveOpsService.PersistUgcFileOutput> PersistUgcFile(Guid fileId, string title, string description);
 
         /// <summary>
         ///     Clone UGC File from an environment.
