@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
-import { HasPlayedRecord } from '@models/loyalty-rewards';
+import { HasPlayedRecord, WoodstockLoyaltyRewardsTitle } from '@models/loyalty-rewards';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -29,9 +29,9 @@ export class WoodstockLoyaltyRewardsService {
     xuid: BigNumber,
     externalProfileId: GuidLikeString,
     gameTitles: string[],
-  ): Observable<void> {
+  ): Observable<Record<WoodstockLoyaltyRewardsTitle, boolean>> {
     const params = new HttpParams().append('externalProfileId', externalProfileId);
 
-    return this.api.postRequest$<void>(`${this.basePath}/${xuid}/loyalty`, gameTitles, params);
+    return this.api.postRequest$<Record<WoodstockLoyaltyRewardsTitle, boolean>>(`${this.basePath}/${xuid}/loyalty`, gameTitles, params);
   }
 }
