@@ -13,7 +13,7 @@ namespace StewardGitApi
     /// <summary>
     ///     Contains the git operation implementations.
     /// </summary>
-    internal class GitHelper
+    internal static class GitHelper
     {
         private const string AutogenBranchName = "steward-api-autogen";
         private const int GitCommitHashLength = 40;
@@ -470,9 +470,15 @@ namespace StewardGitApi
         private static string BuildBranchName(AzureContext context, string authorName)
         {
             // concat split removes whitespace
-            var tokenUserName = string.Concat(GetCurrentUserDisplayName(context).Split());
-            var authorNameSquish = string.Concat(authorName.Split());
+            var tokenUserName = GetCurrentUserDisplayName(context).RemoveWhiteSpace();
+            var authorNameSquish = authorName.RemoveWhiteSpace();
             return $"{tokenUserName}/{authorNameSquish}-{GetUniqueRefId()}";
+        }
+
+        private static string RemoveWhiteSpace(this string str)
+        {
+            Check.CheckForNull(str, nameof(str));
+            return string.Concat(str.Split());
         }
 
         private static IEnumerable<GitCommitRef> ToGitCommitRef(IEnumerable<CommitRefProxy> proxyCommits)
