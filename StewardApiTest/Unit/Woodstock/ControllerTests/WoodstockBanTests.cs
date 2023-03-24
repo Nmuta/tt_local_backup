@@ -99,32 +99,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
                     Gamertag = "gamerT1",
-                    FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
                     DeleteLeaderboardEntries = false,
-                    OverrideBanDuration = false,
-                    BanConfigurationId = "Test",
-                    BanDuration = null
                 },
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
                     Gamertag = "gamerT2",
-                    FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
                     DeleteLeaderboardEntries = false,
-                    OverrideBanDuration = false,
-                    BanConfigurationId = "Test",
-                    BanDuration = null
                 },
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
                     Gamertag = "gamerT3",
-                    FeatureArea = "Matchmaking",
                     Reason = "Disgusting license plate.",
                     DeleteLeaderboardEntries = false,
-                    OverrideBanDuration = false,
-                    BanConfigurationId = "Test",
-                    BanDuration = null
                 }
             };
         }

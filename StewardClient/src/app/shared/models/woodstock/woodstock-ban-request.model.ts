@@ -27,10 +27,7 @@ export interface WoodstockBanDuration {
 export interface WoodstockBanRequest {
   xuid?: BigNumber;
   gamertag?: string;
-  banConfigurationId: string;
   deleteLeaderboardEntries: boolean;
+  reasonGroupName: string;
   reason: string;
-  featureArea: WoodstockBanArea;
-  overrideBanDuration: boolean;
-  banDuration: WoodstockBanDuration;
 }

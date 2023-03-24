@@ -29,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using Xls.Security.FH5_main.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -46,6 +47,108 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     public class BanController : V2WoodstockControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
+        private readonly IList<BanReasonGroup> banReasonGroups = new List<BanReasonGroup>()
+        {
+            new BanReasonGroup()
+            {
+                Name = "Extreme Violations",
+                Reasons = new List<string>
+                {
+                    "Hate Speech",
+                    "Credible threat of violent acts",
+                    "CSEAI - child sexual exploitive abusive imagery",
+                    "TVEC - terrorism or violent extremism content",
+                    "Sexual/Nude imagery",
+                    "Credit/XP Hacking"
+                },
+                BanConfigurationId = new Guid("1b1d4b1e-4111-49be-82e3-74335052338c"),
+                FeatureAreas = new List<string>
+                {
+                    "AllRequests"
+                }
+            },
+            new BanReasonGroup()
+            {
+                Name = "Cheating/Unallowed Modding",
+                Reasons = new List<string>
+                {
+                    "Obtaining unreleased cars",
+                    "Device exploitation",
+                    "In-game glitches or exploits",
+                    "Modifying game files",
+                    "Running cheat software on client alongside game",
+                    "Audio Mods",
+                    "Fraudulent leaderboards",
+                    "Auction house automated scripts",
+                    "Stream-Sniping",
+                },
+                BanConfigurationId = new Guid(),
+                FeatureAreas = new List<string>
+                {
+                    "AllRequests"
+                }
+            },
+            new BanReasonGroup()
+            {
+                Name = "Inappropriate User Generated Content (UGC)",
+                Reasons = new List<string>
+                {
+                    "Pornographic logo",
+                    "Notorious iconography",
+                    "Drug/Marijuana Symbolism & Imagery",
+                    "Profanity",
+                    "Sharing Personal Information",
+                    "Spam/Advertising",
+                    "Political Statement",
+                    "Defamation & Impersonation",
+                    "Harm Against People/Animals",
+                    "Crude Humor/Imagery",
+                    "Low Effort/Quality Content",
+                    "Child Endangerment",
+                    "Sexually Inappropriate/Suggestive",
+                    "Threat of Self Harm"
+                },
+                BanConfigurationId = new Guid(),
+                FeatureAreas = new List<string>
+                {
+                    "UserGeneratedContent",
+                    "AuctionHouse"
+                }
+            },
+            new BanReasonGroup()
+            {
+                Name = "Unsportsmanlike Conduct",
+                Reasons = new List<string>
+                {
+                    "Intentional ramming/wrecking, pinning, pitting, spearing, shoving, and blocking in races",
+                    "Light Bullying",
+                    "Vulgar language",
+                },
+                BanConfigurationId = new Guid(),
+                FeatureAreas = new List<string>
+                {
+                    "Matchmaking",
+                    "DailyCredit",
+                    "Community",
+                    "Drivatar"
+                }
+            },
+            {
+                new BanReasonGroup()
+                {
+                    Name = "Developer",
+                    Reasons = new List<string>
+                    {
+                        "Testing"
+                    },
+                    BanConfigurationId = new Guid(),
+                    FeatureAreas = new List<string>
+                    {
+                        "Test"
+                    }
+                }
+            }
+        };
 
         private readonly IWoodstockPegasusService pegasusService;
         private readonly IMapper mapper;
@@ -89,7 +192,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         }
 
         /// <summary>
-        ///    Return a list of ugc report reason.
+        ///    Return a list of report reason group.
+        /// </summary>
+        [HttpGet("banReasonGroups")]
+        [SwaggerResponse(200, type: typeof(Dictionary<string, BanReasonGroup>))]
+        public IActionResult GetBanReasonGroups()
+        {
+            return this.Ok(this.banReasonGroups);
+        }
+
+        /// <summary>
+        ///    Return a list of ugc ban configuration.
         /// </summary>
         [HttpGet("banConfigurations")]
         [SwaggerResponse(200, type: typeof(IList<BanConfiguration>))]
@@ -230,7 +343,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 for (var i = 0; i < banInput.Count; i += maxXuidsPerRequest)
                 {
                     var paramBatch = banInput.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banInput.Count - i));
-                    var mappedBanParameters = this.mapper.SafeMap<IList<ForzaUserBanParametersV2>>(paramBatch);
+                    // This assume that the parameters are the same for every ban input which is how Steward currently works
+                    var banReasonGroup = this.banReasonGroups.First(x => x.Name == paramBatch[0].ReasonGroupName);
+                    var convertedBanArea = banReasonGroup.FeatureAreas.Select(x => (uint)Enum.Parse(typeof(FeatureAreas), x, true));
+                    var calculatedBanAreas = convertedBanArea.Aggregate((a, b) => a | b);
+                    var mappedBanParameters = paramBatch.Select(x => new ForzaUserBanParametersV2()
+                    {
+                        xuids = new ulong[] { x.Xuid.Value },
+                        DeleteLeaderboardEntries = x.DeleteLeaderboardEntries.Value,
+                        BanEntryReason = x.Reason,
+                        PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
+                        FeatureArea = calculatedBanAreas
+                });
                     var result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
 
                     banResults.AddRange(this.mapper.SafeMap<IList<BanResult>>(result.banResults));

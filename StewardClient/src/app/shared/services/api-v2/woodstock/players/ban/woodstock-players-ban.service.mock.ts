@@ -9,6 +9,7 @@ export class MockWoodstockPlayersBanService {
   public waitUntil$: Observable<unknown> = of(true);
 
   public getBanConfigurations$ = jasmine.createSpy('getBanConfigurations').and.returnValue(of([]));
+  public getBanReasonGroups$ = jasmine.createSpy('getBanReasonGroups').and.returnValue(of([]));
   public postBanPlayers$ = jasmine.createSpy('postBanPlayers').and.returnValue(of());
   public postBanPlayersWithBackgroundProcessing$ = jasmine
     .createSpy('postBanPlayersWithBackgroundProcessing')

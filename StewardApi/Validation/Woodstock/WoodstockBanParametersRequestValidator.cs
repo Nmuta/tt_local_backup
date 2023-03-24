@@ -18,28 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if (model.OverrideBanDuration)
-            {
-                if (model.BanDuration.Duration == TimeSpan.Zero)
-                {
-                    modelState.AddModelError("BanParameters.Duration", $"Duration must be non-zero. {nameof(model.BanDuration)} was {model.BanDuration}.");
-                }
-
-                if (model.BanDuration.Duration < TimeSpan.Zero)
-                {
-                    modelState.AddModelError("BanParameters.Duration", $"Duration must be positive. {nameof(model.BanDuration)} was {model.BanDuration}.");
-                }
-            }
+            
 
             if (!model.DeleteLeaderboardEntries.HasValue)
             {
                 modelState.AddModelError("BanParameters.DeleteLeaderboardEntries", $"{nameof(model.DeleteLeaderboardEntries)} must not be null.");
-            }
-
-            if (model.FeatureArea == null || !Enum.IsDefined(typeof(FeatureAreas), model.FeatureArea))
-            {
-                var areaStatus = model.FeatureArea == null ? "Null" : model.FeatureArea;
-                modelState.AddModelError("BanParameters.FeatureArea", $"Property must be a valid FeatureArea. {nameof(model.FeatureArea)} was {areaStatus}.");
             }
         }
 

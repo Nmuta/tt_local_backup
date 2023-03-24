@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
 import { BanConfiguration } from '@models/ban-configuration';
+import { BanReasonGroup } from '@models/ban-reason-group';
 import { WoodstockBanRequest, WoodstockBanResult } from '@models/woodstock';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
@@ -13,6 +14,11 @@ import { Observable } from 'rxjs';
 export class WoodstockPlayersBanService {
   public readonly basePath: string = 'title/woodstock/players/ban';
   constructor(private readonly api: ApiV2Service) {}
+
+  /** Get Ban Reasons. */
+  public getBanReasonGroups$(): Observable<BanReasonGroup[]> {
+    return this.api.getRequest$<BanReasonGroup[]>(`${this.basePath}/banReasonGroups`);
+  }
 
   /** Get Ban Configuration. */
   public getBanConfigurations$(): Observable<BanConfiguration[]> {

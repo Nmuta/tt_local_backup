@@ -2,24 +2,23 @@ import BigNumber from 'bignumber.js';
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { WoodstockBanArea, WoodstockBanRequest, WoodstockBanSummary } from '@models/woodstock';
+import { WoodstockBanRequest, WoodstockBanSummary } from '@models/woodstock';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { BackgroundJob } from '@models/background-job';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanHistoryComponent } from '@shared/views/ban-history/woodstock/woodstock-ban-history.component';
-import { chain, Dictionary, filter, first, keyBy } from 'lodash';
+import { chain, Dictionary, filter, keyBy } from 'lodash';
 import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
-import { BanArea, STANDARD_BAN_REASONS } from '../../components/ban-options/ban-options.component';
+import { BanArea } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { GameTitle } from '@models/enums';
-import { DurationPickerOptions } from '../../components/duration-picker/duration-picker.component';
 import { WoodstockPlayersBanService } from '@services/api-v2/woodstock/players/ban/woodstock-players-ban.service';
 import { BanConfiguration } from '@models/ban-configuration';
 import { requireReasonListMatch } from '@helpers/validations';
-
-type BanReasonGroup = { group: string; values: string[] };
+import { BanReasonGroup } from '@models/ban-reason-group';
+import { MatOptionSelectionChange } from '@angular/material/core/option';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -33,15 +32,11 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public playerIdentities$ = new Subject<IdentityResultAlpha[]>();
   public playerIdentities: IdentityResultAlpha[] = [];
   public selectedPlayerIdentity: AugmentedCompositeIdentity = null;
+  /** List of every ban reasons. Used in custom validation. */
+  public banReasons: string[] = [];
 
   public formControls = {
-    banArea: new FormControl(BanArea.AllFeatures, [Validators.required]),
     banReason: new FormControl('', [Validators.required, requireReasonListMatch.bind(this)]),
-    banConfiguration: new FormControl(null, [Validators.required]),
-    banDuration: new FormControl(first(DurationPickerOptions).duration, [Validators.required]),
-    overrideDuration: new FormControl(false),
-    banAllDevices: new FormControl(false),
-    permanentBan: new FormControl(false),
     deleteLeaderboardEntries: new FormControl(false),
   };
 
@@ -51,8 +46,12 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
   public banAreaEnum = BanArea;
+  public banReasonGroups: BanReasonGroup[];
   public banReasonOptions: Observable<BanReasonGroup[]>;
   public banConfigurations: BanConfiguration[] = null;
+  public selectedBanReasonGroup: BanReasonGroup = null;
+  public selectedBanConfiguration: BanConfiguration = null;
+  public selectedBanAreasLabel: string = '';
 
   public identitySortFn = null;
 
@@ -110,30 +109,50 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
         this.banConfigurations = results;
       });
 
-    this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
-      startWith(''),
-      map((searchValue: string) => {
-        if (searchValue) {
-          const lowercaseSearchValue = searchValue.toLowerCase();
-          return STANDARD_BAN_REASONS.map(g => {
-            if (g.group.toLowerCase().startsWith(lowercaseSearchValue)) {
-              return g;
-            } else {
-              const matchingValues = g.values.filter(v =>
-                v.toLowerCase().includes(lowercaseSearchValue),
-              );
-              if (matchingValues.length > 0) {
-                return <BanReasonGroup>{ group: g.group, values: matchingValues };
-              } else {
-                return null;
-              }
-            }
-          }).filter(v => !!v);
-        }
+    this.woodstockPlayersBanService
+      .getBanReasonGroups$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(results => {
+        this.banReasonGroups = results;
 
-        return STANDARD_BAN_REASONS;
-      }),
-    );
+        this.banReasons = [].concat(
+          ...Object.values(results).map(g => {
+            return g.reasons;
+          }),
+        );
+
+        this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
+          startWith(''),
+          map((searchValue: string) => {
+            if (searchValue) {
+              const lowercaseSearchValue = searchValue.toLowerCase();
+              return this.banReasonGroups
+                .map(g => {
+                  if (g.name.toLowerCase().startsWith(lowercaseSearchValue)) {
+                    return g;
+                  } else {
+                    const matchingValues = g.reasons.filter(v =>
+                      v.toLowerCase().includes(lowercaseSearchValue),
+                    );
+                    if (matchingValues.length > 0) {
+                      return <BanReasonGroup>{
+                        name: g.name,
+                        reasons: matchingValues,
+                        banConfigurationId: g.banConfigurationId,
+                        featureAreas: g.featureAreas,
+                      };
+                    } else {
+                      return null;
+                    }
+                  }
+                })
+                .filter(v => !!v);
+            }
+
+            return this.banReasonGroups;
+          }),
+        );
+      });
   }
 
   /** Submit the form. */
@@ -143,16 +162,9 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
     const bans: WoodstockBanRequest[] = identities.map(identity => {
       return <WoodstockBanRequest>{
         xuid: identity.xuid,
-        banConfigurationId: this.formControls.banConfiguration.value,
         deleteLeaderboardEntries: this.formControls.deleteLeaderboardEntries.value,
         reason: this.formControls.banReason.value,
-        featureArea: this.formControls.banArea.value as WoodstockBanArea,
-        overrideBanDuration: this.formControls.overrideDuration.value,
-        banDuration: {
-          duration: this.formControls.banDuration.value,
-          banAllDevices: this.formControls.banAllDevices.value,
-          isPermanentBan: this.formControls.permanentBan.value,
-        },
+        reasonGroupName: this.selectedBanReasonGroup.name,
       };
     });
 
@@ -195,5 +207,18 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
     }
 
     return null;
+  }
+
+  /** Event when a ban reason is changed. */
+  public banReasonChanged(event: MatOptionSelectionChange, banReasonGroup: BanReasonGroup): void {
+    if (!event.isUserInput) {
+      return;
+    }
+
+    this.selectedBanReasonGroup = banReasonGroup;
+    this.selectedBanConfiguration = this.banConfigurations.find(
+      x => x.banConfigurationId == banReasonGroup.banConfigurationId,
+    );
+    this.selectedBanAreasLabel = banReasonGroup.featureAreas.join(',');
   }
 }

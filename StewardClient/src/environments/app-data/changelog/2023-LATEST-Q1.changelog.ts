@@ -11,10 +11,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
       uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
       shortText: 'New way of banning implemented',
-      longText: [
-        'New Ban Configuration field allow the selection of a predefined configuration for a ban',
-        'New optional Override Duration option to force a duration, a devices ban or a permanent ban',
-      ],
+      longText: ['Ban reason will decide the ban configuration and areas automatically'],
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
@@ -42,7 +39,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
         'Add restrictions to Create Auction.',
         'Add restrictions to Banning.',
       ],
-    },    
+    },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
       uuid: '8d7d1ddd-9881-4134-8f67-4a5386ba2e0c',

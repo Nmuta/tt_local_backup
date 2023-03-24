@@ -534,9 +534,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.FailedUsers, opt => opt.MapFrom(src => src.failedUsers.SelectMany(x => x.userIds).ToList()));
 
             this.CreateMap<WoodstockLiveOpsContent.BanConfiguration, BanConfiguration>();
-            this.CreateMap<WoodstockBanParametersInput, ForzaUserBanParametersV2>()
-                .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid.Value }))
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)));
             this.CreateMap<WoodstockBanDurationInput, ForzaBanDuration>()
                 .ForMember(dest => dest.BanDuration, opt => opt.MapFrom(src => new ForzaTimeSpan() { Minutes = (uint)src.Duration.Value.TotalMinutes }))
                 .ForMember(dest => dest.IsDeviceBan, opt => opt.MapFrom(src => src.BanAllDevices))

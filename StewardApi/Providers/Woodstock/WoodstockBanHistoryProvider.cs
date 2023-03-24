@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 requesterObjectId,
                 banResult.BanDescription.StartTimeUtc,
                 banResult.BanDescription.ExpireTimeUtc,
-                banParameters.FeatureArea,
+                banResult.BanDescription.FeatureArea,
                 banParameters.Reason,
                 banParameters.ToJson(),
                 endpoint);

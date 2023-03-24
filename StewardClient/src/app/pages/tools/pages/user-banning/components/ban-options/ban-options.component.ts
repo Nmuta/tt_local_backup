@@ -163,6 +163,9 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
     },
   };
 
+  /** List of every ban reasons. Used in custom validation. */
+  public banReasons: string[] = [];
+
   public formControls = {
     banArea: new FormControl(this.defaults.banArea, [Validators.required]),
     banReason: new FormControl(this.defaults.banReason, [
@@ -199,6 +202,11 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+    this.banReasons = [].concat(
+      ...STANDARD_BAN_REASONS.map(g => {
+        return g.values;
+      }),
+    );
     this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
       startWith(''),
       map((searchValue: string) => {
