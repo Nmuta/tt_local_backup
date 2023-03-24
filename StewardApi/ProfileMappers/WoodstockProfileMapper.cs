@@ -534,10 +534,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.FailedUsers, opt => opt.MapFrom(src => src.failedUsers.SelectMany(x => x.userIds).ToList()));
 
             this.CreateMap<WoodstockLiveOpsContent.BanConfiguration, BanConfiguration>();
-            this.CreateMap<WoodstockBanDurationInput, ForzaBanDuration>()
-                .ForMember(dest => dest.BanDuration, opt => opt.MapFrom(src => new ForzaTimeSpan() { Minutes = (uint)src.Duration.Value.TotalMinutes }))
-                .ForMember(dest => dest.IsDeviceBan, opt => opt.MapFrom(src => src.BanAllDevices))
-                .ForMember(dest => dest.IsPermaBan, opt => opt.MapFrom(src => src.IsPermanentBan));
         }
 
         private string PrepareDeviceType(string deviceType)

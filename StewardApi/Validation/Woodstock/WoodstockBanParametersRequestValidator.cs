@@ -18,8 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            
-
             if (!model.DeleteLeaderboardEntries.HasValue)
             {
                 modelState.AddModelError("BanParameters.DeleteLeaderboardEntries", $"{nameof(model.DeleteLeaderboardEntries)} must not be null.");
