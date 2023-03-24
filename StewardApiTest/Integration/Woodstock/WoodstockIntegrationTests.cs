@@ -626,24 +626,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_InvalidFeatureArea()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].FeatureArea = "invalidFeatureArea";
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
         public async Task BanPlayers_NoXuidsOrGamertagsProvided()
         {
             var banParameters = GenerateBanParameters();
@@ -1791,11 +1773,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
                 {
                     Xuid = xuid,
                     Gamertag = gamertag,
-                    FeatureArea = "Matchmaking",
-                    Reason = "This is an automated test.",
-                    BanConfigurationId = "test",
-                    OverrideBanDuration = false,
-                    BanDuration = null,
+                    Reason = "Testing",
+                    ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false
                 }
             };
