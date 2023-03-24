@@ -1,9 +1,6 @@
 import { ValueProvider } from '@angular/core';
 import { of } from 'rxjs';
-import {
-  SteelheadLoyaltyRewardsService,
-  SteelheadLoyaltyRewardsTitle,
-} from './steelhead-loyalty-rewards.service';
+import { SteelheadLoyaltyRewardsService } from './steelhead-loyalty-rewards.service';
 
 /** Defines the mock for the API Service. */
 export class MockSteelheadLoyaltyRewardsService {
