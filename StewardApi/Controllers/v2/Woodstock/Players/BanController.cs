@@ -82,7 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Auction house automated scripts",
                     "Stream-Sniping",
                 },
-                BanConfigurationId = new Guid(),
+                BanConfigurationId = new Guid("0f9d16d9-f53c-42d4-b4b3-8b0cef766ce8"),
                 FeatureAreas = new List<string>
                 {
                     "AllRequests"
@@ -108,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Sexually Inappropriate/Suggestive",
                     "Threat of Self Harm"
                 },
-                BanConfigurationId = new Guid(),
+                BanConfigurationId = new Guid("4fd94e88-aee9-49dd-a099-d7c293d3a033"),
                 FeatureAreas = new List<string>
                 {
                     "UserGeneratedContent",
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Light Bullying",
                     "Vulgar language",
                 },
-                BanConfigurationId = new Guid(),
+                BanConfigurationId = new Guid("2dab05e7-f5a2-4284-b32e-8f980695438c"),
                 FeatureAreas = new List<string>
                 {
                     "Matchmaking",
@@ -133,19 +133,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Drivatar"
                 }
             },
+            new BanReasonGroup()
             {
-                new BanReasonGroup()
+                Name = "Developer",
+                Reasons = new List<string>
                 {
-                    Name = "Developer",
-                    Reasons = new List<string>
-                    {
-                        "Testing"
-                    },
-                    BanConfigurationId = new Guid(),
-                    FeatureAreas = new List<string>
-                    {
-                        "Test"
-                    }
+                    "Testing"
+                },
+                BanConfigurationId = new Guid("2dab05e7-f5a2-4284-b32e-8f980695438c"),
+                FeatureAreas = new List<string>
+                {
+                    "Test"
                 }
             }
         };
