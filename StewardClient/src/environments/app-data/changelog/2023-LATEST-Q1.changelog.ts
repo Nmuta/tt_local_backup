@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '3379a529-4720-4972-946d-c457e5f87432',
+      shortText: 'Persist UGC popup now includes icon to open persisted item in a new tab',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '4f2446fd-fd88-47f1-93c2-3ea350cca8f1',
       shortText: 'Persist UGC success popup now allows the user to copy new ugc id',
     },
