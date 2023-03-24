@@ -86,22 +86,21 @@
                     >
                   </mat-form-field>
                 </div>
-                <ng-container
-                  *ngIf="formControls.banReason.value && formControls.banReason.valid"
-                >
-                <div class="sf-horizontal">
-                  <p><b>Ban Configuration:</b> {{ selectedBanConfiguration.friendlyName }}</p></div>
+                <ng-container *ngIf="formControls.banReason.value && formControls.banReason.valid">
                   <div class="sf-horizontal">
-                  <p><b>Ban Areas:</b> {{ selectedBanAreasLabel | deppoh }}</p>
-                </div>
-                <div class="sf-horizontal">
-                  <span
-                    *ngIf="selectedBanReasonGroup.featureAreas.includes(banAreaEnum.AllFeatures)"
-                    class="warn"
-                  >
-                    All player(s) UGC content will be removed when banning All Requests.
-                  </span>
-                </div>
+                    <p><b>Ban Configuration:</b> {{ selectedBanConfiguration.friendlyName }}</p>
+                  </div>
+                  <div class="sf-horizontal">
+                    <p><b>Ban Areas:</b> {{ selectedBanAreasLabel | deppoh }}</p>
+                  </div>
+                  <div class="sf-horizontal">
+                    <span
+                      *ngIf="selectedBanReasonGroup.featureAreas.includes(banAreaEnum.AllFeatures)"
+                      class="warn"
+                    >
+                      All player(s) UGC content will be removed when banning All Requests.
+                    </span>
+                  </div>
                 </ng-container>
 
                 <mat-checkbox [formControl]="formControls.deleteLeaderboardEntries"
