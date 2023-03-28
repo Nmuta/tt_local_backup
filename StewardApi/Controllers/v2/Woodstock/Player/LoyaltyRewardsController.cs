@@ -54,11 +54,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         /// <summary>
         ///     Initializes a new instance of the <see cref="LoyaltyRewardsController"/> class.
         /// </summary>
-        public LoyaltyRewardsController(IMapper mapper)
+        public LoyaltyRewardsController(IMapper mapper, ILoggingService loggingService)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
 
             this.mapper = mapper;
+            this.loggingService = loggingService;
         }
 
         /// <summary>
@@ -97,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(200, type: typeof(Dictionary<WoodstockLoyaltyRewardsTitle, bool>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<string, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -120,11 +122,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             }
 
             var invalidGameTitles = new List<string>();
-            var validGameTitles = new List<WoodstockLoyaltyRewardsTitle>();
+            var validGameTitles = new List<Turn10.UGC.Contracts.GameTitle>();
 
             foreach (var gameTitle in gameTitles)
             {
-                if (!Enum.TryParse(gameTitle, true, out WoodstockLoyaltyRewardsTitle gameTitleEnum))
+                if (!Enum.TryParse(gameTitle, true, out Turn10.UGC.Contracts.GameTitle gameTitleEnum))
                 {
                     invalidGameTitles.Add(gameTitle);
                 }
@@ -137,30 +139,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                 throw new InvalidArgumentsStewardException($"Game titles: {invalidGameTitles} were not found.");
             }
 
-            var gameTitleEnums = new List<Turn10.UGC.Contracts.GameTitle>();
-            foreach (var validTitle in validGameTitles)
-            {
-                var convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(validTitle);
-                gameTitleEnums.Add(convertedEnum);
-            }
-
-            var successResponse = new Dictionary<WoodstockLoyaltyRewardsTitle, bool>();
+            var successResponse = new Dictionary<string, bool>();
             var partialSuccess = false;
 
-            foreach (var titleEnum in gameTitleEnums)
+            foreach (var titleEnum in validGameTitles)
             {
-                int[] currentGameTitleId = new[] { (int)titleEnum };
-                var convertedEnum = this.mapper.SafeMap<WoodstockLoyaltyRewardsTitle>(titleEnum);
+                WoodstockLoyaltyRewardsTitle convertedEnum;
 
                 try
                 {
+                    int[] currentGameTitleId = new[] { (int)titleEnum };
+                    convertedEnum = this.mapper.SafeMap<WoodstockLoyaltyRewardsTitle>(titleEnum);
                     await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, currentGameTitleId).ConfigureAwait(true);
-                    successResponse.Add(convertedEnum, true);
+                    successResponse.Add(convertedEnum.ToString(), true);
                 }
                 catch (Exception ex)
                 {
                     this.loggingService.LogException(new AppInsightsException($"Failed to resend loyalty rewards. (XUID: {xuid}) (externalProfileId: {externalProfileIdGuid}) (gameTitle: {titleEnum})", ex));
-                    successResponse.Add(convertedEnum, false);
+                    successResponse.Add(titleEnum.ToString(), false);
                     partialSuccess = true;
                 }
             }

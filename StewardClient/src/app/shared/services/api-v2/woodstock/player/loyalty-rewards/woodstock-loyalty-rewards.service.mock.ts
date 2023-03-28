@@ -1,13 +1,18 @@
 import { ValueProvider } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { WoodstockLoyaltyRewardsService } from './woodstock-loyalty-rewards.service';
 import { WoodstockLoyaltyRewardsTitle } from '@models/loyalty-rewards';
 
 /** Defines the mock for the API Service. */
 export class MockWoodstockLoyaltyRewardsService {
   private result: WoodstockLoyaltyRewardsTitle[] = [WoodstockLoyaltyRewardsTitle.FH1];
+  public waitUntil$: Observable<unknown> = of(true);
 
   public getUserLoyalty$ = jasmine.createSpy('getUserLoyalty').and.returnValue(of(this.result));
+
+  public postUserLoyalty$ = jasmine
+    .createSpy('postUserLoyalty$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of())));
 
   constructor(private readonly generator$: () => unknown) {}
 }

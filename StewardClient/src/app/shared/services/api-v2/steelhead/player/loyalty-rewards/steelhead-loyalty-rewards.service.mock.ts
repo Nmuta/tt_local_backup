@@ -1,12 +1,18 @@
 import { ValueProvider } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { SteelheadLoyaltyRewardsService } from './steelhead-loyalty-rewards.service';
+import { SteelheadLoyaltyRewardsTitle } from '@models/loyalty-rewards';
 
 /** Defines the mock for the API Service. */
 export class MockSteelheadLoyaltyRewardsService {
   private result: SteelheadLoyaltyRewardsTitle[] = [SteelheadLoyaltyRewardsTitle.FH];
+  public waitUntil$: Observable<unknown> = of(true);
 
   public getUserLoyalty$ = jasmine.createSpy('getUserLoyalty').and.returnValue(of(this.result));
+
+  public postUserLoyalty$ = jasmine
+    .createSpy('postUserLoyalty$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of())));
 
   constructor(private readonly generator$: () => unknown) {}
 }
