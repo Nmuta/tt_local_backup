@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { Duration } from 'luxon';
 
 export enum WoodstockBanArea {
   AllRequests = 'AllRequests',
@@ -15,12 +14,6 @@ export enum WoodstockBanArea {
   Scoreboards = 'Scoreboards',
   Test = 'Test',
   UserGeneratedContent = 'UserGeneratedContent',
-}
-
-export interface WoodstockBanDuration {
-  duration: Duration;
-  banAllDevices: boolean;
-  isPermanentBan: boolean;
 }
 
 /** A single part of the bulk /v2/title/Woodstock/players/ban request model */

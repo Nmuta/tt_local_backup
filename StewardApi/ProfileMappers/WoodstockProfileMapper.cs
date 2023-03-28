@@ -59,7 +59,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ServicesLiveOps.AdminForzaProfile, WoodstockInventoryProfile>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
                 .ReverseMap();
-            this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>();
+            this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>()
+                .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src => new List<string>() { LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.BannedAreas.FirstOrDefault()) }));
             this.CreateMap<ServicesLiveOps.ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
