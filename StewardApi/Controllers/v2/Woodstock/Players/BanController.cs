@@ -338,13 +338,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
             try
             {
+                // This assume that the parameters are the same for every ban input which is how Steward currently works
+                var banReasonGroup = this.banReasonGroups.First(x => x.Name == banInput[0].ReasonGroupName);
+                var convertedBanArea = banReasonGroup.FeatureAreas.Select(x => (uint)Enum.Parse(typeof(FeatureAreas), x, true));
+                var formattedBanAreas = string.Join(", ", banReasonGroup.FeatureAreas);
+                var calculatedBanAreas = convertedBanArea.Aggregate((a, b) => a | b);
+
                 for (var i = 0; i < banInput.Count; i += maxXuidsPerRequest)
                 {
                     var paramBatch = banInput.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banInput.Count - i));
-                    // This assume that the parameters are the same for every ban input which is how Steward currently works
-                    var banReasonGroup = this.banReasonGroups.First(x => x.Name == paramBatch[0].ReasonGroupName);
-                    var convertedBanArea = banReasonGroup.FeatureAreas.Select(x => (uint)Enum.Parse(typeof(FeatureAreas), x, true));
-                    var calculatedBanAreas = convertedBanArea.Aggregate((a, b) => a | b);
+
                     var mappedBanParameters = paramBatch.Select(x => new ForzaUserBanParametersV2()
                     {
                         xuids = new ulong[] { x.Xuid.Value },
@@ -352,7 +355,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                         BanEntryReason = x.Reason,
                         PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
                         FeatureArea = calculatedBanAreas
-                });
+                    });
                     var result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
 
                     banResults.AddRange(this.mapper.SafeMap<IList<BanResult>>(result.banResults));
@@ -374,7 +377,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                                         requesterObjectId,
                                         parameters,
                                         result,
-                                        this.WoodstockEndpoint.Value).ConfigureAwait(false);
+                                        this.WoodstockEndpoint.Value,
+                                        formattedBanAreas).ConfigureAwait(false);
                         }
                         catch (Exception ex)
                         {

@@ -21,7 +21,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             string requesterObjectId,
             WoodstockBanParametersInput banParameters,
             BanResult banResult,
-            string endpoint);
+            string endpoint,
+            string featureAreas);
 
         /// <summary>
         ///     Gets ban histories.

@@ -52,7 +52,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             string requesterObjectId,
             WoodstockBanParametersInput banParameters,
             BanResult banResult,
-            string endpoint)
+            string endpoint,
+            string featureAreas)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -69,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 requesterObjectId,
                 banResult.BanDescription.StartTimeUtc,
                 banResult.BanDescription.ExpireTimeUtc,
-                banResult.BanDescription.FeatureArea,
+                featureAreas,
                 banParameters.Reason,
                 banParameters.ToJson(),
                 endpoint);
