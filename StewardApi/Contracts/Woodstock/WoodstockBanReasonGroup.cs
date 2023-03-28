@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xls.Security.FH5_main.Generated;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
 {
     /// <summary>
-    ///     Represents a ban reason group.
+    ///     Represents a woodstock ban reason group.
     /// </summary>
-    public sealed class BanReasonGroup
+    public sealed class WoodstockBanReasonGroup
     {
         /// <summary>
         ///     Gets or sets the name.
@@ -26,6 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the list of feature areas.
         /// </summary>
-        public IEnumerable<string> FeatureAreas { get; set; }
+        public IEnumerable<FeatureAreas> FeatureAreas { get; set; }
     }
 }

@@ -47,9 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     public class BanController : V2WoodstockControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
-        private readonly IList<BanReasonGroup> banReasonGroups = new List<BanReasonGroup>()
+        private readonly IList<WoodstockBanReasonGroup> banReasonGroups = new List<WoodstockBanReasonGroup>()
         {
-            new BanReasonGroup()
+            new WoodstockBanReasonGroup()
             {
                 Name = "Extreme Violations",
                 Reasons = new List<string>
@@ -62,12 +62,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Credit/XP Hacking"
                 },
                 BanConfigurationId = new Guid("1b1d4b1e-4111-49be-82e3-74335052338c"),
-                FeatureAreas = new List<string>
+                FeatureAreas = new List<FeatureAreas>
                 {
-                    "AllRequests"
+                    FeatureAreas.AllRequests
                 }
             },
-            new BanReasonGroup()
+            new WoodstockBanReasonGroup()
             {
                 Name = "Cheating/Unallowed Modding",
                 Reasons = new List<string>
@@ -83,12 +83,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Stream-Sniping",
                 },
                 BanConfigurationId = new Guid("0f9d16d9-f53c-42d4-b4b3-8b0cef766ce8"),
-                FeatureAreas = new List<string>
+                FeatureAreas = new List<FeatureAreas>
                 {
-                    "AllRequests"
+                    FeatureAreas.AllRequests
                 }
             },
-            new BanReasonGroup()
+            new WoodstockBanReasonGroup()
             {
                 Name = "Inappropriate User Generated Content (UGC)",
                 Reasons = new List<string>
@@ -109,13 +109,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Threat of Self Harm"
                 },
                 BanConfigurationId = new Guid("4fd94e88-aee9-49dd-a099-d7c293d3a033"),
-                FeatureAreas = new List<string>
+                FeatureAreas = new List<FeatureAreas>
                 {
-                    "UserGeneratedContent",
-                    "AuctionHouse"
+                    FeatureAreas.UserGeneratedContent,
+                    FeatureAreas.AuctionHouse
                 }
             },
-            new BanReasonGroup()
+            new WoodstockBanReasonGroup()
             {
                 Name = "Unsportsmanlike Conduct",
                 Reasons = new List<string>
@@ -125,15 +125,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Vulgar language",
                 },
                 BanConfigurationId = new Guid("2dab05e7-f5a2-4284-b32e-8f980695438c"),
-                FeatureAreas = new List<string>
+                FeatureAreas = new List<FeatureAreas>
                 {
-                    "Matchmaking",
-                    "DailyCredit",
-                    "Community",
-                    "Drivatar"
+                    FeatureAreas.Matchmaking,
+                    FeatureAreas.DailyCredit,
+                    FeatureAreas.Community,
+                    FeatureAreas.Drivatar
                 }
             },
-            new BanReasonGroup()
+            new WoodstockBanReasonGroup()
             {
                 Name = "Developer",
                 Reasons = new List<string>
@@ -141,9 +141,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Testing"
                 },
                 BanConfigurationId = new Guid("2dab05e7-f5a2-4284-b32e-8f980695438c"),
-                FeatureAreas = new List<string>
+                FeatureAreas = new List<FeatureAreas>
                 {
-                    "Test"
+                    FeatureAreas.Test
                 }
             }
         };
@@ -193,7 +193,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         ///    Return a list of report reason group.
         /// </summary>
         [HttpGet("banReasonGroups")]
-        [SwaggerResponse(200, type: typeof(Dictionary<string, BanReasonGroup>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<string, WoodstockBanReasonGroup>))]
         public IActionResult GetBanReasonGroups()
         {
             return this.Ok(this.banReasonGroups);
@@ -340,10 +340,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             {
                 // This assume that the parameters are the same for every ban input which is how Steward currently works
                 var banReasonGroup = this.banReasonGroups.First(x => x.Name == banInput[0].ReasonGroupName);
-                var convertedBanArea = banReasonGroup.FeatureAreas.Select(x => (uint)Enum.Parse(typeof(FeatureAreas), x, true));
                 var formattedBanAreas = string.Join(", ", banReasonGroup.FeatureAreas);
-                var calculatedBanAreas = convertedBanArea.Aggregate((a, b) => a | b);
-
+                var calculatedBanAreas = banReasonGroup.FeatureAreas.Select(x => (uint)x).Aggregate((a, b) => a | b);
                 for (var i = 0; i < banInput.Count; i += maxXuidsPerRequest)
                 {
                     var paramBatch = banInput.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banInput.Count - i));

@@ -19,7 +19,8 @@ import { DurationPickerOptions } from '../duration-picker/duration-picker.compon
 
 type BanReasonGroup = { group: string; values: string[] };
 type StandardBanReasons = BanReasonGroup[];
-export const STANDARD_BAN_REASONS: StandardBanReasons = [
+// Following reasons only used for non-woodstock titles
+const STANDARD_BAN_REASONS: StandardBanReasons = [
   {
     group: 'Extreme Violations',
     values: [
