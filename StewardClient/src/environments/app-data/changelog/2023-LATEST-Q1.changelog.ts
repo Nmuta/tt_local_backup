@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.PermissionManagement },
+      uuid: 'f6b0f4cf-be12-47bd-b5f2-a75105fb9631',
+      shortText: 'Allow team leads to manage their team members',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '3379a529-4720-4972-946d-c457e5f87432',
       shortText: 'Persist UGC popup now includes icon to open persisted item in a new tab',
