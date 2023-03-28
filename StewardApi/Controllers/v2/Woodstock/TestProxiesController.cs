@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagement", out exception))
+            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
