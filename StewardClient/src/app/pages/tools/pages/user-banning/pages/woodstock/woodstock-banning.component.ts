@@ -123,8 +123,8 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
         this.banReasonGroups = banReasonGroups;
 
         this.banReasons = [].concat(
-          ...Object.values(banReasonGroups).map(g => {
-            return g.reasons;
+          ...Object.values(banReasonGroups).map(group => {
+            return group.reasons;
           }),
         );
 
