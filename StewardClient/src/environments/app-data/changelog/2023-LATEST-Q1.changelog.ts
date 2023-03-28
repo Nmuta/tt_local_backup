@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '7bb8390b-2fdb-4a25-830b-ca9155b45cae',
+      shortText: 'Fix issue with Woodstock loyalty rewards and some cleanup',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '3379a529-4720-4972-946d-c457e5f87432',
       shortText: 'Persist UGC popup now includes icon to open persisted item in a new tab',
