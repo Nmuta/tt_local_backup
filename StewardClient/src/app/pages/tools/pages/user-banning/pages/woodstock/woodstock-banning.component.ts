@@ -9,8 +9,16 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanHistoryComponent } from '@shared/views/ban-history/woodstock/woodstock-ban-history.component';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
-import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { catchError, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { EMPTY, Observable, of, ReplaySubject, Subject, combineLatest } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  map,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs/operators';
 import { BanArea } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { GameTitle } from '@models/enums';
@@ -19,6 +27,7 @@ import { BanConfiguration } from '@models/ban-configuration';
 import { requireReasonListMatch } from '@helpers/validations';
 import { BanReasonGroup } from '@models/ban-reason-group';
 import { MatOptionSelectionChange } from '@angular/material/core/option';
+import { HCI } from '@environments/environment';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -102,57 +111,59 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.woodstockPlayersBanService
-      .getBanConfigurations$()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(results => {
-        this.banConfigurations = results;
-      });
+    const getBanConfigurations$ = this.woodstockPlayersBanService.getBanConfigurations$();
 
-    this.woodstockPlayersBanService
-      .getBanReasonGroups$()
+    const getBanReasonGroups$ = this.woodstockPlayersBanService.getBanReasonGroups$();
+
+    combineLatest([getBanConfigurations$, getBanReasonGroups$])
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(results => {
-        this.banReasonGroups = results;
+      .subscribe(([banConfigurations, banReasonGroups]) => {
+        this.banConfigurations = banConfigurations;
+
+        this.banReasonGroups = banReasonGroups;
 
         this.banReasons = [].concat(
-          ...Object.values(results).map(g => {
+          ...Object.values(banReasonGroups).map(g => {
             return g.reasons;
           }),
         );
 
-        this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
-          startWith(''),
-          map((searchValue: string) => {
-            if (searchValue) {
-              const lowercaseSearchValue = searchValue.toLowerCase();
-              return this.banReasonGroups
-                .map(g => {
-                  if (g.name.toLowerCase().startsWith(lowercaseSearchValue)) {
-                    return g;
-                  } else {
-                    const matchingValues = g.reasons.filter(v =>
-                      v.toLowerCase().includes(lowercaseSearchValue),
-                    );
-                    if (matchingValues.length > 0) {
-                      return <BanReasonGroup>{
-                        name: g.name,
-                        reasons: matchingValues,
-                        banConfigurationId: g.banConfigurationId,
-                        featureAreas: g.featureAreas,
-                      };
-                    } else {
-                      return null;
-                    }
-                  }
-                })
-                .filter(v => !!v);
-            }
-
-            return this.banReasonGroups;
-          }),
-        );
+        // Force autocomplete logic to run now that the values are loaded
+        this.formControls.banReason.updateValueAndValidity({ emitEvent: true });
       });
+
+    this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
+      debounceTime(HCI.TypingToAutoSearchDebounceMillis),
+      startWith(''),
+      map((searchValue: string) => {
+        if (!searchValue) {
+          return this.banReasonGroups;
+        }
+
+        const lowercaseSearchValue = searchValue.toLowerCase();
+        return this.banReasonGroups
+          .map(group => {
+            if (group.name.toLowerCase().includes(lowercaseSearchValue)) {
+              return group;
+            } else {
+              const matchingValues = group.reasons.filter(v =>
+                v.toLowerCase().includes(lowercaseSearchValue),
+              );
+              if (matchingValues.length > 0) {
+                return <BanReasonGroup>{
+                  name: group.name,
+                  reasons: matchingValues,
+                  banConfigurationId: group.banConfigurationId,
+                  featureAreas: group.featureAreas,
+                };
+              } else {
+                return null;
+              }
+            }
+          })
+          .filter(v => !!v);
+      }),
+    );
   }
 
   /** Submit the form. */

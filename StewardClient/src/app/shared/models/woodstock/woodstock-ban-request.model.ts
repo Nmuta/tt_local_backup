@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 
+/** Woodstock Ban Area */
 export enum WoodstockBanArea {
   AllRequests = 'AllRequests',
   AuctionHouse = 'AuctionHouse',

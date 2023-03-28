@@ -60,6 +60,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
                 .ReverseMap();
             this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>()
+                // Banned Areas are combined into one int so ForzaUserBanSummary.BannedAreas will only ever contain one int
                 .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src => new List<string>() { LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.BannedAreas.FirstOrDefault()) }));
             this.CreateMap<ServicesLiveOps.ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.FeatureAreas)))
