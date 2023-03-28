@@ -27,7 +27,6 @@ export class PermissionManagementComponent extends BaseComponent implements OnIn
     },
   ];
   public activeTab: MatRoutedTabData;
-  public isAdmin: boolean = false;
 
   constructor(private readonly router: Router, private readonly store: Store) {
     super();

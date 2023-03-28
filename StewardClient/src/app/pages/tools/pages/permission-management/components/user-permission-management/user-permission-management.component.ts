@@ -401,7 +401,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     });
   }
 
-  /** Disables permissions in the attribute tree that the user doesn't have permissions to. */
+  /** Recursively sorts nodes in tree that are active (not disabled) to the top. */
   private sortActiveNodesToTop(treeNodes: AttributeTreeNode[]): AttributeTreeNode[] {
     treeNodes.forEach(node => {
       node.children = this.sortActiveNodesToTop(node.children);
