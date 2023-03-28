@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         [Authorize(Policy = UserAttribute.GiftPlayer)]
-        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
+        public async Task<IActionResult> GiftItemsToPlayersUseBackgroundProcessing(
             [FromBody] WoodstockGroupGift groupGift)
         {
             var services = this.Services;

@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Core;
 using AutoFixture;
+using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,7 @@ using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.Services.LiveOps.FH5_main.Generated.NotificationsManagementService;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers
 {
     internal class ProxyControllerHelper
     {
@@ -34,8 +35,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
             configuration[Arg.Is<string>(x => x.Contains("Xuid") || x.Contains("TitleId"))].Returns(Fixture.Create<int>().ToString());
 
-            var mockProxyBundle = new WoodstockProxyBundle(GenerateProxyFactory(Fixture));
-            mockProxyBundle.Endpoint = "fake";
+            var mockProxyBundle = CreateWoodstockProxyBundle(Fixture);
 
             var builder = new ContainerBuilder();
             builder.Register(c => mockProxyBundle).Named<WoodstockProxyBundle>("woodstockProdLiveProxyBundle").As<WoodstockProxyBundle>();
@@ -55,6 +55,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             return httpContext;
         }
 
+        public static WoodstockProxyBundle CreateWoodstockProxyBundle(Fixture Fixture)
+        {
+            var mockProxyBundle = new WoodstockProxyBundle(GenerateProxyFactory(Fixture));
+            mockProxyBundle.Endpoint = "fake";
+
+            return mockProxyBundle;
+        }
+
         private static IWoodstockProxyFactory GenerateProxyFactory(Fixture Fixture)
         {
             var proxyFactory = Substitute.For<IWoodstockProxyFactory>();
@@ -64,6 +72,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             var mockNotificationsManagementService = GenerateNotificationsManagementService(Fixture);
             proxyFactory.PrepareNotificationsManagementService(Arg.Any<string>()).Returns(mockNotificationsManagementService);
+
+            var mockGiftingManagementService = GenerateGiftingManagementService(Fixture);
+            proxyFactory.PrepareGiftingManagementService(Arg.Any<string>()).Returns(mockGiftingManagementService);
+
+            var mockRareCarShopService = GenerateRareCarShopService(Fixture);
+            proxyFactory.PrepareRareCarShopService(Arg.Any<string>()).Returns(mockRareCarShopService);
 
             //Add more services as needed for testing. Each should be constrained in it's own method to make organization simple.
 
@@ -80,6 +94,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             mockUserManagementService.GetUserGroupBulkOperationStatus(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<Guid>()).Returns(Fixture.Create<GetUserGroupBulkOperationStatusOutput>());
             mockUserManagementService.CreateUserGroupBulkOperationV2(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserGroupOperationPage[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationV2Output>());
 
+            var mockGetUserIdsOutput = new GetUserIdsOutput();
+            mockGetUserIdsOutput.playerLookupResult = new[] { new ForzaPlayerLookupResult() { PlayerExists = true } };
+            mockUserManagementService.GetUserIds(Arg.Any<int>(), Arg.Any<ForzaPlayerLookupParameters[]>()).Returns(mockGetUserIdsOutput);
+
             return mockUserManagementService;
         }
 
@@ -87,8 +105,27 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             var mockNotificationsManagementService = Substitute.For<INotificationsManagementService>();
             mockNotificationsManagementService.DeleteNotificationsForUser(Arg.Any<ulong>()).Returns(Fixture.Create<DeleteNotificationsForUserOutput>());
-            
+
             return mockNotificationsManagementService;
+        }
+
+        private static IGiftingManagementService GenerateGiftingManagementService(Fixture Fixture)
+        {
+            var mockGiftingManagementService = Substitute.For<IGiftingManagementService>();
+            mockGiftingManagementService.AdminSendItemGiftV2(Arg.Any<ulong>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<bool>(), Arg.Any<uint>()).Returns(Fixture.Create<Task>());
+            mockGiftingManagementService.AdminSendItemGroupGiftV2(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<bool>(), Arg.Any<uint>()).Returns(Fixture.Create<Task>());
+            mockGiftingManagementService.AdminSendLiveryGift(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<uint>()).Returns(Fixture.Create<GiftingManagementService.AdminSendLiveryGiftOutput>());
+            mockGiftingManagementService.AdminSendGroupLiveryGift(Arg.Any<int>(), Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<uint>()).Returns(Fixture.Create<GiftingManagementService.AdminSendGroupLiveryGiftOutput>());
+
+            return mockGiftingManagementService;
+        }
+
+        private static IRareCarShopService GenerateRareCarShopService(Fixture Fixture)
+        {
+            var mockRareCarShopService = Substitute.For<IRareCarShopService>();
+            mockRareCarShopService.AdminGetTokenBalance(Arg.Any<ulong>()).Returns(Fixture.Create<RareCarShopService.AdminGetTokenBalanceOutput>());
+
+            return mockRareCarShopService;
         }
     }
 }
