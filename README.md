@@ -36,9 +36,15 @@ In the StewardClient directory, run the yarn command
 yarn 
 ```
 
-<br>
-In order to gain access to the app's features, you also need to be given permission within the [Client Azure AAD App](https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Overview/appId/48a8a430-0f6b-4469-940f-1c5c6af1fd88/isMSAApp/). 
-
+<br />
+To access the app's tools, you will need to be given permission to the Steward Azure AAD Apps 
+ 
+( 
+[Dev AAD App](https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp) 
+& 
+[Prod AAD App](https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/796faca8-01de-436e-b75e-fb981756d5ed/isMSAApp/) 
+)
+<br />
 Please reach out to anyone on the LiveOps dev team to give you permissions.
 
 ### API
@@ -49,9 +55,9 @@ will use when trying to use the latest version. The folder will be empty and del
 
 You will need to install Visual Studio to run the app.
 
-<br>
-Also you will need to be given a role within the [API Azure AAD App](https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Overview/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp/). 
-Please reach out to anyone on the LiveOps dev team to give you correct Admin role.
+To run the app locally, you will also need to have GET Secrets permissions to 
+[Steward's Dev KeyVault](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.KeyVault/vaults/steward-keyvault-dev/overview) <br />
+Please reach out to anyone on the LiveOps dev team to give you permissions.
 
 ## Running the app
 ### Zendesk
