@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         public LocTextBaseWof PopupDescription { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public string ContentImagePath { get; set; }
     }
 }

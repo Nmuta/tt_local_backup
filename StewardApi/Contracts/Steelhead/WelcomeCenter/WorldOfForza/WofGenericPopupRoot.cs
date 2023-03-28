@@ -29,10 +29,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlRoot("WorldOfForza.WoFTileGenericPopup", Namespace = "scribble:title-content", IsNullable = false)]
     public partial class WofGenericPopupEntry : WofBaseTileEntry
     {
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextBaseWof PopupTitle { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextBaseWof PopupDescription { get; set; }
     }
 }

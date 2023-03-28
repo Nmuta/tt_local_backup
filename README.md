@@ -5,7 +5,7 @@
 To ensure proper suppression of CA/SA warnings, you want to be sure to download the data-buildmodule Submodule.
 Use this command when creating your repository to pull down all submodules.
 ```console
-git clone --recurse-submodules https://github.com/ABC/Project
+git clone --recurse-submodules https://dev.azure.com/turn10/Services/_git/Data-BuildModule
 ```
 
 ### Zendesk

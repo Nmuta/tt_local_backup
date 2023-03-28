@@ -122,6 +122,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync()
+        {
+            var displayConditions =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>>(
+                     SteelheadLiveOpsContent.CMSFileNames.TileDisplayConditions,
+                     this.cmsEnvironment,
+                     slot: "daily").ConfigureAwait(false);
+
+            return displayConditions;
+        }
+
+        /// <inheritdoc />
         public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
         {
             var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}";
@@ -419,11 +431,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditMessageOfTheDayAsync(MotdBridge messageOfTheDayBridge, Guid id)
         {
             var entry = this.mapper.SafeMap<MotdEntry>(messageOfTheDayBridge);
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, null);
 
             XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
@@ -433,7 +445,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var change = new CommitRefProxy()
             {
-                CommitComment = commitComment,
                 NewFileContent = newXml,
                 PathToFile = PegasusFilePath.MessageOfTheDay,
                 VersionControlChangeType = VersionControlChangeType.Edit
@@ -533,30 +544,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id)
         {
             var entry = this.mapper.SafeMap<WofImageTextEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
+            var deleteElements = new List<string> { "DisplayConditions", "Timer" };
 
-            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.ImageTextTile).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.ImageTextTile, deleteElements).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id)
         {
             var entry = this.mapper.SafeMap<WofGenericPopupEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
+            var deleteElements = new List<string> { "DisplayConditions", "Timer", "Destination" }; // check if popup contains destination.
 
-            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.GenericPopupTile).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.GenericPopupTile, deleteElements).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id, string commitComment)
+        public async Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id)
         {
             var entry = this.mapper.SafeMap<WofDeeplinkEntry>(wofTileBridge);
             XElement element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
+            var deleteElements = new List<string> { "DisplayConditions", "Timer", "Destination" };
 
-            return await this.GetWelcomeCenterTileCommitAsync(commitComment, entry, element, PegasusFilePath.DeeplinkTile).ConfigureAwait(false);
+            return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusFilePath.DeeplinkTile, deleteElements).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -577,9 +591,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
+        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId, bool deleteSourceBranch)
         {
-            return await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId).ConfigureAwait(false);
+            return await this.azureDevOpsManager.AbandonPullRequestAsync(pullRequestId, deleteSourceBranch).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -630,7 +644,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 var entry = this.mapper.SafeMap<LocEntry>(loc);
 
                 entry.id = Guid.NewGuid();
-                entry.LocString.locdef = Guid.NewGuid().ToString();
+                entry.LocString.locdef = Guid.NewGuid();
                 entry.Category = loc.Category.ToString();
                 entry.SubCategory = loc.SubCategory.ToString();
 
@@ -682,12 +696,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return choices;
         }
 
-        private async Task<CommitRefProxy> GetWelcomeCenterTileCommitAsync(string commitComment, WofBaseTileEntry entry, XElement element, string filePath)
+        private async Task<CommitRefProxy> CommitWelcomeCenterTileAsync(WofBaseTileEntry entry, XElement element, string filePath, IEnumerable<string> deleteTargets)
         {
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings);
+            var displayConditions = await this.GetDisplayConditionsAsync().ConfigureAwait(false);
+            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, displayConditions);
 
-            element.Elements().Where(x => x.Name.LocalName == "Destination").Remove();
+            // deleted elements will be rewritten.
+            foreach (var target in deleteTargets)
+            {
+                element.Elements().Where(k => k.Name.LocalName == target).Remove();
+            }
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
@@ -695,7 +714,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var change = new CommitRefProxy()
             {
-                CommitComment = commitComment,
                 NewFileContent = newXml,
                 PathToFile = filePath,
                 VersionControlChangeType = VersionControlChangeType.Edit

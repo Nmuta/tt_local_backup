@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
     {
         public object ID { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public string FriendlyMessageName { get; set; }
 
         public string LocationSceneEnum { get; set; }
@@ -50,19 +50,19 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         public object DisplayConditionDataList { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextMotd TitleHeader { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public string Date { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextMotdNoDesc ContentHeader { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public LocTextMotdNoDesc ContentBody { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         public string ContentImagePath { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
@@ -105,13 +105,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locdef { get; set; }
+        public Guid locdef { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locref { get; set; }
+        public Guid locref { get; set; }
     }
 
     [Serializable]
@@ -125,12 +125,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locdef { get; set; }
+        public Guid locdef { get; set; }
 
-        [PegEdit]
+        [WriteToPegasus]
         [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string locref { get; set; }
+        public Guid locref { get; set; }
     }
 }
