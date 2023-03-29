@@ -1,14 +1,16 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ZERO } from '@helpers/bignumbers';
 import { ActivatedRoute } from '@angular/router';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitle } from '@models/enums';
-import { Gift, GroupGift } from '@models/gift';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
+import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { WoodstockService } from '@services/woodstock';
 import BigNumber from 'bignumber.js';
@@ -33,6 +35,8 @@ export class WoodstockGiftLiveryComponent extends GiftLiveryBaseComponent<Identi
 
   constructor(
     private readonly woodstockService: WoodstockService,
+    private readonly woodstockPlayersGiftService: WoodstockPlayersGiftService,
+    private readonly woodstockGroupGiftService: WoodstockGroupGiftService,
     backgroundJobService: BackgroundJobService,
     route: ActivatedRoute,
   ) {
@@ -56,10 +60,12 @@ export class WoodstockGiftLiveryComponent extends GiftLiveryBaseComponent<Identi
       );
     }
 
-    return this.woodstockService.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, {
-      xuids: xuids,
-      giftReason: giftReason,
-    } as GroupGift);
+    return this.woodstockPlayersGiftService.giftLiveriesByXuids$(
+      giftReason,
+      [liveryId],
+      xuids,
+      ZERO,
+    );
   }
 
   /** Gifts a livery to a LSP user group. */
@@ -72,8 +78,11 @@ export class WoodstockGiftLiveryComponent extends GiftLiveryBaseComponent<Identi
       return throwError(new Error('Failed to gift livery: lspGroup is null or undefined'));
     }
 
-    return this.woodstockService.postGiftLiveryToLspGroup$(liveryId, lspGroup, {
-      giftReason: giftReason,
-    } as Gift);
+    return this.woodstockGroupGiftService.giftLiveriesByUserGroup$(
+      giftReason,
+      [liveryId],
+      lspGroup.id,
+      ZERO,
+    );
   }
 }

@@ -92,6 +92,22 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         }
 
         /// <inheritdoc/>
+        public IGiftingManagementService PrepareGiftingManagementService(string endpoint)
+        {
+            var service = new GiftingManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
+            var serviceProxy = service.ProxyInterface<GiftingManagementService, IGiftingManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IRareCarShopService PrepareRareCarShopService(string endpoint)
+        {
+            var service = new RareCarShopService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
+            var serviceProxy = service.ProxyInterface<RareCarShopService, IRareCarShopService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
         public INotificationsManagementService PrepareNotificationsManagementService(string endpoint)
         {
             var service = new NotificationsManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);

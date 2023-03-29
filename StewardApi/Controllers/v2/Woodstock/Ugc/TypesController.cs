@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcLivery(string id)
-            => this.UgcLookupWithCarDataAsync<GetUGCLiveryOutput, WoodstockUgcLiveryItem>(id, this.ServicesWithProdLiveStewardCms.StorefrontManagement.GetUGCLivery, o => o.result);
+            => this.UgcLookupWithCarDataAsync<GetUGCLiveryOutput, WoodstockUgcLiveryItem>(id, this.ServicesWithProdLiveStewardCms.StorefrontManagementService.GetUGCLivery, o => o.result);
 
         /// <summary>
         ///     Gets a UGC photo by ID.
@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcPhoto(string id)
-            => this.UgcLookupWithCarDataAsync(id, this.ServicesWithProdLiveStewardCms.StorefrontManagement.GetUGCPhoto, o => o.result);
+            => this.UgcLookupWithCarDataAsync(id, this.ServicesWithProdLiveStewardCms.StorefrontManagementService.GetUGCPhoto, o => o.result);
 
         /// <summary>
         ///     Gets a UGC tune by ID.
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcTune(string id)
-            => this.UgcLookupWithCarDataAsync(id, this.ServicesWithProdLiveStewardCms.StorefrontManagement.GetUGCTune, o => o.result);
+            => this.UgcLookupWithCarDataAsync(id, this.ServicesWithProdLiveStewardCms.StorefrontManagementService.GetUGCTune, o => o.result);
 
         /// <summary>
         ///     Gets a UGC blueprint by ID.
@@ -115,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetLayerGroup(string id)
-            => this.SimpleUgcLookupAsync(id, this.ServicesWithProdLiveStewardCms.StorefrontManagement.GetUGCLayerGroup, o => o.result);
+            => this.SimpleUgcLookupAsync(id, this.ServicesWithProdLiveStewardCms.StorefrontManagementService.GetUGCLayerGroup, o => o.result);
 
 
         private Task<IActionResult> SimpleUgcLookupAsync<TempT>(
