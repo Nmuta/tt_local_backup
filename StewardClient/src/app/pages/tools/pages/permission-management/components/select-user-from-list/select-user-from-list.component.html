@@ -1,4 +1,5 @@
 <button
+  *ngIf="isAdmin"
   mat-raised-button
   color="primary"
   class="sync-users-button"
@@ -16,8 +17,19 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Steward Users</mat-card-title>
-    <mat-card-subtitle>List of all non-admin users</mat-card-subtitle>
+    <mat-card-subtitle>All available users to manage</mat-card-subtitle>
   </mat-card-header>
+
+  <table *ngIf="!!team" class="info-table full-width">
+    <tr>
+      <th>Team Name</th>
+      <td>{{ team.name }}</td>
+    </tr>
+    <tr>
+      <th>Members Count</th>
+      <td>{{ team?.members?.length ?? 0 }}</td>
+    </tr>
+  </table>
 
   <ng-container *waitForMonitor="getUsersActionMonitor">
     <mat-form-field class="name-filter">
