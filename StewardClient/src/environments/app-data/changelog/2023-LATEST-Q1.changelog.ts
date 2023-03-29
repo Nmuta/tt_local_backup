@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },
+      uuid: '420e8b5e-a281-4fe9-8505-5d15723a17aa',
+      shortText: 'Display Layer Group thumbnails',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '28550227-cded-4111-b099-a28f3cd5b6b2',
+      shortText: 'Fix UGC overflow styling',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: 'f6b0f4cf-be12-47bd-b5f2-a75105fb9631',
       shortText: 'Allow team leads to manage their team members',

@@ -89,12 +89,21 @@
                 >({{ ugcLiveries?.ugcContent?.length }})</inline-spinner
               >
             </ng-template>
-            <steelhead-player-ugc
-              #ugcLiveries
-              [identity]="identity"
-              [contentType]="UgcType.Livery"
-              [usingIdentities]="true"
-            ></steelhead-player-ugc>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Liveries</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-ugc
+                  #ugcLiveries
+                  [identity]="identity"
+                  [contentType]="UgcType.Livery"
+                  [usingIdentities]="true"
+                ></steelhead-player-ugc>
+              </mat-card-content>
+            </mat-card>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
@@ -103,12 +112,20 @@
                 >({{ ugcPhotos?.ugcContent?.length }})</inline-spinner
               >
             </ng-template>
-            <steelhead-player-ugc
-              #ugcPhotos
-              [identity]="identity"
-              [contentType]="UgcType.Photo"
-              [usingIdentities]="true"
-            ></steelhead-player-ugc>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Photos</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-ugc
+                  #ugcPhotos
+                  [identity]="identity"
+                  [contentType]="UgcType.Photo"
+                  [usingIdentities]="true"
+                ></steelhead-player-ugc>
+              </mat-card-content>
+            </mat-card>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
@@ -117,12 +134,20 @@
                 >({{ ugcTunes?.ugcContent?.length }})</inline-spinner
               >
             </ng-template>
-            <steelhead-player-ugc
-              #ugcTunes
-              [identity]="identity"
-              [contentType]="UgcType.Tune"
-              [usingIdentities]="true"
-            ></steelhead-player-ugc>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Tunes</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-ugc
+                  #ugcTunes
+                  [identity]="identity"
+                  [contentType]="UgcType.Tune"
+                  [usingIdentities]="true"
+                ></steelhead-player-ugc>
+              </mat-card-content>
+            </mat-card>
           </mat-tab>
           <!-- TODO: Add hidden UGC tab once feature is ready in Services -->
           <!-- <mat-tab>
