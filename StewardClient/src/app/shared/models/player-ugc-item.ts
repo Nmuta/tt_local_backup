@@ -3,6 +3,7 @@ import faker from '@faker-js/faker';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { UgcType } from './ugc-filters';
+import { GameTitle } from './enums';
 
 /** Interface for a player UGC item. */
 export interface PlayerUgcItem {
@@ -61,8 +62,10 @@ export interface PersistedItemResult {
 
 /** The result of a ugc operation (Cloning, persisting) */
 export interface UgcOperationResult {
+  gameTitle: GameTitle;
   fileId: string;
   shareCode?: string;
+  allowOpenInNewTab?: boolean;
 }
 
 /** Creates a fake player UGC item */

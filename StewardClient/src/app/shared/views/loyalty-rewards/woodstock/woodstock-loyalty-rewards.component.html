@@ -21,21 +21,22 @@
           <ng-container matColumnDef="label">
             <th mat-header-cell *matHeaderCellDef>Label</th>
             <td mat-cell *matCellDef="let entry">
-              <span
-                >{{ entry.label | humanize }}
-                <mat-checkbox
+              <span>
+                <p *ngIf="entry?.label === displayLabel">{{ entry.label }}</p>
+                <button
                   *ngIf="entry.label === actionLabel"
+                  mat-raised-button
+                  color="primary"
+                  [monitor]="postMonitor"
                   stateManager
-                  [permissionAttribute]="permAttribute"
-                  [permissionTitle]="gameTitle"
-                  [checked]="!disableSingleActions"
-                  (change)="toggleSingleSend($event)"
-                  [disabled]="disableSendActions"
-                  [matTooltip]="
-                    !disableSendActions ? 'Verify Send Loyalty Reward' : featureDisabledText
-                  "
+                  [disabled]="!allowSend"
+                  monitorDisable
+                  monitorWarnSnackbar
+                  (click)="updateTitlesPlayed()"
                 >
-                </mat-checkbox>
+                  {{ entry.label | humanize }}
+                  <button-spinner [monitor]="postMonitor" defaultIcon="send"></button-spinner>
+                </button>
               </span>
             </td>
           </ng-container>
@@ -45,63 +46,26 @@
               {{ gameColumn }}
             </th>
             <td mat-cell *matCellDef="let row">
-              <span *ngIf="!!row.titles">
+              <span *ngIf="row.label === displayLabel">
                 <mat-icon *ngIf="row.titles[gameColumn]; else falseFlagTemplate" class="green-icon"
                   >check_circle</mat-icon
                 >
               </span>
-              <span *ngIf="!row.titles">
-                <button
-                  mat-raised-button
-                  color="primary"
-                  [matTooltip]="'Send Loyalty Reward for: ' + gameColumn"
-                  [disabled]="disableSingleActions || disableSendActions"
-                  (click)="sendReward(gameColumn)"
-                  [monitor]="singlePostMonitors[gameColumn]"
+              <span *ngIf="row.label === actionLabel">
+                <mat-checkbox
+                  *ngIf="!row.titles[gameColumn]"
                   stateManager
                   [permissionAttribute]="permAttribute"
                   [permissionTitle]="gameTitle"
-                  monitorDisable
-                  monitorWarnSnackbar
+                  (change)="toggleTitleSend($event, gameColumn)"
                 >
-                  <button-spinner
-                    [monitor]="singlePostMonitors[gameColumn]"
-                    defaultIcon="send"
-                  ></button-spinner>
-                </button>
+                </mat-checkbox>
               </span>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-        <div class="submit-field">
-          <button
-            mat-raised-button
-            color="primary"
-            [matTooltip]="'Send Loyalty Rewards for: ' + titlesToSendRewardsTo.toString()"
-            [verifyWith]="verifyAction"
-            (click)="resendRewards()"
-            [monitor]="postMonitor"
-            stateManager
-            monitorDisable
-            monitorWarnSnackbar
-          >
-            Send Missing Loyalty Rewards
-            <button-spinner [monitor]="postMonitor" defaultIcon="send"></button-spinner>
-          </button>
-          <mat-checkbox
-            #verifyAction
-            stateManager
-            [permissionAttribute]="permAttribute"
-            [permissionTitle]="gameTitle"
-            [disabled]="titlesToSendRewardsTo.length === 0 || disableSendActions"
-            [matTooltip]="!disableSendActions ? 'Verify Send Loyalty Rewards' : featureDisabledText"
-            >{{
-              titlesToSendRewardsTo.length === 0 ? 'No Eligible Titles' : 'Verify Send'
-            }}</mat-checkbox
-          >
-        </div>
       </ng-container>
     </ng-container>
   </mat-card-content>
