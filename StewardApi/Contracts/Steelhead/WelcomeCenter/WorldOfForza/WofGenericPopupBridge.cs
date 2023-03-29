@@ -51,6 +51,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// <summary>
         ///     Gets or sets the timer.
         /// </summary>
-        public TimerBridge Timer { get; set; }
+        public WofTimerBridge Timer { get; set; }
     }
 }

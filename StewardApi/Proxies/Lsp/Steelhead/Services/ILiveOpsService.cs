@@ -91,5 +91,17 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Get driver level, prestige rank and experience points for a given xuid.
         /// </summary>
         Task<GetDriverLevelOutput> GetDriverLevel(ulong xuid);
+
+        /// <summary>
+        ///     Retrieves list of legacy titles a user has played.
+        /// </summary>
+        /// <remarks>Used for determining legacy rewards.</remarks>
+        Task<GetTitlesUserPlayedOutput> GetTitlesUserPlayed(ulong xuid);
+
+        /// <summary>
+        ///     Adds a title to a user's list of legacy titles played.
+        /// </summary>
+        /// <remarks>When added, a user should expect to recieve legacy rewards on next login.</remarks>
+        Task AddToTitlesUserPlayed(ulong xuid, ForzaLoyaltyRewardsSupportedTitles titleToAdd);
     }
 }

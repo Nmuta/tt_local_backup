@@ -1,4 +1,6 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
+﻿using System;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
     /// <summary>
     ///     Properties of localized text.
@@ -6,9 +8,9 @@
     public class LocTextBridge
     {
         /// <summary>
-        ///     Gets or sets the skiploc.
+        ///     Gets or sets a value indicating whether to skip localization.
         /// </summary>
-        public string SkipLoc { get; set; }
+        public bool SkipLoc { get; set; }
 
         /// <summary>
         ///     Gets or sets the base.
@@ -23,11 +25,11 @@
         /// <summary>
         ///     Gets or sets the localized text definition.
         /// </summary>
-        public string Locdef { get; set; }
+        public Guid Locdef { get; set; }
 
         /// <summary>
         ///     Gets or sets the localized text reference.
         /// </summary>
-        public string Locref { get; set; }
+        public Guid Locref { get; set; }
     }
 }

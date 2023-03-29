@@ -13,9 +13,41 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add layer group and event blueprint as supported UGC types',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '3379a529-4720-4972-946d-c457e5f87432',
+      shortText: 'Persist UGC popup now includes icon to open persisted item in a new tab',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '22386364-e53a-424f-a12d-9ad7d38dd5e0',
+      shortText: 'Update Woodstock loyalty rewards to look like Steelhead loyalty rewards.',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '4f2446fd-fd88-47f1-93c2-3ea350cca8f1',
+      shortText: 'Persist UGC success popup now allows the user to copy new ugc id',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: 'a962db50-cf71-4cae-8d42-87ce32fe5063',
+      shortText: 'Add Loyalty tab with Loyalty Rewards tool',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '21d83616-5d2f-4d74-95a4-27273bbbaa74',
       shortText: 'Fully incorportate Forum as a game title with stubbed environment',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.Home },
+      uuid: '96adf13c-80b2-4406-8a81-ea1af0fc8e81',
+      shortText: 'General updates to home page',
+      longText: [
+        'Fix filtering on disabled tools.',
+        'Add MOTD to to GeneralUser for visibility and update restrictions.',
+        'Add Welcome Center Tiles to GeneralUser for visibility and update restrictions.',
+        'Add restrictions to Create Auction.',
+        'Add restrictions to Banning.',
+      ],
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },

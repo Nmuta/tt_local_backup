@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FH5_main.Generated;
+using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -46,60 +50,55 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.LoyaltyRewards)]
     public class LoyaltyRewardsController : V2SteelheadControllerBase
     {
-        private const int DefaultMaxResults = 500;
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
+        private readonly ILoggingService loggingService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LoyaltyRewardsController"/> class.
         /// </summary>
-        public LoyaltyRewardsController(IMapper mapper)
+        public LoyaltyRewardsController(IMapper mapper, ILoggingService loggingService)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
 
             this.mapper = mapper;
+            this.loggingService = loggingService;
         }
 
         /// <summary>
         ///     Gets the user's profile notes.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
+        [SwaggerResponse(200, type: typeof(IList<ForzaLoyaltyRewardsSupportedTitles>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetHasPlayedRecordAsync(
-            ulong xuid,
-            [FromQuery] string externalProfileId)
+            ulong xuid)
         {
-            externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
             //xuid.IsValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
-            }
-
-            Services.LiveOps.FM8.Generated.UserManagementService.GetHasPlayedRecordOutput response = null;
-
+            ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
             try
             {
-                response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
+                var response = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
+                titlesPlayed = response.titlesPlayed;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"No record of legacy titles played found. (XUID: {xuid})", ex);
             }
 
-            var result = this.mapper.SafeMap<IList<HasPlayedRecord>>(response.records);
+            var convertedList = this.mapper.SafeMap<IList<SteelheadLoyaltyRewardsTitle>>(titlesPlayed);
 
-            return this.Ok(result);
+            return this.Ok(convertedList);
         }
 
         /// <summary>
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
-        [HttpPost("rewards/send")]
-        [SwaggerResponse(200)]
+        [HttpPost]
+        [SwaggerResponse(200, type: typeof(Dictionary<SteelheadLoyaltyRewardsTitle, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -108,50 +107,65 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             UserRole.CommunityManager)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
-        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
+        [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
-        public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromQuery] string externalProfileId, [FromBody] string[] gameTitles)
+        public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromBody] IList<string> gameTitles)
         {
             //xuid.IsValidXuid();
-            externalProfileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(externalProfileId));
             gameTitles.ShouldNotBeNull(nameof(gameTitles));
 
-            if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: {externalProfileId}");
-            }
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            var gameTitleIds = new List<int>();
-            var unparsedGameTitles = new StringBuilder();
+            var invalidGameTitles = new List<string>();
+            var validGameTitles = new List<SteelheadLoyaltyRewardsTitle>();
 
             foreach (var gameTitle in gameTitles)
             {
-                if (!Enum.TryParse(typeof(Turn10.UGC.Contracts.GameTitle), gameTitle, true, out var gameTitleEnum))
+                if (!Enum.TryParse(gameTitle, true, out SteelheadLoyaltyRewardsTitle gameTitleEnum))
                 {
-                    unparsedGameTitles.Append(gameTitle);
+                    invalidGameTitles.Add(gameTitle);
                 }
-                else
+
+                validGameTitles.Add(gameTitleEnum);
+            }
+
+            if (invalidGameTitles.Count > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Game titles: {invalidGameTitles} were not found.");
+            }
+
+            var gameTitleEnums = new List<ForzaLoyaltyRewardsSupportedTitles>();
+            foreach (var validTitle in validGameTitles)
+            {
+                var convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(validTitle);
+                gameTitleEnums.Add(convertedEnum);
+            }
+
+            var successResponse = new Dictionary<SteelheadLoyaltyRewardsTitle, bool>();
+            var partialSuccess = false;
+            foreach (var titleEnum in gameTitleEnums)
+            {
+                var convertedEnum = this.mapper.SafeMap<SteelheadLoyaltyRewardsTitle>(titleEnum);
+
+                try
                 {
-                    gameTitleIds.Add((int)gameTitleEnum);
+                    await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, titleEnum).ConfigureAwait(true);
+                    successResponse.Add(convertedEnum, true);
+                }
+                catch (Exception ex)
+                {
+                    this.loggingService.LogException(new AppInsightsException($"Failed to add {titleEnum} to {xuid}'s previously played titles.", ex));
+                    successResponse.Add(convertedEnum, false);
+                    partialSuccess = true;
                 }
             }
 
-            if (unparsedGameTitles.Length > 0)
+            if (partialSuccess)
             {
-                throw new InvalidArgumentsStewardException($"Game titles: {unparsedGameTitles} were not found.");
+                return this.StatusCode((int)HttpStatusCode.PartialContent, successResponse);
             }
 
-            try
-            {
-                await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, gameTitleIds.ToArray())
-                    .ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to send loyalty rewards. (XUID: {xuid})", ex);
-            }
-
-            return this.Ok();
+            return this.Ok(successResponse);
         }
     }
 }
