@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get(string shareCodeOrId)
         {
-            var fh5StorefrontService = this.WoodstockServices.Value.StorefrontManagement;
+            var fh5StorefrontService = this.WoodstockServices.Value.StorefrontManagementService;
             var fm8StorefrontService = this.SteelheadServices.Value.StorefrontManagementService;
             var fm8Lookups = new[]
             {

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitle, UserRole } from '@models/enums';
@@ -52,7 +52,7 @@ export abstract class GiftBasketBaseComponent<
     MasterInventoryT extends MasterInventoryUnion,
   >
   extends BaseComponent
-  implements OnChanges
+  implements OnInit, OnChanges
 {
   /** Player identities to gift to. */
   @Input() public playerIdentities: IdentityT[];
@@ -159,6 +159,16 @@ export abstract class GiftBasketBaseComponent<
 
   /** Sets the state gift basket. */
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    if (!this.allowSettingLocalizedMessage) {
+      this.formControls.localizedTitleMessageInfo.removeValidators(Validators.required);
+      this.formControls.localizedBodyMessageInfo.removeValidators(Validators.required);
+      this.formControls.localizedTitleMessageInfo.updateValueAndValidity();
+      this.formControls.localizedBodyMessageInfo.updateValueAndValidity();
+    }
+  }
 
   /** Lifecycle hook. */
   public ngOnChanges(
