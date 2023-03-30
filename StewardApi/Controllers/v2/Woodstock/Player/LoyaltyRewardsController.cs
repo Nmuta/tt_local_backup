@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -99,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(200, type: typeof(Dictionary<string, bool>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<WoodstockLoyaltyRewardsTitle, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -122,11 +123,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             }
 
             var invalidGameTitles = new List<string>();
-            var validGameTitles = new List<Turn10.UGC.Contracts.GameTitle>();
+            var validGameTitles = new List<WoodstockLoyaltyRewardsTitle>();
 
             foreach (var gameTitle in gameTitles)
             {
-                if (!Enum.TryParse(gameTitle, true, out Turn10.UGC.Contracts.GameTitle gameTitleEnum))
+                if (!Enum.TryParse(gameTitle, true, out WoodstockLoyaltyRewardsTitle gameTitleEnum))
                 {
                     invalidGameTitles.Add(gameTitle);
                 }
@@ -136,27 +137,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 
             if (invalidGameTitles.Count > 0)
             {
-                throw new InvalidArgumentsStewardException($"Game titles: {invalidGameTitles} were not found.");
+                throw new InvalidArgumentsStewardException($"Game titles: {string.Join(", ", invalidGameTitles)} were not found.");
             }
 
-            var successResponse = new Dictionary<string, bool>();
+            var successResponse = new Dictionary<WoodstockLoyaltyRewardsTitle, bool>();
             var partialSuccess = false;
 
             foreach (var titleEnum in validGameTitles)
             {
-                WoodstockLoyaltyRewardsTitle convertedEnum;
+                Turn10.UGC.Contracts.GameTitle convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
+
+                if (!Enum.IsDefined(typeof(Turn10.UGC.Contracts.GameTitle), convertedEnum))
+                {
+                    throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
+                }
 
                 try
                 {
                     int[] currentGameTitleId = new[] { (int)titleEnum };
-                    convertedEnum = this.mapper.SafeMap<WoodstockLoyaltyRewardsTitle>(titleEnum);
                     await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, currentGameTitleId).ConfigureAwait(true);
-                    successResponse.Add(convertedEnum.ToString(), true);
+                    successResponse.Add(titleEnum, true);
                 }
                 catch (Exception ex)
                 {
                     this.loggingService.LogException(new AppInsightsException($"Failed to resend loyalty rewards. (XUID: {xuid}) (externalProfileId: {externalProfileIdGuid}) (gameTitle: {titleEnum})", ex));
-                    successResponse.Add(titleEnum.ToString(), false);
+                    successResponse.Add(titleEnum, false);
                     partialSuccess = true;
                 }
             }
