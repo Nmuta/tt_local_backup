@@ -60,6 +60,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
 
   public selectedUser: UserModelWithPermissions;
   public selectedUserHasPermChanges: boolean = false;
+  public isAdmin: boolean = false;
 
   public getPermissionsActionMonitor = new ActionMonitor('GET permission attributes');
   public titleEnvironments: TitleEnvironments = {
@@ -121,6 +122,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     this.permAttributesService.initializationGuard$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
+        this.isAdmin = this.permAttributesService.isAdmin;
         this.initAttributeTree();
       });
   }
@@ -383,6 +385,10 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
 
   /** Disables permissions in the attribute tree that the user doesn't have permissions to. */
   private disablePermissions(treeNodes: AttributeTreeNode[]): AttributeTreeNode[] {
+    if (this.isAdmin) {
+      return treeNodes;
+    }
+
     const userPermissions = this.permAttributesService.permAttributes;
     return treeNodes.map(node => {
       if (!!node.attribute) {

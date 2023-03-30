@@ -20,7 +20,7 @@
     <mat-card-subtitle>All available users to manage</mat-card-subtitle>
   </mat-card-header>
 
-  <table *ngIf="!!team" class="info-table full-width">
+  <table *ngIf="!isAdmin && !!team" class="info-table full-width">
     <tr>
       <th>Team Name</th>
       <td>{{ team.name }}</td>

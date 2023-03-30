@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.PermissionManagement },
+      uuid: '1c3c4bf8-86dc-4cbf-afc9-3863c83b2dfc',
+      shortText: 'Give admins override access to all users and permissions',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
       uuid: '3b1f2834-b5d0-451c-ba48-46f4b50749d0',
       shortText: 'Allow items in next content release to be giftable',
