@@ -79,17 +79,5 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
             return parsedSource;
         }
-
-        /// <summary>
-        ///     Removes whitespace from string.
-        /// </summary>
-        public static string RemoveWhiteSpace(this string str)
-        {
-            return str switch
-            {
-                null => throw new InvalidArgumentsStewardException($"String is null, {nameof(str)}"),
-                _ => string.Concat(str.Split())
-            };
-        }
     }
 }

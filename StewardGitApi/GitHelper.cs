@@ -470,9 +470,9 @@ namespace StewardGitApi
         private static string BuildBranchName(AzureContext context, string authorName)
         {
             // concat split removes whitespace
-            var tokenUserName = GetCurrentUserDisplayName(context).RemoveWhiteSpace();
-            var authorNameSquish = authorName.RemoveWhiteSpace();
-            return $"{tokenUserName}/{authorNameSquish}-{GetUniqueRefId()}";
+            var stewardName = GetCurrentUserDisplayName(context).RemoveWhiteSpace();
+            var authorNameConcat = authorName.RemoveWhiteSpace();
+            return $"{stewardName}/{authorNameConcat}-{GetUniqueRefId()}";
         }
 
         private static string RemoveWhiteSpace(this string str)
