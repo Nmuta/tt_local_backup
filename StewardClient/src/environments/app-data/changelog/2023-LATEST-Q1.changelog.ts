@@ -8,9 +8,39 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.PermissionManagement },
+      uuid: '1c3c4bf8-86dc-4cbf-afc9-3863c83b2dfc',
+      shortText: 'Give admins override access to all users and permissions',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
+      uuid: '3b1f2834-b5d0-451c-ba48-46f4b50749d0',
+      shortText: 'Allow items in next content release to be giftable',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC] },
+      uuid: '420e8b5e-a281-4fe9-8505-5d15723a17aa',
+      shortText: 'Display Layer Group thumbnails',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '28550227-cded-4111-b099-a28f3cd5b6b2',
+      shortText: 'Fix UGC overflow styling',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.PermissionManagement },
+      uuid: 'f6b0f4cf-be12-47bd-b5f2-a75105fb9631',
+      shortText: 'Allow team leads to manage their team members',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '3379a529-4720-4972-946d-c457e5f87432',
       shortText: 'Persist UGC popup now includes icon to open persisted item in a new tab',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '22386364-e53a-424f-a12d-9ad7d38dd5e0',
+      shortText: 'Update Woodstock loyalty rewards to look like Steelhead loyalty rewards.',
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },

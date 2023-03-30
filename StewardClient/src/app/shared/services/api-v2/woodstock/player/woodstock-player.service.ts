@@ -1,8 +1,5 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReportWeightType, UserReportWeight } from '@models/report-weight';
-import { GuidLikeString } from '@models/extended-types';
-import { HasPlayedRecord } from '@models/loyalty-rewards';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -29,34 +26,6 @@ export class WoodstockPlayerService {
     return this.api.postRequest$<UserReportWeight>(
       `${this.basePath}/${xuid}/reportWeight`,
       reportWeightType,
-    );
-  }
-
-  /** Gets a record of which legacy titles a player has played. */
-  public getUserHasPlayedRecord$(
-    xuid: BigNumber,
-    externalProfileId: GuidLikeString,
-  ): Observable<HasPlayedRecord[]> {
-    const params = new HttpParams().append('externalProfileId', externalProfileId);
-
-    return this.api.getRequest$<HasPlayedRecord[]>(
-      `${this.basePath}/${xuid}/loyaltyRewards/hasPlayedRecord`,
-      params,
-    );
-  }
-
-  /** Sends Loyalty Rewards for selected titles. */
-  public postResendLoyaltyRewards$(
-    xuid: BigNumber,
-    externalProfileId: GuidLikeString,
-    gameTitles: string[],
-  ): Observable<void> {
-    const params = new HttpParams().append('externalProfileId', externalProfileId);
-
-    return this.api.postRequest$<void>(
-      `${this.basePath}/${xuid}/loyaltyRewards/send`,
-      gameTitles,
-      params,
     );
   }
 

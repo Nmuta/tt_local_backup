@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         [Authorize(Policy = UserAttribute.GiftPlayer)]
-        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
+        public async Task<IActionResult> GiftItemsToPlayersUseBackgroundProcessing(
             [FromBody] WoodstockGroupGift groupGift)
         {
             var services = this.Services;
@@ -149,6 +149,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
+            var proxyBundle = this.ServicesWithProdLiveStewardCms;
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
@@ -162,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                         groupGift,
                         requesterObjectId,
                         allowedToExceedCreditLimit,
-                        endpoint).ConfigureAwait(true);
+                        proxyBundle).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
@@ -217,6 +219,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Woodstock Gifting Liveries: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
+            var proxyBundle = this.ServicesWithProdLiveStewardCms;
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
@@ -224,7 +228,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 try
                 {
                     // When replacing the player inventory provider, be careful of race conditions
-                    var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint)).ToList();
+                    var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, proxyBundle)).ToList();
                     await Task.WhenAll(jobs).ConfigureAwait(false);
 
                     var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();
@@ -272,7 +276,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             try
             {
-                livery = await this.Services.StorefrontManagement.GetUGCLivery(liveryGuid).ConfigureAwait(true);
+                livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryGuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

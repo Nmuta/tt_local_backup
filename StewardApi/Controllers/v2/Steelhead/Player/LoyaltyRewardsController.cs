@@ -98,8 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(200)]
-        [SwaggerResponse(200, type: typeof(Dictionary<ForzaLoyaltyRewardsSupportedTitles, bool>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<SteelheadLoyaltyRewardsTitle, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -142,19 +141,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 gameTitleEnums.Add(convertedEnum);
             }
 
-            var successResponse = new Dictionary<ForzaLoyaltyRewardsSupportedTitles, bool>();
+            var successResponse = new Dictionary<SteelheadLoyaltyRewardsTitle, bool>();
             var partialSuccess = false;
             foreach (var titleEnum in gameTitleEnums)
             {
+                var convertedEnum = this.mapper.SafeMap<SteelheadLoyaltyRewardsTitle>(titleEnum);
+
                 try
                 {
                     await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, titleEnum).ConfigureAwait(true);
-                    successResponse.Add(titleEnum, true);
+                    successResponse.Add(convertedEnum, true);
                 }
                 catch (Exception ex)
                 {
                     this.loggingService.LogException(new AppInsightsException($"Failed to add {titleEnum} to {xuid}'s previously played titles.", ex));
-                    successResponse.Add(titleEnum, false);
+                    successResponse.Add(convertedEnum, false);
                     partialSuccess = true;
                 }
             }

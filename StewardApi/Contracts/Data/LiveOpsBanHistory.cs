@@ -2,6 +2,7 @@
 using System.Data;
 using Newtonsoft.Json;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Providers;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
@@ -58,7 +59,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             featureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(featureArea));
             reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
             banParameters.ShouldNotBeNullEmptyOrWhiteSpace(nameof(banParameters));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            // Forum Ban History do not have endpoint
+            if (title != TitleConstants.Forum)
+            {
+                endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            }
 
             this.Xuid = xuid;
             this.BanEntryId = banEntryId;
