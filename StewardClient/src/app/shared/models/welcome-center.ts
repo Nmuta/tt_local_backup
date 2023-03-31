@@ -60,7 +60,7 @@ export interface GenericPopupTile extends WelcomeCenterTile {
 
 /** Interface for a deeplink tile. */
 export interface DeeplinkTile extends WelcomeCenterTile {
-  category: string;
+  manufacturer: string;
   championship: string;
   ladder: string;
   series: string;
