@@ -33,6 +33,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         Task<UgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint);
 
         /// <summary>
+        ///    Get player layer group.
+        /// </summary>
+        Task<UgcItem> GetUgcLayerGroupAsync(Guid layerGroupId, string endpoint);
+
+        /// <summary>
+        ///    Get player event blueprint.
+        /// </summary>
+        Task<UgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint);
+
+        /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
         Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);

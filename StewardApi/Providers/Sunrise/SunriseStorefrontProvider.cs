@@ -104,6 +104,38 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
+        public async Task<UgcItem> GetUgcLayerGroupAsync(Guid layerGroupId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var layerGroupOutput = await this.sunriseService.GetPlayerUgcObjectAsync(layerGroupId, endpoint).ConfigureAwait(false);
+            var layerGroup = this.mapper.SafeMap<UgcItem>(layerGroupOutput.result);
+
+            if (layerGroup.GameTitle != (int)GameTitle.FH4)
+            {
+                throw new NotFoundStewardException($"Layer Group id could not found: {layerGroupId}");
+            }
+
+            return layerGroup;
+        }
+
+        /// <inheritdoc />
+        public async Task<UgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var eventBlueprintOutput = await this.sunriseService.GetPlayerUgcObjectAsync(eventBlueprintId, endpoint).ConfigureAwait(false);
+            var eventBlueprint = this.mapper.SafeMap<UgcItem>(eventBlueprintOutput.result);
+
+            if (eventBlueprint.GameTitle != (int)GameTitle.FH4)
+            {
+                throw new NotFoundStewardException($"Tune id could not found: {eventBlueprintId}");
+            }
+
+            return eventBlueprint;
+        }
+
+        /// <inheritdoc />
         public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));

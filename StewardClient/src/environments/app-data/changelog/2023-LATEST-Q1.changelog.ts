@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UgcDetails, NavbarTool.UserDetails] },
+      uuid: 'b9023154-10fd-4cae-ba81-410c19a1a34b',
+      shortText: 'Add layer group and event blueprint as supported UGC types',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: '1c3c4bf8-86dc-4cbf-afc9-3863c83b2dfc',
       shortText: 'Give admins override access to all users and permissions',
