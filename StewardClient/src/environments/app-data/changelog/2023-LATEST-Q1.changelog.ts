@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'f899d7f1-85c0-4a5e-affe-d34f5b3e24ce',
+      shortText: 'Add Services Table Storage component',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: [NavbarTool.UgcDetails, NavbarTool.UserDetails] },
       uuid: 'b9023154-10fd-4cae-ba81-410c19a1a34b',
       shortText: 'Add layer group and event blueprint as supported UGC types',
