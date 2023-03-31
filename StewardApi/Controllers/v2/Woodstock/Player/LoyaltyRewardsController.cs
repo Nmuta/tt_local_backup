@@ -147,13 +147,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             {
                 Turn10.UGC.Contracts.GameTitle convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
 
-                if (!Enum.IsDefined(typeof(Turn10.UGC.Contracts.GameTitle), convertedEnum))
-                {
-                    throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
-                }
-
                 try
                 {
+                    if (!Enum.IsDefined(typeof(Turn10.UGC.Contracts.GameTitle), convertedEnum))
+                    {
+                        throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
+                    }
+
                     int[] currentGameTitleId = new[] { (int)titleEnum };
                     await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, currentGameTitleId).ConfigureAwait(true);
                     successResponse.Add(titleEnum, true);
