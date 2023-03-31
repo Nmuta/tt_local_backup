@@ -140,10 +140,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             foreach (var titleEnum in validGameTitles)
             {
-                ForzaLoyaltyRewardsSupportedTitles convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(titleEnum);
-
                 try
                 {
+                    ForzaLoyaltyRewardsSupportedTitles convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(titleEnum);
+
                     if (!Enum.IsDefined(typeof(ForzaLoyaltyRewardsSupportedTitles), convertedEnum))
                     {
                         throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");

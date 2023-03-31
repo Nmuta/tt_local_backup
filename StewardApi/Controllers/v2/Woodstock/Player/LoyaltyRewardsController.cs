@@ -145,10 +145,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 
             foreach (var titleEnum in validGameTitles)
             {
-                Turn10.UGC.Contracts.GameTitle convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
-
                 try
                 {
+                    Turn10.UGC.Contracts.GameTitle convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
+
                     if (!Enum.IsDefined(typeof(Turn10.UGC.Contracts.GameTitle), convertedEnum))
                     {
                         throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
