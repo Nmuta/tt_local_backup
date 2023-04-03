@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'f899d7f1-85c0-4a5e-affe-d34f5b3e24ce',
+      shortText: 'Add Services Table Storage component',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: [NavbarTool.UgcDetails, NavbarTool.UserDetails] },
+      uuid: 'b9023154-10fd-4cae-ba81-410c19a1a34b',
+      shortText: 'Add layer group and event blueprint as supported UGC types',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: '1c3c4bf8-86dc-4cbf-afc9-3863c83b2dfc',
       shortText: 'Give admins override access to all users and permissions',
@@ -31,6 +41,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: 'f6b0f4cf-be12-47bd-b5f2-a75105fb9631',
       shortText: 'Allow team leads to manage their team members',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '7bb8390b-2fdb-4a25-830b-ca9155b45cae',
+      shortText: 'Fix issue with Woodstock loyalty rewards and some cleanup',
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },

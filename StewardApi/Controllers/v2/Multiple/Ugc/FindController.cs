@@ -129,13 +129,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
             var fh4Lookups = new[]
             {
                 this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Livery),
+                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup),
                 this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Tune),
                 this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Photo),
+                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.EventBlueprint),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCLiveryOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH4.ForzaUGCContentType.Livery,
                     (id) => this.fh4Service.GetPlayerLiveryAsync(id, this.SunriseEndpoint.Value),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Livery),
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCObjectOutput>(
+                    shareCodeOrId,
+                    ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup,
+                    (id) => this.fh4Service.GetPlayerUgcObjectAsync(id, this.SunriseEndpoint.Value),
+                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCTuneOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH4.ForzaUGCContentType.Tune,
@@ -146,6 +153,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     ServicesLiveOpsFH4.ForzaUGCContentType.Photo,
                     (id) => this.fh4Service.GetPlayerPhotoAsync(id, this.SunriseEndpoint.Value),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Photo),
+                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCObjectOutput>(
+                    shareCodeOrId,
+                    ServicesLiveOpsFH4.ForzaUGCContentType.EventBlueprint,
+                    (id) => this.fh4Service.GetPlayerUgcObjectAsync(id, this.SunriseEndpoint.Value),
+                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.EventBlueprint),
             };
 
             await Task.WhenAll(fm8Lookups).ConfigureAwait(true);
