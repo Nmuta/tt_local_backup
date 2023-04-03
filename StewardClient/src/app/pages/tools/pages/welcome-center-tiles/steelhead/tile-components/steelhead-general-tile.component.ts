@@ -21,6 +21,7 @@ import {
   WelcomeCenterTileSize,
 } from '@models/welcome-center';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { DateTime } from 'luxon';
 import { filter, map, Observable, pairwise, startWith, takeUntil } from 'rxjs';
 
 /** Outputted form value of the base tile form. */
@@ -53,6 +54,8 @@ export class GeneralTileComponent extends BaseComponent {
   public timerTypeEnum = TimerType;
   public timerReferenceOptions: Map<string, string>;
   public selectedTimerReferenceInstance: TimerReferenceInstance;
+  // Min date is needed for datetime picker to not crash. We use epoch time
+  public minDate = DateTime.fromSeconds(0);
 
   public formControls = {
     size: new FormControl(null, [Validators.required]),
@@ -81,35 +84,37 @@ export class GeneralTileComponent extends BaseComponent {
       },
     };
 
-    this.formControls.timerInstance.valueChanges.subscribe(data => {
-      if (data == TimerInstance.Chapter) {
-        this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
-        this.timerReferenceOptions = new Map([
-          ['3a9b1321-792c-47d1-ad40-b2dc39bf62b3', 'Chapter 1: GA Pre-Season - Chapter 1'],
-          ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 1: GA Pre-Season - Chapter 1'],
-        ]);
-      } else if (data == TimerInstance.Ladder) {
-        this.selectedTimerReferenceInstance = TimerReferenceInstance.Ladder;
-        this.timerReferenceOptions = new Map([
-          ['6d3e623d-3b4f-4239-8cfd-85ac9b5ed573', 'Modern Race Car Tour'],
-          ['b4cfc5b1-fbf4-4cef-9fe9-9970d71bb642', 'Decades Tour'],
-        ]);
-      } else if (data == TimerInstance.Season) {
-        this.selectedTimerReferenceInstance = TimerReferenceInstance.Season;
-        this.timerReferenceOptions = new Map([
-          ['b0344978-c1cc-4cb0-bff8-422bb9cd21c2', 'Season 1:GA Pre-Season'],
-        ]);
-      } else if (data == TimerInstance.Series) {
-        this.selectedTimerReferenceInstance = TimerReferenceInstance.Series;
-        this.timerReferenceOptions = new Map([
-          ['03390be2-c878-40c3-8eab-f7370688ad04', 'Test Entry Series'],
-          ['1f3ce4b5-fade-4341-80cb-0006c8c9b122', 'Vintage LM Prototypes Series'],
-        ]);
-      } else if (data == TimerInstance.Custom) {
-        this.selectedTimerReferenceInstance = undefined;
-        this.timerReferenceOptions = undefined;
-      }
-    });
+    this.formControls.timerInstance.valueChanges
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        if (data == TimerInstance.Chapter) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
+          this.timerReferenceOptions = new Map([
+            ['3a9b1321-792c-47d1-ad40-b2dc39bf62b3', 'Chapter 1: GA Pre-Season - Chapter 1'],
+            ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 1: GA Pre-Season - Chapter 1'],
+          ]);
+        } else if (data == TimerInstance.Ladder) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.Ladder;
+          this.timerReferenceOptions = new Map([
+            ['6d3e623d-3b4f-4239-8cfd-85ac9b5ed573', 'Modern Race Car Tour'],
+            ['b4cfc5b1-fbf4-4cef-9fe9-9970d71bb642', 'Decades Tour'],
+          ]);
+        } else if (data == TimerInstance.Season) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.Season;
+          this.timerReferenceOptions = new Map([
+            ['b0344978-c1cc-4cb0-bff8-422bb9cd21c2', 'Season 1:GA Pre-Season'],
+          ]);
+        } else if (data == TimerInstance.Series) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.Series;
+          this.timerReferenceOptions = new Map([
+            ['03390be2-c878-40c3-8eab-f7370688ad04', 'Test Entry Series'],
+            ['1f3ce4b5-fade-4341-80cb-0006c8c9b122', 'Vintage LM Prototypes Series'],
+          ]);
+        } else if (data == TimerInstance.Custom) {
+          this.selectedTimerReferenceInstance = undefined;
+          this.timerReferenceOptions = undefined;
+        }
+      });
   }
 
   /** Clears the tile image path input */
@@ -157,8 +162,8 @@ export class GeneralTileComponent extends BaseComponent {
         });
       }
       if (data.timer.customRange) {
-        this.formControls.timerCustomFromDate.setValue(data.timer.customRange.from.text);
-        this.formControls.timerCustomToDate.setValue(data.timer.customRange.to.text);
+        this.formControls.timerCustomFromDate.setValue(data.timer.customRange.from.dateUtc);
+        this.formControls.timerCustomToDate.setValue(data.timer.customRange.to.dateUtc);
       }
       if (data.timer.timerReference) {
         this.formControls.timerReferenceId.setValue(data.timer.timerReference.refId);
@@ -228,11 +233,11 @@ export class GeneralTileComponent extends BaseComponent {
       if (this.formControls.timerInstance.value == TimerInstance.Custom) {
         welcomeCenterTile.timer.customRange = {
           from: {
-            text: this.formControls.timerCustomFromDate.value,
+            dateUtc: this.formControls.timerCustomFromDate.value,
             when: undefined,
           },
           to: {
-            text: this.formControls.timerCustomToDate.value,
+            dateUtc: this.formControls.timerCustomToDate.value,
             when: undefined,
           },
         };

@@ -30,6 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         /// <summary>
         ///     Gets or sets the localized text reference.
         /// </summary>
-        public Guid? Locref { get; set; }
+        public Guid Locref { get; set; }
     }
 }

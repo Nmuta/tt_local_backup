@@ -65,9 +65,9 @@ export interface TextOverride {
   refId: string;
 }
 
-/** Interface for a custom timer instance date. Text is a date as string */
+/** Interface for a custom timer instance date */
 export interface CustomRangePoint {
-  text: string;
+  dateUtc: string;
   when: string;
 }
 
