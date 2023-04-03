@@ -12,6 +12,7 @@ using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -131,31 +132,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             if (invalidGameTitles.Count > 0)
             {
-                throw new InvalidArgumentsStewardException($"Game titles: {invalidGameTitles} were not found.");
-            }
-
-            var gameTitleEnums = new List<ForzaLoyaltyRewardsSupportedTitles>();
-            foreach (var validTitle in validGameTitles)
-            {
-                var convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(validTitle);
-                gameTitleEnums.Add(convertedEnum);
+                throw new InvalidArgumentsStewardException($"Game titles: {string.Join(", ", invalidGameTitles)} were not found.");
             }
 
             var successResponse = new Dictionary<SteelheadLoyaltyRewardsTitle, bool>();
             var partialSuccess = false;
-            foreach (var titleEnum in gameTitleEnums)
-            {
-                var convertedEnum = this.mapper.SafeMap<SteelheadLoyaltyRewardsTitle>(titleEnum);
 
+            foreach (var titleEnum in validGameTitles)
+            {
                 try
                 {
-                    await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, titleEnum).ConfigureAwait(true);
-                    successResponse.Add(convertedEnum, true);
+                    ForzaLoyaltyRewardsSupportedTitles convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(titleEnum);
+
+                    if (!Enum.IsDefined(typeof(ForzaLoyaltyRewardsSupportedTitles), convertedEnum))
+                    {
+                        throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
+                    }
+
+                    await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, convertedEnum).ConfigureAwait(true);
+                    successResponse.Add(titleEnum, true);
                 }
                 catch (Exception ex)
                 {
                     this.loggingService.LogException(new AppInsightsException($"Failed to add {titleEnum} to {xuid}'s previously played titles.", ex));
-                    successResponse.Add(convertedEnum, false);
+                    successResponse.Add(titleEnum, false);
                     partialSuccess = true;
                 }
             }
