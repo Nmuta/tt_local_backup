@@ -3,7 +3,7 @@
   <section>
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="User Details">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <apollo-user-flags [identity]="identity"></apollo-user-flags>
           <apollo-ban-history [xuid]="identity.xuid"></apollo-ban-history>
           <entitlements [identity]="identity"></entitlements>
@@ -12,7 +12,7 @@
         </div>
       </mat-tab>
       <mat-tab label="Inventory">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <mat-card>
             <mat-card-header>
               <mat-card-title>Player Inventory</mat-card-title>
@@ -54,7 +54,7 @@
         </mat-card>
       </mat-tab>
       <mat-tab label="JSON">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <json-dump [input]="identity">Identity</json-dump>
         </div>
       </mat-tab>
