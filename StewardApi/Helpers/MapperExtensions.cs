@@ -24,7 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             }
         }
 
-
         /// <summary>
         ///     Validation utility method copied from https://stackoverflow.com/questions/954480/automapper-ignore-the-rest/38073718#38073718
         /// </summary>

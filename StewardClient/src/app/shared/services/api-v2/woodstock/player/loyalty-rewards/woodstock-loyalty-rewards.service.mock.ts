@@ -9,6 +9,8 @@ export class MockWoodstockLoyaltyRewardsService {
 
   public getUserLoyalty$ = jasmine.createSpy('getUserLoyalty').and.returnValue(of(this.result));
 
+  public postUserLoyalty$ = jasmine.createSpy('postUserLoyalty$').and.returnValue(of({}));
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

@@ -94,6 +94,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
         }),
         takeUntil(this.onDestroy$),
       )
+      /** Determine if we've already sent an award for a particular game title */
       .subscribe(record => {
         const hasPlayed = chain(record)
           .map(game => [game.gameTitle, game.sentProfileNotification])
