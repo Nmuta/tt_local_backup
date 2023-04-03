@@ -34,6 +34,7 @@ export enum AppIcon {
   CreateAuction = 'sell',
   WelcomeCenterTile = 'grid_view',
   PlayFab = 'hexagon',
+  ServicesTableStorage = 'table_rows',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */

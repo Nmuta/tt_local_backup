@@ -28,5 +28,6 @@ export * from './tools/ugc-search';
 export * from './tools/user-group-management';
 export * from './tools/welcome-center';
 export * from './tools/welcome-center-calendar';
+export * from './tools/services-table-storage';
 export * from './widgets/endpoints';
 export * from './widgets/themeing';

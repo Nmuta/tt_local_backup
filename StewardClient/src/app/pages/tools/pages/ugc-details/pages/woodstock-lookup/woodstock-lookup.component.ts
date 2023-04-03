@@ -251,12 +251,21 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
     this.service
       .persistUgc$(this.ugcItem.id)
-      .pipe(this.persistMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(result => {
-        return {
-          fileId: result.newFileId,
-        } as UgcOperationResult;
-      });
+      .pipe(
+        // The custom success snackbar expects a UgcOperationResult as the monitor value
+        // Mapping must be done above the monitor single fire for it to use mapped result
+        map(
+          result =>
+            ({
+              gameTitle: GameTitle.FH5,
+              fileId: result.newFileId,
+              allowOpenInNewTab: true,
+            } as UgcOperationResult),
+        ),
+        this.persistMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe();
   }
 
   /** Persist a UGC item to the system user in Woodstock */
@@ -268,12 +277,20 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
     this.service
       .cloneUgc$(this.ugcItem.id, this.ugcItem.type)
-      .pipe(this.cloneMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(result => {
-        return {
-          fileId: result.clonedFileId,
-          shareCode: result.clonedShareCode,
-        } as UgcOperationResult;
-      });
+      .pipe(
+        // The custom success snackbar expects a UgcOperationResult as the monitor value
+        // Mapping must be done above the monitor single fire for it to use mapped result
+        map(
+          result =>
+            ({
+              gameTitle: GameTitle.FH5,
+              fileId: result.clonedFileId,
+              shareCode: result.clonedShareCode,
+            } as UgcOperationResult),
+        ),
+        this.cloneMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe();
   }
 }

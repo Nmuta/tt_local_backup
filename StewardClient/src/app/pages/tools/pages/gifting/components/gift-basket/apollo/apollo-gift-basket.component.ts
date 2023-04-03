@@ -52,6 +52,7 @@ export class ApolloGiftBasketComponent
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+    super.ngOnInit();
     this.isLoading = true;
     this.store.dispatch(new GetApolloMasterInventoryList()).subscribe(() => {
       this.isLoading = false;

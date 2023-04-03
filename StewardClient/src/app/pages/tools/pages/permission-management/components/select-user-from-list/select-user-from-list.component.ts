@@ -5,13 +5,16 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
 import { UserRole } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
-import { UserModelWithPermissions } from '@models/user.model';
+import { UserModel, UserModelWithPermissions } from '@models/user.model';
+import { Store } from '@ngxs/store';
 import { V2UsersService } from '@services/api-v2/users/users.service';
 import { PermAttribute } from '@services/perm-attributes/perm-attributes';
 import { UserService } from '@services/user';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { cloneDeep, find, sortBy } from 'lodash';
-import { debounceTime, filter, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { UserState } from '@shared/state/user/user.state';
+import { cloneDeep, find, includes, sortBy } from 'lodash';
+import { combineLatest, debounceTime, filter, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { StewardTeam } from '../../permission-management.models';
 import { VerifyUserSwitchDialogComponent } from '../verify-user-switch-dialong/verify-user-switch-dialog.component';
 
 /** Tools that displays Steward users and allows one to be selected. */
@@ -40,6 +43,10 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
   public selectUserToManage$ = new Subject<UserModelWithPermissions>();
   public nameFilterFormControl = new FormControl(null);
 
+  public userProfile: UserModel;
+  public isAdmin: boolean = false;
+  public team: StewardTeam;
+
   public get isUserSelected(): boolean {
     return !!this.selectedUser;
   }
@@ -49,6 +56,7 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
   }
 
   constructor(
+    private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
     private readonly v2UsersService: V2UsersService,
@@ -58,6 +66,9 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
+    this.userProfile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.isAdmin = this.userProfile.role === UserRole.LiveOpsAdmin;
+
     this.initStewardUsersList();
 
     let pendingUser: UserModelWithPermissions;
@@ -121,13 +132,21 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
 
   /** Gets the Steward user list and loads it into the component. */
   private initStewardUsersList(): void {
-    this.getUsersActionMonitor = this.getUsersActionMonitor.repeat();
-    this.userService
-      .getAllStewardUsers$()
-      .pipe(this.getUsersActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(users => {
-        const generalUsers = users.filter(user => user.role === UserRole.GeneralUser);
+    const getUsers$ = this.userService.getAllStewardUsers$();
+    const getTeam$ = this.v2UsersService.getStewardTeam$(this.userProfile.objectId);
 
+    this.getUsersActionMonitor = this.getUsersActionMonitor.repeat();
+    combineLatest([getUsers$, getTeam$])
+      .pipe(this.getUsersActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(([users, team]) => {
+        this.team = team;
+
+        // If user isnt an admin, filter out users that aren't a part of their team.
+        if (!this.isAdmin) {
+          users = users.filter(user => includes(team?.members ?? [], user.objectId));
+        }
+
+        const generalUsers = users.filter(user => user.role === UserRole.GeneralUser);
         this.allUsers = sortBy(generalUsers, user => {
           return user.name;
         }) as UserModelWithPermissions[];

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { ClonedItemResult } from '@models/player-ugc-item';
+import { getUgcDetailsRoute } from '@helpers/route-links';
+import { UgcOperationResult } from '@models/player-ugc-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 /** A component that summarizes the results of a ugc operation. */
@@ -9,7 +10,8 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
   styleUrls: ['./ugc-operation-snackbar.component.scss'],
 })
 export class UgcOperationSnackbarComponent implements OnInit {
-  public completionValue: ClonedItemResult;
+  public completionValue: UgcOperationResult;
+  public newTabRoute: string[];
 
   /** Gets the label for the error. */
   public get label(): string {
@@ -28,6 +30,10 @@ export class UgcOperationSnackbarComponent implements OnInit {
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.completionValue = this.monitor.status.value as ClonedItemResult;
+    this.completionValue = this.monitor.status.value as UgcOperationResult;
+    this.newTabRoute = getUgcDetailsRoute(
+      this.completionValue.gameTitle,
+      this.completionValue.fileId,
+    );
   }
 }

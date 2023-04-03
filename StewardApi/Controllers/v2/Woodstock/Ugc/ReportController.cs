@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 
             try
             {
-                await this.Services.StorefrontManagement.ReportContentWithReason(parsedUgcId, parsedReasonId).ConfigureAwait(true);
+                await this.Services.StorefrontManagementService.ReportContentWithReason(parsedUgcId, parsedReasonId).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

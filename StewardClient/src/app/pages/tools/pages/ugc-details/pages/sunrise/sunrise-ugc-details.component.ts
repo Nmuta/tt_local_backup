@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
-import { UgcType } from '@models/ugc-filters';
+import { SunriseExtendedSupportedUgcTypes, UgcType } from '@models/ugc-filters';
+import { takeUntil } from 'rxjs';
 import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.service';
 
 /** Routed component that displays nav information for Sunrise UGC searches. */
@@ -12,7 +13,7 @@ import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.s
 export class SunriseUgcDetailsComponent extends BaseComponent implements OnInit {
   public GameTitleCodeName = GameTitleCodeName;
 
-  public supportedTypes = [UgcType.Livery, UgcType.Photo, UgcType.Tune];
+  public supportedTypes = SunriseExtendedSupportedUgcTypes;
   public hasTypeLookup = {};
 
   constructor(public readonly sharedLookupService: ScopedSharedLookupService) {
@@ -22,7 +23,9 @@ export class SunriseUgcDetailsComponent extends BaseComponent implements OnInit 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.applyData();
-    this.sharedLookupService.latestResults$.subscribe(() => this.applyData());
+    this.sharedLookupService.latestResults$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => this.applyData());
   }
 
   private applyData(): void {

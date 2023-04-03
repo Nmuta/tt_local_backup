@@ -28,4 +28,5 @@ export class TitleMemoryModel {
   public messageOfTheDay: GameTitleCodeName.FM8;
   public createAuction: GameTitleCodeName.FH5;
   public welcomeCenterTiles: GameTitleCodeName.FM8;
+  public servicesTableStorage: GameTitleCodeName.FM8;
 }

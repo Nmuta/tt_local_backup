@@ -57,6 +57,7 @@ export class SunriseGiftBasketComponent
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+    super.ngOnInit();
     this.isLoading = true;
     this.store.dispatch(new GetSunriseMasterInventoryList()).subscribe(() => {
       this.isLoading = false;
