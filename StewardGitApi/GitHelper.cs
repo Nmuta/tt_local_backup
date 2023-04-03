@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Globalization;
+using System.Runtime.Serialization;
 using System.Text;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi;
@@ -12,9 +13,9 @@ namespace StewardGitApi
     /// <summary>
     ///     Contains the git operation implementations.
     /// </summary>
-    internal class GitHelper
+    internal static class GitHelper
     {
-        private const string AutogenBranchNameRoot = "steward-api-autogen";
+        private const string AutogenBranchName = "steward-api-autogen";
         private const int GitCommitHashLength = 40;
 
         /// <summary>
@@ -279,11 +280,10 @@ namespace StewardGitApi
             string defaultBranchName = WithoutRefsPrefix(repo.DefaultBranch);
             GitRef defaultBranch = (await gitClient.GetRefsAsync(repo.Id, filter: defaultBranchName).ConfigureAwait(false)).First();
 
-            // Craft the new branch that we'll push
-            string refId = GetUniqueRefId();
+            // Craft the new branch that we'll push. Based on name of author.
             GitRefUpdate newBranch = new ()
             {
-                Name = $"refs/heads/{BuildBranchName(context, refId)}",
+                Name = $"refs/heads/{BuildBranchName(context, proxyChanges.First().AuthorName ?? AutogenBranchName)}",
                 OldObjectId = defaultBranch.ObjectId,
             };
 
@@ -467,16 +467,18 @@ namespace StewardGitApi
             return Guid.NewGuid().ToString("D")[..6];
         }
 
-        private static string BuildBranchName(AzureContext context, string refId)
+        private static string BuildBranchName(AzureContext context, string authorName)
         {
-            StringBuilder sb = new ();
-            sb.Append(AutogenBranchNameRoot);
-            sb.Append('/');
-            var name = string.Concat(GetCurrentUserDisplayName(context).Split()); // removes whitespace
-            sb.Append(name);
-            sb.Append('-');
-            sb.Append(refId);
-            return sb.ToString();
+            // concat split removes whitespace
+            var stewardName = GetCurrentUserDisplayName(context).RemoveWhiteSpace();
+            var authorNameConcat = authorName.RemoveWhiteSpace();
+            return $"{stewardName}/{authorNameConcat}-{GetUniqueRefId()}";
+        }
+
+        private static string RemoveWhiteSpace(this string str)
+        {
+            Check.CheckForNull(str, nameof(str));
+            return string.Concat(str.Split());
         }
 
         private static IEnumerable<GitCommitRef> ToGitCommitRef(IEnumerable<CommitRefProxy> proxyCommits)
@@ -487,7 +489,7 @@ namespace StewardGitApi
             {
                 commitRefs.Add(new GitCommitRef
                 {
-                    Comment = c.CommitComment,
+                    Comment = c.CommitMessage,
                     Changes = new GitChange[]
                     {
                         new GitChange()
