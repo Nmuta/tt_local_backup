@@ -48,7 +48,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Series,
         Season,
         Chapter,
-        Custom,
     }
 
     [Serializable]
@@ -65,7 +64,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [WriteToPegasus]
         public WofBaseTimer Timer { get; set; }
 
-        [WriteToPegasus]
         public WofBaseDisplayConditions DisplayConditions { get; set; }
 
         public object Cooldowns { get; set; }
@@ -177,11 +175,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         [WriteToPegasus]
         [XmlElement("From")]
-        public WofBaseRangePoint[] From { get; set; }
+        public WofBaseRangePoint From { get; set; }
 
         [WriteToPegasus]
         [XmlElement("To")]
-        public WofBaseRangePoint[] To { get; set; }
+        public WofBaseRangePoint To { get; set; }
     }
 
     [Serializable]

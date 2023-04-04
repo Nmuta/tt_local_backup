@@ -18,9 +18,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
         /// </summary>
         public WofBaseTimerReference Convert(TimerReferenceBridge source, WofBaseTimerReference destination, ResolutionContext context)
         {
-            if (source.TimerInstance == TimerInstance.Custom && (source.LadderBridge != null || source.ChapterBridge != null || source.SeriesBridge != null || source.SeasonBridge != null))
+            if (source == null)
             {
-                throw new InvalidOperationException($"If '{TimerInstance.Custom}' is selected, the timer bridges must be null.");
+                return null;
             }
 
             return source.TimerInstance switch
@@ -29,7 +29,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
                 TimerInstance.Ladder => new Ladder() { RefId = source.RefId },
                 TimerInstance.Series => new Series() { RefId = source.RefId },
                 TimerInstance.Season => new Season() { RefId = source.RefId },
-                TimerInstance.Custom => null,
                 _ => throw new ArgumentException($"Unsupported {nameof(TimerInstance)}: {source.TimerInstance}"),
             };
         }
@@ -48,10 +47,15 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
         {
             // If source is null, then there is no timer reference in the xml
             // on deserialization. The parent object Timer is likely <x:null />
+            if (source == null)
+            {
+                return null;
+            }
+
             return new TimerReferenceBridge
             {
-                RefId = source != null ? source.RefId : Guid.Empty,
-                TimerInstance = source != null ? source.TimerInstance : TimerInstance.Custom,
+                RefId = source.RefId,
+                TimerInstance = source.TimerInstance,
                 ChapterBridge = new ChapterBridge(),
                 LadderBridge = new LadderBridge(),
                 SeriesBridge = new SeriesBridge(),
