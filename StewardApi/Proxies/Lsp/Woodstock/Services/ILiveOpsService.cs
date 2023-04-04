@@ -60,6 +60,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <summary>
         ///     Gets user data by gamertag.
         /// </summary>
-        Task<GetLiveOpsUserDataByGamerTagV2Output> GetLiveOpsUserDataByGamerTagV2(string gamertag);
+        Task<LiveOpsService.GetLiveOpsUserDataByGamerTagV2Output> GetLiveOpsUserDataByGamerTagV2(string gamertag);
     }
 }
