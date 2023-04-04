@@ -12,7 +12,7 @@ declare const require: any;
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), {
-  teardown: { destroyAfterEach: false },
+  teardown: { destroyAfterEach: true },
 });
 // Then we find all the tests.
 const context = require.context('./', true, /\.spec\.ts$/);
