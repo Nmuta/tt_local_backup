@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
+      shortText: 'Add timer field',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserDetails },
       uuid: '4b58bd90-c77e-493b-ba65-0ee94ec259db',
       shortText: 'Standard tab and card formatting',
