@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '99394a85-7ac3-40af-a23d-e7367fedb39f',
+      shortText: 'Change DeepLink category to manufacturer',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
       uuid: 'f899d7f1-85c0-4a5e-affe-d34f5b3e24ce',
       shortText: 'Add Services Table Storage component',
