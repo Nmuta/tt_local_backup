@@ -27,4 +27,34 @@ describe('WoodstockPlayersGiftService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
+    const gift: WoodstockGroupGift = {
+      xuids: [new BigNumber(123456789)],
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+        carHorns: [],
+        quickChatLines: [],
+        emotes: [],
+      },
+      expireAfterDays: fakeBigNumber(),
+    };
+
+    beforeEach(() => {
+      mockApiService.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest$ with the expected params', done => {
+      mockService.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
+        expect(mockApiService.postRequest$).toHaveBeenCalledWith(
+          `${mockService.basePath}/useBackgroundProcessing`,
+          gift,
+        );
+        done();
+      });
+    });
+  });
 });
