@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -32,6 +32,7 @@ using Turn10.Services.LiveOps.FH5_main.Generated;
 using Xls.Security.FH5_main.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 {
@@ -206,7 +207,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [SwaggerResponse(200, type: typeof(IList<BanConfiguration>))]
         public async Task<IActionResult> GetBanConfigurations()
         {
-            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync().ConfigureAwait(true);
+            var pegasusEnvironment = this.WoodstockEndpoint.Value == WoodstockContracts.WoodstockEndpoint.Studio
+                ? WoodstockPegasusEnvironment.Dev : WoodstockPegasusEnvironment.Prod;
+
+            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync(pegasusEnvironment).ConfigureAwait(true);
 
             var banConfigurations = new List<BanConfiguration>();
 

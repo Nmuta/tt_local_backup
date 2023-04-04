@@ -69,6 +69,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets ban configurations.
         /// </summary>
-        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync();
+        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment);
     }
 }
