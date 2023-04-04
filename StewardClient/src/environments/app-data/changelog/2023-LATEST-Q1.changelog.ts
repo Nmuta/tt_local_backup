@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Change DeepLink category to manufacturer',
     },
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '4b58bd90-c77e-493b-ba65-0ee94ec259db',
+      shortText: 'Standard tab and card formatting',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
       uuid: 'f899d7f1-85c0-4a5e-affe-d34f5b3e24ce',
       shortText: 'Add Services Table Storage component',

@@ -9,11 +9,15 @@ namespace StewardGitApi
     /// </summary>
     public class CommitRefProxy
     {
-        public string CommitComment { get; set; }
-
         public string PathToFile { get; init; }
 
         public string NewFileContent { get; init; }
+
+        public string CommitMessage { get; set; }
+
+        public string AuthorEmail { get; set; }
+
+        public string AuthorName { get; set; }
 
         public VersionControlChangeType VersionControlChangeType { get; init; }
 
@@ -24,13 +28,17 @@ namespace StewardGitApi
             string commitComment,
             string pathToFile,
             string newFileContent,
+            string authorEmail,
+            string authorName,
             VersionControlChangeType versionControlChangeType = VersionControlChangeType.Edit)
         {
             return new CommitRefProxy()
             {
-                CommitComment = commitComment.CheckForNullEmptyOrWhiteSpace(nameof(commitComment)),
+                CommitMessage = commitComment.CheckForNullEmptyOrWhiteSpace(nameof(commitComment)),
                 PathToFile = pathToFile.CheckForNullEmptyOrWhiteSpace(nameof(pathToFile)),
                 NewFileContent = newFileContent.CheckForNullEmptyOrWhiteSpace(nameof(newFileContent)),
+                AuthorEmail = authorEmail.CheckForNullEmptyOrWhiteSpace(nameof(authorEmail)),
+                AuthorName = authorName.CheckForNullEmptyOrWhiteSpace(nameof(authorName)),
                 VersionControlChangeType = versionControlChangeType,
             };
         }
