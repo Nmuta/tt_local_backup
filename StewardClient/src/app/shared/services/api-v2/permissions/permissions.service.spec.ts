@@ -9,7 +9,7 @@ describe('PermissionsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [createMockPermAttributesService()]
+      providers: [createMockPermAttributesService()],
     });
     service = TestBed.inject(PermissionsService);
   });
