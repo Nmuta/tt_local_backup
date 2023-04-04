@@ -3,7 +3,7 @@
   <section>
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)">
       <mat-tab *ngIf="!isSpecialXuid" label="User Details">
-        <div class="tab-container sf-wrapper">
+        <div class="sf-wrapper sf-tab-container">
           <div class="sf-horizontal do-not-align-items">
             <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
             <woodstock-report-weight [identity]="identity"></woodstock-report-weight>
@@ -17,7 +17,7 @@
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Deep Dive">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <woodstock-overview [identity]="identity"></woodstock-overview>
           <!-- TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818) -->
           <!-- <woodstock-backstage-pass-history
@@ -27,7 +27,7 @@
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Inventory">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <mat-card>
             <mat-card-header>
               <mat-card-title>Player Inventory</mat-card-title>
@@ -51,17 +51,17 @@
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Notifications">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <woodstock-player-notifications [identity]="identity"></woodstock-player-notifications>
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <ng-template mat-tab-label>
             Auction Log
             <error-spinner
@@ -225,13 +225,13 @@
         </mat-tab-group>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Loyalty">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <woodstock-loyalty-rewards [identity]="identity"></woodstock-loyalty-rewards>
           <entitlements [identity]="identity"></entitlements>
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="JSON">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <json-dump [input]="identity">Identity</json-dump>
         </div>
       </mat-tab>

@@ -3,7 +3,7 @@
   <section>
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)">
       <mat-tab label="User Details">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <sunrise-user-flags [identity]="identity"></sunrise-user-flags>
           <sunrise-ban-history [xuid]="identity.xuid"></sunrise-ban-history>
           <entitlements [identity]="identity"></entitlements>
@@ -13,14 +13,14 @@
         </div>
       </mat-tab>
       <mat-tab label="Deep Dive">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <sunrise-overview [identity]="identity"></sunrise-overview>
           <sunrise-backstage-pass-history [identity]="identity"></sunrise-backstage-pass-history>
           <sunrise-credit-history [identity]="identity"></sunrise-credit-history>
         </div>
       </mat-tab>
       <mat-tab label="Inventory">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <mat-card>
             <mat-card-header>
               <mat-card-title>Player Inventory</mat-card-title>
@@ -43,17 +43,17 @@
         </div>
       </mat-tab>
       <mat-tab label="Notifications">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <sunrise-player-notifications [identity]="identity"></sunrise-player-notifications>
         </div>
       </mat-tab>
       <mat-tab label="Auctions">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <sunrise-player-auctions [identity]="identity"></sunrise-player-auctions>
         </div>
       </mat-tab>
       <mat-tab>
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <ng-template mat-tab-label>
             Auction Log
             <error-spinner
@@ -200,7 +200,7 @@
         </mat-tab-group>
       </mat-tab>
       <mat-tab label="JSON">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <json-dump [input]="identity">Identity</json-dump>
         </div>
       </mat-tab>

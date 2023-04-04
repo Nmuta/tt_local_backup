@@ -3,7 +3,7 @@
   <section>
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="User Details">
-        <div class="tab-container sf-wrapper">
+        <div class="sf-wrapper sf-tab-container">
           <div class="sf-horizontal do-not-align-item">
             <steelhead-user-flags
               [identity]="identity"
@@ -22,12 +22,12 @@
         </div>
       </mat-tab>
       <mat-tab label="Notifications">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <steelhead-player-notifications [identity]="identity"></steelhead-player-notifications>
         </div>
       </mat-tab>
       <mat-tab label="Inventory Profiles">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <mat-card>
             <mat-card-header>
               <mat-card-title>Player Profiles</mat-card-title>
@@ -164,18 +164,18 @@
       </mat-tab>
       <!-- TODO: Uncomment once auction endpoints are released to LSP Retail. -->
       <!-- <mat-tab label="Auctions">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <steelhead-player-auctions [identity]="identity"></steelhead-player-auctions>
         </div>
       </mat-tab> -->
       <mat-tab label="Loyalty">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <steelhead-loyalty-rewards [identity]="identity"></steelhead-loyalty-rewards>
           <entitlements [identity]="identity"></entitlements>
         </div>
       </mat-tab>
       <mat-tab label="JSON">
-        <div class="tab-container">
+        <div class="sf-wrapper sf-tab-container">
           <json-dump [input]="identity">Identity</json-dump>
         </div>
       </mat-tab>
