@@ -9,6 +9,9 @@ using PermissionsManagementService = Turn10.Services.LiveOps.FH5_main.Generated.
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="PermissionsManagementService"/>.
+    /// </summary>
     public interface IPermissionsManagementService
     {
         /// <summary>

@@ -10,6 +10,7 @@ export class AttributeTreeNode {
   isChecked: boolean;
   attribute: PermAttribute;
   name: string;
+  disabled?: boolean;
 }
 
 /** Flat Node for permission attribute tree items. */
@@ -19,6 +20,7 @@ export class AttributeTreeFlatNode {
   level: number;
   isChecked: boolean;
   expandable: boolean;
+  disabled?: boolean;
 }
 
 /** Key/Value pairing for titles and their environments */

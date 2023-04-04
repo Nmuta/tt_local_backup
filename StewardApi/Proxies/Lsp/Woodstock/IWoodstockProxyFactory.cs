@@ -34,6 +34,16 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         IStorefrontManagementService PrepareStorefrontManagementService(string endpoint);
 
         /// <summary>
+        ///     Prepares a <see cref="IGiftingManagementService" />.
+        /// </summary>
+        IGiftingManagementService PrepareGiftingManagementService(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="IRareCarShopService" />.
+        /// </summary>
+        IRareCarShopService PrepareRareCarShopService(string endpoint);
+
+        /// <summary>
         ///     Prepares a <see cref="INotificationsManagementService" />.
         /// </summary>
         INotificationsManagementService PrepareNotificationsManagementService(string endpoint);

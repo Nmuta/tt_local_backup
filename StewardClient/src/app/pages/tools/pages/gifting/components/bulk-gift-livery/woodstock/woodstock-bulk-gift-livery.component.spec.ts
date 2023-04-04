@@ -23,8 +23,8 @@ import { PastableSingleInputComponent } from '@views/pastable-single-input/pasta
 import { WoodstockBulkGiftLiveryComponent } from './woodstock-bulk-gift-livery.component';
 import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service.mock';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
-import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service.mock';
-import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/woodstock-group-gift.service';
+import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service.mock';
+import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 

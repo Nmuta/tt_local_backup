@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LiveOpsService = Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using Turn10.Services.LiveOps.FH5_main.Generated;
-using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 #pragma warning disable SA1516 // Blank lines
@@ -10,28 +10,31 @@ using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="LiveOpsService"/>.
+    /// </summary>
     public interface ILiveOpsService
     {
         /// <summary>
         ///     Gets the loyalty rewards 'Has Played' record.
         /// </summary>
-        Task<GetHasPlayedRecordOutput> GetHasPlayedRecord(ulong xuid, Guid externalProfileId);
+        Task<LiveOpsService.GetHasPlayedRecordOutput> GetHasPlayedRecord(ulong xuid, Guid externalProfileId);
 
         /// <summary>
         ///     Gets player inventory by XUID.
         /// </summary>
-        Task<GetAdminUserInventoryOutput> GetAdminUserInventory(ulong xuid);
+        Task<LiveOpsService.GetAdminUserInventoryOutput> GetAdminUserInventory(ulong xuid);
 
         /// <summary>Gets a specific event blueprint.</summary>
-        Task<GetUGCEventBlueprintOutput> GetUGCEventBlueprint(Guid id);
+        Task<LiveOpsService.GetUGCEventBlueprintOutput> GetUGCEventBlueprint(Guid id);
 
         /// <summary>Gets a specific community challenge.</summary>
-        Task<GetUGCCommunityChallengeOutput> GetUGCCommunityChallenge(Guid id);
+        Task<LiveOpsService.GetUGCCommunityChallengeOutput> GetUGCCommunityChallenge(Guid id);
 
         /// <summary>
         ///     Gets player inventory by profile id.
         /// </summary>
-        Task<GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
+        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
 
         /// <summary>
         ///     Persist is a mechanism to allow Community to save a player UGC file for later user. Instead of pointing
@@ -41,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <param name="fileId">File to persist</param>
         /// <param name="title">Overrides the UGC title. Use empty string to persist the current title.</param>
         /// <param name="description">Overrides the UGC description. Use empty string to persist the current description.</param>
-        Task<PersistUgcFileOutput> PersistUgcFile(Guid fileId, string title, string description);
+        Task<LiveOpsService.PersistUgcFileOutput> PersistUgcFile(Guid fileId, string title, string description);
 
         /// <summary>
         ///     Clone UGC File from an environment.
@@ -52,11 +55,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <param name="contentType">type of file</param>
         /// <param name="isSearchable">if the new file will be searchable or not</param>
         /// <param name="keepGuid">keep the same fileId or not</param>
-        Task<CloneUgcFileOutput> CloneUgcFile(Guid fileId, string shareCode, ForzaUGCContentType contentType, bool isSearchable, bool keepGuid);
+        Task<LiveOpsService.CloneUgcFileOutput> CloneUgcFile(Guid fileId, string shareCode, ForzaUGCContentType contentType, bool isSearchable, bool keepGuid);
 
         /// <summary>
         ///     Gets user data by gamertag.
         /// </summary>
-        Task<GetLiveOpsUserDataByGamerTagV2Output> GetLiveOpsUserDataByGamerTagV2(string gamertag);
+        Task<LiveOpsService.GetLiveOpsUserDataByGamerTagV2Output> GetLiveOpsUserDataByGamerTagV2(string gamertag);
     }
 }

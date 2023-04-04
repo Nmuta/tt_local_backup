@@ -4,19 +4,19 @@ import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source'
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { HasPlayedRecord } from '@models/loyalty-rewards';
+import { HasPlayedRecord, WoodstockLoyaltyRewardsTitle } from '@models/loyalty-rewards';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { of, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { chain } from 'lodash';
+import { chain, keys } from 'lodash';
 import { Store } from '@ngxs/store';
 import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodstock-player.service';
+import { WoodstockLoyaltyRewardsService } from '@services/api-v2/woodstock/player/loyalty-rewards/woodstock-loyalty-rewards.service';
 
 type LoyaltyRewardsDataInterface = {
   label: string;
@@ -37,25 +37,29 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
 
   public gameTitle: GameTitle = GameTitle.FH5;
   public externalProfileId: GuidLikeString;
-  public profileId: string;
   public getHasPlayedRecord$ = new Subject<void>();
   public hasPlayedRecordTable = new BetterMatTableDataSource<LoyaltyRewardsDataInterface>();
-  public titlesToSendRewardsTo: string[] = [];
-  public gameTitleColumns: string[] = [];
   public displayedColumns: string[] = [];
   public getMonitor = new ActionMonitor('GET Has played Records');
   public postMonitor = new ActionMonitor('POST Send Loyalty Rewards');
-  public singlePostMonitors: { [key: string]: ActionMonitor } = {};
-  public disableSingleActions: boolean = true;
   public disableSendActions: boolean = true;
-  public actionLabel: string = 'resendReward';
+  public actionLabel: string = 'Update Has Played';
+  public displayLabel: string = 'Has Played';
   public featureDisabledText = `Feature is not supported for your user role.`;
 
+  public gameTitleColumns = keys(WoodstockLoyaltyRewardsTitle);
+  public playedTitles: WoodstockLoyaltyRewardsTitle[] = [];
+  public titlesToSend: string[] = [];
+
+  public allowSend: boolean = false;
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
+
+  public errorMessage: string;
+  private errorAntecedent: string = 'Failed to add the following titles to loyalty history: ';
 
   constructor(
     protected readonly store: Store,
-    private woodstockPlayerService: WoodstockPlayerService,
+    private loyaltyRewardsService: WoodstockLoyaltyRewardsService,
   ) {
     super();
   }
@@ -75,7 +79,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
           this.hasPlayedRecordTable.data = [];
           this.displayedColumns = [];
           this.gameTitleColumns = [];
-          this.titlesToSendRewardsTo = [];
+          this.titlesToSend = [];
         }),
         filter(() => !!this.externalProfileId),
         switchMap(() => {
@@ -84,50 +88,65 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
           }
 
           this.getMonitor = this.getMonitor.repeat();
-          return this.woodstockPlayerService
-            ?.getUserHasPlayedRecord$(this.identity?.xuid, this.externalProfileId)
+          return this.loyaltyRewardsService
+            ?.getUserLoyalty$(this.identity?.xuid, this.externalProfileId)
             .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$));
         }),
         takeUntil(this.onDestroy$),
       )
+      /** Determine if we've already sent an award for a particular game title */
       .subscribe(record => {
         const hasPlayed = chain(record)
-          .map(game => [game.gameTitle, game.hasPlayed])
-          .fromPairs()
-          .value();
-
-        const rewardSent = chain(record)
           .map(game => [game.gameTitle, game.sentProfileNotification])
           .fromPairs()
           .value();
 
-        const actions = chain(record)
-          .map(game => [
-            game.gameTitle,
-            new ActionMonitor(`POST Send Loyalty Rewards for ${game.gameTitle}`),
-          ])
-          .fromPairs()
-          .value();
-
         const convertedData: LoyaltyRewardsDataInterface[] = [
-          { label: 'hasPlayed', titles: hasPlayed },
-          { label: 'rewardSent', titles: rewardSent },
-          { label: this.actionLabel },
+          { label: this.displayLabel, titles: hasPlayed },
+          { label: this.actionLabel, titles: hasPlayed },
         ];
 
-        this.singlePostMonitors = actions;
         this.hasPlayedRecordTable.data = convertedData;
         this.gameTitleColumns = (record as HasPlayedRecord[]).map(x => x.gameTitle);
         this.displayedColumns = ['label', ...this.gameTitleColumns];
 
         (record as HasPlayedRecord[]).forEach(i => {
           if (i.hasPlayed === true && i.sentProfileNotification === false) {
-            this.titlesToSendRewardsTo = this.titlesToSendRewardsTo.concat(i.gameTitle);
+            this.titlesToSend = this.titlesToSend.concat(i.gameTitle);
           }
         });
       });
 
     this.getHasPlayedRecord$.next();
+  }
+
+  /** Called to manually send out a reward. */
+  public updateTitlesPlayed(): void {
+    if (!this.identity.xuid || this.identity.xuid.isNaN()) {
+      return;
+    }
+
+    this.errorMessage = null;
+    this.postMonitor = this.postMonitor.repeat();
+
+    this.loyaltyRewardsService
+      .postUserLoyalty$(
+        this.identity.xuid,
+        this.externalProfileId,
+        this.titlesToSend as WoodstockLoyaltyRewardsTitle[],
+      )
+      .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(userLoyaltyUpdateResults => {
+        const fullSuccess = this.titlesToSend.every(title => userLoyaltyUpdateResults[title]);
+
+        if (!fullSuccess) {
+          const failures = this.titlesToSend.filter(title => !userLoyaltyUpdateResults[title]);
+          this.errorMessage = this.errorAntecedent + failures.join(', ');
+        }
+
+        this.getHasPlayedRecord$.next();
+        this.allowSend = false;
+      });
   }
 
   /** Called when a new profile is picked. */
@@ -137,46 +156,14 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
     this.getHasPlayedRecord$.next();
   }
 
-  /** Sends rewards to players for titles they should have recieved rewards for but did not. */
-  public resendRewards(): void {
-    if (!this.identity.xuid || this.identity.xuid.isNaN()) {
-      return;
+  /** Controls disabled state for updating titles that have been played. */
+  public toggleTitleSend($event: MatCheckboxChange, gameTitle: string): void {
+    if ($event.checked) {
+      this.titlesToSend.push(gameTitle);
+      this.allowSend = true;
+    } else {
+      this.titlesToSend = this.titlesToSend.filter(title => title != gameTitle);
+      this.allowSend = this.titlesToSend.length > 0;
     }
-    this.postMonitor = this.postMonitor.repeat();
-
-    this.woodstockPlayerService
-      .postResendLoyaltyRewards$(
-        this.identity?.xuid,
-        this.externalProfileId,
-        this.titlesToSendRewardsTo,
-      )
-      .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.getHasPlayedRecord$.next();
-      });
-  }
-
-  /** Called to manually send out a reward. */
-  public sendReward(gameAbbriviation: string): void {
-    if (!this.identity.xuid || this.identity.xuid.isNaN()) {
-      return;
-    }
-    this.singlePostMonitors[gameAbbriviation] = this.singlePostMonitors[gameAbbriviation].repeat();
-
-    this.woodstockPlayerService
-      .postResendLoyaltyRewards$(this.identity?.xuid, this.externalProfileId, [gameAbbriviation])
-      .pipe(
-        this.singlePostMonitors[gameAbbriviation].monitorSingleFire(),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe(() => {
-        this.disableSingleActions = true;
-        this.getHasPlayedRecord$.next();
-      });
-  }
-
-  /** Controls disabled state for single Legacy titles. */
-  public toggleSingleSend($event: MatCheckboxChange): void {
-    this.disableSingleActions = !$event.checked;
   }
 }

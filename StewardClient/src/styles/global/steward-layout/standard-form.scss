@@ -13,6 +13,15 @@
     }
   }
 
+  &.sf-tab-container,
+  .sf-tab-container {
+    margin: $gap-small;
+
+    > * {
+      margin: $gap-small;
+    }
+  }
+
   .sf-horizontal {
     display: flex;
     flex-flow: row wrap;
