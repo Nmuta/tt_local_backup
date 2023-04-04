@@ -26,7 +26,6 @@ import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
-import { BackgroundJob } from '@models/background-job';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   BulkCommunityMessage,
