@@ -29,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Xls.Security.FH5_main.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -206,7 +207,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [SwaggerResponse(200, type: typeof(IList<BanConfiguration>))]
         public async Task<IActionResult> GetBanConfigurations()
         {
-            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync().ConfigureAwait(true);
+            var pegasusEnvironment = this.WoodstockEndpoint.Value == WoodstockContracts.WoodstockEndpoint.Studio
+                ? WoodstockPegasusEnvironment.Dev : WoodstockPegasusEnvironment.Prod;
+
+            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync(pegasusEnvironment).ConfigureAwait(true);
 
             var banConfigurations = new List<BanConfiguration>();
 

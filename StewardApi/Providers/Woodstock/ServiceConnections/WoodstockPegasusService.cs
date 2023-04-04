@@ -256,13 +256,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync()
+        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment)
         {
-            var banConfigurationKey = $"{PegasusBaseCacheKey}BanConfiguration";
+            var banConfigurationKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_BanConfiguration";
 
             async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
             {
-                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", this.cmsEnvironment).ConfigureAwait(false);
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(banConfigurationKey, TimeSpan.FromDays(1), banConfigurations);
 
