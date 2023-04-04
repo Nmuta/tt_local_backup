@@ -12,6 +12,7 @@ using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -98,8 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///    Sends Loyalty Rewards for selected titles.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(200)]
-        [SwaggerResponse(200, type: typeof(Dictionary<ForzaLoyaltyRewardsSupportedTitles, bool>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<SteelheadLoyaltyRewardsTitle, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin,
@@ -132,23 +132,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             if (invalidGameTitles.Count > 0)
             {
-                throw new InvalidArgumentsStewardException($"Game titles: {invalidGameTitles} were not found.");
+                throw new InvalidArgumentsStewardException($"Game titles: {string.Join(", ", invalidGameTitles)} were not found.");
             }
 
-            var gameTitleEnums = new List<ForzaLoyaltyRewardsSupportedTitles>();
-            foreach (var validTitle in validGameTitles)
-            {
-                var convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(validTitle);
-                gameTitleEnums.Add(convertedEnum);
-            }
-
-            var successResponse = new Dictionary<ForzaLoyaltyRewardsSupportedTitles, bool>();
+            var successResponse = new Dictionary<SteelheadLoyaltyRewardsTitle, bool>();
             var partialSuccess = false;
-            foreach (var titleEnum in gameTitleEnums)
+
+            foreach (var titleEnum in validGameTitles)
             {
                 try
                 {
-                    await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, titleEnum).ConfigureAwait(true);
+                    ForzaLoyaltyRewardsSupportedTitles convertedEnum = this.mapper.SafeMap<ForzaLoyaltyRewardsSupportedTitles>(titleEnum);
+
+                    if (!Enum.IsDefined(typeof(ForzaLoyaltyRewardsSupportedTitles), convertedEnum))
+                    {
+                        throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
+                    }
+
+                    await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, convertedEnum).ConfigureAwait(true);
                     successResponse.Add(titleEnum, true);
                 }
                 catch (Exception ex)

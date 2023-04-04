@@ -8,11 +8,9 @@ import { of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import {
-  SteelheadLoyaltyRewardsService,
-  SteelheadLoyaltyRewardsTitle,
-} from '@services/api-v2/steelhead/player/loyalty-rewards/steelhead-loyalty-rewards.service';
+import { SteelheadLoyaltyRewardsService } from '@services/api-v2/steelhead/player/loyalty-rewards/steelhead-loyalty-rewards.service';
 import { includes, keys } from 'lodash';
+import { SteelheadLoyaltyRewardsTitle } from '@models/loyalty-rewards';
 
 type LoyaltyRewardsDataInterface = {
   label: string;

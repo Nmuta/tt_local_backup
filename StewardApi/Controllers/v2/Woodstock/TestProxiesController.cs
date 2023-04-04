@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.StorefrontManagement, "StorefrontManagement", out exception))
+            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
@@ -141,13 +141,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         /// <summary>
         ///     Verifies Permissions Management Service proxy.
         /// </summary>
-        [HttpGet("StorefrontManagement")]
+        [HttpGet("StorefrontManagementService")]
         [SwaggerResponse(200, type: typeof(bool))]
         public IActionResult StorefrontManagementProxy()
         {
             var services = this.WoodstockServices.Value;
 
-            if (!this.VerifyServiceProxy(() => services.StorefrontManagement, "StorefrontManagement", out var exception))
+            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out var exception))
             {
                 throw exception;
             }

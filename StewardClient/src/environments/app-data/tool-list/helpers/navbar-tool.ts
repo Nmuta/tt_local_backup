@@ -40,4 +40,5 @@ export enum NavbarTool {
   CreateAuction = 'create-auction',
   WelcomeCenterTiles = 'welcome-center-tiles',
   Home = 'home',
+  ServicesTableStorage = 'services-table-storage',
 }

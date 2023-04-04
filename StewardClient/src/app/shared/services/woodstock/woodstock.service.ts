@@ -6,14 +6,12 @@ import {
   IdentityQueryAlpha,
   IdentityResultAlpha,
 } from '@models/identity-query.model';
-import { LspGroup, LspGroups } from '@models/lsp-group';
+import { LspGroups } from '@models/lsp-group';
 import {
   LiveOpsExtendedBanDescriptions,
   WoodstockBanSummary,
   WoodstockConsoleDetailsEntry,
-  WoodstockGift,
   WoodstockGiftHistory,
-  WoodstockGroupGift,
   WoodstockMasterInventory,
   WoodstockPlayerAccountInventory,
   WoodstockPlayerDetails,
@@ -28,7 +26,6 @@ import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
-import { GiftResponse } from '@models/gift-response';
 import { BackgroundJob } from '@models/background-job';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {
@@ -48,7 +45,6 @@ import {
 import { UgcType } from '@models/ugc-filters';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
 import { SimpleCar } from '@models/cars';
-import { Gift, GroupGift } from '@models/gift';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
@@ -400,35 +396,6 @@ export class WoodstockService {
     );
   }
 
-  /** Gift players inventory items. */
-  public postGiftPlayers$(gift: WoodstockGroupGift): Observable<GiftResponse<BigNumber>[]> {
-    return this.apiService.postRequest$<GiftResponse<BigNumber>[]>(
-      `${this.basePath}/gifting/players`,
-      gift,
-    );
-  }
-
-  /** Gift players inventory items using a background task. */
-  public postGiftPlayersUsingBackgroundTask$(
-    gift: WoodstockGroupGift,
-  ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/gifting/players/useBackgroundProcessing`,
-      gift,
-    );
-  }
-
-  /** Gift lsp group inventory items. */
-  public postGiftLspGroup$(
-    lspGroup: LspGroup,
-    gift: WoodstockGift,
-  ): Observable<GiftResponse<BigNumber>> {
-    return this.apiService.postRequest$<GiftResponse<BigNumber>>(
-      `${this.basePath}/gifting/groupId(${lspGroup.id})`,
-      gift,
-    );
-  }
-
   /** Gets player auctions by XUID. */
   public getPlayerAuctionsByXuid$(
     xuid: BigNumber,
@@ -586,29 +553,6 @@ export class WoodstockService {
     return this.apiService.postRequest$<void>(
       `${this.basePath}/storefront/itemId(${status.itemId})/featuredStatus`,
       status,
-    );
-  }
-
-  /** Gifts livery to players.  */
-  public postGiftLiveryToPlayersUsingBackgroundJob$(
-    liveryId: string,
-    groupGift: GroupGift,
-  ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/gifting/livery(${liveryId})/players/useBackgroundProcessing`,
-      groupGift,
-    );
-  }
-
-  /** Gifts livery to an LSP group.  */
-  public postGiftLiveryToLspGroup$(
-    liveryId: string,
-    lspGroup: LspGroup,
-    gift: Gift,
-  ): Observable<GiftResponse<BigNumber>> {
-    return this.apiService.postRequest$<GiftResponse<BigNumber>>(
-      `${this.basePath}/gifting/livery(${liveryId})/groupId(${lspGroup.id})`,
-      gift,
     );
   }
 

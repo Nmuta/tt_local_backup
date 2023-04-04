@@ -10,6 +10,9 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementServ
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="StorefrontManagementService"/>.
+    /// </summary>
     public interface IStorefrontManagementService
     {
         /// <summary>Gets a specific livery.</summary>

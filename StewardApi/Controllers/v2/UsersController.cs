@@ -173,6 +173,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             }
 
             var user = this.mapper.SafeMap<StewardUser>(internalUser);
+            var updatedPerms = this.AddManageTeamToAttributesList(user.Attributes.ToList());
+            user.Attributes = updatedPerms;
             user.Team = team;
             await this.stewardUserProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
@@ -203,6 +205,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 throw new InvalidArgumentsStewardException($"Steward user does not have a team. (userId: {userId})");
             }
 
+            var updatedPerms = this.RemoveManageTeamFromAttributesList(mappedUser.Attributes.ToList());
+            mappedUser.Attributes = updatedPerms;
             mappedUser.Team = null;
             await this.stewardUserProvider.UpdateStewardUserAsync(mappedUser).ConfigureAwait(true);
 
@@ -290,6 +294,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             {
                 throw new UnknownFailureStewardException($"Failed to updated AAD user to DB during sync. (aadUserId: {userToUpdate.ObjectId})", ex);
             }
+        }
+
+        private IList<AuthorizationAttribute> AddManageTeamToAttributesList(IList<AuthorizationAttribute> attributes)
+        {
+            var manageTeamAttr = attributes.FirstOrDefault(attr => attr.Attribute == UserAttribute.ManageStewardTeam);
+            if (manageTeamAttr == null)
+            {
+                attributes.Add(new AuthorizationAttribute()
+                {
+                    Attribute = UserAttribute.ManageStewardTeam,
+                });
+            }
+
+            return attributes;
+        }
+
+        private IList<AuthorizationAttribute> RemoveManageTeamFromAttributesList(IList<AuthorizationAttribute> attributes)
+        {
+            var manageTeamAttr = attributes.FirstOrDefault(attr => attr.Attribute == UserAttribute.ManageStewardTeam);
+            if (manageTeamAttr != null)
+            {
+                attributes.Remove(manageTeamAttr);
+            }
+
+            return attributes;
         }
     }
 }
