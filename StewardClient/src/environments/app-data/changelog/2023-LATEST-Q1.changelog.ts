@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging, NavbarTool.WelcomeCenterTiles] },
+      uuid: 'bf98f050-9392-43e1-a9bb-b6f9acbd3e21',
+      shortText: 'Hook up localized string creation form to new backing APIs',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'c1652439-efa9-4332-ba11-59e6d3ec3cd3',
       shortText: 'Clean up test bed modules after each unit test file',
