@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'f382179c-2d6c-469b-93b7-94c3cbb2b015',
+      shortText: 'Add display condition field',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
       shortText: 'Add timer field',
     },

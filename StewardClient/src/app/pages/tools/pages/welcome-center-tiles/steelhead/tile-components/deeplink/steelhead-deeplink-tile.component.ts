@@ -202,6 +202,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
       tileTitle: deeplinkTile.tileTitle,
       tileType: deeplinkTile.tileType,
       timer: deeplinkTile.timer,
+      displayConditions: deeplinkTile.displayConditions,
     } as WelcomeCenterTile;
 
     this.formControls.baseTile.setValue(baseTile);

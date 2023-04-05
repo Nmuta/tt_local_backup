@@ -1,6 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
+  FormArray,
   FormControl,
   FormGroup,
   NG_VALIDATORS,
@@ -53,6 +54,7 @@ export class GeneralTileComponent extends BaseComponent {
   public timerInstanceEnum = TimerInstance;
   public timerTypeEnum = TimerType;
   public timerReferenceOptions: Map<string, string>;
+  public displayConditionReferences: Map<string, string>;
   public selectedTimerReferenceInstance: TimerReferenceInstance;
   // Min date is needed for datetime picker to not crash. We use epoch time
   public minDate = DateTime.fromSeconds(0);
@@ -70,6 +72,7 @@ export class GeneralTileComponent extends BaseComponent {
     timerReferenceId: new FormControl(),
     timerCustomFromDate: new FormControl(),
     timerCustomToDate: new FormControl(),
+    displayConditions: new FormArray([]),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
@@ -83,6 +86,12 @@ export class GeneralTileComponent extends BaseComponent {
         return steelheadLocalizationService.getLocalizedStrings$();
       },
     };
+
+    this.displayConditionReferences = new Map([
+      ['d435a35f-df81-466c-9f7a-96313031ff87', 'Display After FTUE'],
+      ['88b4383c-abe8-4839-8ad1-c6a3e58fa07a', 'Less than 2 minutes'],
+      ['29d84c8c-19f9-4e7d-a228-05a8e7bc861e', 'Greater than 45 minutes'],
+    ]);
 
     this.formControls.timerInstance.valueChanges
       .pipe(takeUntil(this.onDestroy$))
@@ -168,6 +177,14 @@ export class GeneralTileComponent extends BaseComponent {
       if (data.timer.timerReference) {
         this.formControls.timerReferenceId.setValue(data.timer.timerReference.refId);
       }
+
+      // Display conditions
+      this.formControls.displayConditions.clear();
+      if (data.displayConditions.item) {
+        for (const displayCondition of data.displayConditions.item) {
+          this.addDisplayCondition(displayCondition.refId, displayCondition.when);
+        }
+      }
     }
   }
 
@@ -250,10 +267,36 @@ export class GeneralTileComponent extends BaseComponent {
     } else {
       welcomeCenterTile.timer = null;
     }
+
+    if (this.formControls.displayConditions.controls.length > 0) {
+      welcomeCenterTile.displayConditions.item = [];
+      this.formControls.displayConditions.controls.forEach(element => {
+        welcomeCenterTile.displayConditions.item.push({
+          refId: element.get('reference').value,
+          when: element.get('when').value,
+        });
+      });
+    } else {
+      welcomeCenterTile.displayConditions.item = null;
+    }
   }
 
   /** Removes the selected timer instance. */
   public removeTimerInstance(): void {
     this.formControls.timerInstance.setValue(undefined);
+  }
+
+  /** Add a new display condition. */
+  public addDisplayCondition(reference: string, when: string): void {
+    const newDisplayConditionForm = new FormGroup({
+      reference: new FormControl(reference),
+      when: new FormControl(when),
+    });
+    this.formControls.displayConditions.push(newDisplayConditionForm);
+  }
+
+  /** Remove the selected display condition. */
+  public removeDisplayCondition(index: number): void {
+    this.formControls.displayConditions.removeAt(index);
   }
 }

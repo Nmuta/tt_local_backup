@@ -93,6 +93,17 @@ export interface Timer {
   timerReference: TimerReference;
 }
 
+/** Base interface for a display condition. */
+export interface DisplayConditionItem {
+  refId: string;
+  when: string;
+}
+
+/** Base interface for a display conditions wrapper. */
+export interface DisplayCondition {
+  item: DisplayConditionItem[];
+}
+
 /** Base interface for a welcome center tile. */
 export interface WelcomeCenterTile {
   friendlyName: string;
@@ -102,6 +113,7 @@ export interface WelcomeCenterTile {
   tileDescription: LocalizedText;
   tileImagePath: string;
   timer: Timer;
+  displayConditions: DisplayCondition;
   derivedType?: TileType;
 }
 
