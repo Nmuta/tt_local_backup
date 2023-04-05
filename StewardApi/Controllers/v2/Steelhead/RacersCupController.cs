@@ -253,8 +253,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     var newSeries = new RacersCupSeries
                     {
                         Name = scheduledSeriesData.ScheduledSeries.Name,
-                        OpenTimeUtc = scheduledSeriesData.ScheduledSeries.OpenTime.Value,
-                        CloseTimeUtc = scheduledSeriesData.ScheduledSeries.CloseTime.Value,
+                        OpenTimeUtc = scheduledSeriesData.ScheduledSeries.OpenTime.HasValue ? scheduledSeriesData.ScheduledSeries.OpenTime.Value : null,
+                        CloseTimeUtc = scheduledSeriesData.ScheduledSeries.CloseTime.HasValue ? scheduledSeriesData.ScheduledSeries.CloseTime.Value : null,
                         Events = events,
                         EventPlaylistTransitionTimeUtc = scheduledSeriesData.ScheduledSeries.EventPlaylistTransitionTime,
                     };
