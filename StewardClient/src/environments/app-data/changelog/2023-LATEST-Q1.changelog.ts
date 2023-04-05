@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'c1652439-efa9-4332-ba11-59e6d3ec3cd3',
+      shortText: 'Clean up test bed modules after each unit test file',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
       shortText: 'Add timer field',
