@@ -53,9 +53,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
     public class TimerCustomRangeBridge
     {
-        public List<RangePointBridge> From { get; set; }
+        public RangePointBridge From { get; set; }
 
-        public List<RangePointBridge> To { get; set; }
+        public RangePointBridge To { get; set; }
     }
 
     public class RangePointBridge
@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         ///     is XmlText in the model, so its value is written
         ///     but the property name is not created into an element.
         /// </summary>
-        public string Text
+        public string DateUtc
         {
             get => this.InternalDateUtc.ToString("O");
             set => this.InternalDateUtc = DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();

@@ -1,6 +1,6 @@
 <div class="wrapper" [formGroup]="formGroup">
   <section formGroupName="date" class="vertical">
-    <mat-form-field appearance="fill">
+    <mat-form-field class="sf-default-hint" appearance="fill">
       <mat-label>Date</mat-label>
       <input
         matInput
@@ -14,7 +14,7 @@
     </mat-form-field>
   </section>
   <section formGroupName="time">
-    <mat-form-field>
+    <mat-form-field class="sf-default-hint">
       <mat-label>Time</mat-label>
       <timepicker
         [formControl]="formControls.time"

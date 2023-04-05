@@ -75,6 +75,9 @@ export class TimepickerComponent
 
   /** MatFormFieldControl hook. */
   public get errorState(): boolean {
+    if (this.ngControl?.disabled) {
+      return false;
+    }
     return !(this.ngControl?.valid ?? true);
   }
 

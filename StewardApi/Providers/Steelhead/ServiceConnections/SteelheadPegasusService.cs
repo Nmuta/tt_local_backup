@@ -682,7 +682,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + typeNamespace)
                 .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
-
             selectedElement.ShouldNotBeNull(nameof(selectedElement));
             return selectedElement;
         }
