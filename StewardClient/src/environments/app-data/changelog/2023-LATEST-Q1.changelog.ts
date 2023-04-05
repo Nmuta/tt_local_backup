@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
+      shortText: 'Add timer field',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '99394a85-7ac3-40af-a23d-e7367fedb39f',
       shortText: 'Change DeepLink category to manufacturer',
     },
