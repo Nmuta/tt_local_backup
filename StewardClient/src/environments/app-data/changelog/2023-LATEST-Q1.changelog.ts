@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: '58670a58-ff9c-4d5f-a985-bbabb955c5b4',
+      shortText: 'Show reporting state for UGC as humanized string in UGC overview',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
       shortText: 'Add timer field',
