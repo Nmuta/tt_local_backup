@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.ServicesTableStorage] },
+      uuid: 'd243963e-dab1-466f-99b3-f8d9b643866d',
+      shortText: 'Filter out entries for unselected external profile ID',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging, NavbarTool.WelcomeCenterTiles] },
       uuid: 'bf98f050-9392-43e1-a9bb-b6f9acbd3e21',
       shortText: 'Hook up localized string creation form to new backing APIs',

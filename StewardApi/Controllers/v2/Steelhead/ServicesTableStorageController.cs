@@ -110,7 +110,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     finalResponse.Add(convertedEntry);
                 }
 
-                return this.Ok(finalResponse);
+                // Some results have the external profile ID as part of the row key instead of the partition key.
+                // If that guid doesn't match the external profile ID we're using, we need to filter them out.
+                string guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
+
+                var filteredResponse = finalResponse.Where(entry => 
+                {
+                    var rowKeyGuids = Regex.Matches(entry.RowKey, guidPattern);
+                    var partitionKeyGuids = Regex.Matches(entry.PartitionKey, guidPattern);
+                    var rowKeyContainsGuid = rowKeyGuids.Count > 0;
+                    var partitionKeyNoGuid = partitionKeyGuids.Count == 0;
+                    var rowKeyGuidMatchProfileId = rowKeyGuids.All(guid => guid.Value == externalProfileIdGuid.ToString());
+
+                    if (rowKeyContainsGuid && partitionKeyNoGuid && !rowKeyGuidMatchProfileId)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                return this.Ok(filteredResponse);
             }
             catch (Exception ex)
             {
