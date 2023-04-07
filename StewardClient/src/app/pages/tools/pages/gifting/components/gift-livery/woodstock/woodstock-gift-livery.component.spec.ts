@@ -9,7 +9,6 @@ import { UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { catchError, take } from 'rxjs/operators';
 import { EMPTY, of, throwError } from 'rxjs';
-import { Gift, GroupGift } from '@models/gift';
 import { LspGroup } from '@models/lsp-group';
 import { WoodstockGiftLiveryComponent } from './woodstock-gift-livery.component';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
@@ -21,12 +20,20 @@ import { GiftResponse } from '@models/gift-response';
 import BigNumber from 'bignumber.js';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
+import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
+import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service.mock';
+import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-player-gift.service.mock';
+import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
+import { ZERO } from '@helpers/bignumbers';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('WoodstockGiftLiveryComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftLiveryComponent>;
   let component: WoodstockGiftLiveryComponent;
 
   let mockWoodstockService: WoodstockService;
+  let mockWoodstockPlayersGiftService: WoodstockPlayersGiftService;
+  let mockWoodstockGroupGiftService: WoodstockGroupGiftService;
   let mockBackgroundJobService: BackgroundJobService;
   const liveryId = faker.datatype.uuid();
 
@@ -38,15 +45,22 @@ describe('WoodstockGiftLiveryComponent', () => {
         NgxsModule.forRoot(),
         ReactiveFormsModule,
       ],
-      declarations: [WoodstockGiftLiveryComponent],
+      declarations: [WoodstockGiftLiveryComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockBackgroundJobService(), createMockWoodstockService()],
+      providers: [
+        createMockBackgroundJobService(),
+        createMockWoodstockService(),
+        createMockWoodstockPlayersGiftService(),
+        createMockWoodstockGroupGiftService(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;
 
     mockWoodstockService = TestBed.inject(WoodstockService);
+    mockWoodstockPlayersGiftService = TestBed.inject(WoodstockPlayersGiftService);
+    mockWoodstockGroupGiftService = TestBed.inject(WoodstockGroupGiftService);
     mockBackgroundJobService = TestBed.inject(BackgroundJobService);
   }));
 
@@ -73,8 +87,8 @@ describe('WoodstockGiftLiveryComponent', () => {
     const giftReason = faker.random.words(5);
 
     beforeEach(() => {
-      mockWoodstockService.postGiftLiveryToPlayersUsingBackgroundJob$ = jasmine
-        .createSpy('postGiftLiveryToPlayersUsingBackgroundJob')
+      mockWoodstockPlayersGiftService.giftLiveriesByXuids$ = jasmine
+        .createSpy('giftLiveriesByXuids$')
         .and.returnValue(of());
     });
 
@@ -93,9 +107,7 @@ describe('WoodstockGiftLiveryComponent', () => {
             expect(true).toBeFalsy();
           });
 
-        expect(
-          mockWoodstockService.postGiftLiveryToPlayersUsingBackgroundJob$,
-        ).not.toHaveBeenCalled();
+        expect(mockWoodstockPlayersGiftService.giftLiveriesByXuids$).not.toHaveBeenCalled();
       });
     });
 
@@ -114,9 +126,7 @@ describe('WoodstockGiftLiveryComponent', () => {
             expect(true).toBeFalsy();
           });
 
-        expect(
-          mockWoodstockService.postGiftLiveryToPlayersUsingBackgroundJob$,
-        ).not.toHaveBeenCalled();
+        expect(mockWoodstockPlayersGiftService.giftLiveriesByXuids$).not.toHaveBeenCalled();
       });
     });
 
@@ -124,9 +134,12 @@ describe('WoodstockGiftLiveryComponent', () => {
       it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
         component.giftLiveryToPlayers$(liveryId, xuids, giftReason);
 
-        expect(
-          mockWoodstockService.postGiftLiveryToPlayersUsingBackgroundJob$,
-        ).toHaveBeenCalledWith(liveryId, { xuids: xuids, giftReason: giftReason } as GroupGift);
+        expect(mockWoodstockPlayersGiftService.giftLiveriesByXuids$).toHaveBeenCalledWith(
+          giftReason,
+          [liveryId],
+          xuids,
+          ZERO,
+        );
       });
     });
   });
@@ -136,8 +149,8 @@ describe('WoodstockGiftLiveryComponent', () => {
     const giftReason = faker.random.words(5);
 
     beforeEach(() => {
-      mockWoodstockService.postGiftLiveryToLspGroup$ = jasmine
-        .createSpy('postGiftLiveryToLspGroup$')
+      mockWoodstockGroupGiftService.giftLiveriesByUserGroup$ = jasmine
+        .createSpy('giftLiveriesByUserGroup$')
         .and.returnValue(of());
     });
 
@@ -156,7 +169,7 @@ describe('WoodstockGiftLiveryComponent', () => {
             expect(true).toBeFalsy();
           });
 
-        expect(mockWoodstockService.postGiftLiveryToLspGroup$).not.toHaveBeenCalled();
+        expect(mockWoodstockGroupGiftService.giftLiveriesByUserGroup$).not.toHaveBeenCalled();
       });
     });
 
@@ -164,10 +177,11 @@ describe('WoodstockGiftLiveryComponent', () => {
       it('should call unriseService.postGiftLiveryToPlayersUsingBackgroundJob with correct parmas', () => {
         component.giftLiveryToLspGroup$(liveryId, lspGroup, giftReason);
 
-        expect(mockWoodstockService.postGiftLiveryToLspGroup$).toHaveBeenCalledWith(
-          liveryId,
-          lspGroup,
-          { giftReason: giftReason } as Gift,
+        expect(mockWoodstockGroupGiftService.giftLiveriesByUserGroup$).toHaveBeenCalledWith(
+          giftReason,
+          [liveryId],
+          lspGroup.id,
+          ZERO,
         );
       });
     });

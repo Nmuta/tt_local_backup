@@ -127,41 +127,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             return this.Ok();
         }
 
-        private async Task SyncAddNewUserAsync(StewardUser userToAdd)
+        /// <summary>
+        ///     Gets all Steward teams.
+        /// </summary>
+        [HttpGet("teams")]
+        [SwaggerResponse(200, type: typeof(IDictionary<string, Team>))]
+        public async Task<IActionResult> GetTeamsAsync()
         {
-            try
-            {
-                var aadUserProfile = await this.msGraphService.GetAadUserAsync(userToAdd.ObjectId).ConfigureAwait(true);
-                if (aadUserProfile == null)
-                {
-                    throw new UnknownFailureStewardException($"Failed to pull AAD user profile during sync. (aadUserId: {userToAdd.ObjectId})");
-                }
-
-                userToAdd.EmailAddress = aadUserProfile.Mail;
-                await this.stewardUserProvider.CreateStewardUserAsync(userToAdd).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to add new AAD user to DB during sync. (aadUserId: {userToAdd.ObjectId})", ex);
-            }
-        }
-
-        private async Task SyncUpdateUserAsync(StewardUserInternal userToUpdate)
-        {
-            try
-            {
-                await this.stewardUserProvider.UpdateStewardUserAsync(
-                    userToUpdate.ObjectId,
-                    userToUpdate.Name,
-                    userToUpdate.EmailAddress,
-                    userToUpdate.Role,
-                    userToUpdate.Attributes,
-                    userToUpdate.Team).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to updated AAD user to DB during sync. (aadUserId: {userToUpdate.ObjectId})", ex);
-            }
+            var teams = await this.GetAllTeamsAsync().ConfigureAwait(true);
+            return this.Ok(teams);
         }
 
         /// <summary>
@@ -199,10 +173,152 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             }
 
             var user = this.mapper.SafeMap<StewardUser>(internalUser);
+            var updatedPerms = this.AddManageTeamToAttributesList(user.Attributes.ToList());
+            user.Attributes = updatedPerms;
             user.Team = team;
             await this.stewardUserProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
             return await this.GetTeamAsync(userId).ConfigureAwait(true);
+        }
+
+        /// <summary>
+        ///     Deletes user team.
+        /// </summary>
+        [HttpDelete("{userId}/team")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
+        [AutoActionLogging(TitleCodeName.None, StewardAction.Delete, StewardSubject.UserTeam)]
+        [Authorize(Policy = UserAttribute.AdminFeature)]
+        public async Task<IActionResult> DeleteTeamAsync(string userId)
+        {
+            var user = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
+            if (user == null)
+            {
+                throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {userId})");
+            }
+
+            var mappedUser = this.mapper.SafeMap<StewardUser>(user);
+            if (mappedUser.Team == null)
+            {
+                throw new InvalidArgumentsStewardException($"Steward user does not have a team. (userId: {userId})");
+            }
+
+            var updatedPerms = this.RemoveManageTeamFromAttributesList(mappedUser.Attributes.ToList());
+            mappedUser.Attributes = updatedPerms;
+            mappedUser.Team = null;
+            await this.stewardUserProvider.UpdateStewardUserAsync(mappedUser).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Gets user's team lead.
+        /// </summary>
+        [HttpGet("{userId}/teamLead")]
+        [SwaggerResponse(200, type: typeof(StewardUser))]
+        public async Task<IActionResult> GetUsersTeamLeadAsync(string userId)
+        {
+            var parsedUserId = userId.TryParseGuidElseThrow("userId");
+            var teams = await this.GetAllTeamsAsync().ConfigureAwait(true);
+
+            foreach (var team in teams)
+            {
+                var members = team.Value.Members;
+                var isUserMember = members.FirstOrDefault(member => member == parsedUserId) != default(Guid);
+                if (isUserMember)
+                {
+                    var teamLead = await this.stewardUserProvider.GetStewardUserAsync(team.Key).ConfigureAwait(true);
+                    var mappedTeamLead = this.mapper.SafeMap<StewardUser>(teamLead);
+
+                    return this.Ok(mappedTeamLead);
+                }
+            }
+
+            return this.Ok(null);
+        }
+
+        /// <summary>
+        ///     Gets all Steward teams.
+        /// </summary>
+        private async Task<IDictionary<string, Team>> GetAllTeamsAsync()
+        {
+            var internalUsers = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);
+            var users = this.mapper.SafeMap<IList<StewardUser>>(internalUsers);
+
+            var teams = new Dictionary<string, Team>();
+            users.ForEach(user =>
+            {
+                if (user.Team != null)
+                {
+                    teams.Add(user.ObjectId, user.Team);
+                }
+            });
+
+            return teams;
+        }
+
+        private async Task SyncAddNewUserAsync(StewardUser userToAdd)
+        {
+            try
+            {
+                var aadUserProfile = await this.msGraphService.GetAadUserAsync(userToAdd.ObjectId).ConfigureAwait(true);
+                if (aadUserProfile == null)
+                {
+                    throw new UnknownFailureStewardException($"Failed to pull AAD user profile during sync. (aadUserId: {userToAdd.ObjectId})");
+                }
+
+                userToAdd.EmailAddress = aadUserProfile.Mail;
+                await this.stewardUserProvider.CreateStewardUserAsync(userToAdd).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to add new AAD user to DB during sync. (aadUserId: {userToAdd.ObjectId})", ex);
+            }
+        }
+
+        private async Task SyncUpdateUserAsync(StewardUserInternal userToUpdate)
+        {
+            try
+            {
+                await this.stewardUserProvider.UpdateStewardUserAsync(
+                    userToUpdate.ObjectId,
+                    userToUpdate.Name,
+                    userToUpdate.EmailAddress,
+                    userToUpdate.Role,
+                    userToUpdate.Attributes,
+                    userToUpdate.Team).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to updated AAD user to DB during sync. (aadUserId: {userToUpdate.ObjectId})", ex);
+            }
+        }
+
+        private IList<AuthorizationAttribute> AddManageTeamToAttributesList(IList<AuthorizationAttribute> attributes)
+        {
+            var manageTeamAttr = attributes.FirstOrDefault(attr => attr.Attribute == UserAttribute.ManageStewardTeam);
+            if (manageTeamAttr == null)
+            {
+                attributes.Add(new AuthorizationAttribute()
+                {
+                    Attribute = UserAttribute.ManageStewardTeam,
+                });
+            }
+
+            return attributes;
+        }
+
+        private IList<AuthorizationAttribute> RemoveManageTeamFromAttributesList(IList<AuthorizationAttribute> attributes)
+        {
+            var manageTeamAttr = attributes.FirstOrDefault(attr => attr.Attribute == UserAttribute.ManageStewardTeam);
+            if (manageTeamAttr != null)
+            {
+                attributes.Remove(manageTeamAttr);
+            }
+
+            return attributes;
         }
     }
 }

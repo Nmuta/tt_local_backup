@@ -1,0 +1,126 @@
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group mat-stretch-tabs class="steward-layout-vertical-fill">
+        <mat-tab label="Player Selection">
+          <mat-card class="player-selection steward-layout-vertical-fill">
+            <player-selection-bulk
+              [disableLookupTypes]="['t10Id']"
+              [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
+              [sortFn]="identitySortFn"
+              (found)="onPlayerIdentitiesChange($event)"
+              (selected)="playerIdentitySelected($event)"
+            >
+              <ng-template let-identity>
+                <ban-chip-icon
+                  *ngIf="identity?.general?.xuid"
+                  [identity]="identity.general"
+                  [banSummary]="summaryLookup[identity.general.xuid]"
+                ></ban-chip-icon>
+              </ng-template>
+            </player-selection-bulk>
+          </mat-card>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="steward-layout-pane steward-layout-fill ban-history">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Ban History</mat-card-title>
+          <mat-card-subtitle>Forum</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <forum-ban-history-compact
+            *ngFor="let xuid of bannedXuids"
+            [xuid]="xuid"
+            [hidden]="!xuid.isEqualTo(selectedPlayer?.xuid)"
+          ></forum-ban-history-compact>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="steward-layout-pane steward-layout-main-group">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Player Ban</mat-card-title>
+        <mat-card-subtitle>Forum</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <span class="warn"> Forum Banning through Steward is not doing any actual banning. </span>
+        <ng-container *waitForMonitor="banActionMonitor">
+          <form [formGroup]="formGroup" class="sf-wrapper">
+            <div class="sf-vertical">
+              <mat-form-field appearance="fill" class="sf-default-hint">
+                <mat-label>Ban Reason</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControl]="formControls.banReason"
+                  placeholder="ʕ•́ᴥ•̀ʔっ"
+                  required
+                  [matAutocomplete]="autoGroup"
+                />
+                <mat-autocomplete #autoGroup="matAutocomplete">
+                  <mat-optgroup
+                    *ngFor="let group of banReasonOptions | async"
+                    [label]="group.group"
+                  >
+                    <mat-option *ngFor="let value of group.values" [value]="value">{{
+                      value
+                    }}</mat-option>
+                  </mat-optgroup>
+                </mat-autocomplete>
+                <mat-error *ngIf="formControls.banReason.hasError('required')"
+                  >Missing ban reason</mat-error
+                >
+              </mat-form-field>
+              <div>
+                <mat-form-field appearance="fill">
+                  <mat-label>Issued Date (mm/dd/yyyy)</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [formControl]="formControls.issuedDate"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-hint>The date the ban was given to the player</mat-hint>
+                </mat-form-field>
+              </div>
+              <div>
+                <button
+                  mat-raised-button
+                  color="warn"
+                  (click)="submitBan()"
+                  clickStop
+                  stateManager
+                  monitorDisable
+                  monitorWarnSnackbar
+                  monitorCompleteSnackbar
+                  [monitor]="banActionMonitor"
+                  [disabled]="!canBan()"
+                  [verifyWith]="confirmBan"
+                >
+                  Ban
+                  <button-spinner [monitor]="banActionMonitor" defaultIcon="gavel"></button-spinner>
+                </button>
+                <mat-checkbox
+                  #confirmBan
+                  stateManager
+                  [monitor]="banActionMonitor"
+                  monitorDisable
+                  [permissionAttribute]="permAttribute"
+                  [permissionSupportV1Auth]="false"
+                >
+                  Verify ban
+                </mat-checkbox>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -100,16 +100,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));
 
-            var commitComment = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, "WoFTileGenericPopup");
-            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaGenericPopupTileAsync(wofTileBridge, parsedId, commitComment).ConfigureAwait(true);
+            CommitRefProxy change = await this.steelheadPegasusService.EditWorldOfForzaGenericPopupTileAsync(wofTileBridge, parsedId).ConfigureAwait(true);
+
+            var user = this.User.UserClaims();
+            change.AuthorName = user.Name;
+            change.AuthorEmail = user.EmailAddress;
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
 
-            var user = this.User.UserClaims();
             var pullRequestTitle = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestTitle, "WoFTileGenericPopup", user.EmailAddress);
             var pullRequestDescription = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardPullRequestDescription, DateTime.UtcNow);
-
             var pullrequest = await this.steelheadPegasusService.CreatePullRequestAsync(pushed, pullRequestTitle, pullRequestDescription).ConfigureAwait(true);
 
             return this.Ok(pullrequest);

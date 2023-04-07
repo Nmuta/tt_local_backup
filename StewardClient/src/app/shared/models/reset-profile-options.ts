@@ -7,5 +7,5 @@ export interface ResetProfileOptions {
   resetTrueSkillData: boolean;
   resetUserInventoryData: boolean;
   resetUserSafetyRatingData: boolean;
-  softDeleteInventory: boolean;
+  resetUgcProfileData: boolean;
 }

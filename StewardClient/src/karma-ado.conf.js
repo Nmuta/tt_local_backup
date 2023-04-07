@@ -88,5 +88,9 @@ module.exports = function (config) {
       },
     },
     singleRun: true,
+    // Timeouts
+    processKillTimeout: 5000,
+    browserDisconnectTimeout: 5000,
+    browserDisconnectTolerance: 3,
   });
 };

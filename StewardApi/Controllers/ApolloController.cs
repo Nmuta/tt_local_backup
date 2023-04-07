@@ -272,7 +272,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<ApolloBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<ApolloBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -310,8 +310,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(
                         jobId,
                         requesterObjectId,
@@ -353,7 +355,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<ApolloBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<ApolloBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -623,7 +625,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var validatedFlags = this.mapper.Map<ApolloUserFlags>(userFlags);
+            var validatedFlags = this.mapper.SafeMap<ApolloUserFlags>(userFlags);
             await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 
@@ -798,8 +800,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }

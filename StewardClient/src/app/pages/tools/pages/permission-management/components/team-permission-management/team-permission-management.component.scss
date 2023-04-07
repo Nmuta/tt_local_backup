@@ -1,0 +1,20 @@
+@import '/src/styles/mixins';
+
+table {
+  width: 100%;
+  margin-bottom: $gap-medium;
+}
+
+.team-metadata {
+  margin-bottom: $gap-medium;
+}
+
+.remove-btn {
+  margin: $gap-small 0;
+}
+
+mat-form-field {
+  display: block;
+  max-width: $single-input-max-width * 2;
+  width: 100%;
+}

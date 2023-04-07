@@ -47,6 +47,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         public async Task<IActionResult> GetPlayerCmsOverride(
             ulong xuid)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
             try
             {
                 var response = await this.Services.UserManagementService.GetCMSOverride(xuid).ConfigureAwait(true);
@@ -72,6 +74,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             ulong xuid,
             [FromBody] ForzaCMSOverride cmsOverride)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
             try
             {
                 await this.Services.UserManagementService.SetCMSOverride(
@@ -89,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         }
 
         /// <summary>
-        ///     Sets player CMS override.
+        ///     Removes a player CMS override.
         /// </summary>
         [HttpDelete]
         [SwaggerResponse(200)]
@@ -99,16 +103,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [Authorize(Policy = UserAttribute.OverrideCms)]
         public async Task<IActionResult> DeletePlayerCmsOverride(ulong xuid)
         {
-            throw new NotImplementedException("LSP endpoint to delete player CMS override is not ready");
-            try {
-                // TODO: Waiting on new endpoint to delete the CMS override DB entry.
-                //await this.Services.UserManagementService.SetCMSOverride(
-                //        xuid,
-                //        null,
-                //        null,
-                //        null).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-                //return this.Ok();
+            try
+            {
+                await this.Services.UserManagementService.DeleteCMSOverride(xuid).ConfigureAwait(true);
+
+                return this.Ok();
             }
             catch (Exception ex)
             {

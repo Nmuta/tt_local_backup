@@ -394,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var validatedFlags = this.mapper.Map<WoodstockUserFlags>(userFlags);
+            var validatedFlags = this.mapper.SafeMap<WoodstockUserFlags>(userFlags);
             await this.woodstockPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 
@@ -512,19 +512,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {sort}");
             }
 
-            var results = await this.woodstockPlayerDetailsProvider
-                .GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint)
-                .ConfigureAwait(true);
+            var getAuctions = this.woodstockPlayerDetailsProvider.GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint);
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
-            var cars = await this.itemsProvider.GetCarsAsync<SimpleCar>().ConfigureAwait(true);
-            var carsDict = cars.ToDictionary(car => car.Id);
+            await Task.WhenAll(getAuctions, getCars).ConfigureAwait(true);
 
-            foreach (var auction in results)
+            var auctions = getAuctions.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+
+            foreach (var auction in auctions)
             {
                 auction.ItemName = carsDict.TryGetValue(auction.ModelId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
-            return this.Ok(results);
+            return this.Ok(auctions);
         }
 
         /// <summary>
@@ -616,14 +620,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>(WoodstockPegasusSlot.LiveSteward);
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>(WoodstockPegasusSlot.LiveSteward).SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
             var getBlockList = this.woodstockServiceManagementProvider.GetAuctionBlockListAsync(maxResults, endpoint);
 
             await Task.WhenAll(getBlockList, getCars).ConfigureAwait(true);
 
             var blockList = getBlockList.GetAwaiter().GetResult();
-
             var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+
             foreach (var entry in blockList)
             {
                 entry.Description = carsDict.TryGetValue(entry.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
@@ -692,7 +699,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 xuid,
                 typeEnum,
                 endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -724,14 +734,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
             }
 
-            var filters = this.mapper.Map<ForzaUGCSearchRequest>(new UgcFilters(ulong.MaxValue, shareCode));
+            var filters = this.mapper.SafeMap<ForzaUGCSearchRequest>(new UgcFilters(ulong.MaxValue, shareCode));
 
             var getUgcItems = this.storefrontProvider.SearchUgcContentAsync(
                 typeEnum,
                 filters,
                 endpoint,
                 includeThumbnails: true);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
@@ -759,7 +772,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getLivery = this.storefrontProvider.GetUgcLiveryAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getLivery, getCars).ConfigureAwait(true);
 
@@ -785,7 +801,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getPhoto = this.storefrontProvider.GetUgcPhotoAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getPhoto, getCars).ConfigureAwait(true);
 
@@ -811,7 +830,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
 
             var getTune = this.storefrontProvider.GetUgcTuneAsync(id, endpoint);
-            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>();
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
 
             await Task.WhenAll(getTune, getCars).ConfigureAwait(true);
 
@@ -1009,7 +1031,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<WoodstockBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<WoodstockBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -1044,8 +1066,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -1088,7 +1112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<WoodstockBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<WoodstockBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -1369,331 +1393,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(inventoryProfileSummary);
-        }
-
-        /// <summary>
-        ///     Updates player inventories with given items.
-        /// </summary>
-        [HttpPost("gifting/players/useBackgroundProcessing")]
-        [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
-        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
-        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
-            [FromBody] WoodstockGroupGift groupGift)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            groupGift.ShouldNotBeNull(nameof(groupGift));
-            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
-            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var stringBuilder = new StringBuilder();
-
-            this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
-            this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
-
-            if (!this.ModelState.IsValid)
-            {
-                var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-                throw new InvalidArgumentsStewardException(errorResponse);
-            }
-
-            foreach (var xuid in groupGift.Xuids)
-            {
-                var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                    .ConfigureAwait(true);
-                if (!playerExists)
-                {
-                    stringBuilder.Append($"{xuid} ");
-                }
-            }
-
-            if (stringBuilder.Length > 0)
-            {
-                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
-            }
-
-            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory)
-                .ConfigureAwait(true);
-            if (invalidItems.Length > 0)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
-            }
-
-            var jobId = await this.jobTracker.CreateNewJobAsync(
-                groupGift.ToJson(),
-                requesterObjectId,
-                $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.",
-                this.Response).ConfigureAwait(true);
-
-            async Task BackgroundProcessing(CancellationToken cancellationToken)
-            {
-                // Throwing within the hosting environment background worker seems to have significant consequences.
-                // Do not throw.
-                try
-                {
-                    var allowedToExceedCreditLimit =
-                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.woodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
-                        groupGift,
-                        requesterObjectId,
-                        allowedToExceedCreditLimit,
-                        endpoint).ConfigureAwait(true);
-
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
-                        .ConfigureAwait(true);
-
-                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
-
-                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
-                        .ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
-                        .ConfigureAwait(true);
-                }
-            }
-
-            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
-        /// <summary>
-        ///     Updates player inventories with given items.
-        /// </summary>
-        [HttpPost("gifting/players")]
-        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
-        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
-        public async Task<IActionResult> UpdateGroupInventories(
-            [FromBody] WoodstockGroupGift groupGift)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            groupGift.ShouldNotBeNull(nameof(groupGift));
-            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
-            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var stringBuilder = new StringBuilder();
-
-            this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
-            this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
-
-            if (!this.ModelState.IsValid)
-            {
-                var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-                throw new InvalidArgumentsStewardException(errorResponse);
-            }
-
-            foreach (var xuid in groupGift.Xuids)
-            {
-                var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                    .ConfigureAwait(true);
-                if (!playerExists)
-                {
-                    stringBuilder.Append($"{xuid} ");
-                }
-            }
-
-            if (stringBuilder.Length > 0)
-            {
-                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
-            }
-
-            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(groupGift.Inventory).ConfigureAwait(true);
-            if (invalidItems.Length > 0)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
-            }
-
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.woodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
-                groupGift,
-                requesterObjectId,
-                allowedToExceedCreditLimit,
-                endpoint).ConfigureAwait(true);
-
-            var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
-
-            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
-                .ConfigureAwait(true);
-
-            return this.Ok(response);
-        }
-
-        /// <summary>
-        ///     Updates inventories for an LSP group.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
-        [HttpPost("gifting/groupId({groupId})")]
-        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
-        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
-        public async Task<IActionResult> UpdateGroupInventories(
-            int groupId,
-            [FromBody] WoodstockGift gift)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            gift.ShouldNotBeNull(nameof(gift));
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            this.giftRequestValidator.Validate(gift, this.ModelState);
-
-            if (!this.ModelState.IsValid)
-            {
-                var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                throw new InvalidArgumentsStewardException(result);
-            }
-
-            var invalidItems = await this.VerifyGiftAgainstMasterInventoryAsync(gift.Inventory).ConfigureAwait(true);
-            if (invalidItems.Length > 0)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
-            }
-
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.woodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(
-                groupId,
-                gift,
-                requesterObjectId,
-                allowedToExceedCreditLimit,
-                endpoint).ConfigureAwait(true);
-            return this.Ok(response);
-        }
-
-        /// <summary>
-        ///     Gift players a car livery.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager,
-            UserRole.MediaTeam)]
-        [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
-        [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
-        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
-        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] ExpirableGroupGift groupGift)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            groupGift.ShouldNotBeNull(nameof(groupGift));
-            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
-            groupGift.Xuids.EnsureValidXuids();
-            groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var stringBuilder = new StringBuilder();
-
-            foreach (var xuid in groupGift.Xuids)
-            {
-                if (!await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint).ConfigureAwait(true))
-                {
-                    stringBuilder.Append($"{xuid} ");
-                }
-            }
-
-            if (stringBuilder.Length > 0)
-            {
-                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
-            }
-
-            var livery = await this.storefrontProvider.GetUgcLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
-            if (livery == null)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
-            }
-
-            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting Livery: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
-
-            async Task BackgroundProcessing(CancellationToken cancellationToken)
-            {
-                // Throwing within the hosting environment background worker seems to have significant consequences.
-                // Do not throw.
-                try
-                {
-                    var response = await this.woodstockPlayerInventoryProvider.SendCarLiveryAsync(groupGift, livery, requesterObjectId, endpoint).ConfigureAwait(true);
-
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
-
-                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
-
-                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
-                        .ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                }
-            }
-
-            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
-        /// <summary>
-        ///     Updates inventories for an LSP group.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
-        [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
-        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
-        public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] ExpirableGift gift)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            groupId.ShouldNotBeNull(nameof(groupId));
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-
-            var livery = await this.storefrontProvider.GetUgcLiveryAsync(liveryId, endpoint).ConfigureAwait(true);
-            if (livery == null)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryId}");
-            }
-
-            var response = await this.woodstockPlayerInventoryProvider.SendCarLiveryAsync(gift, groupId, livery, requesterObjectId, endpoint).ConfigureAwait(true);
-            return this.Ok(response);
         }
 
         /// <summary>

@@ -8,8 +8,7 @@ import { WoodstockPlayerXuidProfileSummaryFakeApi } from '@interceptors/fake-api
 import { WoodstockPlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/sharedConsoleUsers';
 import { WoodstockPlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/userFlags';
 import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
-import { LspGroup } from '@models/lsp-group';
-import { WoodstockGift, WoodstockGroupGift, WoodstockUserFlags } from '@models/woodstock';
+import { WoodstockUserFlags } from '@models/woodstock';
 import { ApiService, createMockApiService } from '@services/api';
 import faker from '@faker-js/faker';
 
@@ -19,7 +18,6 @@ import { WoodstockService } from './woodstock.service';
 import { DateTime } from 'luxon';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Gift, GroupGift } from '@models/gift';
 import { UgcType } from '@models/ugc-filters';
 import { PegasusProjectionSlot } from '@models/enums';
 
@@ -317,96 +315,6 @@ describe('WoodstockService', () => {
     });
   });
 
-  describe('Method: postGiftPlayers', () => {
-    const gift: WoodstockGroupGift = {
-      xuids: [new BigNumber(123456789)],
-      giftReason: 'unit testing gift',
-      inventory: {
-        creditRewards: [],
-        cars: [],
-        vanityItems: [],
-        carHorns: [],
-        quickChatLines: [],
-        emotes: [],
-      },
-      expireAfterDays: fakeBigNumber(),
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest$ with the expected params', done => {
-      service.postGiftPlayers$(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/players`,
-          gift,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
-    const gift: WoodstockGroupGift = {
-      xuids: [new BigNumber(123456789)],
-      giftReason: 'unit testing gift',
-      inventory: {
-        creditRewards: [],
-        cars: [],
-        vanityItems: [],
-        carHorns: [],
-        quickChatLines: [],
-        emotes: [],
-      },
-      expireAfterDays: fakeBigNumber(),
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest$ with the expected params', done => {
-      service.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/players/useBackgroundProcessing`,
-          gift,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: postGiftLspGroup', () => {
-    const lspGroup: LspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
-    const gift: WoodstockGift = {
-      giftReason: 'unit testing gift',
-      inventory: {
-        creditRewards: [],
-        cars: [],
-        vanityItems: [],
-        carHorns: [],
-        quickChatLines: [],
-        emotes: [],
-      },
-      expireAfterDays: fakeBigNumber(),
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest$ with the expected params', done => {
-      service.postGiftLspGroup$(lspGroup, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/groupId(${lspGroup.id})`,
-          gift,
-        );
-        done();
-      });
-    });
-  });
-
   describe('Method: getPlayerAuctionsByXuid$', () => {
     const xuid = fakeXuid();
     const filters = DefaultAuctionFilters;
@@ -541,28 +449,6 @@ describe('WoodstockService', () => {
     });
   });
 
-  describe('Method: postGiftLiveryToPlayersUsingBackgroundJob$', () => {
-    const liveryId = faker.datatype.uuid();
-    const groupGift: GroupGift = {
-      xuids: [fakeBigNumber(), fakeBigNumber(), fakeBigNumber()],
-      giftReason: faker.random.words(10),
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call apiServiceMock.postRequest', done => {
-      service.postGiftLiveryToPlayersUsingBackgroundJob$(liveryId, groupGift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/livery(${liveryId})/players/useBackgroundProcessing`,
-          groupGift,
-        );
-        done();
-      });
-    });
-  });
-
   describe('Method: getLeaderboards', () => {
     const scoreboardTypeId = fakeBigNumber();
     const scoreTypeId = fakeBigNumber();
@@ -579,6 +465,10 @@ describe('WoodstockService', () => {
       .set('pivotId', pivotId.toString())
       .set('startAt', startAt.toString())
       .set('maxResults', maxResults.toString());
+
+    const expectedHeaders = new HttpHeaders()
+      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
+      .set('endpoint-woodstock', endpointKeyOverride);
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
@@ -621,7 +511,7 @@ describe('WoodstockService', () => {
           expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
             `${service.basePath}/leaderboard/scores/top`,
             expectedParams,
-            new HttpHeaders().set('endpointKey', `Woodstock|${endpointKeyOverride}`),
+            expectedHeaders,
           );
           done();
         });
@@ -644,6 +534,10 @@ describe('WoodstockService', () => {
       .set('pivotId', pivotId.toString())
       .set('maxResults', maxResults.toString());
 
+    const expectedHeaders = new HttpHeaders()
+      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
+      .set('endpoint-woodstock', endpointKeyOverride);
+
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
@@ -685,7 +579,7 @@ describe('WoodstockService', () => {
           expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
             `${service.basePath}/leaderboard/scores/near-player/${xuid}`,
             expectedParams,
-            new HttpHeaders().set('endpointKey', `Woodstock|${endpointKeyOverride}`),
+            expectedHeaders,
           );
           done();
         });
@@ -695,6 +589,10 @@ describe('WoodstockService', () => {
   describe('Method: deleteLeaderboardScores', () => {
     const scoreIds = [faker.datatype.uuid(), faker.datatype.uuid(), faker.datatype.uuid()];
     const endpointKeyOverride = faker.random.word();
+
+    const expectedHeaders = new HttpHeaders()
+      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
+      .set('endpoint-woodstock', endpointKeyOverride);
 
     beforeEach(() => {
       apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
@@ -718,29 +616,7 @@ describe('WoodstockService', () => {
           `${service.basePath}/leaderboard/scores/delete`,
           scoreIds,
           undefined,
-          new HttpHeaders().set('endpointKey', `Woodstock|${endpointKeyOverride}`),
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: postGiftLiveryToLspGroup$', () => {
-    const liveryId = faker.datatype.uuid();
-    const lspGroup: LspGroup = { id: fakeBigNumber(), name: faker.random.words(2) };
-    const gift: Gift = {
-      giftReason: faker.random.words(10),
-    };
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call apiServiceMock.postRequest', done => {
-      service.postGiftLiveryToLspGroup$(liveryId, lspGroup, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/livery(${liveryId})/groupId(${lspGroup.id})`,
-          gift,
+          expectedHeaders,
         );
         done();
       });

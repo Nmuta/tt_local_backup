@@ -8,6 +8,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
@@ -72,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<WoodstockLiveOpsContent.CarClass>>(
                     CMSFileNames.CarClasses,
                     this.cmsEnvironment).ConfigureAwait(false);
-                var carClasses = this.mapper.Map<IEnumerable<CarClass>>(pegasusCarClasses);
+                var carClasses = this.mapper.SafeMap<IEnumerable<CarClass>>(pegasusCarClasses);
 
                 this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
 
@@ -91,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             async Task<IEnumerable<Leaderboard>> GetLeaderboards()
             {
                 var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<LeaderboardV2>>(CMSFileNames.LeaderboardsV2, pegasusEnvironment).ConfigureAwait(false);
-                var leaderboards = this.mapper.Map<IEnumerable<Leaderboard>>(pegasusLeaderboards);
+                var leaderboards = this.mapper.SafeMap<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
                 this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
 

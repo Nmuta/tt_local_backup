@@ -66,6 +66,16 @@
         public const string GroupGiftPasswordSecretName = "GroupGiftingPasswordSecretName";
 
         /// <summary>
+        ///     Secret name to get cosmos DB connection string.
+        /// </summary>
+        public const string CosmosTableSecretName = "CosmosTableSecretName";
+
+        /// <summary>
+        ///     Secret name to get shared cosmos DB connection string.
+        /// </summary>
+        public const string CosmosSharedTableSecretName = "CosmosSharedTableSecretName";
+
+        /// <summary>
         ///     The Apollo uri.
         /// </summary>
         public const string ApolloUri = "ApolloEnvironment:Uri";

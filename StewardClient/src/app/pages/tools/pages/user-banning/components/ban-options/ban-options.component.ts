@@ -10,6 +10,7 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
+import _ from 'lodash';
 import { first } from 'lodash';
 import { Duration } from 'luxon';
 import { Observable } from 'rxjs';
@@ -20,23 +21,28 @@ type BanReasonGroup = { group: string; values: string[] };
 type StandardBanReasons = BanReasonGroup[];
 const STANDARD_BAN_REASONS: StandardBanReasons = [
   {
-    group: 'Abusive',
+    group: 'Extreme Violations',
     values: [
-      'Harassment or bullying',
-      'Hate speech',
-      'Notorious iconography, organizations or events',
-      'Profanity',
-      'Racism',
+      'Hate Speech',
+      'Credible threat of violent acts',
+      'CSEAI - child sexual exploitive abusive imagery',
+      'TVEC - terrorism or violent extremism content',
+      'Sexual/Nude imagery',
+      'Credit/XP Hacking',
     ],
   },
   {
-    group: 'Cheating',
+    group: 'Cheating/Unallowed Modding',
     values: [
+      'Obtaining unreleased cars',
       'Device exploitation',
       'In-game glitches or exploits',
       'Modifying game files',
-      'Purchasing content/accounts third-parties',
-      'Selling in-game content',
+      'Running cheat software on client alongside game',
+      'Audio Mods',
+      'Fraudulent leaderboards',
+      'Auction house automated scripts',
+      'Stream-Sniping',
     ],
   },
   {
@@ -48,30 +54,59 @@ const STANDARD_BAN_REASONS: StandardBanReasons = [
     ],
   },
   {
-    group: 'Disruptive',
+    group: 'Inappropriate User Generated Content (UGC)',
     values: [
-      'Defamation, impersonation, false information',
-      'Fraud',
-      'Illegal activities',
-      'Illegal drugs or controlled substances',
-      'Personal information',
-      'Spam of advertising',
-      'Unsportsmanlike conduct',
-    ],
-  },
-  { group: 'Imminent Harm', values: ['Imminent harm to person/property', 'Self-harm or suicide'] },
-  {
-    group: 'Sexual Content',
-    values: [
-      'Non-consensual intimate imagery',
-      'Obscene imagery',
-      'Pornographic logos and similar',
-      'Sexually inappropriate',
+      'Pornographic logo',
+      'Notorious iconography',
+      'Drug/Marijuana Symbolism & Imagery',
+      'Profanity',
+      'Sharing Personal Information',
+      'Spam/Advertising',
+      'Political Statement',
+      'Defamation & Impersonation',
+      'Harm Against People/Animals',
+      'Crude Humor/Imagery',
+      'Low Effort/Quality Content',
+      'Child Endangerment',
+      'Sexually Inappropriate/Suggestive',
+      'Threat of Self Harm',
     ],
   },
   {
-    group: 'Violence',
-    values: ['Harm against people or animals', 'Terrorism or violent extremism', 'Violent acts'],
+    group: 'Unsportsmanlike Conduct',
+    values: [
+      'Intentional ramming/wrecking, pinning, pitting, spearing, shoving, and blocking in races',
+      'Light Bullying',
+      'Vulgar language',
+    ],
+  },
+  {
+    group: 'Forums/Communications Violations',
+    values: [
+      'Personal Attacks',
+      'Vulgar language',
+      'Posts with sole intent to antagonize users and/or disrupt the conversation',
+      'Deliberate name shaming of suspected cheaters',
+      'Sensitive topic discussions outside of in-game context',
+      'Plotting illegal activities',
+      'Threats of harm to other community members, including jokes.',
+      'Circulating or distributing hacks/cheats',
+      'Soliciting, plagiarism, or phishing attempts',
+      'Evasion of bans/suspensions',
+      'Sharing personal information',
+      'Leaking unannounced content',
+      'Purposeful Misinformation',
+      'Disrespecting/Rebelling against Moderators',
+    ],
+  },
+  {
+    group:
+      'Variable Offenses (Suspension length determined by Support Agent based on severity of offense)',
+    values: ['T10/PG Employee Harassment', 'Ban-Dodging'],
+  },
+  {
+    group: 'Developer',
+    values: ['Testing'],
   },
 ];
 
@@ -129,7 +164,10 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
 
   public formControls = {
     banArea: new FormControl(this.defaults.banArea, [Validators.required]),
-    banReason: new FormControl(this.defaults.banReason, [Validators.required]),
+    banReason: new FormControl(this.defaults.banReason, [
+      Validators.required,
+      this.requireReasonListMatch.bind(this),
+    ]),
     banDuration: new FormControl(this.defaults.banDuration, [Validators.required]),
     checkboxes: {
       banAllXboxes: new FormControl(this.defaults.checkboxes.banAllXboxes),
@@ -219,5 +257,20 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
     }
 
     return { invalidForm: { valid: false, message: 'fields are invalid' } };
+  }
+
+  private requireReasonListMatch(control: FormControl): ValidationErrors | null {
+    const selection = control.value;
+    const banReasons = [].concat(
+      ...STANDARD_BAN_REASONS.map(g => {
+        return g.values;
+      }),
+    );
+
+    if (!_.includes(banReasons, selection)) {
+      return { requireReasonListMatch: true };
+    }
+
+    return null;
   }
 }

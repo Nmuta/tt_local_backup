@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Globalization;
+using System.Runtime.Serialization;
 using System.Text;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi;
@@ -12,9 +13,9 @@ namespace StewardGitApi
     /// <summary>
     ///     Contains the git operation implementations.
     /// </summary>
-    internal class GitHelper
+    internal static class GitHelper
     {
-        private const string AutogenBranchNameRoot = "steward-api-autogen";
+        private const string AutogenBranchName = "steward-api-autogen";
         private const int GitCommitHashLength = 40;
 
         /// <summary>
@@ -85,11 +86,12 @@ namespace StewardGitApi
         internal static async Task<GitItem> GetItemAsync(AzureContext context, string path, GitObjectType gitObjectType)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
-            TeamProjectReference project = await GetProjectAsync(context).ConfigureAwait(false);
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
+            var projectId = context.Settings.Ids.projectId;
 
             // get a filepath we know exists
             List<GitItem> gitItems = await gitClient.GetItemsAsync(
+                projectId,
                 repo.Id,
                 scopePath: path,
                 recursionLevel: VersionControlRecursionType.OneLevel).ConfigureAwait(false);
@@ -100,6 +102,24 @@ namespace StewardGitApi
             GitItem item = await gitClient.GetItemAsync(repo.Id, filepath, includeContent: true).ConfigureAwait(false);
 
             return item;
+        }
+
+        /// <summary>
+        ///     Gets a list of items from the repository.
+        /// </summary>
+        internal static async Task<IEnumerable<GitItem>> ListItemsAsync(AzureContext context, string path)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+            GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
+            var projectId = context.Settings.Ids.projectId;
+
+            List<GitItem> gitItems = await gitClient.GetItemsAsync(
+                projectId,
+                repo.Id,
+                scopePath: path,
+                recursionLevel: VersionControlRecursionType.OneLevel).ConfigureAwait(false);
+
+            return gitItems;
         }
 
         /// <summary>
@@ -180,13 +200,9 @@ namespace StewardGitApi
             try
             {
                 var pr = await gitClient.GetPullRequestAsync(projectId, repo.Id, pullRequestId).ConfigureAwait(false);
-                if (pr == null)
-                {
-                    throw new GitOperationException($"Pull request is in an unexpected state. " +
-                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
-                }
 
-                return pr;
+                return pr ?? throw new GitOperationException($"Pull request is in an unexpected state. " +
+                        $"Pull Request Id: {pullRequestId}, Project Id: {projectId}, Repo Id: {repo.Id}");
             }
             catch (Exception e) when (e is VssException or ProjectDoesNotExistException)
             {
@@ -264,11 +280,10 @@ namespace StewardGitApi
             string defaultBranchName = WithoutRefsPrefix(repo.DefaultBranch);
             GitRef defaultBranch = (await gitClient.GetRefsAsync(repo.Id, filter: defaultBranchName).ConfigureAwait(false)).First();
 
-            // Craft the new branch that we'll push
-            string refId = GetUniqueRefId();
+            // Craft the new branch that we'll push. Based on name of author.
             GitRefUpdate newBranch = new ()
             {
-                Name = $"refs/heads/{BuildBranchName(context, refId)}",
+                Name = $"refs/heads/{BuildBranchName(context, proxyChanges.First().AuthorName ?? AutogenBranchName)}",
                 OldObjectId = defaultBranch.ObjectId,
             };
 
@@ -357,7 +372,7 @@ namespace StewardGitApi
         /// <summary>
         ///     Abandons pull request.
         /// </summary>
-        internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId)
+        internal static async Task<GitPullRequest> AbandonPullRequestAsync(AzureContext context, int pullRequestId, bool deleteSourceBranch)
         {
             GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
 
@@ -368,7 +383,34 @@ namespace StewardGitApi
                 Status = PullRequestStatus.Abandoned,
             };
 
-            return await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
+            GitPullRequest pullRequest = await gitClient.UpdatePullRequestAsync(updatedPr, repoId, pullRequestId).ConfigureAwait(false);
+
+            if (deleteSourceBranch)
+            {
+                GitRef gitref = await GitHelper.GetBranchAsync(context, pullRequest.SourceRefName).ConfigureAwait(false);
+
+                if (gitref != null)
+                {
+                    await GitHelper.DeleteBranchAsync(context, gitref).ConfigureAwait(false);
+                }
+            }
+
+            return pullRequest;
+        }
+
+        /// <summary>
+        ///     Gets a single branch.
+        /// </summary>
+        internal static async Task<GitRef> GetBranchAsync(AzureContext context, string branchName)
+        {
+            GitHttpClient gitClient = context.Connection.GetClient<GitHttpClient>();
+            (_, Guid repoId) = context.Settings.Ids;
+
+            var branchNameNoRefs = WithoutRefsPrefix(branchName);
+
+            GitRef aref = (await gitClient.GetRefsAsync(repoId, filter: branchNameNoRefs).ConfigureAwait(false)).FirstOrDefault();
+
+            return aref;
         }
 
         /// <summary>
@@ -391,7 +433,7 @@ namespace StewardGitApi
         {
             if (branch.StartsWith("refs/heads/", StringComparison.OrdinalIgnoreCase))
             {
-                branch = branch.Substring(11);
+                branch = branch[11..];
             }
 
             var buildClient = context.Connection.GetClient<BuildHttpClient>();
@@ -414,7 +456,7 @@ namespace StewardGitApi
         {
             if (!refName.StartsWith("refs/", StringComparison.InvariantCulture))
             {
-                throw new ArgumentException("The ref name did not start with 'refs/'", nameof(refName));
+                throw new ArgumentException("Invalid ref. The ref name did not start with 'refs/'", nameof(refName));
             }
 
             return refName.Remove(0, "refs/".Length);
@@ -425,16 +467,18 @@ namespace StewardGitApi
             return Guid.NewGuid().ToString("D")[..6];
         }
 
-        private static string BuildBranchName(AzureContext context, string refId)
+        private static string BuildBranchName(AzureContext context, string authorName)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(AutogenBranchNameRoot);
-            sb.Append('/');
-            var name = string.Concat(GetCurrentUserDisplayName(context).Split()); // removes whitespace
-            sb.Append(name);
-            sb.Append('-');
-            sb.Append(refId);
-            return sb.ToString();
+            // concat split removes whitespace
+            var stewardName = GetCurrentUserDisplayName(context).RemoveWhiteSpace();
+            var authorNameConcat = authorName.RemoveWhiteSpace();
+            return $"{stewardName}/{authorNameConcat}-{GetUniqueRefId()}";
+        }
+
+        private static string RemoveWhiteSpace(this string str)
+        {
+            Check.CheckForNull(str, nameof(str));
+            return string.Concat(str.Split());
         }
 
         private static IEnumerable<GitCommitRef> ToGitCommitRef(IEnumerable<CommitRefProxy> proxyCommits)
@@ -445,7 +489,7 @@ namespace StewardGitApi
             {
                 commitRefs.Add(new GitCommitRef
                 {
-                    Comment = c.CommitComment,
+                    Comment = c.CommitMessage,
                     Changes = new GitChange[]
                     {
                         new GitChange()

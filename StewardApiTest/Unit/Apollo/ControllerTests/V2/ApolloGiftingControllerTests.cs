@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Apollo;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
@@ -171,7 +172,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
 
             public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
 
-           public IApolloPlayerDetailsProvider ApolloPlayerDetailsProvider { get; set; } = Substitute.For<IApolloPlayerDetailsProvider>();
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+
+            public IApolloPlayerDetailsProvider ApolloPlayerDetailsProvider { get; set; } = Substitute.For<IApolloPlayerDetailsProvider>();
 
             public IApolloPlayerInventoryProvider ApolloPlayerInventoryProvider { get; set; } = Substitute.For<IApolloPlayerInventoryProvider>();
 
@@ -191,6 +194,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
 
             public ApolloGiftingController Build() => new ApolloGiftingController(
                 this.ActionLogger,
+                this.LoggingService,
                 this.ApolloPlayerDetailsProvider,
                 this.ApolloPlayerInventoryProvider,
                 this.StorefrontProvider,

@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
     [Route("api/v{version:apiVersion}/title/woodstock/auctions")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
-    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+    [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
     [ApiVersion("2.0")]
     [Tags(Title.Woodstock)]
     public sealed class AuctionsController : V2WoodstockControllerBase

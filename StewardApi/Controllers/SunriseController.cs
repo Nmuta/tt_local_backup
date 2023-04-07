@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
-        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
+        [Authorize(Policy = UserAttribute.UpdateUserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] SunriseUserFlagsInput userFlags)
@@ -365,7 +365,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var validatedFlags = this.mapper.Map<SunriseUserFlags>(userFlags);
+            var validatedFlags = this.mapper.SafeMap<SunriseUserFlags>(userFlags);
             await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 
@@ -675,6 +675,52 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets a UGC layer group by ID.
+        /// </summary>
+        [HttpGet("storefront/layerGroup({id})")]
+        [SwaggerResponse(200, type: typeof(UgcItem))]
+        public async Task<IActionResult> GetUgcLayerGroup(Guid id)
+        {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            var getLayerGroup = this.storefrontProvider.GetUgcLayerGroupAsync(id, endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getLayerGroup, getKustoCars).ConfigureAwait(true);
+
+            var layerGroup = getLayerGroup.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == layerGroup.CarId);
+            layerGroup.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(layerGroup);
+        }
+
+        /// <summary>
+        ///     Gets a UGC tune by ID.
+        /// </summary>
+        [HttpGet("storefront/eventBlueprint({id})")]
+        [SwaggerResponse(200, type: typeof(UgcItem))]
+        public async Task<IActionResult> GetUgcEventBlueprint(Guid id)
+        {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            var geteventBlueprint = this.storefrontProvider.GetUgcEventBlueprintAsync(id, endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCarsAsync(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(geteventBlueprint, getKustoCars).ConfigureAwait(true);
+
+            var eventBlueprint = geteventBlueprint.GetAwaiter().GetResult();
+            var kustoCars = getKustoCars.GetAwaiter().GetResult();
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == eventBlueprint.CarId);
+            eventBlueprint.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(eventBlueprint);
+        }
+
+        /// <summary>
         ///     Sets featured status of a UGC content item.
         /// </summary>
         [HttpPost("storefront/itemId({ugcId})/featuredStatus")]
@@ -875,7 +921,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SunriseBanParameters>>(banInput);
             var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
@@ -906,8 +952,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -954,7 +1002,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SunriseBanParameters>>(banInput);
             var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(
                 banParameters,
                 requesterObjectId,
@@ -1316,8 +1364,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -1506,8 +1556,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }

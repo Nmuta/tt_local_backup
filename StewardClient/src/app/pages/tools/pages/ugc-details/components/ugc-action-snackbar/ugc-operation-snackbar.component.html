@@ -1,0 +1,31 @@
+<span class="message">
+  <span class="label">{{ label }}</span> Complete
+</span>
+<span class="spacer"></span>
+<button mat-icon-button [cdkCopyToClipboard]="completionValue | json" matTooltip="Copy Output">
+  <mat-icon>content_copy</mat-icon>
+</button>
+<button mat-icon-button [cdkCopyToClipboard]="completionValue.fileId" matTooltip="Copy UGC ID">
+  <mat-icon>vpn_key</mat-icon>
+</button>
+<button
+  *ngIf="!!completionValue?.shareCode"
+  mat-icon-button
+  [cdkCopyToClipboard]="completionValue?.shareCode"
+  matTooltip="Copy Share Code"
+>
+  <mat-icon>pin</mat-icon>
+</button>
+<a
+  *ngIf="completionValue?.allowOpenInNewTab"
+  mat-icon-button
+  matTooltip="Open new UGC item in separate tab"
+  [routerLink]="newTabRoute"
+  target="_blank"
+>
+  <mat-icon>open_in_new</mat-icon>
+</a>
+
+<button mat-icon-button (click)="onDismiss()" matTooltip="Dismiss">
+  <mat-icon>close</mat-icon>
+</button>

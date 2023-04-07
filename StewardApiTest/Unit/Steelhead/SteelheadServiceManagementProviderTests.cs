@@ -16,6 +16,7 @@ using Turn10.Services.LiveOps.FM8.Generated;
 
 using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -82,55 +83,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             result.Should().BeOfType<List<LspGroup>>();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task GetCmsRacersCupScheduleAsync_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var environment = Fixture.Create<string>();
-            var slotId = Fixture.Create<string>();
-            var snapshotId = Fixture.Create<string>();
-            var startTime = DateTime.UtcNow.AddMinutes(1);
-            var daysForward = Fixture.Create<int>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            async Task<RacersCupSchedule> Action() => await provider.GetCmsRacersCupScheduleAsync(environment, slotId, snapshotId, startTime, daysForward, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<RacersCupSchedule>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetCmsRacersCupScheduleAsync_WithNullEndpoint_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var environment = Fixture.Create<string>();
-            var slotId = Fixture.Create<string>();
-            var snapshotId = Fixture.Create<string>();
-            var startTime = DateTime.UtcNow.AddMinutes(1);
-            var daysForward = Fixture.Create<int>();
-
-
-            // Act.
-            Func<Task<RacersCupSchedule>> action = async () => await provider.GetCmsRacersCupScheduleAsync(environment, slotId, snapshotId, startTime, daysForward, null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "endpoint"));
-        }
-
         private sealed class Dependencies
         {
             public Dependencies()
             {
                 this.SteelheadService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
-                this.SteelheadService.GetCmsRacersCupScheduleAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<int>(), Arg.Any<ForzaEventSessionType[]>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetCMSRacersCupScheduleOutput>());
-                this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
-                this.Mapper.Map<RacersCupSchedule>(Arg.Any<ForzaRacersCupScheduleData>()).Returns(Fixture.Create<RacersCupSchedule>());
+                this.Mapper.SafeMap<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
             }
 
             public ISteelheadService SteelheadService { get; set; } = Substitute.For<ISteelheadService>();

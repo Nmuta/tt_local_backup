@@ -8,6 +8,7 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 import { SunriseGamertagsComponent } from './sunrise-gamertags.component';
 import { ActivatedRoute } from '@angular/router';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 const activatedRouteMock = {
   pathFromRoot: [
@@ -25,7 +26,7 @@ describe('SunriseGamertagsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SunriseGamertagsComponent],
+      declarations: [SunriseGamertagsComponent, HumanizePipe],
       providers: [
         createMockSunriseService(),
         {

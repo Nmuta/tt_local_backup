@@ -5,6 +5,7 @@ import { WoodstockBackstagePassHistoryComponent } from './woodstock-backstage-pa
 import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('WoodstockBackstagePassHistoryComponent', () => {
   let component: WoodstockBackstagePassHistoryComponent;
@@ -14,7 +15,7 @@ describe('WoodstockBackstagePassHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WoodstockBackstagePassHistoryComponent],
+      declarations: [WoodstockBackstagePassHistoryComponent, HumanizePipe],
       providers: [createMockWoodstockService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

@@ -5,7 +5,7 @@ import {
   PermAttribute,
   PermAttributeName,
 } from '@services/perm-attributes/perm-attributes';
-import { AttributeTreeNode, TitleEnvironments } from '../permission-management.component';
+import { AttributeTreeNode, TitleEnvironments } from '../permission-management.models';
 
 /**
  * Builds the permission attributes tree structure with features at the top level.

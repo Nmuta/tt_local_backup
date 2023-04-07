@@ -20,6 +20,8 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 using AutoMapper;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
@@ -126,11 +128,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             public Dependencies()
             {
                 this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
-                this.Mapper.Map<ForzaUserIds>(Arg.Any<string>()).Returns(Fixture.Create<ForzaUserIds>());
-                this.Mapper.Map<ForzaUserIds>(Arg.Any<ulong>()).Returns(Fixture.Create<ForzaUserIds>());
-                this.Mapper.Map<UserGroupBulkOperationType>(Arg.Any<ForzaBulkOperationType>()).Returns(Fixture.Create<UserGroupBulkOperationType>());
-                this.Mapper.Map<UserGroupBulkOperationStatus>(Arg.Any<ForzaBulkOperationStatus>()).Returns(Fixture.Create<UserGroupBulkOperationStatus>());
-                this.Mapper.Map<UserGroupBulkOperationStatusOutput>(Arg.Any<ForzaUserGroupBulkOperationStatus>()).Returns(Fixture.Create<UserGroupBulkOperationStatusOutput>());
+                this.Mapper.SafeMap<ForzaUserIds>(Arg.Any<string>()).Returns(Fixture.Create<ForzaUserIds>());
+                this.Mapper.SafeMap<ForzaUserIds>(Arg.Any<ulong>()).Returns(Fixture.Create<ForzaUserIds>());
+                this.Mapper.SafeMap<UserGroupBulkOperationType>(Arg.Any<ForzaBulkOperationType>()).Returns(Fixture.Create<UserGroupBulkOperationType>());
+                this.Mapper.SafeMap<UserGroupBulkOperationStatus>(Arg.Any<ForzaBulkOperationStatus>()).Returns(Fixture.Create<UserGroupBulkOperationStatus>());
+                this.Mapper.SafeMap<UserGroupBulkOperationStatusOutput>(Arg.Any<ForzaUserGroupBulkOperationStatus>()).Returns(Fixture.Create<UserGroupBulkOperationStatusOutput>());
             }
 
             public UserGroupController Build() => new UserGroupController(

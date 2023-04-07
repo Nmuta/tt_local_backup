@@ -1,0 +1,66 @@
+<section>
+  <h2 mat-dialog-title>
+    <span>{{ ladderName }}</span>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="modal-wrapper">
+      <div class="series-events">
+        <div class="event-cards-wrapper">
+          <steelhead-builders-cup-series-card
+            *ngFor="let event of eventGroup"
+            [event]="event"
+            (click)="onEventCardClick(event)"
+            [class.selected]="event === selectedEvent"
+          ></steelhead-builders-cup-series-card>
+        </div>
+      </div>
+      <div class="event-details">
+        <mat-card>
+          <mat-card-title>{{ selectedEvent?.meta?.seriesName ?? null }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ selectedEvent?.meta?.tourName ?? 'Select an event to display details' }}
+          </mat-card-subtitle>
+          <div class="spacer"></div>
+          <div class="game-options" *ngIf="!!selectedEvent">
+            <h3>Series Details</h3>
+            <table class="info-table full-width">
+              <tr *ngIf="!!selectedEvent?.meta?.tourDescription">
+                <th>Tour Description</th>
+                <td>{{ selectedEvent?.meta?.tourDescription }}</td>
+              </tr>
+              <tr *ngIf="!!selectedEvent?.meta?.seriesDescription">
+                <th>Series Description</th>
+                <td>{{ selectedEvent?.meta?.seriesDescription }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="spacer"></div>
+          <div class="game-options" *ngIf="!!selectedEvent">
+            <h3>Car Restriction</h3>
+            <table
+              class="info-table full-width"
+              *ngIf="!!selectedEvent?.meta?.seriesAllowedCarClass"
+            >
+              <tr>
+                <th>Class Restriction Name</th>
+                <td>{{ selectedEvent?.meta?.seriesAllowedCarClass?.name }}</td>
+              </tr>
+              <tr>
+                <th>Allowed Car Class</th>
+                <td>{{ selectedEvent?.meta?.seriesAllowedCarClass?.carClassName }}</td>
+              </tr>
+            </table>
+            <table class="info-table full-width" *ngIf="!!selectedEvent?.meta?.seriesAllowedCars">
+              <tr *ngFor="let car of selectedEvent?.meta?.seriesAllowedCars">
+                <th>Allowed Car</th>
+                <td>{{ car.make }} - {{ car.model }} [{{ car.id }}]</td>
+              </tr>
+            </table>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </mat-dialog-content>
+</section>

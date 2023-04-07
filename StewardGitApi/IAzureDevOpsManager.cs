@@ -44,6 +44,11 @@ namespace StewardGitApi
         Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType);
 
         /// <summary>
+        ///     List items along the repository by the specified path.
+        /// </summary>
+        Task<IEnumerable<GitItem>> ListItemsAsync(string path);
+
+        /// <summary>
         ///     Commit and push a new file represented
         ///     by <paramref name="proxyChanges"/>.
         /// </summary>
@@ -97,7 +102,7 @@ namespace StewardGitApi
         /// <summary>
         /// Abandons pull request.
         /// </summary>
-        public Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId);
+        public Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId, bool deleteSourceBranch);
 
         /// <summary>
         ///     Gets current user id.

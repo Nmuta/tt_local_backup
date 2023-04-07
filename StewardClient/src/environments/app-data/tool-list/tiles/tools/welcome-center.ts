@@ -5,7 +5,7 @@ import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } fr
 export const welcomeCenterTile = <HomeTileInfoInternal>{
   icon: AppIcon.WelcomeCenterTile,
   tool: NavbarTool.WelcomeCenterTiles,
-  accessList: [UserRole.LiveOpsAdmin],
+  accessList: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   title: 'Welcome Center Tiles',
   subtitle: 'Manage Welcome Center Tiles',
   supportedTitles: [GameTitle.FM8],
@@ -20,7 +20,7 @@ export const welcomeCenterTile = <HomeTileInfoInternal>{
     ).then(m => m.WelcomeCenterTilesModule),
   hideFromUnauthorized: true,
   restriction: {
-    requiredPermissions: [PermAttributeName.AdminFeature],
-    action: HomeTileRestrictionType.Hide,
+    requiredPermissions: [PermAttributeName.UpdateWelcomeCenterTiles],
+    action: HomeTileRestrictionType.Disable,
   },
 };

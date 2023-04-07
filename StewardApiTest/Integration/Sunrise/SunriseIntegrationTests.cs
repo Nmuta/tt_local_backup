@@ -1927,7 +1927,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
+                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed || status == BackgroundJobStatus.CompletedWithErrors;
 
                 jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));

@@ -1,5 +1,6 @@
 import { Without } from '@helpers/types';
 import { PermAttribute } from '@services/perm-attributes/perm-attributes';
+import { StewardTeam } from '@tools-app/pages/permission-management/permission-management.models';
 import { UserRole } from './enums';
 import { GuidLikeString } from './extended-types';
 
@@ -9,6 +10,7 @@ export interface ApiUserModel {
   role: UserRole;
   name: string;
   objectId: GuidLikeString;
+  team?: StewardTeam;
 }
 
 /** A signed-in user model, enhanced by the UI. */

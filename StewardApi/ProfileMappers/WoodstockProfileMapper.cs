@@ -189,6 +189,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => UgcSearchConstants.NoCarId))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
+                .ForMember(dest => dest.ShowBothUnfeaturedAndFeatured, opt => opt.MapFrom(source => true))
                 .ReverseMap();
             this.CreateMap<UgcSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
                 .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
@@ -484,7 +485,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.FamilySpecialId, opt => opt.MapFrom(src => src.FamilySpecialID))
                 .ForMember(dest => dest.RegionId, opt => opt.MapFrom(src => src.RegionID))
                 .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.CountryID))
-                .ForMember(dest => dest.IsAvailableInAutoshow, opt => opt.MapFrom(src => src.NotAvailableInAutoshow == null || src.NotAvailableInAutoshow.Value == 0));
+                .ForMember(dest => dest.IsAvailableInAutoshow, opt => opt.MapFrom(src => src.NotAvailableInAutoshow == null || src.NotAvailableInAutoshow.Value == 0))
+                .ForMember(dest => dest.PerformanceIndex , opt => opt.MapFrom(src => src.PerformanceIndex))
+                .ForMember(dest => dest.PowertrainName, opt => opt.MapFrom(src => src.PowertrainName))
+                .ForMember(dest => dest.CarTypeName, opt => opt.MapFrom(src => src.CarTypeName))
+                .ForMember(dest => dest.CarClassName, opt => opt.MapFrom(src => src.CarClassName))
+                .ForMember(dest => dest.RegionName, opt => opt.MapFrom(src => src.RegionName))
+                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.ReleaseIndex))
+                .ForMember(dest => dest.ReleaseDateUtc, opt => opt.MapFrom(src => src.ReleaseDate));
 
             this.CreateMap<WoodstockLiveOpsContent.CarHorn, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))

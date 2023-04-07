@@ -10,6 +10,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
@@ -254,14 +255,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput>());
                 this.WoodstockService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput>());
                 this.WoodstockService.GetHiddenUgcForUserAsync(Arg.Any<int>(), Arg.Any<ulong>(), Arg.Any<FileType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontService.GetHiddenUGCForUserOutput>());
-                this.Mapper.Map<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
+                this.Mapper.SafeMap<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
                 var ugcItem = Fixture.Create<WoodstockUgcItem>();
                 var ugcLiveryItem = Fixture.Create<WoodstockUgcLiveryItem>();
                 ugcItem.GameTitle = (int)GameTitle.FH5;
                 ugcLiveryItem.GameTitle = (int)GameTitle.FH5;
-                this.Mapper.Map<WoodstockUgcItem>(Arg.Any<ServicesLiveOps.ForzaPhotoData>()).Returns(ugcItem);
-                this.Mapper.Map<WoodstockUgcLiveryItem>(Arg.Any<ServicesLiveOps.ForzaLiveryData>()).Returns(ugcLiveryItem);
-                this.Mapper.Map<WoodstockUgcItem>(Arg.Any<ServicesLiveOps.ForzaTuneData>()).Returns(ugcItem);
+                this.Mapper.SafeMap<WoodstockUgcItem>(Arg.Any<ServicesLiveOps.ForzaPhotoData>()).Returns(ugcItem);
+                this.Mapper.SafeMap<WoodstockUgcLiveryItem>(Arg.Any<ServicesLiveOps.ForzaLiveryData>()).Returns(ugcLiveryItem);
+                this.Mapper.SafeMap<WoodstockUgcItem>(Arg.Any<ServicesLiveOps.ForzaTuneData>()).Returns(ugcItem);
             }
             
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();

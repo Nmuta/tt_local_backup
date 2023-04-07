@@ -63,34 +63,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<LiveOpsService.GetCMSRacersCupScheduleForUserOutput> GetCmsRacersCupScheduleForUserAsync(
-            ulong xuid,
-            DateTime startDateUtc,
-            int daysForward,
-            ForzaEventSessionType[] gameOptionsFilter,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await service.GetCMSRacersCupScheduleForUser(xuid, startDateUtc, daysForward, gameOptionsFilter).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<LiveOpsService.GetCMSRacersCupScheduleOutput> GetCmsRacersCupScheduleAsync(
-            string environment,
-            string slotId,
-            string snapshotId,
-            DateTime startDateUtc,
-            int daysForward,
-            ForzaEventSessionType[] gameOptionsFilter,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await service.GetCMSRacersCupSchedule(environment, slotId, snapshotId, startDateUtc, daysForward, gameOptionsFilter).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
         public async Task<AuctionManagementService.SearchAuctionHouseOutput> SearchAuctionsAsync(
             ForzaAuctionFilters filters,
             string endpoint)
@@ -395,28 +367,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var service = await this.serviceFactory.PrepareUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await service.GetAdminUserProfiles(xuid, maxProfiles).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task RemoveCarFromUserInventoryWithCarIdAsync(
-            int carId,
-            int profileId,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            await service.RemoveCarFromUserInventoryWithCarId(carId, profileId).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task RemoveCarFromUserInventoryWithVinAsync(
-            Guid vin,
-            int profileId,
-            string endpoint)
-        {
-            var service = await this.serviceFactory.PrepareUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            await service.RemoveCarFromUserInventoryWithVin(vin, profileId).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

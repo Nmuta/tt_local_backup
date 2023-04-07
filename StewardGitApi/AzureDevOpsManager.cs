@@ -66,6 +66,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitItem> GetItemAsync(string path, GitObjectType gitObjectType)
         {
+            path.CheckForNull(nameof(path));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.GetItemAsync(this.AzureContext, path, gitObjectType).ConfigureAwait(false);
         }
@@ -73,7 +74,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitPush> CreateNewFileAndPushAsync(CommitRefProxy changeToPush)
         {
-            _ = changeToPush.CheckForNull(nameof(changeToPush));
+            changeToPush.CheckForNull(nameof(changeToPush));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.CommitAndPushAsync(this.AzureContext, new CommitRefProxy[] { changeToPush }).ConfigureAwait(false);
         }
@@ -81,7 +82,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitPush> CommitAndPushAsync(IEnumerable<CommitRefProxy> changesToPush)
         {
-            _ = changesToPush.CheckForNullOrEmpty(nameof(changesToPush));
+            changesToPush.CheckForNullOrEmpty(nameof(changesToPush));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.CommitAndPushAsync(this.AzureContext, changesToPush).ConfigureAwait(false);
         }
@@ -89,7 +90,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(int? mostRecent = null)
         {
-            _ = mostRecent.CheckForGreaterThanZero(nameof(mostRecent));
+            mostRecent.CheckForGreaterThanZero(nameof(mostRecent));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.GetPullRequestStatusAsync(this.AzureContext, mostRecent).ConfigureAwait(false);
         }
@@ -104,7 +105,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecent = null)
         {
-            _ = mostRecent.CheckForGreaterThanZero(nameof(mostRecent));
+            mostRecent.CheckForGreaterThanZero(nameof(mostRecent));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.GetPullRequestsIntoDefaultBranchAsync(this.AzureContext, status, mostRecent).ConfigureAwait(false);
         }
@@ -112,8 +113,8 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitPullRequest> CreatePullRequestAsync(GitPush push, string title, string description)
         {
-            _ = Check.CheckForNull(push, nameof(push));
-            _ = Check.CheckForNullEmptyOrWhiteSpace(new string[] { title, description });
+            Check.CheckForNull(push, nameof(push));
+            Check.CheckForNullEmptyOrWhiteSpace(new string[] { title, description });
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.CreatePullRequestAsync(this.AzureContext, push, title, description).ConfigureAwait(false);
         }
@@ -128,7 +129,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRef gitRef)
         {
-            _ = gitRef.CheckForNull(nameof(gitRef));
+            gitRef.CheckForNull(nameof(gitRef));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.DeleteBranchAsync(this.AzureContext, gitRef).ConfigureAwait(false);
         }
@@ -136,7 +137,7 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitRefUpdateResult> DeleteBranchAsync(GitPush gitPush)
         {
-            _ = gitPush.CheckForNull(nameof(gitPush));
+            gitPush.CheckForNull(nameof(gitPush));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.DeleteBranchAsync(this.AzureContext, gitPush).ConfigureAwait(false);
         }
@@ -144,16 +145,16 @@ namespace StewardGitApi
         /// <inheritdoc/>
         public async Task<GitRefUpdateResult> DeleteBranchAsync(GitRefUpdate gitRefUpdate)
         {
-            _ = gitRefUpdate.CheckForNull(nameof(gitRefUpdate));
+            gitRefUpdate.CheckForNull(nameof(gitRefUpdate));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.DeleteBranchAsync(this.AzureContext, gitRefUpdate).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
+        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId, bool deleteSourceBranch)
         {
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
-            return await GitHelper.AbandonPullRequestAsync(this.AzureContext, pullRequestId).ConfigureAwait(false);
+            return await GitHelper.AbandonPullRequestAsync(this.AzureContext, pullRequestId, deleteSourceBranch).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -161,6 +162,14 @@ namespace StewardGitApi
         {
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
             return await GitHelper.GetAllBranchesAsync(this.AzureContext).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<GitItem>> ListItemsAsync(string path)
+        {
+            path.CheckForNull(nameof(path));
+            await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
+            return await GitHelper.ListItemsAsync(this.AzureContext, path).ConfigureAwait(false);
         }
     }
 }

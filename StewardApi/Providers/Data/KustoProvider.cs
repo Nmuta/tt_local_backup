@@ -365,7 +365,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string title, string endpoint)
         {
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            endpoint.ShouldNotBeNull(nameof(endpoint));
 
             try
             {

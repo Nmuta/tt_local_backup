@@ -4,7 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
-import { WoodstockGeoFlags, WoodstockPlayerUgcItem } from '@models/player-ugc-item';
+import {
+  UgcOperationResult,
+  WoodstockGeoFlags,
+  WoodstockPlayerUgcItem,
+} from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { UgcReportReason } from '@models/ugc-report-reason';
 import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
@@ -29,7 +33,7 @@ import {
 } from 'rxjs';
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { CloneSnackbarComponent } from '../../components/clone-snackbar/clone-snackbar.component';
+import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
@@ -75,7 +79,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public persistPermAttribute = PermAttributeName.PersistUgc;
   public gameTitle = GameTitle.FH5;
 
-  public cloneSnackbarComponent = CloneSnackbarComponent;
+  public ugcOperationSnackbarComponent = UgcOperationSnackbarComponent;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -247,7 +251,20 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
     this.service
       .persistUgc$(this.ugcItem.id)
-      .pipe(this.persistMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(
+        // The custom success snackbar expects a UgcOperationResult as the monitor value
+        // Mapping must be done above the monitor single fire for it to use mapped result
+        map(
+          result =>
+            ({
+              gameTitle: GameTitle.FH5,
+              fileId: result.newFileId,
+              allowOpenInNewTab: true,
+            } as UgcOperationResult),
+        ),
+        this.persistMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe();
   }
 
@@ -260,7 +277,20 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
     this.service
       .cloneUgc$(this.ugcItem.id, this.ugcItem.type)
-      .pipe(this.cloneMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(
+        // The custom success snackbar expects a UgcOperationResult as the monitor value
+        // Mapping must be done above the monitor single fire for it to use mapped result
+        map(
+          result =>
+            ({
+              gameTitle: GameTitle.FH5,
+              fileId: result.clonedFileId,
+              shareCode: result.clonedShareCode,
+            } as UgcOperationResult),
+        ),
+        this.cloneMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe();
   }
 }

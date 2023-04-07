@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         // In December of 2022 bans were changed to start on next login.
         // This made ban start/expiry no longer a good way to associate bans.
         // For bans before this time, correlate on date, for times after, prefer ban entry id.
-        private readonly DateTime cutOffTime = new DateTime(2022, 12, 01);
+        private readonly DateTime cutOffTime = new DateTime(2022, 11, 29);
 
         /// <summary>
         ///     Compares two <see cref="LiveOpsBanHistory"/> models.

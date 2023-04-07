@@ -7,8 +7,8 @@ export class MockWoodstockLeaderboardTalentService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getLeaderboardTalentIdentities$ = jasmine
-    .createSpy('getLeaderboardTalentIdentities$')
+  public getRetailLeaderboardTalentIdentities$ = jasmine
+    .createSpy('getRetailLeaderboardTalentIdentities$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   constructor(private readonly generator$: () => unknown) {}

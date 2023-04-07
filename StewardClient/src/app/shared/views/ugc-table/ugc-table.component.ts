@@ -324,7 +324,7 @@ export abstract class UgcTableBaseComponent
   }
 
   private shouldLookupThumbnails(item: PlayerUgcItem): boolean {
-    const typesWithThumbnails = [UgcType.Livery, UgcType.Photo];
+    const typesWithThumbnails = [UgcType.Livery, UgcType.Photo, UgcType.LayerGroup];
     const shouldLookupThumbnails = !!typesWithThumbnails.find(type => type === item?.type);
     return !!item && !item.thumbnailOneImageBase64 && shouldLookupThumbnails;
   }

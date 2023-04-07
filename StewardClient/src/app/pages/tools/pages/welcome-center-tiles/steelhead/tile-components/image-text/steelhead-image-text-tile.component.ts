@@ -20,6 +20,7 @@ import { SteelheadImageTextTileService } from '@services/api-v2/steelhead/welcom
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
+import { GeneralTileComponent } from '../steelhead-general-tile.component';
 
 /** The image text tile component. */
 @Component({
@@ -29,6 +30,7 @@ import { Observable, takeUntil } from 'rxjs';
 })
 export class ImageTextTileComponent extends BaseComponent implements OnChanges {
   @ViewChild(MatCheckbox) verifyCheckbox: MatCheckbox;
+  @ViewChild(GeneralTileComponent) generalTileComponent: GeneralTileComponent;
 
   /** The image text tile representing the currently selected tile. */
   @Input() imageTextTile: ImageTextTile;
@@ -101,13 +103,7 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
     this.imageTextTile.contentImagePath = this.formControls.contentImagePath.value;
 
     // Base tile fields
-    this.imageTextTile.tileImagePath = this.formControls.baseTile.value.tileImagePath;
-    this.imageTextTile.size = this.formControls.baseTile.value.size;
-    // Localization data
-    this.imageTextTile.tileDescription.locref =
-      this.formControls.baseTile.value.localizedTileDescription?.id;
-    this.imageTextTile.tileTitle.locref = this.formControls.baseTile.value.localizedTileTitle?.id;
-    this.imageTextTile.tileType.locref = this.formControls.baseTile.value.localizedTileType?.id;
+    this.generalTileComponent.mapFormToWelcomeCenterTile(this.imageTextTile);
 
     this.steelheadImageTextTileService
       .submitImageTextTileModification$(this.tileId, this.imageTextTile)
@@ -121,16 +117,17 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
       });
   }
 
-  /** Set form fields using the WelcomeCenterTile parameter. */
-  private setFields(welcomeCenterTile: ImageTextTile): void {
-    this.formControls.contentImagePath.setValue(welcomeCenterTile.contentImagePath);
+  /** Set form fields using the ImageTextTile parameter. */
+  private setFields(imageTextTile: ImageTextTile): void {
+    this.formControls.contentImagePath.setValue(imageTextTile.contentImagePath);
 
     const baseTile = {
-      tileImagePath: welcomeCenterTile.tileImagePath,
-      size: welcomeCenterTile.size,
-      tileDescription: welcomeCenterTile.tileDescription,
-      tileTitle: welcomeCenterTile.tileTitle,
-      tileType: welcomeCenterTile.tileType,
+      tileImagePath: imageTextTile.tileImagePath,
+      size: imageTextTile.size,
+      tileDescription: imageTextTile.tileDescription,
+      tileTitle: imageTextTile.tileTitle,
+      tileType: imageTextTile.tileType,
+      timer: imageTextTile.timer,
     } as WelcomeCenterTile;
 
     this.formControls.baseTile.setValue(baseTile);

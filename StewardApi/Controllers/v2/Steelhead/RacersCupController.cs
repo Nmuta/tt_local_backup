@@ -223,12 +223,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                     var events = new List<RacersCupEvent>();
 
+                    var carRestriction = scheduledSeriesData.ScheduledSeries.DefaultEventOverrides.Buckets.First().CarRestrictions.CarClassId.ToString();
+
                     foreach (BaseChampionshipEventData eventData in scheduledSeriesData.ScheduledSeries.ChampionshipEventData)
                     {
-                        // TODO V2: Lookup game options for each event
-                        //var gameOptions = await this.pegasusService.GetRacersCupEventGameOptionsV3Async(eventData.EventDataId).ConfigureAwait(true);
-                        //var translatedGameOptions = this.mapper.SafeMap<List<RacersCupGameOptions>>(gameOptions);
-
                         // Propogate event windows for each event.
                         WindowData[] eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
                         if (eventWindows == null) //If there's no event windows to chart, we don't care about it.
@@ -242,9 +240,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         RacersCupEvent newEvent = new RacersCupEvent()
                         {
                             Name = eventData.Name,
-                            PlaylistName = playlistName, //PlaylistName = playlistInfo.EventPlaylistName,
+                            PlaylistName = playlistName,
+                            CarRestrictions = carRestriction,
                             EventWindows = this.mapper.SafeMap<List<RacersCupEventWindow>>(eventWindows),
-                            GameOptions = this.mapper.SafeMap<List<RacersCupGameOptions>>(eventData.GameOptions), //new List<RacersCupGameOptions>(), //TODO use real game options
+                            GameOptions = this.mapper.SafeMap<List<RacersCupGameOptions>>(eventData.GameOptions),
                             QualificationOptions = this.mapper.SafeMap<RacersCupQualificationOptions>(scheduledSeriesData.ScheduledSeries.DefaultEventOverrides.QualificationOptions),
                         };
 
@@ -254,8 +253,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     var newSeries = new RacersCupSeries
                     {
                         Name = scheduledSeriesData.ScheduledSeries.Name,
-                        OpenTimeUtc = scheduledSeriesData.ScheduledSeries.OpenTime.Value,
-                        CloseTimeUtc = scheduledSeriesData.ScheduledSeries.CloseTime.Value,
+                        OpenTimeUtc = scheduledSeriesData.ScheduledSeries.OpenTime,
+                        CloseTimeUtc = scheduledSeriesData.ScheduledSeries.CloseTime,
                         Events = events,
                         EventPlaylistTransitionTimeUtc = scheduledSeriesData.ScheduledSeries.EventPlaylistTransitionTime,
                     };

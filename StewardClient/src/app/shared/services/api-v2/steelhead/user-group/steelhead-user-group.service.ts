@@ -25,6 +25,11 @@ export class SteelheadUserGroupService {
     return this.api.getRequest$<LspGroups>(`${this.basePath}`);
   }
 
+  /** Gets the Steelhead lsp groups. */
+  public getUserGroupMembership$(userGroupId: BigNumber, xuid: BigNumber): Observable<boolean> {
+    return this.api.getRequest$<boolean>(`${this.basePath}/${userGroupId}/membership/${xuid}`);
+  }
+
   /** Gets users for a user group. Index starts at 1. */
   public getUserGroupUsers$(
     userGroupId: BigNumber,

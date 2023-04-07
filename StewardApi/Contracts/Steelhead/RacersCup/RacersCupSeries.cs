@@ -12,9 +12,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 
         public List<RacersCupEvent> Events { get; set; }
 
-        public DateTime CloseTimeUtc { get; set; }
+        public DateTime? CloseTimeUtc { get; set; }
 
-        public DateTime OpenTimeUtc { get; set; }
+        public DateTime? OpenTimeUtc { get; set; }
 
         public TimeSpan EventPlaylistTransitionTimeUtc { get; set; }
     }

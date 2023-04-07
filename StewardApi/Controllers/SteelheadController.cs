@@ -328,7 +328,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<SteelheadBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SteelheadBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -362,8 +362,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -400,7 +402,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<SteelheadBanParameters>>(banInput);
+            var banParameters = this.mapper.SafeMap<IList<SteelheadBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -644,8 +646,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
                         .ConfigureAwait(true);
                 }
@@ -1113,92 +1117,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
-        }
-
-        /// <summary>
-        ///     Gets a Racer Cup schedule.
-        /// </summary>
-        [HttpGet("RacerCupSchedule")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.MotorsportDesigner,
-            UserRole.CommunityManager)]
-        [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
-        public async Task<IActionResult> GetCmsRacersCupSchedule(
-            [FromQuery] string pegasusEnvironment,
-            [FromQuery] string pegasusSlotId,
-            [FromQuery] string pegasusSnapshotId,
-            [FromQuery] DateTimeOffset? startTime,
-            [FromQuery] int daysForward)
-        {
-            daysForward.ShouldBeGreaterThanValue(-1);
-
-            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-            var cutoffTime = DateTimeOffset.UtcNow.AddSeconds(1);
-            pegasusEnvironment ??= string.Empty;
-            pegasusSlotId ??= string.Empty;
-            pegasusSnapshotId ??= string.Empty;
-
-            if (!startTime.HasValue)
-            {
-                startTime = cutoffTime;
-            }
-
-            var startTimeUtc = startTime.Value.ToUniversalTime();
-            if (startTimeUtc < cutoffTime)
-            {
-                throw new BadRequestStewardException("Start time provided must not be in the past.");
-            }
-
-            var result = await this.steelheadServiceManagementProvider
-                .GetCmsRacersCupScheduleAsync(pegasusEnvironment, pegasusSlotId, pegasusSnapshotId, startTimeUtc.DateTime, daysForward, endpoint).ConfigureAwait(true);
-
-            return this.Ok(result);
-        }
-
-        /// <summary>
-        ///     Gets a user's Racer Cup schedule.
-        /// </summary>
-        [HttpGet("player/{xuid}/RacerCupSchedule")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.MotorsportDesigner,
-            UserRole.CommunityManager)]
-        [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
-        public async Task<IActionResult> GetCmsRacersCupScheduleForUser(
-            ulong xuid,
-            [FromQuery] DateTimeOffset? startTime,
-            [FromQuery] int daysForward)
-        {
-            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
-
-            daysForward.ShouldBeGreaterThanValue(-1);
-            var cutoffTime = DateTimeOffset.UtcNow.AddSeconds(1);
-
-            var playerExists = await this.steelheadPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            if (!startTime.HasValue)
-            {
-                startTime = cutoffTime;
-            }
-
-            var startTimeUtc = startTime.Value.ToUniversalTime();
-            if (startTimeUtc < cutoffTime)
-            {
-                throw new BadRequestStewardException("Start time provided must not be in the past.");
-            }
-
-            var result = await this.steelheadPlayerDetailsProvider
-                .GetCmsRacersCupScheduleForUserAsync(xuid, startTimeUtc.DateTime, daysForward, endpoint).ConfigureAwait(true);
-
-            return this.Ok(result);
         }
 
         /// <summary>

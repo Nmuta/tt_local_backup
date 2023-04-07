@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
@@ -38,6 +38,8 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   @Input() public identity: IdentityResultUnion;
   /** Boolean determining if flags can be edited. */
   @Input() public disabled: boolean = false;
+  /** Output when the flags have changed */
+  @Output() public flagsUpdated = new EventEmitter();
 
   /** True if form control flags do not match current flags. */
   public hasChanges: boolean = false;
@@ -113,6 +115,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
         tap(value => {
           this.currentFlags = value;
           this.setFlagsToCurrent();
+          this.flagsUpdated.emit();
         }),
         this.setFlagsActionMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),

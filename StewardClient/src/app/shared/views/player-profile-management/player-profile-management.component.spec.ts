@@ -23,6 +23,8 @@ describe('PlayerProfileManagementComponent', () => {
   const mockTemplates = Array(10).map(() => faker.random.word());
   const mockService: PlayerProfileManagementServiceContract = {
     gameTitle: GameTitle.FM8,
+    employeeGroupId: new BigNumber(4),
+    getUserGroupMembership$: () => of(true),
     getPlayerProfileTemplates$: () => of(mockTemplates),
     savePlayerProfileTemplate$: () => of(null),
     loadTemplateToPlayerProfile$: () => of(faker.datatype.uuid()),

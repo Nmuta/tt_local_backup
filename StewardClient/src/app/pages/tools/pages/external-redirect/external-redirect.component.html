@@ -1,0 +1,10 @@
+<div>
+  <ng-container *ngIf="generateLinkMonitor.isActive; else doneTemplate">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    <h1>Generating your external link</h1>
+  </ng-container>
+</div>
+
+<ng-template #doneTemplate>
+  <h1><mat-icon>check_circle</mat-icon> You can close this window</h1>
+</ng-template>

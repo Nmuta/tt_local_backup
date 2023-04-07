@@ -5,7 +5,7 @@ import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } fr
 export const permissionManagementInternalTile = <HomeTileInfoInternal>{
   icon: AppIcon.PermissionManagement,
   tool: NavbarTool.PermissionManagement,
-  accessList: [UserRole.LiveOpsAdmin],
+  accessList: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   title: 'Permission Management',
   subtitle: 'Manage Steward permissions',
   supportedTitles: [],
@@ -20,7 +20,7 @@ export const permissionManagementInternalTile = <HomeTileInfoInternal>{
     ).then(m => m.PermisisionManagementModule),
   hideFromUnauthorized: true,
   restriction: {
-    requiredPermissions: [PermAttributeName.AdminFeature],
+    requiredPermissions: [PermAttributeName.ManageStewardTeam],
     action: HomeTileRestrictionType.Disable,
   },
 };

@@ -72,17 +72,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
+            Services.LiveOps.FM8.Generated.UserManagementService.GetAdminCommentsOutput response = null;
+
             try
             {
-                var response = await this.Services.UserManagementService.GetAdminComments(xuid, maxResults).ConfigureAwait(true);
-                var result = this.mapper.Map<IList<ProfileNote>>(response.adminComments);
-
-                return this.Ok(result);
+                response = await this.Services.UserManagementService.GetAdminComments(xuid, maxResults).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"No profile notes found. (XUID: {xuid})", ex);
             }
+
+            var result = this.mapper.SafeMap<IList<ProfileNote>>(response.adminComments);
+
+            return this.Ok(result);
         }
 
         /// <summary>

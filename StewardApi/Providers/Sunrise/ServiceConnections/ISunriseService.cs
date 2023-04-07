@@ -363,6 +363,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Get a player's UGC by id.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCObjectOutput> GetPlayerUgcObjectAsync(
+            Guid tuneId,
+            string endpoint);
+
+        /// <summary>
         ///     Get hidden UGC.
         /// </summary>
         Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(

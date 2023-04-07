@@ -20,6 +20,7 @@ import { SteelheadGenericPopupTileService } from '@services/api-v2/steelhead/wel
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
+import { GeneralTileComponent } from '../steelhead-general-tile.component';
 
 /** The generic popup tile component. */
 @Component({
@@ -29,6 +30,7 @@ import { Observable, takeUntil } from 'rxjs';
 })
 export class GenericPopupTileComponent extends BaseComponent implements OnChanges {
   @ViewChild(MatCheckbox) verifyCheckbox: MatCheckbox;
+  @ViewChild(GeneralTileComponent) generalTileComponent: GeneralTileComponent;
 
   /** The generic popup tile representing the currently selected tile. */
   @Input() genericPopupTile: GenericPopupTile;
@@ -101,14 +103,7 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
       this.formControls.localizedPopupDescription.value?.id;
 
     // Base tile fields
-    this.genericPopupTile.tileImagePath = this.formControls.baseTile.value.tileImagePath;
-    this.genericPopupTile.size = this.formControls.baseTile.value.size;
-    // Localization data
-    this.genericPopupTile.tileDescription.locref =
-      this.formControls.baseTile.value.localizedTileDescription?.id;
-    this.genericPopupTile.tileTitle.locref =
-      this.formControls.baseTile.value.localizedTileTitle?.id;
-    this.genericPopupTile.tileType.locref = this.formControls.baseTile.value.localizedTileType?.id;
+    this.generalTileComponent.mapFormToWelcomeCenterTile(this.genericPopupTile);
 
     this.steelheadGenericPopupTileService
       .submitGenericPopupTileModification$(this.tileId, this.genericPopupTile)
@@ -141,6 +136,7 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
       tileDescription: genericPopupTile.tileDescription,
       tileTitle: genericPopupTile.tileTitle,
       tileType: genericPopupTile.tileType,
+      timer: genericPopupTile.timer,
     } as WelcomeCenterTile;
 
     this.formControls.baseTile.setValue(baseTile);

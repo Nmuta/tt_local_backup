@@ -9,6 +9,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
@@ -48,20 +49,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            ServicesLiveOps.NotificationsManagementService.LiveOpsRetrieveForUserOutput notifications = null;
+
             try
             {
-                var notifications = await this.woodstockService.LiveOpsRetrieveForUserAsync(
+                notifications = await this.woodstockService.LiveOpsRetrieveForUserAsync(
                     xuid,
                     maxResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<Notification>>(notifications.results);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException(
                     $"Notifications for player with XUID: {xuid} could not be found.", ex);
             }
+
+            return this.mapper.SafeMap<IList<Notification>>(notifications.results);
         }
 
         /// <inheritdoc />
@@ -73,20 +76,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
 
+            ServicesLiveOps.NotificationsManagementService.GetAllUserGroupMessagesOutput notifications = null;
+
             try
             {
-                var notifications = await this.woodstockService.GetUserGroupNotificationsAsync(
+                notifications = await this.woodstockService.GetUserGroupNotificationsAsync(
                     groupId,
                     maxResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<UserGroupNotification>>(notifications.userGroupMessages);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException(
                     $"An error occurred while querying notifications for LSP group with ID: {groupId}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<UserGroupNotification>>(notifications.userGroupMessages);
         }
 
         /// <inheritdoc />
@@ -94,19 +99,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             Guid notificationId,
             string endpoint)
         {
+            ServicesLiveOps.NotificationsManagementService.GetUserGroupMessageOutput notification = null;
+
             try
             {
-                var notification = await this.woodstockService.GetUserGroupNotificationAsync(
+                notification = await this.woodstockService.GetUserGroupNotificationAsync(
                     notificationId,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<UserGroupNotification>(notification.userGroupMessage);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException(
                     $"An error occurred while querying for LSP group notification with ID: {notificationId}.", ex);
             }
+
+            return this.mapper.SafeMap<UserGroupNotification>(notification.userGroupMessage);
         }
 
         /// <inheritdoc />
@@ -125,21 +132,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             var messageSendResults = new List<MessageSendResult<ulong>>();
 
+            ServicesLiveOps.NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput results = null;
+
             try
             {
-                var results = await this.woodstockService.SendMessageNotificationToMultipleUsersAsync(
+                results = await this.woodstockService.SendMessageNotificationToMultipleUsersAsync(
                     xuids,
                     message,
                     sendTimeUtc,
                     expireTimeUtc,
                     endpoint).ConfigureAwait(false);
-
-                messageSendResults = this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults).ToList();
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException("Notifications failed to send.", ex);
             }
+
+            messageSendResults = this.mapper.SafeMap<IList<MessageSendResult<ulong>>>(results.messageSendResults).ToList();
 
             var batchReferenceId = Guid.NewGuid();
             foreach (var messageResult in messageSendResults)
@@ -200,7 +209,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 PlayerOrLspGroup = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
             };
-            var forzaDeviceType = this.mapper.Map<ServicesLiveOps.ForzaLiveDeviceType>(deviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ServicesLiveOps.ForzaLiveDeviceType>(deviceType);
 
             try
             {
@@ -334,7 +343,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var forzaDeviceType = this.mapper.Map<ServicesLiveOps.ForzaLiveDeviceType>(deviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ServicesLiveOps.ForzaLiveDeviceType>(deviceType);
             var editParams = new ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
@@ -481,12 +490,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     endpoint).ConfigureAwait(false);
 
                 groupMessage = notificationInfo.userGroupMessage;
-                deviceType = this.mapper.Map<DeviceType>(groupMessage.DeviceType);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"LSP failed to delete group message with Notification ID: {notificationId}", ex);
             }
+
+            deviceType = this.mapper.SafeMap<DeviceType>(groupMessage.DeviceType);
 
             try
             {

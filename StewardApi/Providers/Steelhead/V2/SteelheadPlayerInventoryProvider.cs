@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
@@ -60,18 +61,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         {
             service.ShouldNotBeNull(nameof(service));
 
+            Services.LiveOps.FM8.Generated.UserInventoryManagementService.GetAdminUserProfilesOutput response = null;
+
             try
             {
-                var response = await service.UserInventoryManagementService.GetAdminUserProfiles(
+                response = await service.UserInventoryManagementService.GetAdminUserProfiles(
                     xuid,
                     MaxProfileResults).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<SteelheadInventoryProfile>>(response.profiles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
             }
+
+            return this.mapper.SafeMap<IList<SteelheadInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc />
@@ -164,7 +167,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var response = new List<GiftResponse<ulong>>();
-            var gift = this.mapper.Map<SteelheadGift>(groupGift);
+            var gift = this.mapper.SafeMap<SteelheadGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
                 response.Add(await this.UpdatePlayerInventoryAsync(
@@ -266,7 +269,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                 hasExpiration,
                 groupGift.ExpireAfterDays).ConfigureAwait(false);
 
-            var giftResponses = this.mapper.Map<IList<GiftResponse<ulong>>>(result.giftResult);
+            var giftResponses = this.mapper.SafeMap<IList<GiftResponse<ulong>>>(result.giftResult);
             var notificationBatchId = Guid.NewGuid();
             foreach (var giftResponse in giftResponses)
             {

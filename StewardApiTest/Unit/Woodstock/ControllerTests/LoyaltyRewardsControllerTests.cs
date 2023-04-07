@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
+using Turn10.LiveOps.StewardApi.Logging;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
@@ -198,8 +199,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 mc.AllowNullCollections = true;
             }));
 
+            public ILoggingService loggingService { get; set; } = Substitute.For<ILoggingService>();
+
             public LoyaltyRewardsController Build() => new LoyaltyRewardsController(
-                this.mapper)
+                this.mapper, this.loggingService)
             { ControllerContext = this.ControllerContext };
         }
     }

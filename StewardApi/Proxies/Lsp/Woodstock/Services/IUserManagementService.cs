@@ -96,5 +96,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Create a add/remove bulk operation on a user group.
         /// </summary>
         Task<CreateUserGroupBulkOperationV2Output> CreateUserGroupBulkOperationV2(ForzaBulkOperationType operation, int userGroupId, ForzaUserGroupOperationPage[] pages);
+
+        /// <summary>
+        ///     Removes the CMS Override on a player by xuid.
+        /// </summary>
+        Task DeleteCMSOverride(ulong xuid);
     }
 }

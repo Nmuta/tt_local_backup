@@ -16,6 +16,7 @@ export enum GameTitleName {
   FH4 = 'Forza Horizon 4',
   FM7 = 'Forza Motorsport 7',
   FH3 = 'Forza Horizon 3',
+  Forum = 'Forum',
 }
 
 /**
@@ -29,6 +30,7 @@ export enum GameTitleAbbreviation {
   FH4 = 'FH4',
   FM7 = 'FM7',
   FH3 = 'FH3',
+  Forum = 'Forum',
 }
 
 /**
@@ -45,6 +47,7 @@ export enum GameTitleCodeName {
   FH4 = 'Sunrise',
   FM7 = 'Apollo',
   FH3 = 'Opus',
+  Forum = 'Forum',
 }
 
 /** Enum for game title names. lowerCamel. */
@@ -55,6 +58,7 @@ export enum GameTitle {
   FH4 = 'sunrise',
   FM7 = 'apollo',
   FH3 = 'opus',
+  Forum = 'forum',
 }
 
 export enum UserRole {
@@ -111,6 +115,14 @@ export enum LocalizationCategory {
   Gifts = 'Gifts',
 }
 
+/** Enum for localization sub-categories. */
+export enum LocalizationSubCategory {
+  Invalid = 'Invalid',
+  Title = 'Title',
+  SubTitle = 'SubTitle',
+  Description = 'Description',
+}
+
 /** Enum for localization categories language + locales. */
 export enum SupportedLocalizationLanguageCodes {
   cs_CZ = 'cs-CZ',
@@ -161,4 +173,18 @@ export enum PegasusProjectionSlot {
   Live = 'live',
   LiveSteward = 'live-steward',
   Daily = 'daily',
+}
+
+/** Enum for Pegasus Projection Slots. */
+export enum PegasusEnvironment {
+  Cert = 'cert',
+  Dev = 'dev',
+  Flight = 'flight',
+  Prod = 'prod',
+}
+
+/** Enum for Forza Sandbox, used when loading profiles. */
+export enum ForzaSandbox {
+  Retail = 'Retail',
+  Test = 'Test',
 }

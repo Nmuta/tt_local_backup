@@ -154,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             var parsedPlayFabEnvironment = playFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(WoodstockPlayFabEnvironment));
             var parsedBuildId = buildId.TryParseGuidElseThrow(nameof(buildId));
 
-            await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, parsedPlayFabEnvironment).ConfigureAwait(true);
+            var playFabBuild = await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, parsedPlayFabEnvironment).ConfigureAwait(true);
 
             var activeBuildLocks = await this.playFabBuildLocksProvider.GetMultipleAsync(parsedPlayFabEnvironment).ConfigureAwait(true);
             var playFabSettings = await this.blobStorageProvider.GetStewardPlayFabSettingsAsync().ConfigureAwait(true);
@@ -178,6 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
                 var buildLock = new PlayFabBuildLock()
                 {
                     Id = parsedBuildId,
+                    Name = playFabBuild.Name,
                     Reason = reason,
                     UserId = userClaims.ObjectId,
                     PlayFabEnvironment = parsedPlayFabEnvironment.ToString(),

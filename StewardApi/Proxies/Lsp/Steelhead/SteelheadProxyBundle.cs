@@ -94,6 +94,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         /// </summary>
         public IScoreboardManagementService ScoreboardManagementService => this.SteelheadFactory.PrepareScoreboardManagementService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets a <see cref="IConfigurationManagementService" />.
+        /// </summary>
+        public IConfigurationManagementService ConfigurationManagementService => this.SteelheadFactory.PrepareConfigurationManagementService(this.Endpoint);
+
         private ISteelheadProxyFactory SteelheadFactory { get; }
 
         /// <summary>
