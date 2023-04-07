@@ -1,22 +1,22 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { VerifyHelpPopoverComponent } from './verify-help-popover.component';
+import { VerifyButtonComponent } from './verify-button.component';
 
-describe('VerifyHelpPopoverComponent', () => {
-  let component: VerifyHelpPopoverComponent;
-  let fixture: ComponentFixture<VerifyHelpPopoverComponent>;
+describe('VerifyButtonComponent', () => {
+  let component: VerifyButtonComponent;
+  let fixture: ComponentFixture<VerifyButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VerifyHelpPopoverComponent],
+      declarations: [VerifyButtonComponent],
       imports: [MatTooltipModule],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerifyHelpPopoverComponent);
+    fixture = TestBed.createComponent(VerifyButtonComponent);
     component = fixture.componentInstance;
   });
 
