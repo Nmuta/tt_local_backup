@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { DateTime } from 'luxon';
 
 /** Interface for a detailed car. */
 export interface SimpleCar {
@@ -28,4 +29,11 @@ export interface DetailedCar extends SimpleCar {
   familyModelID?: BigNumber;
   baseRarity?: BigNumber;
   baseCost?: BigNumber;
+  performanceIndex?: BigNumber;
+  powertrainName?: string;
+  carTypeName?: string;
+  carClassName?: string;
+  regionName?: string;
+  series?: BigNumber;
+  releaseDateUtc?: DateTime;
 }

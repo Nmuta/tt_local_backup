@@ -151,10 +151,10 @@ namespace StewardGitApi
         }
 
         /// <inheritdoc/>
-        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId)
+        public async Task<GitPullRequest> AbandonPullRequestAsync(int pullRequestId, bool deleteSourceBranch)
         {
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
-            return await GitHelper.AbandonPullRequestAsync(this.AzureContext, pullRequestId).ConfigureAwait(false);
+            return await GitHelper.AbandonPullRequestAsync(this.AzureContext, pullRequestId, deleteSourceBranch).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

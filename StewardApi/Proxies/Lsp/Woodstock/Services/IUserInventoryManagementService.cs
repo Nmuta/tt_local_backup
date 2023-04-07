@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using static Turn10.Services.LiveOps.FH5_main.Generated.UserInventoryManagementService;
+using UserInventoryManagementService = Turn10.Services.LiveOps.FH5_main.Generated.UserInventoryManagementService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 #pragma warning disable SA1516 // Blank lines
@@ -8,11 +8,14 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.UserInventoryManagementS
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="UserInventoryManagementService"/>.
+    /// </summary>
     public interface IUserInventoryManagementService
     {
         /// <summary>
         ///     Gets all player inventory profiles.
         /// </summary>
-        Task<GetAdminUserProfilesOutput> GetAdminUserProfiles(ulong xuid, uint maxProfiles);
+        Task<UserInventoryManagementService.GetAdminUserProfilesOutput> GetAdminUserProfiles(ulong xuid, uint maxProfiles);
     }
 }

@@ -20,7 +20,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDa
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
@@ -287,6 +289,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => UgcSearchConstants.NoCarId))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
+                .ForMember(dest => dest.ShowBothUnfeaturedAndFeatured, opt => opt.MapFrom(source => true))
                 .ReverseMap();
             this.CreateMap<UgcSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
                 .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
@@ -329,14 +332,20 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TileTelemetryTag, opt => opt.MapFrom(src => src.tileInfo.TelemetryTag));
             this.CreateMap<MotdEntry, MotdBridge>()
                 .ReverseMap();
-            this.CreateMap<LocEntry, LocalizedStringBridge>().ReverseMap();
-            this.CreateMap<LocLocText, LocTextBridge>().ReverseMap();
+            this.CreateMap<LocalizedStringBridge, LocEntry>()
+                .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512))
+                .ForMember(dest => dest.id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory))
+                .ForPath(dest => dest.LocString.locdef, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForPath(dest => dest.LocString.skiploc, opt => opt.MapFrom(src => false))
+                .ForPath(dest => dest.LocString.@base, opt => opt.MapFrom(src => src.TextToLocalize))
+                .ForPath(dest => dest.LocString.description, opt => opt.MapFrom(src => src.Description));
+
             this.CreateMap<LocTextMotdNoDesc, LocTextBridge>()
                 .ForMember(dest => dest.Description, act => act.Ignore())
                 .ReverseMap();
             this.CreateMap<LocTextMotd, LocTextBridge>()
-                .ReverseMap();
-            this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();
             this.CreateMap<WofGenericPopupEntry, WofGenericPopupBridge>()
                 .ReverseMap();
@@ -353,15 +362,22 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LocTextBaseWof, LocTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofBaseTimer, TimerBridge>()
-                .ForMember(dest => dest.TimerType, opt => opt.MapFrom(src => src.TimerType))
-                .ForMember(dest => dest.TimerCustomRange, opt => opt.MapFrom(src => src.CustomRange))
+            this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();
-            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRange>()
-                .ForMember(dest => dest.FromPoints, opt => opt.MapFrom(src => src.From))
-                .ForMember(dest => dest.ToPoints, opt => opt.MapFrom(src => src.To))
+            this.CreateMap<WofTimerBridge, WofBaseTimer>()
                 .ReverseMap();
-            this.CreateMap<WofBaseRangePoint, TimerCustomRangePoint>()
+            this.CreateMap<TextOverrideBridge, TextOverride>()
+                .ReverseMap();
+            this.CreateMap<WofDisplayConditionsBridge, WofBaseDisplayConditions>()
+                .ReverseMap();
+            this.CreateMap<ItemBridge, BaseItem>()
+                .ReverseMap();
+            this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
+            this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();
+            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRangeBridge>()
+                .ReverseMap();
+            this.CreateMap<WofBaseRangePoint, RangePointBridge>()
+                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.Text))
                 .ReverseMap();
 
             this.CreateMap<ForzaUserIds, BasicPlayer>()
@@ -408,15 +424,36 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<SteelheadLiveOpsContent.EWeatherConditionType, RacersCupWeatherConditionType>();
 
+            this.CreateMap<SteelheadLiveOpsContent.CarRestrictions, Contracts.Steelhead.BuildersCup.CarRestrictions>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.CarClassId))
+                .ForMember(dest => dest.CarClassName, opt => opt.MapFrom(src => src.CarClassId));
+            this.CreateMap<SteelheadLiveOpsContent.BuildersCupSeriesDataV3, BuildersCupChampionshipSeries>()
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.AllowedCars, opt => opt.MapFrom(src =>
+                    src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider) ?
+                        (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist :
+                        new List<DataCar>()))
+                .ForMember(dest => dest.AllowedCarClass, opt => opt.MapFrom(src =>
+                    src.SelectableCars.GetType() == typeof(RefCarRestrictionsProvider) ?
+                        (src.SelectableCars as RefCarRestrictionsProvider).CarRestrictions :
+                        null));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
                 .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
                 .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime));
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.ChampionshipSeries, opt => opt.MapFrom(src => src.ChampionshipSeriesData));
 
             this.CreateMap<GitPullRequest, PullRequest>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.PullRequestId))
                 .ForMember(dest => dest.WebUrl, opt => opt.MapFrom(source => $"{source.Repository.WebUrl}/pullrequest/{source.PullRequestId}"))
                 .ForMember(dest => dest.CreationDateUtc, opt => opt.MapFrom(source => source.CreationDate));
+
+            this.CreateMap<LiveOpsService.GetDriverLevelOutput, SteelheadDriverLevel>()
+                .ForMember(dest => dest.ExperiencePoints, opt => opt.MapFrom(source => source.driverExperiencePoints));
+
+            this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
@@ -499,8 +536,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
                     {
-                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship},
-                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder},
+                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
+                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder },
                         type = "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting",
                     };
                 }
@@ -510,7 +547,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
                     {
                         Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
-                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series},
+                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series },
                         type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting"
                     };
                 }

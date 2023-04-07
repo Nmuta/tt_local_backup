@@ -71,17 +71,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             //xuid.IsValidXuid();
 
+            UserManagementService.GetUserReportWeightOutput response = null;
+
             try
             {
-                var response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
-                var mappedResponse = this.mapper.Map<UserReportWeight>(response);
-
-                return this.Ok(mappedResponse);
+                response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"No report weight found. (XUID: {xuid})", ex);
             }
+
+            var mappedResponse = this.mapper.SafeMap<UserReportWeight>(response);
+
+            return this.Ok(mappedResponse);
         }
 
         /// <summary>
@@ -103,9 +106,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             //xuid.IsValidXuid();
 
+            var mappedReportWeightType = this.mapper.SafeMap<ForzaUserReportWeightType>(reportWeightType);
+
+            UserManagementService.GetUserReportWeightOutput response = null;
+
             try
             {
-                var mappedReportWeightType = this.mapper.Map<ForzaUserReportWeightType>(reportWeightType);
                 await this.Services.UserManagementService.SetUserReportWeightType(xuid, mappedReportWeightType).ConfigureAwait(false);
 
                 if (reportWeightType == UserReportWeightType.Default)
@@ -113,15 +119,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                     await this.Services.UserManagementService.SetUserReportWeight(xuid, DefaultReportWeight).ConfigureAwait(false);
                 }
 
-                var response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
-                var mappedRepsonse = this.mapper.Map<UserReportWeight>(response);
-
-                return this.Ok(mappedRepsonse);
+                response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to set report weight. (XUID: {xuid})", ex);
             }
+
+            var mappedRepsonse = this.mapper.SafeMap<UserReportWeight>(response);
+
+            return this.Ok(mappedRepsonse);
         }
     }
 }

@@ -49,10 +49,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task<LiveOpsService.LoadProfileOutput> LoadProfile(
             Guid profileId,
             string templateName,
-            bool continueOnBreakingChanges);
+            bool continueOnBreakingChanges,
+            ForzaSandbox userSandbox);
 
         /// <summary>
-        ///     Gets all profile template names;
+        ///     Gets all profile template names.
         /// </summary>
         Task<LiveOpsService.GetAllProfileTemplateNamesOutput> GetAllProfileTemplateNames();
 
@@ -70,5 +71,37 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Gets specific user inventory by Profile ID.
         /// </summary>
         Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
+
+        /// <summary>
+        ///     Gets purchased entitlements by Profile ID.
+        /// </summary>
+        Task<GetAdminPurchasablesOutput> GetAdminPurchasables(int profileId);
+
+        /// <summary>
+        ///     Add a product to a profile's purchased entitlements.
+        /// </summary>
+        Task AdminEntitlePurchasable(int profileId, string productId);
+
+        /// <summary>
+        ///     Set driver level and prestige rank by xuid.
+        /// </summary>
+        Task SetDriverLevel(ulong xuid, uint driverLevel, uint prestigeRank);
+
+        /// <summary>
+        ///     Get driver level, prestige rank and experience points for a given xuid.
+        /// </summary>
+        Task<GetDriverLevelOutput> GetDriverLevel(ulong xuid);
+
+        /// <summary>
+        ///     Retrieves list of legacy titles a user has played.
+        /// </summary>
+        /// <remarks>Used for determining legacy rewards.</remarks>
+        Task<GetTitlesUserPlayedOutput> GetTitlesUserPlayed(ulong xuid);
+
+        /// <summary>
+        ///     Adds a title to a user's list of legacy titles played.
+        /// </summary>
+        /// <remarks>When added, a user should expect to recieve legacy rewards on next login.</remarks>
+        Task AddToTitlesUserPlayed(ulong xuid, ForzaLoyaltyRewardsSupportedTitles titleToAdd);
     }
 }

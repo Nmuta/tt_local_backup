@@ -43,7 +43,14 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-
+      <div *ngIf="!isAdmin">
+        Why are some permissions disabled?
+        <help-popover-icon>
+          Only permissions you yourself have are available for you to change for your team members.
+          <br /><br />
+          If you require more permissions to manange, please reach out to a live ops admin for help.
+        </help-popover-icon>
+      </div>
       <ng-container *waitForMonitor="getPermissionsActionMonitor">
         <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
           <mat-tree-node
@@ -55,7 +62,8 @@
             <mat-checkbox
               class="checklist-leaf-node"
               [checked]="node.isChecked"
-              (click)="todoLeafItemSelectionToggle(node)"
+              (click)="leafItemSelectionToggle(node)"
+              [disabled]="node.disabled"
               >{{ node.name | humanize }}</mat-checkbox
             >
           </mat-tree-node>
@@ -72,7 +80,8 @@
             <mat-checkbox
               [checked]="node.isChecked"
               [indeterminate]="descendantsPartiallySelected(node)"
-              (click)="todoItemSelectionToggle(node)"
+              (click)="itemSelectionToggle(node)"
+              [disabled]="node.disabled"
               >{{ node.name | humanize }}</mat-checkbox
             >
           </mat-tree-node>

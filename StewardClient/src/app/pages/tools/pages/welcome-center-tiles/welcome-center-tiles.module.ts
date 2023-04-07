@@ -35,6 +35,7 @@ import { GeneralTileComponent } from './steelhead/tile-components/steelhead-gene
 import { ImageTextTileComponent } from './steelhead/tile-components/image-text/steelhead-image-text-tile.component';
 import { GenericPopupTileComponent } from './steelhead/tile-components/generic-popup/steelhead-generic-popup-tile.component';
 import { DeeplinkTileComponent } from './steelhead/tile-components/deeplink/steelhead-deeplink-tile.component';
+
 /** Module for displaying welcome center tiles tool. */
 @NgModule({
   declarations: [

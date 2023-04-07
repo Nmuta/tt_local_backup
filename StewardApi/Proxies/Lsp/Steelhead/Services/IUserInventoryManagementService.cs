@@ -17,19 +17,5 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task<UserInventoryManagementService.GetAdminUserProfilesOutput> GetAdminUserProfiles(
             ulong xuid,
             uint maxProfiles);
-
-        /// <summary>
-        ///     Removes car from player inventory profile.
-        /// </summary>
-        Task RemoveCarFromUserInventoryWithCarId(
-            int carId,
-            int profileId);
-
-        /// <summary>
-        ///     Removes car from player inventory profile.
-        /// </summary>
-        Task RemoveCarFromUserInventoryWithVin(
-            Guid vin,
-            int profileId);
     }
 }

@@ -8,6 +8,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
@@ -47,20 +48,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            NotificationsManagementService.LiveOpsRetrieveForUserOutput notifications = null;
+
             try
             {
-                var notifications = await this.steelheadService.GetNotificationsForUserAsync(
+                notifications = await this.steelheadService.GetNotificationsForUserAsync(
                     xuid,
                     maxResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<Notification>>(notifications.results);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException(
                     $"Notifications for player with XUID: {xuid} could not be found.", ex);
             }
+
+            return this.mapper.SafeMap<IList<Notification>>(notifications.results);
         }
 
         /// <inheritdoc />
@@ -72,20 +75,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
 
+            NotificationsManagementService.GetAllUserGroupMessagesOutput notifications = null;
+
             try
             {
-                var notifications = await this.steelheadService.GetAllUserGroupMessagesAsync(
+                notifications = await this.steelheadService.GetAllUserGroupMessagesAsync(
                     groupId,
                     maxResults,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<UserGroupNotification>>(notifications.userGroupMessages);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException(
                     $"An error occurred while querying notifications for LSP group with ID: {groupId}.", ex);
             }
+
+            return this.mapper.SafeMap<IList<UserGroupNotification>>(notifications.userGroupMessages);
         }
 
         /// <inheritdoc />
@@ -99,20 +104,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput results = null;
+
             try
             {
-                var results = await this.steelheadService.SendMessageNotificationToMultipleUsersAsync(
+                results = await this.steelheadService.SendMessageNotificationToMultipleUsersAsync(
                     xuids,
                     message,
                     expireTimeUtc,
                     endpoint).ConfigureAwait(false);
-
-                return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException("Notifications failed to send.", ex);
             }
+
+            return this.mapper.SafeMap<IList<MessageSendResult<ulong>>>(results.messageSendResults);
 
             // TODO Add notification logging for individual users Task(948868)
         }
@@ -137,7 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                 PlayerOrLspGroup = groupId,
                 IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
             };
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ForzaLiveDeviceType>(deviceType);
 
             try
             {
@@ -241,7 +248,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var forzaDeviceType = this.mapper.Map<ForzaLiveDeviceType>(deviceType);
+            var forzaDeviceType = this.mapper.SafeMap<ForzaLiveDeviceType>(deviceType);
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
@@ -340,9 +347,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                 DeviceType = ForzaLiveDeviceType.Invalid
             };
 
+            NotificationsManagementService.GetUserGroupMessageOutput notificationInfo = null;
+
             try
             {
-                var notificationInfo = await this.steelheadService.GetUserGroupMessageAsync(
+                notificationInfo = await this.steelheadService.GetUserGroupMessageAsync(
                     notificationId,
                     endpoint).ConfigureAwait(false);
 
@@ -352,12 +361,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                     endpoint).ConfigureAwait(false);
 
                 groupMessage = notificationInfo.userGroupMessage;
-                deviceType = this.mapper.Map<DeviceType>(groupMessage.DeviceType);
             }
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"LSP failed to delete group message with Notification ID: {notificationId}", ex);
             }
+
+            deviceType = this.mapper.SafeMap<DeviceType>(groupMessage.DeviceType);
 
             try
             {

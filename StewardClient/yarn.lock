@@ -6827,10 +6827,10 @@ luxon@1.24.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/luxon/-/luxon-1.24.0.tgz#6db04b79ec8f7159973d4dcf21871fd6acfb3d58"
   integrity sha1-bbBLeeyPcVmXPU3PIYcf1qz7PVg=
 
-luxon@^2.3.0:
-  version "2.3.1"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/luxon/-/luxon-2.3.1.tgz#f276b1b53fd9a740a60e666a541a7f6dbed4155a"
-  integrity sha1-8naxtT/Zp0CmDmZqVBp/bb7UFVo=
+luxon@^2.5.2:
+  version "2.5.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/luxon/-/luxon-2.5.2.tgz#17ed497f0277e72d58a4756d6a9abee4681457b6"
+  integrity sha1-F+1JfwJ35y1YpHVtapq+5GgUV7Y=
 
 magic-string@0.25.7:
   version "0.25.7"

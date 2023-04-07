@@ -38,6 +38,8 @@ import { SelectUserFromListComponent } from './components/select-user-from-list/
 import { SelectTeamFromListComponent } from './components/select-team-from-list/select-team-from-list.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for Steward permission management. */
 @NgModule({
@@ -85,6 +87,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTabsModule,
     MatChipsModule,
     MatAutocompleteModule,
+    VerifyCheckboxModule,
+    HelpModule,
   ],
   exports: [],
 })

@@ -84,5 +84,10 @@
         ///     The Woodstock full name.
         /// </summary>
         public const string WoodstockFullName = "Forza Horizon 5";
+
+        /// <summary>
+        ///     Forum name representation as a title.
+        /// </summary>
+        public const string Forum = "Forum";
     }
 }

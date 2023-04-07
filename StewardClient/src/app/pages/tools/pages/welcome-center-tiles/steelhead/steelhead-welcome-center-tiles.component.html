@@ -1,13 +1,13 @@
 <mat-tab-group class="steward-layout-vertical-fill">
   <mat-tab label="Welcome Center Tiles">
-    <ng-container *waitForMonitor="getListActionMonitor">
+    <ng-container>
       <mat-card>
         <mat-card-header>
           <mat-card-title>Welcome Center Tiles</mat-card-title>
           <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <form [formGroup]="formGroup" class="sf-wrapper">
+          <form *waitForMonitor="getListActionMonitor" [formGroup]="formGroup" class="sf-wrapper">
             <div class="sf-vertical">
               <div class="sf-horizontal">
                 <mat-form-field class="sf-default-hint">

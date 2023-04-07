@@ -88,6 +88,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
+        ///     Checks if a user is a member of a user group.
+        /// </summary>
+        [HttpGet("{userGroupId}/membership/{xuid}")]
+        [SwaggerResponse(200, type: typeof(bool))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetMembershipInUserGroup(int userGroupId, ulong xuid)
+        {
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
+            var response = await this.Services.UserManagementService.GetUserGroupMemberships(xuid, new int[] { userGroupId }, 1).ConfigureAwait(true);
+
+            return this.Ok(response.userGroups.Any());
+        }
+
+        /// <summary>
         ///    Get bulk operation status.
         /// </summary>
         [HttpGet("{userGroupId}/bulkOperationStatus/{operationId}")]

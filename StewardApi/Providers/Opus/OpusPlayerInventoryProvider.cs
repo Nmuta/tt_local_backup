@@ -5,6 +5,7 @@ using AutoMapper;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
@@ -34,47 +35,53 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
+            Forza.WebServices.FH3.Generated.OnlineProfileService.GetAdminUserInventoryOutput response = null;
+
             try
             {
-                var response = await this.opusService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
-
-                return this.mapper.Map<OpusPlayerInventory>(response.summary);
+                response = await this.opusService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}", ex);
             }
+
+            return this.mapper.SafeMap<OpusPlayerInventory>(response.summary);
         }
 
         /// <inheritdoc />
         public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
+            Forza.WebServices.FH3.Generated.OnlineProfileService.GetAdminUserInventoryByProfileIdOutput response = null;
+
             try
             {
-                var response = await this.opusService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
-
-                return this.mapper.Map<OpusPlayerInventory>(response.summary);
+                response = await this.opusService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}", ex);
             }
+
+            return this.mapper.SafeMap<OpusPlayerInventory>(response.summary);
         }
 
         /// <inheritdoc />
         public async Task<IList<OpusInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
         {
+            Forza.WebServices.FH3.Generated.OnlineProfileService.GetAdminUserProfilesOutput response = null;
+
             try
             {
-                var response = await this.opusService.GetAdminUserProfilesAsync(xuid, MaxProfileResults)
+                response = await this.opusService.GetAdminUserProfilesAsync(xuid, MaxProfileResults)
                     .ConfigureAwait(false);
-
-                return this.mapper.Map<IList<OpusInventoryProfile>>(response.profiles);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}", ex);
             }
+
+            return this.mapper.SafeMap<IList<OpusInventoryProfile>>(response.profiles);
         }
     }
 }

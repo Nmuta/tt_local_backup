@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
@@ -57,27 +58,27 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// <summary>
         ///     Gets or sets the timer.
         /// </summary>
-        public TimerBridge Timer { get; set; }
+        public WofTimerBridge Timer { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination championship.
         /// </summary>
-        public string Championship { get; set; }
+        public Guid Championship { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination series.
         /// </summary>
-        public string Series { get; set; }
+        public Guid Series { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination ladder.
         /// </summary>
-        public string Ladder { get; set; }
+        public Guid Ladder { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination showroom category.
         /// </summary>
-        public string Category { get; set; }
+        public Guid Category { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination type.

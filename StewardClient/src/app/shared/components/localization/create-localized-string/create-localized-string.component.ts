@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitle, LocalizationCategory } from '@models/enums';
+import { GameTitle, LocalizationCategory, LocalizationSubCategory } from '@models/enums';
 import { LocalizedStringData } from '@models/localization';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -19,12 +19,13 @@ export interface CreateLocalizedStringContract {
   styleUrls: ['./create-localized-string.component.scss'],
 })
 export class CreateLocalizedStringComponent extends BaseComponent {
-  /** REVIEW-COMMENT: The create localized string service. */
+  /** The service used tocreate localized text. */
   @Input() service: CreateLocalizedStringContract;
 
   public postMonitor = new ActionMonitor('POST String Localization');
   public readonly messageMaxLength: number = 512;
   public categoryTypes: string[] = Object.values(LocalizationCategory);
+  public subCategoryTypes: string[] = Object.values(LocalizationSubCategory);
 
   public formControls = {
     stringToLocalize: new FormControl('', [
@@ -33,6 +34,7 @@ export class CreateLocalizedStringComponent extends BaseComponent {
     ]),
     description: new FormControl('', [Validators.required]),
     category: new FormControl(null, [Validators.required]),
+    subCategory: new FormControl(null, [Validators.required]),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -45,9 +47,10 @@ export class CreateLocalizedStringComponent extends BaseComponent {
       throw new Error('No service provided for CreateLocalizedStringComponent');
     }
     const stringData: LocalizedStringData = {
-      stringToLocalize: this.formControls.stringToLocalize.value,
+      textToLocalize: this.formControls.stringToLocalize.value,
       description: this.formControls.description.value,
       category: this.formControls.category.value,
+      subCategory: this.formControls.subCategory.value,
     };
 
     this.postMonitor = this.postMonitor.repeat();

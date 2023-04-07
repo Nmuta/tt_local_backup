@@ -1,0 +1,87 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Loyalty Rewards</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+    <help-popover-icon cardTitle="Loyalty Rewards">
+      <span
+        >When clicking the 'Send Loyalty Rewards' button, the tool will send out a reward for each
+        title the user has a record of playing but hasn't received a gift for.</span
+      >
+    </help-popover-icon>
+  </mat-card-header>
+  <mat-card-content>
+    <woodstock-player-inventory-profile-picker
+      [identity]="identity"
+      (profileChange)="onProfileChange($event)"
+    ></woodstock-player-inventory-profile-picker>
+
+    <ng-container *waitForMonitor="getMonitor">
+      <ng-container *ngIf="hasPlayedRecordTable?.data?.length > 0; else noDataTemplate">
+        <table mat-table [dataSource]="hasPlayedRecordTable">
+          <ng-container matColumnDef="label">
+            <th mat-header-cell *matHeaderCellDef>Label</th>
+            <td mat-cell *matCellDef="let entry">
+              <span>
+                <p *ngIf="entry?.label === displayLabel">{{ entry.label }}</p>
+                <button
+                  *ngIf="entry.label === actionLabel"
+                  mat-raised-button
+                  color="primary"
+                  [monitor]="postMonitor"
+                  stateManager
+                  [disabled]="!allowSend"
+                  monitorDisable
+                  monitorWarnSnackbar
+                  (click)="updateTitlesPlayed()"
+                >
+                  {{ entry.label | humanize }}
+                  <button-spinner [monitor]="postMonitor" defaultIcon="send"></button-spinner>
+                </button>
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container *ngFor="let gameColumn of gameTitleColumns" [matColumnDef]="gameColumn">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ gameColumn }}
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <span *ngIf="row.label === displayLabel">
+                <mat-icon *ngIf="row.titles[gameColumn]; else falseFlagTemplate" class="green-icon"
+                  >check_circle</mat-icon
+                >
+              </span>
+              <span *ngIf="row.label === actionLabel">
+                <mat-checkbox
+                  *ngIf="!row.titles[gameColumn]"
+                  stateManager
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
+                  (change)="toggleTitleSend($event, gameColumn)"
+                >
+                </mat-checkbox>
+              </span>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #noDataTemplate>
+  <div *ngIf="identity?.xuid">
+    <span>No profile selected.</span>
+  </div>
+
+  <div *ngIf="!identity?.xuid" class="no-xuid">
+    <b>{{ identity?.error?.message }}</b>
+    <span>Use XUID in player lookup to check players Loyalty Rewards record.</span>
+  </div>
+</ng-template>
+
+<ng-template #falseFlagTemplate>
+  <mat-icon class="red-icon">cancel</mat-icon>
+</ng-template>

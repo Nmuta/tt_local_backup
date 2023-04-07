@@ -56,7 +56,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
         private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
-        private readonly IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GiftController"/> class.
@@ -66,22 +65,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
             IWoodstockPlayerInventoryProvider playerInventoryProvider,
             IWoodstockItemsProvider itemsProvider,
             IRequestValidator<WoodstockGift> giftRequestValidator,
-            IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
-            IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider)
+            IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
-            woodstockPlayerInventoryProvider.ShouldNotBeNull(nameof(woodstockPlayerInventoryProvider));
 
             this.mapper = mapper;
             this.playerInventoryProvider = playerInventoryProvider;
             this.itemsProvider = itemsProvider;
             this.giftRequestValidator = giftRequestValidator;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
-            this.woodstockPlayerInventoryProvider = woodstockPlayerInventoryProvider;
         }
 
         /// <summary>
@@ -119,12 +115,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
 
             var allowedToExceedCreditLimit =
                 userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.woodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(
+            var response = await this.playerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
                 gift,
                 requesterObjectId,
                 allowedToExceedCreditLimit,
-                endpoint).ConfigureAwait(true);
+                this.ServicesWithProdLiveStewardCms).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -151,7 +147,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
             var liveries = await this.LookupLiveries(gift.LiveryIds).ConfigureAwait(true);
 
             // TODO: Move livery gifting logic out of the provider
-            var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(gift.Target, groupId, livery, requesterObjectId, endpoint)).ToList();
+            var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(gift.Target, groupId, livery, requesterObjectId, this.ServicesWithProdLiveStewardCms)).ToList();
             await Task.WhenAll(jobs).ConfigureAwait(false);
 
             var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();
@@ -179,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
 
             try
             {
-                livery = await this.Services.StorefrontManagement.GetUGCLivery(liveryGuid).ConfigureAwait(true);
+                livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryGuid).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

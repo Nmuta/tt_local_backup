@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <a
+    [class.mat-button-disabled]="!identity?.extra?.hasSteelhead"
+    [matTooltip]="steelheadTooltip"
+    [routerLink]="steelheadRouterLink"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    queryParamsHandling="preserve"
+    >FM
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FM8"> </endpoint-selection>
+  </a>
+  <!-- https://dev.azure.com/t10motorsport/ForzaTech/_dashboards/dashboard/a38b680b-c8f2-431a-8a3a-ff1bbf473d95 -->
+  <!-- <a
+    [class.mat-button-disabled]="!identity?.extra?.hasWoodstock"
+    [matTooltip]="woodstockTooltip"
+    [routerLink]="woodstockRouterLink"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    queryParamsHandling="preserve"
+    >FH5
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FH5"> </endpoint-selection>
+  </a> -->
+  <span class="icon-spacer"></span>
+  <player-selection-single
+    [displayInSingleLine]="true"
+    [specialIdentitiesAllowed]="specialIdentitiesAllowed"
+    (found)="found($event)"
+  ></player-selection-single>
+  <span class="spacer"></span>
+</mat-toolbar>
+<router-outlet></router-outlet>

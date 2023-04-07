@@ -36,6 +36,8 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { ForumBanningComponent } from './pages/forum/forum-banning.component';
+import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
 import { MatIconModule } from '@angular/material/icon';
 
 /** Routed module for banning users. */
@@ -46,6 +48,7 @@ import { MatIconModule } from '@angular/material/icon';
     SunriseBanningComponent,
     SteelheadBanningComponent,
     WoodstockBanningComponent,
+    ForumBanningComponent,
     BanOptionsComponent,
     DurationPickerComponent,
   ],
@@ -82,6 +85,8 @@ import { MatIconModule } from '@angular/material/icon';
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,
+    ForumBanHistoryModule,
+    MatIconModule,
   ],
 })
 export class UserBanningModule {}
