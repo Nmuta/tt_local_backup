@@ -289,7 +289,7 @@ export class GeneralTileComponent extends BaseComponent {
   /** Add a new display condition. */
   public addDisplayCondition(reference: string, when: string): void {
     const newDisplayConditionForm = new FormGroup({
-      reference: new FormControl(reference),
+      reference: new FormControl(reference, [Validators.required]),
       when: new FormControl(when),
     });
     this.formControls.displayConditions.push(newDisplayConditionForm);
