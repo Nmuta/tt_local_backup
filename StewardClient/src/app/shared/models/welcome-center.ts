@@ -100,7 +100,7 @@ export interface DisplayConditionItem {
 }
 
 /** Base interface for a display conditions wrapper. */
-export interface DisplayCondition {
+export interface TileDisplayCondition {
   item: DisplayConditionItem[];
 }
 
@@ -113,7 +113,7 @@ export interface WelcomeCenterTile {
   tileDescription: LocalizedText;
   tileImagePath: string;
   timer: Timer;
-  displayConditions: DisplayCondition;
+  displayConditions: TileDisplayCondition;
   derivedType?: TileType;
 }
 

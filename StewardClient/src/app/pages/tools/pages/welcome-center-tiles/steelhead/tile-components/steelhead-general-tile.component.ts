@@ -20,8 +20,10 @@ import {
   TimerInstance,
   WelcomeCenterTile,
   WelcomeCenterTileSize,
+  FriendlyNameMap,
 } from '@models/welcome-center';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { SteelheadWorldOfForzaService } from '@services/api-v2/steelhead/welcome-center-tiles/world-of-forza/world-of-forza/steelhead-world-of-forza.service';
 import { DateTime } from 'luxon';
 import { filter, map, Observable, pairwise, startWith, takeUntil } from 'rxjs';
 
@@ -54,7 +56,7 @@ export class GeneralTileComponent extends BaseComponent {
   public timerInstanceEnum = TimerInstance;
   public timerTypeEnum = TimerType;
   public timerReferenceOptions: Map<string, string>;
-  public displayConditionReferences: Map<string, string>;
+  public displayConditionReferences: FriendlyNameMap;
   public selectedTimerReferenceInstance: TimerReferenceInstance;
   // Min date is needed for datetime picker to not crash. We use epoch time
   public minDate = DateTime.fromSeconds(0);
@@ -77,8 +79,18 @@ export class GeneralTileComponent extends BaseComponent {
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
-  constructor(steelheadLocalizationService: SteelheadLocalizationService) {
+  constructor(
+    steelheadLocalizationService: SteelheadLocalizationService,
+    steelheadWorldOfForzaService: SteelheadWorldOfForzaService,
+  ) {
     super();
+
+    steelheadWorldOfForzaService
+      .getDisplayConditions$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        this.displayConditionReferences = data;
+      });
 
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
@@ -86,12 +98,6 @@ export class GeneralTileComponent extends BaseComponent {
         return steelheadLocalizationService.getLocalizedStrings$();
       },
     };
-
-    this.displayConditionReferences = new Map([
-      ['d435a35f-df81-466c-9f7a-96313031ff87', 'Display After FTUE'],
-      ['88b4383c-abe8-4839-8ad1-c6a3e58fa07a', 'Less than 2 minutes'],
-      ['29d84c8c-19f9-4e7d-a228-05a8e7bc861e', 'Greater than 45 minutes'],
-    ]);
 
     this.formControls.timerInstance.valueChanges
       .pipe(takeUntil(this.onDestroy$))
