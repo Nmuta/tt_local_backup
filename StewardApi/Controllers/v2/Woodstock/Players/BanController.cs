@@ -210,7 +210,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             var pegasusEnvironment = this.WoodstockEndpoint.Value == WoodstockContracts.WoodstockEndpoint.Studio
                 ? WoodstockPegasusEnvironment.Dev : WoodstockPegasusEnvironment.Prod;
 
-            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync(pegasusEnvironment).ConfigureAwait(true);
+            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync(pegasusEnvironment, WoodstockPegasusSlot.LiveSteward).ConfigureAwait(true);
 
             var banConfigurations = new List<BanConfiguration>();
 
