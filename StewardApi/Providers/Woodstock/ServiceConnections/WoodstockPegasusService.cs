@@ -262,7 +262,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
             {
-                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment).ConfigureAwait(false);
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment, slot: "live-steward").ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(banConfigurationKey, TimeSpan.FromDays(1), banConfigurations);
 
