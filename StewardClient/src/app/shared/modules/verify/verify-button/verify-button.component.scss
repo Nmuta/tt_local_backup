@@ -3,6 +3,10 @@
 button {
   margin-right: $gap-medium;
 
+  &:not(.has-help-icon) {
+    margin: 0px;
+  }
+
   .actions {
     margin-top: $gap-large;
   }

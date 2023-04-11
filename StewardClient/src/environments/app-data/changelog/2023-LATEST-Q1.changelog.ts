@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '6070292d-ff07-4d31-b72a-f0f0e2c98330',
+      shortText: 'Rework verification checkbox into an icon button',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging, NavbarTool.WelcomeCenterTiles] },
       uuid: 'bf98f050-9392-43e1-a9bb-b6f9acbd3e21',
       shortText: 'Hook up localized string creation form to new backing APIs',

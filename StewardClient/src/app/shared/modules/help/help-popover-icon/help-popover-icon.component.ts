@@ -4,6 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { takeUntil } from 'rxjs/operators';
 import { filter } from 'rxjs';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { TooltipPosition } from '@angular/material/tooltip';
 
 /** Produces a questionmark icon which contains helpful text and an optional link to the docs. */
 @Component({
@@ -19,6 +20,8 @@ export class HelpPopoverIconComponent extends BaseComponent implements OnInit {
   @Input() public cardSubtitle: string = 'Help card';
   /** REVIEW-COMMENT: Confluence name. Default to empty string. */
   @Input() public confluenceName: string = '';
+  /** Mat tooltip position */
+  @Input() public matTooltipPosition: TooltipPosition = 'below';
 
   public isOpen = false;
 

@@ -4,6 +4,11 @@ mat-card-content {
   max-width: 20em;
 }
 
+// Force color onto help icon to ignore parent opacity
+mat-icon {
+  color: app-color-default-contrast($app-background);
+}
+
 ::ng-deep mat-card > help-popover-icon,
 ::ng-deep mat-card-title-group > help-popover-icon,
 ::ng-deep mat-card-header > help-popover-icon,
@@ -21,12 +26,26 @@ mat-card-content {
 
 // Default help popover icon size
 $help-popover-icon-size: 36px;
-::ng-deep .mat-button-wrapper > help-popover-icon {
-  position: absolute;
-  overflow: hidden;
+$help-popover-icon-spacing: $help-popover-icon-size / 2;
+::ng-deep button {
+  &:not(.mat-mini-fab) > .mat-button-wrapper > help-popover-icon {
+    position: absolute;
+    overflow: hidden;
 
-  top: -#{$help-popover-icon-size / 2};
-  right: -#{$help-popover-icon-size / 2};
+    top: -$help-popover-icon-spacing;
+    right: -$help-popover-icon-spacing;
+  }
+
+  &.mat-mini-fab > .mat-button-wrapper > help-popover-icon,
+  &.mat-icon-button > .mat-button-wrapper > help-popover-icon {
+    position: absolute;
+    overflow: hidden;
+
+    // Mini fab button is pretty small, need to add more spacing to icon so its hover
+    // event does not impede the button itself
+    top: -#{$help-popover-icon-spacing + 2};
+    right: -#{$help-popover-icon-spacing + 2};
+  }
 }
 
 ::ng-deep .mat-badge-icon .mat-badge-content {

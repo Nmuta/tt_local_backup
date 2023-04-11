@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Select, Store } from '@ngxs/store';
 import { ConfigureShowVerifyCheckboxPopup } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
-import { Observable } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 
 /** Displays the verify checkbox help popover. */
 @Component({
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   templateUrl: './verify-button.component.html',
   styleUrls: ['./verify-button.component.scss'],
 })
-export class VerifyButtonComponent extends BaseComponent {
+export class VerifyButtonComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState.showVerifyCheckboxPopup)
   public showVerifyCheckboxPopup$: Observable<boolean>;
   /** Sets the disabled state of the verify button. */
@@ -20,9 +20,19 @@ export class VerifyButtonComponent extends BaseComponent {
   @Output() public isVerifiedChange = new EventEmitter<boolean>();
 
   public isVerified: boolean = false;
+  public showVerifyCheckboxPopup: boolean = true;
 
   constructor(private readonly store: Store) {
     super();
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    this.showVerifyCheckboxPopup$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(
+        showVerifyCheckboxPopup => (this.showVerifyCheckboxPopup = showVerifyCheckboxPopup),
+      );
   }
 
   /** Sets the show verify checkbox popup value in settings. */

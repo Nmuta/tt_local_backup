@@ -1,14 +1,14 @@
 <button
-  mat-mini-fab
-  [color]="!isVerified ? null : null"
+  mat-icon-button
+  [class.has-help-icon]="showVerifyCheckboxPopup"
   [disabled]="disabled"
   (click)="changeVerifyStatus(!isVerified)"
   clickStop
 >
-  <mat-icon *ngIf="!isVerified">lock</mat-icon>
-  <mat-icon *ngIf="isVerified">lock_open</mat-icon>
-  <ng-container *ngIf="showVerifyCheckboxPopup$ | async as showVerifyCheckboxPopup">
-    <help-popover-icon cardTitle="Button Verification Checkbox">
+  <mat-icon *ngIf="!isVerified">lock_open</mat-icon>
+  <mat-icon *ngIf="isVerified">lock</mat-icon>
+  <ng-container *ngIf="showVerifyCheckboxPopup">
+    <help-popover-icon cardTitle="Button Verification Checkbox" matTooltipPosition="right">
       <div>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec efficitur velit. Morbi
         tincidunt nulla non est pharetra, et blandit mauris pretium. Ut vel porttitor magna.
