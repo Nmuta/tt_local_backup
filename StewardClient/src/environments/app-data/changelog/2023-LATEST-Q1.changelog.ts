@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Rework verification checkbox into an icon button',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.ServicesTableStorage] },
+      uuid: 'd243963e-dab1-466f-99b3-f8d9b643866d',
+      shortText: 'Filter out entries for unselected external profile ID',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging, NavbarTool.WelcomeCenterTiles] },
       uuid: 'bf98f050-9392-43e1-a9bb-b6f9acbd3e21',
       shortText: 'Hook up localized string creation form to new backing APIs',
@@ -21,6 +26,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: ChangelogTag.Internal,
       uuid: 'c1652439-efa9-4332-ba11-59e6d3ec3cd3',
       shortText: 'Clean up test bed modules after each unit test file',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: '58670a58-ff9c-4d5f-a985-bbabb955c5b4',
+      shortText: 'Show reporting state for UGC as humanized string in UGC overview',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
