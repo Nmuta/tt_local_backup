@@ -332,8 +332,16 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TileTelemetryTag, opt => opt.MapFrom(src => src.tileInfo.TelemetryTag));
             this.CreateMap<MotdEntry, MotdBridge>()
                 .ReverseMap();
-            this.CreateMap<LocEntry, LocalizedStringBridge>().ReverseMap();
-            this.CreateMap<LocLocText, LocTextBridge>().ReverseMap();
+            this.CreateMap<LocalizedStringBridge, LocEntry>()
+                .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512))
+                .ForMember(dest => dest.id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory))
+                .ForPath(dest => dest.LocString.locdef, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForPath(dest => dest.LocString.skiploc, opt => opt.MapFrom(src => false))
+                .ForPath(dest => dest.LocString.@base, opt => opt.MapFrom(src => src.TextToLocalize))
+                .ForPath(dest => dest.LocString.description, opt => opt.MapFrom(src => src.Description));
+
             this.CreateMap<LocTextMotdNoDesc, LocTextBridge>()
                 .ForMember(dest => dest.Description, act => act.Ignore())
                 .ReverseMap();

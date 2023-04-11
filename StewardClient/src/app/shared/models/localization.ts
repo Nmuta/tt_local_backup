@@ -1,13 +1,18 @@
-import { LocalizationCategory, SupportedLocalizationLanguageCodes } from './enums';
+import {
+  LocalizationCategory,
+  LocalizationSubCategory,
+  SupportedLocalizationLanguageCodes,
+} from './enums';
 import { GuidLikeString } from './extended-types';
 
 /**
  * Interface that represents data used to localize a string.
  */
 export interface LocalizedStringData {
-  stringToLocalize: string;
+  textToLocalize: string;
   description: string;
   category: LocalizationCategory;
+  subCategory: LocalizationSubCategory;
   //maxLength: - Probably use a hardcoded value internally in the API. Let's start with 512 and go from there.
 }
 

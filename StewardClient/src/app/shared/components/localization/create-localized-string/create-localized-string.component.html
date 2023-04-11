@@ -43,6 +43,15 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+          <mat-label>Sub-Category</mat-label>
+          <mat-select formControlName="subCategory">
+            <mat-option *ngFor="let type of subCategoryTypes" [value]="type">
+              {{ type | deppoh }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <div class="sf-horizontal">
           <button
             class="sf-standard-width"
