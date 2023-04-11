@@ -626,138 +626,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_InvalidFeatureArea()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].FeatureArea = "invalidFeatureArea";
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task BanPlayers_UndefinedStartTimeUtc()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].StartTimeUtc = default;
-
-            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.ToList()[0].Error);
-            Assert.IsTrue(result[0].BanDescription.StartTimeUtc.ToUniversalTime() < DateTime.UtcNow.AddMinutes(5));
-            Assert.IsTrue(result[0].BanDescription.StartTimeUtc.ToUniversalTime() > DateTime.UtcNow.AddMinutes(-5));
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
         public async Task BanPlayers_NoXuidsOrGamertagsProvided()
         {
             var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = null;
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_DurationNull()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].Duration = default;
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_DurationZero()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].Duration = TimeSpan.Zero;
-            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_DurationNegative()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].Duration = TimeSpan.FromMinutes(-10);
-            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_BanAllConsolesUndefined()
-        {
-            var banParameters = this.GenerateBanParameters();
-            banParameters[0].BanAllConsoles = null;
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_SendNotificationWithoutReason()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].SendReasonNotification = true;
-            banParameters[0].Reason = string.Empty;
 
             try
             {
@@ -1728,14 +1601,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
                 {
                     Xuid = xuid,
                     Gamertag = gamertag,
-                    FeatureArea = "Matchmaking",
-                    Reason = "This is an automated test.",
-                    StartTimeUtc = DateTime.UtcNow,
-                    Duration = TimeSpan.FromMinutes(5),
-                    BanAllConsoles = false,
-                    BanAllPcs = false,
-                    DeleteLeaderboardEntries = false,
-                    SendReasonNotification = false
+                    Reason = "Testing",
+                    ReasonGroupName = "Developer",
+                    DeleteLeaderboardEntries = false
                 }
             };
         }

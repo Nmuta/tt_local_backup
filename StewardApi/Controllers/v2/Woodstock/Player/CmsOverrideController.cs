@@ -26,7 +26,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 {
     /// <summary>
-    ///     Test controller for testing Woodstock LSP APIs.
+    ///     Handles requests for Woodstock cms override.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/cmsOverride")]
     [LogTagTitle(TitleLogTags.Woodstock)]

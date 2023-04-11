@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
+      shortText: 'New way of banning implemented',
+      longText: ['Ban reason will decide the ban configuration and areas automatically'],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.ServicesTableStorage] },
       uuid: 'd243963e-dab1-466f-99b3-f8d9b643866d',
       shortText: 'Filter out entries for unselected external profile ID',
