@@ -64,16 +64,6 @@ export enum GameTitle {
 export enum UserRole {
   None = 'none', // This value does not match the casing. It seems to be provided upstream.
   LiveOpsAdmin = 'LiveOpsAdmin',
-  SupportAgentAdmin = 'SupportAgentAdmin',
-  SupportAgent = 'SupportAgent',
-  SupportAgentNew = 'SupportAgentNew',
-  DataPipelineAdmin = 'DataPipelineAdmin',
-  DataPipelineContributor = 'DataPipelineContributor',
-  DataPipelineRead = 'DataPipelineRead',
-  CommunityManager = 'CommunityManager',
-  HorizonDesigner = 'HorizonDesigner',
-  MotorsportDesigner = 'MotorsportDesigner',
-  MediaTeam = 'MediaTeam',
   /** V2 User Role */
   GeneralUser = 'GeneralUser',
 }

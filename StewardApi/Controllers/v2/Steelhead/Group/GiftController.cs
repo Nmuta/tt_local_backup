@@ -37,10 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.CommunityManager)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Target.LspGroup, Topic.Gifting)]
     public class GiftController : V2SteelheadControllerBase
@@ -110,8 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.playerInventoryProvider.UpdateGroupInventoriesAsync(
                 this.Services,
                 groupId,

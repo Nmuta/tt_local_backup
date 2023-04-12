@@ -63,25 +63,6 @@ describe('UserRoleGuard:', () => {
     });
   });
 
-  describe('When profile has an invalid role: ', () => {
-    describe('DataPipelineAdmin', () => {
-      beforeEach(() => {
-        testProfile.role = UserRole.DataPipelineAdmin;
-        guard.profile$ = of(testProfile);
-      });
-
-      it('should call router.navigate correctly', fakeAsync(() => {
-        const action = guard.canActivate(testRoute as never, testSnapshot as never);
-        action.subscribe(result => expect(result).toBeFalsy());
-
-        expect(store.dispatch).toHaveBeenCalled();
-        expect(store.dispatch).toHaveBeenCalledWith(
-          new Navigate(['/unauthorized'], { source: testSnapshot.url }),
-        );
-      }));
-    });
-  });
-
   describe('when profile is invalid:', () => {
     beforeEach(() => {
       guard.profile$ = of(null);

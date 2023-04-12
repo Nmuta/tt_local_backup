@@ -47,20 +47,10 @@ export const USER_GUARD_TOKENS = [
   ...values(UserRole).map(r => GenerateUserRoleGuard([r])),
   // add in the customized extras
   ...values(CommonAccessLevels).map(set => GenerateUserRoleGuard(set)),
-  GenerateUserRoleGuard([UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin]),
-  GenerateUserRoleGuard([
-    UserRole.LiveOpsAdmin,
-    UserRole.SupportAgent,
-    UserRole.SupportAgentAdmin,
-    UserRole.SupportAgentNew,
-  ]),
-  GenerateUserRoleGuard([UserRole.LiveOpsAdmin, UserRole.CommunityManager]),
-  GenerateUserRoleGuard([
-    UserRole.LiveOpsAdmin,
-    UserRole.DataPipelineRead,
-    UserRole.DataPipelineContributor,
-    UserRole.DataPipelineAdmin,
-  ]),
+  GenerateUserRoleGuard([UserRole.LiveOpsAdmin]),
+  GenerateUserRoleGuard([UserRole.LiveOpsAdmin]),
+  GenerateUserRoleGuard([UserRole.LiveOpsAdmin]),
+  GenerateUserRoleGuard([UserRole.LiveOpsAdmin]),
 ];
 
 export const USER_GUARD_PROVIDERS = USER_GUARD_TOKENS.map(v => <Provider>{ provide: v });

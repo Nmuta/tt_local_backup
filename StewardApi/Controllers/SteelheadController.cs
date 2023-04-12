@@ -41,12 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.MotorsportDesigner,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam,
-        UserRole.MotorsportDesigner,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
@@ -629,8 +624,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit =
-                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                         groupGift,
                         requesterObjectId,
@@ -714,8 +708,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                 groupGift,
                 requesterObjectId,
@@ -735,8 +728,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
@@ -767,8 +759,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.steelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
                 gift,
@@ -897,9 +888,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/send")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
         [Authorize(Policy = UserAttribute.MessagePlayer)]
@@ -950,9 +939,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/send/groupId({groupId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
         [Authorize(Policy = UserAttribute.MessageGroup)]
@@ -993,9 +980,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
         [Authorize(Policy = UserAttribute.MessagePlayer)]
@@ -1033,9 +1018,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
         [Authorize(Policy = UserAttribute.MessageGroup)]
@@ -1069,9 +1052,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpDelete("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
         [Authorize(Policy = UserAttribute.MessagePlayer)]
@@ -1099,9 +1080,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpDelete("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
         [Authorize(Policy = UserAttribute.MessageGroup)]

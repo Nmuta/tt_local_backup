@@ -61,15 +61,6 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 return Task.CompletedTask;
             }
 
-            // If the user is in any of the v1 roles, succeed the policy
-            // TODO: Once all users are migrated to auth v2, remove this
-            // PBI: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1349616
-            if (UserRole.V1Roles().Any(role => context.User.IsInRole(role)))
-            {
-                context.Succeed(requirement);
-                return Task.CompletedTask;
-            }
-
             if (!EnvironmentAndTitle(httpContext, out string title, out string environment))
             {
                 return Task.CompletedTask;

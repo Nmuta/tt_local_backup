@@ -14,100 +14,40 @@ export enum V1RestrictedFeature {
 /** The role restrictions for tooling features. */
 export const RestrictedToolAccessLookup = {
   [V1RestrictedFeature.GroupGifting]: {
-    [GameTitle.FH5]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
-    [GameTitle.FH4]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
-    [GameTitle.FM7]: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.CommunityManager],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
   [V1RestrictedFeature.GiftLivery]: {
-    [GameTitle.FH5]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.CommunityManager,
-      UserRole.MediaTeam,
-    ],
-    [GameTitle.FH4]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.CommunityManager,
-      UserRole.MediaTeam,
-    ],
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
-    [GameTitle.FM7]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.CommunityManager,
-      UserRole.MediaTeam,
-    ],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
   [V1RestrictedFeature.SendLoyaltyRewards]: {
-    [GameTitle.FH5]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.CommunityManager,
-    ],
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin],
     [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
   [V1RestrictedFeature.SetReportWeight]: {
-    [GameTitle.FH5]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.CommunityManager,
-    ],
-    [GameTitle.FH4]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.CommunityManager,
-    ],
-    [GameTitle.FM8]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.CommunityManager,
-    ],
-    [GameTitle.FM7]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.CommunityManager,
-    ],
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
   [V1RestrictedFeature.PlayerProfileManagement]: {
-    [GameTitle.FM8]: [UserRole.LiveOpsAdmin, UserRole.MotorsportDesigner],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
     [GameTitle.FH5]: [], // Unused
     [GameTitle.FH4]: [], // Unused
     [GameTitle.FM7]: [], // Unused
   },
   [V1RestrictedFeature.UserGroupWrite]: {
-    [GameTitle.FM8]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.CommunityManager,
-      UserRole.MediaTeam,
-      UserRole.HorizonDesigner,
-    ],
-    [GameTitle.FH5]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.CommunityManager,
-      UserRole.MediaTeam,
-      UserRole.HorizonDesigner,
-    ],
-    [GameTitle.FH4]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.CommunityManager,
-      UserRole.MediaTeam,
-      UserRole.HorizonDesigner,
-    ],
-    [GameTitle.FM7]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.CommunityManager,
-      UserRole.MediaTeam,
-      UserRole.HorizonDesigner,
-    ],
+    [GameTitle.FM8]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FH5]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FH4]: [UserRole.LiveOpsAdmin],
+    [GameTitle.FM7]: [UserRole.LiveOpsAdmin],
   },
   [V1RestrictedFeature.UserGroupRemoveAll]: {
     [GameTitle.FM8]: [UserRole.LiveOpsAdmin],

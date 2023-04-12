@@ -106,10 +106,6 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
     this.areAnyAppsAccessible = role !== UserRole.None;
     // Only support agents have access to Zendesk.
     // Doing this manually until Zendesk app is deleted.
-    this.areZendeskAppsAccessible =
-      role === UserRole.LiveOpsAdmin ||
-      role === UserRole.SupportAgentAdmin ||
-      role === UserRole.SupportAgent ||
-      role === UserRole.SupportAgentNew;
+    this.areZendeskAppsAccessible = role === UserRole.LiveOpsAdmin;
   }
 }

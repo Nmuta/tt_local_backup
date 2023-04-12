@@ -198,9 +198,7 @@ export abstract class GiftBasketBaseComponent<
     }
 
     this.ignoreMaxCreditLimit =
-      event?.value === GiftReason.LostSave &&
-      (this.profile.role === UserRole.LiveOpsAdmin ||
-        this.profile.role === UserRole.SupportAgentAdmin);
+      event?.value === GiftReason.LostSave && this.profile.role === UserRole.LiveOpsAdmin;
     this.setStateGiftBasket(this.giftBasket.data);
   }
 

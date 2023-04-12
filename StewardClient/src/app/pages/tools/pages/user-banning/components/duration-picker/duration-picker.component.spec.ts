@@ -53,7 +53,7 @@ describe('DurationPickerComponent', () => {
       beforeEach(() => {
         mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
           emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
-          role: UserRole.SupportAgent,
+          role: UserRole.GeneralUser,
           name: faker.name.firstName(),
         } as UserModel);
       });
