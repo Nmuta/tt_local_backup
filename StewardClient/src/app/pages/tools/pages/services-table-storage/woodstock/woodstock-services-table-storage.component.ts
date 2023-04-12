@@ -1,28 +1,28 @@
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { cloneDeep, first } from 'lodash';
-import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { GuidLikeString } from '@models/extended-types';
 import { ServicesTableStorageComponent } from '../services-table-storage.component';
-import {
-  ServicesTableStorageEntity,
-  SteelheadServicesTableStorageService,
-} from '@services/api-v2/steelhead/services-table-storage/services-table-storage.service';
 import { Observable } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ServicesTableStorageContract } from '../components/services-filterable-table/services-filterable-table.component';
 import BigNumber from 'bignumber.js';
+import {
+  WoodstockServicesTableStorageService,
+  ServicesTableStorageEntity,
+} from '@services/api-v2/woodstock/services-table-storage/services-table-storage.service';
+import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 
-/** Component for displaying routed Steelhead user details. */
+/** Component for displaying Woodstock services table storage. */
 @Component({
-  selector: 'steelhead-services-table-storage',
-  templateUrl: './steelhead-services-table-storage.component.html',
-  styleUrls: ['./steelhead-services-table-storage.component.scss'],
+  selector: 'woodstock-services-table-storage',
+  templateUrl: './woodstock-services-table-storage.component.html',
+  styleUrls: ['./woodstock-services-table-storage.component.scss'],
 })
-export class SteelheadServicesTableStorageComponent extends BaseComponent {
-  public title: GameTitle.FM8;
-  public profile: SteelheadPlayerInventoryProfile;
+export class WoodstockServicesTableStorageComponent extends BaseComponent {
+  public title: GameTitle.FH5;
+  public profile: WoodstockPlayerInventoryProfile;
   public data: ServicesTableStorageEntity[] = null;
   public serviceContract: ServicesTableStorageContract;
 
@@ -38,7 +38,7 @@ export class SteelheadServicesTableStorageComponent extends BaseComponent {
 
   /** The specific relevant identity from the parent. */
   public get identity(): IdentityResultAlpha {
-    return this.parent.identity?.steelhead;
+    return this.parent.identity?.woodstock;
   }
 
   /** A string overview of the profile ids. */
@@ -49,7 +49,7 @@ export class SteelheadServicesTableStorageComponent extends BaseComponent {
   constructor(
     @Inject(forwardRef(() => ServicesTableStorageComponent))
     private parent: ServicesTableStorageComponent,
-    private steelheadService: SteelheadServicesTableStorageService,
+    private woodstockService: WoodstockServicesTableStorageService,
   ) {
     super();
 
@@ -61,13 +61,13 @@ export class SteelheadServicesTableStorageComponent extends BaseComponent {
         xuid: BigNumber,
         externalProfileId: GuidLikeString,
       ): Observable<ServicesTableStorageEntity[]> {
-        return steelheadService.getTableStorageByProfileId$(xuid, externalProfileId);
+        return woodstockService.getTableStorageByProfileId$(xuid, externalProfileId);
       },
     };
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: SteelheadPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: WoodstockPlayerInventoryProfile): void {
     this.profile = newProfile;
     this.serviceContract.xuid = this.identity.xuid;
     this.serviceContract.externalProfileId = this.profile.externalProfileId;

@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: [NavbarTool.ServicesTableStorage] },
+      uuid: 'eddbd7a1-5db5-4853-95b6-531bb7780539',
+      shortText: 'Added Services Table Storage view for FH5',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
       uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
       shortText: 'New way of banning implemented',
