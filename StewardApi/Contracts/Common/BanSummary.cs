@@ -23,6 +23,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public int BanCount { get; set; }
 
         /// <summary>
+        ///     Gets or sets the number of bans adjusted to include ban count reduction every 6 months. Used for Forum Ban.
+        /// </summary>
+        public int AdjustedBanCount { get; set; }
+
+        /// <summary>
         ///     Gets or sets the banned areas.
         /// </summary>
         public IList<string> BannedAreas { get; set; }

@@ -89,6 +89,11 @@
                   <mat-hint>The date the ban was given to the player</mat-hint>
                 </mat-form-field>
               </div>
+              <p><b>Next Ban Duration:</b>
+              <i *ngIf="!nextBanDuration">Please select a player to see the next ban duration</i>
+              <ng-container *ngIf="nextBanDuration">
+                {{ nextBanDuration }} 
+              </ng-container></p>
               <div>
                 <button
                   mat-raised-button

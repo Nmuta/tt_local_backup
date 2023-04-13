@@ -106,5 +106,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Bans a list of players.
         /// </summary>
         Task<BanUsersV2Output> BanUsersV2(ForzaUserBanParametersV2[] banParameters);
+
+        /// <summary>
+        ///     Gets the next ban period for a player based on a ban configuration.
+        /// </summary>
+        Task<GetNextBanPeriodOutput> GetNextBanPeriod(ulong xuid, Guid pegasusBanConfigurationId);
     }
 }
