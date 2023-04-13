@@ -105,8 +105,6 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
     const role = this.userProfile?.role ?? UserRole.None;
     this.areAnyAppsAccessible = role !== UserRole.None;
 
-    this.areZendeskAppsAccessible =
-      role === UserRole.LiveOpsAdmin ||
-      role === UserRole.GeneralUser
+    this.areZendeskAppsAccessible = role === UserRole.LiveOpsAdmin || role === UserRole.GeneralUser;
   }
 }
