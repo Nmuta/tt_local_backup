@@ -140,7 +140,11 @@
         </mat-form-field>
         <mat-form-field appearance="fill" class="sf-default-hint sf-13-char">
           <mat-label>When</mat-label>
-          <input type="text" matInput formControlName="when" />
+          <mat-select formControlName="when">
+            <mat-option *ngFor="let whenReference of whenFieldReferences" [value]="whenReference">
+              {{ whenReference }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <button
           mat-mini-fab

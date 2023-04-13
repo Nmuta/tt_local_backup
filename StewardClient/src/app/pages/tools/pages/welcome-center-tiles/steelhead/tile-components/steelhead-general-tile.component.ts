@@ -57,6 +57,27 @@ export class GeneralTileComponent extends BaseComponent {
   public timerTypeEnum = TimerType;
   public timerReferenceOptions: Map<string, string>;
   public displayConditionReferences: FriendlyNameMap;
+  public whenFieldReferences: string[] = [
+    '#builderscup',
+    '#internal',
+    '#dev',
+    '#narrator',
+    '#tts',
+    '#automation',
+    '#hqfirstpersonnav',
+    '#prod',
+    '#audio',
+    '#cinematics',
+    '#dayofplay',
+    '#devtest',
+    '#EventSelectRaceLength',
+    '#integration-tests',
+    '#liveteam',
+    '#megafun',
+    '#mixmaster',
+    '#mpstresstesting',
+    '#vanguard',
+  ];
   public selectedTimerReferenceInstance: TimerReferenceInstance;
   // Min date is needed for datetime picker to not crash. We use epoch time
   public minDate = DateTime.fromSeconds(0);
