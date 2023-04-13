@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterCalendar },
+      uuid: 'db3ccf92-a236-4132-9597-a2f8bf91fe52',
+      shortText: "Welcome Center tiles now appear on calendar only while they're active",
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: [NavbarTool.ServicesTableStorage] },
       uuid: 'eddbd7a1-5db5-4853-95b6-531bb7780539',
       shortText: 'Added Services Table Storage view for FH5',
