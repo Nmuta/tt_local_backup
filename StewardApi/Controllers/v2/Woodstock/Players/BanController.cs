@@ -60,7 +60,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "CSEAI - child sexual exploitive abusive imagery",
                     "TVEC - terrorism or violent extremism content",
                     "Sexual/Nude imagery",
-                    "Credit/XP Hacking"
+                    "Credit/XP/Wheelspin hacking",
+                    "Ban dodging",
+                    "Employee harassment"
                 },
                 BanConfigurationId = new Guid("1b1d4b1e-4111-49be-82e3-74335052338c"),
                 FeatureAreas = new List<FeatureAreas>
@@ -124,6 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Intentional ramming/wrecking, pinning, pitting, spearing, shoving, and blocking in races",
                     "Light Bullying",
                     "Vulgar language",
+                    "Track cutting/extending to pass"
                 },
                 BanConfigurationId = new Guid("2dab05e7-f5a2-4284-b32e-8f980695438c"),
                 FeatureAreas = new List<FeatureAreas>
