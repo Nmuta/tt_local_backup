@@ -1,11 +1,10 @@
 import { GameTitle } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const banHistoryTile = <HomeTileInfoInternal>{
   icon: AppIcon.BanHistory,
   tool: NavbarTool.BanReview,
   oldToolRoutes: ['ban-history', 'bulk-ban-history'],
-  accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
   title: 'Ban Review',
   subtitle: 'View past bans',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7],

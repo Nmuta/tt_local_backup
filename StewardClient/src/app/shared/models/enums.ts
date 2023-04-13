@@ -68,6 +68,8 @@ export enum UserRole {
   GeneralUser = 'GeneralUser',
 }
 
+export const ValidUserRoles: UserRole[] = [UserRole.LiveOpsAdmin, UserRole.GeneralUser];
+
 export enum NotificationHubEvents {
   MarkJobRead = 'NotificationHubMarkJobRead',
   MarkJobUnread = 'NotificationHubJobUnread',

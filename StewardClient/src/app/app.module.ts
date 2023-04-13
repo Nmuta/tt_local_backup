@@ -55,7 +55,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { SteelheadGiftingState } from '@tools-app/pages/gifting/steelhead/state/steelhead-gifting.state';
 import { SteelheadGiftHistoryState } from '@tools-app/pages/gift-history/steelhead/state/steelhead-gift-history.state';
-import { USER_GUARD_PROVIDERS } from './route-guards/user-role.guards';
 import { WoodstockGiftingState } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state';
 import { WoodstockGiftHistoryState } from '@tools-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
@@ -220,7 +219,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     { provide: RouteReuseStrategy, useClass: StoreForeverStrategy },
     Clipboard,
     ...fakeApiOrNothing(),
-    ...USER_GUARD_PROVIDERS,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ToolsAvailabilityInterceptor,

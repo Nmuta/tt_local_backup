@@ -61,6 +61,13 @@ namespace Turn10.LiveOps.StewardApi.Authorization
                 return Task.CompletedTask;
             }
 
+            // If the user is a LiveOpsAdmin, skip permissions checks
+            if (context.User.IsInRole(UserRole.LiveOpsAdmin))
+            {
+                context.Succeed(requirement);
+                return Task.CompletedTask;
+            }
+
             if (!EnvironmentAndTitle(httpContext, out string title, out string environment))
             {
                 return Task.CompletedTask;

@@ -1,10 +1,9 @@
 import { GameTitle } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const racersCupTile = <HomeTileInfoInternal>{
   icon: AppIcon.RacersCup,
   tool: NavbarTool.RacersCup,
-  accessList: CommonAccessLevels.RacersCup,
   title: 'Racers Cup',
   subtitle: 'Visualize when racing events occur',
   supportedTitles: [GameTitle.FM8],
