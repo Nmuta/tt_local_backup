@@ -102,21 +102,46 @@
                     </span>
                   </div>
                   <div>
-                    <p><b>Next Ban Duration: </b>
-                    <i *ngIf="!nextBanDuration">Please select a player to see the next ban duration</i>
-                    <ng-container *ngIf="nextBanDuration">
-                      <ng-container *ngIf="nextBanDuration.isPermaBan; else duration">
-                        Permanent Ban{{ nextBanDuration.isDeviceBan ? ', Device Ban' : ''}}
+                    <p>
+                      <b>Next Ban Duration: </b>
+                      <i *ngIf="!nextBanDuration"
+                        >Please select a player to see the next ban duration</i
+                      >
+                      <ng-container *ngIf="nextBanDuration">
+                        <ng-container *ngIf="nextBanDuration.isPermaBan; else duration">
+                          Permanent Ban{{ nextBanDuration.isDeviceBan ? ', Device Ban' : '' }}
+                        </ng-container>
+                        <ng-template #duration>
+                          {{
+                            !nextBanDuration.banDuration.days.isZero()
+                              ? nextBanDuration.banDuration.days + ' days '
+                              : ''
+                          }}
+                          {{
+                            !nextBanDuration.banDuration.hours.isZero()
+                              ? nextBanDuration.banDuration.hours + ' hours '
+                              : ''
+                          }}
+                          {{
+                            !nextBanDuration.banDuration.minutes.isZero()
+                              ? nextBanDuration.banDuration.minutes + ' minutes '
+                              : ''
+                          }}
+                          {{
+                            !nextBanDuration.banDuration.seconds.isZero()
+                              ? nextBanDuration.banDuration.seconds + ' seconds '
+                              : ''
+                          }}
+                          {{
+                            nextBanDuration.banDuration.days.isZero() &&
+                            nextBanDuration.banDuration.hours.isZero() &&
+                            nextBanDuration.banDuration.minutes.isZero() &&
+                            nextBanDuration.banDuration.seconds.isZero()
+                              ? 'Warning Message'
+                              : ''
+                          }}
+                        </ng-template>
                       </ng-container>
-                      <ng-template #duration>
-                        {{ !nextBanDuration.banDuration.days.isZero() ? ', ' + nextBanDuration.banDuration.days + ' days' : ''}}
-                        {{ !nextBanDuration.banDuration.hours.isZero() ? ', ' + nextBanDuration.banDuration.hours + ' hours' : ''}}
-                        {{ !nextBanDuration.banDuration.minutes.isZero() ? ', ' + nextBanDuration.banDuration.minutes + ' minutes' : ''}}
-                        {{ !nextBanDuration.banDuration.seconds.isZero() ? ', ' + nextBanDuration.banDuration.seconds + ' seconds' : ''}}
-                        {{ nextBanDuration.banDuration.days.isZero() && nextBanDuration.banDuration.hours.isZero() 
-                        && nextBanDuration.banDuration.minutes.isZero() && nextBanDuration.banDuration.seconds.isZero() ? 'Warning Message': ''}}
-                      </ng-template>
-                    </ng-container>
                     </p>
                   </div>
                 </ng-container>

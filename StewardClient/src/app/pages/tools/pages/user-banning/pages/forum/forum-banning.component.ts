@@ -38,13 +38,13 @@ const STANDARD_BAN_REASONS: StandardBanReasons = [
   },
 ];
 const ForumBanDuration = {
-  1: "Warning Message",
-  2: "24 hours (Silence)",
-  3: "3 days (Silence)",
-  4: "1 week (Silence)",
-  5: "1 month (Silence)",
-  6: "Permanent (Suspend)",
-}
+  1: 'Warning Message',
+  2: '24 hours (Silence)',
+  3: '3 days (Silence)',
+  4: '1 week (Silence)',
+  5: '1 month (Silence)',
+  6: 'Permanent (Suspend)',
+};
 
 /** Routed Component; Forum Banning Tool. */
 @Component({
@@ -89,7 +89,7 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
       .pipe(map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<ForumBanSummary>))
       .subscribe(summaryLookup$);
     summaryLookup$.subscribe(summaryLookup => {
-      this.summaryLookup = summaryLookup
+      this.summaryLookup = summaryLookup;
       this.updateNextBanDuration();
     });
     summaries$
@@ -195,15 +195,17 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
   }
 
   /** Update the ban duration label based on the appropriate player. */
-  private updateNextBanDuration(){
-    let targetPlayer = this.playerIdentities.length == 1 ? this.playerIdentities[0] : this.selectedPlayer;
+  private updateNextBanDuration() {
+    const targetPlayer =
+      this.playerIdentities.length == 1 ? this.playerIdentities[0] : this.selectedPlayer;
 
     // If no player is selected
     if (!targetPlayer || !this.summaryLookup[targetPlayer.xuid.toNumber()]) {
       this.nextBanDuration = null;
       return;
     }
-    let playerBanCount = this.summaryLookup[targetPlayer.xuid.toNumber()].adjustedBanCount.toNumber();
+    const playerBanCount =
+      this.summaryLookup[targetPlayer.xuid.toNumber()].adjustedBanCount.toNumber();
     this.nextBanDuration = ForumBanDuration[min([playerBanCount + 1, 6])];
   }
 }

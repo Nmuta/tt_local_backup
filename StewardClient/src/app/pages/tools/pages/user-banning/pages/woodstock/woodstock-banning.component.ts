@@ -230,7 +230,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public banReasonChanged(event: MatOptionSelectionChange, banReasonGroup: BanReasonGroup): void {
     this.selectedBanReasonGroup = null;
     this.selectedBanConfiguration = null;
-    this.selectedBanAreasLabel = ''
+    this.selectedBanAreasLabel = '';
     if (!event.isUserInput) {
       return;
     }
@@ -244,8 +244,9 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   }
 
   /** Update the ban duration label based on the appropriate player and ban configuration. */
-  private updateNextBanDuration(){
-    let targetPlayer = this.playerIdentities.length == 1 ? this.playerIdentities[0] : this.selectedPlayer;
+  private updateNextBanDuration() {
+    const targetPlayer =
+      this.playerIdentities.length == 1 ? this.playerIdentities[0] : this.selectedPlayer;
 
     // If no player is selected or no reason is selected
     if (!targetPlayer || !this.selectedBanConfiguration) {
