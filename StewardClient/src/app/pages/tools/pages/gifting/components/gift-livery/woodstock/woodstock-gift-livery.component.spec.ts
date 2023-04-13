@@ -22,7 +22,7 @@ import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
 import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service.mock';
-import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-player-gift.service.mock';
+import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service.mock';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 import { ZERO } from '@helpers/bignumbers';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';

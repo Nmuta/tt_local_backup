@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -49,8 +50,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             int banEntryId,
             string title,
             string requesterObjectId,
-            WoodstockBanParameters banParameters,
-            string endpoint)
+            WoodstockBanParametersInput banParameters,
+            BanResult banResult,
+            string endpoint,
+            string featureAreas)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -58,30 +61,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             // Gamertags must be set to null for NGP. v-joyate 20201123
-            var sanitizedBanParameters = new WoodstockBanParameters
-            {
-                Xuid = banParameters.Xuid,
-                Gamertag = null,
-                BanAllConsoles = banParameters.BanAllConsoles,
-                BanAllPcs = banParameters.BanAllPcs,
-                DeleteLeaderboardEntries = banParameters.DeleteLeaderboardEntries,
-                SendReasonNotification = banParameters.SendReasonNotification,
-                Reason = banParameters.Reason,
-                FeatureArea = banParameters.FeatureArea,
-                StartTimeUtc = banParameters.StartTimeUtc,
-                ExpireTimeUtc = banParameters.ExpireTimeUtc
-            };
+            banParameters.Gamertag = null;
 
             var banHistory = new LiveOpsBanHistory(
-                (long) xuid,
+                (long)xuid,
                 banEntryId,
                 title,
                 requesterObjectId,
-                banParameters.StartTimeUtc,
-                banParameters.ExpireTimeUtc,
-                banParameters.FeatureArea,
+                banResult.BanDescription.StartTimeUtc,
+                banResult.BanDescription.ExpireTimeUtc,
+                featureAreas,
                 banParameters.Reason,
-                sanitizedBanParameters.ToJson(),
+                banParameters.ToJson(),
                 endpoint);
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();

@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}players/ban");
+            var path = new Uri(this.baseUri, $"{V2TitlePath}players/ban?useBackgroundProcessing=false");
 
             return await ServiceClient.SendRequestAsync<IList<BanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters, headers: this.headers).ConfigureAwait(false);
         }
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}players/ban/useBackgroundProcessing");
+            var path = new Uri(this.baseUri, $"{V2TitlePath}players/ban?useBackgroundProcessing=true");
 
             return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters, headers: this.headers).ConfigureAwait(false);
         }

@@ -6,7 +6,6 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import BigNumber from 'bignumber.js';
 import { of } from 'rxjs';
-
 import { WoodstockPlayersGiftService } from './woodstock-players-gift.service';
 
 describe('WoodstockPlayersGiftService', () => {

@@ -13,6 +13,35 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Rework verification checkbox into an icon button',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '26bcd504-40bb-4045-be76-00c9f6d0872e',
+      shortText: 'Update Ban Reasons',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails, NavbarTool.SearchUGC],
+      },
+      uuid: '013ffc89-5427-4454-b894-5bb1ca38ce28',
+      shortText: 'Update Tunes to use new type Tune Blob',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterCalendar },
+      uuid: 'db3ccf92-a236-4132-9597-a2f8bf91fe52',
+      shortText: "Welcome Center tiles now appear on calendar only while they're active",
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: [NavbarTool.ServicesTableStorage] },
+      uuid: 'eddbd7a1-5db5-4853-95b6-531bb7780539',
+      shortText: 'Added Services Table Storage view for FH5',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
+      shortText: 'New way of banning implemented',
+      longText: ['Ban reason will decide the ban configuration and areas automatically'],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.ServicesTableStorage] },
       uuid: 'd243963e-dab1-466f-99b3-f8d9b643866d',
       shortText: 'Filter out entries for unselected external profile ID',

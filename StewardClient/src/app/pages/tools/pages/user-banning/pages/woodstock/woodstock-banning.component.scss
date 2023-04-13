@@ -4,6 +4,26 @@
   @include flex-column-fill();
 }
 
+.ban-area {
+  margin-bottom: $gap-medium;
+}
+
 .ban-action-container {
   margin-top: $gap-medium;
+}
+
+.ban-area {
+  label,
+  span {
+    display: block;
+  }
+}
+
+.mat-button-toggle-checked.mat-button-toggle-checked {
+  background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
+}
+
+.warn {
+  color: app-color-default($app-warn);
 }

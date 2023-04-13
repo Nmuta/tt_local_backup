@@ -9,8 +9,7 @@
     >FM
     <endpoint-selection [titleCodeName]="gameTitleCodeName.FM8"> </endpoint-selection>
   </a>
-  <!-- https://dev.azure.com/t10motorsport/ForzaTech/_dashboards/dashboard/a38b680b-c8f2-431a-8a3a-ff1bbf473d95 -->
-  <!-- <a
+  <a
     [class.mat-button-disabled]="!identity?.extra?.hasWoodstock"
     [matTooltip]="woodstockTooltip"
     [routerLink]="woodstockRouterLink"
@@ -19,7 +18,7 @@
     queryParamsHandling="preserve"
     >FH5
     <endpoint-selection [titleCodeName]="gameTitleCodeName.FH5"> </endpoint-selection>
-  </a> -->
+  </a>
   <span class="icon-spacer"></span>
   <player-selection-single
     [displayInSingleLine]="true"

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DateTimeRange } from '@models/datetime-range';
 import { WelcomeCenterTileSize } from '@models/welcome-center';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
+import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 
 /** Interface that conditionally displays tile based on current time. */
@@ -58,6 +59,13 @@ export interface WelcomeCenterTile {
   tileDescription: string;
   tileImagePath: string;
   tileTelemetryTag: string;
+  startEndDateUtc: WelcomeCenterDateTimeRange;
+}
+
+/** Interface that represents a DateTime range used by Welcome Center Tiles. */
+export interface WelcomeCenterDateTimeRange {
+  fromUtc: DateTime;
+  toUtc: DateTime;
 }
 
 /** Interface that represents the Welcome Center and it's three columns of tiles. */

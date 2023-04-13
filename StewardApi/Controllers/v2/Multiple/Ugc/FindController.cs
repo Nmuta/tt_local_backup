@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
             var fm8Lookups = new[]
             {
                 this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Livery),
-                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Tune),
+                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob),
                 this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Photo),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCLiveryOutput>(
                     shareCodeOrId,
@@ -76,9 +76,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.Livery),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCTuneOutput>(
                     shareCodeOrId,
-                    ServicesLiveOpsFM8.ForzaUGCContentType.Tune,
+                    ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob,
                     (id) => fm8StorefrontService.GetUGCTune(id),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.Tune),
+                    item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCPhotoOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFM8.ForzaUGCContentType.Photo,

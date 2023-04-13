@@ -10,7 +10,7 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
-import _ from 'lodash';
+import { requireReasonListMatch } from '@helpers/validations';
 import { first } from 'lodash';
 import { Duration } from 'luxon';
 import { Observable } from 'rxjs';
@@ -19,6 +19,7 @@ import { DurationPickerOptions } from '../duration-picker/duration-picker.compon
 
 type BanReasonGroup = { group: string; values: string[] };
 type StandardBanReasons = BanReasonGroup[];
+// Following reasons only used for non-woodstock titles
 const STANDARD_BAN_REASONS: StandardBanReasons = [
   {
     group: 'Extreme Violations',
@@ -115,6 +116,7 @@ export const _filter = (opt: string[], value: string): string[] => {
 
   return opt.filter(item => item.toLowerCase().includes(filterValue));
 };
+
 export enum BanArea {
   AllFeatures = 'AllRequests',
   UserGeneratedContent = 'UserGeneratedContent',
@@ -162,11 +164,14 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
     },
   };
 
+  /** List of every ban reasons. Used in custom validation. */
+  public banReasons: string[] = [];
+
   public formControls = {
     banArea: new FormControl(this.defaults.banArea, [Validators.required]),
     banReason: new FormControl(this.defaults.banReason, [
       Validators.required,
-      this.requireReasonListMatch.bind(this),
+      requireReasonListMatch.bind(this),
     ]),
     banDuration: new FormControl(this.defaults.banDuration, [Validators.required]),
     checkboxes: {
@@ -198,6 +203,11 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+    this.banReasons = [].concat(
+      ...STANDARD_BAN_REASONS.map(g => {
+        return g.values;
+      }),
+    );
     this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
       startWith(''),
       map((searchValue: string) => {
@@ -257,20 +267,5 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
     }
 
     return { invalidForm: { valid: false, message: 'fields are invalid' } };
-  }
-
-  private requireReasonListMatch(control: FormControl): ValidationErrors | null {
-    const selection = control.value;
-    const banReasons = [].concat(
-      ...STANDARD_BAN_REASONS.map(g => {
-        return g.values;
-      }),
-    );
-
-    if (!_.includes(banReasons, selection)) {
-      return { requireReasonListMatch: true };
-    }
-
-    return null;
   }
 }
