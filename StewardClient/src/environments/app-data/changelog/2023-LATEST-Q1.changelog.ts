@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails, NavbarTool.SearchUGC],
+      },
+      uuid: '013ffc89-5427-4454-b894-5bb1ca38ce28',
+      shortText: 'Update Tunes to use new type Tune Blob',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterCalendar },
       uuid: 'db3ccf92-a236-4132-9597-a2f8bf91fe52',
       shortText: "Welcome Center tiles now appear on calendar only while they're active",

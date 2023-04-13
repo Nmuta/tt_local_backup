@@ -262,7 +262,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<ForzaTuneData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.TuneBlob))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
