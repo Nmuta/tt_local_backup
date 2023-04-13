@@ -9,6 +9,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: 'b977e558-41d7-4c73-890b-9b55837844ef',
+      shortText: 'Display player next ban duration',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: 'b977e558-41d7-4c73-890b-9b55837844ef',
+      shortText: 'Display player next ban duration',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
       uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
       shortText: 'New way of banning implemented',
       longText: ['Ban reason will decide the ban configuration and areas automatically'],
