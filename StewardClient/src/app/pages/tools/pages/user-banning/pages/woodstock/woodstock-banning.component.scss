@@ -27,3 +27,8 @@
 .warn {
   color: app-color-default($app-warn);
 }
+
+button {
+  max-width: $button-min-size;
+  width: 100%;
+}
