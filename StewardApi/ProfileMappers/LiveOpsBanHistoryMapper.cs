@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -115,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 ServicesRequesterObjectId,
                 banDescription.StartTime,
                 banDescription.ExpireTime,
-                Enum.GetName(typeof(FH5Security.FeatureAreas), banDescription.FeatureAreas),
+                PrepareWoodstockBanFeatureArea(banDescription.FeatureAreas),
                 banDescription.Reason,
                 "{}",
                 endpoint);
@@ -126,6 +127,34 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             liveOpsBanHistory.IsActive = banDescription.IsActive;
 
             return liveOpsBanHistory;
+        }
+
+        /// <summary>
+        ///     Maps FH5 feature areas as a single int to a list of string.
+        /// </summary>
+        public static string PrepareWoodstockBanFeatureArea(uint featureAreas)
+        {
+            if (featureAreas == uint.MaxValue)
+            {
+                return FH5Security.FeatureAreas.AllRequests.ToString();
+            }
+
+            var mappedFeatureAreas = new List<string>();
+            // Use bitwise AND operator to reverse what the featureAreas were
+            foreach (uint value in Enum.GetValues(typeof(FH5Security.FeatureAreas)))
+            {
+                if (value == uint.MaxValue)
+                {
+                    continue;
+                }
+
+                if ((value & featureAreas) != 0)
+                {
+                    mappedFeatureAreas.Add(Enum.GetName(typeof(FH5Security.FeatureAreas), value));
+                }
+            }
+
+            return string.Join(", ", mappedFeatureAreas);
         }
     }
 }

@@ -35,12 +35,13 @@ import { MatTableModule } from '@angular/material/table';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { ServicesTableResultsComponent } from './components/services-table-results/services-table-results.component';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
-/** The feature module for the User Details route. */
+import { WoodstockServicesTableStorageComponent } from './woodstock/woodstock-services-table-storage.component';
+/** The feature module for the Services Table Storage route. */
 @NgModule({
   declarations: [
     ServicesTableStorageComponent,
     SteelheadServicesTableStorageComponent,
-    // WoodstockServicesTableStorageComponent,
+    WoodstockServicesTableStorageComponent,
     ServicesFilterableTableComponent,
     ServicesTableResultsComponent,
   ],

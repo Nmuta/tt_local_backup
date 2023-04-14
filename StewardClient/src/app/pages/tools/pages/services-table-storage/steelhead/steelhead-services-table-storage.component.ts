@@ -16,7 +16,7 @@ import BigNumber from 'bignumber.js';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
-  selector: 'app-steelhead',
+  selector: 'steelhead-services-table-storage',
   templateUrl: './steelhead-services-table-storage.component.html',
   styleUrls: ['./steelhead-services-table-storage.component.scss'],
 })

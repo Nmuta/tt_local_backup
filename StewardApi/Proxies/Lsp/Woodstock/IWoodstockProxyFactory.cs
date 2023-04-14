@@ -57,5 +57,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         ///     Prepares a <see cref="IStorefrontService" />.
         /// </summary>
         IStorefrontService PrepareStorefrontService(string endpoint);
+
+
+        /// <summary>
+        ///     Prepares a <see cref="IConfigurationManagementService" />.
+        /// </summary>
+        IConfigurationManagementService PrepareConfigurationManagementService(string endpoint);
     }
 }

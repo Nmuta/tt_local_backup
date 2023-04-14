@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using Xls.Security.FH5_main.Generated;
 using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
@@ -58,17 +59,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ServicesLiveOps.AdminForzaProfile, WoodstockInventoryProfile>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
                 .ReverseMap();
-            this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>();
-            this.CreateMap<WoodstockBanParametersInput, WoodstockBanParameters>()
-                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
-                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
-            this.CreateMap<WoodstockBanParameters, ServicesLiveOps.ForzaUserBanParameters>()
-                .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid }))
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
-                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
-                .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
+            this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>()
+                // Banned Areas are combined into one int so ForzaUserBanSummary.BannedAreas will only ever contain one int
+                .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src => new List<string>() { LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.BannedAreas.FirstOrDefault()) }));
             this.CreateMap<ServicesLiveOps.ForzaUserBanDescription, BanDescription>()
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
+                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
@@ -540,6 +535,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.xuid));
             this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>()
                 .ForMember(dest => dest.FailedUsers, opt => opt.MapFrom(src => src.failedUsers.SelectMany(x => x.userIds).ToList()));
+
+            this.CreateMap<WoodstockLiveOpsContent.BanConfiguration, BanConfiguration>();
         }
 
         private string PrepareDeviceType(string deviceType)

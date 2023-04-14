@@ -9,8 +9,6 @@ import {
 import { LspGroups } from '@models/lsp-group';
 import {
   LiveOpsExtendedBanDescriptions,
-  WoodstockBanRequest,
-  WoodstockBanResult,
   WoodstockBanSummary,
   WoodstockConsoleDetailsEntry,
   WoodstockGiftHistory,
@@ -28,7 +26,6 @@ import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
-import { BackgroundJob } from '@models/background-job';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   BulkCommunityMessage,
@@ -247,21 +244,6 @@ export class WoodstockService {
       xuids,
       undefined,
       headers,
-    );
-  }
-
-  /** Bans players by a list of XUIDs. */
-  public postBanPlayers$(bans: WoodstockBanRequest[]): Observable<WoodstockBanResult[]> {
-    return this.apiService.postRequest$<WoodstockBanResult[]>(`${this.basePath}/players/ban`, bans);
-  }
-
-  /** Bans players by a list of XUIDs using background processing. */
-  public postBanPlayersWithBackgroundProcessing$(
-    bans: WoodstockBanRequest[],
-  ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/players/ban/useBackgroundProcessing`,
-      bans,
     );
   }
 
