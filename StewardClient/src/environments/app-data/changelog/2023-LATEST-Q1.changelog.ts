@@ -8,9 +8,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'de3a997a-31d3-426e-ac40-663a0a0fc0da',
+      shortText: 'Allow UGC to be featured without an end date',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '26bcd504-40bb-4045-be76-00c9f6d0872e',
-      shortText: "Update Ban Reasons",
+      shortText: 'Update Ban Reasons',
     },
     {
       tag: {
