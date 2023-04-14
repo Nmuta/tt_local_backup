@@ -108,7 +108,12 @@
                 >
 
                 <div class="ban-action-container">
-                  <verify-button [disabled]="!canBan()" #verifyBtn></verify-button>
+                  <verify-button
+                    [disabled]="!canBan()"
+                    #verifyBtn
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
+                  ></verify-button>
                   <button
                     mat-raised-button
                     color="warn"

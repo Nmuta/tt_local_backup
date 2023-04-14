@@ -7,6 +7,8 @@ mat-card-content {
 
 // Force color onto help icon to ignore parent opacity
 mat-icon {
+  position: relative;
+  z-index: 5;
   color: app-color-default-contrast($app-background);
 }
 

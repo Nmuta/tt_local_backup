@@ -65,6 +65,12 @@ export abstract class BasePermissionAttributeDirective
     this.checkPermission$.next();
   }
 
+  /** Hides the host's child element if permissions are invalid. */
+  @Input() public set permissionHideChildElement(hideChildElement: boolean) {
+    this.hideChildElement = hideChildElement;
+    this.checkPermission$.next();
+  }
+
   /** Determines how V1 auth roles are allowed to poss. If false, V1 auth roles will NEVER have permissions. */
   @Input() public set permissionSupportV1Auth(allowV1Auth: boolean) {
     this.allowV1Auth = allowV1Auth;
@@ -75,6 +81,7 @@ export abstract class BasePermissionAttributeDirective
   private attributeName: PermAttributeName;
   private gameTitle: GameTitle;
   private actionType: InvalidPermActionType = InvalidPermActionType.Disable;
+  private hideChildElement: boolean = false;
   private allowV1Auth: boolean = true;
 
   constructor(
@@ -134,11 +141,14 @@ export abstract class BasePermissionAttributeDirective
     const host = this.element.nativeElement;
     // If host element doesnt have the invalid permissions component as a child, add it
     if (host.firstChild.localName !== 'invalid-permissions') {
+      if (this.hideChildElement) {
+        host.firstChild.style.visibility = 'hidden';
+      }
+
       const invalidPermissionComponent = this.viewContainerRef.createComponent(
         InvalidPermissionsComponent,
       );
       invalidPermissionComponent.instance.setPermAttributeName(this.attributeName);
-      const host = this.element.nativeElement;
       host.insertBefore(invalidPermissionComponent.location.nativeElement, host.firstChild);
     }
   }
@@ -151,6 +161,10 @@ export abstract class BasePermissionAttributeDirective
     // If hasPerm is true and host element has the invalid permissions component as a child, remove it
     if (host.firstChild.localName === 'invalid-permissions') {
       host.firstChild.remove();
+
+      if (this.hideChildElement) {
+        host.firstChild.style.visibility = 'visible';
+      }
     }
 
     if (!!this.tooltip) {

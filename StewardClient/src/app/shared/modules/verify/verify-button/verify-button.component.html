@@ -3,9 +3,13 @@
   [class.has-help-icon]="showVerifyCheckboxPopup"
   [disabled]="disabled"
   (click)="changeVerifyStatus(!isVerified)"
+  stateManager
+  [permissionAttribute]="permissionAttribute"
+  [permissionTitle]="permissionTitle"
+  [permissionHideChildElement]="true"
   clickStop
 >
-  <mat-icon *ngIf="!isVerified">lock_open</mat-icon>
+  <mat-icon *ngIf="!isVerified" id="verify-button-icon">lock_open</mat-icon>
   <mat-icon *ngIf="isVerified">lock</mat-icon>
   <ng-container *ngIf="showVerifyCheckboxPopup">
     <help-popover-icon cardTitle="Verify Button" matTooltipPosition="right">
