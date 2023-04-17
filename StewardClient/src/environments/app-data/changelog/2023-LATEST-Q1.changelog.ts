@@ -9,8 +9,13 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '5949f9c4-e40b-4f13-9c4f-7c1f657e4400',
+      shortText: "Added 'Breaching NDA' ban reason",
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '26bcd504-40bb-4045-be76-00c9f6d0872e',
-      shortText: "Update Ban Reasons",
+      shortText: 'Update Ban Reasons',
     },
     {
       tag: {
