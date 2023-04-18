@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '06533eea-f7b6-4dc4-99f9-dc52934452e1',
+      shortText: 'Fix team lead permission error',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: 'f8e3de26-fa91-4f56-8aff-faab4843bce1',
       shortText: 'Fix leaderboard scores',
