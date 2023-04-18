@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'f8e3de26-fa91-4f56-8aff-faab4843bce1',
+      shortText: 'Fix leaderboard scores',
+      longText: [
+        'Adjusted speed traps and speed zones to be treated as meters per second.',
+        'Miles per hour conversion updated to match adjustement.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '5949f9c4-e40b-4f13-9c4f-7c1f657e4400',
       shortText: "Added 'Breaching NDA' ban reason",
