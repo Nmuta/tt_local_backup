@@ -60,8 +60,8 @@
               </tr>
               <tr>
                 <th>VIP Sale Price</th>
-                <td>
-                  {{ carSale.saleInformation[0].vipSalePrice }} ({{
+                <td *ngIf="carSale.saleInformation[0].vipSalePrice > 0;">
+                  {{ carSale.saleInformation[0].vipSalePrice > 0 ? carSale.saleInformation[0].vipSalePrice : 'N/A' }} ({{
                     carSale.saleInformation[0].vipSalePercentOff
                   }}%)
                 </td>
