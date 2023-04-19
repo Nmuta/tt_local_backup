@@ -44,7 +44,11 @@
             </tr>
             <tr>
               <th>VIP Sale Price</th>
-              <td>{{ carSale.vipSalePrice > 0 ? carSale.vipSalePrice : 'N/A' }} ({{ carSale.vipSalePercentOff }}%)</td>
+              <td>
+                {{ carSale.vipSalePrice > 0 ? carSale.vipSalePrice : 'N/A' }} ({{
+                  carSale.vipSalePercentOff
+                }}%)
+              </td>
             </tr>
           </table>
         </mat-card-content>
