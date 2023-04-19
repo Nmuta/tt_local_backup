@@ -56,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         private readonly ILoggingService loggingService;
         private readonly IScheduler scheduler;
         private readonly IMapper mapper;
+        private readonly IStewardUserProvider userProvider;
         private readonly ISteelheadPlayerInventoryProvider playerInventoryProvider;
         private readonly IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<SteelheadGift> giftRequestValidator;
@@ -71,6 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             ILoggingService loggingService,
             IScheduler scheduler,
             IMapper mapper,
+            IStewardUserProvider userProvider,
             ISteelheadPlayerInventoryProvider playerInventoryProvider,
             IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SteelheadGift> giftRequestValidator,
@@ -82,6 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             loggingService.ShouldNotBeNull(nameof(loggingService));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             mapper.ShouldNotBeNull(nameof(mapper));
+            userProvider.ShouldNotBeNull(nameof(userProvider));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
@@ -93,6 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             this.loggingService = loggingService;
             this.scheduler = scheduler;
             this.mapper = mapper;
+            this.userProvider = userProvider;
             this.playerInventoryProvider = playerInventoryProvider;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
@@ -145,13 +149,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin;
+                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin || hasPermissionsToExceedCreditLimit;
                     // Before refactoring, please check the repo ReadMe -> Steward -> Docs -> Background Jobs and Race Conditions
                     var response = await this.playerInventoryProvider.UpdatePlayerInventoriesAsync(
                         services,

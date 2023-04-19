@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Kusto.Cloud.Platform.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
+using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -146,6 +151,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
+        public async Task<bool> HasPermissionsForAsync(HttpContext httpContext, string objectId, string attribute)
+        {
+            StewardUserInternal user = null;
+
+            try
+            {
+                user = await this.GetStewardUserAsync(objectId).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new ForbiddenStewardException("Invalid user claim.", ex);
+            }
+
+            this.EnvironmentAndTitle(httpContext, out string title, out string environment);
+
+            var authorized = user.AuthorizationAttributes().Where(authAttr =>
+                    Equals(authAttr.Environment, environment) &&
+                    Equals(authAttr.Title, title) &&
+                    Equals(authAttr.Attribute, attribute));
+
+            return authorized.Any();
+
+            bool Equals(string str, string attr)
+            {
+                return str?.Equals(attr, StringComparison.OrdinalIgnoreCase) == true;
+            }
+        }
+
+        /// <inheritdoc />
         public async Task EnsureStewardUserAsync(StewardClaimsUser user)
         {
           // We shouldnt pass in the attributes from claim. it doesnt exist
@@ -202,6 +236,56 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             this.refreshableCacheStore.PutItem(this.allStewardUsersCacheKey, TimeSpan.FromDays(1), result);
 
             return result;
+        }
+
+        public void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
+        {
+            title = this.RequestPathSegment(httpContext.Request.Path, "title", true);
+            var api = this.RequestPathSegment(httpContext.Request.Path, "api");
+            environment = string.Empty;
+
+            if (string.IsNullOrEmpty(title))
+            {
+                return;
+            }
+
+            // v1 apis use endpointKey, value is Title|environment
+            // v2 apis use Endpoint-Title, value is environment
+            var environmentKey = "v1".Equals(api) ? "endpointKey" : $"Endpoint-{title}";
+
+            if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
+            {
+                throw new BadRequestStewardException($"Missing {environmentKey} header.");
+            }
+
+            if (string.IsNullOrEmpty(env))
+            {
+                throw new BadRequestStewardException($"Null or empty {environmentKey} header.");
+            }
+
+            environment = env.ToString().Contains("|") ? env.ToString().Split("|")[1] : env;
+
+            return;
+        }
+
+        string RequestPathSegment(PathString path, string key, bool capitalize = false)
+        {
+            if (path == null)
+            {
+                return string.Empty;
+            }
+
+            var segments = path.ToUriComponent().Split("/");
+
+            var index = segments.IndexOf(segment => string.Equals(segment, key, StringComparison.OrdinalIgnoreCase)) + 1;
+            if (index >= segments.Length || index == 0)
+            {
+                return string.Empty;
+            }
+
+            var segment = segments[index];
+
+            return capitalize ? char.ToUpper(segment[0]) + segment[1..] : segment;
         }
     }
 }

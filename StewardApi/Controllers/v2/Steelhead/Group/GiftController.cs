@@ -46,6 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 
         private readonly ISteelheadItemsProvider itemsProvider;
         private readonly IMapper mapper;
+        private readonly IStewardUserProvider userProvider;
         private readonly ISteelheadPlayerInventoryProvider playerInventoryProvider;
         private readonly IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<SteelheadGift> giftRequestValidator;
@@ -56,18 +57,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         public GiftController(
             ISteelheadItemsProvider itemsProvider,
             IMapper mapper,
+            IStewardUserProvider userProvider,
             ISteelheadPlayerInventoryProvider playerInventoryProvider,
             IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SteelheadGift> giftRequestValidator)
         {
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
+            userProvider.ShouldNotBeNull(nameof(userProvider));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
 
             this.itemsProvider = itemsProvider;
             this.mapper = mapper;
+            this.userProvider = userProvider;
             this.playerInventoryProvider = playerInventoryProvider;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
@@ -107,7 +111,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin;
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin || hasPermissionsToExceedCreditLimit;
             var response = await this.playerInventoryProvider.UpdateGroupInventoriesAsync(
                 this.Services,
                 groupId,
