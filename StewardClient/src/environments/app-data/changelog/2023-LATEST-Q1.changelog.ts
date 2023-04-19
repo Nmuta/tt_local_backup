@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
+      uuid: 'f75bfce5-a32a-4c61-925c-9b6e24624cd3',
+      shortText: 'New Showroom Calendar component',
+      longText: ['Display car featured showcase and car sales in a calendar'],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '06533eea-f7b6-4dc4-99f9-dc52934452e1',
       shortText: 'Fix team lead permission error',
