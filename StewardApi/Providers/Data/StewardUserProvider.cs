@@ -153,6 +153,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task<bool> HasPermissionsForAsync(HttpContext httpContext, string objectId, string attribute)
         {
+            // If the user is a LiveOpsAdmin, skip permissions checks
+            if (httpContext.User.IsInRole(UserRole.LiveOpsAdmin))
+            {
+                return true;
+            }
+
             StewardUserInternal user = null;
 
             try
