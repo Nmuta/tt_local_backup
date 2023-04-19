@@ -56,5 +56,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <param name="isSearchable">if the new file will be searchable or not</param>
         /// <param name="keepGuid">keep the same fileId or not</param>
         Task<LiveOpsService.CloneUgcFileOutput> CloneUgcFile(Guid fileId, string shareCode, ForzaUGCContentType contentType, bool isSearchable, bool keepGuid);
+
+        /// <summary>
+        ///     Gets user data by gamertag.
+        /// </summary>
+        Task<LiveOpsService.GetLiveOpsUserDataByGamerTagV2Output> GetLiveOpsUserDataByGamerTagV2(string gamertag);
     }
 }

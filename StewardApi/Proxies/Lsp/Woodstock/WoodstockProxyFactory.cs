@@ -17,6 +17,7 @@ using Turn10.Services.ForzaClient;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using Turn10.Services.MessageEncryption;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
+using ConfigurationManagementService = Turn10.Services.LiveOps.FH5_main.Generated.ConfigurationManagementService;
 using UserInventoryManagementService = Turn10.Services.LiveOps.FH5_main.Generated.UserInventoryManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
@@ -128,6 +129,14 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         {
             var service = new StorefrontService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
             var serviceProxy = service.ProxyInterface<StorefrontService, IStorefrontService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IConfigurationManagementService PrepareConfigurationManagementService(string endpoint)
+        {
+            var service = new ConfigurationManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
+            var serviceProxy = service.ProxyInterface<ConfigurationManagementService, IConfigurationManagementService>();
             return serviceProxy;
         }
     }

@@ -262,7 +262,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<ForzaTuneData, UgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.TuneBlob))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
@@ -322,6 +322,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src));
             this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
+            this.CreateMap<SteelheadLiveOpsContent.DateTimeRange, WelcomeCenterDateTimeRange>()
+                .ForMember(dest => dest.FromUtc, opt => opt.MapFrom(src => src.From))
+                .ForMember(dest => dest.ToUtc, opt => opt.MapFrom(src => src.To));
             this.CreateMap<(WoFTileConfigBase tile, WoFTileCMSBase tileInfo), WelcomeCenterTileOutput>()
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.tile.Size))
                 .ForMember(dest => dest.TileFriendlyName, opt => opt.MapFrom(src => src.tileInfo.FriendlyName))
@@ -329,7 +332,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TileType, opt => opt.MapFrom(src => src.tileInfo.TileType))
                 .ForMember(dest => dest.TileDescription, opt => opt.MapFrom(src => src.tileInfo.TileDescription))
                 .ForMember(dest => dest.TileImagePath, opt => opt.MapFrom(src => src.tileInfo.TileImagePath))
-                .ForMember(dest => dest.TileTelemetryTag, opt => opt.MapFrom(src => src.tileInfo.TelemetryTag));
+                .ForMember(dest => dest.TileTelemetryTag, opt => opt.MapFrom(src => src.tileInfo.TelemetryTag))
+                .ForMember(dest => dest.StartEndDateUtc, opt => opt.MapFrom(src => src.tileInfo.StartEndDate));
             this.CreateMap<MotdEntry, MotdBridge>()
                 .ReverseMap();
             this.CreateMap<LocalizedStringBridge, LocEntry>()

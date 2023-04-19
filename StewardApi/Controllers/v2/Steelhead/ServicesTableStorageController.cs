@@ -51,18 +51,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     public class ServicesTableStorageController : V2SteelheadControllerBase
     {
         private readonly IMapper mapper;
-        private readonly ISteelheadPegasusService pegasusService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServicesTableStorageController"/> class for Steelhead.
         /// </summary>
-        public ServicesTableStorageController(IMapper mapper, ISteelheadPegasusService pegasusService)
+        public ServicesTableStorageController(IMapper mapper)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
-            pegasusService.ShouldNotBeNull(nameof(pegasusService));
 
             this.mapper = mapper;
-            this.pegasusService = pegasusService;
         }
 
         /// <summary>
@@ -114,7 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 // If that guid doesn't match the external profile ID we're using, we need to filter them out.
                 string guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
 
-                var filteredResponse = finalResponse.Where(entry => 
+                var filteredResponse = finalResponse.Where(entry =>
                 {
                     var rowKeyGuids = Regex.Matches(entry.RowKey, guidPattern);
                     var partitionKeyGuids = Regex.Matches(entry.PartitionKey, guidPattern);

@@ -93,6 +93,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers
             mockUserManagementService.CreateUserGroupBulkOperation(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserIds[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationOutput>());
             mockUserManagementService.GetUserGroupBulkOperationStatus(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<Guid>()).Returns(Fixture.Create<GetUserGroupBulkOperationStatusOutput>());
             mockUserManagementService.CreateUserGroupBulkOperationV2(Arg.Any<ForzaBulkOperationType>(), Arg.Any<int>(), Arg.Any<ForzaUserGroupOperationPage[]>()).Returns(Fixture.Create<CreateUserGroupBulkOperationV2Output>());
+            mockUserManagementService.BanUsersV2(Arg.Any<ForzaUserBanParametersV2[]>()).Returns(Fixture.Create<BanUsersV2Output>());
 
             var mockGetUserIdsOutput = new GetUserIdsOutput();
             mockGetUserIdsOutput.playerLookupResult = new[] { new ForzaPlayerLookupResult() { PlayerExists = true } };

@@ -40,7 +40,7 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
     makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
-    supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.Tune],
+    supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.TuneBlob],
     specialIdentitiesAllowed: [],
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,

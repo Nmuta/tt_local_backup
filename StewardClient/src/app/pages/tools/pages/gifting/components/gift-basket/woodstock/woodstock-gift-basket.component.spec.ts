@@ -15,7 +15,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
-import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-player-gift.service.mock';
+import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service.mock';
 import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service.mock';
 
 describe('WoodstockGiftBasketComponent', () => {

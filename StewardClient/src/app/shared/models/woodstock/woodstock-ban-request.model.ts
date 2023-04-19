@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
-import { Duration } from 'luxon';
 
+/** Woodstock Ban Area */
 export enum WoodstockBanArea {
   AllRequests = 'AllRequests',
   AuctionHouse = 'AuctionHouse',
@@ -17,15 +17,11 @@ export enum WoodstockBanArea {
   UserGeneratedContent = 'UserGeneratedContent',
 }
 
-/** A single part of the bulk /v1/title/Woodstock/players/ban request model */
+/** A single part of the bulk /v2/title/Woodstock/players/ban request model */
 export interface WoodstockBanRequest {
   xuid?: BigNumber;
   gamertag?: string;
-  banAllConsoles: boolean;
-  banAllPcs: boolean;
   deleteLeaderboardEntries: boolean;
-  sendReasonNotification: boolean;
+  reasonGroupName: string;
   reason: string;
-  featureArea: WoodstockBanArea;
-  duration: Duration;
 }

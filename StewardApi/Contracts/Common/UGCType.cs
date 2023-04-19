@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using static Microsoft.VisualStudio.Services.Graph.GraphResourceIds;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -27,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         LayerGroup = 2,
 
         /// <summary>
-        ///     Tune UGC item type.
+        ///     Tune UGC item type for non-FM8 titles
         /// </summary>
         Tune = 3,
 
@@ -40,6 +41,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Event Blueprint UGC item type.
         /// </summary>
         EventBlueprint = 6,
+
+        /// <summary>
+        ///     Tune UGC item type for FM8.
+        /// </summary>
+        TuneBlob = 7,
 
         /// <summary>
         ///     Event Community Challenge UGC item type.

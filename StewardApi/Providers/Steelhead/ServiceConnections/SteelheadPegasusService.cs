@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         .Where(p => localizationIdsMapping.ContainsKey(p.Key))
                         .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
                 }
-                
+
                 this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
 
                 return results;
