@@ -27,5 +27,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         ///     is a base type with multiple exchangable derived types.
         /// </summary>
         public bool IsMultiElement { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this element
+        ///     needs to be created even if its null. Used for Display Conditions
+        /// </summary>
+        public bool CreateIfNull { get; set; }
     }
 }

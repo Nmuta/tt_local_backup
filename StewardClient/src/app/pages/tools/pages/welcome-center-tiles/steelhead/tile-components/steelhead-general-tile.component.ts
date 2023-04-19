@@ -1,6 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
+  FormArray,
   FormControl,
   FormGroup,
   NG_VALIDATORS,
@@ -19,8 +20,10 @@ import {
   TimerInstance,
   WelcomeCenterTile,
   WelcomeCenterTileSize,
+  FriendlyNameMap,
 } from '@models/welcome-center';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { SteelheadWorldOfForzaService } from '@services/api-v2/steelhead/welcome-center-tiles/world-of-forza/world-of-forza/steelhead-world-of-forza.service';
 import { DateTime } from 'luxon';
 import { filter, map, Observable, pairwise, startWith, takeUntil } from 'rxjs';
 
@@ -53,6 +56,28 @@ export class GeneralTileComponent extends BaseComponent {
   public timerInstanceEnum = TimerInstance;
   public timerTypeEnum = TimerType;
   public timerReferenceOptions: Map<string, string>;
+  public displayConditionReferences: FriendlyNameMap;
+  public whenFieldReferences: string[] = [
+    '#builderscup',
+    '#internal',
+    '#dev',
+    '#narrator',
+    '#tts',
+    '#automation',
+    '#hqfirstpersonnav',
+    '#prod',
+    '#audio',
+    '#cinematics',
+    '#dayofplay',
+    '#devtest',
+    '#EventSelectRaceLength',
+    '#integration-tests',
+    '#liveteam',
+    '#megafun',
+    '#mixmaster',
+    '#mpstresstesting',
+    '#vanguard',
+  ];
   public selectedTimerReferenceInstance: TimerReferenceInstance;
   // Min date is needed for datetime picker to not crash. We use epoch time
   public minDate = DateTime.fromSeconds(0);
@@ -70,12 +95,23 @@ export class GeneralTileComponent extends BaseComponent {
     timerReferenceId: new FormControl(),
     timerCustomFromDate: new FormControl(),
     timerCustomToDate: new FormControl(),
+    displayConditions: new FormArray([]),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
-  constructor(steelheadLocalizationService: SteelheadLocalizationService) {
+  constructor(
+    steelheadLocalizationService: SteelheadLocalizationService,
+    steelheadWorldOfForzaService: SteelheadWorldOfForzaService,
+  ) {
     super();
+
+    steelheadWorldOfForzaService
+      .getDisplayConditions$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        this.displayConditionReferences = data;
+      });
 
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
@@ -168,6 +204,14 @@ export class GeneralTileComponent extends BaseComponent {
       if (data.timer.timerReference) {
         this.formControls.timerReferenceId.setValue(data.timer.timerReference.refId);
       }
+
+      // Display conditions
+      this.formControls.displayConditions.clear();
+      if (data.displayConditions.item) {
+        for (const displayCondition of data.displayConditions.item) {
+          this.addDisplayCondition(displayCondition.refId, displayCondition.when);
+        }
+      }
     }
   }
 
@@ -250,10 +294,36 @@ export class GeneralTileComponent extends BaseComponent {
     } else {
       welcomeCenterTile.timer = null;
     }
+
+    if (this.formControls.displayConditions.controls.length > 0) {
+      welcomeCenterTile.displayConditions.item = [];
+      this.formControls.displayConditions.controls.forEach(element => {
+        welcomeCenterTile.displayConditions.item.push({
+          refId: element.get('reference').value,
+          when: element.get('when').value,
+        });
+      });
+    } else {
+      welcomeCenterTile.displayConditions.item = null;
+    }
   }
 
   /** Removes the selected timer instance. */
   public removeTimerInstance(): void {
     this.formControls.timerInstance.setValue(undefined);
+  }
+
+  /** Add a new display condition. */
+  public addDisplayCondition(reference: string, when: string): void {
+    const newDisplayConditionForm = new FormGroup({
+      reference: new FormControl(reference, [Validators.required]),
+      when: new FormControl(when),
+    });
+    this.formControls.displayConditions.push(newDisplayConditionForm);
+  }
+
+  /** Remove the selected display condition. */
+  public removeDisplayCondition(index: number): void {
+    this.formControls.displayConditions.removeAt(index);
   }
 }

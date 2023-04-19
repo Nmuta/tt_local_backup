@@ -213,7 +213,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             }
 
             var user = this.mapper.SafeMap<StewardUser>(internalUser);
+            // If user is team lead, add manage team attribute to new attributes list
+            if (user.Attributes.HasManageTeamAttribute())
+            {
+                attributes = attributes.AddManageTeamAttribute();
+            }
+
             user.Attributes = attributes;
+
             await this.userProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
             return await this.GetUserPermissionsAsync(userId).ConfigureAwait(true);

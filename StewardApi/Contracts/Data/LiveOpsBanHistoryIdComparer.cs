@@ -12,6 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         // This made ban start/expiry no longer a good way to associate bans.
         // For bans before this time, correlate on date, for times after, prefer ban entry id.
         private readonly DateTime cutOffTime = new DateTime(2022, 11, 29);
+        private readonly DateTime defaultTime = new DateTime(1, 1, 1);
 
         /// <summary>
         ///     Compares two <see cref="LiveOpsBanHistory"/> models.
@@ -31,7 +32,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 return false;
             }
 
-            if (liveOpsBanHistoryOne.StartTimeUtc > this.cutOffTime || liveOpsBanHistoryTwo.StartTimeUtc > this.cutOffTime)
+            // All services entries will start and end on defaultTime until they have been activated by player logging in
+            var banHasDefaultTime = liveOpsBanHistoryOne.StartTimeUtc == this.defaultTime || liveOpsBanHistoryTwo.StartTimeUtc == this.defaultTime;
+
+            // All bans after the cutoff time should have IDs that we can compare against, so long as they've been activated
+            var banStartsAfterCutoffTime = liveOpsBanHistoryOne.StartTimeUtc > this.cutOffTime && liveOpsBanHistoryTwo.StartTimeUtc > this.cutOffTime;
+
+            if (banHasDefaultTime || banStartsAfterCutoffTime)
             {
                 return liveOpsBanHistoryOne.BanEntryId == liveOpsBanHistoryTwo.BanEntryId;
             }

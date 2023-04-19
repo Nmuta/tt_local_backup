@@ -101,6 +101,11 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
             foreach (var item in child.Children)
             {
+                if (item.Children.Count == 0)
+                {
+                    continue;
+                }
+
                 Node refNode = item.Children.Where(node => node.Path.LocalName == "ref").First();
                 if (displayConditions.TryGetValue((Guid)refNode.Value, out var condition))
                 {
@@ -152,6 +157,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                 if (child.IsArray)
                 {
+                    if (child.Children.Count == 0)
+                    {
+                        // create <!-- empty array -->
+                        XNode xnode = new XComment(" empty array ");
+                        el.RemoveNodes();
+                        el.Add(xnode);
+                        continue;
+                    }
+
                     var descend = el.Descendants(child.Path).First();
                     foreach (var c in child.Children)
                     {
@@ -320,7 +334,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         // when mapped to the xml object. So skip the current property,
                         // avoiding a null reference on `target` on the next recursive call.
 
-                        if (root.Parent == null || root.Parent.Value != null)
+                        if (root.Parent == null || root.Parent.Value != null || property.GetCustomAttribute<WriteToPegasusAttribute>().CreateIfNull)
                         {
                             // Create the node if the parent is valid. But do not create its children.
                             // Allows for easier creation of elements with <x:null/> inside.
@@ -328,7 +342,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                             {
                                 Value = null,
                                 Path = path,
-                                Parent = root
+                                Parent = root,
+                                IsArray = property.PropertyType.IsArray
                             });
                         }
 

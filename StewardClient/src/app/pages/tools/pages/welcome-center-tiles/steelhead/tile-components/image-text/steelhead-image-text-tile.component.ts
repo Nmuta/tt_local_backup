@@ -128,6 +128,7 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
       tileTitle: imageTextTile.tileTitle,
       tileType: imageTextTile.tileType,
       timer: imageTextTile.timer,
+      displayConditions: imageTextTile.displayConditions,
     } as WelcomeCenterTile;
 
     this.formControls.baseTile.setValue(baseTile);

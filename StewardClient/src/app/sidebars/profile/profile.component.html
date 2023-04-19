@@ -24,19 +24,19 @@
       </tr>
       <ng-container *waitForMonitor="getTeamLeadMonitor">
         <tr>
-          <th>Tead Name</th>
+          <th>Team Name</th>
           <td>
             <standard-copy>{{ !!teamLead ? teamLead?.team?.name : 'N/A' }}</standard-copy>
           </td>
         </tr>
         <tr>
-          <th>Tead Lead</th>
+          <th>Team Lead</th>
           <td>
             <standard-copy>{{ !!teamLead ? teamLead.name : adminTeamLead }}</standard-copy>
           </td>
         </tr>
         <tr>
-          <th>Tead Lead Email</th>
+          <th>Team Lead Email</th>
           <td>
             <standard-copy>{{
               !!teamLead ? teamLead.emailAddress : adminTeamLeadEmail
