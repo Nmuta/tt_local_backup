@@ -123,6 +123,42 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.CarFeaturedShowcase[]> GetCarFeaturedShowcasesAsync()
+        {
+            var carFeaturedShowcases =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarFeaturedShowcase[]>(
+                    "LiveOps_CarFeaturedShowcase-en-US",
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            return carFeaturedShowcases;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.CarListingCategoryV2[]> GetCarSalesAsync()
+        {
+            var carListingCategories =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingCategoryV2[]>(
+                    "LiveOps_ShowroomCarSales",
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            return carListingCategories;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.CarListingV2[]> GetCarListingsAsync()
+        {
+            var carListings =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
+                    "LiveOps_CarListings",
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            return carListings;
+        }
+
+        /// <inheritdoc />
         public async Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync()
         {
             var displayConditions =

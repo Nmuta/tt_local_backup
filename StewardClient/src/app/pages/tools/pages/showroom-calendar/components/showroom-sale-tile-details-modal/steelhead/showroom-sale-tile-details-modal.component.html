@@ -1,0 +1,54 @@
+<section>
+  <h2 mat-dialog-title>
+    <span>Car Sale Details</span>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <table class="info-table">
+      <tr>
+        <th>Internal Name</th>
+        <td>
+          {{ data.name }}
+        </td>
+      </tr>
+      <tr>
+        <th>Start Time</th>
+        <td>{{ data.startTime | utcDate: 'short' }}</td>
+      </tr>
+      <tr>
+        <th>End Time</th>
+        <td>{{ data.endTime | utcDate: 'short' }}</td>
+      </tr>
+    </table>
+    <div class="scroll-pane grid">
+      <mat-card *ngFor="let carSale of data.cars">
+        <mat-card-title>{{ carSale.car.carId }} - {{ carSale.car.modelShort }}</mat-card-title>
+        <mat-card-content class="respect-newline">
+          <table class="info-table">
+            <tr>
+              <th>Media Name</th>
+              <td>
+                {{ carSale.car.mediaName }}
+              </td>
+            </tr>
+            <tr>
+              <th>Initial Price</th>
+              <td>
+                {{ carSale.car.baseCost }}
+              </td>
+            </tr>
+            <tr>
+              <th>Sale Price</th>
+              <td>{{ carSale.salePrice }} ({{ carSale.salePercentOff }}%)</td>
+            </tr>
+            <tr>
+              <th>VIP Sale Price</th>
+              <td>{{ carSale.vipSalePrice }} ({{ carSale.vipSalePercentOff }}%)</td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-dialog-content>
+</section>

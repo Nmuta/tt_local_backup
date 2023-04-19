@@ -35,6 +35,7 @@ import {
   servicesTableStorageTile,
 } from './tiles';
 import { playFabTile } from './tiles/tools/playfab';
+import { showroomCalendarTile } from './tiles/tools/showroom-calendar';
 
 /** The unprocessed tool list. Use @see environment.tools instead. */
 export const unprocessedToolList: HomeTileInfo[] = [
@@ -70,6 +71,8 @@ export const unprocessedToolList: HomeTileInfo[] = [
   welcomeCenterCalendarTile,
 
   userGroupManagementTile,
+
+  showroomCalendarTile,
 
   playFabTile,
 

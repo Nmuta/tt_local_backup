@@ -224,5 +224,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets display conditions.
         /// </summary>
         Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync();
+
+        /// <summary>
+        ///     Gets Car Featured Showcases.
+        /// </summary>
+        Task<SteelheadLiveOpsContent.CarFeaturedShowcase[]> GetCarFeaturedShowcasesAsync();
+
+        /// <summary>
+        ///     Gets Car Sales.
+        /// </summary>
+        Task<SteelheadLiveOpsContent.CarListingCategoryV2[]> GetCarSalesAsync();
+
+        /// <summary>
+        ///     Gets Car Listings.
+        /// </summary>
+        Task<SteelheadLiveOpsContent.CarListingV2[]> GetCarListingsAsync();
     }
 }
