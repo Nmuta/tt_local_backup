@@ -37,11 +37,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         /// <summary>
         ///    Gets a pnext ban duration for a player based on the ban configuration.
         /// </summary>
-        [HttpGet("nextBanDuration/{banconfig}")]
+        [HttpGet("nextDuration/{banconfig}")]
         [SwaggerResponse(200, type: typeof(ForzaBanDuration))]
         public async Task<IActionResult> GetNextBanDuration(ulong xuid, Guid banconfig)
         {
-            var nextBanPeriod = await this.ServicesWithProdLiveStewardCms.UserManagementService.GetNextBanPeriod(xuid, banconfig).ConfigureAwait(true);
+            GetNextBanPeriodOutput nextBanPeriod;
+            try
+            {
+                nextBanPeriod = await this.ServicesWithProdLiveStewardCms.UserManagementService.GetNextBanPeriod(xuid, banconfig).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get next ban duration. (xuid: {xuid}) (banconfig: {banconfig})", ex);
+            }
+
             return this.Ok(nextBanPeriod.banDuration);
         }
     }

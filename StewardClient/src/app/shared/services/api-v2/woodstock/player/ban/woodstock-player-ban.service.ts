@@ -15,7 +15,7 @@ export class WoodstockPlayerBanService {
   /** Get Next Ban Period . */
   public getNextBanDuration$(xuid: BigNumber, configurationId: string): Observable<BanDuration> {
     return this.api.getRequest$<BanDuration>(
-      `${this.basePath}/${xuid}/ban/nextBanDuration/${configurationId}`,
+      `${this.basePath}/${xuid}/ban/nextDuration/${configurationId}`,
     );
   }
 }

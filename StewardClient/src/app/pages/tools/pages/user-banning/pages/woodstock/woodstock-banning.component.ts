@@ -30,6 +30,7 @@ import { MatOptionSelectionChange } from '@angular/material/core/option';
 import { HCI } from '@environments/environment';
 import { WoodstockPlayerBanService } from '@services/api-v2/woodstock/player/ban/woodstock-player-ban.service';
 import { BanDuration } from '@models/ban-duration';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -64,6 +65,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public selectedBanConfiguration: BanConfiguration = null;
   public selectedBanAreasLabel: string = '';
   public nextBanDuration: BanDuration = null;
+  public nextBanDurationMonitor: ActionMonitor = new ActionMonitor('GET next ban duration');
 
   public identitySortFn = null;
 
@@ -254,9 +256,10 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
       return;
     }
 
+    this.nextBanDurationMonitor = this.nextBanDurationMonitor.repeat();
     this.woodstockPlayerBanService
       .getNextBanDuration$(targetPlayer.xuid, this.selectedBanConfiguration.banConfigurationId)
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(this.nextBanDurationMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(banDuration => {
         this.nextBanDuration = banDuration;
       });
