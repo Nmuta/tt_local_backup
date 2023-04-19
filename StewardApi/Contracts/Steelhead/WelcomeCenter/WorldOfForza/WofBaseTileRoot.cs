@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -64,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [WriteToPegasus]
         public WofBaseTimer Timer { get; set; }
 
+        [WriteToPegasus]
         public WofBaseDisplayConditions DisplayConditions { get; set; }
 
         public object Cooldowns { get; set; }
@@ -202,10 +204,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
     [Serializable]
     [DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     public partial class WofBaseDisplayConditions
     {
-        [WriteToPegasus]
+        [WriteToPegasus(CreateIfNull=true)]
+        [Required]
         [XmlElement(Namespace = "scribble:x")]
         public BaseItem[] item { get; set; }
     }
