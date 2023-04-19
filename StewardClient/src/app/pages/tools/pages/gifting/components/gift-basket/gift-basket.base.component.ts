@@ -173,12 +173,14 @@ export abstract class GiftBasketBaseComponent<
       this.formControls.localizedBodyMessageInfo.updateValueAndValidity();
     }
 
-    this.permAttributesService.initializationGuard$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      this.allowedToExceedCreditLimit = this.permAttributesService.hasFeaturePermission(
-        PermAttributeName.AllowedToExceedCreditLimit,
-        this.title,
-      );
-    });
+    this.permAttributesService.initializationGuard$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.allowedToExceedCreditLimit = this.permAttributesService.hasFeaturePermission(
+          PermAttributeName.AllowedToExceedCreditLimit,
+          this.title,
+        );
+      });
   }
 
   /** Lifecycle hook. */
@@ -209,7 +211,8 @@ export abstract class GiftBasketBaseComponent<
     }
 
     this.ignoreMaxCreditLimit =
-      event?.value === GiftReason.LostSave && (this.profile.role === UserRole.LiveOpsAdmin || this.allowedToExceedCreditLimit);
+      event?.value === GiftReason.LostSave &&
+      (this.profile.role === UserRole.LiveOpsAdmin || this.allowedToExceedCreditLimit);
     this.setStateGiftBasket(this.giftBasket.data);
   }
 

@@ -1079,6 +1079,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
                 mc.AllowNullCollections = true;
             }));
 
+            public IStewardUserProvider UserProvider { get; set; } = Substitute.For<IStewardUserProvider>();
+
             public IRequestValidator<ApolloBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloBanParametersInput>>();
 
             public IRequestValidator<ApolloGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloGift>>();
@@ -1103,6 +1105,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
                 this.Scheduler,
                 this.JobTracker,
                 this.Mapper,
+                this.UserProvider,
                 this.BanParametersRequestValidator,
                 this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,
