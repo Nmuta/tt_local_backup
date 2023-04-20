@@ -258,8 +258,10 @@ export class UserState {
 
   /** Action that synchronizes the user state model with the target user state. */
   @Action(SyncUserState, { cancelUncompleted: true })
-  public syncUserState(ctx: StateContext<UserStateModel>, action: SyncUserState): void {
-    ctx.setState(action.targetUserState);
+  public syncUserState(ctx: StateContext<UserStateModel>, action: SyncUserState): Observable<void> {
+    ctx.patchState({ accessToken: action.accessToken });
+
+    return ctx.dispatch(new GetUser());
   }
 
   /** Helper function that timeouts state checks for user profile. */

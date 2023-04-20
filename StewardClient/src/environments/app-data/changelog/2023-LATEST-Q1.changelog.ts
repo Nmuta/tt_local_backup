@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'a34b9712-384e-4e93-aff6-d0a9760adf4a',
+      shortText: 'Fix sync state component for cypress tests',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '06533eea-f7b6-4dc4-99f9-dc52934452e1',
       shortText: 'Fix team lead permission error',
     },

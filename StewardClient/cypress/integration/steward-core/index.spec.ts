@@ -7,20 +7,16 @@ context('Steward Index', () => {
     cy.visit('/');
   });
 
-  it('should have a logout button', () => {
-    cy.get('.mat-button-wrapper').contains('Logout').should('exist');
-  });
+  it('should lead to Tools homepage', () => {
+    // Verfiy cards
+    cy.get('.mat-card-title').contains('Player Details');
+    cy.get('.mat-card-title').contains('UGC Search');
+    cy.get('.mat-card-title').contains('UGC Details');
 
-  it('should lead to User Selected Tools', () => {
-    cy.get('.mat-button-wrapper').contains('User Selected Tools').click();
-
-    cy.contains('Click to set standard tools').should('exist');
-  });
-
-  it('should have link to Zendesk Ticket Tools', () => {
-    cy.get('.mat-button-wrapper').contains('Zendesk Ticket Tools').should('exist');
-    cy.contains('a', 'Zendesk Ticket Tools').should('have.attr', 'href', '/ticket-app/title');
-    // this cannot be fully tested outside of zendesk
-    // cy.contains('Steward Support Ticket App').should('exist');
+    // Verify icons
+    cy.get('.mat-icon').contains('notifications');
+    cy.get('.mat-icon').contains('sticky_note_2');
+    cy.get('.mat-icon').contains('account_circle');
+    cy.get('.mat-icon').contains('contact_support');
   });
 });
