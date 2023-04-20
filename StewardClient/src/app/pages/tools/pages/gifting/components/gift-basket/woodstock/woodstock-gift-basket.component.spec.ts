@@ -40,7 +40,7 @@ describe('WoodstockGiftBasketComponent', () => {
           PipesModule,
         ],
         providers: [
-          createMockWoodstockPlayersGiftService(), 
+          createMockWoodstockPlayersGiftService(),
           createMockWoodstockGroupGiftService(),
           createMockPermAttributesService(),
         ],
