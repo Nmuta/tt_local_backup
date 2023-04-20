@@ -16,10 +16,7 @@ describe('ForumBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
       declarations: [ForumBanningComponent],
       providers: [createMockForumBanService(), createMockForumBanService()],
       schemas: [NO_ERRORS_SCHEMA],

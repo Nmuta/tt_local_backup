@@ -28,10 +28,7 @@ describe('WoodstockBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
       declarations: [WoodstockBanningComponent],
       providers: [
         createMockWoodstockService(),
