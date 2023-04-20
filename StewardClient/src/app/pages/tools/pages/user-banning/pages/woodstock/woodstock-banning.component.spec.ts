@@ -16,6 +16,8 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { BanResultsUnion } from '../base/user-banning.base.component';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { createMockWoodstockPlayersBanService } from '@services/api-v2/woodstock/players/ban/woodstock-players-ban.service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgxsModule } from '@ngxs/store';
 
 describe('WoodstockBanningComponent', () => {
   let component: WoodstockBanningComponent;
@@ -26,6 +28,10 @@ describe('WoodstockBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        NgxsModule.forRoot(),
+      ],
       declarations: [WoodstockBanningComponent],
       providers: [
         createMockWoodstockService(),
