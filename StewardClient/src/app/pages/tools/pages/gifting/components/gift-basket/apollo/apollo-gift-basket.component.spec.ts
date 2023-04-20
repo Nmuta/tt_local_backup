@@ -13,6 +13,7 @@ import { ApolloService } from '@services/apollo';
 import { SetApolloGiftBasket } from '@tools-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
 import faker from '@faker-js/faker';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
 describe('ApolloGiftBasketComponent', () => {
   let fixture: ComponentFixture<ApolloGiftBasketComponent>;
@@ -33,7 +34,7 @@ describe('ApolloGiftBasketComponent', () => {
       ],
       declarations: [ApolloGiftBasketComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
+      providers: [createMockPermAttributesService()],
     }).compileComponents();
 
     const injector = getTestBed();

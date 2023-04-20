@@ -17,6 +17,7 @@ import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
 import { createMockWoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service.mock';
 import { createMockWoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service.mock';
+import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
 describe('WoodstockGiftBasketComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
@@ -38,7 +39,11 @@ describe('WoodstockGiftBasketComponent', () => {
           ReactiveFormsModule,
           PipesModule,
         ],
-        providers: [createMockWoodstockPlayersGiftService(), createMockWoodstockGroupGiftService()],
+        providers: [
+          createMockWoodstockPlayersGiftService(), 
+          createMockWoodstockGroupGiftService(),
+          createMockPermAttributesService(),
+        ],
       }),
     );
 

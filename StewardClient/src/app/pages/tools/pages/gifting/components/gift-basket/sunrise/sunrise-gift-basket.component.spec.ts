@@ -13,6 +13,7 @@ import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-me
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
 describe('SunriseGiftBasketComponent', () => {
   let fixture: ComponentFixture<SunriseGiftBasketComponent>;
@@ -33,6 +34,7 @@ describe('SunriseGiftBasketComponent', () => {
           ReactiveFormsModule,
           PipesModule,
         ],
+        providers: [createMockPermAttributesService()],
       }),
     );
     const injector = getTestBed();

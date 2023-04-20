@@ -19,6 +19,7 @@ import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { toDateTime } from '@helpers/luxon';
+import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<
@@ -41,7 +42,7 @@ describe('GiftBasketBaseComponent', () => {
       ],
       declarations: [GiftBasketBaseComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
+      providers: [createMockPermAttributesService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(

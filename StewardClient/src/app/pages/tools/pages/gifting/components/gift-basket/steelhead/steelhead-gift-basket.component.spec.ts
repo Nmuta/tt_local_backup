@@ -17,6 +17,7 @@ import { createMockSteelheadPlayersGiftService } from '@services/api-v2/steelhea
 import { createMockSteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service.mock';
 import { SteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/gift/steelhead-players-gift.service';
 import { SteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service';
+import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
 describe('SteelheadGiftBasketComponent', () => {
   let fixture: ComponentFixture<SteelheadGiftBasketComponent>;
@@ -42,6 +43,7 @@ describe('SteelheadGiftBasketComponent', () => {
         createMockSteelheadLocalizationService(),
         createMockSteelheadPlayersGiftService(),
         createMockSteelheadGroupGiftService(),
+        createMockPermAttributesService(),
       ],
     }).compileComponents();
 
