@@ -36,7 +36,7 @@ export class VerifyWithV2ButtonDirective extends BaseDirective implements Disabl
     this.button$.next(value);
   }
 
-  constructor(private readonly host: MatButton, private readonly renderer: Renderer2) {
+  constructor(host: MatButton, renderer: Renderer2) {
     super();
 
     this.button$.pipe(takeUntil(this.onDestroy$)).subscribe(button => {

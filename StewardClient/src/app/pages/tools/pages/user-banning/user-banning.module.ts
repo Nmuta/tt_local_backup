@@ -86,7 +86,6 @@ import { MatIconModule } from '@angular/material/icon';
     MonitorActionModule,
     PermissionsModule,
     ForumBanHistoryModule,
-    MatIconModule,
   ],
 })
 export class UserBanningModule {}
