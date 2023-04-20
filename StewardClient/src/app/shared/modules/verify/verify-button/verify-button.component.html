@@ -1,12 +1,12 @@
 <button
   mat-icon-button
-  [class.has-help-icon]="showVerifyCheckboxPopup"
+  [class.has-help-icon]="showVerifyCheckboxPopup && hasPermission"
   [disabled]="disabled"
   (click)="changeVerifyStatus(!isVerified)"
   stateManager
   [permissionAttribute]="permissionAttribute"
   [permissionTitle]="permissionTitle"
-  [permissionHideChildElement]="true"
+  (permissionChange)="permissionAllowedChange($event)"
   clickStop
 >
   <mat-icon *ngIf="!isVerified" id="verify-button-icon">lock_open</mat-icon>

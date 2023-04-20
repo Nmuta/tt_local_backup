@@ -28,6 +28,7 @@ export class VerifyButtonComponent extends BaseComponent implements OnInit {
 
   public isVerified: boolean = false;
   public showVerifyCheckboxPopup: boolean = true;
+  public hasPermission: boolean = false;
 
   constructor(private readonly store: Store) {
     super();
@@ -51,5 +52,10 @@ export class VerifyButtonComponent extends BaseComponent implements OnInit {
   public changeVerifyStatus(isVerified: boolean): void {
     this.isVerified = isVerified;
     this.isVerifiedChange.emit(this.isVerified);
+  }
+
+  /** Change event when permission directive outputs. */
+  public permissionAllowedChange(hasPermission: boolean) {
+    this.hasPermission = hasPermission;
   }
 }

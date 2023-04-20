@@ -1,9 +1,11 @@
 import {
   Directive,
   ElementRef,
+  EventEmitter,
   forwardRef,
   Input,
   Optional,
+  Output,
   ViewContainerRef,
 } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -39,6 +41,9 @@ export abstract class BasePermissionAttributeDirective
   extends BaseDirective
   implements DisableStateProvider
 {
+  /** Outputs if permission is allowed. */
+  @Output() public permissionChange = new EventEmitter<boolean>();
+
   public overrideDisable: boolean = undefined;
   public overrideDisable$ = new BehaviorSubject<boolean | undefined>(this.overrideDisable);
 
@@ -65,12 +70,6 @@ export abstract class BasePermissionAttributeDirective
     this.checkPermission$.next();
   }
 
-  /** Hides the host's child element if permissions are invalid. */
-  @Input() public set permissionHideChildElement(hideChildElement: boolean) {
-    this.hideChildElement = hideChildElement;
-    this.checkPermission$.next();
-  }
-
   /** Determines how V1 auth roles are allowed to poss. If false, V1 auth roles will NEVER have permissions. */
   @Input() public set permissionSupportV1Auth(allowV1Auth: boolean) {
     this.allowV1Auth = allowV1Auth;
@@ -81,11 +80,11 @@ export abstract class BasePermissionAttributeDirective
   private attributeName: PermAttributeName;
   private gameTitle: GameTitle;
   private actionType: InvalidPermActionType = InvalidPermActionType.Disable;
-  private hideChildElement: boolean = false;
+  protected hideChildElement: boolean = false;
   private allowV1Auth: boolean = true;
 
   constructor(
-    private readonly element: ElementRef,
+    protected readonly element: ElementRef,
     private readonly permAttributesService: PermAttributesService,
     private readonly viewContainerRef: ViewContainerRef,
     @Optional() private readonly tooltip: MatTooltip,
@@ -132,6 +131,8 @@ export abstract class BasePermissionAttributeDirective
               break;
           }
         }
+
+        this.permissionChange.emit(hasPerm);
       });
   }
 
