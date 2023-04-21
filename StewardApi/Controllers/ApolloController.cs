@@ -765,11 +765,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin || hasPermissionsToExceedCreditLimit;
                     var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                         groupGift,
                         requesterObjectId,
-                        allowedToExceedCreditLimit,
+                        hasPermissionsToExceedCreditLimit,
                         endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
@@ -848,11 +847,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin || hasPermissionsToExceedCreditLimit;
             var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                 groupGift,
                 requesterObjectId,
-                allowedToExceedCreditLimit,
+                hasPermissionsToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
 
             var giftedXuids = response.Where(giftResponse => giftResponse.Errors.Count == 0)
@@ -903,12 +901,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin || hasPermissionsToExceedCreditLimit;
             var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
                 gift,
                 requesterObjectId,
-                allowedToExceedCreditLimit,
+                hasPermissionsToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
             return this.Ok(response);
             }

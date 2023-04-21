@@ -157,13 +157,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin || hasPermissionsToExceedCreditLimit;
                     // Before refactoring, please check the repo ReadMe -> Steward -> Docs -> Background Jobs and Race Conditions
                     var response = await this.playerInventoryProvider.UpdatePlayerInventoriesAsync(
                         services,
                         groupGift,
                         requesterObjectId,
-                        allowedToExceedCreditLimit).ConfigureAwait(true);
+                        hasPermissionsToExceedCreditLimit).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)

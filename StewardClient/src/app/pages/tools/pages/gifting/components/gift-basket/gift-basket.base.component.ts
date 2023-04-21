@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { GameTitle, UserRole } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -211,8 +211,7 @@ export abstract class GiftBasketBaseComponent<
     }
 
     this.ignoreMaxCreditLimit =
-      event?.value === GiftReason.LostSave &&
-      (this.profile.role === UserRole.LiveOpsAdmin || this.allowedToExceedCreditLimit);
+      event?.value === GiftReason.LostSave && this.allowedToExceedCreditLimit;
     this.setStateGiftBasket(this.giftBasket.data);
   }
 

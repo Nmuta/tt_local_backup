@@ -111,26 +111,56 @@ describe('GiftBasketBaseComponent', () => {
         });
       });
 
+      describe('When profile is defined', () => {
+        const testUserModel2: UserModel = {
+          name: faker.name.firstName(),
+          emailAddress: 'fakeemail2@microsoft.com',
+          role: UserRole.GeneralUser,
+          objectId: `${faker.datatype.uuid()}`,
+        };
+        beforeEach(() => {
+          component.profile = testUserModel2;
+        });
+        it('should not call and set profile', () => {
+          component.giftReasonChanged(giftReasonEvent);
+          expect(component.profile).not.toBeUndefined();
+          expect(component.profile).toEqual(testUserModel2);
+          expect(mockStore.selectSnapshot).not.toHaveBeenCalled();
+        });
+      });
+
       describe('When gift reason is "Lost Save"', () => {
         beforeEach(() => {
           giftReasonEvent.value = GiftReason.LostSave;
           component.profile = {
             name: faker.name.firstName(),
             emailAddress: 'fakeemail@microsoft.com',
-            role: UserRole.LiveOpsAdmin,
+            role: UserRole.GeneralUser,
             objectId: `${faker.datatype.uuid()}`,
           };
         });
 
-        describe('And when user role is LiveOpsAdmin', () => {
+        describe('And when allowedToExceedCreditLimit is true', () => {
           beforeEach(() => {
-            component.profile.role = UserRole.LiveOpsAdmin;
+            component.allowedToExceedCreditLimit = true;
           });
 
           it('should set ignoreMaxCreditLimit to true', () => {
             component.giftReasonChanged(giftReasonEvent);
 
             expect(component.ignoreMaxCreditLimit).toBeTruthy();
+          });
+        });
+
+        describe('And when allowedToExceedCreditLimit is false', () => {
+          beforeEach(() => {
+            component.allowedToExceedCreditLimit = false;
+          });
+
+          it('should set ignoreMaxCreditLimit to false', () => {
+            component.giftReasonChanged(giftReasonEvent);
+
+            expect(component.ignoreMaxCreditLimit).toBeFalsy();
           });
         });
       });

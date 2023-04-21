@@ -113,13 +113,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 
             var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.LiveOpsAdmin || hasPermissionsToExceedCreditLimit;
             var response = await this.playerInventoryProvider.UpdateGroupInventoriesAsync(
                 this.Services,
                 groupId,
                 gift,
                 requesterObjectId,
-                allowedToExceedCreditLimit).ConfigureAwait(true);
+                hasPermissionsToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 
