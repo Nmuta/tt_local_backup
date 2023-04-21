@@ -47,11 +47,6 @@ export class ButtonPermissionAttributeDirective
   /** Lifecycle hook. */
   public ngOnInit(): void {
     // Hide internal content for certain buttons when permissions are disabled
-    if (
-      intersection(this.hideInternalContentButtonClasses, this.element.nativeElement.classList)
-        .length > 0
-    ) {
-      this.hideChildElement = true;
-    }
+    this.hideChildElement = intersection(this.hideInternalContentButtonClasses, this.element.nativeElement.classList).length > 0
   }
 }
