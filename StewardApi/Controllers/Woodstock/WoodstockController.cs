@@ -525,7 +525,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var auction in auctions)
             {
-                auction.ItemName = carsDict.TryGetValue(auction.ModelId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
+                auction.ItemName = carsDict.TryGetValue(auction.ModelId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";
             }
 
             return this.Ok(auctions);
@@ -633,7 +633,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var entry in blockList)
             {
-                entry.Description = carsDict.TryGetValue(entry.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
+                entry.Description = carsDict.TryGetValue(entry.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";
             }
 
             return this.Ok(blockList);
@@ -711,7 +711,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var item in ugcItems)
             {
-                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";
             }
 
             return this.Ok(ugcItems);
@@ -753,7 +753,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var item in ugCItems)
             {
-                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";
             }
 
             return this.Ok(ugCItems);
@@ -783,7 +783,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var cars = getCars.GetAwaiter().GetResult();
 
             var carData = cars.FirstOrDefault(car => car.Id == livery.CarId);
-            livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
+            livery.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
 
             return this.Ok(livery);
         }
@@ -812,7 +812,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var cars = getCars.GetAwaiter().GetResult();
 
             var carData = cars.FirstOrDefault(car => car.Id == photo.CarId);
-            photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
+            photo.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
 
             return this.Ok(photo);
         }
@@ -841,7 +841,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var cars = getCars.GetAwaiter().GetResult();
 
             var carData = cars.FirstOrDefault(car => car.Id == tune.CarId);
-            tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
+            tune.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
 
             return this.Ok(tune);
         }
