@@ -87,7 +87,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
         start: new Date(carFeaturedShowcase.startTime),
         end: new Date(carFeaturedShowcase.endTime),
         title: `${carFeaturedShowcase.title}`,
-        cssClass: `left-border-color-blue`,
+        cssClass: `unique-left-border-color-1-of-5`,
         meta: {
           carFeaturedShowcase: carFeaturedShowcase,
           carSale: undefined,
@@ -115,7 +115,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
         start: new Date(carSale.startTime),
         end: new Date(carSale.endTime),
         title: `${carSale.name}`,
-        cssClass: `left-border-color-red`,
+        cssClass: `unique-left-border-color-2-of-5`,
         meta: {
           carFeaturedShowcase: undefined,
           carSale: carSale,

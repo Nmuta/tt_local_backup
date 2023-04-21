@@ -1,4 +1,5 @@
 @import '/src/styles/mixins';
+@import '../../../styles/showroom-unique-colors.scss';
 
 .center-text {
   display: flex;
@@ -88,18 +89,6 @@ div.calendar-control-panel {
     padding-left: 0.5em;
     //cursor: pointer;
   }
-}
-
-.left-border-color-red {
-  border-left: 4px solid;
-  margin-bottom: 1px;
-  border-color: red;
-}
-
-.left-border-color-blue {
-  border-left: 4px solid;
-  margin-bottom: 1px;
-  border-color: blue;
 }
 
 .day-view-event {
