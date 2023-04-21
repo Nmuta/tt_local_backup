@@ -25,6 +25,7 @@ import { SteelheadDeeplinkTileService } from '@services/api-v2/steelhead/welcome
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
+import { GeneralTileComponent } from '../steelhead-general-tile.component';
 
 /** The deeplink tile component. */
 @Component({
@@ -34,6 +35,7 @@ import { Observable, takeUntil } from 'rxjs';
 })
 export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
   @ViewChild(MatCheckbox) verifyCheckbox: MatCheckbox;
+  @ViewChild(GeneralTileComponent) generalTileComponent: GeneralTileComponent;
 
   /** The deeplink tile representing the currently selected tile. */
   @Input() deeplinkTile: DeeplinkTile;
@@ -156,13 +158,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
     }
 
     // Base tile fields
-    this.deeplinkTile.tileImagePath = this.formControls.baseTile.value.tileImagePath;
-    this.deeplinkTile.size = this.formControls.baseTile.value.size;
-    // Localization data
-    this.deeplinkTile.tileDescription.locref =
-      this.formControls.baseTile.value.localizedTileDescription?.id;
-    this.deeplinkTile.tileTitle.locref = this.formControls.baseTile.value.localizedTileTitle?.id;
-    this.deeplinkTile.tileType.locref = this.formControls.baseTile.value.localizedTileType?.id;
+    this.generalTileComponent.mapFormToWelcomeCenterTile(this.deeplinkTile);
 
     this.steelheadDeeplinkTileService
       .submitDeeplinkTileModification$(this.tileId, this.deeplinkTile)
@@ -176,7 +172,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
       });
   }
 
-  /** Set form fields using the WelcomeCenterTile parameter. */
+  /** Set form fields using the DeeplinkTile parameter. */
   private setFields(deeplinkTile: DeeplinkTile): void {
     if (deeplinkTile.destinationType == DestinationType.RacersCup) {
       // not implemented yet
@@ -205,6 +201,8 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
       tileDescription: deeplinkTile.tileDescription,
       tileTitle: deeplinkTile.tileTitle,
       tileType: deeplinkTile.tileType,
+      timer: deeplinkTile.timer,
+      displayConditions: deeplinkTile.displayConditions,
     } as WelcomeCenterTile;
 
     this.formControls.baseTile.setValue(baseTile);

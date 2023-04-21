@@ -46,20 +46,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     public class LocalizationController : V2SteelheadControllerBase
     {
         private readonly ISteelheadPegasusService pegasusService;
-        private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LocalizationController"/> class.
         /// </summary>
         public LocalizationController(
-            ISteelheadPegasusService pegasusService,
-            IMapper mapper)
+            ISteelheadPegasusService pegasusService)
         {
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
-            mapper.ShouldNotBeNull(nameof(mapper));
 
             this.pegasusService = pegasusService;
-            this.mapper = mapper;
         }
 
         /// <summary>
@@ -71,36 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var locStrings = await this.pegasusService.GetLocalizedStringsAsync(useInternalIds).ConfigureAwait(true);
             return this.Ok(locStrings);
-        }
-
-        /// <summary>
-        ///     Add string for localization.
-        /// </summary>
-        [HttpPost]
-        [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(200, type: typeof(Guid))]
-        [Authorize(Policy = UserAttribute.AddLocalizedString)]
-        public async Task<IActionResult> AddStringToLocalization([FromBody] LocalizedStringData data)
-        {
-            if (!Enum.IsDefined(typeof(LocCategory), data.Category))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(LocCategory)} provided: {data.Category}");
-            }
-
-            var forzaLocalizedStringData = this.mapper.SafeMap<ForzaLocalizedStringData>(data);
-
-            try
-            {
-                var result = await this.Services.LocalizationManagementService.AddStringToLocalize(forzaLocalizedStringData)
-                    .ConfigureAwait(true);
-
-                return this.Ok(result.localizedStringId);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to add string for localization: \"{data.StringToLocalize}\"", ex);
-            }
-
         }
 
         /// <summary>

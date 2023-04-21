@@ -34,6 +34,7 @@ export enum UgcType {
   Photo = 'Photo',
   Tune = 'Tune',
   EventBlueprint = 'EventBlueprint',
+  TuneBlob = 'TuneBlob',
   CommunityChallenge = 'CommunityChallenge',
 }
 

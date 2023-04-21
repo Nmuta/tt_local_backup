@@ -9,16 +9,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
     public class LocalizedStringBridge
     {
-        public ushort MaxLength { get; set; }
+        public string TextToLocalize { get; set; }
 
-        public LocTextBridge LocString { get; set; }
+        public string Description { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public LocCategory Category { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public LocSubCategory SubCategory { get; set; }
-
-        public Guid Id { get; set; }
     }
 }

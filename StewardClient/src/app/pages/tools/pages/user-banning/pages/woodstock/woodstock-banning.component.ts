@@ -1,44 +1,66 @@
 import BigNumber from 'bignumber.js';
-import { Component, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { WoodstockBanArea, WoodstockBanRequest, WoodstockBanSummary } from '@models/woodstock';
+import { WoodstockBanRequest, WoodstockBanSummary } from '@models/woodstock';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { BackgroundJob } from '@models/background-job';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanHistoryComponent } from '@shared/views/ban-history/woodstock/woodstock-ban-history.component';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
-import { EMPTY, of, ReplaySubject, Subject } from 'rxjs';
-import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
-import { BanOptions } from '../../components/ban-options/ban-options.component';
+import { EMPTY, Observable, of, ReplaySubject, Subject, combineLatest } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  map,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs/operators';
+import { BanArea } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 import { GameTitle } from '@models/enums';
+import { WoodstockPlayersBanService } from '@services/api-v2/woodstock/players/ban/woodstock-players-ban.service';
+import { BanConfiguration } from '@models/ban-configuration';
+import { requireReasonListMatch } from '@helpers/validations';
+import { BanReasonGroup } from '@models/ban-reason-group';
+import { MatOptionSelectionChange } from '@angular/material/core/option';
+import { HCI } from '@environments/environment';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
   templateUrl: './woodstock-banning.component.html',
   styleUrls: ['./woodstock-banning.component.scss'],
 })
-export class WoodstockBanningComponent extends UserBanningBaseComponent {
+export class WoodstockBanningComponent extends UserBanningBaseComponent implements OnInit {
   @ViewChildren('woodstock-ban-history')
   public banHistoryComponents: WoodstockBanHistoryComponent[] = [];
 
   public playerIdentities$ = new Subject<IdentityResultAlpha[]>();
   public playerIdentities: IdentityResultAlpha[] = [];
   public selectedPlayerIdentity: AugmentedCompositeIdentity = null;
+  /** List of every ban reasons. Used in custom validation. */
+  public banReasons: string[] = [];
 
   public formControls = {
-    banOptions: new FormControl('', [Validators.required]),
+    banReason: new FormControl('', [Validators.required, requireReasonListMatch.bind(this)]),
+    deleteLeaderboardEntries: new FormControl(false),
   };
 
-  public formGroup = new FormGroup({
-    banOptions: this.formControls.banOptions,
-  });
+  public formGroup: FormGroup = new FormGroup(this.formControls);
 
   public summaryLookup: Dictionary<WoodstockBanSummary> = {};
   public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
+  public banAreaEnum = BanArea;
+  public banReasonGroups: BanReasonGroup[];
+  public banReasonOptions: Observable<BanReasonGroup[]>;
+  public banConfigurations: BanConfiguration[] = null;
+  public selectedBanReasonGroup: BanReasonGroup = null;
+  public selectedBanConfiguration: BanConfiguration = null;
+  public selectedBanAreasLabel: string = '';
 
   public identitySortFn = null;
 
@@ -47,6 +69,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
   constructor(
     backgroundJobService: BackgroundJobService,
     private readonly woodstock: WoodstockService,
+    private readonly woodstockPlayersBanService: WoodstockPlayersBanService,
   ) {
     super(backgroundJobService);
 
@@ -86,25 +109,78 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
     };
   }
 
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    const getBanConfigurations$ = this.woodstockPlayersBanService.getBanConfigurations$();
+
+    const getBanReasonGroups$ = this.woodstockPlayersBanService.getBanReasonGroups$();
+
+    combineLatest([getBanConfigurations$, getBanReasonGroups$])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([banConfigurations, banReasonGroups]) => {
+        this.banConfigurations = banConfigurations;
+
+        this.banReasonGroups = banReasonGroups;
+
+        this.banReasons = [].concat(
+          ...Object.values(banReasonGroups).map(group => {
+            return group.reasons;
+          }),
+        );
+
+        // Force autocomplete logic to run now that the values are loaded
+        this.formControls.banReason.updateValueAndValidity({ emitEvent: true });
+      });
+
+    this.banReasonOptions = this.formControls.banReason.valueChanges.pipe(
+      debounceTime(HCI.TypingToAutoSearchDebounceMillis),
+      startWith(''),
+      map((searchValue: string) => {
+        if (!searchValue) {
+          return this.banReasonGroups;
+        }
+
+        const lowercaseSearchValue = searchValue.toLowerCase();
+        return this.banReasonGroups
+          .map(group => {
+            if (group.name.toLowerCase().includes(lowercaseSearchValue)) {
+              return group;
+            } else {
+              const matchingValues = group.reasons.filter(v =>
+                v.toLowerCase().includes(lowercaseSearchValue),
+              );
+              if (matchingValues.length > 0) {
+                return <BanReasonGroup>{
+                  name: group.name,
+                  reasons: matchingValues,
+                  banConfigurationId: group.banConfigurationId,
+                  featureAreas: group.featureAreas,
+                };
+              } else {
+                return null;
+              }
+            }
+          })
+          .filter(v => !!v);
+      }),
+    );
+  }
+
   /** Submit the form. */
   public submitBan(): void {
     const identities = this.playerIdentities;
-    const banOptions = this.formControls.banOptions.value as BanOptions;
+
     const bans: WoodstockBanRequest[] = identities.map(identity => {
       return <WoodstockBanRequest>{
         xuid: identity.xuid,
-        banAllConsoles: banOptions.checkboxes.banAllXboxes,
-        banAllPcs: banOptions.checkboxes.banAllPCs,
-        deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
-        sendReasonNotification: true,
-        reason: banOptions.banReason,
-        featureArea: banOptions.banArea as unknown as WoodstockBanArea,
-        duration: banOptions.banDuration,
+        deleteLeaderboardEntries: this.formControls.deleteLeaderboardEntries.value,
+        reason: this.formControls.banReason.value,
+        reasonGroupName: this.selectedBanReasonGroup.name,
       };
     });
 
     this.banActionMonitor = this.banActionMonitor.repeat();
-    this.woodstock
+    this.woodstockPlayersBanService
       .postBanPlayersWithBackgroundProcessing$(bans)
       .pipe(
         take(1),
@@ -142,5 +218,18 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
     }
 
     return null;
+  }
+
+  /** Event when a ban reason is changed. */
+  public banReasonChanged(event: MatOptionSelectionChange, banReasonGroup: BanReasonGroup): void {
+    if (!event.isUserInput) {
+      return;
+    }
+
+    this.selectedBanReasonGroup = banReasonGroup;
+    this.selectedBanConfiguration = this.banConfigurations.find(
+      x => x.banConfigurationId == banReasonGroup.banConfigurationId,
+    );
+    this.selectedBanAreasLabel = banReasonGroup.featureAreas.join(',');
   }
 }

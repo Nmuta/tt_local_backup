@@ -94,14 +94,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid, string endpoint);
 
         /// <summary>
-        ///     Bans users.
-        /// </summary>
-        Task<IList<BanResult>> BanUsersAsync(
-            IList<WoodstockBanParameters> banParameters,
-            string requesterObjectId,
-            string endpoint);
-
-        /// <summary>
         ///     Expire bans.
         /// </summary>
         Task<UnbanResult> ExpireBanAsync(

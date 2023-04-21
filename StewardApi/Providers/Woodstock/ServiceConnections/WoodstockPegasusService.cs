@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
 using WoodstockLiveOpsContent;
+using BanConfiguration = Turn10.LiveOps.StewardApi.Contracts.Common.BanConfiguration;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
@@ -252,6 +253,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
             return this.refreshableCacheStore.GetItem<IEnumerable<SupportedLocale>>(supportedLocaleKey)
                    ?? await GetSupportedLocales().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.Live)
+        {
+            var banConfigurationKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_BanConfiguration";
+
+            async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
+            {
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(banConfigurationKey, TimeSpan.FromDays(1), banConfigurations);
+
+                return banConfigurations;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, BanConfiguration>>(banConfigurationKey)
+                   ?? await GetBanConfigurations().ConfigureAwait(false);
         }
     }
 }
