@@ -60,8 +60,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => this.PrepareDeviceType(src.deviceType)))
                 .ReverseMap();
             this.CreateMap<ServicesLiveOps.ForzaUserBanSummary, BanSummary>()
-                // Banned Areas are combined into one int so ForzaUserBanSummary.BannedAreas will only ever contain one int
-                .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src => new List<string>() { LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.BannedAreas.FirstOrDefault()) }));
+                .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src => new List<string>() { LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.FeatureAreas) }));
             this.CreateMap<ServicesLiveOps.ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => LiveOpsBanHistoryMapper.PrepareWoodstockBanFeatureArea(src.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
@@ -241,7 +240,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<ServicesLiveOps.ForzaLiveryData, WoodstockUgcLiveryItem>()
                 .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
-                .ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
                 .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
