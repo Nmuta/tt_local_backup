@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'a3150781-c8a1-4415-9379-d4f09cee9701',
+      shortText: 'Convert player inventory component to use composition',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'a34b9712-384e-4e93-aff6-d0a9760adf4a',
       shortText: 'Fix sync state component for cypress tests',
     },
