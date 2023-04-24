@@ -8,6 +8,84 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'a34b9712-384e-4e93-aff6-d0a9760adf4a',
+      shortText: 'Fix sync state component for cypress tests',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '06533eea-f7b6-4dc4-99f9-dc52934452e1',
+      shortText: 'Fix team lead permission error',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'f8e3de26-fa91-4f56-8aff-faab4843bce1',
+      shortText: 'Fix leaderboard scores',
+      longText: [
+        'Adjusted speed traps and speed zones to be treated as meters per second.',
+        'Miles per hour conversion updated to match adjustement.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '5949f9c4-e40b-4f13-9c4f-7c1f657e4400',
+      shortText: "Added 'Breaching NDA' ban reason",
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '26bcd504-40bb-4045-be76-00c9f6d0872e',
+      shortText: 'Update Ban Reasons',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.UserDetails, NavbarTool.UgcDetails, NavbarTool.SearchUGC],
+      },
+      uuid: '013ffc89-5427-4454-b894-5bb1ca38ce28',
+      shortText: 'Update Tunes to use new type Tune Blob',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterCalendar },
+      uuid: 'db3ccf92-a236-4132-9597-a2f8bf91fe52',
+      shortText: "Welcome Center tiles now appear on calendar only while they're active",
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: [NavbarTool.ServicesTableStorage] },
+      uuid: 'eddbd7a1-5db5-4853-95b6-531bb7780539',
+      shortText: 'Added Services Table Storage view for FH5',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
+      shortText: 'New way of banning implemented',
+      longText: ['Ban reason will decide the ban configuration and areas automatically'],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.ServicesTableStorage] },
+      uuid: 'd243963e-dab1-466f-99b3-f8d9b643866d',
+      shortText: 'Filter out entries for unselected external profile ID',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging, NavbarTool.WelcomeCenterTiles] },
+      uuid: 'bf98f050-9392-43e1-a9bb-b6f9acbd3e21',
+      shortText: 'Hook up localized string creation form to new backing APIs',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'c1652439-efa9-4332-ba11-59e6d3ec3cd3',
+      shortText: 'Clean up test bed modules after each unit test file',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: '58670a58-ff9c-4d5f-a985-bbabb955c5b4',
+      shortText: 'Show reporting state for UGC as humanized string in UGC overview',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'f382179c-2d6c-469b-93b7-94c3cbb2b015',
+      shortText: 'Add display condition field',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
       shortText: 'Add timer field',

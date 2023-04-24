@@ -119,5 +119,55 @@
         </mat-select>
       </mat-form-field>
     </ng-container>
+    <ng-container
+      formArrayName="displayConditions"
+      *ngFor="let displayCondition of formControls.displayConditions.controls; let i = index"
+    >
+      <div class="sf-horizontal" [formGroupName]="i">
+        <label
+          ><b>Display condition #{{ i + 1 }}</b></label
+        >
+        <mat-form-field appearance="fill" class="sf-default-hint">
+          <mat-label>Condition</mat-label>
+          <mat-select formControlName="reference">
+            <mat-option
+              *ngFor="let reference of displayConditionReferences | keyvalue"
+              [value]="reference.key"
+            >
+              {{ reference.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="sf-default-hint sf-13-char">
+          <mat-label>When</mat-label>
+          <mat-select formControlName="when">
+            <mat-option *ngFor="let whenReference of whenFieldReferences" [value]="whenReference">
+              {{ whenReference }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-mini-fab
+          color="warn"
+          matTooltip="Remove display condition"
+          aria-label="Remove display condition"
+          (click)="removeDisplayCondition(i)"
+          [disabled]="formControls.displayConditions.disabled"
+        >
+          <mat-icon svgIcon="steward-trash"></mat-icon>
+        </button>
+      </div>
+    </ng-container>
+    <div class="sf-horizontal">
+      <button
+        mat-raised-button
+        color="default"
+        (click)="addDisplayCondition('', '')"
+        [disabled]="formControls.displayConditions.disabled"
+      >
+        Add Display Condition
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
   </div>
 </form>

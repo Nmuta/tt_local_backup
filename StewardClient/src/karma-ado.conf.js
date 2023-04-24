@@ -91,5 +91,6 @@ module.exports = function (config) {
     // Timeouts
     processKillTimeout: 5000,
     browserDisconnectTimeout: 5000,
+    browserDisconnectTolerance: 3,
   });
 };

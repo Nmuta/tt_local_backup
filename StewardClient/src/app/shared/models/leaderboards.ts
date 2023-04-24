@@ -185,7 +185,7 @@ export function determineScoreTypeQualifier(scoreTypeId: BigNumber): string {
   switch (scoreTypeId.toNumber()) {
     case LeaderboardScoreType.AverageSpeedZone:
     case LeaderboardScoreType.SpeedTrap:
-      return 'km/h';
+      return 'm/s';
     case LeaderboardScoreType.DangerSign:
       return 'meters';
     case LeaderboardScoreType.DriftZone:

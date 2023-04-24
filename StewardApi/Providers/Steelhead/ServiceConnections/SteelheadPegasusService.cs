@@ -189,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         .Where(p => localizationIdsMapping.ContainsKey(p.Key))
                         .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
                 }
-                
+
                 this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
 
                 return results;
@@ -633,25 +633,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<CommitRefProxy> WriteLocalizedStringsToPegasusAsync(LocCategory category, IEnumerable<LocalizedStringBridge> localizedStrings)
+        public async Task<CommitRefProxy> WriteLocalizedStringToPegasusAsync(LocalizedStringBridge localizedString)
         {
-            var path = $"{PegasusConstants.LocalizationFolder}/Localization-{category}.xml";
+            var path = $"{PegasusConstants.LocalizationFolder}/Localization-{localizedString.Category}.xml";
 
             var item = await this.azureDevOpsManager.GetItemAsync(path, GitObjectType.Blob).ConfigureAwait(false);
 
             var xmlObj = await item.Content.DeserializeAsync<LocalizedStringRoot>().ConfigureAwait(false);
 
-            foreach (var loc in localizedStrings)
-            {
-                var entry = this.mapper.SafeMap<LocEntry>(loc);
+            var entry = this.mapper.SafeMap<LocEntry>(localizedString);
 
-                entry.id = Guid.NewGuid();
-                entry.LocString.locdef = Guid.NewGuid();
-                entry.Category = loc.Category.ToString();
-                entry.SubCategory = loc.SubCategory.ToString();
-
-                xmlObj.LocalizationEntries.Add(entry);
-            }
+            xmlObj.LocalizationEntries.Add(entry);
 
             var appendedXmlStr = await XmlHelpers.SerializeAsync(xmlObj, WelcomeCenterHelpers.SteelheadXmlNamespaces).ConfigureAwait(false);
 

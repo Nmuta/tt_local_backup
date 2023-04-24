@@ -19,7 +19,7 @@ export interface PlayerUgcItem {
   carDescription: string;
   makeId: BigNumber;
   carId: BigNumber;
-  reportingState: BigNumber;
+  reportingState: string;
   forceFeaturedEndDateUtc: DateTime;
   featuredEndDateUtc: DateTime;
   featuredByT10: boolean;
@@ -84,7 +84,7 @@ export function fakePlayerUgcItem(): PlayerUgcItem {
     carDescription: faker.random.words(10),
     makeId: new BigNumber(0),
     carId: new BigNumber(0),
-    reportingState: new BigNumber(0),
+    reportingState: faker.random.word(),
     forceFeaturedEndDateUtc: null,
     featuredEndDateUtc: null,
     featuredByT10: false,

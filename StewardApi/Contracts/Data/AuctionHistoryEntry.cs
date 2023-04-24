@@ -112,7 +112,7 @@ union
 | project Time, Action, AuctionId, Xuid, Success, Message=extract('Message: ?(.*?)\r\n', 1, SystemStackTrace), BidAmount, SpendAmount
 | join kind=leftouter
     (
-        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_Create
+        database('Prod Woodstock Telemetry').Services_Forza_WebServices_Auction_Create()
         | project AuctionId, SellerXuid=SystemHeaderXuid, OpeningPrice, BuyoutPrice, CarId=ForzaCarCarId, CarMake=ForzaCarMake, CarYear=ForzaCarYear, CarVin=ForzaCarVin
         | where AuctionId <> ''
     ) on AuctionId

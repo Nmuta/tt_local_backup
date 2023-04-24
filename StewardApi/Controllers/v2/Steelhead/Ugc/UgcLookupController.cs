@@ -234,7 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets a UGC tune by ID.
         /// </summary>
-        [HttpGet("tune/{ugcId}")]
+        [HttpGet("tuneblob/{ugcId}")]
         [SwaggerResponse(200, type: typeof(UgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]

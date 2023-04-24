@@ -748,15 +748,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getUgcItems, getCars).ConfigureAwait(true);
 
-            var ugCItems = getUgcItems.GetAwaiter().GetResult();
+            var ugcItems = getUgcItems.GetAwaiter().GetResult();
             var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
 
-            foreach (var item in ugCItems)
+            foreach (var item in ugcItems)
             {
                 item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
             }
 
-            return this.Ok(ugCItems);
+            return this.Ok(ugcItems);
         }
 
         /// <summary>
@@ -1001,140 +1001,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .ConfigureAwait(true);
 
             return this.Ok(result);
-        }
-
-        /// <summary>
-        ///     Bans players.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.SupportAgentNew)]
-        [HttpPost("players/ban/useBackgroundProcessing")]
-        [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.BackgroundProcessing)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
-        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
-        public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
-            [FromBody] IList<WoodstockBanParametersInput> banInput)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            banInput.ShouldNotBeNull(nameof(banInput));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            foreach (var banParam in banInput)
-            {
-                this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
-                this.banParametersRequestValidator.Validate(banParam, this.ModelState);
-            }
-
-            var banParameters = this.mapper.SafeMap<IList<WoodstockBanParameters>>(banInput);
-
-            if (!this.ModelState.IsValid)
-            {
-                var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
-                throw new InvalidArgumentsStewardException(result);
-            }
-
-            var jobId = await this.jobTracker.CreateNewJobAsync(
-                banParameters.ToJson(),
-                requesterObjectId,
-                $"Woodstock Banning: {banParameters.Count} recipients.",
-                this.Response).ConfigureAwait(true);
-
-            async Task BackgroundProcessing(CancellationToken cancellationToken)
-            {
-                // Throwing within the hosting environment background worker seems to have significant consequences.
-                // Do not throw.
-                try
-                {
-                    var results = await this.woodstockPlayerDetailsProvider.BanUsersAsync(
-                        banParameters,
-                        requesterObjectId,
-                        endpoint).ConfigureAwait(true);
-
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
-                        .ConfigureAwait(true);
-
-                    var bannedXuids = results.Where(banResult => banResult.Error == null)
-                        .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
-
-                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
-                        .ConfigureAwait(true);
-                }
-                catch (Exception ex)
-                {
-                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
-
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
-                        .ConfigureAwait(true);
-                }
-            }
-
-            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
-        }
-
-        /// <summary>
-        ///     Bans players.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.SupportAgentNew)]
-        [HttpPost("players/ban")]
-        [SwaggerResponse(201, type: typeof(List<BanResult>))]
-        [SwaggerResponse(202)]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
-        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
-        public async Task<IActionResult> BanPlayers(
-            [FromBody] IList<WoodstockBanParametersInput> banInput)
-        {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            banInput.ShouldNotBeNull(nameof(banInput));
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            foreach (var banParam in banInput)
-            {
-                this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
-                this.banParametersRequestValidator.Validate(banParam, this.ModelState);
-            }
-
-            var banParameters = this.mapper.SafeMap<IList<WoodstockBanParameters>>(banInput);
-
-            if (!this.ModelState.IsValid)
-            {
-                var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
-                throw new InvalidArgumentsStewardException(result);
-            }
-
-            var results = await this.woodstockPlayerDetailsProvider.BanUsersAsync(
-                banParameters,
-                requesterObjectId,
-                endpoint).ConfigureAwait(true);
-
-            var bannedXuids = results.Where(banResult => banResult.Error == null)
-                .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
-
-            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
-                .ConfigureAwait(true);
-
-            return this.Ok(results);
         }
 
         /// <summary>

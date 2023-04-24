@@ -101,5 +101,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Removes the CMS Override on a player by xuid.
         /// </summary>
         Task DeleteCMSOverride(ulong xuid);
+
+        /// <summary>
+        ///     Bans a list of players.
+        /// </summary>
+        Task<BanUsersV2Output> BanUsersV2(ForzaUserBanParametersV2[] banParameters);
     }
 }

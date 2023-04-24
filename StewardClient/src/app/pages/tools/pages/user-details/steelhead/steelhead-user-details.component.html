@@ -129,21 +129,21 @@
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
-              Tunes
+              Tune Blobs
               <inline-spinner [monitor]="ugcTunes.getMonitor | renderGuard"
                 >({{ ugcTunes?.ugcContent?.length }})</inline-spinner
               >
             </ng-template>
             <mat-card>
               <mat-card-header>
-                <mat-card-title>Tunes</mat-card-title>
+                <mat-card-title>Tune Blobs</mat-card-title>
                 <mat-card-subtitle>Steelhead</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content>
                 <steelhead-player-ugc
                   #ugcTunes
                   [identity]="identity"
-                  [contentType]="UgcType.Tune"
+                  [contentType]="UgcType.TuneBlob"
                   [usingIdentities]="true"
                 ></steelhead-player-ugc>
               </mat-card-content>

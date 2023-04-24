@@ -89,5 +89,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         ///     Gets or sets the builder's cup destination setting type.
         /// </summary>
         public BuildersCupSettingType? BuildersCupSettingType { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the display conditions bridge.
+        /// </summary>
+        public WofDisplayConditionsBridge DisplayConditions { get; set; }
     }
 }

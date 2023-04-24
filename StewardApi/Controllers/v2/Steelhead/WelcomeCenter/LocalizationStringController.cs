@@ -47,23 +47,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         /// <summary>
         ///     Submits new localized strings to Pegasus.
         /// </summary>
-        [HttpPost("{category}")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [HttpPost]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
         [SwaggerResponse(200, type: typeof(Contracts.Git.PullRequest))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [Authorize(Policy = UserAttribute.AddLocalizedString)]
-        public async Task<IActionResult> WriteLocalizedStringsToPegasus(LocCategory category, [FromBody] IEnumerable<LocalizedStringBridge> localizedStringBridge)
+        public async Task<IActionResult> WriteLocalizedStringsToPegasus([FromBody] LocalizedStringBridge localizedStringBridge)
         {
-            localizedStringBridge.CheckForNullOrEmpty(nameof(localizedStringBridge));
+            localizedStringBridge.ShouldNotBeNull(nameof(localizedStringBridge));
 
             var availableCategories = await this.steelheadPegasusService.GetLocalizationCategoriesFromRepoAsync().ConfigureAwait(true);
-            if (!availableCategories.Contains(category.ToString()))
+            if (!availableCategories.Contains(localizedStringBridge.Category.ToString()))
             {
-                throw new BadRequestStewardException($"The selected category is invalid: {category})");
+                throw new BadRequestStewardException($"The selected category is invalid: {localizedStringBridge.Category})");
             }
 
-            CommitRefProxy change = await this.steelheadPegasusService.WriteLocalizedStringsToPegasusAsync(category, localizedStringBridge).ConfigureAwait(true);
+            CommitRefProxy change = await this.steelheadPegasusService.WriteLocalizedStringToPegasusAsync(localizedStringBridge).ConfigureAwait(true);
 
             GitPush pushed = await this.steelheadPegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.steelheadPegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);

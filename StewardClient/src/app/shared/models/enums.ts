@@ -115,6 +115,14 @@ export enum LocalizationCategory {
   Gifts = 'Gifts',
 }
 
+/** Enum for localization sub-categories. */
+export enum LocalizationSubCategory {
+  Invalid = 'Invalid',
+  Title = 'Title',
+  SubTitle = 'SubTitle',
+  Description = 'Description',
+}
+
 /** Enum for localization categories language + locales. */
 export enum SupportedLocalizationLanguageCodes {
   cs_CZ = 'cs-CZ',

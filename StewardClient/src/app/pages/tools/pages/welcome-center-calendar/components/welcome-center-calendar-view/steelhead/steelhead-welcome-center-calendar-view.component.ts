@@ -66,6 +66,9 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
 
   public events: CalendarEvent[];
 
+  private alwaysAvailableMinDate: Date = new Date(1, 1, 1);
+  private alwaysAvailableMaxDate: Date = new Date(3001, 1, 1);
+
   constructor(
     private readonly welcomeCenterService: SteelheadWelcomeCenterService,
     private readonly deppoh: DomainEnumPrettyPrintOrHumanizePipe,
@@ -159,10 +162,18 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
     column: WelcomeCenterColumn,
   ): CalendarEvent<WelcomeCenterMeta>[] {
     const events: CalendarEvent<WelcomeCenterMeta>[] = [];
+
     for (const tile of welcomeCenter[column]) {
+      const startTime = !!tile.startEndDateUtc?.fromUtc
+        ? tile.startEndDateUtc.fromUtc.toJSDate()
+        : this.alwaysAvailableMinDate;
+      const endTime = !!tile.startEndDateUtc?.toUtc
+        ? tile.startEndDateUtc.toUtc.toJSDate()
+        : this.alwaysAvailableMaxDate;
+
       const newEvent: CalendarEvent<WelcomeCenterMeta> = {
-        start: new Date('01/01/2001'), // TODO: Waiting on update from Madden on source of truth for tile display times.
-        end: new Date('01/01/2101'), // TODO: Waiting on update from Madden on source of truth for tile display times.
+        start: startTime,
+        end: endTime,
         title: `${tile.tileTitle}`,
         cssClass: `event-column-${column}`,
         meta: {
