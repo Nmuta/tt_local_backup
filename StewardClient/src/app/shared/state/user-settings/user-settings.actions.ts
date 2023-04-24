@@ -24,6 +24,12 @@ export class ConfigureAppUpdatePopup {
   constructor(public readonly show: boolean) {}
 }
 
+/** Sets whether or not the verify help popup should show to users. */
+export class ConfigureShowVerifyCheckboxPopup {
+  public static readonly type = '[Settings] Configure Show Verify Checkbox Popup';
+  constructor(public readonly show: boolean) {}
+}
+
 /** Sets endpoint key defaults if none are present in local storage.. */
 export class VerifyEndpointKeyDefaults {
   public static readonly type = '[Settings] Verify Endpoint Key Defaults';
