@@ -1,5 +1,4 @@
 import { UserModelOverrides } from '@models/user.model';
-import { UserStateModel } from './user.state.model';
 
 /** GetUser action declaration. */
 export class GetUser {
@@ -71,7 +70,7 @@ export class BreakAccessToken {
 /** Synchronize the user state with this target user state. */
 export class SyncUserState {
   public static readonly type = '[User] Sync User State';
-  constructor(public readonly targetUserState: UserStateModel) {}
+  constructor(public readonly accessToken: string) {}
 }
 
 /** Break the access token. */

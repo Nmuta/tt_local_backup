@@ -21,5 +21,8 @@ export function login(): Cypress.Chainable<unknown> {
         `/auth/sync-state` + `?accessToken=${token}` + `&role=LiveOpsAdmin` + `&name=Application`;
 
       cy.visit(syncPath);
+
+      // Wait for sync state component to display that the profile was synced
+      cy.get('#is-synced', { timeout: 20000 }).should('exist');
     });
 }
