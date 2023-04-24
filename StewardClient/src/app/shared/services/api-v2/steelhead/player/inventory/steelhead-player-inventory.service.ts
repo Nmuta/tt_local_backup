@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { GuidLikeString } from '@models/extended-types';
 import { SteelheadPlayerInventory, SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 /** The /v2/title/steelhead/player/{xuid}/inventory endpoints. */
 @Injectable({
@@ -24,5 +25,18 @@ export class SteelheadPlayerInventoryService {
     return this.api.getRequest$<SteelheadPlayerInventoryProfile[]>(
       `${this.basePath}/${xuid}/inventory/profiles`,
     );
+  }
+
+  /** Adds item to player inventory. */
+  public addItemToInventory$(
+    _xuid: BigNumber,
+    _externalProfileId: GuidLikeString,
+  ): Observable<unknown> {
+    // TODO: Update once API is ready
+    return of(null);
+    // return this.api.postRequest$<SteelheadPlayerInventoryProfile[]>(
+    //   `${this.basePath}/${xuid}/inventory/profile/${externalProfileId}`,
+    //   null,
+    // );
   }
 }
