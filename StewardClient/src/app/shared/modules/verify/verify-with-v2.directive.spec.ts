@@ -7,7 +7,9 @@ import { VerifyButtonComponent } from './verify-button/verify-button.component';
 
 describe('VerifyWithV2ButtonDirective', () => {
   let button: MatButton;
-  const verifyButton: Partial<VerifyButtonComponent> = { isVerifiedChange: new EventEmitter<boolean>() };
+  const verifyButton: Partial<VerifyButtonComponent> = {
+    isVerifiedChange: new EventEmitter<boolean>(),
+  };
   let directive: VerifyWithV2ButtonDirective;
   let mockRenderer2: Renderer2;
 
