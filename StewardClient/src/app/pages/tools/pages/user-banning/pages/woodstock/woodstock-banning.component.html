@@ -108,6 +108,12 @@
                 >
 
                 <div class="ban-action-container">
+                  <verify-button
+                    [disabled]="!canBan()"
+                    #verifyBtn
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
+                  ></verify-button>
                   <button
                     mat-raised-button
                     color="warn"
@@ -117,7 +123,7 @@
                     monitorDisable
                     [monitor]="banActionMonitor"
                     [disabled]="!canBan()"
-                    [verifyWith]="confirmBan"
+                    [verifyWithV2]="verifyBtn"
                     matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
                   >
                     Ban
@@ -126,16 +132,6 @@
                       defaultIcon="gavel"
                     ></button-spinner>
                   </button>
-                  <mat-checkbox
-                    #confirmBan
-                    stateManager
-                    [monitor]="banActionMonitor"
-                    monitorDisable
-                    [permissionAttribute]="permAttribute"
-                    [permissionTitle]="gameTitle"
-                  >
-                    Verify ban
-                  </mat-checkbox>
                 </div>
               </div>
             </div>

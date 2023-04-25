@@ -1,0 +1,9 @@
+@import '/src/styles/mixins/';
+
+button.sf-button {
+  min-width: $button-min-size;
+}
+
+mat-checkbox.sf-button-checkbox {
+  margin-left: $gap-small;
+}

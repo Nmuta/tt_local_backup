@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add year to displayed car info',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '6070292d-ff07-4d31-b72a-f0f0e2c98330',
+      shortText: 'Rework verification checkbox into an icon button',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'a3150781-c8a1-4415-9379-d4f09cee9701',
       shortText: 'Convert player inventory component to use composition',
