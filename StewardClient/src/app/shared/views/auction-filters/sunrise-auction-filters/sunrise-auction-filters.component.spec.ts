@@ -53,13 +53,18 @@ describe('SunriseAuctionFiltersComponent', () => {
 
   describe('Method: ngOnInit', () => {
     describe('When getSimpleCars$() returns valid data', () => {
-      const car: SimpleCar = {
+      const tempCar = {
         id: fakeBigNumber(),
         makeId: fakeBigNumber(),
         make: faker.random.word(),
-        model: faker.random.word(),
+        model: faker.random.words(),
+        year: (Math.random() * (new Date().getFullYear() - 1908) + 1908).toString(),
+        displayName: '',
         makeOnly: false,
       };
+      tempCar.displayName = `${tempCar.make} ${tempCar.model} (${tempCar.year})`;
+
+      const car: SimpleCar = tempCar;
 
       const filterGroup: MakeModelFilterGroup = {
         category: faker.random.word(),

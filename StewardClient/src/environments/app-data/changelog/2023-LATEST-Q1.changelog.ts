@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'e3702108-3edd-4f7c-9b56-9440c3b78a68',
+      shortText: 'Add year to displayed car info',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '6070292d-ff07-4d31-b72a-f0f0e2c98330',
       shortText: 'Rework verification checkbox into an icon button',

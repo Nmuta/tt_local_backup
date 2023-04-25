@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             }
 
             var carData = cars.FirstOrDefault(car => car.Id == result.CarId);
-            result.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Pegasus.";
+            result.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
 
             return this.Ok(result);
         }

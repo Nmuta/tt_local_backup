@@ -152,11 +152,11 @@ describe('ApolloMakeModelAutocompleteComponent', () => {
     });
 
     describe('When input is a Kusto car with an id', () => {
-      it('should return full car name (make + model + [carId])', () => {
+      it('should return full car name (displayName + [carId])', () => {
         const carInput = fakeSimpleCars[0];
         const res = component.autoCompleteDisplayFn(carInput);
 
-        expect(res).toEqual(`${carInput.make} ${carInput.model} [${carInput.id}]`);
+        expect(res).toEqual(`${carInput.displayName} [${carInput.id}]`);
       });
     });
 
