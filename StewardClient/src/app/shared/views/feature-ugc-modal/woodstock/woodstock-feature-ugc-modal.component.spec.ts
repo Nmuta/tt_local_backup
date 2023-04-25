@@ -9,20 +9,20 @@ import { createMockWoodstockService, WoodstockService } from '@services/woodstoc
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
-import { WoodstocksetUgcfeatureStatusModalComponent } from './woodstock-feature-ugc-modal.component';
+import { WoodstockFeatureUgcModalComponent } from './woodstock-feature-ugc-modal.component';
 
-describe('WoodstocksetUgcfeatureStatusModalComponent', () => {
+describe('WoodstockFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
-  let fixture: ComponentFixture<WoodstocksetUgcfeatureStatusModalComponent>;
-  let component: WoodstocksetUgcfeatureStatusModalComponent;
+  let fixture: ComponentFixture<WoodstockFeatureUgcModalComponent>;
+  let component: WoodstockFeatureUgcModalComponent;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mockMatDialogRef: any;
   let mockWoodstockService: WoodstockService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WoodstocksetUgcfeatureStatusModalComponent],
+      declarations: [WoodstockFeatureUgcModalComponent],
       imports: [MatButtonModule, MatDialogModule, PipesModule],
       providers: [
         createMockWoodstockService(),
@@ -37,7 +37,7 @@ describe('WoodstocksetUgcfeatureStatusModalComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WoodstocksetUgcfeatureStatusModalComponent);
+    fixture = TestBed.createComponent(WoodstockFeatureUgcModalComponent);
     component = fixture.componentInstance;
     mockWoodstockService = TestBed.inject(WoodstockService);
 
@@ -99,27 +99,12 @@ describe('WoodstocksetUgcfeatureStatusModalComponent', () => {
     const expireDuration = expireDate.diff(DateTime.local().startOf('day'));
 
     it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
-      component.changeFeaturedStatus$(itemId, expireDate);
+      component.changeFeaturedStatus$(itemId, true, expireDate);
 
       expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
         expiry: expireDuration,
-      } as UgcFeaturedStatus);
-    });
-  });
-
-  describe('Method: deleteFeaturedStatus$', () => {
-    const itemId = faker.datatype.uuid().toString();
-    const expireDate = DateTime.local();
-    expireDate.plus(1);
-
-    it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
-      component.deleteFeaturedStatus$(itemId);
-
-      expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
-        itemId: itemId,
-        isFeatured: false,
       } as UgcFeaturedStatus);
     });
   });

@@ -9,20 +9,20 @@ import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
-import { SunrisesetUgcfeatureStatusModalComponent } from './sunrise-feature-ugc-modal.component';
+import { SunriseFeatureUgcModalComponent } from './sunrise-feature-ugc-modal.component';
 
-describe('SunrisesetUgcfeatureStatusModalComponent', () => {
+describe('SunriseFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
-  let fixture: ComponentFixture<SunrisesetUgcfeatureStatusModalComponent>;
-  let component: SunrisesetUgcfeatureStatusModalComponent;
+  let fixture: ComponentFixture<SunriseFeatureUgcModalComponent>;
+  let component: SunriseFeatureUgcModalComponent;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mockMatDialogRef: any;
   let mockSunriseService: SunriseService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SunrisesetUgcfeatureStatusModalComponent],
+      declarations: [SunriseFeatureUgcModalComponent],
       imports: [MatButtonModule, MatDialogModule, PipesModule],
       providers: [
         createMockSunriseService(),
@@ -37,7 +37,7 @@ describe('SunrisesetUgcfeatureStatusModalComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SunrisesetUgcfeatureStatusModalComponent);
+    fixture = TestBed.createComponent(SunriseFeatureUgcModalComponent);
     component = fixture.componentInstance;
     mockSunriseService = TestBed.inject(SunriseService);
 
@@ -99,27 +99,12 @@ describe('SunrisesetUgcfeatureStatusModalComponent', () => {
     const expireDuration = expireDate.diff(DateTime.local().startOf('day'));
 
     it('should call SunriseService.setUgcItemFeatureStatus() with correct params', () => {
-      component.changeFeaturedStatus$(itemId, expireDate);
+      component.changeFeaturedStatus$(itemId, true, expireDate);
 
       expect(mockSunriseService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
         expiry: expireDuration,
-      } as UgcFeaturedStatus);
-    });
-  });
-
-  describe('Method: deleteFeaturedStatus$', () => {
-    const itemId = faker.datatype.uuid().toString();
-    const expireDate = DateTime.local();
-    expireDate.plus(1);
-
-    it('should call SunriseService.setUgcItemFeatureStatus() with correct params', () => {
-      component.deleteFeaturedStatus$(itemId);
-
-      expect(mockSunriseService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
-        itemId: itemId,
-        isFeatured: false,
       } as UgcFeaturedStatus);
     });
   });
