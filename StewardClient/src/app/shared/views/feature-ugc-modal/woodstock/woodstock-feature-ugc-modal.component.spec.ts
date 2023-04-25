@@ -82,7 +82,7 @@ describe('WoodstockFeatureUgcModalComponent', () => {
 
     describe('When formGroup is invalid', () => {
       beforeEach(() => {
-        component.formControls.featuredDate.setValue(null);
+        component.formControls.featuredDate.setValue(DateTime.utc().minus(10_000));
       });
 
       it('should not call component.changeFeaturedStatus$()', () => {
@@ -104,7 +104,7 @@ describe('WoodstockFeatureUgcModalComponent', () => {
       expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
-        expiry: expireDuration,
+        featuredExpiry: expireDuration,
       } as UgcFeaturedStatus);
     });
   });
