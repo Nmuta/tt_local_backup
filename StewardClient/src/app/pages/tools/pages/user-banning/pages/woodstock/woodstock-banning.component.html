@@ -94,20 +94,21 @@
                     <p><b>Ban Areas:</b> {{ selectedBanAreasLabel | deppoh }}</p>
                   </div>
                   <div>
-                    <span
+                    <p
                       *ngIf="selectedBanReasonGroup.featureAreas.includes(banAreaEnum.AllFeatures)"
                       class="warn"
                     >
                       All player(s) UGC content will be removed when banning All Requests.
-                    </span>
+                    </p>
                   </div>
                   <div>
                     <p *waitForMonitor="nextBanDurationMonitor">
-                      <b>Next Ban Duration: </b>
-                      <i *ngIf="!nextBanDuration"
-                        >Please select a player to see the next ban duration</i
-                      >
+                      <ng-container *ngIf="!nextBanDuration">
+                        <b>Next Ban Duration: </b>
+                        <i>Please select a player to see the next ban duration</i>
+                      </ng-container>
                       <ng-container *ngIf="nextBanDuration">
+                        <b>Next Ban Duration for {{ nextBanDurationUser }}: </b>
                         <ng-container *ngIf="nextBanDuration.isPermaBan; else duration">
                           Permanent Ban{{ nextBanDuration.isDeviceBan ? ', Device Ban' : '' }}
                         </ng-container>

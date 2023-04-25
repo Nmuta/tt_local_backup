@@ -9,7 +9,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanHistoryComponent } from '@shared/views/ban-history/woodstock/woodstock-ban-history.component';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
-import { EMPTY, Observable, of, ReplaySubject, Subject, combineLatest } from 'rxjs';
+import { EMPTY, Observable, of, ReplaySubject, Subject, combineLatest, Subscription } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -65,7 +65,9 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public selectedBanConfiguration: BanConfiguration = null;
   public selectedBanAreasLabel: string = '';
   public nextBanDuration: BanDuration = null;
+  public nextBanDurationUser: string = '';
   public nextBanDurationMonitor: ActionMonitor = new ActionMonitor('GET next ban duration');
+  public nextBanDurationSubscription: Subscription;
 
   public identitySortFn = null;
 
@@ -247,6 +249,9 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
 
   /** Update the ban duration label based on the appropriate player and ban configuration. */
   private updateNextBanDuration() {
+    if (this.nextBanDurationSubscription) {
+      this.nextBanDurationSubscription.unsubscribe();
+    }
     const targetPlayer =
       this.playerIdentities.length == 1 ? this.playerIdentities[0] : this.selectedPlayer;
 
@@ -256,8 +261,11 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
       return;
     }
 
+    this.nextBanDurationUser = targetPlayer.query['gamertag']
+      ? targetPlayer.query['gamertag']
+      : targetPlayer.query['xuid'];
     this.nextBanDurationMonitor = this.nextBanDurationMonitor.repeat();
-    this.woodstockPlayerBanService
+    this.nextBanDurationSubscription = this.woodstockPlayerBanService
       .getNextBanDuration$(targetPlayer.xuid, this.selectedBanConfiguration.banConfigurationId)
       .pipe(this.nextBanDurationMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(banDuration => {
