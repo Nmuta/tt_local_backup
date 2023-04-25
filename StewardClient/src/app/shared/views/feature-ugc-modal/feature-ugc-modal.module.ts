@@ -40,7 +40,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatFormFieldModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    JsonDumpModule,
     DirectivesModule,
     StateManagersModule,
     MonitorActionModule,
