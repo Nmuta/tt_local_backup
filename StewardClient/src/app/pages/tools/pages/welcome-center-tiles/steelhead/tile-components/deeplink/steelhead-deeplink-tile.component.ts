@@ -143,7 +143,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
       // Not implemented yet
     }
     if (this.deeplinkTile.destinationType == DestinationType.Showroom) {
-      this.deeplinkTile.category = this.formControls.category.value;
+      this.deeplinkTile.manufacturer = this.formControls.category.value;
     }
     if (this.deeplinkTile.destinationType == DestinationType.BuildersCup) {
       this.deeplinkTile.buildersCupSettingType = this.formControls.settingType.value;
@@ -192,7 +192,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
     }
     if (deeplinkTile.destinationType == DestinationType.Showroom) {
       this.formControls.destinationType.setValue(DestinationType.Showroom);
-      this.formControls.category.setValue(deeplinkTile.category);
+      this.formControls.category.setValue(deeplinkTile.manufacturer);
     }
 
     const baseTile = {

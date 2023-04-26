@@ -111,6 +111,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add timer field',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '99394a85-7ac3-40af-a23d-e7367fedb39f',
+      shortText: 'Change DeepLink category to manufacturer',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserDetails },
       uuid: '4b58bd90-c77e-493b-ba65-0ee94ec259db',
       shortText: 'Standard tab and card formatting',

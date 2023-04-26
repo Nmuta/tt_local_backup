@@ -76,9 +76,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid Ladder { get; set; }
 
         /// <summary>
-        ///     Gets or sets the destination showroom category.
+        ///     Gets or sets the destination showroom manufacturer.
         /// </summary>
-        public Guid Category { get; set; }
+        public Guid Manufacturer { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination type.

@@ -357,7 +357,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Championship, opt => opt.MapFrom(src => src.Destination.Setting.Championship.@ref))
                 .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.Destination.Setting.Series.@ref))
                 .ForMember(dest => dest.Ladder, opt => opt.MapFrom(src => src.Destination.Setting.Ladder.@ref))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Destination.Category.@ref))
+                .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.Destination.Manufacturer.@ref))
                 .ForMember(dest => dest.DestinationType, opt => opt.MapFrom(src => this.PrepareDestinationType(src.Destination.type)))
                 .ForMember(dest => dest.BuildersCupSettingType, opt => opt.MapFrom(src => this.PrepareBuildersCupSettingType(src.Destination.Setting)));
 
@@ -519,7 +519,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             {
                 return new WofBaseDestination()
                 {
-                    Category = new WorldOfForzaWoFTileDeeplinkDestinationCategory() { @ref = deeplinkBridge.Category },
+                    Manufacturer = new WorldOfForzaWoFTileDeeplinkDestinationManufacturer() { @ref = deeplinkBridge.Manufacturer },
                     type = "WorldOfForza.WoFToShowroomConfig",
                     CategoryId = new WorldOfForzaWoFTileDeeplinkDestinationCategoryId()
                 };
