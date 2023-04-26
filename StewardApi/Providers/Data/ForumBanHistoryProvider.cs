@@ -107,9 +107,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 foreach (var xuid in xuids)
                 {
                     var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, TitleConstants.Forum, this.forumDefaultEndpoint).ConfigureAwait(false);
+
+                    // A player’s offense count is reduced by 1 for every 6 month period without an offense (minimum of 0).
+                    // Order the dates from oldest to most recent
+                    var banDates = banHistoryResult.Select(x => x.StartTimeUtc).OrderBy(x => x).ToList();
+                    var adjustedBanCount = 0;
+                    if (banDates.Any())
+                    {
+                        var oldestBanDate = banDates.First();
+                        // Add today to the banDates list to calculate difference between today and most recent ban
+                        banDates.Add(DateTime.Now);
+                        // Loop through the banDates starting from the second
+                        for (int i = 1; i < banDates.Count - 1; i++)
+                        {
+                            // Increase ban count
+                            adjustedBanCount += 1;
+                            // Count the number of 6 months period between this ban and the next most recent ban (or today if this is the most recent ban)
+                            var numberOf6Months = (int)(banDates[i] - banDates[i - 1]).TotalDays / 180;
+                            adjustedBanCount -= numberOf6Months;
+                            // Ban count can't go under 0
+                            adjustedBanCount = Math.Max(0, adjustedBanCount);
+                        }
+                    }
+
                     banSummaryResults.Add(new BanSummary()
                     {
                         BanCount = banHistoryResult.Count,
+                        AdjustedBanCount = adjustedBanCount,
                         Xuid = xuid
                     });
                 }
