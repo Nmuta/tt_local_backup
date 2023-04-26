@@ -30,7 +30,8 @@ mat-icon {
 // Default help popover icon size
 $help-popover-icon-size: 36px;
 $help-popover-icon-spacing: $help-popover-icon-size / 2;
-::ng-deep button {
+::ng-deep button,
+::ng-deep a {
   &:not(.mat-mini-fab) > .mat-button-wrapper > help-popover-icon {
     position: absolute;
     overflow: hidden;

@@ -103,5 +103,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// </summary>
         /// <remarks>When added, a user should expect to recieve legacy rewards on next login.</remarks>
         Task AddToTitlesUserPlayed(ulong xuid, ForzaLoyaltyRewardsSupportedTitles titleToAdd);
+
+        /// <summary>
+        ///     Get driver level, prestige rank and experience points for a given xuid.
+        /// </summary>
+        Task<LiveOpsGetUGCTuneBlobsOutput> LiveOpsGetUGCTuneBlobs(Guid[] ids);
     }
 }

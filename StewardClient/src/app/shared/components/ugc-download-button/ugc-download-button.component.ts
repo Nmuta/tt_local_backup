@@ -53,6 +53,13 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
         clickFn: () => this.downloadCLivery(this.item),
       });
     }
+    
+    if (!!this.item?.tuneblobDownloadDataBase64) {
+      this.downloadOptions.push({
+        label: 'Tune blob data',
+        clickFn: () => this.downloadTuneblobData(this.item),
+      });
+    }
   }
 
   /** Downloads the UGC Photo. */
@@ -76,6 +83,28 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
     const liveryData = item.liveryDownloadDataBase64;
 
     const binaryString = window.atob(liveryData);
+    const binaryLen = binaryString.length;
+    const bytes = new Uint8Array(binaryLen);
+    for (let i = 0; i < binaryLen; i++) {
+      const ascii = binaryString.charCodeAt(i);
+      bytes[i] = ascii;
+    }
+
+    const blob = new Blob([bytes], { type: 'application/octet-stream' });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = title;
+    downloadLink.click();
+    downloadLink.remove();
+  }
+
+  /** Downloads the UGC Tune Blob Data. */
+  public downloadTuneblobData(item: PlayerUgcItem): void {
+    this.menuTrigger.closeMenu();
+    const title = `${item.id}_Tuneblob_Data`;
+    const tuneblobData = item.tuneblobDownloadDataBase64;
+
+    const binaryString = window.atob(tuneblobData);
     const binaryLen = binaryString.length;
     const bytes = new Uint8Array(binaryLen);
     for (let i = 0; i < binaryLen; i++) {
