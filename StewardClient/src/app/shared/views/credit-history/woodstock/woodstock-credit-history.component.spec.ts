@@ -104,9 +104,23 @@ describe('WoodstockCreditHistoryComponent', () => {
       component.getCreditUpdates$.next = jasmine.createSpy('getCreditUpdates$.next');
     });
 
-    it('should call getCreditUpdates$.next()', () => {
+    it('should call getCreditUpdates$.next() and shouldLoadAllCreditUpdates should be false', () => {
       component.loadMoreCreditUpdates();
 
+      expect(component.shouldLoadAllCreditUpdates).toBeFalsy();
+      expect(component.getCreditUpdates$.next).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: loadAllCreditUpdates', () => {
+    beforeEach(() => {
+      component.getCreditUpdates$.next = jasmine.createSpy('getCreditUpdates$.next');
+    });
+
+    it('should call getCreditUpdates$.next() and shouldLoadAllCreditUpdates should be true', () => {
+      component.loadAllCreditUpdates();
+
+      expect(component.shouldLoadAllCreditUpdates).toBeTruthy();
       expect(component.getCreditUpdates$.next).toHaveBeenCalled();
     });
   });

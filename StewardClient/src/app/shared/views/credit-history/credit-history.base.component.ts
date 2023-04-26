@@ -250,9 +250,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
         if (this.shouldLoadAllCreditUpdates && creditUpdates.length >= this.maxResultsPerRequest) {
           this.getCreditUpdates$.next();
-        }
-        else 
-        {
+        } else {
           this.shouldLoadAllCreditUpdates = false;
         }
       });
@@ -291,7 +289,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   /** Load all credit updates */
   public loadAllCreditUpdates(): void {
     this.shouldLoadAllCreditUpdates = true;
-    
+
     this.getCreditUpdates$.next();
   }
 
