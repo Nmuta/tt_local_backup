@@ -189,6 +189,14 @@
         >
           Load More
         </button>
+        <button
+          mat-raised-button
+          color="primary"
+          *ngIf="showLoadAll && !loadingMore"
+          (click)="loadAllCreditUpdates()"
+        >
+          Load All
+        </button>
         <mat-progress-spinner *ngIf="loadingMore" mode="indeterminate"></mat-progress-spinner>
       </div>
     </ng-container>
